@@ -68,6 +68,12 @@ This library is duel-licensed under both the [MIT License](https://opensource.or
 git clone https://github.com/mathiasbynens/dotfiles.git && cd dotfiles && ./bootstrap.sh
 ```
 
+To update, cd into the `dotfiles` folder and then:
+
+```bash
+./bootstrap.sh
+```
+
 Suggestions/improvements
 [welcome](https://github.com/mathiasbynens/dotfiles/issues)!
 

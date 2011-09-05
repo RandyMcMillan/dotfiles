@@ -59,3 +59,14 @@ climake = "3.0.0-pre.1" # rewrite isn't out just yet!
 ## License
 
 This library is duel-licensed under both the [MIT License](https://opensource.org/licenses/MIT) ([`LICENSE-MIT`](https://github.com/rust-cli/climake/blob/master/LICENSE-MIT)) and [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) ([`LICENSE-APACHE`](https://github.com/rust-cli/climake/blob/master/LICENSE-APACHE)), you may choose at your discretion.
+
+# Mathias’s dotfiles
+
+Suggestions/improvements
+[welcome](https://github.com/mathiasbynens/dotfiles/issues)!
+
+## Thanks to…
+* [Gianni Chiappetta](http://gf3.ca/) for sharing his [amazing collection of dotfiles](https://github.com/gf3/dotfiles)
+* [Matijs Brinkhuis](http://hotfusion.nl/) and his [homedir repository](https://github.com/matijs/homedir))
+* [Jan Moesen](http://jan.moesen.nu/)
+* [Tim Esselens](http://devel.datif.be/)

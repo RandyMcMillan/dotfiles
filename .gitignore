@@ -1,6 +1,9 @@
 /target
 Cargo.lock
 .DS_Store
+# Compiled Python files
+*.pyc
+
 # Folder view configuration files
 .DS_Store
 Desktop.ini

@@ -1,3 +1,10 @@
+# git shortcuts
+alias status="git status"
+alias commit="git commit -a"
+alias push="git push"
+alias tag="git tag -a"
+alias pusht="git push --tags"
+
 alias under="cd ~/Under*"
 alias cdv="cd /Volumes"
 alias cdvcreate="~/cordova-ios/bin/./create"
@@ -111,7 +118,6 @@ alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
 
 
 
-
 alias 0="osascript -e 'set volume 0'"
 alias 1="osascript -e 'set volume 1'"
 alias 2="osascript -e 'set volume 2'"
@@ -123,4 +129,3 @@ alias 7="osascript -e 'set volume 7'"
 alias 8="osascript -e 'set volume 8'"
 alias 9="osascript -e 'set volume 9'"
 alias 10="osascript -e 'set volume 10'"
-

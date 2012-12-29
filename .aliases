@@ -2,8 +2,10 @@
 alias status="git status"
 alias commit="git commit -a"
 alias push="git push"
-alias tag="git tag -a"
+alias tag="git tag "
 alias pusht="git push --tags"
+alias tags="git tags"
+
 
 alias under="cd ~/Under*"
 alias cdv="cd /Volumes"

@@ -5,7 +5,7 @@ alias push="git push"
 alias tag="git tag "
 alias pusht="git push --tags"
 alias tags="git tags"
-
+alias x="exit"
 
 alias under="cd ~/Under*"
 alias cdv="cd /Volumes"

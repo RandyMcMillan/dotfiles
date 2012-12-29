@@ -68,15 +68,13 @@ defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryCli
 
 
 # TrackPad Accesibility Options
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad DragLock -bool true 
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true 
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadHandResting -bool true 
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadPinch -int 1
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true 
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadScroll -bool true 
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true 
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true 
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true 
+trackpad DragLock -bool true 
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.DragLock -bool true
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.Dragging -bool true
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.TrackHandResting -bool true
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.TRackpadPinch -bool true
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.Clicking -bool true
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.TrackpadScroll -bool true
 
 
 

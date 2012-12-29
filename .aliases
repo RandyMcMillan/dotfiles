@@ -1,3 +1,8 @@
+alias under="cd ~/Under*"
+alias cdv="cd /Volumes"
+alias cdvcreate="~/cordova-ios/bin/./create"
+alias cdme="cd ~/"
+
 # Easier navigation: .., ..., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -9,6 +14,7 @@ alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
 alias g="git"
 alias v="vim"
+alias mv="mvim"
 alias m="mate ."
 alias s="subl ."
 alias o="open"
@@ -102,3 +108,19 @@ done
 alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume 10'"
 alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
+
+
+
+
+alias 0="osascript -e 'set volume 0'"
+alias 1="osascript -e 'set volume 1'"
+alias 2="osascript -e 'set volume 2'"
+alias 3="osascript -e 'set volume 3'"
+alias 4="osascript -e 'set volume 4'"
+alias 5="osascript -e 'set volume 5'"
+alias 6="osascript -e 'set volume 6'"
+alias 7="osascript -e 'set volume 7'"
+alias 8="osascript -e 'set volume 8'"
+alias 9="osascript -e 'set volume 9'"
+alias 10="osascript -e 'set volume 10'"
+

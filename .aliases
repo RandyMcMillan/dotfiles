@@ -5,12 +5,17 @@ alias push="git push"
 alias tag="git tag "
 alias pusht="git push --tags"
 alias tags="git tags"
+alias co="checkout "
+alias m="merge "
+
+#exit terminal
 alias x="exit"
 
 alias under="cd ~/Under*"
 alias cdv="cd /Volumes"
 alias cdvcreate="~/cordova-ios/bin/./create"
 alias cdme="cd ~/"
+alias prefs="cd ~/Library/Preferences"
 
 # Easier navigation: .., ..., ~ and -
 alias ..="cd .."
@@ -21,7 +26,7 @@ alias -- -="cd -"
 # Shortcuts
 alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
-alias g="git"
+alias g="git "
 alias v="vim"
 alias mv="mvim"
 alias m="mate ."

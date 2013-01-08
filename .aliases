@@ -1,5 +1,6 @@
 # git shortcuts
 alias status="git status"
+alias gs="git status"
 alias commit="git commit -a"
 alias push="git push"
 alias tag="git tag "
@@ -14,8 +15,13 @@ alias x="exit"
 alias under="cd ~/Under*"
 alias cdv="cd /Volumes"
 alias cdvcreate="~/cordova-ios/bin/./create"
+#alias cdvcreate="~/ios/bin/./create"
 alias cdme="cd ~/"
+alias cdtf="cd ~/Library/Developer/Xcode/Templates/File\ Templates/"
 alias prefs="cd ~/Library/Preferences"
+
+#HomeBrew
+alias forms="cd /usr/local/Library/Formula"
 
 # Easier navigation: .., ..., ~ and -
 alias ..="cd .."
@@ -28,7 +34,7 @@ alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
 alias g="git "
 alias v="vim"
-alias mv="mvim"
+alias mm="mvim"
 alias m="mate ."
 alias s="subl ."
 alias o="open"

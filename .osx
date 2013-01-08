@@ -146,7 +146,7 @@ chflags nohidden ~/Library
 defaults write com.apple.dock wvous-tr-corner -int 2
 defaults write com.apple.dock wvous-tr-modifier -int 0
 
-# Top left screen corner → Mission Control
+# Top left screen corner → Launch Pad
 defaults write com.apple.dock wvous-tl-corner -int 1
 defaults write com.apple.dock wvous-tl-modifier -int 0
 

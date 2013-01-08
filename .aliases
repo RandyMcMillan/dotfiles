@@ -1,3 +1,6 @@
+#Mou shortcuts
+alias mou="open -a Mou"
+
 # git shortcuts
 alias status="git status"
 alias gs="git status"

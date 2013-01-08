@@ -1,6 +1,7 @@
 # git shortcuts
 alias status="git status"
 alias gs="git status"
+alias ss="git status"
 alias commit="git commit -a"
 alias push="git push"
 alias tag="git tag "

@@ -1,2 +1,4 @@
 # Automatically normalize line endings for all text-based files
-* text=auto
+# this causes to much diff junk in collaborative repos
+# no likey
+#* text=auto

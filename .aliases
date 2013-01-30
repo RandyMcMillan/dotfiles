@@ -1,19 +1,21 @@
-#Mou shortcuts
+#Mou shortcuts http://mouapp.com
 alias mou="open -a Mou"
 
 # git shortcuts
-alias g="git"
-alias status="git status"
-alias gs="git status"
-alias ss="git status"
-alias commit="git commit -a"
-alias push="git push"
-alias tag="git tag"
-alias pusht="git push --tags"
-alias tags="git tags"
-alias co="checkout"
-alias m="merge"
-alias branch="git branch"
+alias g="git "
+alias status="git status "
+alias gs="git status "
+alias ss="git status "
+alias commit="git commit -a "
+alias push="git push "
+alias tag="git tag "
+alias pusht="git push --tags "
+alias tags="git tags "
+alias co="checkout "
+alias gco="git checkout "
+alias m="merge "
+alias branch="git branch "
+
 #exit terminal
 alias x="exit"
 

@@ -15,6 +15,7 @@ alias co="checkout "
 alias gco="git checkout "
 alias m="merge "
 alias branch="git branch "
+alias clone="git clone"
 
 #exit terminal
 alias x="exit"

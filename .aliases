@@ -48,6 +48,7 @@ alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
 alias g="git "
 alias vim="/usr/local/Cellar/vim/7.3.762/bin/vim"
+alias v=vim
 alias mm="open /usr/local/Cellar/macvim/7.3-66/MacVim.app"
 alias m="mate ."
 alias s="subl ."

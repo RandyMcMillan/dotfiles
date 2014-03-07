@@ -47,7 +47,7 @@ alias -- -="cd -"
 alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
 alias g="git "
-alias vim="/usr/local/Cellar/vim/7.3.762/bin/vim"
+alias vim="/usr/local/Cellar/vim/7.4.161/bin/vim"
 alias v=vim
 alias mm="open /usr/local/Cellar/macvim/7.3-66/MacVim.app"
 alias m="mate ."
@@ -157,3 +157,6 @@ alias 7="osascript -e 'set volume 7'"
 alias 8="osascript -e 'set volume 8'"
 alias 9="osascript -e 'set volume 9'"
 alias 10="osascript -e 'set volume 10'"
+
+
+alias read="| ~/speedread/./speedread -w 250"

@@ -158,5 +158,5 @@ alias 8="osascript -e 'set volume 8'"
 alias 9="osascript -e 'set volume 9'"
 alias 10="osascript -e 'set volume 10'"
 
-
+#https://github.com/pasky/speedread
 alias read="| ~/speedread/./speedread -w 250"

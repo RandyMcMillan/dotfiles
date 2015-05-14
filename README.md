@@ -301,6 +301,8 @@ try
     Number aNumber = 10
     aNumber = 12
     aNumber.Equals 12
+    ## note: it's possible to compare with '==' operator too
+    ##       as they both invoke the same __equals__ method on the object
 finish
 
 it "should make basic operations on two arrays"
@@ -405,7 +407,7 @@ Hey, I am a function!
 Hurray: logging from myFunction
 ```
 
-As you can see, logging automatically redirected the logger from our function from our previously registered STDERR to our more specifically defined MYLOGGER
+As you can see, logging automatically redirected the logger from our function from our previously registered STDERR to our more specifically defined MYLOGGER.
 If you wish to keep logging to both loggers, you can disable the specificity filter:
 
 ```bash

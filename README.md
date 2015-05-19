@@ -303,7 +303,7 @@ try
     aNumber.Equals 12
     ## note: it's possible to compare with '==' operator too
     ##       as they both invoke the same __equals__ method on the object
-finish
+expectPass
 
 it "should make basic operations on two arrays"
 try
@@ -323,7 +323,7 @@ try
     Letters2.Merge "${!lettersRef}"
 
     Letters2.Contains "Hello Bobby"
-finish
+expectPass
 ```
 
 Can you believe this is bash?! ;-)

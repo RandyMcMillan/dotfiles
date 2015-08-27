@@ -6,6 +6,7 @@ alias mou="open -a Mou"
 
 # git shortcuts
 alias g="git "
+alias got="git "
 alias status="git status "
 alias gs="git status "
 alias ss="git status "
@@ -47,7 +48,7 @@ alias -- -="cd -"
 alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
 alias g="git "
-alias vim="/usr/local/Cellar/vim/7.4.712_1/bin/vim"
+alias vim="/usr/local/Cellar/vim/7.4.826/bin/vim"
 alias v=vim
 alias mm="open /usr/local/Cellar/macvim/7.3-66/MacVim.app"
 alias m="mate ."

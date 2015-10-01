@@ -48,11 +48,7 @@ alias -- -="cd -"
 alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
 alias g="git "
-<<<<<<< HEAD
-alias vim="/usr/local/Cellar/vim/7.4.873/bin/vim"
-=======
-alias vim="/usr/local/Cellar/vim/7.4.865/bin/vim"
->>>>>>> 87d079ff98edb9271e3f3f1cf6b3c1e0202bc5c4
+alias vim="/usr/local/Cellar/vim/7.4.884/bin/vim"
 alias v=vim
 alias mm="open /usr/local/Cellar/macvim/7.4-77/MacVim.app"
 alias mvim=mm

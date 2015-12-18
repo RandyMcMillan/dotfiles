@@ -9,6 +9,7 @@ function folderName(){
     f="${dest##*/}";
     echo "${f}"
     }
+alias fn=folderName
 
 #alias makeremote='ssh git@72.64.186.174 "git init --bare "fn'
 function makeRemote(){

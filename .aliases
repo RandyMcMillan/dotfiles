@@ -1,8 +1,22 @@
-#git server
+#ssh to git server
+alias deepspace='ssh git@72.64.186.174'
+alias ds=deepspace
+alias lsds='ssh git@72.64.186.174 "ls"'
 
-alias ssh="ssh"
-alias deepspace="git@72.64.186.174"
-alias deepspace="ssh deepspace"
+#return local foldername
+function folderName(){
+    dest=$PWD;
+    f="${dest##*/}";
+#    echo "${f}"
+    }
+
+#alias makeremote='ssh git@72.64.186.174 "git init --bare "fn'
+function makeRemote(){
+    dest=$PWD;
+    f="${dest##*/}";
+ #   echo "${f}"
+    ssh git@72.64.186.174 "git init --bare ${f}";
+}
 
 # Spoof MAC Address
 alias spoof="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"
@@ -54,9 +68,9 @@ alias -- -="cd -"
 alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
 alias g="git "
-alias vim="/usr/local/Cellar/vim/7.4.903/bin/vim"
+alias vim="/usr/local/Cellar/vim/7.4.963/bin/vim"
 alias v=vim
-alias mm="open /usr/local/Cellar/macvim/7.4-77/MacVim.app"
+alias mm="open /usr/local/Cellar/macvim/7.4-86/MacVim.app"
 alias mvim=mm
 alias s="subl ."
 alias o="open"
@@ -168,3 +182,4 @@ alias 10="osascript -e 'set volume 10'"
 #https://github.com/pasky/speedread
 #usage $ cat *.txt | read
 alias read="~/speedread/./speedread -w 250"
+

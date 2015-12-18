@@ -7,16 +7,19 @@ alias lsds='ssh git@72.64.186.174 "ls"'
 function folderName(){
     dest=$PWD;
     f="${dest##*/}";
-#    echo "${f}"
+    echo "${f}"
     }
 
 #alias makeremote='ssh git@72.64.186.174 "git init --bare "fn'
 function makeRemote(){
-    dest=$PWD;
+    dest=$PWD".git";
+
     f="${dest##*/}";
  #   echo "${f}"
     ssh git@72.64.186.174 "git init --bare ${f}";
 }
+
+alias makeremote=makeRemote
 
 # Spoof MAC Address
 alias spoof="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"

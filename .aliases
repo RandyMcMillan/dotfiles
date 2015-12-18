@@ -21,6 +21,18 @@ function makeRemote(){
 
 alias makeremote=makeRemote
 
+function forceOrigin(){
+
+#git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git
+    git remote rm origin;
+    dest=$PWD".git";
+    f="${dest##*/}";
+    git remote set-url origin ssh://git@72.64.186.174/Users/git/${f};
+
+}
+alias forceorigin=forceOrigin
+alias fo=forceorigin
+
 # Spoof MAC Address
 alias spoof="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"
 
@@ -185,4 +197,5 @@ alias 10="osascript -e 'set volume 10'"
 #https://github.com/pasky/speedread
 #usage $ cat *.txt | read
 alias read="~/speedread/./speedread -w 250"
+
 

@@ -16,13 +16,17 @@ else
 if [ -d ~/QuickVim ]
 		then
 				echo '~/QuickVim exists'
+                cd ~/QuickVim
+                ~/QuickVim/./quick-vim install
 		else
-				echo 'cloning'
+				echo 'cloning ~/QuickVim'
 				git clone https://github.com/randymcmillan/QuickVim.git ~/QuickVim
+				cd ~/QuickVim
+				echo $PWD
+                ~/QuickVim/./quick-vim upgrade
+
 		fi
 unset doIt
 source ~/.bash_profile
 source ~/.aliases
-
-
 fi

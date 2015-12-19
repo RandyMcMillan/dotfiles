@@ -16,6 +16,6 @@ fi
 unset doIt
 source ~/.bash_profile
 source ~/.aliases
-cdme
+cd ..
 git clone https://github.com/randymcmillan/QuickVim.git
 

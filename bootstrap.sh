@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 cd "$(dirname "$0")"
 git pull
 function doIt() {
@@ -12,10 +13,16 @@ else
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt
 	fi
-fi
+if [ -d ~/QuickVim ]
+		then
+				echo '~/QuickVim exists'
+		else
+				echo 'cloning'
+				git clone https://github.com/randymcmillan/QuickVim.git ~/QuickVim
+		fi
 unset doIt
 source ~/.bash_profile
 source ~/.aliases
-cd ..
-git clone https://github.com/randymcmillan/QuickVim.git
 
+
+fi

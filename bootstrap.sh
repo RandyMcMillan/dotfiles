@@ -9,18 +9,17 @@ function installQuickVim() {
             if [ -d ~/QuickVim ]
                     then
                             echo '~/QuickVim exists'
-                            cd ~/QuickVim
-                            ~/QuickVim/./quick-vim upgrade
+                            cd ~/QuickVim/
+                             ~/QuickVim/./quick-vim upgrade
                     else
-                            echo 'cloning
-                            https://github.com/randymcmillan/QuickVim.git to ~/QuickVim'
+                            echo 'cloning https://github.com/randymcmillan/QuickVim.git to ~/QuickVim'
                             git clone https://github.com/randymcmillan/QuickVim.git ~/QuickVim
-                            cd ~/QuickVim
+                            cd ~/QuickVim/
                             ~/QuickVim/./quick-vim install
 
-                    fi
-        }
 
+                    fi
+}
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt

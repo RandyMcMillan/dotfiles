@@ -1,5 +1,7 @@
 #ssh to git server
-alias deepspace='ssh git@72.64.186.174'
+ip='72.64.186.174'
+user='git'
+alias deepspace='ssh $user@$ip'
 alias ds=deepspace
 alias lsds='ssh git@72.64.186.174 "ls"'
 

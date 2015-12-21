@@ -46,6 +46,7 @@ function forceOrigin(){
     git ls-remote --get-url ssh://git@72.64.186.174/Users/git/${f} #&>-
     if [ "$?" -ne 0 ]; #fail test
         then
+        git remote -v
         echo failed to read remote
         makeRemote;forceOrigin;
         else

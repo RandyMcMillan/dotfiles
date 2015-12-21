@@ -26,10 +26,15 @@ alias makeremote=makeRemote
 
 #git ls-remote --exit-code remote
 function testRemote(){
- dest=$PWD".git";
- echo $dest;
-    f="${dest##*/}";
-    ssh git@72.64.186.174 "git remote --exit-code -h /Users/git/${f}"
+     dest=$PWD".git";
+     echo $dest;
+     f="${dest##*/}";
+    git ls-remote ssh://git@72.64.186.174/Users/git/${f} &>-
+    if [ "$?" -ne 0 ]; then
+    echo "[ERROR] Unable to read from " git ls-remote ssh://git@72.64.186.174/Users/git/${f}
+    else
+    return "$?"
+    fi
 }
 echo myresult = $myresult
 
@@ -50,20 +55,18 @@ fi
 function forceOrigin(){
     dest=$PWD".git";
     f="${dest##*/}";
-    echo before
-
-git ls-remote ssh://git@72.64.186.174/Users/git/${f} &>-
-if [ "$?" -ne 0 ]; #not success test
-    then
-        echo true
-        git remote set-url origin ssh://git@72.64.186.174/Users/git/${f};
-        git remote -v
-    else
-        echo else
-        dest=$PWD".git";
-        f="${dest##*/}";
-        git remote add origin ssh://git@72.64.186.174/Users/git/${f};
-    fi
+    git ls-remote --get-url ssh://git@72.64.186.174/Users/git/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        echo failed to read remote
+ #           git remote add origin ssh://git@72.64.186.174/Users/git/${f};
+ #           git remote -v
+ makeRemote;forceOrigin;
+        else
+            echo suceeded to read
+            git remote set-url origin ssh://git@72.64.186.174/Users/git/${f};
+            git remote -v
+        fi
 }
 alias forceorigin=forceOrigin
 alias fo=forceorigin

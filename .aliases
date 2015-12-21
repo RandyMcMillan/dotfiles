@@ -59,9 +59,7 @@ function forceOrigin(){
     if [ "$?" -ne 0 ]; #fail test
         then
         echo failed to read remote
- #           git remote add origin ssh://git@72.64.186.174/Users/git/${f};
- #           git remote -v
- makeRemote;forceOrigin;
+        makeRemote;forceOrigin;
         else
             echo suceeded to read
             git remote set-url origin ssh://git@72.64.186.174/Users/git/${f};

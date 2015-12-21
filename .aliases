@@ -4,7 +4,6 @@ user='git'
 alias deepspace='ssh $user@$ip'
 alias ds=deepspace
 alias lsds='ssh git@72.64.186.174 "ls"'
-
 #return local foldername
 function folderName(){
     dest=$PWD;
@@ -12,19 +11,14 @@ function folderName(){
     echo "${f}"
     }
 alias fn=folderName
-
-#alias makeremote='ssh git@72.64.186.174 "git init --bare "fn'
+#makeRemote
 function makeRemote(){
     dest=$PWD".git";
     f="${dest##*/}";
     ssh git@72.64.186.174 "git init --bare ${f}";
 }
 alias makeremote=makeRemote
-
-#git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git
-#$ git ls-remote --heads git@github.com:user/repo.git branch | wc -l
-
-#git ls-remote --exit-code remote
+#testRemote
 function testRemote(){
      dest=$PWD".git";
      echo $dest;
@@ -36,22 +30,16 @@ function testRemote(){
     return "$?"
     fi
 }
-echo myresult = $myresult
 
+#myfunc
+#echo myresult = $myresult
 function myfunc()
 {
     myresult='some value'
 }
-
-myfunc
-echo myresult = $myresult
-
-if test $? = 1; then
-    echo ls-remote!
-    else
-        echo 0
-fi
-
+#myfunc
+#echo myresult = $myresult
+#forceOrigin
 function forceOrigin(){
     dest=$PWD".git";
     f="${dest##*/}";

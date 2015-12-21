@@ -16,22 +16,38 @@ alias fn=folderName
 #alias makeremote='ssh git@72.64.186.174 "git init --bare "fn'
 function makeRemote(){
     dest=$PWD".git";
-
     f="${dest##*/}";
- #   echo "${f}"
     ssh git@72.64.186.174 "git init --bare ${f}";
 }
-
 alias makeremote=makeRemote
 
 function forceOrigin(){
-
 #git remote set-url origin https://github.com/USERNAME/OTHERREPOSITORY.git
+#$ git ls-remote --heads git@github.com:user/repo.git branch | wc -l
+
+#git ls-remote --exit-code remote
+
+function testRemote(){
+ dest=$PWD".git";
+    f="${dest##*/}";
+    ssh git@72.64.186.174 "git remote --exit-code -h ${f}"
+}
+if test $? = 1; then
+    echo ls-remote!
+    else
+        echo 0
+fi
+
+    if git remote | grep faraway > /dev/null; then
+    echo remote exists
+    echo true
     git remote rm origin;
     dest=$PWD".git";
     f="${dest##*/}";
     git remote set-url origin ssh://git@72.64.186.174/Users/git/${f};
-
+    else
+    echo not exists
+    fi
 }
 alias forceorigin=forceOrigin
 alias fo=forceorigin

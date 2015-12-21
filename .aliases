@@ -62,6 +62,7 @@ function forceOrigin(){
         makeRemote;forceOrigin;
         else
             echo suceeded to read
+            git add remote origin;
             git remote set-url origin ssh://git@72.64.186.174/Users/git/${f};
             git remote -v
         fi

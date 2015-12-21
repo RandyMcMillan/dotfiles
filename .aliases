@@ -29,9 +29,20 @@ function forceOrigin(){
 
 function testRemote(){
  dest=$PWD".git";
+ echo $dest;
     f="${dest##*/}";
-    ssh git@72.64.186.174 "git remote --exit-code -h ${f}"
+    ssh git@72.64.186.174 "git remote --exit-code -h /Users/git/${f}"
 }
+echo myresult = $myresult
+
+function myfunc()
+{
+    myresult='some value'
+}
+
+myfunc
+echo myresult = $myresult
+
 if test $? = 1; then
     echo ls-remote!
     else

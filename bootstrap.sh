@@ -21,6 +21,28 @@ function installQuickVim() {
                     fi
 }
 
+
+function installISightCapture() {
+
+
+            if [ -d ~/iSightCapture ]
+                    then
+                            echo '~/iSightCapture exists'
+                            cd ~/iSightCapture/
+                            git pull
+                    else
+                            echo 'cloning
+                            https://github.com/randymcmillan/iSightCapture.git
+                            to ~/iSIghtCapture'
+                            git clone
+                            https://github.com/randymcmillan/iSightCapture.git ~/iSightCapture
+                            cd ~/iSightCapture/
+                            installISightCapture
+                    fi
+
+
+
+}
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt
 else
@@ -31,9 +53,11 @@ else
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt
         installQuickVim
+        installISightCapture
     fi
 unset doIt
 unset installQuickVim
+unset installISightCapture
 cd ~/
 source ~/.bash_profile
 source ~/.aliases

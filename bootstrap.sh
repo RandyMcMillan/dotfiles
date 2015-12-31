@@ -23,8 +23,6 @@ function installQuickVim() {
 
 
 function installISightCapture() {
-
-
             if [ -d ~/iSightCapture ]
                     then
                             echo '~/iSightCapture exists'
@@ -39,10 +37,25 @@ function installISightCapture() {
                             cd ~/iSightCapture/
                             installISightCapture
                     fi
-
-
-
 }
+
+function installMyUncrustifyCongfigs() {
+            if [ -d ~/my-uncrustify-configs ]
+                then
+                    echo '~/my-uncrustify-configs'
+                    cd ~/my-uncrustify-configs
+                    git pull
+                else
+                    echo 'cloning
+                    https://github.com/RandyMcMillan/my-uncrustify-configs.git to
+                    ~/my-uncrustify-configs'
+                    git clone https://github.com/RandyMcMillan/my-uncrustify-configs.git
+                    ~/my-uncrustofy-configs
+                    installMyUncrustofyConfigs
+            fi
+}
+
+
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt
 else
@@ -54,10 +67,12 @@ else
 		doIt
         installQuickVim
         installISightCapture
+        installMyUncrustifyCongfigs
     fi
 unset doIt
 unset installQuickVim
 unset installISightCapture
+unset installMyUncrustifyCongfigs
 cd ~/
 source ~/.bash_profile
 source ~/.aliases

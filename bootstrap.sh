@@ -39,7 +39,7 @@ function installISightCapture() {
                     fi
 }
 
-function installMyUncrustifyCongfigs() {
+function installMyUncrustifyConfigs() {
             if [ -d ~/my-uncrustify-configs ]
                 then
                     echo '~/my-uncrustify-configs'
@@ -72,7 +72,7 @@ else
 unset doIt
 unset installQuickVim
 unset installISightCapture
-unset installMyUncrustifyCongfigs
+unset installMyUncrustifyConfigs
 cd ~/
 source ~/.bash_profile
 source ~/.aliases

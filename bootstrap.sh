@@ -67,7 +67,7 @@ else
 		doIt
         installQuickVim
         installISightCapture
-        installMyUncrustifyCongfigs
+        installMyUncrustifyConfigs
     fi
 unset doIt
 unset installQuickVim

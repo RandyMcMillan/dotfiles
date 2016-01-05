@@ -50,7 +50,7 @@ function forceOrigin(){
         echo failed to read remote
         makeRemote;forceOrigin;
         else
-            echo suceeded to read
+            echo succeeded to read
             echo adding remote origin
             git remote add deepspace ssh://git@72.64.186.174/Users/git/${f};
             echo setting remote url

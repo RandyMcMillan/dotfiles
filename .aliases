@@ -54,7 +54,7 @@ function forceOrigin(){
             echo adding remote deepspace repository
             git remote add deepspace ssh://git@72.64.186.174/Users/git/${f};
             echo setting remote url
-            git remote set-url deepspace ssh://git@72.64.186.174/Users/git/${f};
+            #git remote set-url deepspace ssh://git@72.64.186.174/Users/git/${f};
             git remote -v
         fi
 }

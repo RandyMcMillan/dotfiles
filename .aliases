@@ -51,9 +51,10 @@ function forceOrigin(){
         makeRemote;forceOrigin;
         else
             echo succeeded to read
+            echo adding remote github repository
             git remote add github https://github.com/randymcmillan/${f};
             echo adding remote deepspace repository
-            #git remote add deepspace ssh://git@72.64.186.174/Users/git/${f};
+            git remote add deepspace ssh://git@72.64.186.174/Users/git/${f};
             echo setting remote url
             #git remote set-url --addurl deepspace ssh://git@72.64.186.174/Users/git/${f};
             git remote -v

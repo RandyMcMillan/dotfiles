@@ -202,7 +202,7 @@ alias mt=emptytrash
 alias show="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
 alias hide="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
 alias s='show'
-alais h='hide'
+alias h='hide'
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"

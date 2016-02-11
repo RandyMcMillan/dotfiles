@@ -20,8 +20,6 @@ function installQuickVim() {
 
                     fi
 }
-
-
 function installISightCapture() {
             if [ -d ~/iSightCapture ]
                     then
@@ -38,7 +36,6 @@ function installISightCapture() {
                             installISightCapture
                     fi
 }
-
 function installMyUncrustifyConfigs() {
             if [ -d ~/my-uncrustify-configs ]
                 then
@@ -54,8 +51,6 @@ function installMyUncrustifyConfigs() {
                     installMyUncrustofyConfigs
             fi
 }
-
-
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt
 else
@@ -68,7 +63,7 @@ else
         installQuickVim
         installISightCapture
         installMyUncrustifyConfigs
-    fi
+#    fi
 unset doIt
 unset installQuickVim
 unset installISightCapture
@@ -76,4 +71,5 @@ unset installMyUncrustifyConfigs
 cd ~/
 source ~/.bash_profile
 source ~/.aliases
+    fi
 fi

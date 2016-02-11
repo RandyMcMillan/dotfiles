@@ -4,6 +4,23 @@ user='git'
 alias deepspace='ssh $user@$ip'
 alias ds=deepspace
 alias lsds='ssh git@72.64.186.174 "ls"'
+
+#circe
+circeurl='circe.rc.usf.edu'
+usfuser='rmcmillan1'
+alias circe='ssh -Y $usfuser@$circeurl'
+alias usf=circe
+alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
+
+function x2go(){
+#cd /opt/homebrew-cask/Caskroom/x2goclient/latest/
+#open x2goclient.app/
+
+open /opt/homebrew-cask/Caskroom/x2goclient/latest/./x2goclient.app
+
+}
+alias x2='x2go'
+
 #return local foldername
 function folderName(){
     dest=$PWD;
@@ -78,7 +95,7 @@ alias forceorigin=forceOrigin
 alias fo=forceorigin
 
 # Spoof MAC Address
-#alias spoof="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"
+alias spoof="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"
 
 #Mou shortcuts http://mouapp.com
 alias mou="open -a Mou"
@@ -129,9 +146,9 @@ alias p="cd ~/Projects"
 alias g="git "
 
 #7.4.1063
-alias vim="/usr/local/Cellar/vim/7.4.1063/bin/vim"
+alias vim="/usr/local/Cellar/vim/7.4.1090/bin/vim"
 alias v=vim
-alias mm="open /usr/local/Cellar/macvim/7.4-89/MacVim.app"
+alias mm="open /usr/local/Cellar/macvim/7.4-94/MacVim.app"
 alias mvim=mm
 alias s="subl ."
 alias o="open"
@@ -196,7 +213,7 @@ alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 
 # Empty the Trash on all mounted volumes and the main HDD
 # Also, clear Apple’s System Logs to improve shell startup speed
-#alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
 alias mt=emptytrash
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"

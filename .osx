@@ -147,7 +147,9 @@ defaults write com.apple.dock wvous-tr-corner -int 2
 defaults write com.apple.dock wvous-tr-modifier -int 0
 
 # Top left screen corner → Launch Pad
-defaults write com.apple.dock wvous-tl-corner -int 1
+# set top left corner to launchpad
+defaults write com.apple.dock wvous-tl-corner 11
+#defaults write com.apple.dock wvous-tl-corner -int 1
 defaults write com.apple.dock wvous-tl-modifier -int 0
 
 # Bottom right screen corner → Desktop
@@ -161,7 +163,9 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilte-stack -bool true
 
-
+# Use list view in all Finder windows by default
+# Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
 # Set the icon size of Dock items to 36 pixels
 defaults write com.apple.dock tilesize -int 36
@@ -193,9 +197,9 @@ defaults write com.apple.dock showhidden -bool true
 defaults write com.apple.dock itunes-notifications -bool true
 
 # Add a spacer to the left side of the Dock (where the applications are)
-#defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
+defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
 # Add a spacer to the right side of the Dock (where the Trash is)
-#defaults write com.apple.dock persistent-others -array-add '{tile-data={}; tile-type="spacer-tile";}'
+defaults write com.apple.dock persistent-others -array-add '{tile-data={}; tile-type="spacer-tile";}'
 
 # Disable shadow in screenshots
 defaults write com.apple.screencapture disable-shadow -bool true

@@ -1,3 +1,6 @@
+alias vf="cd"
+alias got="git"
+
 #ssh to git server
 ip='72.64.186.174'
 user='git'

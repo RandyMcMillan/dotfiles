@@ -18,7 +18,7 @@ alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 #bocmacmini
 bocmacminiurl='107.144.242.47'
 me='randymcmillan'
-alias boc='ssh $me@bocmacminiurl'
+alias boc='ssh $me@$bocmacminiurl'
 
 function x2go(){
 #cd /opt/homebrew-cask/Caskroom/x2goclient/latest/
@@ -154,7 +154,7 @@ alias p="cd ~/Projects"
 alias g="git "
 
 #7.4.1063
-alias vim="/usr/local/Cellar/vim/7.4.1401/bin/vim"
+alias vim="/usr/local/Cellar/vim/7.4.1345/bin/vim"
 alias v=vim
 alias mm="open /usr/local/Cellar/macvim/7.4-94/MacVim.app"
 alias mvim=mm

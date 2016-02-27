@@ -29,6 +29,15 @@ open /opt/homebrew-cask/Caskroom/x2goclient/latest/./x2goclient.app
 }
 alias x2='x2go'
 
+alias pt='pipeTree'
+#pipe tree
+function pipeTree(){
+
+ls -R1 /path | 
+  while read l; do case $l in *:) d=${l%:};; "") d=;; *) echo "$d/$l";; esac; done
+
+}
+
 #return local foldername
 function folderName(){
     dest=$PWD;

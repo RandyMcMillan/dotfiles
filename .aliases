@@ -15,10 +15,17 @@ alias circe='ssh -Y $usfuser@$circeurl'
 alias usf=circe
 alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 
+
+# ssh randymcmillan@107.144.243.47
 #bocmacmini
-bocmacminiurl='107.144.243.47'
+alias boc='bocmacmini'
+function bocmacmini(){
+
+bocurl='107.144.243.47'
 me='randymcmillan'
-alias boc='ssh $me@$bocmacminiurl'
+ssh $me@$bocurl
+
+}
 
 function x2go(){
 #cd /opt/homebrew-cask/Caskroom/x2goclient/latest/

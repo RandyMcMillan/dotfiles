@@ -16,7 +16,7 @@ alias usf=circe
 alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 
 #bocmacmini
-bocmacminiurl='107.144.242.47'
+bocmacminiurl='107.144.243.47'
 me='randymcmillan'
 alias boc='ssh $me@$bocmacminiurl'
 

@@ -122,11 +122,14 @@ alias fo=forceorigin
 alias spoof='spoofMacAddress'
 function spoofMacAddress(){
 
-openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether
+    if [ "$?" -ne 0 ]; #fail test
 
+openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether 
+fi
+    if [ "$?" -ne 0 ]; #fail test
 
-| ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'
-
+ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'
+fi
 }
 
 #Mou shortcuts http://mouapp.com

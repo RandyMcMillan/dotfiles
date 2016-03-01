@@ -118,20 +118,20 @@ function forceOrigin(){
 alias forceorigin=forceOrigin
 alias fo=forceorigin
 
+
+
+alias spoofMacAddress="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"
 # Spoof MAC Address
-alias spoof='spoofMacAddress'
-function spoofMacAddress(){
-
-    if [ "$?" -ne 0 ]; #fail test
-
-openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether 
-fi
-    if [ "$?" -ne 0 ]; #fail test
-
-ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'
-fi
+function spoof(){
+spoofMacAddress; reportMacAddress
 }
 
+function reportMacAddress(){
+
+
+    ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'
+
+}
 #Mou shortcuts http://mouapp.com
 alias mou="open -a Mou"
 

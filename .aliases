@@ -183,8 +183,9 @@ alias g="git "
 #7.4.1063
 alias vim="/usr/local/bin/vim"
 alias v=vim
-alias mm="open /usr/local/Cellar/macvim/7.4-94/MacVim.app"
-alias mvim=mm
+#alias mm="open /usr/local/Cellar/macvim/7.4-94/MacVim.app"
+alias mvim="/usr/local/bin/mvim"
+alias mm=mvim
 alias s="subl ."
 alias o="open"
 alias oo="open ."
@@ -299,5 +300,6 @@ alias 10="osascript -e 'set volume 10'"
 #https://github.com/pasky/speedread
 #usage $ cat *.txt | read
 alias read="~/speedread/./speedread -w 250"
+
 
 

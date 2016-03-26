@@ -2,11 +2,11 @@ alias vf="cd"
 alias got="git"
 
 #ssh to git server
-ip='72.64.186.174'
+ip='96.252.148.52'
 user='git'
 alias deepspace='ssh $user@$ip'
 alias ds=deepspace
-alias lsds='ssh git@72.64.186.174 "ls"'
+alias lsds='ssh git@96.252.148.52 "ls"'
 
 #circe
 circeurl='circe.rc.usf.edu'
@@ -56,7 +56,7 @@ alias fn=folderName
 function makeRemote(){
     dest=$PWD".git";
     f="${dest##*/}";
-    ssh git@72.64.186.174 "git init --bare ${f}";
+    ssh git@96.252.148.52 "git init --bare ${f}";
 }
 alias makeremote=makeRemote
 #testRemote
@@ -64,7 +64,7 @@ function testRemote(){
      dest=$PWD".git";
      echo $dest;
      f="${dest##*/}";
-    git ls-remote ssh://git@72.64.186.174/Users/git/${f} &>-
+    git ls-remote ssh://git@96.252.148.52/Users/git/${f} &>-
     if [ "$?" -ne 0 ]; then
     echo "[ERROR] Unable to read from " git ls-remote ssh://git@72.64.186.174/Users/git/${f}
     else
@@ -84,7 +84,7 @@ function myfunc()
 function forceOrigin(){
     dest=$PWD".git";
     f="${dest##*/}";
-    git ls-remote --get-url ssh://git@72.64.186.174/Users/git/${f} #&>-
+    git ls-remote --get-url ssh://git@96.252.148.52/Users/git/${f} #&>-
     if [ "$?" -ne 0 ]; #fail test
         then
         git remote -v
@@ -93,9 +93,9 @@ function forceOrigin(){
         else
             echo succeeded to read
             echo adding remote deepspace repository
-            git remote add deepspace ssh://git@72.64.186.174/Users/git/${f};
+            git remote add deepspace ssh://git@96.252.148.52/Users/git/${f};
             echo setting remote url
-            git remote set-url --origin ssh://git@72.64.186.174/Users/git/${f};
+            git remote set-url --origin ssh://git@96.252.148.52/Users/git/${f};
             git remote -v
         fi
     git ls-remote --get-url https://github.com/randymcmillan/${f} #&>-

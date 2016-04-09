@@ -29,4 +29,4 @@ complete -W "NSGlobalDomain" defaults
 complete -o "nospace" -W "Finder Dock Mail Safari iTunes iCal Address\ Book SystemUIServer" killall
 
 source ~/.profile
-
+source ~/perl5/perlbrew/etc/bashrc

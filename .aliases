@@ -59,7 +59,7 @@ alias p="cd ~/Projects"
 alias g="git "
 
 #7.4.1063
-alias vim="/usr/local/Cellar/vim"
+alias vim="/usr/bin/vim"
 alias v=vim
 alias s="subl ."
 alias o="open"

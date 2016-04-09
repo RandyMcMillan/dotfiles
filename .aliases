@@ -59,14 +59,11 @@ alias p="cd ~/Projects"
 alias g="git "
 
 #7.4.1063
-alias vim="/usr/local/Cellar/vim/7.4.1063/bin/vim"
+alias vim="/usr/local/Cellar/vim"
 alias v=vim
-alias mm="open /usr/local/Cellar/macvim/7.4-89/MacVim.app"
-alias mvim=mm
 alias s="subl ."
 alias o="open"
 alias oo="open ."
-alias ut="~/Library/Containers/com.apple.iWork.Pages/Data/Library/Application Support/User Templates"
 # List all files colorized in long format
 alias l="ls -Gl"
 

@@ -1,4 +1,4 @@
-perl="~/.linuxbrew/bin/Cellar/perl/5.22.1/bin/perl"
+myperl="~/.linuxbrew/bin/Cellar/perl/5.22.1/bin/perl"
 
 
 #myfunc

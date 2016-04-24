@@ -3,4 +3,7 @@ if [ $VIM ]; then
 source ~/.aliases
 else
     [ -n "$PS1" ] && source ~/.bash_profile
+    [ -n "$PS1" ] && source ~/perl5/perlbrew/etc/bashrc
+
 fi
+

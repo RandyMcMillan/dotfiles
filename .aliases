@@ -21,7 +21,7 @@ alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 alias boc='bocmacmini'
 function bocmacmini(){
 
-bocurl='107.144.243.47'
+bocurl='108.190.128.163'
 me='randymcmillan'
 ssh $me@$bocurl
 

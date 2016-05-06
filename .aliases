@@ -19,13 +19,13 @@ alias usf=circe
 alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 
 
-# ssh randymcmillan@107.144.243.47
+# ssh randymcmillan@108.190.128.128
 #bocmacmini
 alias boc='bocmacmini'
 function bocmacmini(){
 
-bocurl='108.190.128.163'
-me='randymcmillan'
+bocurl='108.190.128.128'
+me='git'
 ssh $me@$bocurl
 
 }
@@ -122,6 +122,43 @@ alias forceorigin=forceOrigin
 alias fo=forceorigin
 
 
+#forceLocal
+function forceLocal(){
+    dest=$PWD".git";
+    f="${dest##*/}";
+    git ls-remote --get-url ssh://git@192.168.1.10/Users/git/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding "local" deepspace repository
+            git remote add deepspace ssh://git@192.168.1.10/Users/git/${f};
+            echo setting remote url
+            git remote set-url --origin ssh://git@192.168.1.10/Users/git/${f};
+            git remote -v
+        fi
+    git ls-remote --get-url https://github.com/randymcmillan/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding remote github repository
+            git remote add github https://github.com/randymcmillan/${f};
+            echo setting remote url
+            git remote set-url --addurl local ssh://git@192.168.1.10/Users/git/${f};
+            git remote -v
+        fi
+
+
+}
+alias forcelocal=forceLocal
+alias fl=forcelocal
 
 alias spoofMacAddress="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"
 # Spoof MAC Address

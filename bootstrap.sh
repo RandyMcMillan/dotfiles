@@ -61,8 +61,8 @@ else
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt
         installQuickVim
-        installISightCapture
-        installMyUncrustifyConfigs
+#        installISightCapture
+#        installMyUncrustifyConfigs
 #    fi
 unset doIt
 unset installQuickVim

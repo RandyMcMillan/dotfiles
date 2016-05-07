@@ -221,7 +221,7 @@ alias p="cd ~/Projects"
 alias g="git "
 
 #7.4.1063
-alias vim="/usr/local/bin/vim"
+alias vim="/bin/vim"
 alias v=vim
 #alias mm="open /usr/local/Cellar/macvim/7.4-94/MacVim.app"
 alias mvim="/usr/local/bin/mvim"

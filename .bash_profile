@@ -23,9 +23,9 @@ export LANG="en_US"
 
 # REF http://www.funtoo.org/Keychain
 # brew install keychain
-eval `keychain -q --eval --agents ssh my_git_key2`
-eval `keychain -q --eval --agents ssh rootsinr_persis`
-eval `keychain -q --eval --agents ssh xpatriot_persis_rsa`
+eval `keychain --quiet --eval --agents ssh my_git_key2`
+eval `keychain --quiet --eval --agents ssh rootsinr_persis`
+eval `keychain --quiet --eval --agents ssh xpatriot_persis_rsa`
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults

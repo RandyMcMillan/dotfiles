@@ -4,11 +4,11 @@ alias vf="cd"
 alias got="git"
 
 #ssh to git server
-ip='173.65.226.216'
+ip='71.180.246.88'
 user='git'
 alias deepspace='ssh $user@$ip'
 alias ds=deepspace
-alias lsds='ssh git@173.65.226.216 "ls"'
+alias lsds='ssh git@71.180.246.88 "ls"'
 
 #circe
 circeurl='circe.rc.usf.edu'

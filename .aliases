@@ -18,12 +18,12 @@ alias usf=circe
 alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 
 
-# ssh randymcmillan@108.190.128.128
+# ssh randymcmillan@108.190.128.163
 #bocmacmini
 alias boc='bocmacmini'
 function bocmacmini(){
 
-bocurl='108.190.128.128'
+bocurl='108.190.128.163'
 me='git'
 ssh $me@$bocurl
 
@@ -323,8 +323,6 @@ alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume 10'"
 alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
 
-
-
 alias 0="osascript -e 'set volume 0'"
 alias 1="osascript -e 'set volume 1'"
 alias 2="osascript -e 'set volume 2'"
@@ -340,7 +338,3 @@ alias 10="osascript -e 'set volume 10'"
 #https://github.com/pasky/speedread
 #usage $ cat *.txt | read
 alias read="~/speedread/./speedread -w 250"
-
-
-
-

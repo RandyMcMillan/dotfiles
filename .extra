@@ -1,0 +1,261 @@
+##################################################
+#BEGIN MY ADDITIONS
+
+alias SD="sudo shutdown -r now"
+alias vf="cd"
+alias got="git"
+alias ll=la
+
+
+#ssh to git server
+ip='71.180.246.88'
+user='git'
+alias deepspace='ssh $user@$ip'
+alias ds=deepspace
+alias lsds='ssh git@71.180.246.88 "ls"'
+
+#circe
+circeurl='circe.rc.usf.edu'
+usfuser='rmcmillan1'
+alias circe='ssh -Y $usfuser@$circeurl'
+alias usf=circe
+alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
+
+#Mou shortcuts http://mouapp.com
+alias mou="open -a Mou"
+
+# git shortcuts
+alias g="git "
+alias got="git "
+alias status="git status "
+alias gs="git status "
+alias ss="git status "
+alias commit="git commit -a "
+alias push="git push "
+alias pull="git pull "
+alias tag="git tag "
+alias pusht="git push --tags "
+alias tags="git tags "
+alias co="checkout "
+alias gco="git checkout "
+alias m="merge "
+alias branch="git branch "
+alias clone="git clone "
+alias add="git add "
+
+#exit terminal
+alias x="exit"
+
+alias under="cd ~/Under*"
+alias cdv="cd /Volumes"
+alias cdvioscreate="~/cordova-ios/bin/./create"
+alias cdvosxcreate="~/cordova-osx/bin/./create"
+#alias cdvcreate="~/ios/bin/./create"
+alias cdme="cd ~/"
+alias cdtf="cd ~/Library/Developer/Xcode/Templates/File\ Templates/"
+alias prefs="cd ~/Library/Preferences"
+
+#HomeBrew
+alias forms="cd /usr/local/Library/Formula"
+
+alias vim="/usr/local/bin/vim"
+alias v=vim
+#alias mm="open /usr/local/Cellar/macvim/7.4-94/MacVim.app"
+alias mvim="/usr/local/bin/mvim"
+alias mm=mvim
+alias s="subl ."
+alias o="open"
+alias oo="open ."
+alias ut="~/Library/Containers/com.apple.iWork.Pages/Data/Library/Application Support/User Templates"
+
+
+
+#END MY ADDITIONS
+##################################################
+##################################################
+#BEGIN MY ADDITIONS
+
+# ssh randymcmillan@108.190.128.128
+#bocmacmini
+alias boc='bocmacmini'
+function bocmacmini(){
+
+bocurl='108.190.128.128'
+me='git'
+ssh $me@$bocurl
+
+}
+
+#ssh randymcm@siteground168.com -p 18765
+
+#randymcmillan.net
+alias rm='randymcmillan'
+function randymcmillan(){
+
+rmurl='siteground168.com'
+me='randymcm'
+ssh $me@$rmurl -p 18765
+
+}
+
+#ssh rootsinr@siteground138.com -p 18765
+
+#rootsinrecovery.com
+alias rr='rootsinrecovery'
+function rootsinrecovery(){
+
+rmurl='siteground138.com'
+me='rootsinr'
+ssh $me@$rmurl -p 18765
+
+}
+
+function x2go(){
+#cd /opt/homebrew-cask/Caskroom/x2goclient/latest/
+#open x2goclient.app/
+
+open /opt/homebrew-cask/Caskroom/x2goclient/latest/./x2goclient.app
+
+}
+alias x2='x2go'
+
+alias pt='pipeTree'
+#pipe tree
+function pipeTree(){
+
+ls -R1 /path | 
+  while read l; do case $l in *:) d=${l%:};; "") d=;; *) echo "$d/$l";; esac; done
+
+}
+
+#return local foldername
+function folderName(){
+    dest=$PWD;
+    f="${dest##*/}";
+    echo "${f}"
+    }
+alias fn=folderName
+
+#makeRemote
+function makeRemote(){
+    dest=$PWD".git";
+    f="${dest##*/}";
+    ssh git@71.180.246.88 "git init --bare ${f}";
+}
+alias makeremote=makeRemote
+
+#testRemote
+function testRemote(){
+     dest=$PWD".git";
+     echo $dest;
+     f="${dest##*/}";
+    git ls-remote ssh://git@71.180.246.88/Users/git/${f} &>-
+    if [ "$?" -ne 0 ]; then
+    echo "[ERROR] Unable to read from " git ls-remote ssh://git@71.180.246.88/Users/git/${f}
+    else
+    return "$?"
+    fi
+}
+
+#myfunc
+#echo myresult = $myresult
+function myfunc()
+{
+    myresult='some value'
+}
+#myfunc
+#echo myresult = $myresult
+#forceOrigin
+function forceOrigin(){
+    dest=$PWD".git";
+    f="${dest##*/}";
+    git ls-remote --get-url ssh://git@71.180.246.88/Users/git/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding remote deepspace repository
+            git remote add deepspace ssh://git@71.180.246.88/Users/git/${f};
+            echo setting remote url
+            git remote set-url --origin ssh://git@71.180.246.88/Users/git/${f};
+            git remote -v
+        fi
+    git ls-remote --get-url https://github.com/randymcmillan/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding remote github repository
+            git remote add github https://github.com/randymcmillan/${f};
+            echo setting remote url
+            git remote set-url --addurl origin ssh://git@71.180.246.88/Users/git/${f};
+            git remote -v
+        fi
+
+
+}
+alias forceorigin=forceOrigin
+alias fo=forceorigin
+
+
+#forceLocal
+function forceLocal(){
+    dest=$PWD".git";
+    f="${dest##*/}";
+    git ls-remote --get-url ssh://git@192.168.1.10/Users/git/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding "local" deepspace repository
+            git remote add deepspace ssh://git@192.168.1.10/Users/git/${f};
+            echo setting remote url
+            git remote set-url --origin ssh://git@192.168.1.10/Users/git/${f};
+            git remote -v
+        fi
+    git ls-remote --get-url https://github.com/randymcmillan/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding remote github repository
+            git remote add github https://github.com/randymcmillan/${f};
+            echo setting remote url
+            git remote set-url --addurl local ssh://git@192.168.1.10/Users/git/${f};
+            git remote -v
+        fi
+
+
+}
+alias forcelocal=forceLocal
+alias fl=forcelocal
+
+alias spoofMacAddress="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"
+# Spoof MAC Address
+function spoof(){
+spoofMacAddress; reportMacAddress
+}
+
+function reportMacAddress(){
+
+
+    ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'
+
+}
+
+
+
+#END MY ADDITIONS
+##################################################

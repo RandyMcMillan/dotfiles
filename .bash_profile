@@ -21,6 +21,11 @@ export LANG="en_US"
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
 
+# REF http://www.funtoo.org/Keychain
+# brew install keychain
+eval `keychain --eval --agents ssh my_git_key2`
+eval `keychain --eval --agents ssh rootsinr_persis`
+eval `keychain --eval --agents ssh xpatriot_persis_rsa`
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults

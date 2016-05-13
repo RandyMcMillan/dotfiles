@@ -1,6 +1,5 @@
 alias SD="sudo shutdown -r now"
 
-
 alias vf="cd"
 alias got="git"
 
@@ -221,9 +220,8 @@ alias p="cd ~/Projects"
 alias g="git "
 
 #7.4.1063
-alias vim="/bin/vim"
+alias vim="usr/local/bin/vim"
 alias v=vim
-#alias mm="open /usr/local/Cellar/macvim/7.4-94/MacVim.app"
 alias mvim="/usr/local/bin/mvim"
 alias mm=mvim
 alias s="subl ."
@@ -248,7 +246,7 @@ else
 fi
 
 # Enable aliases to be sudo’ed
-alias sudo='sudo '
+#alias sudo='sudo '
 
 # Get OS X Software Updates, update Homebrew itself, and upgrade installed Homebrew packages
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade'

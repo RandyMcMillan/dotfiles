@@ -1,3 +1,4 @@
+alias aa="atom"
 alias SD="sudo shutdown -r now"
 
 alias vf="cd"
@@ -29,15 +30,15 @@ ssh $me@$bocurl
 
 }
 
-randymcmillan () 
-{ 
+randymcmillan ()
+{
     rmurl='siteground168.com';
     me='randymcm';
     ssh $me@$rmurl -p 18765
 }
 
-randymcmillan () 
-{ 
+randymcmillan ()
+{
     rmurl='siteground168.com';
     me='randymcm';
     ssh $me@$rmurl -p 18765
@@ -56,7 +57,7 @@ alias pt='pipeTree'
 #pipe tree
 function pipeTree(){
 
-ls -R1 /path | 
+ls -R1 /path |
   while read l; do case $l in *:) d=${l%:};; "") d=;; *) echo "$d/$l";; esac; done
 
 }

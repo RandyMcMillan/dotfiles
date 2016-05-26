@@ -18,8 +18,18 @@ alias circe='ssh -Y $usfuser@$circeurl'
 alias usf=circe
 alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 
+# ssh git@108.33.115.134
+#bocmacmini
+alias boo='booimac'
+function booimac(){
 
-# ssh randymcmillan@108.190.128.163
+bocurl='108.3.115.134'
+me='git'
+ssh $me@$bocurl
+
+}
+
+# ssh git@108.190.128.163
 #bocmacmini
 alias boc='bocmacmini'
 function bocmacmini(){

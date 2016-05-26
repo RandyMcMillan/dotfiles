@@ -19,7 +19,7 @@ alias usf=circe
 alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 
 # ssh git@108.33.115.134
-#bocmacmini
+#booimac
 alias boo='booimac'
 function booimac(){
 

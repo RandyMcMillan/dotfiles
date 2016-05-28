@@ -32,8 +32,6 @@ function installISightCapture() {
                             to ~/iSIghtCapture'
                             git clone
                             https://github.com/randymcmillan/iSightCapture.git ~/iSightCapture
-                            cd ~/iSightCapture/
-                            installISightCapture
                     fi
 }
 function installMyUncrustifyConfigs() {
@@ -47,8 +45,7 @@ function installMyUncrustifyConfigs() {
                     https://github.com/RandyMcMillan/my-uncrustify-configs.git to
                     ~/my-uncrustify-configs'
                     git clone https://github.com/RandyMcMillan/my-uncrustify-configs.git
-                    ~/my-uncrustofy-configs
-                    installMyUncrustofyConfigs
+                    ~/my-uncrustify-configs
             fi
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
@@ -61,8 +58,8 @@ else
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt
         installQuickVim
-#        installISightCapture
-#        installMyUncrustifyConfigs
+        installISightCapture
+        installMyUncrustifyConfigs
 #    fi
 unset doIt
 unset installQuickVim

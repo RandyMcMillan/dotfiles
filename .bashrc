@@ -30,12 +30,10 @@ extract () {
        echo "'$1' is not a valid file"
    fi
 }
-# TAMPA KFLTAMPA118
-#https://api.wunderground.com/weatherstation/WXDailyHistory.asp?ID=KFLTAMPA118&format=XML
-# Get weather data for Bristol
+# Get weather data for a zip code
 weather() {
-    echo BRISTOL:
-    curl -s "http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=${@:-33612}" | perl -ne 's/&amp;deg;/°/g;/<title>([^<]+)/&&printf "%s: ",$1;/<fcttext>([^<]+)/&&print $1,"\n"';
+    echo Checking weather for zip code: $1
+    curl -s "http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=${@:-$1}" | perl -ne 's/&amp;deg;/°/g;/<title>([^<]+)/&&printf "%s: ",$1;/<fcttext>([^<]+)/&&print $1,"\n"';
 }
 # Define a word using collinsdictionary.com
 define() {

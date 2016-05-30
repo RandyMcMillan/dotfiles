@@ -1,3 +1,4 @@
+echo now executing ~/.zshrc
 # .zshrc file as part of dotfiles
 # Author: Peter Kokot <peterkokot@gmail.com>
 # Source: https://github.com/peterkokot/dotfiles
@@ -58,4 +59,3 @@ export VISUAL=/usr/bin/vim
 
 # commands that don't need correction
 alias screen='nocorrect screen'
-

@@ -73,11 +73,13 @@ else
         installQuickVim
         installISightCapture
         installMyUncrustifyConfigs
+				installGetLocation
 #    fi
 unset doIt
 unset installQuickVim
 unset installISightCapture
 unset installMyUncrustifyConfigs
+unset installGetLocation
 cd ~/
 source ~/.bash_profile
 source ~/.aliases

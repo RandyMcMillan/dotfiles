@@ -7,32 +7,32 @@ function doIt() {
 }
 function installQuickVim() {
             if [ -d ~/QuickVim ]
-                    then
-                            echo '~/QuickVim exists'
-                            cd ~/QuickVim/
-                             ~/QuickVim/./quick-vim upgrade
-                    else
-                            echo 'cloning https://github.com/randymcmillan/QuickVim.git to ~/QuickVim'
-                            git clone https://github.com/randymcmillan/QuickVim.git ~/QuickVim
-                            cd ~/QuickVim/
-                            ~/QuickVim/./quick-vim install
+              then
+                      echo '~/QuickVim exists'
+                      cd ~/QuickVim/
+                       ~/QuickVim/./quick-vim upgrade
+              else
+                      echo 'cloning https://github.com/randymcmillan/QuickVim.git to ~/QuickVim'
+                      git clone https://github.com/randymcmillan/QuickVim.git ~/QuickVim
+                      cd ~/QuickVim/
+                      ~/QuickVim/./quick-vim install
 
 
                     fi
 }
 function installISightCapture() {
             if [ -d ~/iSightCapture ]
-                    then
-                            echo '~/iSightCapture exists'
-                            cd ~/iSightCapture/
-                            git pull
-                    else
-                            echo 'cloning
-                            https://github.com/randymcmillan/iSightCapture.git
-                            to ~/iSIghtCapture'
-                            git clone
-                            https://github.com/randymcmillan/iSightCapture.git ~/iSightCapture
-                    fi
+              then
+                  echo '~/iSightCapture exists'
+                  cd ~/iSightCapture/
+                  git pull
+              else
+                  echo 'cloning
+                  https://github.com/randymcmillan/iSightCapture.git
+                  to ~/iSIghtCapture'
+                  git clone
+                  https://github.com/randymcmillan/iSightCapture.git ~/iSightCapture
+              fi
 }
 function installMyUncrustifyConfigs() {
             if [ -d ~/my-uncrustify-configs ]
@@ -48,10 +48,23 @@ function installMyUncrustifyConfigs() {
                     ~/my-uncrustify-configs
             fi
 }
+
+function installGetLocation(){
+#git@github.com:lindes/get-location.git
+						 if [ -d ~/get-location ]
+						   then
+						       echo '~/get-location'
+						       cd ~/get-location
+						       git pull
+						   else
+						       echo 'cloning https://github.com/RandyMcMillan/get-location.git to ~/get-location'
+						        git clone https://github.com/RandyMcMillan/get-location.git ~/get-location
+						fi
+}
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt
 else
-	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git] 
+	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1
 	echo

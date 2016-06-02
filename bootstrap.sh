@@ -16,8 +16,6 @@ function installQuickVim() {
                       git clone https://github.com/randymcmillan/QuickVim.git ~/QuickVim
                       cd ~/QuickVim/
                       ~/QuickVim/./quick-vim install
-
-
                     fi
 }
 function installISightCapture() {
@@ -83,5 +81,6 @@ unset installGetLocation
 cd ~/
 source ~/.bash_profile
 source ~/.aliases
+source ~/.bashrc
     fi
 fi

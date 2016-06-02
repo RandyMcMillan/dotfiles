@@ -55,9 +55,12 @@ function installGetLocation(){
 						       cd ~/get-location
 						       git pull
 						   else
-						       echo 'cloning https://github.com/RandyMcMillan/get-location.git to ~/get-location'
-						        git clone git clone https://github.com/lindes/get-location.git ~/get-location
+									cd ~/
+									 echo 'cloning https://github.com/RandyMcMillan/get-location.git to ~/get-location'
+						        git clone https://github.com/lindes/get-location.git ~/get-location
 						fi
+						cd ~/get-location
+						make
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt
@@ -72,15 +75,14 @@ else
         #installISightCapture
         installMyUncrustifyConfigs
 				installGetLocation
-#    fi
-unset doIt
-unset installQuickVim
-#unset installISightCapture
-unset installMyUncrustifyConfigs
-unset installGetLocation
-cd ~/
-source ~/.bash_profile
-source ~/.aliases
-source ~/.bashrc
+		unset doIt
+		unset installQuickVim
+		#unset installISightCapture
+		unset installMyUncrustifyConfigs
+		unset installGetLocation
+		cd ~/
+		source ~/.bash_profile
+		source ~/.aliases
+		source ~/.bashrc
     fi
 fi

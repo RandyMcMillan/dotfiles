@@ -98,7 +98,13 @@ function testRemote(){
     return "$?"
     fi
 }
+#Open location in maps
+alias olim=openLocationInMaps
+function openLocationInMaps(){
 
+open maps:// < ./get-location
+
+}
 #myfunc
 #echo myresult = $myresult
 function myfunc()

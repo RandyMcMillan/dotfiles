@@ -46,12 +46,25 @@ function installMyUncrustifyConfigs() {
                     ~/my-uncrustify-configs
             fi
 }
-
+#https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git
+function installRecursiveIndex(){
+						 if [ -d ~/f4c040ce48c0d8e590c125379e1ef69b ]
+						   then
+						       echo '~/f4c040ce48c0d8e590c125379e1ef69b/ git pull'
+						       cd ~/f4c040ce48c0d8e590c125379e1ef69b
+						       git pull
+						   else
+									cd ~/
+									 echo 'cloning https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git to ~/f4c040ce48c0d8e590c125379e1ef69b'
+						        git clone https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git ~/get-location
+						fi
+}
+#Keep this last
 function installGetLocation(){
 #git@github.com:lindes/get-location.git
 						 if [ -d ~/get-location ]
 						   then
-						       echo '~/get-location'
+						       echo '~/get-location/ git pull'
 						       cd ~/get-location
 						       git pull
 						   else
@@ -59,7 +72,8 @@ function installGetLocation(){
 									 echo 'cloning https://github.com/RandyMcMillan/get-location.git to ~/get-location'
 						        git clone https://github.com/lindes/get-location.git ~/get-location
 						fi
-						cd ~/get-location
+						cd ~/get-location/
+						#sudo make
 						make
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
@@ -74,12 +88,14 @@ else
         installQuickVim
         #installISightCapture
         installMyUncrustifyConfigs
+				installRecursiveIndex
 				installGetLocation
 		unset doIt
 		unset installQuickVim
 		#unset installISightCapture
 		unset installMyUncrustifyConfigs
 		unset installGetLocation
+		unset installRecursiveIndex
 		cd ~/
 		source ~/.bash_profile
 		source ~/.aliases

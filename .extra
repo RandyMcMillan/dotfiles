@@ -136,7 +136,7 @@ ssh $me@$bocurl
 #ssh randymcm@siteground168.com -p 18765
 
 #randymcmillan.net
-alias rm='randymcmillan'
+alias rnet='randymcmillan'
 function randymcmillan(){
 
 rmurl='siteground168.com'

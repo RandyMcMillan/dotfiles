@@ -50,13 +50,6 @@ randymcmillan ()
     ssh $me@$rmurl -p 18765
 }
 
-randymcmillan ()
-{
-    rmurl='siteground168.com';
-    me='randymcm';
-    ssh $me@$rmurl -p 18765
-}
-
 function x2go(){
 #cd /opt/homebrew-cask/Caskroom/x2goclient/latest/
 #open x2goclient.app/
@@ -154,7 +147,6 @@ function forceOrigin(){
 }
 alias forceorigin=forceOrigin
 alias fo=forceorigin
-
 
 #forceLocal
 function forceLocal(){

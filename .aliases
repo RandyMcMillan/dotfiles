@@ -110,14 +110,13 @@ function pipeLocationCoords(){
 
 #printf "%s" "$(<~/location)"
 
-value=`cat ~/location`
-#echo "$value"
 
-for t in "${value[@]}"
-do
-printf "%s\n" "${value[@]}"
-#echo $t
-done
+FILE_DATA=( $( /bin/cat ~/location ) )
+for I in $(/usr/bin/seq 0 $((${#FILE_DATA[@]} - 1)))
+	do
+		echo $I $FILE_DATA[$i]
+	done
+
 #echo "Read file content!"
 
 }

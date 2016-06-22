@@ -102,6 +102,26 @@ cd ~/get-location
 open maps:// < ./get-location
 
 }
+#Pipe location
+alias pl=pipeLocationCoords
+function pipeLocationCoords(){
+
+~/get-location/./get-location > ~/location
+
+#printf "%s" "$(<~/location)"
+
+value=`cat ~/location`
+#echo "$value"
+
+for t in "${value[@]}"
+do
+printf "%s\n" "${value[@]}"
+#echo $t
+done
+#echo "Read file content!"
+
+}
+
 #myfunc
 #echo myresult = $myresult
 function myfunc()
@@ -207,8 +227,13 @@ alias got="git "
 alias status="git status "
 alias gs="git status "
 alias ss="gs "
-alias commit="git commit -m ~/get-location/./get-location "
-alias     cc="commit "
+
+########
+#alias commit="git commit -m ~/get-location/./get-location "
+#alias     cc="commit "
+######
+
+
 alias push="git push "
 alias    p="git push "
 alias pull="git pull "

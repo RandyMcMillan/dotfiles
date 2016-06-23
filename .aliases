@@ -3,7 +3,7 @@
 
 function uncrustifyAndGitCommit(){
 
-git commit -am'.'
+git commit -am'Uncrust and Quick Commit'
     uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
 }
 

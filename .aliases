@@ -4,9 +4,9 @@
 function uncrustifyAndGitCommit(){
 
 git commit -am'.'
-uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
-
+    uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
 }
+
 #alias uc="uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup"
 alias uc="uncrustifyAndGitCommit"
 alias cc="uc"

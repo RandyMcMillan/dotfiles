@@ -2,10 +2,10 @@
 #uncrustify
 
 function uncrustifyAndGitCommit(){
+  uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
+  git add *
 
-git commit -am'Uncrust and Quick Commit'
-git add *
-    uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
+git commit -am'git add * ; uncrustify; git ommit'
 }
 
 #alias uc="uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup"

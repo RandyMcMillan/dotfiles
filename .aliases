@@ -9,6 +9,9 @@ function uncrustifyAndGitCommit(){
   git add *
   git commit -am'git add * ; uncrustify; git commit'
 
+
+
+
 }
 
 #alias uc="uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup"

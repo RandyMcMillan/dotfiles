@@ -1,3 +1,6 @@
+#uncrustify
+alias uc="uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup"
+
 alias index="perl ~/f4c040ce48c0d8e590c125379e1ef69b/recursive_index.pl -r"
 alias idx="index"
 alias rdx="index"
@@ -7,7 +10,7 @@ alias SD="sudo shutdown -r now"
 alias vf="cd"
 alias got="git"
 
-#ssh to git server
+#ssh to git server 96.228.181.194
 ip='96.228.181.194'
 user='git'
 alias deepspace='ssh $user@$ip'

@@ -1,5 +1,14 @@
+
 #uncrustify
-alias uc="uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup"
+
+function uncrustifyAndGitCommit(){
+
+git commit -am'.'
+uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
+
+}
+#alias uc="uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup"
+alias uc="uncrustifyAndGitCommit"
 alias cc="uc"
 
 alias index="perl ~/f4c040ce48c0d8e590c125379e1ef69b/recursive_index.pl -r"

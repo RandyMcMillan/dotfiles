@@ -56,7 +56,7 @@ function installRecursiveIndex(){
 						   else
 									cd ~/
 									 echo 'cloning https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git to ~/f4c040ce48c0d8e590c125379e1ef69b'
-						        git clone https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git ~/get-location
+						        git clone https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git ~/f4c040ce48c0d8e590c125379e1ef69b
 						fi
 }
 #Keep this last
@@ -73,8 +73,8 @@ function installGetLocation(){
 						        git clone https://github.com/lindes/get-location.git ~/get-location
 						fi
 						cd ~/get-location/
-						#sudo make
-						make
+						sudo make
+						#make
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt

@@ -55,11 +55,11 @@ alias ll=la
 
 
 #ssh to git server
-ip='71.180.246.88'
+ip='96.228.181.194'
 user='git'
 alias deepspace='ssh $user@$ip'
 alias ds=deepspace
-alias lsds='ssh git@71.180.246.88 "ls"'
+alias lsds='ssh git@96.228.181.194 "ls"'
 
 #circe
 circeurl='circe.rc.usf.edu'
@@ -187,7 +187,7 @@ alias fn=folderName
 function makeRemote(){
     dest=$PWD".git";
     f="${dest##*/}";
-    ssh git@71.180.246.88 "git init --bare ${f}";
+    ssh git@96.228.181.194 "git init --bare ${f}";
 }
 alias makeremote=makeRemote
 
@@ -196,9 +196,9 @@ function testRemote(){
      dest=$PWD".git";
      echo $dest;
      f="${dest##*/}";
-    git ls-remote ssh://git@71.180.246.88/Users/git/${f} &>-
+    git ls-remote ssh://git@96.228.181.194/Users/git/${f} &>-
     if [ "$?" -ne 0 ]; then
-    echo "[ERROR] Unable to read from " git ls-remote ssh://git@71.180.246.88/Users/git/${f}
+    echo "[ERROR] Unable to read from " git ls-remote ssh://git@96.228.181.194/Users/git/${f}
     else
     return "$?"
     fi
@@ -216,7 +216,7 @@ function myfunc()
 function forceOrigin(){
     dest=$PWD".git";
     f="${dest##*/}";
-    git ls-remote --get-url ssh://git@71.180.246.88/Users/git/${f} #&>-
+    git ls-remote --get-url ssh://git@96.228.181.194/Users/git/${f} #&>-
     if [ "$?" -ne 0 ]; #fail test
         then
         git remote -v
@@ -225,9 +225,9 @@ function forceOrigin(){
         else
             echo succeeded to read
             echo adding remote deepspace repository
-            git remote add deepspace ssh://git@71.180.246.88/Users/git/${f};
+            git remote add deepspace ssh://git@96.228.181.194/Users/git/${f};
             echo setting remote url
-            git remote set-url --origin ssh://git@71.180.246.88/Users/git/${f};
+            git remote set-url --origin ssh://git@96.228.181.194/Users/git/${f};
             git remote -v
         fi
     git ls-remote --get-url https://github.com/randymcmillan/${f} #&>-
@@ -241,7 +241,7 @@ function forceOrigin(){
             echo adding remote github repository
             git remote add github https://github.com/randymcmillan/${f};
             echo setting remote url
-            git remote set-url --addurl origin ssh://git@71.180.246.88/Users/git/${f};
+            git remote set-url --addurl origin ssh://git@96.228.181.194/Users/git/${f};
             git remote -v
         fi
 

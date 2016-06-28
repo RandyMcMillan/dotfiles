@@ -22,13 +22,6 @@ alias SD="sudo shutdown -r now"
 alias vf="cd"
 alias got="git"
 
-#ssh to git server 96.228.181.194
-ip='96.228.181.194'
-user='git'
-alias deepspace='ssh $user@$ip'
-alias ds=deepspace
-alias lsds='ssh git@96.228.181.194 "ls"'
-
 #circe
 circeurl='circe.rc.usf.edu'
 usfuser='rmcmillan1'

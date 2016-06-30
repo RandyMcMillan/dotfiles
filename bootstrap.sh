@@ -60,8 +60,8 @@ function installRecursiveIndex(){
 						fi
 }
 #Keep this last
-function installGetLocation(){
 #git@github.com:lindes/get-location.git
+function installGetLocation(){
 						 if [ -d ~/get-location ]
 						   then
 						       echo '~/get-location/ git pull'

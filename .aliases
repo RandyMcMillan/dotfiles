@@ -1,6 +1,6 @@
 #gem install t
 #http://sferik.github.io/t/
-alias tu ="t update "
+alias tu="t update "
 alias tt="tu "
 #uncrustifyAndGitCommit
 function uncrustifyAndGitCommit(){

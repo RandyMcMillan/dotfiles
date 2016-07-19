@@ -39,6 +39,7 @@ alias aa="atom"
 alias SD="sudo shutdown -r now"
 
 alias vf="cd"
+alias xs="cd"
 alias got="git"
 
 #circe

@@ -1,0 +1,5 @@
+cmd: "gcc"
+args: ["-O", "-Wall", "-std=c99", "-pedantic", "-o", "{FILE_ACTIVE_NAME_BASE}", "{FILE_ACTIVE}"]
+cwd: "{FILE_ACTIVE_PATH}"
+sh: false
+name: "Compile ..."

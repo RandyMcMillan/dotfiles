@@ -1,3 +1,24 @@
+#Undo changes
+#If you want any of the above commands undo than is possible using the defaults delete command.
+#defaults delete domain key
+
+#http://www.defaults-write.com/change-the-layout-rows-and-columns-of-launchpad/
+defaults write com.apple.dock springboard-columns -int X
+defaults write com.apple.dock springboard-rows -int X
+defaults write com.apple.dock ResetLaunchPad -bool TRUE;killall Dock
+
+#http://www.defaults-write.com/sync-icloud-history-and-bookmarks-manually-safari/
+defaults write com.apple.Safari IncludeInternalDebugMenu 1
+
+#http://www.defaults-write.com/yosemite-enable-dark-mode-with-a-keyboard-shortcut-hotkey/
+sudo defaults write /Library/Preferences/.GlobalPreferences.plist _HIEnableThemeSwitchHotKey -bool true
+
+#http://www.defaults-write.com/disable-google-chromes-automatic-software-update/
+defaults write com.google.Keystone.Agent checkInterval 0
+
+#http://www.defaults-write.com/enable-full-name-display-in-twitter-for-mac/
+defaults write com.twitter.twitter-mac ShowFullNames -bool true
+
 #http://www.grivet-tools.com/blog/2015/display-hostname-ip-address-os-at-login-window-os-x/
 sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
@@ -163,8 +184,8 @@ defaults write com.apple.dock wvous-br-corner -int 4
 defaults write com.apple.dock wvous-br-modifier -int 0
 
 # Bottom left screen corner →  
-#defaults write com.apple.dock wvous-bl-corner -int 3
-#defaults write com.apple.dock wvous-bl-modifier -int 0
+defaults write com.apple.dock wvous-bl-corner -int 3
+defaults write com.apple.dock wvous-bl-modifier -int 0
 
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilte-stack -bool true

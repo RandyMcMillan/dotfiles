@@ -8,8 +8,8 @@ defaults write com.apple.desktop '{ Background = { default = {BackgroundColor = 
 
 
 #http://apple.stackexchange.com/questions/165233/change-iterm2-default-profile-preset-with-defaults-write
-#defaults write com.googlecode.iterm2 "PrefsCustomFolder" -string "~/randymcmillan/dotfiles/iterm2"
-#defaults write com.googlecode.iterm2 "LoadPrefsFromCustomFolder" -bool true
+defaults write com.googlecode.iterm2 "PrefsCustomFolder" -string "~/randymcmillan/dotfiles/iterm2"
+defaults write com.googlecode.iterm2 "LoadPrefsFromCustomFolder" -bool true
 
 #http://www.defaults-write.com/change-the-layout-rows-and-columns-of-launchpad/
 defaults write com.apple.dock springboard-columns -int X

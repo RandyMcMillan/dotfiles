@@ -49,9 +49,9 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>269 197 606 456 0 0 1366 745 </string>
+	<string>269 267 796 473 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>144 66 570 452 0 0 1366 745 </string>
+	<string>10 283 570 452 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>165 43 570 452 0 0 1366 745 </string>
 	<key>New Bookmarks</key>

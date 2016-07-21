@@ -49,7 +49,7 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>269 267 796 473 0 0 1366 745 </string>
+	<string>269 284 606 456 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>10 283 570 452 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
@@ -1303,7 +1303,7 @@
 	<key>OpenArrangementAtStartup</key>
 	<false/>
 	<key>OpenNoWindowsAtStartup</key>
-	<true/>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>

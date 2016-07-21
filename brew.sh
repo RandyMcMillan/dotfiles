@@ -10,7 +10,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Make sure we’re using the latest Homebrew.
 brew update
-
+brew install cask
 # Upgrade any already-installed formulae.
 brew upgrade --all
 
@@ -47,7 +47,7 @@ brew install homebrew/dupes/grep
 brew install homebrew/dupes/openssh
 brew install homebrew/dupes/screen
 brew install homebrew/php/php56 --with-gmp
-
+brew cask install xampp
 # Install font tools.
 brew tap bramstein/webfonttools
 brew install sfnt2woff

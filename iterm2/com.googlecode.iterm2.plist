@@ -41,8 +41,17 @@
 	<array/>
 	<key>NSTableView Sort Ordering KeyBingingTable</key>
 	<array/>
+	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
+	<dict>
+		<key>TB Is Shown</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>269 139 606 456 0 0 1366 745 </string>
+	<string>269 168 606 456 0 0 1366 745 </string>
+	<key>NSWindow Frame iTerm Window 0</key>
+	<string>144 66 570 452 0 0 1366 745 </string>
+	<key>NSWindow Frame iTerm Window 1</key>
+	<string>165 43 570 452 0 0 1366 745 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1314,12 +1323,18 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/randymcmillan/dotfiles/iterm2</string>
+	<key>SUEnableAutomaticChecks</key>
+	<false/>
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
 	<string>https://iterm2.com/appcasts/final.xml?shard=79</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
+	<key>SUSendProfileInfo</key>
+	<false/>
+	<key>TabStyle</key>
+	<integer>1</integer>
 	<key>iTerm Version</key>
 	<string>3.0.4</string>
 </dict>

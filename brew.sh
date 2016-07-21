@@ -48,6 +48,7 @@ brew install homebrew/dupes/openssh
 brew install homebrew/dupes/screen
 brew install homebrew/php/php56 --with-gmp
 brew cask install xampp
+brew cask install atom
 # Install font tools.
 brew tap bramstein/webfonttools
 brew install sfnt2woff

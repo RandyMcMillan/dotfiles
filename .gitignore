@@ -12,6 +12,9 @@
 .Spotlight-V100
 .Trashes
 
+!PrefsCustomFolder
+!PrefsCustomFolder/*
+
 # Xcode
 .DS_Store
 */build/*

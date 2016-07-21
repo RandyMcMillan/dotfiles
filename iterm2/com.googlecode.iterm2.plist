@@ -237,6 +237,8 @@
 			<integer>80</integer>
 			<key>Command</key>
 			<string></string>
+			<key>Cursor Boost</key>
+			<real>0.37379351265822791</real>
 			<key>Cursor Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -572,6 +574,8 @@
 					<string>[1;5F</string>
 				</dict>
 			</dict>
+			<key>Minimum Contrast</key>
+			<real>0.45596815664556961</real>
 			<key>Mouse Reporting</key>
 			<true/>
 			<key>Name</key>
@@ -843,6 +847,8 @@
 			<integer>80</integer>
 			<key>Command</key>
 			<string></string>
+			<key>Cursor Boost</key>
+			<real>0.0</real>
 			<key>Cursor Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -1204,6 +1210,8 @@
 				<key>Red Component</key>
 				<real>0.023</real>
 			</dict>
+			<key>Minimum Contrast</key>
+			<real>0.23924545094936708</real>
 			<key>Mouse Reporting</key>
 			<true/>
 			<key>Name</key>
@@ -1270,6 +1278,8 @@
 			<true/>
 			<key>Use Non-ASCII Font</key>
 			<false/>
+			<key>Use Tab Color</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -1333,6 +1343,8 @@
 	<true/>
 	<key>SUSendProfileInfo</key>
 	<false/>
+	<key>SplitPaneDimmingAmount</key>
+	<real>0.25596955128205134</real>
 	<key>TabStyle</key>
 	<integer>1</integer>
 	<key>iTerm Version</key>

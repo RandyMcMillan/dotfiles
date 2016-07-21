@@ -1343,6 +1343,8 @@
 	<true/>
 	<key>SUSendProfileInfo</key>
 	<false/>
+	<key>SavePasteHistory</key>
+	<true/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.25596955128205134</real>
 	<key>TabStyle</key>

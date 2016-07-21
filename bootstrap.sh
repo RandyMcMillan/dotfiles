@@ -5,6 +5,22 @@ git pull
 function doIt() {
 	rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" --exclude "README.md" -avv --progress . ~
 }
+#https://github.com/altercation/solarized.git
+function installSolarized() {
+            if [ -d ~/solarized ]
+              then
+                      echo '~/solarized exists'
+                      cd ~/solarized/
+                       ~/solarized/./git pull
+              else
+                      echo 'cloning https://github.com/altercation/solarized.git
+to ~/solarized'
+                      git clone https://github.com/altercation/solarized.git
+~/solarized
+                      cd ~/solarized/
+                      ~/solarized/./git pull
+                    fi
+}
 function installQuickVim() {
             if [ -d ~/QuickVim ]
               then
@@ -100,5 +116,6 @@ else
 		source ~/.bash_profile
 		source ~/.aliases
 		source ~/.bashrc
+		source ~/.osx
     fi
 fi

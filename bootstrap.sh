@@ -11,14 +11,14 @@ function installSolarized() {
               then
                       echo '~/solarized exists'
                       cd ~/solarized/
-                       ~/solarized/./git pull
+                       git pull
               else
                       echo 'cloning https://github.com/altercation/solarized.git
 to ~/solarized'
                       git clone https://github.com/altercation/solarized.git
 ~/solarized
                       cd ~/solarized/
-                      ~/solarized/./git pull
+                     git pull
                     fi
 }
 function installQuickVim() {
@@ -101,6 +101,7 @@ else
 	echo
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt
+        installSolarized
         installQuickVim
         #installISightCapture
         installMyUncrustifyConfigs

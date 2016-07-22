@@ -13,6 +13,7 @@ function installSolarized() {
                       cd ~/solarized/
                        git pull
               else
+                      cd ~/
                       echo 'cloning https://github.com/altercation/solarized.git
 to ~/solarized'
                       git clone https://github.com/altercation/solarized.git

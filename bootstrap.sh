@@ -14,12 +14,8 @@ function installSolarized() {
                        git pull
               else
                       cd ~/
-                      echo 'cloning https://github.com/altercation/solarized.git
-to ~/solarized'
-                      git clone https://github.com/altercation/solarized.git
-~/solarized
-                      cd ~/solarized/
-                     git pull
+                      echo 'cloning https://github.com/altercation/solarized.git to ~/solarized'
+                      git clone https://github.com/altercation/solarized.git ~/solarized
                     fi
 }
 function installQuickVim() {

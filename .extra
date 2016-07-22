@@ -90,7 +90,7 @@ alias m="merge "
 alias branch="git branch "
 alias clone="git clone "
 alias add="git add "
-
+alias fir="git "
 #exit terminal
 alias x="exit"
 

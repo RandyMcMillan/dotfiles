@@ -1,6 +1,13 @@
 ##################################################
 #BEGIN MY ADDITIONS
+resetSafari(){
+#Preserve Bookmarks.plist
+mv ~/Library/Safari/Bookmarks.plist ~/Desktop/Bookmarks.plist
+mv ~/Library/Safari ~/Downloads/Safari-`date +%Y%m%d%H%M%S`
+mkdir ~/Library/Safari
+mv ~/Desktop/Bookmarks.plist ~/Library/Safari/Bookmarks.plist
 
+}
 # Easily extract all compressed file types
 extract () {
    if [ -f $1 ] ; then

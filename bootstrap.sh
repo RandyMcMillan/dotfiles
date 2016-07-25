@@ -15,7 +15,7 @@ function installSolarized() {
               else
                       cd ~/
                       echo 'cloning https://github.com/altercation/solarized.git to ~/solarized'
-                      git clone https://github.com/altercation/solarized.git ~/solarized
+                      git clone https://github.com/altercation/solarized.git
                     fi
 }
 function installQuickVim() {
@@ -26,7 +26,7 @@ function installQuickVim() {
                        ~/QuickVim/./quick-vim upgrade
               else
                       echo 'cloning https://github.com/randymcmillan/QuickVim.git to ~/QuickVim'
-                      git clone https://github.com/randymcmillan/QuickVim.git ~/QuickVim
+                      git clone https://github.com/randymcmillan/QuickVim.git
                       cd ~/QuickVim/
                       ~/QuickVim/./quick-vim install
                     fi
@@ -42,7 +42,7 @@ function installISightCapture() {
                   https://github.com/randymcmillan/iSightCapture.git
                   to ~/iSIghtCapture'
                   git clone
-                  https://github.com/randymcmillan/iSightCapture.git ~/iSightCapture
+                  https://github.com/randymcmillan/iSightCapture.git
               fi
 }
 function installMyUncrustifyConfigs() {
@@ -56,7 +56,6 @@ function installMyUncrustifyConfigs() {
                     https://github.com/RandyMcMillan/my-uncrustify-configs.git to
                     ~/my-uncrustify-configs'
                     git clone https://github.com/RandyMcMillan/my-uncrustify-configs.git
-                    ~/my-uncrustify-configs
             fi
 }
 #https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git
@@ -68,8 +67,8 @@ function installRecursiveIndex(){
 						       git pull
 						   else
 									cd ~/
-									 echo 'cloning https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git to ~/f4c040ce48c0d8e590c125379e1ef69b'
-						        git clone https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git ~/f4c040ce48c0d8e590c125379e1ef69b
+         echo 'cloning https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git to ~/f4c040ce48c0d8e590c125379e1ef69b'
+            git clone https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git ~/f4c040ce48c0d8e590c125379e1ef69b
 						fi
 }
 #Keep this last

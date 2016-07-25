@@ -15,7 +15,7 @@
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSNavLastRootDirectory</key>
-	<string>/Users/randymcmillan/dotfiles/iterm2</string>
+	<string>~/dotfiles/iterm2</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -51,7 +51,7 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>269 284 606 456 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>10 283 570 452 0 0 1366 745 </string>
+	<string>912 -6 444 741 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>165 43 570 452 0 0 1366 745 </string>
 	<key>New Bookmarks</key>
@@ -1294,12 +1294,20 @@
 	</array>
 	<key>NoSyncInstallationId</key>
 	<string>B9C48D3F-FC1A-4ED8-95A6-51B5C754795E</string>
+	<key>NoSyncLastTipTime</key>
+	<real>491067693.38559002</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
 	<integer>0</integer>
+	<key>NoSyncPermissionToShowTip</key>
+	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>490826754.57943302</real>
+	<key>NoSyncTipsToNotShow</key>
+	<array>
+		<string>000</string>
+	</array>
 	<key>OpenArrangementAtStartup</key>
 	<false/>
 	<key>OpenNoWindowsAtStartup</key>
@@ -1338,7 +1346,7 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>Users/randymcmillan/dotfiles/iterm2</string>
+	<string>/Users/randymcmillan/dotfiles/iterm2</string>
 	<key>SUEnableAutomaticChecks</key>
 	<false/>
 	<key>SUFeedAlternateAppNameKey</key>
@@ -1348,7 +1356,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-07-21T20:56:10Z</date>
+	<date>2016-07-24T18:26:12Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>

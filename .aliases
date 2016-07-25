@@ -376,6 +376,11 @@ alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 # Finally, clear download history from quarantine. https://mths.be/bum
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl;"
 alias mt=emptytrash
+alias deleteappstate="sudo rm -rfv ~/Library/Saved\ Application\ State/*;"
+alias das="deleteappstate"
+alias deletegooglelib="sudo rm -rfv ~/Library/Google/*"
+alias dgl="deletegooglelib"
+
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"

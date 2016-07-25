@@ -1,5 +1,7 @@
 ##################################################
 #BEGIN MY ADDITIONS
+
+#Reset Safari
 resetSafari(){
 #Preserve Bookmarks.plist
 mv ~/Library/Safari/Bookmarks.plist ~/Desktop/Bookmarks.plist

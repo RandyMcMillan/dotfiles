@@ -51,9 +51,9 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>269 284 606 456 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>912 -6 444 741 0 0 1366 745 </string>
+	<string>302 213 570 452 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>165 43 570 452 0 0 1366 745 </string>
+	<string>628 108 570 452 0 0 1366 745 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1295,7 +1295,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>B9C48D3F-FC1A-4ED8-95A6-51B5C754795E</string>
 	<key>NoSyncLastTipTime</key>
-	<real>491067693.38559002</real>
+	<real>491172921.17621201</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1307,6 +1307,7 @@
 	<key>NoSyncTipsToNotShow</key>
 	<array>
 		<string>000</string>
+		<string>0000</string>
 	</array>
 	<key>OpenArrangementAtStartup</key>
 	<false/>

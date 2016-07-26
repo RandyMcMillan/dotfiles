@@ -111,7 +111,7 @@ else
         installISightCapture
         installMyUncrustifyConfigs
 				installRecursiveIndex
-				installGetLocation
+				#installGetLocation
 		unset doIt
 		unset installQuickVim
 		unset installISightCapture

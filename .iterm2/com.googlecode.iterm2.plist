@@ -1357,7 +1357,7 @@
 	<key>SavePasteHistory</key>
 	<true/>
 	<key>SplitPaneDimmingAmount</key>
-	<real>0.9</real>
+	<real>0.1</real>
 	<key>TabStyle</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>

@@ -3,8 +3,7 @@ set -e
 cd "$(dirname "$0")"
 git pull
 function doIt() {
-	rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh"
---exclude "README.md"--exclude ".iterm2" -avv --progress . ~
+	rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" --exclude "README.md" --exclude ".iterm2" -avv --progress . ~
 }
 #https://github.com/altercation/solarized.git
 function installSolarized() {
@@ -95,8 +94,7 @@ function installISightCapture() {
                   https://github.com/randymcmillan/iSightCapture.git
                   to ~/iSightCapture'
 cd ~/
-                  git clone
-                  https://github.com/randymcmillan/iSightCapture.git
+                  git clone https://github.com/randymcmillan/iSightCapture.git
               fi
 }
 function installMyUncrustifyConfigs() {

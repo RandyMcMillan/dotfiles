@@ -100,7 +100,6 @@ defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryCli
 
 
 # TrackPad Accesibility Options
-trackpad DragLock -bool true 
 defaults -currentHost write NSGlobalDomain com.apple.trackpad.DragLock -bool true
 defaults -currentHost write NSGlobalDomain com.apple.trackpad.Dragging -bool true
 defaults -currentHost write NSGlobalDomain com.apple.trackpad.TrackHandResting -bool true
@@ -173,7 +172,6 @@ defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 chflags nohidden ~/Library
 
 # Hot corners
-
 # Top right screen corner → Mission Control
 defaults write com.apple.dock wvous-tr-corner -int 2
 defaults write com.apple.dock wvous-tr-modifier -int 0

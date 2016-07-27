@@ -46,9 +46,14 @@ brew cask install atom
 #pdf tools
 brew install qpdf
 brew install pdf2svg
+brew install svg2pdf
 brew install diff-pdf
 brew install htmldoc
 brew install xpdf
+brew install pdf2htmlex
+brew install pstoedit
+brew cask install combine-pdfs
+brew cask install pdf-toolbox
 
 # Install font tools.
 brew tap bramstein/webfonttools

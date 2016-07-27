@@ -43,8 +43,13 @@ brew install homebrew/dupes/screen
 brew install homebrew/php/php56 --with-gmp
 brew cask install xampp
 brew cask install atom
+#pdf tools
 brew install qpdf
 brew install pdf2svg
+brew install diff-pdf
+brew install htmldoc
+brew install xpdf
+
 # Install font tools.
 brew tap bramstein/webfonttools
 brew install sfnt2woff
@@ -74,7 +79,6 @@ brew install tcpflow
 brew install tcpreplay
 brew install tcptrace
 brew install ucspi-tcp # `tcpserver` etc.
-brew install xpdf
 brew install xz
 
 # Install other useful binaries.

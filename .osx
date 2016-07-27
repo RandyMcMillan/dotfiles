@@ -178,7 +178,7 @@ defaults write com.apple.dock wvous-tr-modifier -int 0
 
 # Top left screen corner → Launch Pad
 # set top left corner to launchpad
-defaults write com.apple.dock wvous-tl-corner 1
+defaults write com.apple.dock wvous-tl-corner 11
 #defaults write com.apple.dock wvous-tl-corner -int 1
 #defaults write com.apple.dock wvous-tl-modifier -int 0
 

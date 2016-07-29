@@ -1,5 +1,14 @@
 ##################################################
 #BEGIN MY ADDITIONS
+#Git purge file/folder
+gitPurgeF(){
+
+git filter-branch --force --index-filter \
+'git rm -r --cached --ignore-unmatched $1' \
+--tag-name-filter cat -- --all
+
+}
+
 
 #Reset Safari
 resetSafari(){

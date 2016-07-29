@@ -3,10 +3,15 @@
 #Git purge file/folder
 gitPurgeF(){
 
-#git filter-branch --force --index-filter "git rm -r --cached --ignore-unmatched $1" --tag-name-filter cat -- --all
-git rm --cached $1
-git commit --amend -CHEAD
-git push
+#LEAVE AS THREE LINES, REPLACE FILENAME.EXTENSION with target object them copy
+##and paste the entire block of text into command line
+#
+#git filter-branch --force --index-filter \
+#'git rm -r --cached --ignore-unmatch FILEorFOLDER.NAME' \
+#--tag-name-filter cat -- --all
+#
+
+bfg --delete-files $1
 
 }
 

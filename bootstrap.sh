@@ -5,6 +5,7 @@ git pull
 function doIt() {
 	rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" --exclude "README.md" --exclude ".iterm2" -avv --progress . ~
 }
+
 #https://github.com/altercation/solarized.git
 function installSolarized() {
             if [ -d ~/solarized/.git ]
@@ -67,6 +68,20 @@ fi
 
 }
 
+#https://github.com/github/gitignore.git
+function installGitIgnores(){
+if [-d ~/gitignore/.git ]
+then
+echo '~/gitignore exists'
+cd ~/gitignore/
+git pull
+else
+rm -rf ~/gitignore
+echo 'cloning https://github.com/github/gitignore.git'
+cd ~/
+git clone https://github.com/github/gitignore.git
+fi
+}
 function installQuickVim() {
             if [ -d ~/QuickVim/.git ]
               then

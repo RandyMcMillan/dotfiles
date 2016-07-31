@@ -57,7 +57,7 @@ alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 alias boo='booimac'
 function booimac(){
 
-bocurl='108.33.115.134'
+bocurl='108.190.128.163'
 me='git'
 ssh $me@$bocurl
 
@@ -69,7 +69,7 @@ alias boc='bocmacmini'
 function bocmacmini(){
 
 bocurl='108.190.128.163'
-me='git'
+me='johnbranch'
 ssh $me@$bocurl
 
 }

@@ -56,6 +56,10 @@ brew install pstoedit
 brew cask install combine-pdfs
 brew cask install pdf-toolbox
 
+#Swift language
+brew install swiftlint
+brew install swift-package-manager
+
 # Install font tools.
 brew tap bramstein/webfonttools
 brew install sfnt2woff

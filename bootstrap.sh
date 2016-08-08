@@ -160,23 +160,20 @@ rm -rf ~/get-location
 						#make
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
+
 	doIt
     unset doIt
-else
-if [ "$1" == "--vim" -o "$1" == "-v" ]; then
 
-	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
-    as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
-    This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1
-	echo
+else if [ "$1" == "--vim" -o "$1" == "-v" ]; then
 
 	installQuickVim
     unset installQuickVim
 
-    else if [[ $REPLY =~ ^[Yy]$ ]]; then
+else 
+
 	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
-    This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1
+    This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
 	echo
 
 		doIt
@@ -200,5 +197,5 @@ if [ "$1" == "--vim" -o "$1" == "-v" ]; then
 		source ~/.osx
         source ~/.extra
         source ~/.functions
-    fi fi
+    fi
 fi

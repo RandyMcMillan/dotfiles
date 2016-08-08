@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
 # Install command-line tools using Homebrew.
-
 # Ask for the administrator password upfront.
 sudo -v
 
@@ -11,6 +9,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Make sure we’re using the latest Homebrew.
 brew update
 brew install cask
+
 # Upgrade any already-installed formulae.
 brew upgrade --all
 
@@ -21,10 +20,13 @@ sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
 
 # Install some other useful utilities like `sponge`.
 brew install moreutils
+
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
 brew install findutils
+
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
+
 # Install Bash 4.
 # Note: don’t forget to add `/usr/local/bin/bash` to `/etc/shells` before
 # running `chsh`.
@@ -44,6 +46,7 @@ brew install homebrew/dupes/screen
 brew install homebrew/php/php56 --with-gmp
 brew cask install xampp
 brew cask install atom
+
 #pdf tools
 brew install qpdf
 brew install pdf2svg
@@ -55,8 +58,7 @@ brew install pdf2htmlex
 brew install pstoedit
 brew cask install combine-pdfs
 brew cask install pdf-toolbox
-brew install Caskroom/cask/adobe-creative-cloud
-brew install Caskroom/cask/adobe-creative-cloud-cleaner-tool
+
 #Swift language
 brew install swiftlint
 brew install swift-package-manager
@@ -95,6 +97,7 @@ brew install xz
 # Install other useful binaries.
 brew install ack
 brew install dark-mode
+
 #brew install exiv2
 #git tools
 brew install git
@@ -115,6 +118,11 @@ brew install tree
 brew install webkit2png
 brew install zopfli
 brew install keychain
-brew install adobe-creative-cloud
+
+#adobe
+brew install Caskroom/cask/adobe-creative-cloud
+brew install Caskroom/cask/adobe-creative-cloud-cleaner-tool
+
 # Remove outdated versions from the cellar.
 brew cleanup
+

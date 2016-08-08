@@ -64,8 +64,6 @@ else
   exit 5
 fi
 
-
-
 }
 
 #https://github.com/github/gitignore.git
@@ -83,95 +81,94 @@ git clone https://github.com/github/gitignore.git
 fi
 }
 function installQuickVim() {
-            if [ -d ~/QuickVim/.git ]
-              then
-                      echo '~/QuickVim exists'
-                      cd ~/QuickVim/
-git pull
-                       ~/QuickVim/./quick-vim upgrade
-              else
-rm -rf ~/QuickVim
-                      echo 'cloning https://github.com/randymcmillan/QuickVim.git to ~/QuickVim'
-cd ~/
-                      git clone https://github.com/randymcmillan/QuickVim.git
-                      cd ~/QuickVim/
-                      ~/QuickVim/./quick-vim install
-                    fi
+    if [ -d ~/QuickVim/.git ]
+      then
+        echo '~/QuickVim exists'
+        cd ~/QuickVim/
+        git pull
+        ~/QuickVim/./quick-vim upgrade
+      else
+        rm -rf ~/QuickVim
+        echo 'cloning https://github.com/randymcmillan/QuickVim.git to ~/QuickVim'
+        cd ~/
+        git clone https://github.com/randymcmillan/QuickVim.git
+        cd ~/QuickVim/
+        ~/QuickVim/./quick-vim install
+    fi
 }
 function installISightCapture() {
-            if [ -d ~/iSightCapture/.git ]
-              then
-                  echo '~/iSightCapture exists'
-                  cd ~/iSightCapture/
-                  git pull
-              else
-                  echo 'cloning
-                  https://github.com/randymcmillan/iSightCapture.git
-                  to ~/iSightCapture'
-cd ~/
-                  git clone https://github.com/randymcmillan/iSightCapture.git
-              fi
+    if [ -d ~/iSightCapture/.git ]
+      then
+        echo '~/iSightCapture exists'
+        cd ~/iSightCapture/
+        git pull
+      else
+        echo 'cloning
+        https://github.com/randymcmillan/iSightCapture.git
+        to ~/iSightCapture'
+        cd ~/
+        git clone https://github.com/randymcmillan/iSightCapture.git
+      fi
 }
 function installMyUncrustifyConfigs() {
-            if [ -d ~/my-uncrustify-configs/.git ]
-                then
-                    echo '~/my-uncrustify-configs exists'
-                    cd ~/my-uncrustify-configs
-                    git pull
-                else
-rm -rf ~/my-uncrustify-configs
-cd ~/
-                    echo 'cloning
-                    https://github.com/RandyMcMillan/my-uncrustify-configs.git to
-                    ~/my-uncrustify-configs'
-                    git clone https://github.com/RandyMcMillan/my-uncrustify-configs.git
-            fi
+    if [ -d ~/my-uncrustify-configs/.git ]
+      then
+        echo '~/my-uncrustify-configs exists'
+        cd ~/my-uncrustify-configs
+        git pull
+      else
+        rm -rf ~/my-uncrustify-configs
+        cd ~/
+        echo 'cloning
+        https://github.com/RandyMcMillan/my-uncrustify-configs.git to
+        ~/my-uncrustify-configs'
+        git clone https://github.com/RandyMcMillan/my-uncrustify-configs.git
+    fi
 }
 #https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git
 function installRecursiveIndex(){
-						 if [ -d ~/f4c040ce48c0d8e590c125379e1ef69b/.git ]
-						   then
-						       echo '~/f4c040ce48c0d8e590c125379e1ef69b/ exists'
-						       cd ~/f4c040ce48c0d8e590c125379e1ef69b
-						       git pull
-						   else
-rm -rf ~/f4c040ce48c0d8e590c125379e1ef69b
-									cd ~/
-         echo 'cloning https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git to ~/f4c040ce48c0d8e590c125379e1ef69b'
+    if [ -d ~/f4c040ce48c0d8e590c125379e1ef69b/.git ]
+      then
+        echo '~/f4c040ce48c0d8e590c125379e1ef69b/ exists'
+        cd ~/f4c040ce48c0d8e590c125379e1ef69b
+        git pull
+      else
+        rm -rf ~/f4c040ce48c0d8e590c125379e1ef69b
+        cd ~/
+        echo 'cloning https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git to ~/f4c040ce48c0d8e590c125379e1ef69b'
             git clone https://gist.github.com/f4c040ce48c0d8e590c125379e1ef69b.git
-						fi
+    fi
 }
 #Keep this last
 #git@github.com:lindes/get-location.git
 function installGetLocation(){
-						 if [ -d ~/get-location/.git ]
-						   then
-						       echo '~/get-location/ exists'
-						       cd ~/get-location
-						       git pull
-						   else
-rm -rf ~/get-location
-									cd ~/
-									 echo 'cloning https://github.com/RandyMcMillan/get-location.git to ~/get-location'
-						        git clone https://github.com/lindes/get-location.git
-						fi
-						cd ~/get-location/
-						sudo make
-						#make
+     if [ -d ~/get-location/.git ]
+       then
+           echo '~/get-location/ exists'
+           cd ~/get-location
+           git pull
+       else
+        rm -rf ~/get-location
+        cd ~/
+        echo 'cloning https://github.com/RandyMcMillan/get-location.git to ~/get-location'
+        git clone https://github.com/lindes/get-location.git
+        fi
+        cd ~/get-location/
+        sudo make
+        #make
 }
 
 #switch logic
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
-
 	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
 	echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-	doIt
-    unset doIt
-else break
-fi
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        doIt
+        unset doIt
+    else break
+    fi
 
 else if [ "$1" == "--vim" -o "$1" == "-v" ]; then
 
@@ -179,6 +176,7 @@ else if [ "$1" == "--vim" -o "$1" == "-v" ]; then
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
 	echo
+
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 	installQuickVim
     unset installQuickVim
@@ -191,27 +189,27 @@ else
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
 	echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-		doIt
-        installSolarized
-        installQuickVim
-        installITermPrefPlist
-        installISightCapture
-        installMyUncrustifyConfigs
-        installRecursiveIndex
-        #installGetLocation
-		unset doIt
-		unset installQuickVim
-		unset installISightCapture
-		unset installMyUncrustifyConfigs
-		unset installGetLocation
-		unset installRecursiveIndex
-		cd ~/
-		source ~/.bash_profile
-		source ~/.aliases
-		source ~/.bashrc
-		source ~/.osx
-        source ~/.extra
-        source ~/.functions
-    fi fi
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+            doIt
+            installSolarized
+            installQuickVim
+            installITermPrefPlist
+            installISightCapture
+            installMyUncrustifyConfigs
+            installRecursiveIndex
+            #installGetLocation
+            unset doIt
+            unset installQuickVim
+            unset installISightCapture
+            unset installMyUncrustifyConfigs
+            unset installGetLocation
+            unset installRecursiveIndex
+            cd ~/
+            source ~/.bash_profile
+            source ~/.aliases
+            source ~/.bashrc
+            source ~/.osx
+            source ~/.extra
+            source ~/.functions
+        fi fi
 fi

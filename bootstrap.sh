@@ -175,7 +175,7 @@ else
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
 	echo
-
+if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt
         installSolarized
         installQuickVim
@@ -197,5 +197,5 @@ else
 		source ~/.osx
         source ~/.extra
         source ~/.functions
-    fi
+    fi fi
 fi

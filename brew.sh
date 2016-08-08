@@ -55,7 +55,8 @@ brew install pdf2htmlex
 brew install pstoedit
 brew cask install combine-pdfs
 brew cask install pdf-toolbox
-
+brew install Caskroom/cask/adobe-creative-cloud
+brew install Caskroom/cask/adobe-creative-cloud-cleaner-tool
 #Swift language
 brew install swiftlint
 brew install swift-package-manager

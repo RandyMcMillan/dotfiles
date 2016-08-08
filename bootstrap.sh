@@ -8,17 +8,17 @@ function doIt() {
 
 #https://github.com/altercation/solarized.git
 function installSolarized() {
-            if [ -d ~/solarized/.git ]
-              then
-                      echo '~/solarized exists'
-                      cd ~/solarized
-                       git pull
-              else
-rm -rf ~/solarized
-                      cd ~/
-                      echo 'cloning https://github.com/altercation/solarized.git to ~/solarized'
-                      git clone https://github.com/altercation/solarized.git
-                    fi
+if [ -d ~/solarized/.git ]
+    then
+    echo '~/solarized exists'
+    cd ~/solarized
+    git pull
+  else
+    rm -rf ~/solarized
+    cd ~/
+    echo 'cloning https://github.com/altercation/solarized.git to ~/solarized'
+    git clone https://github.com/altercation/solarized.git
+fi
 }
 
 function installITermPrefPlist(){
@@ -167,7 +167,7 @@ if [ "$1" == "--force" -o "$1" == "-f" ]; then
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         doIt
         unset doIt
-    else break
+    else exit
     fi
 
 else if [ "$1" == "--vim" -o "$1" == "-v" ]; then
@@ -180,7 +180,7 @@ else if [ "$1" == "--vim" -o "$1" == "-v" ]; then
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 	installQuickVim
     unset installQuickVim
-else break
+else exit
 fi
 
 else 

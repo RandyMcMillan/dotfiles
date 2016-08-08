@@ -159,15 +159,31 @@ rm -rf ~/get-location
 						sudo make
 						#make
 }
+
+#switch logic
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 
+	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
+    as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
+    This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
+	echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
 	doIt
     unset doIt
+else break
+fi
 
 else if [ "$1" == "--vim" -o "$1" == "-v" ]; then
 
+	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
+    as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
+    This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
+	echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
 	installQuickVim
     unset installQuickVim
+else break
+fi
 
 else 
 

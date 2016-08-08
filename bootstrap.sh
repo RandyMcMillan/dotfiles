@@ -69,15 +69,15 @@ fi
 #https://github.com/github/gitignore.git
 function installGitIgnores(){
 if [-d ~/gitignore/.git ]
-then
-echo '~/gitignore exists'
-cd ~/gitignore/
-git pull
-else
-rm -rf ~/gitignore
-echo 'cloning https://github.com/github/gitignore.git'
-cd ~/
-git clone https://github.com/github/gitignore.git
+    then
+        echo '~/gitignore exists'
+        cd ~/gitignore/
+        git pull
+    else
+        rm -rf ~/gitignore
+        echo 'cloning https://github.com/github/gitignore.git'
+        cd ~/
+        git clone https://github.com/github/gitignore.git
 fi
 }
 function installQuickVim() {

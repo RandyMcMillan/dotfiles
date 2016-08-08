@@ -161,20 +161,24 @@ rm -rf ~/get-location
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt
+    unset doIt
 else
 	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1
 	echo
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [ "$1" == "--vim" -o "$1" == "-v" ]; then
+	installQuickVim
+    unset installQuickVim
+    else if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt
         installSolarized
         installQuickVim
         installITermPrefPlist
         installISightCapture
         installMyUncrustifyConfigs
-				installRecursiveIndex
-				#installGetLocation
+        installRecursiveIndex
+        #installGetLocation
 		unset doIt
 		unset installQuickVim
 		unset installISightCapture
@@ -186,7 +190,7 @@ else
 		source ~/.aliases
 		source ~/.bashrc
 		source ~/.osx
-source ~/.extra
-source ~/.functions
-    fi
+        source ~/.extra
+        source ~/.functions
+    fi fi
 fi

@@ -3,7 +3,7 @@ set -e
 cd "$(dirname "$0")"
 git pull
 function doIt() {
-	rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" --exclude "README.md" --exclude ".iterm2" -avv --progress . ~
+    rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" --exclude "README.md" --exclude ".iterm2" -avv --progress . ~
 }
 
 #https://github.com/altercation/solarized.git
@@ -160,10 +160,10 @@ function installGetLocation(){
 
 #switch logic
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
-	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
+    read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
-	echo
+    echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         doIt
         unset doIt
@@ -172,23 +172,23 @@ if [ "$1" == "--force" -o "$1" == "-f" ]; then
 
 else if [ "$1" == "--vim" -o "$1" == "-v" ]; then
 
-	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
+    read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
-	echo
+    echo
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-	installQuickVim
+    installQuickVim
     unset installQuickVim
 else exit
 fi
 
-else 
+else
 
-	read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
+    read -p "Installs QuickVim [https://github.com/randymcmillan/QuickVim.git]
     as well as the dotfiles [https://github.com/randymcmillan/dotfiles.git] files.
     This may overwrite existing files in your home and .vim directory. Are you sure? (y/n) " -n 1
-	echo
+    echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
             doIt
             installSolarized

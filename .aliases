@@ -109,11 +109,11 @@ alias fn=folderName
 #makeRemote
 function makeRemote(){
 
-cat ~/dotfiles/remoteURL | while read REMOTEURL;
+    cat ~/dotfiles/remoteURL | while read REMOTEURL;
 
     dest=$PWD".git";
     f="${dest##*/}";
-    ssh git@REMOTEURL "git init --bare ${f}";
+    ssh git@$REMOTEURL "git init --bare ${f}";
 }
 alias makeremote=makeRemote
 #testRemote
@@ -122,9 +122,9 @@ cat ~/dotfiles/remoteURL | while read REMOTEURL
      dest=$PWD".git";
      echo $dest;
      f="${dest##*/}";
-    git ls-remote ssh://git@REMOTEURL/Users/git/${f} &>-
+    git ls-remote ssh://git@$REMOTEURL/Users/git/${f} &>-
     if [ "$?" -ne 0 ]; then
-    echo "[ERROR] Unable to read from " git ls-remote ssh://git@REMOTEURL/Users/git/${f}
+    echo "[ERROR] Unable to read from " git ls-remote ssh://git@$REMOTEURL/Users/git/${f}
     else
     return "$?"
     fi

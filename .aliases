@@ -24,7 +24,7 @@ function uncrustifyAndGitCommitAndPush(){
   uncrustify *.m -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
   git add *
   git commit -am'git add * ; uncrustify; git commit'
-  git push origin
+  git push deepspace
 
 }
 

@@ -113,7 +113,7 @@ function makeRemote(){
 
     dest=$PWD".git";
     f="${dest##*/}";
-    ssh git@$REMOTEURL "git init --bare ${f}";
+    ssh git@$REMOTEURL "git init --bare ${f}"
 }
 alias makeremote=makeRemote
 #testRemote
@@ -196,7 +196,7 @@ cat ~/dotfiles/remoteURL | while read REMOTEURL
             echo adding remote github repository
             git remote add github https://github.com/randymcmillan/${f};
             echo setting remote url
-            git remote set-url --addurl origin ssh://git@REMOTEURL/Users/git/${f};
+            git remote set-url --addurl origin ssh://git@$REMOTEURL/Users/git/${f};
             git remote -v
         fi
 

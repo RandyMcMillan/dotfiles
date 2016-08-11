@@ -162,9 +162,12 @@ function myfunc()
 #echo myresult = $myresult
 #forceOrigin
 function forceOrigin(){
-    dest=$PWD".git";
+cat ~/dotfiles/remoteURL | while read REMOTEURL
+ 
+
+   dest=$PWD".git";
     f="${dest##*/}";
-    git ls-remote --get-url ssh://git@96.228.181.194/Users/git/${f} #&>-
+    git ls-remote --get-url ssh://git@$REMOTEURL/Users/git/${f} #&>-
     if [ "$?" -ne 0 ]; #fail test
         then
         git remote -v
@@ -173,9 +176,9 @@ function forceOrigin(){
         else
             echo succeeded to read
             echo adding remote deepspace repository
-            git remote add deepspace ssh://git@96.228.181.194/Users/git/${f};
+            git remote add deepspace ssh://git@$REMOTEURL/Users/git/${f};
             echo setting remote url
-            git remote set-url --origin ssh://git@96.228.181.194/Users/git/${f};
+            git remote set-url --origin ssh://git@REMOATEURL/Users/git/${f};
             git remote -v
         fi
     git ls-remote --get-url https://github.com/randymcmillan/${f} #&>-
@@ -189,7 +192,7 @@ function forceOrigin(){
             echo adding remote github repository
             git remote add github https://github.com/randymcmillan/${f};
             echo setting remote url
-            git remote set-url --addurl origin ssh://git@96.228.181.194/Users/git/${f};
+            git remote set-url --addurl origin ssh://git@REMOTEURL/Users/git/${f};
             git remote -v
         fi
 

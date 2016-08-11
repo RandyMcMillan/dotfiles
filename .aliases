@@ -106,25 +106,23 @@ function folderName(){
     echo "${f}"
     }
 alias fn=folderName
+
+
 #makeRemote
 function makeRemote(){
 
-
 while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoteURL \
-
 #    cat ~/dotfiles/remoteURL | while read ~/dot REMOTEURL
-
     dest=$PWD".git" \
     f="${dest##*/}" \ 
     ssh git@$REMOTEURL "git init --bare ${f}" \ 
 }
-
 alias makeremote=makeRemote
+
 #testRemote
 function testRemote(){
 
 while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoteURL
-
 #cat ~/dotfiles/remoteURL | while read REMOTEURL
      dest=$PWD".git";
      echo $dest;

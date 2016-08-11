@@ -109,7 +109,7 @@ alias fn=folderName
 #makeRemote
 function makeRemote(){
 
-cat ~/dotfiles/remoteURL | while read REMOTEURL
+cat ~/dotfiles/remoteURL | while read REMOTEURL;
 
     dest=$PWD".git";
     f="${dest##*/}";

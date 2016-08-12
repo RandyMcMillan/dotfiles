@@ -123,6 +123,9 @@ brew install keychain
 brew install Caskroom/cask/adobe-creative-cloud
 brew install Caskroom/cask/adobe-creative-cloud-cleaner-tool
 
+#twitter
+brew install t
+
 # Remove outdated versions from the cellar.
 brew cleanup
 

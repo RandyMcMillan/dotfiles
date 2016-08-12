@@ -2,8 +2,6 @@
  #  source ~/.bashrc
 #fi
 
-
-
 # Load ~/.extra, ~/.bash_prompt, ~/.exports, ~/.aliases and ~/.functions
 # ~/.extra can be used for settings you don’t want to commit
 for file in ~/.{bash_prompt,exports,aliases,profile,functions,extra}; do
@@ -37,7 +35,8 @@ eval `keychain --quiet --eval --agents ssh xpatriot_persis_rsa`
 complete -W "NSGlobalDomain" defaults
 
 # Add `killall` tab completion for common apps
-complete -o "nospace" -W "Finder Dock Mail Safari iTunes iCal Address\ Book SystemUIServer" killall
+complete -o "nospace" -W "Finder Dock Mail Safari iTunes iCal Address\ Book
+SystemUIServer Activity\ Monitor" killall
 
 #REF: https://github.com/Linuxbrew/linuxbrew/find/master
 export PATH="$HOME/.linuxbrew/bin:$PATH"

@@ -42,7 +42,6 @@ alias aa="atom"
 
 #SHUT DOWN
 alias SD="sudo shutdown -r now"
-
 alias vf="cd"
 alias xs="cd"
 alias got="git"
@@ -166,9 +165,9 @@ for I in $(/usr/bin/seq 0 $((${#FILE_DATA[@]} - 1)))
 
 #myfunc
 #echo myresult = $myresult
-function myfunc()
+function myfuncOne()
 {
-    myresult='some value'
+    myresult='in the .aliases file.'
 }
 #myfunc
 #echo myresult = $myresult
@@ -321,11 +320,12 @@ alias d="cd ~/Documents/Dropbox"
 alias p="cd ~/Projects"
 alias g="git "
 
-#7.4.1063
+#homebrew vim
 alias vim="/usr/local/bin/vim"
 alias v=vim
 #basic vim
 alias vv="vim -u NONE -N"
+#homebrew macvim
 alias mvim="/usr/local/bin/mvim"
 alias mm=mvim
 alias s="subl ."

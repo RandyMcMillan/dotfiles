@@ -128,7 +128,7 @@ brew install t
 
 #Snitch
 brew install Caskroom/cask/micro-snitch --eorce
-nstall Caskroom/cask/little-snitch --force
+brew install Caskroom/cask/little-snitch --force
 
 # Remove outdated versions from the cellar.
 brew cleanup

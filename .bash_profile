@@ -43,4 +43,4 @@ SystemUIServer Activity\ Monitor" killall
 export PATH="$HOME/.linuxbrew/bin:$PATH"
 export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
 export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-eval "$(uru_rt admin install)"
+#eval "$(uru_rt admin install)"

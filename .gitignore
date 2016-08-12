@@ -1,8 +1,8 @@
-*remoteURL
-*bocURL
+#*remoteURL
+#*bocURL
 
-remoteURL
-bocURL
+#remoteURL
+#bocURL
 
 *.*.un*
 

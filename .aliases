@@ -1,3 +1,12 @@
+#deepspace
+function deepspace(){
+
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoeteURL
+ssh git@$remoteURL
+
+}
+alias ds="deepspace"
+
 #gem install t
 #http://sferik.github.io/t/
 alias tu="t update "

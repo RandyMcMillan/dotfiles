@@ -1,6 +1,11 @@
 *remoteURL
 *bocURL
+
+remoteURL
+bocURL
+
 *.*.un*
+
 # Folder view configuration files
 .DS_Store
 .AppleDouble

@@ -1,8 +1,13 @@
 #deepspace
 function deepspace(){
 
-while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~//remoteURL
-ssh git@$remoteURL
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/remoteURL
+
+
+
+    rmurl=$remoteURL;
+    me='git';
+    ssh $me@$rmurl -p 21
 
 }
 alias ds="deepspace"

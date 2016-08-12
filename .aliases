@@ -56,25 +56,27 @@ alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 
 # ssh git@$REMOTEURL
 #booimac
-alias boo='booimac'
 function booimac(){
 
-bocurl='108.190.128.163'
+while read bocURL; do echo -e "bocURL = $bocURL\n"; done < ~/dotfile/bocURL
+bocurl='$bocURL'
 me='git'
-ssh $me@$bocurl
+ssh $me@$bocURL
 
 }
+alias boo='booimac'
 
 # ssh git@$REMOTEURL
 #bocmacmini
-alias boc='bocmacmini'
 function bocmacmini(){
 
-bocurl='108.190.128.163'
+while read bocURL; do echo -e "bocURL = $bocURL\n"; done < ~/dotfile/bocURL
+bocurl=$bocURL
 me='johnbranch'
-ssh $me@$bocurl
+ssh $me@$bocURL
 
 }
+alias boc='bocmacmini'
 
 randymcmillan ()
 {

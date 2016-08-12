@@ -1,7 +1,7 @@
 #deepspace
 function deepspace(){
 
-while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoteURL
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~//remoteURL
 ssh git@$remoteURL
 
 }
@@ -66,7 +66,7 @@ alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
 #booimac
 function booimac(){
 
-while read bocURL; do echo -e "bocURL = $bocURL\n"; done < ~/dotfile/bocURL
+while read bocURL; do echo -e "bocURL = $bocURL\n"; done < ~/dotfiles/bocURL
 bocurl='$bocURL'
 me='git'
 ssh $me@$bocURL
@@ -78,7 +78,7 @@ alias boo='booimac'
 #bocmacmini
 function bocmacmini(){
 
-while read bocURL; do echo -e "bocURL = $bocURL\n"; done < ~/dotfile/bocURL
+while read bocURL; do echo -e "bocURL = $bocURL\n"; done < ~/dotfiles/bocURL
 bocurl=$bocURL
 me='johnbranch'
 ssh $me@$bocURL
@@ -123,7 +123,7 @@ alias fn=folderName
 #makeRemote
 function makeRemote(){
 
-while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoteURL
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfiles/remoteURL
     dest=$PWD".git";
     f="${dest##*/}"; 
     ssh git@$REMOTEURL "git init --bare ${f}";
@@ -133,7 +133,7 @@ alias makeremote=makeRemote
 #testRemote
 function testRemote(){
 
-while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoteURL
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfiles/remoteURL
      dest=$PWD".git";
      echo $dest;
      f="${dest##*/}";
@@ -183,7 +183,7 @@ function myfuncOne()
 #forceOrigin
 function forceOrigin(){
 
-while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoteURL
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfiles/remoteURL
  
 
    dest=$PWD".git";

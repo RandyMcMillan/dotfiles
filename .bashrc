@@ -14,7 +14,7 @@ fi
 
 if [ $VIM ]; then
     export PS1='\h:\w\$ '
-source ~/.aliases
+    source ~/.aliases
 else
     [ -n "$PS1" ] && source ~/.bash_profile
 

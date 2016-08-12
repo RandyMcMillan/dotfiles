@@ -114,9 +114,7 @@ function installISightCapture() {
         cd ~/iSightCapture/
         git pull
       else
-        echo 'cloning
-        https://github.com/randymcmillan/iSightCapture.git
-        to ~/iSightCapture'
+echo 'cloning https://github.com/randymcmillan/iSightCapture.git to ~/iSightCapture'
         cd ~/
         git clone https://github.com/randymcmillan/iSightCapture.git
       fi

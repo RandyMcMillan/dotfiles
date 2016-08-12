@@ -1,6 +1,7 @@
 # .screenrc file as part of dotfiles
 # Author: Peter Kokot <peterkokot@gmail.com>
 # Source: https://github.com/peterkokot/dotfiles
+scrollback 5000 
 
 
 altscreen on

@@ -1,7 +1,7 @@
 #deepspace
 function deepspace(){
 
-while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoeteURL
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfile/remoteURL
 ssh git@$remoteURL
 
 }

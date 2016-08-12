@@ -217,8 +217,8 @@ else
             source ~/.bash_profile
             source ~/.aliases
             source ~/.bashrc
-            source ~/.osx
             source ~/.extra
             source ~/.functions
+            source ~/.osx
         fi fi
 fi

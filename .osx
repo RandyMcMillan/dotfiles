@@ -9,7 +9,8 @@ defaults write com.apple.desktop '{ Background = { default = {BackgroundColor = 
 
 
 #reset launchpad
-rm ~/Library/Application\ Support/Dock/*.db; defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
+rm ~/Library/Application\ Support/Dock/*.db;
+defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
 
 #http://www.defaults-write.com/change-the-layout-rows-and-columns-of-launchpad/
 defaults write com.apple.dock springboard-columns -int 5

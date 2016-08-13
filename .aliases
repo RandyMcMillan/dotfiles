@@ -1,16 +1,8 @@
-#deepspace
-function deepspace(){
-
-while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/remoteURL
-
-
-
-    rmurl=$remoteURL;
-    me='git';
-    ssh $me@$rmurl -p 21
-
-}
-alias ds="deepspace"
+#deepSpace
+while read deepSpaceURL; do echo -e "deepSpaceURL = $deepSpaceURL\n"; done < ~/remoteURL
+gitUser='git'
+ssh -Y $gitUser@$deepSpaceURL
+alias ds='ssh -Y $gitUser@$deepSpaceURL'
 
 #gem install t
 #http://sferik.github.io/t/

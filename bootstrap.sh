@@ -10,7 +10,7 @@ function doIt() {
             source ~/.bash_profile
             source ~/.aliases
             source ~/.bashrc
-            source ~/.osx
+#            source ~/.osx
             source ~/.extra
             source ~/.functions
 
@@ -219,6 +219,6 @@ else
             source ~/.bashrc
             source ~/.extra
             source ~/.functions
-            source ~/.osx
+#            source ~/.osx
         fi fi
 fi

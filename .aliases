@@ -1,19 +1,7 @@
 #deepSpace
 while read deepSpaceURL; do echo -e "deepSpaceURL = $deepSpaceURL\n"; done < ~/remoteURL
-gitUser='git'
-echo $gitUser\
-echo @\
-echo $deepSpaceURL\
 
-alias ds='ssh $gitUser@$deepSpaceURL'
-
-
-#circe
-circeurl='circe.rc.usf.edu'
-usfuser='rmcmillan1'
-alias circe='ssh -Y $usfuser@$circeurl'
-alias usf=circe
-alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
+alias ds='ssh git@96.228.181.194'
 
 
 

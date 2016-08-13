@@ -1,8 +1,21 @@
 #deepSpace
 while read deepSpaceURL; do echo -e "deepSpaceURL = $deepSpaceURL\n"; done < ~/remoteURL
 gitUser='git'
-ssh -Y $gitUser@$deepSpaceURL
-alias ds='ssh -Y $gitUser@$deepSpaceURL'
+echo $gitUser\
+echo @\
+echo $deepSpaceURL\
+
+alias ds='ssh $gitUser@$deepSpaceURL'
+
+
+#circe
+circeurl='circe.rc.usf.edu'
+usfuser='rmcmillan1'
+alias circe='ssh -Y $usfuser@$circeurl'
+alias usf=circe
+alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
+
+
 
 #gem install t
 #http://sferik.github.io/t/

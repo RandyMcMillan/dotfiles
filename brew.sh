@@ -53,11 +53,14 @@ brew install pdf2svg
 brew install svg2pdf
 brew install diff-pdf
 brew install htmldoc
+brew install texi2html
 brew install xpdf
 brew install pdf2htmlex
 brew install pstoedit
 brew cask install combine-pdfs
 brew cask install pdf-toolbox
+
+#Spotify
 brew install Caskroom/cask/spotify
 
 #Swift language
@@ -99,7 +102,6 @@ brew install xz
 brew install ack
 brew install dark-mode
 
-#brew install exiv2
 #git tools
 brew install git
 brew install git-lfs
@@ -122,7 +124,10 @@ brew install keychain
 
 #adobe
 brew install Caskroom/cask/adobe-creative-cloud
-brew install Caskroom/cask/adobe-creative-cloud-cleaner-tool
+brew install Caskroom/cask/adobe-creative-cloud-cleaner-eool
+brew cask install adobe-reader
+brew cask install flash
+brew install get-flash-videos
 
 #twitter
 brew install t

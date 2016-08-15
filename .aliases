@@ -1,9 +1,5 @@
-#deepSpace
-while read deepSpaceURL; do echo -e "deepSpaceURL = $deepSpaceURL\n"; done < ~/remoteURL
-
+#deepspace
 alias ds='ssh git@96.228.181.194'
-
-
 
 #gem install t
 #http://sferik.github.io/t/
@@ -30,9 +26,8 @@ function uncrustifyAndGitCommitAndPush(){
   uncrustify *.h -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
   uncrustify *.m -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
   git add * -f
-  git commit -am;
-  echo 'git add * -f ; uncrustify; git commit'
-  git push deepspace
+  git commit -am'git add * -f ;git commit -am; uncrustify; git commit'
+  git push deepspace +master:master
 
 }
 

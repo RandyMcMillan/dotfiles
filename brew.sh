@@ -124,10 +124,13 @@ brew install keychain
 
 #adobe
 brew install Caskroom/cask/adobe-creative-cloud
-brew install Caskroom/cask/adobe-creative-cloud-cleaner-eool
+brew install Caskroom/cask/adobe-creative-cloud-cleaner-tool
 brew cask install adobe-reader
 brew cask install flash
 brew install get-flash-videos
+brew install Caskroom/cask/adobe-acrobat
+brew install Caskroom/cask/adobe-illustrator-cc
+brew install Caskroom/cask/adobe-photoshop-cc
 
 #twitter
 brew install t

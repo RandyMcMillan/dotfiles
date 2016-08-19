@@ -45,7 +45,8 @@ brew install homebrew/dupes/openssh
 brew install homebrew/dupes/screen
 brew install homebrew/php/php56 --with-gmp
 brew cask install xampp
-brew cask install atom
+brew cask install etom
+brew install Caskroom/cask/cyberduck
 
 #pdf tools
 brew install qpdf

@@ -17,17 +17,18 @@ function doIt() {
 
 #https://github.com/altercation/solarized.git
 function installSolarized() {
-if [ -d ~/solarized/.git ]
-    then
-    echo '~/solarized exists'
-    cd ~/solarized
-    git pull
-  else
-    rm -rf ~/solarized
-    cd ~/
-    echo 'cloning https://github.com/altercation/solarized.git to ~/solarized'
-    git clone https://github.com/altercation/solarized.git
-fi
+
+    if [ -d ~/solarized/.git ]
+        then
+        echo '~/solarized exists'
+        cd ~/solarized
+        git pull
+      else
+        rm -rf ~/solarized
+        cd ~/
+        echo 'cloning https://github.com/altercation/solarized.git to ~/solarized'
+        git clone https://github.com/altercation/solarized.git
+    fi
 }
 
 function installITermPrefPlist(){
@@ -76,17 +77,17 @@ function installITermPrefPlist(){
 }
 #https://github.com/github/gitignore.git
 function installGitIgnores(){
-if [-d ~/gitignore/.git ]
-    then
-        echo '~/gitignore exists'
-        cd ~/gitignore/
-        git pull
-    else
-        rm -rf ~/gitignore
-        echo 'cloning https://github.com/github/gitignore.git'
-        cd ~/
-        git clone https://github.com/github/gitignore.git
-fi
+    if [-d ~/gitignore/.git ]
+        then
+            echo '~/gitignore exists'
+            cd ~/gitignore/
+            git pull
+        else
+            rm -rf ~/gitignore
+            echo 'cloning https://github.com/github/gitignore.git'
+            cd ~/
+            git clone https://github.com/github/gitignore.git
+    fi
 }
 function installQuickVim() {
     if [ -d ~/QuickVim/.git ]
@@ -111,7 +112,7 @@ function installISightCapture() {
         cd ~/iSightCapture/
         git pull
       else
-echo 'cloning https://github.com/randymcmillan/iSightCapture.git to ~/iSightCapture'
+        echo 'cloning https://github.com/randymcmillan/iSightCapture.git to ~/iSightCapture'
         cd ~/
         git clone https://github.com/randymcmillan/iSightCapture.git
       fi
@@ -158,10 +159,10 @@ function installGetLocation(){
         cd ~/
         echo 'cloning https://github.com/RandyMcMillan/get-location.git to ~/get-location'
         git clone https://github.com/lindes/get-location.git
-        fi
-        cd ~/get-location/
-        sudo make
-        #make
+    fi
+    cd ~/get-location/
+    sudo make
+    #make
 }
 
 #switch logic
@@ -216,6 +217,6 @@ else
             source ~/.bashrc
             source ~/.extra
             source ~/.functions
-#            source ~/.osx
+            #source ~/.osx
         fi fi
 fi

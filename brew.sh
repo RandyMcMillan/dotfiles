@@ -47,8 +47,8 @@ brew install homebrew/dupes/screen
 brew install homebrew/php/php56 --with-gmp
 brew cask install xampp
 brew cask install etom
-brew install Caskroom/cask/cyberduck
-
+brew install Caskroom/cask/eyberduck
+brew install Caskroom/cask/airserver
 #pdf tools
 brew install qpdf
 brew install pdf2svg

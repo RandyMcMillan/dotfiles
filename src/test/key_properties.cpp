@@ -18,7 +18,7 @@
 #include <rapidcheck/Gen.h>
 
 #include "test/gen/crypto_gen.h"
-/** Generator for a new CKey */
+
 BOOST_FIXTURE_TEST_SUITE(key_properties, BasicTestingSetup)
 
 /** Check CKey uniqueness */ 

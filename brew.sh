@@ -37,7 +37,9 @@ brew install cmake
 brew install multimarkdown
 # Install `wget` with IRI support.
 brew install wget --with-iri
-
+brew install homebrew/fuse/ifuse
+brew install Caskroom/cask/osxfuse
+brew install homebrew/fuse/sshfs
 # Install more recent versions of some OS X tools.
 brew install vim --override-system-vi
 brew install macvim

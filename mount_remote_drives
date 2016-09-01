@@ -1,0 +1,21 @@
+# https://jonathansblog.co.uk/sshfs-mount-remote-drive-in-finder
+# I made this in my ~/bin folder - remember to chmod +x the file after you make
+# it
+
+# give your drive a nice name and location
+mkdir /Volumes/ssh.mine.nu
+
+#mount it
+sshfs -o reconnect -o volname=ssh.mine.nu -o IdentityFile=~/.ssh/my_git_key2 git@ssh.mine.nu:/ /Volumes/ssh.mine.nu
+
+# give your drive a nice name and location
+mkdir /Volumes/Movies
+
+#mount it
+sshfs -o reconnect -o volname=Movies -o IdentityFile=~/.ssh/my_git_key2 git@ssh.mine.nu:/Volumes/DeepSpaceExtHD/Movies /Volumes/Movies
+
+# give your drive a nice name and location
+mkdir /Volumes/Pico
+
+#mount it
+sshfs -o reconnect -o volname=Pico -o IdentityFile=~/.ssh/my_git_key2 git@ssh.mine.nu:/Users/git/Pico /Volumes/Pico

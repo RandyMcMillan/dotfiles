@@ -1,3 +1,6 @@
+# homebrews should always take precedence
+export PATH=/usr/local/bin:$PATH
+
 #vim
 
 if [ -f /usr/local/bin/vim ]; then

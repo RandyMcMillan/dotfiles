@@ -1,4 +1,7 @@
-*
+youtube/*
+!youtube/youtube
+
+
 *remoteURL
 *bocURL
 

@@ -1,3 +1,4 @@
+export PATH=/usr/local/bin:$PATH
 # Initialize rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 # Fix $PATH for homebrew

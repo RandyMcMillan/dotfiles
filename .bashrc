@@ -1,6 +1,12 @@
 # homebrews should always take precedence
 export PATH=/usr/local/bin:$PATH
 
+#https://gist.github.com/denji/8706676
+if [[ -s $HOME/.rvm/scripts/rvm ]]; then
+  source $HOME/.rvm/scripts/rvm;
+fi
+
+
 #vim
 
 if [ -f /usr/local/bin/vim ]; then

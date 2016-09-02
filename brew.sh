@@ -142,7 +142,7 @@ brew install t
 #Snitch
 brew install Caskroom/cask/micro-snitch --force
 brew install Caskroom/cask/little-snitch --force
-
+brew install Caskroom/cask/vyprvpn
 
 mkdir -p ~/.rvm/src && cd ~/.rvm/src && rm -rf ./rvm && \
 git clone --depth 1 git://github.com/wayneeseguin/rvm.git && \

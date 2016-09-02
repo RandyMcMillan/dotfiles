@@ -37,6 +37,14 @@ brew install cmake
 #brew install multimarkdown
 # Install `wget` with IRI support.
 brew install wget --with-iri
+
+
+#Coda
+brew install Caskroom/cask/coda
+brew install coda-cli
+
+
+
 #brew install homebrew/fuse/ifuse
 brew install Caskroom/cask/osxfuse
 brew install homebrew/fuse/sshfs

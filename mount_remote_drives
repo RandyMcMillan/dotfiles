@@ -1,6 +1,4 @@
 # https://jonathansblog.co.uk/sshfs-mount-remote-drive-in-finder
-# I made this in my ~/bin folder - remember to chmod +x the file after you make
-# it
 
 # give your drive a nice name and location
 mkdir /Volumes/ssh.mine.nu

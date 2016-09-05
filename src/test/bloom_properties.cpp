@@ -27,4 +27,14 @@ RC_BOOST_PROP(no_false_negatives, (CBloomFilter bloomFilter, uint256 hash)) {
   RC_ASSERT(bloomFilter.contains(hash));
 }
 
+RC_BOOST_PROP(serialization_symmetry, (CBloomFilter bloomFilter)) { 
+  CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+  ss << bloomFilter;
+  CBloomFilter bloomFilter2; 
+  ss >> bloomFilter2; 
+  CDataStream ss1(SER_NETWORK, PROTOCOL_VERSION);
+  ss << bloomFilter;  
+  ss1 << bloomFilter2;
+  RC_ASSERT(ss.str() == ss1.str());
+}    
 BOOST_AUTO_TEST_SUITE_END()

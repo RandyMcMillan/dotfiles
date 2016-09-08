@@ -1,5 +1,14 @@
 # https://jonathansblog.co.uk/sshfs-mount-remote-drive-in-finder
 
+
+# give your drive a nice name and location
+mkdir /Volumes/rootsinrecovery.com
+
+#mount it
+sshfs -p 18765 -o reconnect -o volname=rootsinrecovery.com -o IdentityFile=~/.ssh/rootsinr_persis rootsinr@siteground138.com:/ /Volumes/rootsinrecovery.com
+
+
+
 # give your drive a nice name and location
 mkdir /Volumes/ssh.mine.nu
 

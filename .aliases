@@ -23,6 +23,7 @@ alias cc="uc"
 function uncrustifyAndGitCommitAndPush(){
 
   uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
+  uncrustify *.cpp -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
   uncrustify *.h -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
   uncrustify *.m -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
   git add *

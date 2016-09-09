@@ -38,6 +38,8 @@ brew install cmake
 # Install `wget` with IRI support.
 brew install wget --with-iri
 
+#repurpose CAPS LOCK TO ESC
+brew install Caskroom/cask/seil
 
 #Coda
 brew install Caskroom/cask/coda

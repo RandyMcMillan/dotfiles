@@ -74,6 +74,10 @@ brew install xpdf
 brew cask install combine-pdfs
 brew cask install pdf-toolbox
 
+
+brew install Caskroom/cask/xnconvert
+
+
 #Spotify
 brew install Caskroom/cask/spotify
 

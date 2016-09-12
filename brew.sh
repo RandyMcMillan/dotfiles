@@ -13,6 +13,9 @@ brew install cask
 # Upgrade any already-installed formulae.
 brew upgrade --all
 
+#iTerm2
+brew upgrade Caskroom/cask/iterm2
+
 # Install GNU core utilities (those that come with OS X are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install coreutils

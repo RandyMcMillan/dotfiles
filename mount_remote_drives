@@ -2,10 +2,10 @@
 
 
 # give your drive a nice name and location
-mkdir /Volumes/rootsinrecovery.com
+#mkdir /Volumes/rootsinrecovery.com
 
 #mount it
-sshfs -p 18765 -o reconnect -o volname=rootsinrecovery.com -o IdentityFile=~/.ssh/rootsinr_persis rootsinr@siteground138.com:/ /Volumes/rootsinrecovery.com
+#sshfs -p 18765 -o reconnect -o volname=rootsinrecovery.com -o IdentityFile=~/.ssh/rootsinr_persis rootsinr@siteground138.com:/ /Volumes/rootsinrecovery.com
 
 
 
@@ -31,5 +31,5 @@ sshfs -o reconnect -o volname=Pico -o IdentityFile=~/.ssh/my_git_key2 git@ssh.mi
 mkdir /Volumes/circe.rc.usf.edu
 
 #mount it
-#sshfs -o reconnect -o volname=circe.rc.usf.edu -o IdentityFile=~/.ssh/id_rsa rmcmillan1@circe.rc.usf.edu:/home/r/rmcmillan1/ /Volumes/circe.rc.usf.edu
+sshfs -o reconnect -o volname=circe.rc.usf.edu -o IdentityFile=~/.ssh/id_rsa rmcmillan1@circe.rc.usf.edu:/home/r/rmcmillan1/ /Volumes/circe.rc.usf.edu
 

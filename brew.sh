@@ -16,6 +16,11 @@ brew upgrade --all
 #iTerm2
 brew upgrade Caskroom/cask/iterm2
 
+#Latex/MacTex
+#REF: http://rpi.edu/dept/arc/training/latex/resumes/
+#These were abel to get working easy
+brew install Caskroom/cask/texshop
+
 # Install GNU core utilities (those that come with OS X are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install coreutils

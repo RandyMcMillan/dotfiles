@@ -21,6 +21,8 @@ brew upgrade Caskroom/cask/iterm2
 #These were abel to get working easy
 brew install Caskroom/cask/texshop
 
+#https://github.com/suan/vim-instant-markdown.git
+npm -g install instant-markdown-d
 # Install GNU core utilities (those that come with OS X are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install coreutils

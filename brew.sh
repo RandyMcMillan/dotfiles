@@ -23,6 +23,9 @@ brew install Caskroom/cask/texshop
 
 #https://github.com/suan/vim-instant-markdown.git
 npm -g install instant-markdown-d
+brew upgrade grip
+npm install -g markdown-pdf
+
 # Install GNU core utilities (those that come with OS X are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install coreutils

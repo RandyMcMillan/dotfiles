@@ -8,7 +8,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Make sure we’re using the latest Homebrew.
 brew update
-brew install cask
+brew upgrade cask
 
 # Upgrade any already-installed formulae.
 brew upgrade --all
@@ -19,23 +19,23 @@ brew upgrade Caskroom/cask/iterm2
 #Latex/MacTex
 #REF: http://rpi.edu/dept/arc/training/latex/resumes/
 #These were abel to get working easy
-brew install Caskroom/cask/texshop
+brew upgrade Caskroom/cask/texshop
 
 #https://github.com/suan/vim-instant-markdown.git
-npm -g install instant-markdown-d
+npm -g upgrade instant-markdown-d
 brew upgrade grip
-npm install -g markdown-pdf
+npm upgrade -g markdown-pdf
 
 # Install GNU core utilities (those that come with OS X are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
-brew install coreutils
+brew upgrade coreutils
 sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
 
 # Install some other useful utilities like `sponge`.
-brew install moreutils
+brew upgrade moreutils
 
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
-brew install findutils
+brew upgrade findutils
 
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
@@ -43,20 +43,20 @@ brew install gnu-sed --with-default-names
 # Install Bash 4.
 # Note: don’t forget to add `/usr/local/bin/bash` to `/etc/shells` before
 # running `chsh`.
-brew install bash
+brew upgrade bash
 brew tap homebrew/versions
-brew install bash-completion2
-brew install cmake
-#brew install multimarkdown
+brew upgrade bash-completion2
+brew upgrade cmake
+#brew upgrade multimarkdown
 # Install `wget` with IRI support.
-brew install wget --with-iri
+brew upgrade wget --with-iri
 
 #repurpose CAPS LOCK TO ESC
-brew install Caskroom/cask/seil
+brew upgrade Caskroom/cask/seil
 
 #Coda
-brew install Caskroom/cask/coda
-brew install coda-cli
+brew upgrade Caskroom/cask/coda
+brew upgrade coda-cli
 
 
 
@@ -136,40 +136,40 @@ brew upgrade dark-mode
 #git tools
 brew upgrade git
 brew upgrade git-lfs
-#brew install hub
-#brew install imagemagick --with-webp
-#brew install lua
+#brew upgrade hub
+#brew upgrade imagemagick --with-webp
+#brew upgrade lua
 brew upgrade lynx
-#brew install p7zip
-#brew install pigz
-#brew install pv
-#brew install rename
-#brew install rhino
-#brew install speedtest_cli
-#brew install ssh-copy-id
-#brew install testssl
-#brew install tree
-#brew install webkit2png
-#brew install zopfli
+#brew upgrade p7zip
+#brew upgrade pigz
+#brew upgrade pv
+#brew upgrade rename
+#brew upgrade rhino
+#brew upgrade speedtest_cli
+#brew upgrade ssh-copy-id
+#brew upgrade testssl
+#brew upgrade tree
+#brew upgrade webkit2png
+#brew upgrade zopfli
 brew upgrade keychain
 
 #adobe
-#brew install Caskroom/cask/adobe-creative-cloud
-#brew install Caskroom/cask/adobe-creative-cloud-cleaner-tool
-#brew cask install adobe-reader
-#brew cask install flash
-#brew install get-flash-videos
-#brew install Caskroom/cask/adobe-acrobat
-#brew install Caskroom/cask/adobe-illustrator-cc
-#brew install Caskroom/cask/adobe-photoshop-cc
+#brew upgrade Caskroom/cask/adobe-creative-cloud
+#brew upgrade Caskroom/cask/adobe-creative-cloud-cleaner-tool
+#brew cask upgrade adobe-reader
+#brew cask upgrade flash
+#brew upgrade get-flash-videos
+#brew upgrade Caskroom/cask/adobe-acrobat
+#brew upgrade Caskroom/cask/adobe-illustrator-cc
+#brew upgrade Caskroom/cask/adobe-photoshop-cc
 
 #twitter
-brew install t
+brew upgrade t
 
 #Snitch
 brew upgrade Caskroom/cask/micro-snitch --force
 brew upgrade Caskroom/cask/little-snitch --force
-brew install Caskroom/cask/vyprvpn
+brew upgrade Caskroom/cask/vyprvpn
 
 mkdir -p ~/.rvm/src && cd ~/.rvm/src && rm -rf ./rvm && \
 git clone --depth 1 git://github.com/wayneeseguin/rvm.git && \

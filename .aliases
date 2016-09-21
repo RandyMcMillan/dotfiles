@@ -42,6 +42,7 @@ alias dddd="cccc"
 alias index="sudo erl ~/f4c040ce48c0d8e590c125379e1ef69b/recursive_index.pl -r"
 alias idx="index"
 alias rdx="index"
+
 alias aa="atom"
 
 #SHUT DOWN

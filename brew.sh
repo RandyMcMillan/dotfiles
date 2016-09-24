@@ -9,6 +9,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Make sure we’re using the latest Homebrew.
 brew update
 brew upgrade cask
+brew tap homebrew/science
+
+brew upgrade R
 
 # Upgrade any already-installed formulae.
 brew upgrade --all

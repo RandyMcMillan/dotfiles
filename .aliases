@@ -335,12 +335,12 @@ alias p="cd ~/Projects"
 alias g="git "
 
 #homebrew vim
-alias vim="/usr/local/bin/vim"
+alias vim="/usr/bin/vim"
 alias v=vim
 #basic vim
 alias vv="vim -u NONE -N"
 #homebrew macvim
-alias mvim="/usr/local/bin/mvim"
+alias mvim="/usr/bin/mvim"
 alias mm=mvim
 alias s="subl ."
 alias o="open"

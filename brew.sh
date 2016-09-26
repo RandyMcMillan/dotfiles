@@ -18,6 +18,9 @@ for pkg in cask Caskroom/cask/iterm2 R Caskroom/cask/texshop homebrew/science gr
     fi
 done
 
+
+#brew install macvim --override-system-vim
+
 #adobe
 #brew upgrade Caskroom/cask/adobe-creative-cloud
 #brew upgrade Caskroom/cask/adobe-creative-cloud-cleaner-tool

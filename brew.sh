@@ -8,53 +8,54 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 brew update
 # Upgrade any already-installed formulae.
 brew upgrade --all
-for pkg in\
- cask \
+for pkg in \
+cask \
 Caskroom/cask/iterm2 \
 R \
 Caskroom/cask/texshop \
 homebrew/science \
-grip\
- evince\
- coreutils\
- moreutils\
- findutils\
- gnu-sed\
-  bash\
-  homebrew/versions \
-bash-completion2\
- cmake\
- vim\
- macvim\
- wget\
- Caskroom/cask/seil\
- Caskroom/cask/coda \
-coda-cli\
- Caskroom/cask/osxfuse\
-  homebrew/fuse/sshfs\
- Caskroom/cask/cyberduck \
-pdf2svg\
- svg2pdf\
- diff-pdf\
- texi2html\
- xpdf\
- Caskroom/cask/combine-pdfs \
-Caskroom/cask/pdf-toolbox\
- Caskroom/cask/xnconvert\
- Caskroom/cask/spotify \
-swiftlint\
- swift-package-manager\
- ack\
- dark-mode\
- git\
- git-lfs\
- lynx\
- keychain\
- t \
+grip \
+evince \
+coreutils \
+moreutils \
+findutils \
+gnu-sed \
+bash \
+homebrew/versions \
+bash-completion2 \
+cmake \
+vim \
+macvim \
+wget \
+Caskroom/cask/seil \
+Caskroom/cask/coda \
+coda-cli \
+Caskroom/cask/osxfuse \
+homebrew/fuse/sshfs \
+Caskroom/cask/cyberduck \
+pdf2svg \
+svg2pdf \
+diff-pdf \
+texi2html \
+xpdf \
+Caskroom/cask/combine-pdfs \
+Caskroom/cask/pdf-toolbox \
+Caskroom/cask/xnconvert \
+Caskroom/cask/spotify \
+swiftlint \
+swift-package-manager \
+ack \
+dark-mode \
+git \
+git-lfs \
+lynx \
+keychain \
+t \
 Caskroom/cask/micro-snitch \
 Caskroom/cask/little-snitch \
 Caskroom/cask/vyprvpn \
-Caskroom/cask/openoffice; do
+Caskroom/cask/openoffice; \
+ do
     if brew list -1 | grep -q "^${pkg}\$"; then
         #echo "Package '$pkg' is installed"
         brew upgrade $pkg

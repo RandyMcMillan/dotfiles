@@ -26,6 +26,7 @@ bash-completion2 \
 cmake \
 vim \
 macvim \
+uncrustify \ 
 wget \
 Caskroom/cask/seil \
 Caskroom/cask/coda \

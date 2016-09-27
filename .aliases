@@ -340,7 +340,7 @@ alias v=vim
 #basic vim
 alias vv="vim -u NONE -N"
 #homebrew macvim
-alias mvim="/usr/bin/mvim"
+alias mvim="/usr/local/bin/mvim"
 alias mm=mvim
 alias s="subl ."
 alias o="open"

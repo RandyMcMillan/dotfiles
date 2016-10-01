@@ -21,6 +21,7 @@
 	whitespace = fix
 
 [core]
+    editor = /usr/bin/vim
 	# Use custom `.gitignore` and `.gitattributes`
     excludesfile = ~/.gitignore
 	attributesfile = ~/.gitattributes

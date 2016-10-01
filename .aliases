@@ -1,5 +1,5 @@
 #deepspace
-alias ds='ssh git@96.228.181.194'
+alias ds='git@mac.ftpaccess.cc'
 
 #gem install t
 #http://sferik.github.io/t/
@@ -27,8 +27,8 @@ function uncrustifyAndGitCommitAndPush(){
   uncrustify *.h -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
   uncrustify *.m -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup
   git add *
-  git commit -am'git add * ;git commit -am; uncrustify; git commit'
-  git push deepspace +master:master
+  git commit -am'git add * ;git commit -am; uncrustify; git push'
+#  git push deepspace +master:master
 
 }
 
@@ -460,4 +460,4 @@ alias 10="osascript -e 'set volume 10'"
 
 #https://github.com/pasky/speedread
 #usage $ cat *.txt | read
-alias read="~/speedread/./speedread -w 250"
+alias sread="~/speedread/./speedread -w 250"

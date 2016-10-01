@@ -24,7 +24,7 @@ bash \
 homebrew/versions \
 bash-completion2 \
 cmake \
-vim \
+#vim \
 macvim \
 uncrustify \ 
 wget \
@@ -68,6 +68,7 @@ done
 
 
 #brew install macvim --override-system-vim
+brew install vim --override-system-vim
 
 #adobe
 #brew upgrade Caskroom/cask/adobe-creative-cloud

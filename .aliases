@@ -1,5 +1,9 @@
+#git list files that are tracked
+alias lll="git ls-tree -r master --name-only"
+
+
 #deepspace
-alias ds='git@mac.ftpaccess.cc'
+alias ds='ssh git@mac.ftpaccess.cc'
 
 #gem install t
 #http://sferik.github.io/t/

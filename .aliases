@@ -346,6 +346,13 @@ alias vv="vim -u NONE -N"
 #homebrew macvim
 alias mvim="/usr/local/bin/mvim"
 alias mm=mvim
+
+# Create a new directory and enter it
+function mmm() {
+	mm .
+    mm .
+}
+
 alias s="subl ."
 alias o="open"
 alias oo="open ."

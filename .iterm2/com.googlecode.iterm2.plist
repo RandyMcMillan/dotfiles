@@ -50,10 +50,12 @@
 	</dict>
 	<key>NSWindow Frame Preferences</key>
 	<string>269 284 606 456 0 0 1366 745 </string>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>373 265 620 392 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>10 283 570 452 0 0 1366 745 </string>
+	<string>539 212 605 473 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>642 4 570 452 0 0 1366 745 </string>
+	<string>611 140 570 452 0 0 1366 745 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -236,7 +238,7 @@
 			<key>Close Sessions On End</key>
 			<true/>
 			<key>Columns</key>
-			<integer>80</integer>
+			<integer>85</integer>
 			<key>Command</key>
 			<string></string>
 			<key>Cursor Boost</key>
@@ -846,7 +848,7 @@
 			<key>Close Sessions On End</key>
 			<true/>
 			<key>Columns</key>
-			<integer>80</integer>
+			<integer>85</integer>
 			<key>Command</key>
 			<string></string>
 			<key>Cursor Boost</key>
@@ -2568,10 +2570,14 @@
 			<string>/Users/randymcmillan</string>
 		</dict>
 	</array>
+	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
+	<true/>
 	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
 	<true/>
 	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
 	<integer>0</integer>
+	<key>NoSyncHaveWarnedAboutIncompatibleSoftware</key>
+	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>B9C48D3F-FC1A-4ED8-95A6-51B5C754795E</string>
 	<key>NoSyncLastTipTime</key>
@@ -2641,7 +2647,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-07-24T18:26:12Z</date>
+	<date>2016-09-12T21:15:10Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>

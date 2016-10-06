@@ -7,7 +7,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Make sure we’re using the latest Homebrew.
 brew update
 # Upgrade any already-installed formulae.
-brew upgrade --all
+#brew upgrade --all
+brew upgrade
 for pkg in \
 cask \
 Caskroom/cask/iterm2 \
@@ -24,9 +25,9 @@ bash \
 homebrew/versions \
 bash-completion2 \
 cmake \
-#vim \
+vim \
 macvim \
-uncrustify \ 
+uncrustify \
 wget \
 Caskroom/cask/seil \
 Caskroom/cask/coda \
@@ -55,7 +56,12 @@ t \
 Caskroom/cask/micro-snitch \
 Caskroom/cask/little-snitch \
 Caskroom/cask/vyprvpn \
-Caskroom/cask/openoffice; \
+#Caskroom/cask/openoffice \
+python \
+python2 \
+python3 \
+npm \
+;
  do
     if brew list -1 | grep -q "^${pkg}\$"; then
         #echo "Package '$pkg' is installed"
@@ -69,6 +75,8 @@ done
 
 #brew install macvim --override-system-vim
 brew install vim --override-system-vim
+#needed for YouCompleteMe vim plugin
+#npm install xbuild
 
 #adobe
 #brew upgrade Caskroom/cask/adobe-creative-cloud

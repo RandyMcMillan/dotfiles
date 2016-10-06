@@ -340,17 +340,17 @@ alias g="git "
 
 #homebrew vim
 alias vim="/usr/bin/vim"
-alias v=vim
+alias v="vim"
 #basic vim
 alias vv="vim -u NONE -N"
 #homebrew macvim
 alias mvim="/usr/local/bin/mvim"
-alias mm=mvim
+alias mm="mvim"
 
 # Create a new directory and enter it
 function mmm() {
-	mm .
-    mm .
+	mm      
+    mm      
 }
 
 alias s="subl ."

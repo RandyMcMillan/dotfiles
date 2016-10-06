@@ -56,7 +56,6 @@ t \
 Caskroom/cask/micro-snitch \
 Caskroom/cask/little-snitch \
 Caskroom/cask/vyprvpn \
-#Caskroom/cask/openoffice \
 python \
 python2 \
 python3 \

@@ -29,6 +29,7 @@ cmake \
 vim \
 macvim \
 uncrustify \
+Caskroom/cask/uncrustifyx \
 wget \
 Caskroom/cask/seil \
 Caskroom/cask/coda \

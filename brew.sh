@@ -12,6 +12,7 @@ brew upgrade
 for pkg in \
 cask \
 Caskroom/cask/iterm2 \
+Caskroom/cask/moom \
 R \
 Caskroom/cask/texshop \
 homebrew/science \

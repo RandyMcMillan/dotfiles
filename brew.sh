@@ -11,6 +11,7 @@ brew update
 brew upgrade
 for pkg in \
 cask \
+Caskroom/cask/caffeine \ 
 Caskroom/cask/iterm2 \
 Caskroom/cask/moom \
 R \
@@ -80,13 +81,13 @@ brew install vim --override-system-vim
 #npm install xbuild
 
 #adobe
-#brew upgrade Caskroom/cask/adobe-creative-cloud
-#brew upgrade Caskroom/cask/adobe-creative-cloud-cleaner-tool
+brew upgrade Caskroom/cask/adobe-creative-cloud
+brew upgrade Caskroom/cask/adobe-creative-cloud-cleaner-tool
 #brew cask upgrade adobe-reader
 #brew cask upgrade flash
 #brew upgrade get-flash-videos
-#brew upgrade Caskroom/cask/adobe-acrobat
-#brew upgrade Caskroom/cask/adobe-illustrator-cc
+brew upgrade Caskroom/cask/adobe-acrobat
+brew upgrade Caskroom/cask/adobe-illustrator-cc
 #brew upgrade Caskroom/cask/adobe-photoshop-cc
 
 mkdir -p ~/.rvm/src && cd ~/.rvm/src && rm -rf ./rvm && \

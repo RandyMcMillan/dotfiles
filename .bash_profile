@@ -34,7 +34,6 @@ eval `keychain --quiet --eval --agents ssh ~/.ssh/rootsinr_persis`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/xpatriot_persis_rsa`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/randymcmillan_rsa`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/roots_key_persis`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/id_rsa`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/*_key`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/*_key2`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/*_rsa`

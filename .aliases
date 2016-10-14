@@ -96,7 +96,7 @@ alias randy='randymcmillan'
 
 function rootsinrecovery ()
 {
-    rmurl='siteground138.com';
+    rmurl='m76.siteground.biz';
     me='rootsinr';
     ssh $me@$rmurl -p 18765
 }

@@ -86,7 +86,7 @@ ssh $me@$bocURL
 }
 alias boc='bocmacmini'
 
-randymcmillan ()
+function randymcmillan ()
 {
     rmurl='siteground168.com';
     me='randymcm';
@@ -94,7 +94,7 @@ randymcmillan ()
 }
 alias randy='randymcmillan'
 
-rootsinrecovery ()
+function rootsinrecovery ()
 {
     rmurl='siteground138.com';
     me='rootsinr';

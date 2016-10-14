@@ -32,17 +32,17 @@ chmod 700 ~/.ssh
 chmod 700 ~/.ssh && chmod 400 ~/.ssh/*
 chmod 400 ~/.ssh/authorized_keys
 chmod 400 ~/.ssh/my*
-chown randymcmillan:randymcmillan ~/.ssh/authorized_keys
-chown randymcmillan:randymcmillan ~/.ssh
+#chown randymcmillan:randymcmillan ~/.ssh/authorized_keys
+#chown randymcmillan:randymcmillan ~/.ssh
 
 
 # REF http://www.funtoo.org/Keychain
 # brew install keychain
 #eval `keychain --quiet --eval --agents ssh my_git_key`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/*_key*`
+eval `keychain --quiet --eval --agents ssh ~/.ssh/*t_key2`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key2`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis`
+#eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/rootsinr_persis`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/xpatriot_persis_rsa`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/randymcmillan_rsa`

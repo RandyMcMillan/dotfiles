@@ -206,7 +206,7 @@ while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfiles/r
         else
             echo succeeded to read
             echo adding remote deepspace repository
-            git remote add deepspace ssh://git@$mac.ftpaccess.cc/Users/git/${f};
+            git remote add deepspace ssh://git@mac.ftpaccess.cc/Users/git/${f};
             echo setting remote url
             git remote set-url --origin ssh://git@mac.ftpaccess.cc/Users/git/${f};
             git remote -v

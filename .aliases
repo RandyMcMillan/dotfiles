@@ -100,7 +100,7 @@ function rootsinrecovery ()
     me='rootsinr';
     ssh $me@$rmurl -p 18765
 }
-alias= rinr='rootsinrecovery'
+alias rinr='rootsinrecovery'
 
 function x2go(){
 #cd /opt/homebrew-cask/Caskroom/x2goclient/latest/
@@ -135,7 +135,7 @@ function makeRemote(){
 while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfiles/remoteURL
     dest=$PWD".git";
     f="${dest##*/}"; 
-    ssh git@$mac.ftpaccess.cc "git init --bare ${f}";
+    ssh git@mac.ftpaccess.cc "git init --bare ${f}";
 }
 alias makeremote=makeRemote
 

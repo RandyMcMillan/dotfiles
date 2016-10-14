@@ -25,13 +25,14 @@ export LANG="en_US"
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
 
-
-
+#ssh
+ps -e | grep [s]sh-agent
+ssh-add -l
 #SSH FILE PERMISSIONS
 chmod 700 ~/.ssh
-chmod 700 ~/.ssh && chmod 400 ~/.ssh/*
-chmod 400 ~/.ssh/authorized_keys
-chmod 400 ~/.ssh/my*
+chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
+chmod 600 ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/my*
 #chown randymcmillan:randymcmillan ~/.ssh/authorized_keys
 #chown randymcmillan:randymcmillan ~/.ssh
 

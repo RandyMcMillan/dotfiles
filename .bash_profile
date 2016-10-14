@@ -29,9 +29,9 @@ export LANG="en_US"
 
 #SSH FILE PERMISSIONS
 chmod 700 ~/.ssh
-chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
-chmod 600 ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/my*
+chmod 700 ~/.ssh && chmod 400 ~/.ssh/*
+chmod 400 ~/.ssh/authorized_keys
+chmod 400 ~/.ssh/my*
 chown randymcmillan:randymcmillan ~/.ssh/authorized_keys
 chown randymcmillan:randymcmillan ~/.ssh
 

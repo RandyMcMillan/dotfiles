@@ -25,6 +25,17 @@ export LANG="en_US"
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
 
+
+
+#SSH FILE PERMISSIONS
+chmod 700 ~/.ssh
+chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
+chmod 600 ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/my*
+chown randymcmillan:randymcmillan ~/.ssh/authorized_keys
+chown randymcmillan:randymcmillan ~/.ssh
+
+
 # REF http://www.funtoo.org/Keychain
 # brew install keychain
 #eval `keychain --quiet --eval --agents ssh my_git_key`

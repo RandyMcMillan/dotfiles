@@ -35,7 +35,11 @@ eval `keychain --quiet --eval --agents ssh ~/.ssh/xpatriot_persis_rsa`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/randymcmillan_rsa`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/roots_key_persis`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/id_rsa`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/*`
+eval `keychain --quiet --eval --agents ssh ~/.ssh/*_key`
+eval `keychain --quiet --eval --agents ssh ~/.ssh/*_key2`
+eval `keychain --quiet --eval --agents ssh ~/.ssh/*_rsa`
+eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis`
+eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis_rsa`
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults

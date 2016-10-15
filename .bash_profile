@@ -39,6 +39,7 @@ chmod 600 ~/.ssh/my*
 
 # REF http://www.funtoo.org/Keychain
 # brew install keychain
+eval `keychain --quiet --eval --agents ssh ~/.ssh/DSiM_rsa.pub`
 #eval `keychain --quiet --eval --agents ssh my_git_key`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/*t_key2`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key`

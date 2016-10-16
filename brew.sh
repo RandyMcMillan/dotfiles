@@ -13,6 +13,7 @@ for pkg in \
 cask \
 Caskroom/cask/caffeine \
 Caskroom/cask/transmit \
+Caskroom/cask/bonjour-browser \
 Caskroom/cask/iterm2 \
 Caskroom/cask/moom \
 R \

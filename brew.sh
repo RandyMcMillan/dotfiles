@@ -79,6 +79,7 @@ done
 
 
 #brew install macvim --override-system-vim
+brew link --overwrite macvim
 brew install vim --override-system-vim
 #needed for YouCompleteMe vim plugin
 #npm install xbuild

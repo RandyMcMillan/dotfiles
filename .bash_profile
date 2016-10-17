@@ -79,6 +79,7 @@ function path_prepend() {
 }
 # This is needed so HomeBrew packages get priority
 path_prepend '/usr/local/bin'
+git config --global color.ui auto
 
 # Aliases
 alias vi='/Applications/MacVim.app/Contents/MacOS/Vim'

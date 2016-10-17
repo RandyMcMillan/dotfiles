@@ -9,6 +9,7 @@ brew update
 # Upgrade any already-installed formulae.
 #brew upgrade --all
 brew upgrade
+brew tap homebrew/boneyard
 for pkg in \
 cask \
 Caskroom/cask/caffeine \
@@ -30,7 +31,7 @@ homebrew/versions \
 bash-completion2 \
 cmake \
 vim \
-macvim \
+Caskroom/cask/macvim \
 uncrustify \
 Caskroom/cask/uncrustifyx \
 wget \

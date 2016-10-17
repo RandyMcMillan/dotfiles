@@ -30,7 +30,7 @@ bash \
 homebrew/versions \
 bash-completion2 \
 cmake \
-vim \
+vim  --override-system-vim \
 Caskroom/cask/macvim \
 uncrustify \
 Caskroom/cask/uncrustifyx \
@@ -80,7 +80,7 @@ done
 
 #brew install macvim --override-system-vim
 brew link --overwrite macvim
-brew install vim --override-system-vim
+#brew install vim --override-system-vim
 #needed for YouCompleteMe vim plugin
 #npm install xbuild
 

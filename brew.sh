@@ -12,6 +12,7 @@ brew upgrade
 brew tap homebrew/boneyard
 for pkg in \
 cask \
+Caskroom/cask/qlmarkdown \
 Caskroom/cask/transmit \
 Caskroom/cask/caffeine \
 Caskroom/cask/transmit \

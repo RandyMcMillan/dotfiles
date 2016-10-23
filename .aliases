@@ -101,6 +101,7 @@ function rootsinrecovery ()
     ssh $me@$rmurl -p 18765
 }
 alias rinr='rootsinrecovery'
+alias roots='rootsinrecovery'
 
 function x2go(){
 #cd /opt/homebrew-cask/Caskroom/x2goclient/latest/

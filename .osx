@@ -9,7 +9,9 @@ defaults write com.apple.desktop '{ Background = { default = {BackgroundColor = 
 
 
 #reset launchpad
-rm ~/Library/Application\ Support/Dock/*.db;defaults write com.apple.dock ResetLaunchPad -bool true;killall Dock
+rm ~/Library/Application\ Support/Dock/*.db;
+#defaults write com.apple.dock ResetLaunchPad -bool true;killall Dock
+defaults write com.apple.Dock ResetLaunchPad -bool true && killall Dock
 
 #http://www.defaults-write.com/change-the-layout-rows-and-columns-of-launchpad/
 defaults write com.apple.dock springboard-columns -int 5
@@ -203,10 +205,10 @@ defaults write com.apple.dock mouse-over-hilte-stack -bool true
 #recent items
 defaults write com.apple.dock persistent-others -array-add '{ "tile-data" = { "list-type" = 1; }; "tile-type" = "recents-tile"; }'
 
-
+# http://www.defaults-write.com/change-default-view-style-in-os-x-finder/
 # Use list view in all Finder windows by default
-# Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+# Four-letter codes for the other view modes: `icnv`,`clmv`,`Nlsv`,`Flwv`
+defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 
 # Set the icon size of Dock items to 36 pixels
 defaults write com.apple.dock tilesize -int 50

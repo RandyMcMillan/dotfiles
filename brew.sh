@@ -68,6 +68,7 @@ python2 \
 python3 \
 npm \
 plantuml \
+Caskroom/cask/java \
 ;
  do
     if brew list -1 | grep -q "^${pkg}\$"; then

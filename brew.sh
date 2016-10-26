@@ -67,6 +67,7 @@ python \
 python2 \
 python3 \
 npm \
+plantuml \
 ;
  do
     if brew list -1 | grep -q "^${pkg}\$"; then

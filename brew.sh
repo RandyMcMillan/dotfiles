@@ -12,6 +12,8 @@ brew upgrade
 brew tap homebrew/boneyard
 for pkg in \
 cask \
+Caskroom/cask/argouml \
+caskroom/versions/java6 \
 Caskroom/cask/iexplorer \
 Caskroom/cask/qlmarkdown \
 Caskroom/cask/transmit \

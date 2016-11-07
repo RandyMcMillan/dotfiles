@@ -117,17 +117,31 @@ CCoinsModifier CCoinsViewCache::ModifyCoins(const uint256 &txid) {
     return CCoinsModifier(*this, ret.first, cachedCoinUsage);
 }
 
-// ModifyNewCoins has to know whether the new outputs its creating are for a
-// coinbase or not.  If they are for a coinbase, it can not mark them as fresh.
-// This is to ensure that the historical duplicate coinbases before BIP30 was
-// in effect will still be properly overwritten when spent.
+/* ModifyNewCoins allows for faster coin modification when creating the new
+ * outputs from a transaction.  It assumes that BIP 30 (no duplicate txids)
+ * applies and has already been tested for (or the test is not required due to
+ * BIP 34, height in coinbase).  If we can assume BIP 30 then we know that any
+ * transaction we are adding to the UTXO must not already exist in the utxo
+ * unless it is fully spent.  Thus we can check only if it exists at the current
+ * level of the cache, in which case it is not safe to mark it FRESH (b/c then
+ * spentness might still need to flushed) and if it doesn't exist in the current
+ * cache, we know it either doesn't exist or is pruned in parent caches, which
+ * is the definition of FRESH.  The exception to this is the two historical
+ * violations of BIP 30 in the chain, both of which were coinbases.  We do not
+ * mark these fresh so we we can ensure that they will still be properly
+ * overwritten when spent.
+ */
 CCoinsModifier CCoinsViewCache::ModifyNewCoins(const uint256 &txid, bool coinbase) {
     assert(!hasModifier);
     std::pair<CCoinsMap::iterator, bool> ret = cacheCoins.insert(std::make_pair(txid, CCoinsCacheEntry()));
-    ret.first->second.coins.Clear();
     if (!coinbase) {
-        ret.first->second.flags = CCoinsCacheEntry::FRESH;
+        if (ret.second) {
+            ret.first->second.flags = CCoinsCacheEntry::FRESH;
+        } else {
+            assert(ret.first->second.coins.IsPruned());
+        }
     }
+    ret.first->second.coins.Clear();
     ret.first->second.flags |= CCoinsCacheEntry::DIRTY;
     return CCoinsModifier(*this, ret.first, 0);
 }
@@ -207,6 +221,11 @@ bool CCoinsViewCache::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlockIn
                     itUs->second.coins.swap(it->second.coins);
                     cachedCoinsUsage += itUs->second.coins.DynamicMemoryUsage();
                     itUs->second.flags |= CCoinsCacheEntry::DIRTY;
+                    // NOTE: It is possible the child has a FRESH flag here in
+                    // the event the entry we found in the parent is pruned. But
+                    // we must not copy that FRESH flag to the parent as that
+                    // pruned state likely still needs to be communicated to the
+                    // grandparent.
                 }
             }
         }

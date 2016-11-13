@@ -13,6 +13,8 @@ brew tap homebrew/boneyard
 for pkg in \
 cask \
 Caskroom/cask/argouml \
+buildapp \
+clozure-cl \
 caskroom/versions/java6 \
 Caskroom/cask/iexplorer \
 Caskroom/cask/qlmarkdown \

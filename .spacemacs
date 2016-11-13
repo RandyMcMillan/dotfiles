@@ -5,10 +5,6 @@
 (add-to-list 'load-path "~/.emacs.d/layers/neotree")
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)
-(global-set-key [\n] 'neotree-toggle)
-
-
-
 
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
@@ -135,7 +131,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
+   dotspacemacs-themes '(sanityinc-solarized-dark
+                         spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t

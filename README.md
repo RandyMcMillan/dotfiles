@@ -1,5 +1,6 @@
 #[@RandyMcMillan](https://github.com/RandyMcMillan)'s dotfiles
 ##This fork has diverged tremendously from the origin
+###Recently added a spacemacs config
 
 ## Installation
 

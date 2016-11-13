@@ -107,6 +107,9 @@ brew upgrade Caskroom/cask/adobe-acrobat
 brew upgrade Caskroom/cask/adobe-illustrator-cc
 #brew upgrade Caskroom/cask/adobe-photoshop-cc
 
+#emacs
+brew linkapps emacs-plus
+
 mkdir -p ~/.rvm/src && cd ~/.rvm/src && rm -rf ./rvm && \
 git clone --depth 1 git://github.com/wayneeseguin/rvm.git && \
 cd rvm && ./install

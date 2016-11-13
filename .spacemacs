@@ -2,10 +2,6 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-(add-to-list 'load-path "~/.emacs.d/layers/neotree")
-(require 'neotree)
-(global-set-key [f8] 'neotree-toggle)
-
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable

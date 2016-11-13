@@ -12,6 +12,9 @@ brew upgrade
 brew tap homebrew/boneyard
 for pkg in \
 cask \
+tap d12frosted/emacs-plus \
+emacs-plus \
+linkapps emacs-plus \
 Caskroom/cask/argouml \
 buildapp \
 clozure-cl \

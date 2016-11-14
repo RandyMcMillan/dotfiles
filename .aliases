@@ -346,11 +346,12 @@ alias v="vim"
 #basic vim
 alias vv="vim -u NONE -N"
 #homebrew macvim
-#alias mvim="/usr/local/bin/mvim"
-#alias mm="mvim ."
+alias mvim="/usr/local/bin/mvim"
+alias mm="mvim ."
 
+#EMACS
 #/Applications/Emacs.app/Contents/MacOS
-alias mm="/Applications/Emacs.app/Contents/MacOS/Emacs"
+alias ee="/Applications/Emacs.app/Contents/MacOS/Emacs"
 
 # Create a new directory and enter it
 function mmm() {

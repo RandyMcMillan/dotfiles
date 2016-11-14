@@ -351,7 +351,8 @@ alias mm="mvim ."
 
 #EMACS
 #/Applications/Emacs.app/Contents/MacOS
-alias ee="/Applications/Emacs.app/Contents/MacOS/Emacs"
+alias e="nohup /Applications/Emacs.app/Contents/MacOS/Emacs&"
+alias ee="emacsclient -c"
 
 # Create a new directory and enter it
 function mmm() {

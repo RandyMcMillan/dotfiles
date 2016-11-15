@@ -49,7 +49,8 @@ values."
              shell-default-position 'bottom)
       common-lisp
       spell-checking
-      syntax-checking
+      (syntax-checking :variables
+                       flycheck-gcc-language-standard "c++11")
      ;; version-control
      themes-megapack
      )

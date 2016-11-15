@@ -350,14 +350,22 @@ alias mvim="/usr/local/bin/mvim"
 alias mm="mvim ."
 
 #EMACS
+#http://stackoverflow.com/questions/5795451/how-to-detect-that-emacs-is-in-terminal-mode
+#emacs -nw --color=no
+#for .init.el file or .spacemacs file
+#(if window-system
+#
+#(set-frame-size (selected-frame) 166 100))#
+#
+#    )
 #/Applications/Emacs.app/Contents/MacOS
 alias e="nohup /Applications/Emacs.app/Contents/MacOS/Emacs&"
 alias ee="emacsclient -c -a emacs"
 
 # Create a new directory and enter it
 function mmm() {
-	mm      
-    mm      
+    mm
+    mm
 }
 
 alias s="subl ."

@@ -29,6 +29,7 @@ Caskroom/cask/transmit \
 Caskroom/cask/bonjour-browser \
 Caskroom/cask/iterm2 \
 Caskroom/cask/moom \
+Caskroom/cask/mactex \
 R \
 Caskroom/cask/texshop \
 homebrew/science \

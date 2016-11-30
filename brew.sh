@@ -32,6 +32,7 @@ Caskroom/cask/moom \
 Caskroom/cask/mactex \
 R \
 Caskroom/cask/texshop \
+Caskroom/cask/texstudio \
 homebrew/science \
 grip \
 evince \
@@ -81,6 +82,7 @@ npm \
 plantuml \
 Caskroom/cask/java \
 Caskroom/cask/firefox \
+Caskroom/cask/virtualbox \
 ;
  do
     if brew list -1 | grep -q "^${pkg}\$"; then

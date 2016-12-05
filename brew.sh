@@ -15,6 +15,7 @@ cask \
 tap d12frosted/emacs-plus \
 emacs-plus \
 linkapps emacs-plus \
+Caskroom/cask/codeblocks \
 Caskroom/cask/argouml \
 buildapp \
 clozure-cl \

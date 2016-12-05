@@ -39,21 +39,21 @@ chmod 600 ~/.ssh/my*
 
 # REF http://www.funtoo.org/Keychain
 # brew install keychain
-eval `keychain --quiet --eval --agents ssh ~/.ssh/DSiM_rsa.pub`
-#eval `keychain --quiet --eval --agents ssh my_git_key`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/*t_key2`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key2`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/rootsinr_persis`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/xpatriot_persis_rsa`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/randymcmillan_rsa`
-eval `keychain --quiet --eval --agents ssh ~/.ssh/roots_key_persis`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/*_key`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/*_key2`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/*_rsa`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis_rsa`
+eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/DSiM_rsa.pub`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh my_git_key`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*t_key2`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/my_git_key`
+eval `keychain --noask --quick --ignore-missing --ignore-missing --quiet --eval --agents ssh ~/.ssh/my_git_key2`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_persis`
+eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/rootsinr_persis`
+eval `keychain --noask --quick --ignore-missing --ignore-missing --quiet --eval --agents ssh ~/.ssh/xpatriot_persis_rsa`
+eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/randymcmillan_rsa`
+eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/roots_key_persis`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_key`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_key2`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_rsa`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_persis`
+#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_persis_rsa`
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults

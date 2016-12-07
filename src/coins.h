@@ -355,14 +355,23 @@ class CCoinsViewCache;
 class CCoinsModifier
 {
 private:
-    CCoinsViewCache& cache;
+    const CCoinsViewCache* cache;
     CCoinsMap::iterator it;
-    size_t cachedCoinUsage; // Cached memory usage of the CCoins object before modification
-    CCoinsModifier(CCoinsViewCache& cache_, CCoinsMap::iterator it_, size_t usage);
+    CCoinsMap::value_type new_entry;
+    bool has_new_entry;
+
+    CCoinsModifier(const CCoinsViewCache& cache_, const uint256& txid);
+    void Fetch();
+    void Modify();
+    void Set(CCoinsCacheEntry value);
+    void Flush();
 
 public:
-    CCoins* operator->() { return &it->second.coins; }
-    CCoins& operator*() { return it->second.coins; }
+    CCoins* operator->() { Modify(); return &new_entry.second.coins; }
+    CCoins& operator*() { Modify(); return new_entry.second.coins; }
+    CCoinsModifier(CCoinsModifier&& old);
+    CCoinsModifier(const CCoinsModifier&) = delete;
+    CCoinsModifier& operator=(const CCoinsModifier&) = delete;
     ~CCoinsModifier();
     friend class CCoinsViewCache;
 };
@@ -371,10 +380,6 @@ public:
 class CCoinsViewCache : public CCoinsViewBacked
 {
 protected:
-    /* Whether this cache has an active modifier. */
-    bool hasModifier;
-
-
     /**
      * Make mutable so that we can "fill the cache" even from Get-methods
      * declared as "const".  
@@ -384,6 +389,9 @@ protected:
 
     /* Cached dynamic memory usage for the inner CCoins objects. */
     mutable size_t cachedCoinsUsage;
+
+    /* Whether this cache has an active modifier. */
+    mutable bool hasModifier;
 
 public:
     CCoinsViewCache(CCoinsView *baseIn);

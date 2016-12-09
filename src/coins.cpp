@@ -134,6 +134,7 @@ CCoinsModifier CCoinsViewCache::ModifyCoins(const uint256 &txid) {
 CCoinsModifier CCoinsViewCache::ModifyNewCoins(const uint256 &txid, bool coinbase) {
     assert(!hasModifier);
     std::pair<CCoinsMap::iterator, bool> ret = cacheCoins.insert(std::make_pair(txid, CCoinsCacheEntry()));
+    size_t prevUsage = ret.second ? 0 : ret.first->second.coins.DynamicMemoryUsage();
     if (!coinbase) {
         // New coins must not already exist.
         assert(ret.first->second.coins.IsPruned());
@@ -148,7 +149,7 @@ CCoinsModifier CCoinsViewCache::ModifyNewCoins(const uint256 &txid, bool coinbas
     }
     ret.first->second.coins.Clear();
     ret.first->second.flags |= CCoinsCacheEntry::DIRTY;
-    return CCoinsModifier(*this, ret.first, 0);
+    return CCoinsModifier(*this, ret.first, prevUsage);
 }
 
 const CCoins* CCoinsViewCache::AccessCoins(const uint256 &txid) const {

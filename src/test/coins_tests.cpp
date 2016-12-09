@@ -15,6 +15,7 @@
 #include <vector>
 #include <map>
 
+#include <boost/test/execution_monitor.hpp>
 #include <boost/test/unit_test.hpp>
 
 bool ApplyTxInUndo(const CTxInUndo& undo, CCoinsViewCache& view, const COutPoint& out);
@@ -714,11 +715,18 @@ BOOST_AUTO_TEST_CASE(ccoins_modify)
 void CheckModifyNewCoinsBase(CAmount base_value, CAmount cache_value, CAmount modify_value, CAmount expected_value, char cache_flags, char expected_flags, bool coinbase)
 {
     SingleEntryCacheTest test(base_value, cache_value, cache_flags);
-    SetCoinsValue(modify_value, *test.cache.ModifyNewCoins(TXID, coinbase));
+    boost::execution_monitor monitor;
 
     CAmount result_value;
     char result_flags;
-    GetCoinsMapEntry(test.cache.map(), result_value, result_flags);
+    try {
+        monitor.execute([&]() { SetCoinsValue(modify_value, *test.cache.ModifyNewCoins(TXID, coinbase)); return 0; });
+        GetCoinsMapEntry(test.cache.map(), result_value, result_flags);
+    } catch (boost::execution_exception& e) {
+        result_value = FAIL;
+        result_flags = NO_ENTRY;
+    }
+
     BOOST_CHECK_EQUAL(result_value, expected_value);
     BOOST_CHECK_EQUAL(result_flags, expected_flags);
 }
@@ -749,37 +757,37 @@ BOOST_AUTO_TEST_CASE(ccoins_modify_new)
     CheckModifyNewCoins(ABSENT, PRUNED, PRUNED, NO_ENTRY   , DIRTY      , true );
     CheckModifyNewCoins(ABSENT, VALUE3, VALUE3, NO_ENTRY   , DIRTY|FRESH, false);
     CheckModifyNewCoins(ABSENT, VALUE3, VALUE3, NO_ENTRY   , DIRTY      , true );
-    CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, 0          , NO_ENTRY   , false);
+    CheckModifyNewCoins(PRUNED, PRUNED, PRUNED, 0          , DIRTY      , false);
     CheckModifyNewCoins(PRUNED, PRUNED, PRUNED, 0          , DIRTY      , true );
     CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, FRESH      , NO_ENTRY   , false);
     CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, FRESH      , NO_ENTRY   , true );
-    CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, DIRTY      , NO_ENTRY   , false);
+    CheckModifyNewCoins(PRUNED, PRUNED, PRUNED, DIRTY      , DIRTY      , false);
     CheckModifyNewCoins(PRUNED, PRUNED, PRUNED, DIRTY      , DIRTY      , true );
     CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, DIRTY|FRESH, NO_ENTRY   , false);
     CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, DIRTY|FRESH, NO_ENTRY   , true );
-    CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, 0          , DIRTY|FRESH, false);
+    CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, 0          , DIRTY      , false);
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, 0          , DIRTY      , true );
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, FRESH      , DIRTY|FRESH, false);
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, FRESH      , DIRTY|FRESH, true );
-    CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, DIRTY      , DIRTY|FRESH, false);
+    CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, DIRTY      , DIRTY      , false);
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, DIRTY      , DIRTY      , true );
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, DIRTY|FRESH, DIRTY|FRESH, false);
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, DIRTY|FRESH, DIRTY|FRESH, true );
-    CheckModifyNewCoins(VALUE2, PRUNED, ABSENT, 0          , NO_ENTRY   , false);
+    CheckModifyNewCoins(VALUE2, PRUNED, FAIL  , 0          , NO_ENTRY   , false);
     CheckModifyNewCoins(VALUE2, PRUNED, PRUNED, 0          , DIRTY      , true );
-    CheckModifyNewCoins(VALUE2, PRUNED, ABSENT, FRESH      , NO_ENTRY   , false);
+    CheckModifyNewCoins(VALUE2, PRUNED, FAIL  , FRESH      , NO_ENTRY   , false);
     CheckModifyNewCoins(VALUE2, PRUNED, ABSENT, FRESH      , NO_ENTRY   , true );
-    CheckModifyNewCoins(VALUE2, PRUNED, ABSENT, DIRTY      , NO_ENTRY   , false);
+    CheckModifyNewCoins(VALUE2, PRUNED, FAIL  , DIRTY      , NO_ENTRY   , false);
     CheckModifyNewCoins(VALUE2, PRUNED, PRUNED, DIRTY      , DIRTY      , true );
-    CheckModifyNewCoins(VALUE2, PRUNED, ABSENT, DIRTY|FRESH, NO_ENTRY   , false);
+    CheckModifyNewCoins(VALUE2, PRUNED, FAIL  , DIRTY|FRESH, NO_ENTRY   , false);
     CheckModifyNewCoins(VALUE2, PRUNED, ABSENT, DIRTY|FRESH, NO_ENTRY   , true );
-    CheckModifyNewCoins(VALUE2, VALUE3, VALUE3, 0          , DIRTY|FRESH, false);
+    CheckModifyNewCoins(VALUE2, VALUE3, FAIL  , 0          , NO_ENTRY   , false);
     CheckModifyNewCoins(VALUE2, VALUE3, VALUE3, 0          , DIRTY      , true );
-    CheckModifyNewCoins(VALUE2, VALUE3, VALUE3, FRESH      , DIRTY|FRESH, false);
+    CheckModifyNewCoins(VALUE2, VALUE3, FAIL  , FRESH      , NO_ENTRY   , false);
     CheckModifyNewCoins(VALUE2, VALUE3, VALUE3, FRESH      , DIRTY|FRESH, true );
-    CheckModifyNewCoins(VALUE2, VALUE3, VALUE3, DIRTY      , DIRTY|FRESH, false);
+    CheckModifyNewCoins(VALUE2, VALUE3, FAIL  , DIRTY      , NO_ENTRY   , false);
     CheckModifyNewCoins(VALUE2, VALUE3, VALUE3, DIRTY      , DIRTY      , true );
-    CheckModifyNewCoins(VALUE2, VALUE3, VALUE3, DIRTY|FRESH, DIRTY|FRESH, false);
+    CheckModifyNewCoins(VALUE2, VALUE3, FAIL  , DIRTY|FRESH, NO_ENTRY   , false);
     CheckModifyNewCoins(VALUE2, VALUE3, VALUE3, DIRTY|FRESH, DIRTY|FRESH, true );
 }
 

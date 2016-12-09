@@ -757,7 +757,7 @@ BOOST_AUTO_TEST_CASE(ccoins_modify_new)
     CheckModifyNewCoins(ABSENT, PRUNED, PRUNED, NO_ENTRY   , DIRTY      , true );
     CheckModifyNewCoins(ABSENT, VALUE3, VALUE3, NO_ENTRY   , DIRTY|FRESH, false);
     CheckModifyNewCoins(ABSENT, VALUE3, VALUE3, NO_ENTRY   , DIRTY      , true );
-    CheckModifyNewCoins(PRUNED, PRUNED, PRUNED, 0          , DIRTY      , false);
+    CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, 0          , NO_ENTRY   , false);
     CheckModifyNewCoins(PRUNED, PRUNED, PRUNED, 0          , DIRTY      , true );
     CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, FRESH      , NO_ENTRY   , false);
     CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, FRESH      , NO_ENTRY   , true );
@@ -765,7 +765,7 @@ BOOST_AUTO_TEST_CASE(ccoins_modify_new)
     CheckModifyNewCoins(PRUNED, PRUNED, PRUNED, DIRTY      , DIRTY      , true );
     CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, DIRTY|FRESH, NO_ENTRY   , false);
     CheckModifyNewCoins(PRUNED, PRUNED, ABSENT, DIRTY|FRESH, NO_ENTRY   , true );
-    CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, 0          , DIRTY      , false);
+    CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, 0          , DIRTY|FRESH, false);
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, 0          , DIRTY      , true );
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, FRESH      , DIRTY|FRESH, false);
     CheckModifyNewCoins(PRUNED, VALUE3, VALUE3, FRESH      , DIRTY|FRESH, true );

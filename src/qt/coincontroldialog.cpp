@@ -548,13 +548,10 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
                 CTxOut txout(nChange, (CScript)std::vector<unsigned char>(24, 0));
                 if (txout.IsDust(dustRelayFee))
                 {
-                    if (CoinControlDialog::fSubtractFeeFromAmount) // dust-change will be raised until no dust
-                        nChange = txout.GetDustThreshold(dustRelayFee);
-                    else
-                    {
-                        nPayFee += nChange;
-                        nChange = 0;
-                    }
+                    nPayFee += nChange;
+                    nChange = 0;
+                    if (CoinControlDialog::fSubtractFeeFromAmount)
+                        nBytes -= 34; // we didn't detect lack of change above
                 }
             }
 

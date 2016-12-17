@@ -26,17 +26,40 @@ static const char DB_FLAG = 'F';
 static const char DB_REINDEX_FLAG = 'R';
 static const char DB_LAST_BLOCK = 'l';
 
+namespace {
 
-CCoinsViewDB::CCoinsViewDB(size_t nCacheSize, bool fMemory, bool fWipe) : db(GetDataDir() / "chainstate", nCacheSize, fMemory, fWipe, true) 
+struct CoinsEntry {
+    COutPoint* outpoint;
+    char key;
+    CoinsEntry(const COutPoint* ptr) : outpoint(const_cast<COutPoint*>(ptr)), key(DB_COINS)  {}
+
+    template<typename Stream>
+    void Serialize(Stream &s) const {
+        s << key;
+        s << outpoint->hash;
+        s << VARINT(outpoint->n);
+    }
+
+    template<typename Stream>
+    void Unserialize(Stream& s) {
+        s >> key;
+        s >> outpoint->hash;
+        s >> VARINT(outpoint->n);
+    }
+};
+
+}
+
+CCoinsViewDB::CCoinsViewDB(size_t nCacheSize, bool fMemory, bool fWipe) : db(GetDataDir() / "chainstate2", nCacheSize, fMemory, fWipe, true) 
 {
 }
 
-bool CCoinsViewDB::GetCoins(const uint256 &txid, CCoins &coins) const {
-    return db.Read(make_pair(DB_COINS, txid), coins);
+bool CCoinsViewDB::GetCoins(const COutPoint &txid, CCoins &coins) const {
+    return db.Read(CoinsEntry(&txid), coins);
 }
 
-bool CCoinsViewDB::HaveCoins(const uint256 &txid) const {
-    return db.Exists(make_pair(DB_COINS, txid));
+bool CCoinsViewDB::HaveCoins(const COutPoint &txid) const {
+    return db.Exists(CoinsEntry(&txid));
 }
 
 uint256 CCoinsViewDB::GetBestBlock() const {
@@ -52,10 +75,11 @@ bool CCoinsViewDB::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) {
     size_t changed = 0;
     for (CCoinsMap::iterator it = mapCoins.begin(); it != mapCoins.end();) {
         if (it->second.flags & CCoinsCacheEntry::DIRTY) {
+            CoinsEntry entry(&it->first);
             if (it->second.coins.IsPruned())
-                batch.Erase(make_pair(DB_COINS, it->first));
+                batch.Erase(entry);
             else
-                batch.Write(make_pair(DB_COINS, it->first), it->second.coins);
+                batch.Write(entry, it->second.coins);
             changed++;
         }
         count++;
@@ -65,7 +89,7 @@ bool CCoinsViewDB::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) {
     if (!hashBlock.IsNull())
         batch.Write(DB_BEST_BLOCK, hashBlock);
 
-    LogPrint("coindb", "Committing %u changed transactions (out of %u) to coin database...\n", (unsigned int)changed, (unsigned int)count);
+    LogPrint("coindb", "Committing %u/%u transaction outputs to coin database...\n", changed, count);
     return db.WriteBatch(batch);
 }
 
@@ -100,11 +124,13 @@ CCoinsViewCursor *CCoinsViewDB::Cursor() const
        that restriction.  */
     i->pcursor->Seek(DB_COINS);
     // Cache key of first record
-    i->pcursor->GetKey(i->keyTmp);
+    CoinsEntry entry(&i->keyTmp.second);
+    i->pcursor->GetKey(entry);
+    i->keyTmp.first = entry.key;
     return i;
 }
 
-bool CCoinsViewDBCursor::GetKey(uint256 &key) const
+bool CCoinsViewDBCursor::GetKey(COutPoint &key) const
 {
     // Return cached key
     if (keyTmp.first == DB_COINS) {
@@ -132,8 +158,12 @@ bool CCoinsViewDBCursor::Valid() const
 void CCoinsViewDBCursor::Next()
 {
     pcursor->Next();
-    if (!pcursor->Valid() || !pcursor->GetKey(keyTmp))
+    CoinsEntry entry(&keyTmp.second);
+    if (!pcursor->Valid() || !pcursor->GetKey(entry)) {
         keyTmp.first = 0; // Invalidate cached key after last record so that Valid() and GetKey() return false
+    } else {
+        keyTmp.first = entry.key;
+    }
 }
 
 bool CBlockTreeDB::WriteBatchSync(const std::vector<std::pair<int, const CBlockFileInfo*> >& fileInfo, int nLastFile, const std::vector<const CBlockIndex*>& blockinfo) {

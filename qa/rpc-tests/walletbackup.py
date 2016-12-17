@@ -158,7 +158,7 @@ class WalletBackupTest(BitcoinTestFramework):
 
         # Start node2 with no chain
         shutil.rmtree(self.options.tmpdir + "/node2/regtest/blocks")
-        shutil.rmtree(self.options.tmpdir + "/node2/regtest/chainstate")
+        shutil.rmtree(self.options.tmpdir + "/node2/regtest/chainstate2")
 
         # Restore wallets from backup
         shutil.copyfile(tmpdir + "/node0/wallet.bak", tmpdir + "/node0/regtest/wallet.dat")
@@ -179,7 +179,7 @@ class WalletBackupTest(BitcoinTestFramework):
 
         #start node2 with no chain
         shutil.rmtree(self.options.tmpdir + "/node2/regtest/blocks")
-        shutil.rmtree(self.options.tmpdir + "/node2/regtest/chainstate")
+        shutil.rmtree(self.options.tmpdir + "/node2/regtest/chainstate2")
 
         self.start_three()
 

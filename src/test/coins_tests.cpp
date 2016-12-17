@@ -17,6 +17,7 @@
 
 #include <boost/test/unit_test.hpp>
 
+#if 0
 bool ApplyTxInUndo(const CTxInUndo& undo, CCoinsViewCache& view, const COutPoint& out);
 void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo &txundo, int nHeight);
 
@@ -870,3 +871,4 @@ BOOST_AUTO_TEST_CASE(ccoins_write)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif

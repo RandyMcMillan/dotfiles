@@ -29,18 +29,18 @@
 class CCoins
 {
 public:
-    //! whether transaction is a coinbase
-    bool fCoinBase;
-
     //! unspent transaction outputs; spent outputs are .IsNull()
     CTxOut out;
 
+    //! whether transaction is a coinbase
+    unsigned int fCoinBase : 1;
+
     //! at which height this transaction was included in the active block chain
-    uint32_t nHeight;
+    uint32_t nHeight : 31;
 
     //! construct a CCoins from a CTransaction, at a given height
-    CCoins(CTxOut&& outIn, int nHeightIn, bool fCoinBaseIn) : fCoinBase(fCoinBaseIn), out(std::move(outIn)), nHeight(nHeightIn) {}
-    CCoins(const CTxOut& outIn, int nHeightIn, bool fCoinBaseIn) : fCoinBase(fCoinBaseIn), out(outIn), nHeight(nHeightIn) {}
+    CCoins(CTxOut&& outIn, int nHeightIn, bool fCoinBaseIn) : out(std::move(outIn)), fCoinBase(fCoinBaseIn), nHeight(nHeightIn) {}
+    CCoins(const CTxOut& outIn, int nHeightIn, bool fCoinBaseIn) : out(outIn), fCoinBase(fCoinBaseIn),nHeight(nHeightIn) {}
 
     void Clear() {
         out.SetNull();

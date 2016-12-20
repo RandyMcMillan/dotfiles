@@ -97,7 +97,7 @@ done
 
 #brew install macvim --override-system-vim
 brew cask uninstall --force macvim && brew cask install macvim
-#brew link --overwrite macvim
+brew link --overwrite macvim
 #brew install vim --override-system-vim
 #needed for YouCompleteMe vim plugin
 #npm install xbuild
@@ -113,7 +113,8 @@ brew upgrade Caskroom/cask/adobe-illustrator-cc
 #brew upgrade Caskroom/cask/adobe-photoshop-cc
 
 #emacs
-brew linkapps emacs-plus
+brew unlink emacs
+brew link --overwrite emacs-plus
 
 mkdir -p ~/.rvm/src && cd ~/.rvm/src && rm -rf ./rvm && \
 git clone --depth 1 git://github.com/wayneeseguin/rvm.git && \

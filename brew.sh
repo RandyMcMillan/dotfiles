@@ -12,9 +12,11 @@ brew upgrade
 brew tap homebrew/boneyard
 for pkg in \
 cask \
+vim \
 tap d12frosted/emacs-plus \
 emacs-plus \
 linkapps emacs-plus \
+Caskroom/cask/codeblocks \
 Caskroom/cask/argouml \
 buildapp \
 clozure-cl \
@@ -44,7 +46,6 @@ bash \
 homebrew/versions \
 bash-completion2 \
 cmake \
-vim \
 uncrustify \
 Caskroom/cask/uncrustifyx \
 wget \

@@ -218,5 +218,8 @@ else
             source ~/.extra
             source ~/.functions
             #source ~/.osx
+            sudo rm /usr/bin/emacs
+            sudo ln -s /usr/local/bin/emacs /usr/bin/emacs
+
         fi fi
 fi

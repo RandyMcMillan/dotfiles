@@ -39,7 +39,6 @@ chmod 600 ~/.ssh/my*
 
 # REF http://www.funtoo.org/Keychain
 # brew install keychain
-<<<<<<< HEAD
 eval `keychain --quiet --eval --agents ssh ~/.ssh/DSiM_rsa.pub`
 eval `keychain --quiet --eval --agents ssh my_git_key`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/*t_key2`
@@ -55,7 +54,6 @@ eval `keychain --quiet --eval --agents ssh ~/.ssh/*_key2`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/*_rsa`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis`
 eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis_rsa`
-=======
 eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/DSiM_rsa.pub`
 #eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh my_git_key`
 #eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*t_key2`

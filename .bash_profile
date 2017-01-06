@@ -69,7 +69,6 @@ eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.s
 #eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_rsa`
 #eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_persis`
 #eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*_persis_rsa`
->>>>>>> f822966b51dccdb5e22a15ee6cb4af5908ad62b0
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults

@@ -1,7 +1,8 @@
 #include <rapidcheck/gen/Arbitrary.h>
 #include <rapidcheck/Gen.h>
 #include "primitives/transaction.h" 
-#include "test/gen/crypto_gen.h" 
+#include "test/gen/crypto_gen.h"
+#include "script/script.h"
 namespace rc {
  
   template<>
@@ -14,5 +15,6 @@ namespace rc {
           return COutPoint(nHashIn, nIn);
           });
     };
-  }; 
+  };
+
 }

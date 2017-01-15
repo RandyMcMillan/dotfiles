@@ -1,19 +1,23 @@
+#ifndef BITCOIN_TEST_GEN_BLOCK_GEN_H
+#define BITCOIN_TEST_GEN_BLOCK_GEN_H
+
 #include <rapidcheck/gen/Arbitrary.h>
 #include <rapidcheck/Gen.h>
 #include "primitives/block.h"
 #include "uint256.h"
 #include "test/gen/crypto_gen.h" 
+#include "test/gen/transaction_gen.h" 
 namespace rc {
-
+  /** Generator for the primitives of a block header */
   Gen<std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t>> blockHeaderPrimitives = gen::tuple(gen::arbitrary<int32_t>(), 
       gen::arbitrary<uint256>(), gen::arbitrary<uint256>(), 
       gen::arbitrary<uint32_t>(), gen::arbitrary<uint32_t>(), gen::arbitrary<uint32_t>());
 
   /** Generator for a new CBlockHeader */
   template<>
-  struct Arbitrary<CBlockHeader> { 
-    static Gen<CBlockHeader> arbitrary() { 
-      return gen::map(blockHeaderPrimitives, [](std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t> headerPrimitives) {  
+  struct Arbitrary<CBlockHeader> {
+    static Gen<CBlockHeader> arbitrary() {
+      return gen::map(blockHeaderPrimitives, [](std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t> headerPrimitives) {
         int32_t nVersion;
         uint256 hashPrevBlock;
         uint256 hashMerkleRoot;
@@ -31,5 +35,18 @@ namespace rc {
         return header; 
       });
     };
-  }; 
+  };
+  
+  /** Generator for a new CBlock */
+  template<>
+  struct Arbitrary<CBlock> {
+    static Gen<CBlock> arbitrary() {
+      return gen::map(gen::arbitrary<std::vector<CTransactionRef>>(), [](std::vector<CTransactionRef> txRefs) {
+        CBlock block;
+        block.vtx = txRefs;
+        return block;
+      });
+    }
+  };
 }
+#endif

@@ -1,3 +1,6 @@
+#ifndef BITCOIN_TEST_GEN_TRANSACTION_GEN_H
+#define BITCOIN_TEST_GEN_TRANSACTION_GEN_H
+
 #include <rapidcheck/gen/Arbitrary.h>
 #include <rapidcheck/Gen.h>
 #include "primitives/transaction.h" 
@@ -5,7 +8,7 @@
 #include "script/script.h"
 #include "amount.h"
 namespace rc {
- 
+  /** Generator for a COutPoint */ 
   template<>
   struct Arbitrary<COutPoint> {
     static Gen<COutPoint> arbitrary() { 
@@ -18,7 +21,7 @@ namespace rc {
     };
   };
 
-
+  /** Generator for a CTxIn */
   template<> 
   struct Arbitrary<CTxIn> { 
     static Gen<CTxIn> arbitrary() { 
@@ -31,7 +34,8 @@ namespace rc {
       });
     };
   };
-  
+ 
+  /** Generator for a CAmount */
   template<>
   struct Arbitrary<CAmount> {
     static Gen<CAmount> arbitrary() {
@@ -41,6 +45,7 @@ namespace rc {
     };
   };
 
+  /** Generator for CTxOut */
   template<>
   struct Arbitrary<CTxOut> { 
     static Gen<CTxOut> arbitrary() { 
@@ -53,7 +58,7 @@ namespace rc {
     };
   };
 
-
+  /** Generator for a CTransaction */
   template<> 
   struct Arbitrary<CTransaction> { 
     static Gen<CTransaction> arbitrary() { 
@@ -74,4 +79,15 @@ namespace rc {
       });
     };
   };
+
+  /** Generator for a CTransactionRef */
+  template<>
+  struct Arbitrary<CTransactionRef> { 
+    static Gen<CTransactionRef> arbitrary() {
+      return gen::map(gen::arbitrary<CTransaction>(), [](CTransaction tx) {
+          return MakeTransactionRef(tx); 
+      });
+    };
+  };
 }
+#endif

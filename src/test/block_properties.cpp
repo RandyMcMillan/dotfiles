@@ -21,4 +21,12 @@ RC_BOOST_PROP(blockheader_serialization_symmetry, (CBlockHeader header)) {
   RC_ASSERT(ss.str() == ss1.str());
 }
 
+RC_BOOST_PROP(block_serialization_symmetry, (CBlock block)) {
+  CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+  ss << block;
+  CBlock block2;
+  ss >> block2;
+  RC_ASSERT(block.GetHash() == block2.GetHash());
+}
+
 BOOST_AUTO_TEST_SUITE_END()

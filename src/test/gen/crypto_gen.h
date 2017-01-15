@@ -1,3 +1,6 @@
+#ifndef BITCOIN_TEST_GEN_CRYPTO_GEN_H
+#define BITCOIN_TEST_GEN_CRYPTO_GEN_H
+
 #include "key.h"
 #include "random.h" 
 #include "uint256.h" 
@@ -48,3 +51,4 @@ namespace rc {
     }; 
   }; 
 }
+#endif

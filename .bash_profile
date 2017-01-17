@@ -41,8 +41,8 @@ chmod 600 ~/.ssh/my*
 # brew install keychain
 eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh *.pub`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/DSiM_rsa.pub`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key`
-#eval `keychain --quiet --eval --agents ssh ~/.ssh/*t_key2`
+eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key`
+eval `keychain --quiet --eval --agents ssh ~/.ssh/*t_key2`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/my_git_key2`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis`
@@ -55,7 +55,7 @@ eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh *.pu
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/*_rsa`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis`
 #eval `keychain --quiet --eval --agents ssh ~/.ssh/*_persis_rsa`
-#eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/DSiM_rsa.pub`
+eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/DSiM_rsa.pub`
 #eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh my_git_key`
 #eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/*t_key2`
 #eval `keychain --noask --quick --ignore-missing --quiet --eval --agents ssh ~/.ssh/my_git_key`

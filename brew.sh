@@ -84,6 +84,7 @@ plantuml \
 Caskroom/cask/java \
 Caskroom/cask/firefox \
 Caskroom/cask/virtualbox \
+Caskroom/cask/disk-inventory-x \
 ;
  do
     if brew list -1 | grep -q "^${pkg}\$"; then

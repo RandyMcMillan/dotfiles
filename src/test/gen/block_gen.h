@@ -7,17 +7,20 @@
 #include "uint256.h"
 #include "test/gen/crypto_gen.h" 
 #include "test/gen/transaction_gen.h" 
-namespace rc {
   /** Generator for the primitives of a block header */
-  Gen<std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t>> blockHeaderPrimitives = gen::tuple(gen::arbitrary<int32_t>(), 
-      gen::arbitrary<uint256>(), gen::arbitrary<uint256>(), 
-      gen::arbitrary<uint32_t>(), gen::arbitrary<uint32_t>(), gen::arbitrary<uint32_t>());
+rc::Gen<std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t>> blockHeaderPrimitives() { 
+  return rc::gen::tuple(rc::gen::arbitrary<int32_t>(), 
+    rc::gen::arbitrary<uint256>(), rc::gen::arbitrary<uint256>(), 
+    rc::gen::arbitrary<uint32_t>(), rc::gen::arbitrary<uint32_t>(), rc::gen::arbitrary<uint32_t>());
+}
+
+namespace rc {
 
   /** Generator for a new CBlockHeader */
   template<>
   struct Arbitrary<CBlockHeader> {
     static Gen<CBlockHeader> arbitrary() {
-      return gen::map(blockHeaderPrimitives, [](std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t> headerPrimitives) {
+      return gen::map(blockHeaderPrimitives(), [](std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t> headerPrimitives) {
         int32_t nVersion;
         uint256 hashPrevBlock;
         uint256 hashMerkleRoot;

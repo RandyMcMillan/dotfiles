@@ -9,13 +9,13 @@
 #include "test/gen/crypto_gen.h" 
 
 /** Generates a double between 0,1 exclusive */
-rc::Gen<double> BetweenZeroAndOne() { 
+inline rc::Gen<double> BetweenZeroAndOne() {
   return rc::gen::suchThat<double>([](double x) {
     return fmod(x,1) != 0;
   }); 
 }
 /** Generates the C++ primitives used to create a bloom filter */
-rc::Gen<std::tuple<unsigned int, double, unsigned int, unsigned int>> BloomFilterPrimitives() { 
+inline rc::Gen<std::tuple<unsigned int, double, unsigned int, unsigned int>> BloomFilterPrimitives() {
   return rc::gen::tuple(rc::gen::inRange<unsigned int>(1,100),
     BetweenZeroAndOne(),rc::gen::arbitrary<unsigned int>(),
     rc::gen::inRange<unsigned int>(0,3));
@@ -46,6 +46,16 @@ rc::Gen<std::tuple<CBloomFilter, std::vector<uint256>>> LoadedBloomFilter() {
     std::vector<uint256> hashes;
     CBloomFilter bloomFilter;
     std::tie(bloomFilter,hashes) = primitives;
+    for(unsigned int i = 0; i < hashes.size(); i++) {
+      bloomFilter.insert(hashes[i]);
+    }
+    return std::make_tuple(bloomFilter,hashes);
+  });
+}
+
+/** Loads an arbitrary bloom filter with the given hashes */
+rc::Gen<std::tuple<CBloomFilter, std::vector<uint256>>> LoadBloomFilter(std::vector<uint256>& hashes) {
+  return rc::gen::map(rc::gen::arbitrary<CBloomFilter>(),[&hashes](CBloomFilter bloomFilter) {
     for(unsigned int i = 0; i < hashes.size(); i++) {
       bloomFilter.insert(hashes[i]);
     }

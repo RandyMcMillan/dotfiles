@@ -7,8 +7,9 @@
 #include "uint256.h"
 #include "test/gen/crypto_gen.h" 
 #include "test/gen/transaction_gen.h" 
-  /** Generator for the primitives of a block header */
-rc::Gen<std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t>> blockHeaderPrimitives() { 
+
+/** Generator for the primitives of a block header */
+inline rc::Gen<std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t>> blockHeaderPrimitives() { 
   return rc::gen::tuple(rc::gen::arbitrary<int32_t>(), 
     rc::gen::arbitrary<uint256>(), rc::gen::arbitrary<uint256>(), 
     rc::gen::arbitrary<uint32_t>(), rc::gen::arbitrary<uint32_t>(), rc::gen::arbitrary<uint32_t>());
@@ -44,7 +45,7 @@ namespace rc {
   template<>
   struct Arbitrary<CBlock> {
     static Gen<CBlock> arbitrary() {
-      return gen::map(gen::arbitrary<std::vector<CTransactionRef>>(), [](std::vector<CTransactionRef> txRefs) {
+      return gen::map(gen::nonEmpty<std::vector<CTransactionRef>>(), [](std::vector<CTransactionRef> txRefs) {
         CBlock block;
         block.vtx = txRefs;
         return block;

@@ -85,6 +85,7 @@ Caskroom/cask/java \
 Caskroom/cask/firefox \
 Caskroom/cask/virtualbox \
 Caskroom/cask/disk-inventory-x \
+Caskroom/cask/little-snitch \
 ;
  do
     if brew list -1 | grep -q "^${pkg}\$"; then

@@ -18,6 +18,7 @@ emacs-plus \
 linkapps emacs-plus \
 Caskroom/cask/codeblocks \
 Caskroom/cask/argouml \
+Caskroom/cask/cleanmymac \
 buildapp \
 clozure-cl \
 Caskroom/cask/toau \

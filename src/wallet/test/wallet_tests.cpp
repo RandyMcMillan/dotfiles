@@ -2,6 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "base58.h"
+#include "pubkey.h"
+#include "script/standard.h"
+#include "validation.h"
+#include "wallet/coincontrol.h"
 #include "wallet/wallet.h"
 
 #include <set>
@@ -349,6 +354,33 @@ BOOST_AUTO_TEST_CASE(ApproximateBestSubset)
     BOOST_CHECK(wallet.SelectCoinsMinConf(1003 * COIN, 1, 6, 0, vCoins, setCoinsRet, nValueRet));
     BOOST_CHECK_EQUAL(nValueRet, 1003 * COIN);
     BOOST_CHECK_EQUAL(setCoinsRet.size(), 2U);
+}
+
+/* Ensure no change output is created when calling CreateTransaction with the
+ * subtract fee option and the fee is below the dust limit. */
+BOOST_FIXTURE_TEST_CASE(subtract_fee_dust, TestChain100Setup)
+{
+    LOCK(cs_main);
+    CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey()));
+
+    CWallet wallet;
+    LOCK(wallet.cs_wallet);
+    wallet.AddKeyPubKey(coinbaseKey, coinbaseKey.GetPubKey());
+    wallet.ScanForWalletTransactions(chainActive.Genesis());
+
+    CWalletTx wtx;
+    CReserveKey reservekey(&wallet);
+    CAmount fee;
+    int changePos = -1;
+    std::string failReason;
+    CCoinControl coinControl;
+    coinControl.fAllowOtherInputs = false;
+    coinControl.Select(COutPoint(coinbaseTxns[0].GetHash(), 0));
+    coinControl.destChange = CKeyID();
+    BOOST_CHECK_EQUAL(wallet.CreateTransaction({CRecipient{GetScriptForRawPubKey(coinbaseKey.GetPubKey()), 50 * COIN - 1, true /* subtract fee */}}, wtx, reservekey, fee, changePos, failReason, &coinControl), true);
+    BOOST_CHECK_EQUAL(failReason, "");
+    BOOST_CHECK_EQUAL(wtx.tx->vout.size(), 1);
+    BOOST_CHECK_EQUAL(changePos, -1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

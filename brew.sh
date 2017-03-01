@@ -23,7 +23,7 @@ buildapp \
 clozure-cl \
 Caskroom/cask/toau \
 Caskroom/cask/mou \
-caskroom/versions/java6 \
+Caskroom/cask/java \
 Caskroom/cask/iexplorer \
 Caskroom/cask/qlmarkdown \
 Caskroom/cask/transmit \

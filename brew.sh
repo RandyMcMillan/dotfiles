@@ -83,6 +83,7 @@ python3 \
 npm \
 plantuml \
 Caskroom/cask/java \
+Caskroom/cask/flash-player \
 Caskroom/cask/firefox \
 Caskroom/cask/virtualbox \
 Caskroom/cask/disk-inventory-x \

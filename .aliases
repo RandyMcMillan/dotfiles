@@ -96,8 +96,8 @@ alias randy='randymcmillan'
 
 function rootsinrecovery ()
 {
-    rmurl='m76.siteground.biz';
-    me='rootsinr';
+    rmurl='roots1.ftpaccess.cc';
+    me='johnbranch';
     ssh $me@$rmurl -p 18765
 }
 alias rinr='rootsinrecovery'

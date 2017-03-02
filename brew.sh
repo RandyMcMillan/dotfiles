@@ -105,6 +105,10 @@ brew link --overwrite macvim
 #needed for YouCompleteMe vim plugin
 #npm install xbuild
 
+#perl 
+perl -MCPAN -e 'install HTML::Template'
+
+
 #adobe
 brew upgrade Caskroom/cask/adobe-creative-cloud
 brew upgrade Caskroom/cask/adobe-creative-cloud-cleaner-tool

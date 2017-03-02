@@ -107,6 +107,7 @@ brew link --overwrite macvim
 
 #perl 
 perl -MCPAN -e 'install HTML::Template'
+perl -MCPAN -e 'install CGI'
 
 
 #adobe

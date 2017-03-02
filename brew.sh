@@ -18,11 +18,12 @@ emacs-plus \
 linkapps emacs-plus \
 Caskroom/cask/codeblocks \
 Caskroom/cask/argouml \
+Caskroom/cask/cleanmymac \
 buildapp \
 clozure-cl \
 Caskroom/cask/toau \
 Caskroom/cask/mou \
-caskroom/versions/java6 \
+Caskroom/cask/java \
 Caskroom/cask/iexplorer \
 Caskroom/cask/qlmarkdown \
 Caskroom/cask/transmit \
@@ -82,6 +83,7 @@ python3 \
 npm \
 plantuml \
 Caskroom/cask/java \
+Caskroom/cask/flash-player \
 Caskroom/cask/firefox \
 Caskroom/cask/virtualbox \
 Caskroom/cask/disk-inventory-x \

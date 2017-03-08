@@ -341,7 +341,7 @@ alias p="cd ~/Projects"
 alias g="git "
 
 #homebrew vim
-alias vim="/usr/bin/vim"
+alias vim="/usr/local/bin/vim"
 alias v="vim"
 #basic vim
 alias vv="vim -u NONE -N"

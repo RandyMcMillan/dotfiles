@@ -98,6 +98,6 @@ path_prepend '/usr/local/bin'
 git config --global color.ui auto
 
 # Aliases
-alias vi='/Applications/MacVim.app/Contents/MacOS/Vim'
-alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
-alias gvi='/Applications/MacVim.app/Contents/MacOS/Vim -g'
+#alias vi='/Applications/MacVim.app/Contents/MacOS/Vim'
+#alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+#alias gvi='/Applications/MacVim.app/Contents/MacOS/Vim -g'

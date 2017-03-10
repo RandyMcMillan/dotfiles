@@ -12,6 +12,7 @@ brew upgrade
 brew tap homebrew/boneyard
 for pkg in \
 cask \
+dnsmasq \
 vim \
 tap d12frosted/emacs-plus \
 emacs-plus \

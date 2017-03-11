@@ -1,5 +1,7 @@
-#include "key.h"
 
+#include "test/gen/transaction_gen.h"
+
+#include "key.h"
 #include "base58.h"
 #include "script/script.h"
 #include "uint256.h"
@@ -14,7 +16,6 @@
 #include <rapidcheck/boost_test.h>
 #include <rapidcheck/gen/Arbitrary.h>
 #include <rapidcheck/Gen.h>
-#include "test/gen/transaction_gen.h"
 
 BOOST_FIXTURE_TEST_SUITE(transaction_properties, BasicTestingSetup)
 

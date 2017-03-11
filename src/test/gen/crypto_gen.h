@@ -6,14 +6,15 @@
 #include "uint256.h" 
 #include <rapidcheck/gen/Arbitrary.h>
 #include <rapidcheck/Gen.h>
-
+#include <rapidcheck/gen/Create.h>
+#include <rapidcheck/gen/Numeric.h>
 namespace rc {  
 
   /** Generator for a new CKey */
   template<>
   struct Arbitrary<CKey> {
     static Gen<CKey> arbitrary() {
-      return gen::map<int>([](int x) { 
+      return rc::gen::map<int>([](int x) {
         CKey key;  
         key.MakeNewKey(true);
         return key; 
@@ -25,7 +26,7 @@ namespace rc {
   template<> 
   struct Arbitrary<CPrivKey> { 
     static Gen<CPrivKey> arbitrary() { 
-      return gen::map<CKey>([](CKey key) { 
+      return gen::map(gen::arbitrary<CKey>(), [](CKey key) { 
         return key.GetPrivKey();
       });
     }; 
@@ -35,7 +36,7 @@ namespace rc {
   template<>
   struct Arbitrary<CPubKey> {
     static Gen<CPubKey> arbitrary() {
-      return gen::map<CKey>([](CKey key) {
+      return gen::map(gen::arbitrary<CKey>(), [](CKey key) {
         return key.GetPubKey(); 
       });
     };
@@ -45,9 +46,7 @@ namespace rc {
   template<> 
   struct Arbitrary<uint256> { 
     static Gen<uint256> arbitrary() { 
-      return gen::map<int>([](int x) { 
-        return GetRandHash(); 
-      }); 
+       return rc::gen::just(GetRandHash()); 
     }; 
   }; 
 }

@@ -743,11 +743,6 @@ if test x$use_upnp != xno; then
   )
 fi
 
-dnl check for rapidcheck
-AC_CHECK_HEADERS(
-    [rapidcheck.h],
-    [AC_CHECK_LIB([rapidcheck], [main],[], [])],
-    [])
 
 BITCOIN_QT_INIT
 
@@ -837,6 +832,14 @@ if test x$use_tests = xyes; then
   CPPFLAGS="$TEMP_CPPFLAGS"
 
   fi
+fi
+
+if test x$use_tests = xyes; then
+  dnl check for rapidcheck
+  AC_CHECK_HEADERS(
+    [rapidcheck.h],
+    [AC_CHECK_LIB([rapidcheck], [main],[], [])],
+    [])
 fi
 
 if test x$use_boost = xyes; then

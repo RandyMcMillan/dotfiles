@@ -1,12 +1,13 @@
 #ifndef BITCOIN_TEST_GEN_BLOCK_GEN_H
 #define BITCOIN_TEST_GEN_BLOCK_GEN_H
 
-#include <rapidcheck/gen/Arbitrary.h>
-#include <rapidcheck/Gen.h>
-#include "primitives/block.h"
-#include "uint256.h"
 #include "test/gen/crypto_gen.h" 
 #include "test/gen/transaction_gen.h" 
+#include "uint256.h"
+#include "primitives/block.h"
+
+#include <rapidcheck/gen/Arbitrary.h>
+#include <rapidcheck/Gen.h>
 
 /** Generator for the primitives of a block header */
 inline rc::Gen<std::tuple<int32_t, uint256, uint256, uint32_t, uint32_t, uint32_t>> blockHeaderPrimitives() { 

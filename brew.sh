@@ -12,6 +12,8 @@ brew upgrade
 brew tap homebrew/boneyard
 for pkg in \
 cask \
+Caskroom/cask/google-chrome \
+Caskroom/cask/google-hangouts \
 dnsmasq \
 vim \
 tap d12frosted/emacs-plus \

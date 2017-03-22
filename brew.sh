@@ -15,6 +15,7 @@ cask \
 Caskroom/cask/google-chrome \
 Caskroom/cask/google-hangouts \
 dnsmasq \
+Caskroom/cask/onyx \
 vim \
 tap d12frosted/emacs-plus \
 emacs-plus \

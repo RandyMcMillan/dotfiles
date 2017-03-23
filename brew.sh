@@ -7,9 +7,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Make sure we’re using the latest Homebrew.
 brew update
 # Upgrade any already-installed formulae.
-#brew upgrade --all
-brew upgrade
-brew tap homebrew/boneyard
+brew upgrade --all
 for pkg in \
 cask \
 Caskroom/cask/google-chrome \
@@ -95,14 +93,16 @@ Caskroom/cask/little-snitch \
 ;
  do
     if brew list -1 | grep -q "^${pkg}\$"; then
-        #echo "Package '$pkg' is installed"
+        echo "Package '$pkg' is installed"
         brew upgrade $pkg
     else
-        #echo "Package '$pkg' is not installed"
+        echo "Package '$pkg' is not installed"
         brew install $pkg
     fi
 done
 
+#help https://github.com/toland/qlmarkdown
+defaults write com.apple.finder QLEnableTextSelection -bool TRUE; killall Finder
 
 #brew install macvim --override-system-vim
 brew cask uninstall --force macvim && brew cask install macvim
@@ -111,7 +111,7 @@ brew link --overwrite macvim
 #needed for YouCompleteMe vim plugin
 #npm install xbuild
 
-#perl 
+#perl
 perl -MCPAN -e 'install HTML::Template'
 perl -MCPAN -e 'install CGI'
 

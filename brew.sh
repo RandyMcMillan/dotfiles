@@ -105,11 +105,11 @@ done
 defaults write com.apple.finder QLEnableTextSelection -bool TRUE; killall Finder
 
 #brew install macvim --override-system-vim
-brew cask uninstall --force macvim && brew cask install macvim
-brew link --overwrite macvim
+#brew cask uninstall --force macvim && brew cask install macvim
+#brew link --overwrite macvim
 #brew install vim --override-system-vim
 #needed for YouCompleteMe vim plugin
-#npm install xbuild
+npm install xbuild
 
 #perl
 perl -MCPAN -e 'install HTML::Template'

@@ -12,6 +12,7 @@ for pkg in \
 cask \
 Caskroom/cask/google-chrome \
 Caskroom/cask/google-hangouts \
+Caskroom/cask/google-drive \
 dnsmasq \
 Caskroom/cask/onyx \
 vim \
@@ -94,7 +95,7 @@ Caskroom/cask/little-snitch \
  do
     if brew list -1 | grep -q "^${pkg}\$"; then
         echo "Package '$pkg' is installed"
-        brew upgrade $pkg
+        brew reinstall $pkg
     else
         echo "Package '$pkg' is not installed"
         brew install $pkg

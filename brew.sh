@@ -137,5 +137,7 @@ mkdir -p ~/.rvm/src && cd ~/.rvm/src && rm -rf ./rvm && \
 git clone --depth 1 git://github.com/wayneeseguin/rvm.git && \
 cd rvm && ./install
 
+gem install wayback_machine_downloader
+
 # Remove outdated versions from the cellar.
 brew cleanup

@@ -27,6 +27,7 @@
 #endif
 
 #include "init.h"
+#include "ipc/client.h"
 #include "ipc/interfaces.h"
 #include "rpc/server.h"
 #include "scheduler.h"
@@ -178,7 +179,7 @@ class BitcoinCore: public QObject
 {
     Q_OBJECT
 public:
-    explicit BitcoinCore();
+    explicit BitcoinCore(ipc::Node& ipcNode);
 
 public Q_SLOTS:
     void initialize();
@@ -190,11 +191,10 @@ Q_SIGNALS:
     void runawayException(const QString &message);
 
 private:
-    boost::thread_group threadGroup;
-    CScheduler scheduler;
-
     /// Pass fatal exception message to UI thread
     void handleRunawayException(const std::exception *e);
+
+    ipc::Node& ipcNode;
 };
 
 /** Main Bitcoin application object */
@@ -202,7 +202,7 @@ class BitcoinApplication: public QApplication
 {
     Q_OBJECT
 public:
-    explicit BitcoinApplication(int &argc, char **argv);
+    explicit BitcoinApplication(ipc::Node& ipcNode, int &argc, char **argv);
     ~BitcoinApplication();
 
 #ifdef ENABLE_WALLET
@@ -229,6 +229,9 @@ public:
     /// Get window identifier of QMainWindow (BitcoinGUI)
     WId getMainWinId() const;
 
+    /// Get Node IPC object
+    ipc::Node& getIpcNode() const { return ipcNode; }
+
 public Q_SLOTS:
     void initializeResult(bool success);
     void shutdownResult();
@@ -243,6 +246,7 @@ Q_SIGNALS:
 
 private:
     QThread *coreThread;
+    ipc::Node& ipcNode;
     OptionsModel *optionsModel;
     ClientModel *clientModel;
     BitcoinGUI *window;
@@ -260,8 +264,8 @@ private:
 
 #include "bitcoin.moc"
 
-BitcoinCore::BitcoinCore():
-    QObject()
+BitcoinCore::BitcoinCore(ipc::Node& ipcNode_) :
+    QObject(), ipcNode(ipcNode_)
 {
 }
 
@@ -276,22 +280,7 @@ void BitcoinCore::initialize()
     try
     {
         qDebug() << __func__ << ": Running initialization in thread";
-        if (!FIXME_IMPLEMENT_IPC_VALUE(AppInitBasicSetup()))
-        {
-            Q_EMIT initializeResult(false);
-            return;
-        }
-        if (!FIXME_IMPLEMENT_IPC_VALUE(AppInitParameterInteraction()))
-        {
-            Q_EMIT initializeResult(false);
-            return;
-        }
-        if (!FIXME_IMPLEMENT_IPC_VALUE(AppInitSanityChecks()))
-        {
-            Q_EMIT initializeResult(false);
-            return;
-        }
-        bool rv = FIXME_IMPLEMENT_IPC_VALUE(AppInitMain(threadGroup, scheduler));
+        bool rv = ipcNode.appInit();
         Q_EMIT initializeResult(rv);
     } catch (const std::exception& e) {
         handleRunawayException(&e);
@@ -305,9 +294,7 @@ void BitcoinCore::shutdown()
     try
     {
         qDebug() << __func__ << ": Running Shutdown in thread";
-        FIXME_IMPLEMENT_IPC(Interrupt(threadGroup));
-        threadGroup.join_all();
-        FIXME_IMPLEMENT_IPC(Shutdown());
+        ipcNode.appShutdown();
         qDebug() << __func__ << ": Shutdown finished";
         Q_EMIT shutdownResult();
     } catch (const std::exception& e) {
@@ -317,9 +304,10 @@ void BitcoinCore::shutdown()
     }
 }
 
-BitcoinApplication::BitcoinApplication(int &argc, char **argv):
+BitcoinApplication::BitcoinApplication(ipc::Node& ipcNode_, int &argc, char **argv):
     QApplication(argc, argv),
     coreThread(0),
+    ipcNode(ipcNode_),
     optionsModel(0),
     clientModel(0),
     window(0),
@@ -374,12 +362,12 @@ void BitcoinApplication::createPaymentServer()
 
 void BitcoinApplication::createOptionsModel(bool resetSettings)
 {
-    optionsModel = new OptionsModel(NULL, resetSettings);
+    optionsModel = new OptionsModel(&getIpcNode(), NULL, resetSettings);
 }
 
 void BitcoinApplication::createWindow(const NetworkStyle *networkStyle)
 {
-    window = new BitcoinGUI(platformStyle, networkStyle, 0);
+    window = new BitcoinGUI(getIpcNode(), platformStyle, networkStyle, 0);
 
     pollShutdownTimer = new QTimer(window);
     connect(pollShutdownTimer, SIGNAL(timeout()), window, SLOT(detectShutdown()));
@@ -388,7 +376,7 @@ void BitcoinApplication::createWindow(const NetworkStyle *networkStyle)
 
 void BitcoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
 {
-    SplashScreen *splash = new SplashScreen(0, networkStyle);
+    SplashScreen *splash = new SplashScreen(getIpcNode(), 0, networkStyle);
     // We don't hold a direct pointer to the splash screen after creation, but the splash
     // screen will take care of deleting itself when slotFinish happens.
     splash->show();
@@ -401,7 +389,7 @@ void BitcoinApplication::startThread()
     if(coreThread)
         return;
     coreThread = new QThread(this);
-    BitcoinCore *executor = new BitcoinCore();
+    BitcoinCore *executor = new BitcoinCore(getIpcNode());
     executor->moveToThread(coreThread);
 
     /*  communication to and from thread */
@@ -471,7 +459,7 @@ void BitcoinApplication::initializeResult(bool success)
         paymentServer->setOptionsModel(optionsModel);
 #endif
 
-        clientModel = new ClientModel(optionsModel);
+        clientModel = new ClientModel(getIpcNode(), optionsModel);
         window->setClientModel(clientModel);
 
 #ifdef ENABLE_WALLET
@@ -554,7 +542,14 @@ int main(int argc, char *argv[])
     Q_INIT_RESOURCE(bitcoin);
     Q_INIT_RESOURCE(bitcoin_locale);
 
-    BitcoinApplication app(argc, argv);
+    std::unique_ptr<ipc::Node> ipcNode;
+#if ENABLE_IPC
+    ipcNode = ipc::StartClient();
+#else
+    ipcNode = ipc::MakeNode();
+#endif
+    ipcNode->parseParameters(argc, argv);
+    BitcoinApplication app(*ipcNode, argc, argv);
 #if QT_VERSION > 0x050100
     // Generate high-dpi pixmaps
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -597,14 +592,14 @@ int main(int argc, char *argv[])
     // but before showing splash screen.
     if (IsArgSet("-?") || IsArgSet("-h") || IsArgSet("-help") || IsArgSet("-version"))
     {
-        HelpMessageDialog help(NULL, IsArgSet("-version"));
+        HelpMessageDialog help(app.getIpcNode(), NULL, IsArgSet("-version"));
         help.showOrPrint();
         return EXIT_SUCCESS;
     }
 
     /// 5. Now that settings and translations are available, ask user for data directory
     // User language is set up: pick a data directory
-    if (!Intro::pickDataDirectory())
+    if (!Intro::pickDataDirectory(*ipcNode))
         return EXIT_SUCCESS;
 
     /// 6. Determine availability of data directory and parse bitcoin.conf
@@ -617,6 +612,7 @@ int main(int argc, char *argv[])
     }
     try {
         ReadConfigFile(GetArg("-conf", BITCOIN_CONF_FILENAME));
+        ipcNode->readConfigFile(GetArg("-conf", BITCOIN_CONF_FILENAME));
     } catch (const std::exception& e) {
         QMessageBox::critical(0, QObject::tr(PACKAGE_NAME),
                               QObject::tr("Error: Cannot parse configuration file: %1. Only use key=value syntax.").arg(e.what()));
@@ -631,7 +627,8 @@ int main(int argc, char *argv[])
 
     // Check for -testnet or -regtest parameter (Params() calls are only valid after this clause)
     try {
-        FIXME_IMPLEMENT_IPC(SelectParams(ChainNameFromCommandLine()));
+        SelectParams(ChainNameFromCommandLine());
+        ipcNode->selectParams(ChainNameFromCommandLine());
     } catch(std::exception &e) {
         QMessageBox::critical(0, QObject::tr(PACKAGE_NAME), QObject::tr("Error: %1").arg(e.what()));
         return EXIT_FAILURE;
@@ -683,7 +680,7 @@ int main(int argc, char *argv[])
     app.createOptionsModel(IsArgSet("-resetguisettings"));
 
     // Subscribe to global signals from core
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).InitMessage.connect(InitMessage);
+    std::unique_ptr<ipc::Handler> handlerInitMessage = ipcNode->handleInitMessage(InitMessage);
 
     if (GetBoolArg("-splash", DEFAULT_SPLASHSCREEN) && !GetBoolArg("-min", false))
         app.createSplashScreen(networkStyle.data());

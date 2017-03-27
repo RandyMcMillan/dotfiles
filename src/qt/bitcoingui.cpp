@@ -79,9 +79,10 @@ const std::string BitcoinGUI::DEFAULT_UIPLATFORM =
  * collisions in the future with additional wallets */
 const QString BitcoinGUI::DEFAULT_WALLET = "~Default";
 
-BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *networkStyle, QWidget *parent) :
+BitcoinGUI::BitcoinGUI(ipc::Node& _ipcNode, const PlatformStyle *_platformStyle, const NetworkStyle *networkStyle, QWidget *parent) :
     QMainWindow(parent),
     enableWallet(false),
+    ipcNode(_ipcNode),
     clientModel(0),
     walletFrame(0),
     unitDisplayControl(0),
@@ -152,7 +153,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
 #endif
 
     rpcConsole = new RPCConsole(_platformStyle, 0);
-    helpMessageDialog = new HelpMessageDialog(this, false);
+    helpMessageDialog = new HelpMessageDialog(ipcNode, this, false);
 #ifdef ENABLE_WALLET
     if(enableWallet)
     {
@@ -646,7 +647,7 @@ void BitcoinGUI::aboutClicked()
     if(!clientModel)
         return;
 
-    HelpMessageDialog dlg(this, true);
+    HelpMessageDialog dlg(ipcNode, this, true);
     dlg.exec();
 }
 
@@ -1112,7 +1113,7 @@ void BitcoinGUI::toggleHidden()
 
 void BitcoinGUI::detectShutdown()
 {
-    if (FIXME_IMPLEMENT_IPC_VALUE(ShutdownRequested()))
+    if (ipcNode.shutdownRequested())
     {
         if(rpcConsole)
             rpcConsole->hide();
@@ -1177,15 +1178,15 @@ static bool ThreadSafeMessageBox(BitcoinGUI *gui, const std::string& message, co
 void BitcoinGUI::subscribeToCoreSignals()
 {
     // Connect signals to client
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ThreadSafeMessageBox.connect(boost::bind(ThreadSafeMessageBox, this, _1, _2, _3));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ThreadSafeQuestion.connect(boost::bind(ThreadSafeMessageBox, this, _1, _3, _4));
+    handlerMessageBox = ipcNode.handleMessageBox(boost::bind(ThreadSafeMessageBox, this, _1, _2, _3));
+    handlerQuestion = ipcNode.handleQuestion(boost::bind(ThreadSafeMessageBox, this, _1, _3, _4));
 }
 
 void BitcoinGUI::unsubscribeFromCoreSignals()
 {
     // Disconnect signals from client
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ThreadSafeMessageBox.disconnect(boost::bind(ThreadSafeMessageBox, this, _1, _2, _3));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ThreadSafeQuestion.disconnect(boost::bind(ThreadSafeMessageBox, this, _1, _3, _4));
+    handlerMessageBox->disconnect();
+    handlerQuestion->disconnect();
 }
 
 void BitcoinGUI::toggleNetworkActive()

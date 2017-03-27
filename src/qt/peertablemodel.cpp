@@ -53,35 +53,23 @@ public:
     std::map<NodeId, int> mapNodeRows;
 
     /** Pull a full list of peers from vNodes into our cache */
-    void refreshPeers()
+    void refreshPeers(ipc::Node& ipcNode)
     {
         {
             cachedNodeStats.clear();
-            std::vector<CNodeStats> vstats;
-            if(FIXME_IMPLEMENT_IPC_VALUE(g_connman))
-                FIXME_IMPLEMENT_IPC_VALUE(g_connman)->GetNodeStats(vstats);
+
+            ipc::Node::NodesStats stats;
+            if(ipcNode.getNodesStats(stats))
 #if QT_VERSION >= 0x040700
-            cachedNodeStats.reserve(vstats.size());
+            cachedNodeStats.reserve(stats.size());
 #endif
-            Q_FOREACH (const CNodeStats& nodestats, vstats)
+            for (auto& data : stats)
             {
                 CNodeCombinedStats stats;
-                stats.nodeStateStats.nMisbehavior = 0;
-                stats.nodeStateStats.nSyncHeight = -1;
-                stats.nodeStateStats.nCommonHeight = -1;
-                stats.fNodeStateStatsAvailable = false;
-                stats.nodeStats = nodestats;
+                stats.nodeStats = std::get<0>(data);
+                stats.fNodeStateStatsAvailable = std::get<1>(data);
+                stats.nodeStateStats = std::get<2>(data);
                 cachedNodeStats.append(stats);
-            }
-        }
-
-        // Try to retrieve the CNodeStateStats for each node.
-        {
-            TRY_LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main), lockMain);
-            if (lockMain)
-            {
-                BOOST_FOREACH(CNodeCombinedStats &stats, cachedNodeStats)
-                    stats.fNodeStateStatsAvailable = FIXME_IMPLEMENT_IPC_VALUE(GetNodeStateStats(stats.nodeStats.nodeid, stats.nodeStateStats));
             }
         }
 
@@ -110,8 +98,9 @@ public:
     }
 };
 
-PeerTableModel::PeerTableModel(ClientModel *parent) :
+PeerTableModel::PeerTableModel(ipc::Node& ipcNode, ClientModel *parent) :
     QAbstractTableModel(parent),
+    ipcNode(ipcNode),
     clientModel(parent),
     timer(0)
 {
@@ -222,7 +211,7 @@ const CNodeCombinedStats *PeerTableModel::getNodeStats(int idx)
 void PeerTableModel::refresh()
 {
     Q_EMIT layoutAboutToBeChanged();
-    priv->refreshPeers();
+    priv->refreshPeers(ipcNode);
     Q_EMIT layoutChanged();
 }
 

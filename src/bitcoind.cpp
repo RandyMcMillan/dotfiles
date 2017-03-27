@@ -13,6 +13,7 @@
 #include "fs.h"
 #include "rpc/server.h"
 #include "init.h"
+#include "ipc/server.h"
 #include "noui.h"
 #include "scheduler.h"
 #include "util.h"
@@ -188,6 +189,13 @@ bool AppInit(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
+    // Check if bitcoind is being invoked as an IPC server. If so, then bypass
+    // normal execution and just respond to requests from the IPC channel.
+    int exitStatus;
+    if (ipc::StartServer(argc, argv, exitStatus)) {
+        return exitStatus;
+    }
+
     SetupEnvironment();
 
     // Connect bitcoind signal handlers

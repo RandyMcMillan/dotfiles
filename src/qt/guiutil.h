@@ -20,6 +20,11 @@
 class QValidatedLineEdit;
 class SendCoinsRecipient;
 
+namespace ipc
+{
+    class Node;
+}
+
 QT_BEGIN_NAMESPACE
 class QAbstractItemView;
 class QDateTime;
@@ -241,6 +246,15 @@ namespace GUIUtil
     typedef ClickableProgressBar ProgressBar;
 #endif
 
+    /**
+     * Set an argument if it doesn't already have a value
+     */
+    bool SoftSetArg(ipc::Node& ipcNode, const std::string& arg, const std::string& value);
+
+    /**
+     * Set a boolean argument if it doesn't already have a value
+     */
+    bool SoftSetBoolArg(ipc::Node& ipcNode, const std::string& arg, bool value);
 } // namespace GUIUtil
 
 #endif // BITCOIN_QT_GUIUTIL_H

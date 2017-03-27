@@ -14,6 +14,10 @@
 class ClientModel;
 class PeerTablePriv;
 
+namespace ipc {
+class Node;
+}
+
 QT_BEGIN_NAMESPACE
 class QTimer;
 QT_END_NAMESPACE
@@ -45,7 +49,7 @@ class PeerTableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit PeerTableModel(ClientModel *parent = 0);
+    explicit PeerTableModel(ipc::Node& ipcNode, ClientModel *parent = 0);
     ~PeerTableModel();
     const CNodeCombinedStats *getNodeStats(int idx);
     int getRowByNodeId(NodeId nodeid);
@@ -74,6 +78,7 @@ public Q_SLOTS:
     void refresh();
 
 private:
+    ipc::Node& ipcNode;
     ClientModel *clientModel;
     QStringList columns;
     std::unique_ptr<PeerTablePriv> priv;

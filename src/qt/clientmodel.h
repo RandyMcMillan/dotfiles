@@ -8,6 +8,8 @@
 #include <QObject>
 #include <QDateTime>
 
+#include <memory>
+
 class AddressTableModel;
 class BanTableModel;
 class OptionsModel;
@@ -16,6 +18,11 @@ class TransactionTableModel;
 
 class CWallet;
 class CBlockIndex;
+
+namespace ipc {
+class Handler;
+class Node;
+}
 
 QT_BEGIN_NAMESPACE
 class QTimer;
@@ -41,7 +48,7 @@ class ClientModel : public QObject
     Q_OBJECT
 
 public:
-    explicit ClientModel(OptionsModel *optionsModel, QObject *parent = 0);
+    explicit ClientModel(ipc::Node& ipcNode, OptionsModel *optionsModel, QObject *parent = 0);
     ~ClientModel();
 
     OptionsModel *getOptionsModel();
@@ -82,6 +89,14 @@ public:
     QString dataDir() const;
 
 private:
+    ipc::Node& ipcNode;
+    std::unique_ptr<ipc::Handler> handlerShowProgress;
+    std::unique_ptr<ipc::Handler> handlerNotifyNumConnectionsChanged;
+    std::unique_ptr<ipc::Handler> handlerNotifyNetworkActiveChanged;
+    std::unique_ptr<ipc::Handler> handlerNotifyAlertChanged;
+    std::unique_ptr<ipc::Handler> handlerBannedListChanged;
+    std::unique_ptr<ipc::Handler> handlerNotifyBlockTip;
+    std::unique_ptr<ipc::Handler> handlerNotifyHeaderTip;
     OptionsModel *optionsModel;
     PeerTableModel *peerTableModel;
     BanTableModel *banTableModel;

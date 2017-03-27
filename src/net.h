@@ -507,6 +507,9 @@ public:
     double dMinPing;
     std::string addrLocal;
     CAddress addr;
+    // Note: If you add fields to this class, you should also consider updating
+    // the CNode::copyStats() method, the getpeerinfo RPC (in rpc/net.cpp), and
+    // the IPC serialization code (in ipc/serialize.cpp and ipc/messages.capnp).
 };
 
 

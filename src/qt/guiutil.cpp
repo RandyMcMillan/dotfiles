@@ -981,4 +981,16 @@ void ClickableProgressBar::mouseReleaseEvent(QMouseEvent *event)
     Q_EMIT clicked(event->pos());
 }
 
+bool SoftSetArg(ipc::Node& ipcNode, const std::string& arg, const std::string& value)
+{
+    ipcNode.softSetArg(arg, value);
+    return ::SoftSetArg(arg, value);
+}
+
+bool SoftSetBoolArg(ipc::Node& ipcNode, const std::string& arg, bool value)
+{
+    ipcNode.softSetBoolArg(arg, value);
+    return ::SoftSetBoolArg(arg, value);
+}
+
 } // namespace GUIUtil

@@ -30,14 +30,15 @@ static const int64_t nClientStartupTime = GetTime();
 static int64_t nLastHeaderTipUpdateNotification = 0;
 static int64_t nLastBlockTipUpdateNotification = 0;
 
-ClientModel::ClientModel(OptionsModel *_optionsModel, QObject *parent) :
+ClientModel::ClientModel(ipc::Node& _ipcNode, OptionsModel *_optionsModel, QObject *parent) :
     QObject(parent),
+    ipcNode(_ipcNode),
     optionsModel(_optionsModel),
     peerTableModel(0),
     banTableModel(0),
     pollTimer(0)
 {
-    peerTableModel = new PeerTableModel(this);
+    peerTableModel = new PeerTableModel(ipcNode, this);
     banTableModel = new BanTableModel(this);
     pollTimer = new QTimer(this);
     connect(pollTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
@@ -273,7 +274,7 @@ static void BannedListChanged(ClientModel *clientmodel)
     QMetaObject::invokeMethod(clientmodel, "updateBanlist", Qt::QueuedConnection);
 }
 
-static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, const CBlockIndex *pIndex, bool fHeader)
+static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, int height, int64_t blockTime, double verificationProgress, bool fHeader)
 {
     // lock free async UI updates in case we have a new block tip
     // during initial sync, only update the UI if the last update
@@ -288,9 +289,9 @@ static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, const CB
     if (!initialSync || now - nLastUpdateNotification > MODEL_UPDATE_DELAY) {
         //pass a async signal to the UI thread
         QMetaObject::invokeMethod(clientmodel, "numBlocksChanged", Qt::QueuedConnection,
-                                  Q_ARG(int, pIndex->nHeight),
-                                  Q_ARG(QDateTime, QDateTime::fromTime_t(pIndex->GetBlockTime())),
-                                  Q_ARG(double, clientmodel->getVerificationProgress(pIndex)),
+                                  Q_ARG(int, height),
+                                  Q_ARG(QDateTime, QDateTime::fromTime_t(blockTime)),
+                                  Q_ARG(double, verificationProgress),
                                   Q_ARG(bool, fHeader));
         nLastUpdateNotification = now;
     }
@@ -299,23 +300,23 @@ static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, const CB
 void ClientModel::subscribeToCoreSignals()
 {
     // Connect signals to client
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyNumConnectionsChanged.connect(boost::bind(NotifyNumConnectionsChanged, this, _1));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyNetworkActiveChanged.connect(boost::bind(NotifyNetworkActiveChanged, this, _1));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyAlertChanged.connect(boost::bind(NotifyAlertChanged, this));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).BannedListChanged.connect(boost::bind(BannedListChanged, this));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyBlockTip.connect(boost::bind(BlockTipChanged, this, _1, _2, false));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyHeaderTip.connect(boost::bind(BlockTipChanged, this, _1, _2, true));
+    handlerShowProgress = ipcNode.handleShowProgress(boost::bind(ShowProgress, this, _1, _2));
+    handlerNotifyNumConnectionsChanged = ipcNode.handleNotifyNumConnectionsChanged(boost::bind(NotifyNumConnectionsChanged, this, _1));
+    handlerNotifyNetworkActiveChanged = ipcNode.handleNotifyNetworkActiveChanged(boost::bind(NotifyNetworkActiveChanged, this, _1));
+    handlerNotifyAlertChanged = ipcNode.handleNotifyAlertChanged(boost::bind(NotifyAlertChanged, this));
+    handlerBannedListChanged = ipcNode.handleBannedListChanged(boost::bind(BannedListChanged, this));
+    handlerNotifyBlockTip = ipcNode.handleNotifyBlockTip(boost::bind(BlockTipChanged, this, _1, _2, _3, _4, false));
+    handlerNotifyHeaderTip = ipcNode.handleNotifyHeaderTip(boost::bind(BlockTipChanged, this, _1, _2, _3, _4, true));
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
 {
     // Disconnect signals from client
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyNumConnectionsChanged.disconnect(boost::bind(NotifyNumConnectionsChanged, this, _1));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyNetworkActiveChanged.disconnect(boost::bind(NotifyNetworkActiveChanged, this, _1));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).BannedListChanged.disconnect(boost::bind(BannedListChanged, this));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyBlockTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, false));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyHeaderTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, true));
+    handlerShowProgress->disconnect();
+    handlerNotifyNumConnectionsChanged->disconnect();
+    handlerNotifyNetworkActiveChanged->disconnect();
+    handlerNotifyAlertChanged->disconnect();
+    handlerBannedListChanged->disconnect();
+    handlerNotifyBlockTip->disconnect();
+    handlerNotifyHeaderTip->disconnect();
 }

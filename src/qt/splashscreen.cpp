@@ -27,7 +27,7 @@
 #include <QPainter>
 #include <QRadialGradient>
 
-SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) :
+SplashScreen::SplashScreen(ipc::Node& ipcNode, Qt::WindowFlags f, const NetworkStyle *networkStyle) :
     QWidget(0, f), curAlignment(0)
 {
     // set reference point, paddings
@@ -131,7 +131,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     setFixedSize(r.size());
     move(QApplication::desktop()->screenGeometry().center() - r.center());
 
-    subscribeToCoreSignals();
+    subscribeToCoreSignals(ipcNode);
 }
 
 SplashScreen::~SplashScreen()
@@ -173,21 +173,21 @@ void SplashScreen::ConnectWallet(CWallet* wallet)
 }
 #endif
 
-void SplashScreen::subscribeToCoreSignals()
+void SplashScreen::subscribeToCoreSignals(ipc::Node& ipcNode)
 {
     // Connect signals to client
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).InitMessage.connect(boost::bind(InitMessage, this, _1));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2));
+    handlerInitMessage = ipcNode.handleInitMessage(boost::bind(InitMessage, this, _1));
+    handlerShowProgress = ipcNode.handleShowProgress(boost::bind(ShowProgress, this, _1, _2));
 #ifdef ENABLE_WALLET
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).LoadWallet.connect(boost::bind(&SplashScreen::ConnectWallet, this, _1));
+    FIXME_IMPLEMENT_IPC(handlerLoadWallet = ipcNode.handleLoadWallet(boost::bind(&SplashScreen::ConnectWallet, this, _1)));
 #endif
 }
 
 void SplashScreen::unsubscribeFromCoreSignals()
 {
     // Disconnect signals from client
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).InitMessage.disconnect(boost::bind(InitMessage, this, _1));
-    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
+    handlerInitMessage->disconnect();
+    handlerShowProgress->disconnect();
 #ifdef ENABLE_WALLET
     Q_FOREACH(CWallet* const & pwallet, connectedWallets) {
         pwallet->ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));

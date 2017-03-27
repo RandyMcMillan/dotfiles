@@ -12,6 +12,7 @@
 #include "chainparams.h"
 #include "checkpoints.h"
 #include "clientversion.h"
+#include "ipc/interfaces.h"
 #include "validation.h"
 #include "net.h"
 #include "txmempool.h"
@@ -61,65 +62,65 @@ int ClientModel::getNumConnections(unsigned int flags) const
     else if (flags == CONNECTIONS_ALL)
         connections = CConnman::CONNECTIONS_ALL;
 
-    if(g_connman)
-         return g_connman->GetNodeCount(connections);
+    if(FIXME_IMPLEMENT_IPC_VALUE(g_connman))
+         return FIXME_IMPLEMENT_IPC_VALUE(g_connman)->GetNodeCount(connections);
     return 0;
 }
 
 int ClientModel::getNumBlocks() const
 {
-    LOCK(cs_main);
-    return chainActive.Height();
+    LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main));
+    return FIXME_IMPLEMENT_IPC_VALUE(chainActive).Height();
 }
 
 int ClientModel::getHeaderTipHeight() const
 {
-    LOCK(cs_main);
-    if (!pindexBestHeader)
+    LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main));
+    if (!FIXME_IMPLEMENT_IPC_VALUE(pindexBestHeader))
         return 0;
-    return pindexBestHeader->nHeight;
+    return FIXME_IMPLEMENT_IPC_VALUE(pindexBestHeader)->nHeight;
 }
 
 int64_t ClientModel::getHeaderTipTime() const
 {
-    LOCK(cs_main);
-    if (!pindexBestHeader)
+    LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main));
+    if (!FIXME_IMPLEMENT_IPC_VALUE(pindexBestHeader))
         return 0;
-    return pindexBestHeader->GetBlockTime();
+    return FIXME_IMPLEMENT_IPC_VALUE(pindexBestHeader)->GetBlockTime();
 }
 
 quint64 ClientModel::getTotalBytesRecv() const
 {
-    if(!g_connman)
+    if(!FIXME_IMPLEMENT_IPC_VALUE(g_connman))
         return 0;
-    return g_connman->GetTotalBytesRecv();
+    return FIXME_IMPLEMENT_IPC_VALUE(g_connman)->GetTotalBytesRecv();
 }
 
 quint64 ClientModel::getTotalBytesSent() const
 {
-    if(!g_connman)
+    if(!FIXME_IMPLEMENT_IPC_VALUE(g_connman))
         return 0;
-    return g_connman->GetTotalBytesSent();
+    return FIXME_IMPLEMENT_IPC_VALUE(g_connman)->GetTotalBytesSent();
 }
 
 QDateTime ClientModel::getLastBlockDate() const
 {
-    LOCK(cs_main);
+    LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main));
 
-    if (chainActive.Tip())
-        return QDateTime::fromTime_t(chainActive.Tip()->GetBlockTime());
+    if (FIXME_IMPLEMENT_IPC_VALUE(chainActive).Tip())
+        return QDateTime::fromTime_t(FIXME_IMPLEMENT_IPC_VALUE(chainActive).Tip()->GetBlockTime());
 
     return QDateTime::fromTime_t(Params().GenesisBlock().GetBlockTime()); // Genesis block's time of current network
 }
 
 long ClientModel::getMempoolSize() const
 {
-    return mempool.size();
+    return FIXME_IMPLEMENT_IPC_VALUE(mempool).size();
 }
 
 size_t ClientModel::getMempoolDynamicUsage() const
 {
-    return mempool.DynamicMemoryUsage();
+    return FIXME_IMPLEMENT_IPC_VALUE(mempool).DynamicMemoryUsage();
 }
 
 double ClientModel::getVerificationProgress(const CBlockIndex *tipIn) const
@@ -127,8 +128,8 @@ double ClientModel::getVerificationProgress(const CBlockIndex *tipIn) const
     CBlockIndex *tip = const_cast<CBlockIndex *>(tipIn);
     if (!tip)
     {
-        LOCK(cs_main);
-        tip = chainActive.Tip();
+        LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main));
+        tip = FIXME_IMPLEMENT_IPC_VALUE(chainActive).Tip();
     }
     return GuessVerificationProgress(Params().TxData(), tip);
 }
@@ -158,14 +159,14 @@ void ClientModel::updateAlert()
 
 bool ClientModel::inInitialBlockDownload() const
 {
-    return IsInitialBlockDownload();
+    return FIXME_IMPLEMENT_IPC_VALUE(IsInitialBlockDownload());
 }
 
 enum BlockSource ClientModel::getBlockSource() const
 {
-    if (fReindex)
+    if (FIXME_IMPLEMENT_IPC_VALUE(fReindex))
         return BLOCK_SOURCE_REINDEX;
-    else if (fImporting)
+    else if (FIXME_IMPLEMENT_IPC_VALUE(fImporting))
         return BLOCK_SOURCE_DISK;
     else if (getNumConnections() > 0)
         return BLOCK_SOURCE_NETWORK;
@@ -175,22 +176,22 @@ enum BlockSource ClientModel::getBlockSource() const
 
 void ClientModel::setNetworkActive(bool active)
 {
-    if (g_connman) {
-         g_connman->SetNetworkActive(active);
+    if (FIXME_IMPLEMENT_IPC_VALUE(g_connman)) {
+        FIXME_IMPLEMENT_IPC(g_connman->SetNetworkActive(active));
     }
 }
 
 bool ClientModel::getNetworkActive() const
 {
-    if (g_connman) {
-        return g_connman->GetNetworkActive();
+    if (FIXME_IMPLEMENT_IPC_VALUE(g_connman)) {
+        return FIXME_IMPLEMENT_IPC_VALUE(g_connman)->GetNetworkActive();
     }
     return false;
 }
 
 QString ClientModel::getStatusBarWarnings() const
 {
-    return QString::fromStdString(GetWarnings("gui"));
+    return QString::fromStdString(FIXME_IMPLEMENT_IPC_VALUE(GetWarnings("gui")));
 }
 
 OptionsModel *ClientModel::getOptionsModel()
@@ -298,23 +299,23 @@ static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, const CB
 void ClientModel::subscribeToCoreSignals()
 {
     // Connect signals to client
-    uiInterface.ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2));
-    uiInterface.NotifyNumConnectionsChanged.connect(boost::bind(NotifyNumConnectionsChanged, this, _1));
-    uiInterface.NotifyNetworkActiveChanged.connect(boost::bind(NotifyNetworkActiveChanged, this, _1));
-    uiInterface.NotifyAlertChanged.connect(boost::bind(NotifyAlertChanged, this));
-    uiInterface.BannedListChanged.connect(boost::bind(BannedListChanged, this));
-    uiInterface.NotifyBlockTip.connect(boost::bind(BlockTipChanged, this, _1, _2, false));
-    uiInterface.NotifyHeaderTip.connect(boost::bind(BlockTipChanged, this, _1, _2, true));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyNumConnectionsChanged.connect(boost::bind(NotifyNumConnectionsChanged, this, _1));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyNetworkActiveChanged.connect(boost::bind(NotifyNetworkActiveChanged, this, _1));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyAlertChanged.connect(boost::bind(NotifyAlertChanged, this));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).BannedListChanged.connect(boost::bind(BannedListChanged, this));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyBlockTip.connect(boost::bind(BlockTipChanged, this, _1, _2, false));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyHeaderTip.connect(boost::bind(BlockTipChanged, this, _1, _2, true));
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
 {
     // Disconnect signals from client
-    uiInterface.ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
-    uiInterface.NotifyNumConnectionsChanged.disconnect(boost::bind(NotifyNumConnectionsChanged, this, _1));
-    uiInterface.NotifyNetworkActiveChanged.disconnect(boost::bind(NotifyNetworkActiveChanged, this, _1));
-    uiInterface.NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this));
-    uiInterface.BannedListChanged.disconnect(boost::bind(BannedListChanged, this));
-    uiInterface.NotifyBlockTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, false));
-    uiInterface.NotifyHeaderTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, true));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyNumConnectionsChanged.disconnect(boost::bind(NotifyNumConnectionsChanged, this, _1));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyNetworkActiveChanged.disconnect(boost::bind(NotifyNetworkActiveChanged, this, _1));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).BannedListChanged.disconnect(boost::bind(BannedListChanged, this));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyBlockTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, false));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).NotifyHeaderTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, true));
 }

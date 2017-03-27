@@ -15,6 +15,7 @@
 
 #include "wallet/coincontrol.h"
 #include "init.h"
+#include "ipc/interfaces.h"
 #include "policy/policy.h"
 #include "validation.h" // For mempool
 #include "wallet/wallet.h"
@@ -433,7 +434,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
         {
             CTxOut txout(amount, (CScript)std::vector<unsigned char>(24, 0));
             txDummy.vout.push_back(txout);
-            if (txout.IsDust(dustRelayFee))
+            if (txout.IsDust(FIXME_IMPLEMENT_IPC_VALUE(dustRelayFee)))
                fDust = true;
         }
     }
@@ -512,7 +513,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
                 nBytes -= 34;
 
         // Fee
-        nPayFee = CWallet::GetMinimumFee(nBytes, nTxConfirmTarget, mempool);
+        nPayFee = FIXME_IMPLEMENT_IPC_VALUE(CWallet::GetMinimumFee(nBytes, FIXME_IMPLEMENT_IPC_VALUE(nTxConfirmTarget), FIXME_IMPLEMENT_IPC_VALUE(mempool)));
         if (nPayFee > 0 && coinControl->nMinimumTotalFee > nPayFee)
             nPayFee = coinControl->nMinimumTotalFee;
 
@@ -526,10 +527,10 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
             if (nChange > 0 && nChange < MIN_CHANGE)
             {
                 CTxOut txout(nChange, (CScript)std::vector<unsigned char>(24, 0));
-                if (txout.IsDust(dustRelayFee))
+                if (txout.IsDust(FIXME_IMPLEMENT_IPC_VALUE(dustRelayFee)))
                 {
                     if (CoinControlDialog::fSubtractFeeFromAmount) // dust-change will be raised until no dust
-                        nChange = txout.GetDustThreshold(dustRelayFee);
+                        nChange = txout.GetDustThreshold(FIXME_IMPLEMENT_IPC_VALUE(dustRelayFee));
                     else
                     {
                         nPayFee += nChange;
@@ -589,10 +590,10 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
 
     // how many satoshis the estimated fee can vary per byte we guess wrong
     double dFeeVary;
-    if (payTxFee.GetFeePerK() > 0)
-        dFeeVary = (double)std::max(CWallet::GetRequiredFee(1000), payTxFee.GetFeePerK()) / 1000;
+    if (FIXME_IMPLEMENT_IPC_VALUE(payTxFee).GetFeePerK() > 0)
+        dFeeVary = (double)std::max(FIXME_IMPLEMENT_IPC_VALUE(CWallet::GetRequiredFee(1000)), FIXME_IMPLEMENT_IPC_VALUE(payTxFee).GetFeePerK()) / 1000;
     else {
-        dFeeVary = (double)std::max(CWallet::GetRequiredFee(1000), mempool.estimateSmartFee(nTxConfirmTarget).GetFeePerK()) / 1000;
+        dFeeVary = (double)std::max(FIXME_IMPLEMENT_IPC_VALUE(CWallet::GetRequiredFee(1000)), FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(mempool).estimateSmartFee(FIXME_IMPLEMENT_IPC_VALUE(nTxConfirmTarget))).GetFeePerK()) / 1000;
     }
     QString toolTip4 = tr("Can vary +/- %1 satoshi(s) per input.").arg(dFeeVary);
 

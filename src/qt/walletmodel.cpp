@@ -14,6 +14,7 @@
 
 #include "base58.h"
 #include "keystore.h"
+#include "ipc/interfaces.h"
 #include "validation.h"
 #include "net.h" // for g_connman
 #include "sync.h"
@@ -64,7 +65,7 @@ CAmount WalletModel::getBalance(const CCoinControl *coinControl) const
     {
         CAmount nBalance = 0;
         std::vector<COutput> vCoins;
-        wallet->AvailableCoins(vCoins, true, coinControl);
+        FIXME_IMPLEMENT_IPC(wallet->AvailableCoins(vCoins, true, coinControl));
         BOOST_FOREACH(const COutput& out, vCoins)
             if(out.fSpendable)
                 nBalance += out.tx->tx->vout[out.i].nValue;
@@ -72,17 +73,17 @@ CAmount WalletModel::getBalance(const CCoinControl *coinControl) const
         return nBalance;
     }
 
-    return wallet->GetBalance();
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->GetBalance());
 }
 
 CAmount WalletModel::getUnconfirmedBalance() const
 {
-    return wallet->GetUnconfirmedBalance();
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->GetUnconfirmedBalance());
 }
 
 CAmount WalletModel::getImmatureBalance() const
 {
-    return wallet->GetImmatureBalance();
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->GetImmatureBalance());
 }
 
 bool WalletModel::haveWatchOnly() const
@@ -92,17 +93,17 @@ bool WalletModel::haveWatchOnly() const
 
 CAmount WalletModel::getWatchBalance() const
 {
-    return wallet->GetWatchOnlyBalance();
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->GetWatchOnlyBalance());
 }
 
 CAmount WalletModel::getWatchUnconfirmedBalance() const
 {
-    return wallet->GetUnconfirmedWatchOnlyBalance();
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->GetUnconfirmedWatchOnlyBalance());
 }
 
 CAmount WalletModel::getWatchImmatureBalance() const
 {
-    return wallet->GetImmatureWatchOnlyBalance();
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->GetImmatureWatchOnlyBalance());
 }
 
 void WalletModel::updateStatus()
@@ -118,19 +119,19 @@ void WalletModel::pollBalanceChanged()
     // Get required locks upfront. This avoids the GUI from getting stuck on
     // periodical polls if the core is holding the locks for a longer time -
     // for example, during a wallet rescan.
-    TRY_LOCK(cs_main, lockMain);
+    TRY_LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main), lockMain);
     if(!lockMain)
         return;
     TRY_LOCK(wallet->cs_wallet, lockWallet);
     if(!lockWallet)
         return;
 
-    if(fForceCheckBalanceChanged || chainActive.Height() != cachedNumBlocks)
+    if(fForceCheckBalanceChanged || FIXME_IMPLEMENT_IPC_VALUE(chainActive).Height() != cachedNumBlocks)
     {
         fForceCheckBalanceChanged = false;
 
         // Balance and number of transactions might have changed
-        cachedNumBlocks = chainActive.Height();
+        cachedNumBlocks = FIXME_IMPLEMENT_IPC_VALUE(chainActive).Height();
 
         checkBalanceChanged();
         if(transactionTableModel)
@@ -267,7 +268,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
     }
 
     {
-        LOCK2(cs_main, wallet->cs_wallet);
+        LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
 
         transaction.newPossibleKeyChange(wallet);
 
@@ -277,7 +278,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
 
         CWalletTx *newTx = transaction.getTransaction();
         CReserveKey *keyChange = transaction.getPossibleKeyChange();
-        bool fCreated = wallet->CreateTransaction(vecSend, *newTx, *keyChange, nFeeRequired, nChangePosRet, strFailReason, coinControl);
+        bool fCreated = FIXME_IMPLEMENT_IPC_VALUE(wallet->CreateTransaction(vecSend, *newTx, *keyChange, nFeeRequired, nChangePosRet, strFailReason, coinControl));
         transaction.setTransactionFee(nFeeRequired);
         if (fSubtractFeeFromAmount && fCreated)
             transaction.reassignAmounts(nChangePosRet);
@@ -294,9 +295,9 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         }
 
         // reject absurdly high fee. (This can never happen because the
-        // wallet caps the fee at maxTxFee. This merely serves as a
+        // wallet caps the fee at FIXME_IMPLEMENT_IPC_VALUE(maxTxFee). This merely serves as a
         // belt-and-suspenders check)
-        if (nFeeRequired > maxTxFee)
+        if (nFeeRequired > FIXME_IMPLEMENT_IPC_VALUE(maxTxFee))
             return AbsurdFee;
     }
 
@@ -308,7 +309,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
     QByteArray transaction_array; /* store serialized transaction */
 
     {
-        LOCK2(cs_main, wallet->cs_wallet);
+        LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
         CWalletTx *newTx = transaction.getTransaction();
 
         Q_FOREACH(const SendCoinsRecipient &rcp, transaction.getRecipients())
@@ -332,7 +333,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
 
         CReserveKey *keyChange = transaction.getPossibleKeyChange();
         CValidationState state;
-        if(!wallet->CommitTransaction(*newTx, *keyChange, g_connman.get(), state))
+        if(!FIXME_IMPLEMENT_IPC_VALUE(wallet->CommitTransaction(*newTx, *keyChange, g_connman.get(), state)))
             return SendCoinsReturn(TransactionCommitFailed, QString::fromStdString(state.GetRejectReason()));
 
         CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION);
@@ -358,11 +359,11 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
                 // Check if we have a new address or an updated label
                 if (mi == wallet->mapAddressBook.end())
                 {
-                    wallet->SetAddressBook(dest, strLabel, "send");
+                    FIXME_IMPLEMENT_IPC_VALUE(wallet->SetAddressBook(dest, strLabel, "send"));
                 }
                 else if (mi->second.name != strLabel)
                 {
-                    wallet->SetAddressBook(dest, strLabel, ""); // "" means don't change purpose
+                    FIXME_IMPLEMENT_IPC_VALUE(wallet->SetAddressBook(dest, strLabel, "")); // "" means don't change purpose
                 }
             }
         }
@@ -414,7 +415,7 @@ bool WalletModel::setWalletEncrypted(bool encrypted, const SecureString &passphr
     if(encrypted)
     {
         // Encrypt
-        return wallet->EncryptWallet(passphrase);
+        return FIXME_IMPLEMENT_IPC_VALUE(wallet->EncryptWallet(passphrase));
     }
     else
     {
@@ -433,7 +434,7 @@ bool WalletModel::setWalletLocked(bool locked, const SecureString &passPhrase)
     else
     {
         // Unlock
-        return wallet->Unlock(passPhrase);
+        return FIXME_IMPLEMENT_IPC_VALUE(wallet->Unlock(passPhrase));
     }
 }
 
@@ -443,14 +444,14 @@ bool WalletModel::changePassphrase(const SecureString &oldPass, const SecureStri
     {
         LOCK(wallet->cs_wallet);
         wallet->Lock(); // Make sure wallet is locked before attempting pass change
-        retval = wallet->ChangeWalletPassphrase(oldPass, newPass);
+        retval = FIXME_IMPLEMENT_IPC_VALUE(wallet->ChangeWalletPassphrase(oldPass, newPass));
     }
     return retval;
 }
 
 bool WalletModel::backupWallet(const QString &filename)
 {
-    return wallet->BackupWallet(filename.toLocal8Bit().data());
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->BackupWallet(filename.toLocal8Bit().data()));
 }
 
 // Handlers for core signals
@@ -574,11 +575,11 @@ bool WalletModel::getPrivKey(const CKeyID &address, CKey& vchPrivKeyOut) const
 // returns a list of COutputs from COutPoints
 void WalletModel::getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs)
 {
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
     BOOST_FOREACH(const COutPoint& outpoint, vOutpoints)
     {
         if (!wallet->mapWallet.count(outpoint.hash)) continue;
-        int nDepth = wallet->mapWallet[outpoint.hash].GetDepthInMainChain();
+        int nDepth = FIXME_IMPLEMENT_IPC_VALUE(wallet->mapWallet[outpoint.hash].GetDepthInMainChain());
         if (nDepth < 0) continue;
         COutput out(&wallet->mapWallet[outpoint.hash], outpoint.n, nDepth, true /* spendable */, true /* solvable */, true /* safe */);
         vOutputs.push_back(out);
@@ -587,17 +588,17 @@ void WalletModel::getOutputs(const std::vector<COutPoint>& vOutpoints, std::vect
 
 bool WalletModel::isSpent(const COutPoint& outpoint) const
 {
-    LOCK2(cs_main, wallet->cs_wallet);
-    return wallet->IsSpent(outpoint.hash, outpoint.n);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->IsSpent(outpoint.hash, outpoint.n));
 }
 
 // AvailableCoins + LockedCoins grouped by wallet address (put change in one group with wallet address)
 void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) const
 {
     std::vector<COutput> vCoins;
-    wallet->AvailableCoins(vCoins);
+    FIXME_IMPLEMENT_IPC(wallet->AvailableCoins(vCoins));
 
-    LOCK2(cs_main, wallet->cs_wallet); // ListLockedCoins, mapWallet
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet); // ListLockedCoins, mapWallet
     std::vector<COutPoint> vLockedCoins;
     wallet->ListLockedCoins(vLockedCoins);
 
@@ -605,10 +606,10 @@ void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) 
     BOOST_FOREACH(const COutPoint& outpoint, vLockedCoins)
     {
         if (!wallet->mapWallet.count(outpoint.hash)) continue;
-        int nDepth = wallet->mapWallet[outpoint.hash].GetDepthInMainChain();
+        int nDepth = FIXME_IMPLEMENT_IPC_VALUE(wallet->mapWallet[outpoint.hash].GetDepthInMainChain());
         if (nDepth < 0) continue;
         COutput out(&wallet->mapWallet[outpoint.hash], outpoint.n, nDepth, true /* spendable */, true /* solvable */, true /* safe */);
-        if (outpoint.n < out.tx->tx->vout.size() && wallet->IsMine(out.tx->tx->vout[outpoint.n]) == ISMINE_SPENDABLE)
+        if (outpoint.n < out.tx->tx->vout.size() && FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(out.tx->tx->vout[outpoint.n])) == ISMINE_SPENDABLE)
             vCoins.push_back(out);
     }
 
@@ -616,7 +617,7 @@ void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) 
     {
         COutput cout = out;
 
-        while (wallet->IsChange(cout.tx->tx->vout[cout.i]) && cout.tx->tx->vin.size() > 0 && wallet->IsMine(cout.tx->tx->vin[0]))
+        while (FIXME_IMPLEMENT_IPC_VALUE(wallet->IsChange(cout.tx->tx->vout[cout.i])) && cout.tx->tx->vin.size() > 0 && FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(cout.tx->tx->vin[0])))
         {
             if (!wallet->mapWallet.count(cout.tx->tx->vin[0].prevout.hash)) break;
             cout = COutput(&wallet->mapWallet[cout.tx->tx->vin[0].prevout.hash], cout.tx->tx->vin[0].prevout.n, 0 /* depth */, true /* spendable */, true /* solvable */, true /* safe */);
@@ -631,25 +632,25 @@ void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) 
 
 bool WalletModel::isLockedCoin(uint256 hash, unsigned int n) const
 {
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
     return wallet->IsLockedCoin(hash, n);
 }
 
 void WalletModel::lockCoin(COutPoint& output)
 {
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
     wallet->LockCoin(output);
 }
 
 void WalletModel::unlockCoin(COutPoint& output)
 {
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
     wallet->UnlockCoin(output);
 }
 
 void WalletModel::listLockedCoins(std::vector<COutPoint>& vOutpts)
 {
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
     wallet->ListLockedCoins(vOutpts);
 }
 
@@ -672,24 +673,24 @@ bool WalletModel::saveReceiveRequest(const std::string &sAddress, const int64_t 
 
     LOCK(wallet->cs_wallet);
     if (sRequest.empty())
-        return wallet->EraseDestData(dest, key);
+        return FIXME_IMPLEMENT_IPC_VALUE(wallet->EraseDestData(dest, key));
     else
-        return wallet->AddDestData(dest, key, sRequest);
+        return FIXME_IMPLEMENT_IPC_VALUE(wallet->AddDestData(dest, key, sRequest));
 }
 
 bool WalletModel::transactionCanBeAbandoned(uint256 hash) const
 {
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
     const CWalletTx *wtx = wallet->GetWalletTx(hash);
-    if (!wtx || wtx->isAbandoned() || wtx->GetDepthInMainChain() > 0 || wtx->InMempool())
+    if (!wtx || wtx->isAbandoned() || FIXME_IMPLEMENT_IPC_VALUE(wtx->GetDepthInMainChain()) > 0 || FIXME_IMPLEMENT_IPC_VALUE(wtx->InMempool()))
         return false;
     return true;
 }
 
 bool WalletModel::abandonTransaction(uint256 hash) const
 {
-    LOCK2(cs_main, wallet->cs_wallet);
-    return wallet->AbandonTransaction(hash);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
+    return FIXME_IMPLEMENT_IPC_VALUE(wallet->AbandonTransaction(hash));
 }
 
 bool WalletModel::isWalletEnabled()
@@ -704,10 +705,10 @@ bool WalletModel::hdEnabled() const
 
 int WalletModel::getDefaultConfirmTarget() const
 {
-    return nTxConfirmTarget;
+    return FIXME_IMPLEMENT_IPC_VALUE(nTxConfirmTarget);
 }
 
 bool WalletModel::getDefaultWalletRbf() const
 {
-    return fWalletRbf;
+    return FIXME_IMPLEMENT_IPC_VALUE(fWalletRbf);
 }

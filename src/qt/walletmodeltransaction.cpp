@@ -4,6 +4,7 @@
 
 #include "walletmodeltransaction.h"
 
+#include "ipc/interfaces.h"
 #include "policy/policy.h"
 #include "wallet/wallet.h"
 
@@ -34,7 +35,7 @@ CWalletTx *WalletModelTransaction::getTransaction()
 
 unsigned int WalletModelTransaction::getTransactionSize()
 {
-    return (!walletTransaction ? 0 : ::GetVirtualTransactionSize(*walletTransaction));
+    return (!walletTransaction ? 0 : FIXME_IMPLEMENT_IPC_VALUE(::GetVirtualTransactionSize(*walletTransaction)));
 }
 
 CAmount WalletModelTransaction::getTransactionFee()

@@ -16,6 +16,7 @@
 #include "bantablemodel.h"
 
 #include "chainparams.h"
+#include "ipc/interfaces.h"
 #include "netbase.h"
 #include "rpc/server.h"
 #include "rpc/client.h"
@@ -301,9 +302,9 @@ bool RPCConsole::RPCParseCommandLine(std::string &strResult, const std::string &
                             // Convert argument list to JSON objects in method-dependent way,
                             // and pass it along with the method name to the dispatcher.
                             JSONRPCRequest req;
-                            req.params = RPCConvertValues(stack.back()[0], std::vector<std::string>(stack.back().begin() + 1, stack.back().end()));
+                            req.params = FIXME_IMPLEMENT_IPC_VALUE(RPCConvertValues(stack.back()[0], std::vector<std::string>(stack.back().begin() + 1, stack.back().end())));
                             req.strMethod = stack.back()[0];
-                            lastResult = tableRPC.execute(req);
+                            lastResult = FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(tableRPC).execute(req));
                         }
 
                         state = STATE_COMMAND_EXECUTED;
@@ -452,7 +453,7 @@ RPCConsole::RPCConsole(const PlatformStyle *_platformStyle, QWidget *parent) :
     rpcTimerInterface = new QtRPCTimerInterface();
     // avoid accidentally overwriting an existing, non QTThread
     // based timer interface
-    RPCSetTimerInterfaceIfUnset(rpcTimerInterface);
+    FIXME_IMPLEMENT_IPC(RPCSetTimerInterfaceIfUnset(rpcTimerInterface));
 
     setTrafficGraphRange(INITIAL_TRAFFIC_GRAPH_MINS);
 
@@ -467,7 +468,7 @@ RPCConsole::RPCConsole(const PlatformStyle *_platformStyle, QWidget *parent) :
 RPCConsole::~RPCConsole()
 {
     GUIUtil::saveWindowGeometry("nRPCConsoleWindow", this);
-    RPCUnsetTimerInterface(rpcTimerInterface);
+    FIXME_IMPLEMENT_IPC(RPCUnsetTimerInterface(rpcTimerInterface));
     delete rpcTimerInterface;
     delete ui;
 }
@@ -626,7 +627,7 @@ void RPCConsole::setClientModel(ClientModel *model)
 
         //Setup autocomplete and attach it
         QStringList wordList;
-        std::vector<std::string> commandList = tableRPC.listCommands();
+        std::vector<std::string> commandList = FIXME_IMPLEMENT_IPC_VALUE(tableRPC).listCommands();
         for (size_t i = 0; i < commandList.size(); ++i)
         {
             wordList << commandList[i].c_str();
@@ -1110,7 +1111,7 @@ void RPCConsole::showBanTableContextMenu(const QPoint& point)
 
 void RPCConsole::disconnectSelectedNode()
 {
-    if(!g_connman)
+    if(!FIXME_IMPLEMENT_IPC_VALUE(g_connman))
         return;
     
     // Get selected peer addresses
@@ -1120,14 +1121,14 @@ void RPCConsole::disconnectSelectedNode()
         // Get currently selected peer address
         NodeId id = nodes.at(i).data().toInt();
         // Find the node, disconnect it and clear the selected node
-        if(g_connman->DisconnectNode(id))
+        if(FIXME_IMPLEMENT_IPC_VALUE(g_connman)->DisconnectNode(id))
             clearSelectedNode();
     }
 }
 
 void RPCConsole::banSelectedNode(int bantime)
 {
-    if (!clientModel || !g_connman)
+    if (!clientModel || !FIXME_IMPLEMENT_IPC_VALUE(g_connman))
         return;
     
     // Get selected peer addresses
@@ -1145,7 +1146,7 @@ void RPCConsole::banSelectedNode(int bantime)
 	// Find possible nodes, ban it and clear the selected node
 	const CNodeCombinedStats *stats = clientModel->getPeerTableModel()->getNodeStats(detailNodeRow);
 	if(stats) {
-	    g_connman->Ban(stats->nodeStats.addr, BanReasonManuallyAdded, bantime);
+	    FIXME_IMPLEMENT_IPC_VALUE(g_connman)->Ban(stats->nodeStats.addr, BanReasonManuallyAdded, bantime);
 	}
     }
     clearSelectedNode();
@@ -1166,9 +1167,9 @@ void RPCConsole::unbanSelectedNode()
         CSubNet possibleSubnet;
 
         LookupSubNet(strNode.toStdString().c_str(), possibleSubnet);
-        if (possibleSubnet.IsValid() && g_connman)
+        if (possibleSubnet.IsValid() && FIXME_IMPLEMENT_IPC_VALUE(g_connman))
         {
-            g_connman->Unban(possibleSubnet);
+            FIXME_IMPLEMENT_IPC_VALUE(g_connman)->Unban(possibleSubnet);
             clientModel->getBanTableModel()->refresh();
         }
     }

@@ -13,6 +13,7 @@
 #include "guiutil.h"
 #include "optionsmodel.h"
 
+#include "ipc/interfaces.h"
 #include "validation.h" // for DEFAULT_SCRIPTCHECK_THREADS and MAX_SCRIPTCHECK_THREADS
 #include "netbase.h"
 #include "txdb.h" // for -dbcache defaults
@@ -305,17 +306,17 @@ void OptionsDialog::updateDefaultProxyNets()
     std::string strProxy;
     QString strDefaultProxyGUI;
 
-    GetProxy(NET_IPV4, proxy);
+    FIXME_IMPLEMENT_IPC(GetProxy(NET_IPV4, proxy));
     strProxy = proxy.proxy.ToStringIP() + ":" + proxy.proxy.ToStringPort();
     strDefaultProxyGUI = ui->proxyIp->text() + ":" + ui->proxyPort->text();
     (strProxy == strDefaultProxyGUI.toStdString()) ? ui->proxyReachIPv4->setChecked(true) : ui->proxyReachIPv4->setChecked(false);
 
-    GetProxy(NET_IPV6, proxy);
+    FIXME_IMPLEMENT_IPC(GetProxy(NET_IPV6, proxy));
     strProxy = proxy.proxy.ToStringIP() + ":" + proxy.proxy.ToStringPort();
     strDefaultProxyGUI = ui->proxyIp->text() + ":" + ui->proxyPort->text();
     (strProxy == strDefaultProxyGUI.toStdString()) ? ui->proxyReachIPv6->setChecked(true) : ui->proxyReachIPv6->setChecked(false);
 
-    GetProxy(NET_TOR, proxy);
+    FIXME_IMPLEMENT_IPC(GetProxy(NET_TOR, proxy));
     strProxy = proxy.proxy.ToStringIP() + ":" + proxy.proxy.ToStringPort();
     strDefaultProxyGUI = ui->proxyIp->text() + ":" + ui->proxyPort->text();
     (strProxy == strDefaultProxyGUI.toStdString()) ? ui->proxyReachTor->setChecked(true) : ui->proxyReachTor->setChecked(false);

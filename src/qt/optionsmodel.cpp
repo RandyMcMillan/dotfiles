@@ -13,6 +13,7 @@
 
 #include "amount.h"
 #include "init.h"
+#include "ipc/interfaces.h"
 #include "validation.h" // For DEFAULT_SCRIPTCHECK_THREADS
 #include "net.h"
 #include "netbase.h"
@@ -277,7 +278,7 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             break;
         case MapPortUPnP: // core option - can be changed on-the-fly
             settings.setValue("fUseUPnP", value.toBool());
-            MapPort(value.toBool());
+            FIXME_IMPLEMENT_IPC(MapPort(value.toBool()));
             break;
         case MinimizeOnClose:
             fMinimizeOnClose = value.toBool();
@@ -422,7 +423,7 @@ bool OptionsModel::getProxySettings(QNetworkProxy& proxy) const
     // Directly query current base proxy, because
     // GUI settings can be overridden with -proxy.
     proxyType curProxy;
-    if (GetProxy(NET_IPV4, curProxy)) {
+    if (FIXME_IMPLEMENT_IPC_VALUE(GetProxy(NET_IPV4, curProxy))) {
         proxy.setType(QNetworkProxy::Socks5Proxy);
         proxy.setHostName(QString::fromStdString(curProxy.proxy.ToStringIP()));
         proxy.setPort(curProxy.proxy.GetPort());

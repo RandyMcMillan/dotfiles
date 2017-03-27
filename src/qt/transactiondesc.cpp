@@ -11,6 +11,7 @@
 
 #include "base58.h"
 #include "consensus/consensus.h"
+#include "ipc/interfaces.h"
 #include "validation.h"
 #include "script/script.h"
 #include "timedata.h"
@@ -23,23 +24,23 @@
 
 QString TransactionDesc::FormatTxStatus(const CWalletTx& wtx)
 {
-    AssertLockHeld(cs_main);
-    if (!CheckFinalTx(wtx))
+    AssertLockHeld(FIXME_IMPLEMENT_IPC_VALUE(cs_main));
+    if (!FIXME_IMPLEMENT_IPC_VALUE(CheckFinalTx(wtx)))
     {
         if (wtx.tx->nLockTime < LOCKTIME_THRESHOLD)
-            return tr("Open for %n more block(s)", "", wtx.tx->nLockTime - chainActive.Height());
+            return tr("Open for %n more block(s)", "", wtx.tx->nLockTime - FIXME_IMPLEMENT_IPC_VALUE(chainActive).Height());
         else
             return tr("Open until %1").arg(GUIUtil::dateTimeStr(wtx.tx->nLockTime));
     }
     else
     {
-        int nDepth = wtx.GetDepthInMainChain();
+        int nDepth = FIXME_IMPLEMENT_IPC_VALUE(wtx.GetDepthInMainChain());
         if (nDepth < 0)
             return tr("conflicted with a transaction with %1 confirmations").arg(-nDepth);
-        else if (GetAdjustedTime() - wtx.nTimeReceived > 2 * 60 && wtx.GetRequestCount() == 0)
+        else if (FIXME_IMPLEMENT_IPC_VALUE(GetAdjustedTime()) - wtx.nTimeReceived > 2 * 60 && FIXME_IMPLEMENT_IPC_VALUE(wtx.GetRequestCount()) == 0)
             return tr("%1/offline").arg(nDepth);
         else if (nDepth == 0)
-            return tr("0/unconfirmed, %1").arg((wtx.InMempool() ? tr("in memory pool") : tr("not in memory pool"))) + (wtx.isAbandoned() ? ", "+tr("abandoned") : "");
+            return tr("0/unconfirmed, %1").arg((FIXME_IMPLEMENT_IPC_VALUE(wtx.InMempool()) ? tr("in memory pool") : tr("not in memory pool"))) + (wtx.isAbandoned() ? ", "+tr("abandoned") : "");
         else if (nDepth < 6)
             return tr("%1/unconfirmed").arg(nDepth);
         else
@@ -51,17 +52,17 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
 {
     QString strHTML;
 
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
     strHTML.reserve(4000);
     strHTML += "<html><font face='verdana, arial, helvetica, sans-serif'>";
 
     int64_t nTime = wtx.GetTxTime();
-    CAmount nCredit = wtx.GetCredit(ISMINE_ALL);
-    CAmount nDebit = wtx.GetDebit(ISMINE_ALL);
+    CAmount nCredit = FIXME_IMPLEMENT_IPC_VALUE(wtx.GetCredit(ISMINE_ALL));
+    CAmount nDebit = FIXME_IMPLEMENT_IPC_VALUE(wtx.GetDebit(ISMINE_ALL));
     CAmount nNet = nCredit - nDebit;
 
     strHTML += "<b>" + tr("Status") + ":</b> " + FormatTxStatus(wtx);
-    int nRequests = wtx.GetRequestCount();
+    int nRequests = FIXME_IMPLEMENT_IPC_VALUE(wtx.GetRequestCount());
     if (nRequests != -1)
     {
         if (nRequests == 0)
@@ -99,7 +100,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
                     strHTML += "<b>" + tr("From") + ":</b> " + tr("unknown") + "<br>";
                     strHTML += "<b>" + tr("To") + ":</b> ";
                     strHTML += GUIUtil::HtmlEscape(rec->address);
-                    QString addressOwned = (::IsMine(*wallet, address) == ISMINE_SPENDABLE) ? tr("own address") : tr("watch-only");
+                    QString addressOwned = (FIXME_IMPLEMENT_IPC_VALUE(::IsMine(*wallet, address)) == ISMINE_SPENDABLE) ? tr("own address") : tr("watch-only");
                     if (!wallet->mapAddressBook[address].name.empty())
                         strHTML += " (" + addressOwned + ", " + tr("label") + ": " + GUIUtil::HtmlEscape(wallet->mapAddressBook[address].name) + ")";
                     else
@@ -134,10 +135,10 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
         //
         CAmount nUnmatured = 0;
         BOOST_FOREACH(const CTxOut& txout, wtx.tx->vout)
-            nUnmatured += wallet->GetCredit(txout, ISMINE_ALL);
+            nUnmatured += FIXME_IMPLEMENT_IPC_VALUE(wallet->GetCredit(txout, ISMINE_ALL));
         strHTML += "<b>" + tr("Credit") + ":</b> ";
         if (wtx.IsInMainChain())
-            strHTML += BitcoinUnits::formatHtmlWithUnit(unit, nUnmatured)+ " (" + tr("matures in %n more block(s)", "", wtx.GetBlocksToMaturity()) + ")";
+            strHTML += BitcoinUnits::formatHtmlWithUnit(unit, nUnmatured)+ " (" + tr("matures in %n more block(s)", "", FIXME_IMPLEMENT_IPC_VALUE(wtx.GetBlocksToMaturity())) + ")";
         else
             strHTML += "(" + tr("not accepted") + ")";
         strHTML += "<br>";
@@ -154,14 +155,14 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
         isminetype fAllFromMe = ISMINE_SPENDABLE;
         BOOST_FOREACH(const CTxIn& txin, wtx.tx->vin)
         {
-            isminetype mine = wallet->IsMine(txin);
+            isminetype mine = FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(txin)));
             if(fAllFromMe > mine) fAllFromMe = mine;
         }
 
         isminetype fAllToMe = ISMINE_SPENDABLE;
         BOOST_FOREACH(const CTxOut& txout, wtx.tx->vout)
         {
-            isminetype mine = wallet->IsMine(txout);
+            isminetype mine = FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(txout)));
             if(fAllToMe > mine) fAllToMe = mine;
         }
 
@@ -176,7 +177,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
             BOOST_FOREACH(const CTxOut& txout, wtx.tx->vout)
             {
                 // Ignore change
-                isminetype toSelf = wallet->IsMine(txout);
+                isminetype toSelf = FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(txout)));
                 if ((toSelf == ISMINE_SPENDABLE) && (fAllFromMe == ISMINE_SPENDABLE))
                     continue;
 
@@ -206,7 +207,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
             if (fAllToMe)
             {
                 // Payment to self
-                CAmount nChange = wtx.GetChange();
+                CAmount nChange = FIXME_IMPLEMENT_IPC_VALUE(wtx.GetChange());
                 CAmount nValue = nCredit - nChange;
                 strHTML += "<b>" + tr("Total debit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, -nValue) + "<br>";
                 strHTML += "<b>" + tr("Total credit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, nValue) + "<br>";
@@ -222,11 +223,11 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
             // Mixed debit transaction
             //
             BOOST_FOREACH(const CTxIn& txin, wtx.tx->vin)
-                if (wallet->IsMine(txin))
-                    strHTML += "<b>" + tr("Debit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, -wallet->GetDebit(txin, ISMINE_ALL)) + "<br>";
+                if (FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(txin))))
+                    strHTML += "<b>" + tr("Debit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, -FIXME_IMPLEMENT_IPC_VALUE(wallet->GetDebit(txin, ISMINE_ALL))) + "<br>";
             BOOST_FOREACH(const CTxOut& txout, wtx.tx->vout)
-                if (wallet->IsMine(txout))
-                    strHTML += "<b>" + tr("Credit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, wallet->GetCredit(txout, ISMINE_ALL)) + "<br>";
+                if (FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(txout))))
+                    strHTML += "<b>" + tr("Credit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, FIXME_IMPLEMENT_IPC_VALUE(wallet->GetCredit(txout, ISMINE_ALL))) + "<br>";
         }
     }
 
@@ -277,11 +278,11 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
     {
         strHTML += "<hr><br>" + tr("Debug information") + "<br><br>";
         BOOST_FOREACH(const CTxIn& txin, wtx.tx->vin)
-            if(wallet->IsMine(txin))
-                strHTML += "<b>" + tr("Debit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, -wallet->GetDebit(txin, ISMINE_ALL)) + "<br>";
+            if(FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(txin))))
+                strHTML += "<b>" + tr("Debit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, -FIXME_IMPLEMENT_IPC_VALUE(wallet->GetDebit(txin, ISMINE_ALL))) + "<br>";
         BOOST_FOREACH(const CTxOut& txout, wtx.tx->vout)
-            if(wallet->IsMine(txout))
-                strHTML += "<b>" + tr("Credit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, wallet->GetCredit(txout, ISMINE_ALL)) + "<br>";
+            if(FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(txout))))
+                strHTML += "<b>" + tr("Credit") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, FIXME_IMPLEMENT_IPC_VALUE(wallet->GetCredit(txout, ISMINE_ALL))) + "<br>";
 
         strHTML += "<br><b>" + tr("Transaction") + ":</b><br>";
         strHTML += GUIUtil::HtmlEscape(wtx.tx->ToString(), true);
@@ -294,7 +295,7 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
             COutPoint prevout = txin.prevout;
 
             CCoins prev;
-            if(pcoinsTip->GetCoins(prevout.hash, prev))
+            if(FIXME_IMPLEMENT_IPC_VALUE(pcoinsTip)->GetCoins(prevout.hash, prev))
             {
                 if (prevout.n < prev.vout.size())
                 {
@@ -308,8 +309,8 @@ QString TransactionDesc::toHTML(CWallet *wallet, CWalletTx &wtx, TransactionReco
                         strHTML += QString::fromStdString(CBitcoinAddress(address).ToString());
                     }
                     strHTML = strHTML + " " + tr("Amount") + "=" + BitcoinUnits::formatHtmlWithUnit(unit, vout.nValue);
-                    strHTML = strHTML + " IsMine=" + (wallet->IsMine(vout) & ISMINE_SPENDABLE ? tr("true") : tr("false")) + "</li>";
-                    strHTML = strHTML + " IsWatchOnly=" + (wallet->IsMine(vout) & ISMINE_WATCH_ONLY ? tr("true") : tr("false")) + "</li>";
+                    strHTML = strHTML + " IsMine=" + (FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(vout))) & ISMINE_SPENDABLE ? tr("true") : tr("false")) + "</li>";
+                    strHTML = strHTML + " IsWatchOnly=" + (FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(wallet->IsMine(vout))) & ISMINE_WATCH_ONLY ? tr("true") : tr("false")) + "</li>";
                 }
             }
         }

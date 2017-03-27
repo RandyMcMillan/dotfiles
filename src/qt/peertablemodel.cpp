@@ -8,6 +8,7 @@
 #include "guiconstants.h"
 #include "guiutil.h"
 
+#include "ipc/interfaces.h"
 #include "validation.h" // for cs_main
 #include "sync.h"
 
@@ -57,8 +58,8 @@ public:
         {
             cachedNodeStats.clear();
             std::vector<CNodeStats> vstats;
-            if(g_connman)
-                g_connman->GetNodeStats(vstats);
+            if(FIXME_IMPLEMENT_IPC_VALUE(g_connman))
+                FIXME_IMPLEMENT_IPC_VALUE(g_connman)->GetNodeStats(vstats);
 #if QT_VERSION >= 0x040700
             cachedNodeStats.reserve(vstats.size());
 #endif
@@ -76,11 +77,11 @@ public:
 
         // Try to retrieve the CNodeStateStats for each node.
         {
-            TRY_LOCK(cs_main, lockMain);
+            TRY_LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main), lockMain);
             if (lockMain)
             {
                 BOOST_FOREACH(CNodeCombinedStats &stats, cachedNodeStats)
-                    stats.fNodeStateStatsAvailable = GetNodeStateStats(stats.nodeStats.nodeid, stats.nodeStateStats);
+                    stats.fNodeStateStatsAvailable = FIXME_IMPLEMENT_IPC_VALUE(GetNodeStateStats(stats.nodeStats.nodeid, stats.nodeStateStats));
             }
         }
 

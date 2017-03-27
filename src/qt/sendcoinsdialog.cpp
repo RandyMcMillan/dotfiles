@@ -18,7 +18,8 @@
 #include "base58.h"
 #include "chainparams.h"
 #include "wallet/coincontrol.h"
-#include "validation.h" // mempool and minRelayTxFee
+#include "ipc/interfaces.h"
+#include "validation.h" // FIXME_IMPLEMENT_IPC_VALUE(mempool) and minRelayTxFee
 #include "ui_interface.h"
 #include "txmempool.h"
 #include "wallet/wallet.h"
@@ -169,7 +170,7 @@ void SendCoinsDialog::setModel(WalletModel *_model)
         connect(ui->checkBoxMinimumFee, SIGNAL(stateChanged(int)), this, SLOT(updateFeeSectionControls()));
         connect(ui->checkBoxMinimumFee, SIGNAL(stateChanged(int)), this, SLOT(updateGlobalFeeVariables()));
         connect(ui->checkBoxMinimumFee, SIGNAL(stateChanged(int)), this, SLOT(coinControlUpdateLabels()));
-        ui->customFee->setSingleStep(CWallet::GetRequiredFee(1000));
+        ui->customFee->setSingleStep(FIXME_IMPLEMENT_IPC_VALUE(CWallet::GetRequiredFee(1000)));
         updateFeeSectionControls();
         updateMinFeeLabel();
         updateSmartFeeLabel();
@@ -550,7 +551,7 @@ void SendCoinsDialog::processSendCoinsReturn(const WalletModel::SendCoinsReturn 
         msgParams.second = CClientUIInterface::MSG_ERROR;
         break;
     case WalletModel::AbsurdFee:
-        msgParams.first = tr("A fee higher than %1 is considered an absurdly high fee.").arg(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), maxTxFee));
+        msgParams.first = tr("A fee higher than %1 is considered an absurdly high fee.").arg(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), FIXME_IMPLEMENT_IPC_VALUE(maxTxFee)));
         break;
     case WalletModel::PaymentRequestExpired:
         msgParams.first = tr("Payment request expired.");
@@ -589,7 +590,7 @@ void SendCoinsDialog::on_buttonMinimizeFee_clicked()
 void SendCoinsDialog::setMinimumFee()
 {
     ui->radioCustomPerKilobyte->setChecked(true);
-    ui->customFee->setValue(CWallet::GetRequiredFee(1000));
+    ui->customFee->setValue(FIXME_IMPLEMENT_IPC_VALUE(CWallet::GetRequiredFee(1000)));
 }
 
 void SendCoinsDialog::updateFeeSectionControls()
@@ -614,7 +615,7 @@ void SendCoinsDialog::updateGlobalFeeVariables()
     if (ui->radioSmartFee->isChecked())
     {
         int nConfirmTarget = ui->sliderSmartFee->maximum() - ui->sliderSmartFee->value() + 2;
-        payTxFee = CFeeRate(0);
+        FIXME_IMPLEMENT_IPC_VALUE(payTxFee) = CFeeRate(0);
 
         // set nMinimumTotalFee to 0 to not accidentally pay a custom fee
         CoinControlDialog::coinControl->nMinimumTotalFee = 0;
@@ -624,7 +625,7 @@ void SendCoinsDialog::updateGlobalFeeVariables()
     }
     else
     {
-        payTxFee = CFeeRate(ui->customFee->value());
+        FIXME_IMPLEMENT_IPC_VALUE(payTxFee) = CFeeRate(ui->customFee->value());
 
         // if user has selected to set a minimum absolute fee, pass the value to coincontrol
         // set nMinimumTotalFee to 0 in case of user has selected that the fee is per KB
@@ -649,7 +650,7 @@ void SendCoinsDialog::updateMinFeeLabel()
 {
     if (model && model->getOptionsModel())
         ui->checkBoxMinimumFee->setText(tr("Pay only the required fee of %1").arg(
-            BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), CWallet::GetRequiredFee(1000)) + "/kB")
+            BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(), FIXME_IMPLEMENT_IPC_VALUE(CWallet::GetRequiredFee(1000))) + "/kB")
         );
 }
 
@@ -660,11 +661,11 @@ void SendCoinsDialog::updateSmartFeeLabel()
 
     int nBlocksToConfirm = ui->sliderSmartFee->maximum() - ui->sliderSmartFee->value() + 2;
     int estimateFoundAtBlocks = nBlocksToConfirm;
-    CFeeRate feeRate = mempool.estimateSmartFee(nBlocksToConfirm, &estimateFoundAtBlocks);
+    CFeeRate feeRate = FIXME_IMPLEMENT_IPC_VALUE(FIXME_IMPLEMENT_IPC_VALUE(mempool).estimateSmartFee(nBlocksToConfirm, &estimateFoundAtBlocks));
     if (feeRate <= CFeeRate(0)) // not enough data => minfee
     {
         ui->labelSmartFee->setText(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(),
-                                                                std::max(CWallet::fallbackFee.GetFeePerK(), CWallet::GetRequiredFee(1000))) + "/kB");
+                                                                std::max(FIXME_IMPLEMENT_IPC_VALUE(CWallet::fallbackFee).GetFeePerK(), FIXME_IMPLEMENT_IPC_VALUE(CWallet::GetRequiredFee(1000)))) + "/kB");
         ui->labelSmartFee2->show(); // (Smart fee not initialized yet. This usually takes a few blocks...)
         ui->labelFeeEstimation->setText("");
         ui->fallbackFeeWarningLabel->setVisible(true);
@@ -676,7 +677,7 @@ void SendCoinsDialog::updateSmartFeeLabel()
     else
     {
         ui->labelSmartFee->setText(BitcoinUnits::formatWithUnit(model->getOptionsModel()->getDisplayUnit(),
-                                                                std::max(feeRate.GetFeePerK(), CWallet::GetRequiredFee(1000))) + "/kB");
+                                                                std::max(feeRate.GetFeePerK(), FIXME_IMPLEMENT_IPC_VALUE(CWallet::GetRequiredFee(1000)))) + "/kB");
         ui->labelSmartFee2->hide();
         ui->labelFeeEstimation->setText(tr("Estimated to begin confirmation within %n block(s).", "", estimateFoundAtBlocks));
         ui->fallbackFeeWarningLabel->setVisible(false);

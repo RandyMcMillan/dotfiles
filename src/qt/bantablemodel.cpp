@@ -8,6 +8,7 @@
 #include "guiconstants.h"
 #include "guiutil.h"
 
+#include "ipc/interfaces.h"
 #include "sync.h"
 #include "utiltime.h"
 
@@ -48,8 +49,8 @@ public:
     void refreshBanlist()
     {
         banmap_t banMap;
-        if(g_connman)
-            g_connman->GetBanned(banMap);
+        if(FIXME_IMPLEMENT_IPC_VALUE(g_connman))
+            FIXME_IMPLEMENT_IPC_VALUE(g_connman)->GetBanned(banMap);
 
         cachedBanlist.clear();
 #if QT_VERSION >= 0x040700

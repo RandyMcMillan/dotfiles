@@ -10,6 +10,7 @@
 
 #include "base58.h"
 #include "chainparams.h"
+#include "ipc/interfaces.h"
 #include "policy/policy.h"
 #include "ui_interface.h"
 #include "util.h"
@@ -220,13 +221,13 @@ void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
             {
                 CBitcoinAddress address(r.address.toStdString());
 
-                if (address.IsValid(Params(CBaseChainParams::MAIN)))
+                if (address.IsValid(FIXME_IMPLEMENT_IPC_VALUE(Params(CBaseChainParams::MAIN))))
                 {
-                    SelectParams(CBaseChainParams::MAIN);
+                    FIXME_IMPLEMENT_IPC(SelectParams(CBaseChainParams::MAIN));
                 }
-                else if (address.IsValid(Params(CBaseChainParams::TESTNET)))
+                else if (address.IsValid(FIXME_IMPLEMENT_IPC_VALUE(Params(CBaseChainParams::TESTNET))))
                 {
-                    SelectParams(CBaseChainParams::TESTNET);
+                    FIXME_IMPLEMENT_IPC(SelectParams(CBaseChainParams::TESTNET));
                 }
             }
         }
@@ -239,11 +240,11 @@ void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
             {
                 if (request.getDetails().network() == "main")
                 {
-                    SelectParams(CBaseChainParams::MAIN);
+                    FIXME_IMPLEMENT_IPC(SelectParams(CBaseChainParams::MAIN));
                 }
                 else if (request.getDetails().network() == "test")
                 {
-                    SelectParams(CBaseChainParams::TESTNET);
+                    FIXME_IMPLEMENT_IPC(SelectParams(CBaseChainParams::TESTNET));
                 }
             }
         }
@@ -580,7 +581,7 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
 
         // Extract and check amounts
         CTxOut txOut(sendingTo.second, sendingTo.first);
-        if (txOut.IsDust(dustRelayFee)) {
+        if (txOut.IsDust(FIXME_IMPLEMENT_IPC_VALUE(dustRelayFee))) {
             Q_EMIT message(tr("Payment request error"), tr("Requested payment amount of %1 is too small (considered dust).")
                 .arg(BitcoinUnits::formatWithUnit(optionsModel->getDisplayUnit(), sendingTo.second)),
                 CClientUIInterface::MSG_ERROR);
@@ -646,9 +647,9 @@ void PaymentServer::fetchPaymentACK(CWallet* wallet, SendCoinsRecipient recipien
     }
     else {
         CPubKey newKey;
-        if (wallet->GetKeyFromPool(newKey)) {
+        if (FIXME_IMPLEMENT_IPC_VALUE(wallet->GetKeyFromPool(newKey))) {
             CKeyID keyID = newKey.GetID();
-            wallet->SetAddressBook(keyID, strAccount, "refund");
+            FIXME_IMPLEMENT_IPC(wallet->SetAddressBook(keyID, strAccount, "refund"));
 
             CScript s = GetScriptForDestination(keyID);
             payments::Output* refund_to = payment.add_refund_to();
@@ -760,12 +761,12 @@ void PaymentServer::handlePaymentACK(const QString& paymentACKMsg)
 
 bool PaymentServer::verifyNetwork(const payments::PaymentDetails& requestDetails)
 {
-    bool fVerified = requestDetails.network() == Params().NetworkIDString();
+    bool fVerified = requestDetails.network() == FIXME_IMPLEMENT_IPC_VALUE(Params()).NetworkIDString();
     if (!fVerified) {
         qWarning() << QString("PaymentServer::%1: Payment request network \"%2\" doesn't match client network \"%3\".")
             .arg(__func__)
             .arg(QString::fromStdString(requestDetails.network()))
-            .arg(QString::fromStdString(Params().NetworkIDString()));
+            .arg(QString::fromStdString(FIXME_IMPLEMENT_IPC_VALUE(Params()).NetworkIDString()));
     }
     return fVerified;
 }

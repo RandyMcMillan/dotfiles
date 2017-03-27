@@ -33,6 +33,7 @@
 
 #include "chainparams.h"
 #include "init.h"
+#include "ipc/interfaces.h"
 #include "ui_interface.h"
 #include "util.h"
 
@@ -1111,7 +1112,7 @@ void BitcoinGUI::toggleHidden()
 
 void BitcoinGUI::detectShutdown()
 {
-    if (ShutdownRequested())
+    if (FIXME_IMPLEMENT_IPC_VALUE(ShutdownRequested()))
     {
         if(rpcConsole)
             rpcConsole->hide();
@@ -1176,15 +1177,15 @@ static bool ThreadSafeMessageBox(BitcoinGUI *gui, const std::string& message, co
 void BitcoinGUI::subscribeToCoreSignals()
 {
     // Connect signals to client
-    uiInterface.ThreadSafeMessageBox.connect(boost::bind(ThreadSafeMessageBox, this, _1, _2, _3));
-    uiInterface.ThreadSafeQuestion.connect(boost::bind(ThreadSafeMessageBox, this, _1, _3, _4));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ThreadSafeMessageBox.connect(boost::bind(ThreadSafeMessageBox, this, _1, _2, _3));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ThreadSafeQuestion.connect(boost::bind(ThreadSafeMessageBox, this, _1, _3, _4));
 }
 
 void BitcoinGUI::unsubscribeFromCoreSignals()
 {
     // Disconnect signals from client
-    uiInterface.ThreadSafeMessageBox.disconnect(boost::bind(ThreadSafeMessageBox, this, _1, _2, _3));
-    uiInterface.ThreadSafeQuestion.disconnect(boost::bind(ThreadSafeMessageBox, this, _1, _3, _4));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ThreadSafeMessageBox.disconnect(boost::bind(ThreadSafeMessageBox, this, _1, _2, _3));
+    FIXME_IMPLEMENT_IPC_VALUE(uiInterface).ThreadSafeQuestion.disconnect(boost::bind(ThreadSafeMessageBox, this, _1, _3, _4));
 }
 
 void BitcoinGUI::toggleNetworkActive()

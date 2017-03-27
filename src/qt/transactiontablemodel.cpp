@@ -14,6 +14,7 @@
 #include "walletmodel.h"
 
 #include "core_io.h"
+#include "ipc/interfaces.h"
 #include "validation.h"
 #include "sync.h"
 #include "uint256.h"
@@ -81,7 +82,7 @@ public:
         qDebug() << "TransactionTablePriv::refreshWallet";
         cachedWallet.clear();
         {
-            LOCK2(cs_main, wallet->cs_wallet);
+            LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
             for(std::map<uint256, CWalletTx>::iterator it = wallet->mapWallet.begin(); it != wallet->mapWallet.end(); ++it)
             {
                 if(TransactionRecord::showTransaction(it->second))
@@ -130,7 +131,7 @@ public:
             }
             if(showTransaction)
             {
-                LOCK2(cs_main, wallet->cs_wallet);
+                LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
                 // Find transaction in wallet
                 std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(hash);
                 if(mi == wallet->mapWallet.end())
@@ -190,7 +191,7 @@ public:
             // If a status update is needed (blocks came in since last check),
             //  update the status of this transaction from the wallet. Otherwise,
             // simply re-use the cached status.
-            TRY_LOCK(cs_main, lockMain);
+            TRY_LOCK(FIXME_IMPLEMENT_IPC_VALUE(cs_main), lockMain);
             if(lockMain)
             {
                 TRY_LOCK(wallet->cs_wallet, lockWallet);
@@ -212,7 +213,7 @@ public:
     QString describe(TransactionRecord *rec, int unit)
     {
         {
-            LOCK2(cs_main, wallet->cs_wallet);
+            LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
             std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(rec->hash);
             if(mi != wallet->mapWallet.end())
             {
@@ -224,7 +225,7 @@ public:
 
     QString getTxHex(TransactionRecord *rec)
     {
-        LOCK2(cs_main, wallet->cs_wallet);
+        LOCK2(FIXME_IMPLEMENT_IPC_VALUE(cs_main), wallet->cs_wallet);
         std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(rec->hash);
         if(mi != wallet->mapWallet.end())
         {

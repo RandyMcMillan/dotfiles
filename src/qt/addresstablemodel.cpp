@@ -8,6 +8,7 @@
 #include "walletmodel.h"
 
 #include "base58.h"
+#include "ipc/interfaces.h"
 #include "wallet/wallet.h"
 
 #include <boost/foreach.hpp>
@@ -84,7 +85,7 @@ public:
             BOOST_FOREACH(const PAIRTYPE(CTxDestination, CAddressBookData)& item, wallet->mapAddressBook)
             {
                 const CBitcoinAddress& address = item.first;
-                bool fMine = IsMine(*wallet, address.Get());
+                bool fMine = FIXME_IMPLEMENT_IPC_VALUE(IsMine(*wallet, address.Get()));
                 AddressTableEntry::Type addressType = translateTransactionType(
                         QString::fromStdString(item.second.purpose), fMine);
                 const std::string& strName = item.second.name;
@@ -256,7 +257,7 @@ bool AddressTableModel::setData(const QModelIndex &index, const QVariant &value,
                 editStatus = NO_CHANGES;
                 return false;
             }
-            wallet->SetAddressBook(curAddress, value.toString().toStdString(), strPurpose);
+            FIXME_IMPLEMENT_IPC_VALUE(wallet->SetAddressBook(curAddress, value.toString().toStdString(), strPurpose));
         } else if(index.column() == Address) {
             CTxDestination newAddress = CBitcoinAddress(value.toString().toStdString()).Get();
             // Refuse to set invalid address, set error status and return false
@@ -282,9 +283,9 @@ bool AddressTableModel::setData(const QModelIndex &index, const QVariant &value,
             else if(rec->type == AddressTableEntry::Sending)
             {
                 // Remove old entry
-                wallet->DelAddressBook(curAddress);
+                FIXME_IMPLEMENT_IPC(wallet->DelAddressBook(curAddress));
                 // Add new entry with new address
-                wallet->SetAddressBook(newAddress, rec->label.toStdString(), strPurpose);
+                FIXME_IMPLEMENT_IPC(wallet->SetAddressBook(newAddress, rec->label.toStdString(), strPurpose));
             }
         }
         return true;
@@ -370,7 +371,7 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
     {
         // Generate a new address to associate with given label
         CPubKey newKey;
-        if(!wallet->GetKeyFromPool(newKey))
+        if(!FIXME_IMPLEMENT_IPC_VALUE(wallet->GetKeyFromPool(newKey)))
         {
             WalletModel::UnlockContext ctx(walletModel->requestUnlock());
             if(!ctx.isValid())
@@ -379,7 +380,7 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
                 editStatus = WALLET_UNLOCK_FAILURE;
                 return QString();
             }
-            if(!wallet->GetKeyFromPool(newKey))
+            if(!FIXME_IMPLEMENT_IPC_VALUE(wallet->GetKeyFromPool(newKey)))
             {
                 editStatus = KEY_GENERATION_FAILURE;
                 return QString();
@@ -395,8 +396,8 @@ QString AddressTableModel::addRow(const QString &type, const QString &label, con
     // Add entry
     {
         LOCK(wallet->cs_wallet);
-        wallet->SetAddressBook(CBitcoinAddress(strAddress).Get(), strLabel,
-                               (type == Send ? "send" : "receive"));
+        FIXME_IMPLEMENT_IPC_VALUE(wallet->SetAddressBook(CBitcoinAddress(strAddress).Get(), strLabel,
+                               (type == Send ? "send" : "receive")));
     }
     return QString::fromStdString(strAddress);
 }
@@ -413,7 +414,7 @@ bool AddressTableModel::removeRows(int row, int count, const QModelIndex &parent
     }
     {
         LOCK(wallet->cs_wallet);
-        wallet->DelAddressBook(CBitcoinAddress(rec->address.toStdString()).Get());
+        FIXME_IMPLEMENT_IPC_VALUE(wallet->DelAddressBook(CBitcoinAddress(rec->address.toStdString()).Get()));
     }
     return true;
 }

@@ -84,6 +84,7 @@ AC_PATH_PROG([GIT], [git])
 AC_PATH_PROG(CCACHE,ccache)
 AC_PATH_PROG(XGETTEXT,xgettext)
 AC_PATH_PROG(HEXDUMP,hexdump)
+AC_PATH_PROG(CAPNP, capnp)
 AC_PATH_TOOL(READELF, readelf)
 AC_PATH_TOOL(CPPFILT, c++filt)
 AC_PATH_TOOL(OBJCOPY, objcopy)
@@ -855,6 +856,8 @@ if test x$use_pkgconfig = xyes; then
       else
           AC_DEFINE_UNQUOTED([ENABLE_ZMQ],[0],[Define to 1 to enable ZMQ functions])
       fi
+
+      PKG_CHECK_MODULES([CAPNP_RPC], [capnp-rpc],, [AC_MSG_ERROR(capnp-rpc not found.)])
     ]
   )
 else

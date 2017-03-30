@@ -75,6 +75,19 @@ function installITermPrefPlist(){
     fi
 
 }
+#
+function installYouTubeDLConfig(){
+    if ![-d ~/.config/youtube-dl/config ]
+        then
+            echo '~/.config/youtube-dl/config exists'
+        else
+            echo '~/.config/youtube-dl/config does not exist'
+            rm -rf ~/.config/youtube-dl
+            rm -rf ~/.config/youtube-dl/config
+        #cp -r myfolder/* destinationfolder
+        cp -r ~/dotfiles/youtube-dl ~/.config
+    fi
+}
 #https://github.com/github/gitignore.git
 function installGitIgnores(){
     if [-d ~/gitignore/.git ]
@@ -220,6 +233,7 @@ else
             #source ~/.osx
             sudo rm /usr/bin/emacs
             sudo ln -s /usr/local/bin/emacs /usr/bin/emacs
+            installYouTubeDLConfig
 
         fi fi
 fi

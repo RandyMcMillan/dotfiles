@@ -77,16 +77,10 @@ function installITermPrefPlist(){
 }
 #
 function installYouTubeDLConfig(){
-    if ![-d ~/.config/youtube-dl/config ]
-        then
-            echo '~/.config/youtube-dl/config exists'
-        else
-            echo '~/.config/youtube-dl/config does not exist'
             rm -rf ~/.config/youtube-dl
             rm -rf ~/.config/youtube-dl/config
         #cp -r myfolder/* destinationfolder
         cp -r ~/dotfiles/youtube-dl ~/.config
-    fi
 }
 #https://github.com/github/gitignore.git
 function installGitIgnores(){
@@ -211,12 +205,12 @@ else
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
             doIt
-            installSolarized
-            installQuickVim
-            installITermPrefPlist
-            installISightCapture
-            installMyUncrustifyConfigs
-            installRecursiveIndex
+            #installSolarized
+            #installQuickVim
+            #installITermPrefPlist
+            #installISightCapture
+            #installMyUncrustifyConfigs
+            #installRecursiveIndex
             #installGetLocation
             unset doIt
             unset installQuickVim
@@ -231,8 +225,8 @@ else
             source ~/.extra
             source ~/.functions
             #source ~/.osx
-            sudo rm /usr/bin/emacs
-            sudo ln -s /usr/local/bin/emacs /usr/bin/emacs
+            #sudo rm /usr/bin/emacs
+            #sudo ln -s /usr/local/bin/emacs /usr/bin/emacs
             installYouTubeDLConfig
 
         fi fi

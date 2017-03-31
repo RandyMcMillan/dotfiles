@@ -1,6 +1,6 @@
 #youtube-dl
 
-alias yt="youtube-dl --write-info-json --write-thumbnail --prefer-free-formats --audio-format best "
+alias yt="youtube-dl"
 
 #git list files that are tracked
 alias lll="git ls-tree -r master --name-only"

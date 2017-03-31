@@ -16,6 +16,7 @@ Caskroom/cask/google-drive \
 Caskroom/cask/virtualbox \
 Caskroom/cask/virtualbox-extension-pack \
 dnsmasq \
+Caskroom/cask/makehuman \
 Caskroom/cask/onyx \
 vim \
 tap d12frosted/emacs-plus \

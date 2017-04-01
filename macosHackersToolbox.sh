@@ -12,6 +12,7 @@ for pkg in \
 cask \
 Caskroom/cask/macports \
 Caskroom/cask/metasploit \
+Caskroom/cask/kismac \
 nmap \
 sqlmap \
 burp \

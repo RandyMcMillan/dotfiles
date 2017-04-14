@@ -8,7 +8,9 @@ alias lll="git ls-tree -r master --name-only"
 #deepspace
 alias ds='ssh git@mac.ftpaccess.cc'
 #boc.ftpaccess.cc
-alias ds='ssh git@boc.ftpaccess.cc'
+alias boc='ssh git@boc.ftpaccess.cc -p 21'
+#boc.ftpaccess.cc.macmini
+alias bocmm='ssh git@boc.ftpaccess.cc -p 20'
 
 #gem install t
 #http://sferik.github.io/t/

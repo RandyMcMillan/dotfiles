@@ -10,6 +10,7 @@ brew update
 brew upgrade --all
 for pkg in \
 cask \
+gpg \
 Caskroom/cask/google-chrome \
 Caskroom/cask/google-hangouts \
 Caskroom/cask/google-drive \

@@ -10,6 +10,7 @@ brew update
 brew upgrade --all
 for pkg in \
 cask \
+gpg \
 Caskroom/cask/macports \
 Caskroom/cask/metasploit \
 Caskroom/cask/kismac \

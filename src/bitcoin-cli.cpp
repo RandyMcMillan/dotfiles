@@ -46,7 +46,7 @@ std::string HelpMessageCli()
     strUsage += HelpMessageOpt("-rpcpassword=<pw>", _("Password for JSON-RPC connections"));
     strUsage += HelpMessageOpt("-rpcclienttimeout=<n>", strprintf(_("Timeout in seconds during HTTP requests, or 0 for no timeout. (default: %d)"), DEFAULT_HTTP_CLIENT_TIMEOUT));
     strUsage += HelpMessageOpt("-stdin", _("Read extra arguments from standard input, one per line until EOF/Ctrl-D (recommended for sensitive information such as passphrases)"));
-    strUsage += HelpMessageOpt("-usewallet=<walletname>", _("Send RPC for non-default wallet on RPC server (argument is wallet filename in bitcoind directory, required if bitcoind/-Qt runs with multiple wallets)"));
+    strUsage += HelpMessageOpt("-wallet=<walletname>", _("Send RPC for non-default wallet on RPC server (argument is wallet filename in bitcoind directory, required if bitcoind/-Qt runs with multiple wallets)"));
 
     return strUsage;
 }
@@ -103,6 +103,27 @@ static int AppInitRPC(int argc, char* argv[])
         fprintf(stderr, "Error: Specified data directory \"%s\" does not exist.\n", GetArg("-datadir", "").c_str());
         return EXIT_FAILURE;
     }
+
+    int num_wallets = gArgs.GetArgs("-wallet").size();
+    if (num_wallets > 1) {
+        fprintf(stderr, "Error: %i -wallet values specified. bitcoin-cli must be called with at most one wallet filename.\n", num_wallets);
+        return EXIT_FAILURE;
+    }
+
+    // Prevent bitcoin-cli from ever using any wallet= options from config file.
+    //
+    // If config file contains multiple wallets, it would be unsafe to just
+    // default to the first wallet on wallet RPC calls (user might misspell or
+    // forget -wallet=filename param in one bitcoin-cli call inside a larger
+    // script and fall back to performing an action on the wrong wallet.). But
+    // if config file contains multiple wallets, we also don't want to blindly
+    // raise an error, because user might be making a non-wallet RPC call (we
+    // can't tell the difference) where passing a wallet shouldn't be required.
+    //
+    // Simplest solution is to just never use any wallet= options from the
+    // config file with this soft set.
+    SoftSetArg("-wallet", "");
+
     try {
         ReadConfigFile(GetArg("-conf", BITCOIN_CONF_FILENAME));
     } catch (const std::exception& e) {
@@ -244,7 +265,7 @@ UniValue CallRPC(const std::string& strMethod, const UniValue& params)
 
     // check if we should use a special wallet endpoint
     std::string endpoint = "/";
-    std::string walletName = GetArg("-usewallet", "");
+    std::string walletName = GetArg("-wallet", "");
     if (!walletName.empty()) {
         char *encodedURI = evhttp_uriencode(walletName.c_str(), walletName.size(), false);
         if (encodedURI) {

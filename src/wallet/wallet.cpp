@@ -1022,7 +1022,7 @@ bool CWallet::LoadToWallet(const CWalletTx& wtxIn)
  * Abandoned state should probably be more carefully tracked via different
  * posInBlock signals or by checking mempool presence when necessary.
  */
-bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const CBlockIndex* pIndex, int posInBlock, bool fUpdate)
+bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const CBlockIndex* pIndex, int posInBlock, bool fUpdate, ReserveKeyCache& reserve_key_cache)
 {
     const CTransaction& tx = *ptx;
     {
@@ -1050,7 +1050,10 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const CBlockI
              * This can happen when restoring an old wallet backup that does not contain
              * the mostly recently created transactions from newer versions of the wallet.
              */
-            std::map<CKeyID, ReserveKey> keyPool = GetAllReserveKeys();
+            if (!reserve_key_cache) {
+                reserve_key_cache = GetAllReserveKeys();
+            }
+            std::map<CKeyID, ReserveKey> keyPool = *reserve_key_cache;
 
             // loop though all outputs
             for (const CTxOut& txout: tx.vout) {
@@ -1063,8 +1066,12 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const CBlockI
                         LogPrintf("%s: Detected a used keypool key, mark all keypool key up to this key as used\n", __func__);
                         MarkReserveKeysAsUsed(mi->second);
 
-                        if (!TopUpKeyPool()) {
+                        bool added_keys;
+                        if (!TopUpKeyPool(0 /* kpSize */, &added_keys)) {
                             LogPrintf("%s: Topping up keypool failed (locked wallet)\n", __func__);
+                        }
+                        if (added_keys) {
+                            reserve_key_cache.reset();
                         }
 
                         ShutdownIfKeypoolCritical();
@@ -1207,10 +1214,10 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
     }
 }
 
-void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindex, int posInBlock) {
+void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindex, int posInBlock, ReserveKeyCache& reserve_key_cache) {
     const CTransaction& tx = *ptx;
 
-    if (!AddToWalletIfInvolvingMe(ptx, pindex, posInBlock, true))
+    if (!AddToWalletIfInvolvingMe(ptx, pindex, posInBlock, true, reserve_key_cache))
         return; // Not one of ours
 
     // If a transaction changes 'conflicted' state, that changes the balance
@@ -1225,7 +1232,8 @@ void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pin
 
 void CWallet::TransactionAddedToMempool(const CTransactionRef& ptx) {
     LOCK2(cs_main, cs_wallet);
-    SyncTransaction(ptx);
+    ReserveKeyCache reserve_key_cache;
+    SyncTransaction(ptx, nullptr /* pIndex */, 0 /* posInBlock */, reserve_key_cache);
 }
 
 void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) {
@@ -1238,19 +1246,21 @@ void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const 
     // to abandon a transaction and then have it inadvertently cleared by
     // the notification that the conflicted transaction was evicted.
 
+    ReserveKeyCache reserve_key_cache;
     for (const CTransactionRef& ptx : vtxConflicted) {
-        SyncTransaction(ptx);
+        SyncTransaction(ptx, nullptr /* pIndex */, 0 /* posInBlock */, reserve_key_cache);
     }
     for (size_t i = 0; i < pblock->vtx.size(); i++) {
-        SyncTransaction(pblock->vtx[i], pindex, i);
+        SyncTransaction(pblock->vtx[i], pindex, i, reserve_key_cache);
     }
 }
 
 void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) {
     LOCK2(cs_main, cs_wallet);
 
+    ReserveKeyCache reserve_key_cache;
     for (const CTransactionRef& ptx : pblock->vtx) {
-        SyncTransaction(ptx);
+        SyncTransaction(ptx, nullptr /* pIndex */, 0 /* posInBlock */, reserve_key_cache);
     }
 }
 
@@ -1612,6 +1622,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool f
         ShowProgress(_("Rescanning..."), 0); // show rescan progress in GUI as dialog or on splashscreen, if -rescan on startup
         double dProgressStart = GuessVerificationProgress(chainParams.TxData(), pindex);
         double dProgressTip = GuessVerificationProgress(chainParams.TxData(), chainActive.Tip());
+        ReserveKeyCache reserve_key_cache;
         while (pindex && !fAbortRescan)
         {
             if (pindex->nHeight % 100 == 0 && dProgressTip - dProgressStart > 0.0)
@@ -1624,7 +1635,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool f
             CBlock block;
             if (ReadBlockFromDisk(block, pindex, Params().GetConsensus())) {
                 for (size_t posInBlock = 0; posInBlock < block.vtx.size(); ++posInBlock) {
-                    AddToWalletIfInvolvingMe(block.vtx[posInBlock], pindex, posInBlock, fUpdate);
+                    AddToWalletIfInvolvingMe(block.vtx[posInBlock], pindex, posInBlock, fUpdate, reserve_key_cache);
                 }
             } else {
                 ret = pindex;
@@ -3259,10 +3270,11 @@ size_t CWallet::KeypoolCountExternalKeys()
     return setExternalKeyPool.size();
 }
 
-bool CWallet::TopUpKeyPool(unsigned int kpSize)
+bool CWallet::TopUpKeyPool(unsigned int kpSize, bool* added_keys)
 {
     {
         LOCK(cs_wallet);
+        if (added_keys) *added_keys = false;
 
         if (IsLocked())
             return false;
@@ -3307,6 +3319,7 @@ bool CWallet::TopUpKeyPool(unsigned int kpSize)
         }
         if (missingInternal + missingExternal > 0) {
             LogPrintf("keypool added %d keys (%d internal), size=%u (%u internal)\n", missingInternal + missingExternal, missingInternal, setInternalKeyPool.size() + setExternalKeyPool.size(), setInternalKeyPool.size());
+            if (added_keys) *added_keys = true;
         }
     }
     return true;

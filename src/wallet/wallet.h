@@ -90,7 +90,6 @@ class CTxMemPool;
 class CBlockPolicyEstimator;
 class CWalletTx;
 struct FeeCalculation;
-struct ReserveKey { int64_t index; bool internal; };
 enum class FeeEstimateMode;
 
 /** (client) version numbers for particular wallet features */
@@ -654,6 +653,9 @@ private:
     std::vector<char> _ssExtra;
 };
 
+struct ReserveKey { int64_t index; bool internal; };
+using ReserveKeys = std::map<CKeyID, ReserveKey>;
+using ReserveKeyCache = boost::optional<ReserveKeys>;
 
 /** 
  * A CWallet is an extension of a keystore, which also maintains a set of transactions and balances,
@@ -702,7 +704,7 @@ private:
 
     /* Used by TransactionAddedToMemorypool/BlockConnected/Disconnected.
      * Should be called with pindexBlock and posInBlock if this is for a transaction that is included in a block. */
-    void SyncTransaction(const CTransactionRef& tx, const CBlockIndex *pindex = NULL, int posInBlock = 0);
+    void SyncTransaction(const CTransactionRef& tx, const CBlockIndex *pindex, int posInBlock, ReserveKeyCache& reserve_key_cache);
 
     /* the HD chain data model (external chain counters) */
     CHDChain hdChain;
@@ -941,7 +943,7 @@ public:
     void TransactionAddedToMempool(const CTransactionRef& tx) override;
     void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) override;
     void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) override;
-    bool AddToWalletIfInvolvingMe(const CTransactionRef& tx, const CBlockIndex* pIndex, int posInBlock, bool fUpdate);
+    bool AddToWalletIfInvolvingMe(const CTransactionRef& tx, const CBlockIndex* pIndex, int posInBlock, bool fUpdate, ReserveKeyCache& reserve_key_cache);
     int64_t RescanFromTime(int64_t startTime, bool update);
     CBlockIndex* ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false);
     void ReacceptWalletTransactions();
@@ -994,18 +996,19 @@ public:
 
     bool NewKeyPool();
     size_t KeypoolCountExternalKeys();
-    bool TopUpKeyPool(unsigned int kpSize = 0);
+    bool TopUpKeyPool(unsigned int kpSize = 0, bool* added_keys = nullptr);
     void ReserveKeyFromKeyPool(int64_t& nIndex, CKeyPool& keypool, bool fRequestedInternal);
     void KeepKey(int64_t nIndex);
     void ReturnKey(int64_t nIndex, bool fInternal);
     bool GetKeyFromPool(CPubKey &key, bool internal = false);
     int64_t GetOldestKeyPoolTime();
     void ShutdownIfKeypoolCritical();
+
     /**
      * Marks all keys in the keypool up to and including reserve_key as used.
      */
     void MarkReserveKeysAsUsed(const ReserveKey reserve_key);
-    std::map<CKeyID, ReserveKey> GetAllReserveKeys() const;
+    ReserveKeys GetAllReserveKeys() const;
 
     std::set< std::set<CTxDestination> > GetAddressGroupings();
     std::map<CTxDestination, CAmount> GetAddressBalances();

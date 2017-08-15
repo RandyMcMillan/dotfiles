@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "receiverequestdialog.h"
-#include "ui_receiverequestdialog.h"
+#include <ui_receiverequestdialog.h>
 
 #include "bitcoinunits.h"
 #include "guiconstants.h"
@@ -22,7 +22,7 @@
 #endif
 
 #if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h" /* for USE_QRCODE */
+#include <config/bitcoin-config.h> /* for USE_QRCODE */
 #endif
 
 #ifdef USE_QRCODE

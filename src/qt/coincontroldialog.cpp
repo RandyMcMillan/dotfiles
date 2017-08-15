@@ -3,22 +3,22 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "coincontroldialog.h"
-#include "ui_coincontroldialog.h"
+#include <ui_coincontroldialog.h>
 
 #include "addresstablemodel.h"
 #include "bitcoinunits.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
 #include "platformstyle.h"
-#include "txmempool.h"
+#include <txmempool.h>
 #include "walletmodel.h"
 
-#include "wallet/coincontrol.h"
-#include "init.h"
-#include "policy/fees.h"
-#include "policy/policy.h"
-#include "validation.h" // For mempool
-#include "wallet/wallet.h"
+#include <wallet/coincontrol.h>
+#include <init.h>
+#include <policy/fees.h>
+#include <policy/policy.h>
+#include <validation.h> // For mempool
+#include <wallet/wallet.h>
 
 #include <QApplication>
 #include <QCheckBox>

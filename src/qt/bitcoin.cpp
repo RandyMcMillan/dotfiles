@@ -3,14 +3,14 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h"
+#include <config/bitcoin-config.h>
 #endif
 
 #include "bitcoingui.h"
 
-#include "chainparams.h"
+#include <chainparams.h>
 #include "clientmodel.h"
-#include "fs.h"
+#include <fs.h>
 #include "guiconstants.h"
 #include "guiutil.h"
 #include "intro.h"
@@ -26,15 +26,15 @@
 #include "walletmodel.h"
 #endif
 
-#include "init.h"
-#include "rpc/server.h"
-#include "scheduler.h"
-#include "ui_interface.h"
-#include "util.h"
-#include "warnings.h"
+#include <init.h>
+#include <rpc/server.h>
+#include <scheduler.h>
+#include <ui_interface.h>
+#include <util.h>
+#include <warnings.h>
 
 #ifdef ENABLE_WALLET
-#include "wallet/wallet.h"
+#include <wallet/wallet.h>
 #endif
 
 #include <stdint.h>
@@ -261,7 +261,7 @@ private:
     void startThread();
 };
 
-#include "bitcoin.moc"
+#include <bitcoin.moc>
 
 BitcoinCore::BitcoinCore():
     QObject()

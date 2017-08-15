@@ -4,7 +4,7 @@
 
 #include "bench.h"
 
-#include "support/lockedpool.h"
+#include <support/lockedpool.h>
 
 #include <iostream>
 #include <vector>

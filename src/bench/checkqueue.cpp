@@ -3,13 +3,13 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "bench.h"
-#include "util.h"
-#include "validation.h"
-#include "checkqueue.h"
-#include "prevector.h"
+#include <util.h>
+#include <validation.h>
+#include <checkqueue.h>
+#include <prevector.h>
 #include <vector>
 #include <boost/thread/thread.hpp>
-#include "random.h"
+#include <random.h>
 
 
 // This Benchmark tests the CheckQueue with the lightest

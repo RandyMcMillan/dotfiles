@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "sendcoinsdialog.h"
-#include "ui_sendcoinsdialog.h"
+#include <ui_sendcoinsdialog.h>
 
 #include "addresstablemodel.h"
 #include "bitcoinunits.h"
@@ -15,14 +15,14 @@
 #include "sendcoinsentry.h"
 #include "walletmodel.h"
 
-#include "base58.h"
-#include "chainparams.h"
-#include "wallet/coincontrol.h"
-#include "validation.h" // mempool and minRelayTxFee
-#include "ui_interface.h"
-#include "txmempool.h"
-#include "policy/fees.h"
-#include "wallet/wallet.h"
+#include <base58.h>
+#include <chainparams.h>
+#include <wallet/coincontrol.h>
+#include <validation.h> // mempool and minRelayTxFee
+#include <ui_interface.h>
+#include <txmempool.h>
+#include <policy/fees.h>
+#include <wallet/wallet.h>
 
 #include <QFontMetrics>
 #include <QMessageBox>

@@ -3,13 +3,13 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "aes.h"
-#include "crypto/common.h"
+#include <crypto/common.h>
 
 #include <assert.h>
 #include <string.h>
 
 extern "C" {
-#include "crypto/ctaes/ctaes.c"
+#include <crypto/ctaes/ctaes.c>
 }
 
 AES128Encrypt::AES128Encrypt(const unsigned char key[16])

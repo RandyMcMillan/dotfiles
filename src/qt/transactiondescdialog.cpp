@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "transactiondescdialog.h"
-#include "ui_transactiondescdialog.h"
+#include <ui_transactiondescdialog.h>
 
 #include "transactiontablemodel.h"
 

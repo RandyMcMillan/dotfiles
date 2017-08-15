@@ -4,11 +4,11 @@
 
 #include "bench.h"
 
-#include "crypto/sha256.h"
-#include "key.h"
-#include "validation.h"
-#include "util.h"
-#include "random.h"
+#include <crypto/sha256.h>
+#include <key.h>
+#include <validation.h>
+#include <util.h>
+#include <random.h>
 
 int
 main(int argc, char** argv)

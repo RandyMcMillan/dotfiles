@@ -8,8 +8,8 @@
 #include "guiutil.h"
 #include "optionsmodel.h"
 
-#include "clientversion.h"
-#include "streams.h"
+#include <clientversion.h>
+#include <streams.h>
 
 
 RecentRequestsTableModel::RecentRequestsTableModel(CWallet *wallet, WalletModel *parent) :

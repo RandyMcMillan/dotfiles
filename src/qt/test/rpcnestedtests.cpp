@@ -4,17 +4,17 @@
 
 #include "rpcnestedtests.h"
 
-#include "chainparams.h"
-#include "consensus/validation.h"
-#include "fs.h"
-#include "validation.h"
-#include "rpc/register.h"
-#include "rpc/server.h"
-#include "rpcconsole.h"
-#include "test/testutil.h"
-#include "test/test_bitcoin.h"
-#include "univalue.h"
-#include "util.h"
+#include <chainparams.h>
+#include <consensus/validation.h>
+#include <fs.h>
+#include <validation.h>
+#include <rpc/register.h>
+#include <rpc/server.h>
+#include <rpcconsole.h>
+#include <test/testutil.h>
+#include <test/test_bitcoin.h>
+#include <univalue.h>
+#include <util.h>
 
 #include <QDir>
 #include <QtGlobal>

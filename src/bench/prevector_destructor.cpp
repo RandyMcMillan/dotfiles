@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "bench.h"
-#include "prevector.h"
+#include <prevector.h>
 
 static void PrevectorDestructor(benchmark::State& state)
 {

@@ -2,7 +2,6 @@
 #include "test/gen/crypto_gen.h" 
 
 #include "bloom.h"
-#include "merkleblock.h"
 #include <math.h>
 
 #include <rapidcheck/gen/Arbitrary.h>
@@ -12,11 +11,19 @@
 #include <rapidcheck/gen/Numeric.h>
 #include <rapidcheck/gen/Container.h>
 
-/** Generates a double between 0,1 exclusive */
+/** Generates a double between [0,1) */
 rc::Gen<double> BetweenZeroAndOne() {
-  return rc::gen::suchThat(rc::gen::arbitrary<double>(), [](double x) {
-    return fmod(x,1) != 0;
+  return rc::gen::map(rc::gen::arbitrary<double>(), [](double x) {
+    double result = abs(fmod(x,1));
+    assert(result >= 0 && result < 1);
+    return result;
   }); 
+}
+
+rc::Gen<unsigned int> Between1And100() {
+  return rc::gen::map(rc::gen::arbitrary<unsigned int>(), [](unsigned int x) {
+    return x % 100;
+  });
 }
   /** Generates the C++ primitives used to create a bloom filter */
 rc::Gen<std::tuple<unsigned int, double, unsigned int, unsigned int>> BloomFilterPrimitives() {

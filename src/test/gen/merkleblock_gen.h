@@ -32,6 +32,10 @@ namespace rc {
     return hashes.size() <= 100; 
   }); 
   
+  Gen<std::vector<uint256>> between1And100 = gen::suchThat<std::vector<uint256>>([](std::vector<uint256> hashes) {
+    return hashes.size() > 0 && hashes.size() <= 100; 
+  }); 
+  
   /** Returns an arbitrary CMerkleBlock */
   template<>
   struct Arbitrary<CMerkleBlock> { 
@@ -52,15 +56,7 @@ namespace rc {
   template<>
   struct Arbitrary<std::pair<CPartialMerkleTree, std::vector<uint256>>> {
     static Gen<std::pair<CPartialMerkleTree, std::vector<uint256>>> arbitrary() {
-      return gen::map(gen::arbitrary<std::vector<uint256>>(), [](std::vector<uint256> txids) {
-        //note this use of 'gen::nonEmpty' above, if we have an empty vector of txids
-        //we will get a memory access violation when calling the CPartialMerkleTree 
-        //constructor below. On one hand we shouldn't every have CPartialMerkleTree 
-        //with no txids, but on the other hand, it seems we should call 
-        //CPartialMerkleTree() inside of CPartialMerkleTree(txids,matches)
-        //if we have zero txids. 
-        //Some one who knows more than me will have to elaborate if the memory access violation
-        //is a desirable failure mode or not...
+      return gen::map(between1And100, [](std::vector<uint256> txids) {
         std::vector<bool> matches;
         std::vector<uint256> matchedTxs;  
         for(unsigned int i = 0; i < txids.size(); i++) {

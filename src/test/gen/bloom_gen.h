@@ -9,7 +9,7 @@
 #include <rapidcheck/Gen.h>
 #include <rapidcheck/gen/Arbitrary.h>
 
-/** Generates a double between 0,1 exclusive */
+/** Generates a double between [0,1) */
 rc::Gen<double> BetweenZeroAndOne();
 
 rc::Gen<std::tuple<unsigned int, double, unsigned int, unsigned int>> BloomFilterPrimitives();
@@ -27,7 +27,7 @@ namespace rc {
         unsigned int nTweakIn;
         unsigned int bloomFlag; 
         std::tie(numElements, fpRate, nTweakIn, bloomFlag) = filterPrimitives; 
-        return CBloomFilter(numElements,fpRate,nTweakIn,bloomFlag);  
+	return CBloomFilter(numElements,fpRate,nTweakIn,bloomFlag);  
       });
     };
   };

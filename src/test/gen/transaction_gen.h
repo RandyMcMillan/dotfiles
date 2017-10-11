@@ -12,6 +12,18 @@
 #include <rapidcheck/Gen.h>
 #include <rapidcheck/gen/Predicate.h>
 
+typedef std::tuple<const CTxOut, const CTransaction, const int> SpendingInfo;
+/** A signed tx that validly spends a P2PKSPK and the input index */
+rc::Gen<SpendingInfo> signedP2PKTx();
+
+/** A signed tx that validly spends a P2PKHSPK and the input index */
+rc::Gen<SpendingInfo> signedP2PKHTx();
+
+/** A signed tx that validly spends a Multisig and the input index */
+rc::Gen<SpendingInfo> signedMultisigTx();
+
+rc::Gen<SpendingInfo> signedP2SHTx();
+
 namespace rc {
   /** Generator for a COutPoint */ 
   template<>

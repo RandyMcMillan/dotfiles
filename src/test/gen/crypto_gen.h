@@ -8,6 +8,10 @@
 #include <rapidcheck/Gen.h>
 #include <rapidcheck/gen/Create.h>
 #include <rapidcheck/gen/Numeric.h>
+
+/** Generates 1 to 20 keys for OP_CHECKMULTISIG */
+rc::Gen<std::vector<CKey>> multisigKeys();
+
 namespace rc {  
 
   /** Generator for a new CKey */

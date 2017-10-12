@@ -19,11 +19,19 @@ rc::Gen<SpendingInfo> signedP2PKTx();
 /** A signed tx that validly spends a P2PKHSPK and the input index */
 rc::Gen<SpendingInfo> signedP2PKHTx();
 
-/** A signed tx that validly spends a Multisig and the input index */
+/** A signed tx that validly spends a MultisigSPK and the input index */
 rc::Gen<SpendingInfo> signedMultisigTx();
 
+/** A signed tx that validly spends a P2SHSPK and the input index */
 rc::Gen<SpendingInfo> signedP2SHTx();
 
+/** A signed tx that validly spends a P2WPKH and the input index */
+rc::Gen<SpendingInfo> signedP2WPKHTx();
+/** A signed tx that validly spends a P2WSH output and the input index */
+rc::Gen<SpendingInfo> signedP2WSHTx();
+
+/** Generates a arbitrary validly signed tx */
+rc::Gen<SpendingInfo> signedTx();
 namespace rc {
   /** Generator for a COutPoint */ 
   template<>

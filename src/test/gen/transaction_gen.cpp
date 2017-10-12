@@ -51,6 +51,7 @@ CMutableTransaction BuildSpendingTransaction(const CScript& scriptSig, const CSc
 /** Helper function to generate a tx that spends a spk */
 SpendingInfo sign(T spk_keys, CScript redeemScript = CScript()) {
     const int inputIndex = 0;
+    const CAmount nValue = 0;
     const CScript spk = std::get<0>(spk_keys);
     const std::vector<CKey> keys = std::get<1>(spk_keys);
     CBasicKeyStore store;
@@ -59,14 +60,14 @@ SpendingInfo sign(T spk_keys, CScript redeemScript = CScript()) {
     }
     //add redeem script
     store.AddCScript(redeemScript);
-    CMutableTransaction creditingTx = BuildCreditingTransaction(spk);
+    CMutableTransaction creditingTx = BuildCreditingTransaction(spk,nValue);
     CMutableTransaction spendingTx = BuildSpendingTransaction(CScript(), CScriptWitness(), creditingTx);
     CTransaction spendingTxConst(spendingTx);
     SignatureData sigdata;
     TransactionSignatureCreator creator(&store,&spendingTxConst,inputIndex,0);
-    ProduceSignature(creator, spk, sigdata);
+    assert(ProduceSignature(creator, spk, sigdata));
     UpdateTransaction(spendingTx,0,sigdata);
-    const CTxOut output(0,spk);
+    const CTxOut output = creditingTx.vout[0];
     const CTransaction finalTx = CTransaction(spendingTx);
     SpendingInfo tup = std::make_tuple(output,finalTx,inputIndex);
     return tup;
@@ -92,11 +93,33 @@ rc::Gen<SpendingInfo> signedMultisigTx() {
 }
 
 rc::Gen<SpendingInfo> signedP2SHTx() {
-  return rc::gen::map(rc::gen::oneOf(P2PKSPK(), P2PKHSPK(), MultisigSPK()), [](T spk_keys) { ;
+  return rc::gen::map(RawSPK(), [](T spk_keys) {
     const CScript redeemScript = std::get<0>(spk_keys);
     const std::vector<CKey> keys = std::get<1>(spk_keys);
     //hash the spk
     const CScript p2sh = GetScriptForDestination(CScriptID(redeemScript));
     return sign(std::make_tuple(p2sh,keys),redeemScript);
   });
+}
+
+rc::Gen<SpendingInfo> signedP2WPKHTx() {
+  return rc::gen::map(P2WPKHSPK(), [](T spk_keys) {
+    return sign(spk_keys);
+  });
+}
+
+rc::Gen<SpendingInfo> signedP2WSHTx() {
+  return rc::gen::map(MultisigSPK(), [](T spk_keys) {
+   const CScript redeemScript = std::get<0>(spk_keys);
+   const std::vector<CKey> keys = std::get<1>(spk_keys);
+   const CScript p2wsh = GetScriptForWitness(redeemScript);
+   return sign(std::make_tuple(p2wsh,keys),redeemScript);
+  });
+}
+
+/** Generates an arbitrary validly signed tx */
+rc::Gen<SpendingInfo> signedTx() {
+  return rc::gen::oneOf(signedP2PKTx(), signedP2PKHTx(),
+    signedMultisigTx(), signedP2SHTx(), signedP2WPKHTx(),
+    signedP2WSHTx());
 }

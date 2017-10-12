@@ -29,7 +29,7 @@ bool run(SpendingInfo info) {
   const CTxIn input = tx.vin[inputIndex];
   const CScript scriptSig = input.scriptSig;
   TransactionSignatureChecker checker(&tx,inputIndex,output.nValue);
-  const CScriptWitness wit = CScriptWitness();
+  const CScriptWitness wit = input.scriptWitness;
   //run it through the interpreter
   bool result = VerifyScript(scriptSig,output.scriptPubKey,
     &wit, STANDARD_SCRIPT_VERIFY_FLAGS, checker);
@@ -94,6 +94,16 @@ RC_BOOST_PROP(spend_p2sh_tx, ()) {
   const auto tx = std::get<1>(info);
   bool result = run(info);
   RC_ASSERT(result);
+}
+
+RC_BOOST_PROP(spend_p2wpkh_tx, ()) {
+  SpendingInfo info = *signedP2WPKHTx();
+  RC_ASSERT(run(info));
+}
+
+RC_BOOST_PROP(spend_p2wsh_tx, ()) {
+  SpendingInfo info = *signedP2WSHTx();
+  RC_ASSERT(run(info));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

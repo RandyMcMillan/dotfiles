@@ -790,9 +790,15 @@ public:
     void MaybeSetAddrName(const std::string& addrNameIn);
 };
 
-
-
-
+//! Reference counting helper.
+class NodeRef {
+public:
+   NodeRef(CNode* node) : m_node(node) { node->AddRef(); }
+   ~NodeRef() { m_node->Release(); }
+   CNode* get() { return m_node; }
+private:
+   CNode* m_node;
+};
 
 /** Return a timestamp in the future (in microseconds) for exponentially distributed events. */
 int64_t PoissonNextSend(int64_t nNow, int average_interval_seconds);

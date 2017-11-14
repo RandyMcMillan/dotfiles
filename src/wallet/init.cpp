@@ -216,21 +216,21 @@ bool VerifyWallets()
         }
 
         std::string strError;
-        if (!CWalletDB::VerifyEnvironment(walletFile, GetDataDir().string(), strError)) {
+        if (!CWalletDB::VerifyEnvironment(wallet_path, strError)) {
             return InitError(strError);
         }
 
         if (gArgs.GetBoolArg("-salvagewallet", false)) {
             // Recover readable keypairs:
-            CWallet dummyWallet;
+            CWallet dummyWallet{CWallet::Dummy{}};
             std::string backup_filename;
-            if (!CWalletDB::Recover(walletFile, (void *)&dummyWallet, CWalletDB::RecoverKeysOnlyFilter, backup_filename)) {
+            if (!CWalletDB::Recover(wallet_path, (void *)&dummyWallet, CWalletDB::RecoverKeysOnlyFilter, backup_filename)) {
                 return false;
             }
         }
 
         std::string strWarning;
-        bool dbV = CWalletDB::VerifyDatabaseFile(walletFile, GetDataDir().string(), strWarning, strError);
+        bool dbV = CWalletDB::VerifyDatabaseFile(wallet_path, strWarning, strError);
         if (!strWarning.empty()) {
             InitWarning(strWarning);
         }
@@ -251,7 +251,7 @@ bool OpenWallets()
     }
 
     for (const std::string& walletFile : gArgs.GetArgs("-wallet")) {
-        CWallet * const pwallet = CWallet::CreateWalletFromFile(walletFile);
+        CWallet * const pwallet = CWallet::CreateWalletFromFile(walletFile, fs::absolute(walletFile, GetDataDir()));
         if (!pwallet) {
             return false;
         }

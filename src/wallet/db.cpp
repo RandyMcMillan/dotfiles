@@ -52,13 +52,26 @@ void CheckUniqueFileid(const CDBEnv& env, const std::string& filename, Db& db)
         }
     }
 }
+
+CCriticalSection cs_db;
+std::map<std::string, CDBEnv> g_dbenvs; //!< Map from directory name to open db environment.
 } // namespace
+
+void GetWalletPaths(const fs::path& wallet_path, fs::path* env_directory, std::string* database_filename) {
+    if (env_directory) *env_directory = wallet_path.parent_path();
+    if (database_filename) *database_filename = wallet_path.filename().string();
+}
+
+void GetWalletEnv(const fs::path& wallet_path, CDBEnv*&env, std::string& database_filename) {
+    fs::path env_directory;
+    GetWalletPaths(wallet_path, &env_directory, &database_filename);
+    LOCK(cs_db);
+    env = &g_dbenvs.emplace(std::piecewise_construct, std::forward_as_tuple(env_directory.string()), std::forward_as_tuple(env_directory)).first->second;
+}
 
 //
 // CDB
 //
-
-CDBEnv bitdb;
 
 void CDBEnv::EnvShutdown()
 {
@@ -80,7 +93,7 @@ void CDBEnv::Reset()
     fMockDb = false;
 }
 
-CDBEnv::CDBEnv()
+CDBEnv::CDBEnv(const fs::path& dir_path) : strPath(dir_path.string())
 {
     Reset();
 }
@@ -95,14 +108,14 @@ void CDBEnv::Close()
     EnvShutdown();
 }
 
-bool CDBEnv::Open(const fs::path& pathIn)
+bool CDBEnv::Open()
 {
     if (fDbEnvInit)
         return true;
 
     boost::this_thread::interruption_point();
 
-    strPath = pathIn.string();
+    fs::path pathIn = strPath;
     fs::path pathLogDir = pathIn / "database";
     TryCreateDirectories(pathLogDir);
     fs::path pathErrorFile = pathIn / "db.log";
@@ -187,12 +200,16 @@ CDBEnv::VerifyResult CDBEnv::Verify(const std::string& strFile, recoverFunc_type
         return RECOVER_FAIL;
 
     // Try to recover:
-    bool fRecovered = (*recoverFunc)(strFile, out_backup_filename);
+    bool fRecovered = (*recoverFunc)(fs::path(strPath) / strFile, out_backup_filename);
     return (fRecovered ? RECOVER_OK : RECOVER_FAIL);
 }
 
-bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*recoverKVcallback)(void* callbackData, CDataStream ssKey, CDataStream ssValue), std::string& newFilename)
+bool CDB::Recover(const fs::path& file_path, void *callbackDataIn, bool (*recoverKVcallback)(void* callbackData, CDataStream ssKey, CDataStream ssValue), std::string& newFilename)
 {
+    CDBEnv* env;
+    std::string filename;
+    GetWalletEnv(file_path, env, filename);
+
     // Recovery procedure:
     // move wallet file to walletfilename.timestamp.bak
     // Call Salvage with fAggressive=true to
@@ -203,7 +220,7 @@ bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*reco
     int64_t now = GetTime();
     newFilename = strprintf("%s.%d.bak", filename, now);
 
-    int result = bitdb.dbenv->dbrename(nullptr, filename.c_str(), nullptr,
+    int result = env->dbenv->dbrename(nullptr, filename.c_str(), nullptr,
                                        newFilename.c_str(), DB_AUTO_COMMIT);
     if (result == 0)
         LogPrintf("Renamed %s to %s\n", filename, newFilename);
@@ -214,7 +231,7 @@ bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*reco
     }
 
     std::vector<CDBEnv::KeyValPair> salvagedData;
-    bool fSuccess = bitdb.Salvage(newFilename, true, salvagedData);
+    bool fSuccess = env->Salvage(newFilename, true, salvagedData);
     if (salvagedData.empty())
     {
         LogPrintf("Salvage(aggressive) found no records in %s.\n", newFilename);
@@ -222,7 +239,7 @@ bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*reco
     }
     LogPrintf("Salvage(aggressive) found %u records\n", salvagedData.size());
 
-    std::unique_ptr<Db> pdbCopy = MakeUnique<Db>(bitdb.dbenv.get(), 0);
+    std::unique_ptr<Db> pdbCopy = MakeUnique<Db>(env->dbenv.get(), 0);
     int ret = pdbCopy->open(nullptr,               // Txn pointer
                             filename.c_str(),   // Filename
                             "main",             // Logical db name
@@ -235,7 +252,7 @@ bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*reco
         return false;
     }
 
-    DbTxn* ptxn = bitdb.TxnBegin();
+    DbTxn* ptxn = env->TxnBegin();
     for (CDBEnv::KeyValPair& row : salvagedData)
     {
         if (recoverKVcallback)
@@ -257,8 +274,13 @@ bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*reco
     return fSuccess;
 }
 
-bool CDB::VerifyEnvironment(const std::string& walletFile, const fs::path& dataDir, std::string& errorStr)
+bool CDB::VerifyEnvironment(const fs::path& file_path, std::string& errorStr)
 {
+    CDBEnv* env;
+    std::string walletFile;
+    GetWalletEnv(file_path, env, walletFile);
+    fs::path dataDir = env->Directory();
+
     LogPrintf("Using BerkeleyDB version %s\n", DbEnv::version(0, 0, 0));
     LogPrintf("Using wallet %s\n", walletFile);
 
@@ -269,7 +291,7 @@ bool CDB::VerifyEnvironment(const std::string& walletFile, const fs::path& dataD
         return false;
     }
 
-    if (!bitdb.Open(dataDir))
+    if (!env->Open())
     {
         // try moving the database env out of the way
         fs::path pathDatabase = dataDir / "database";
@@ -282,7 +304,7 @@ bool CDB::VerifyEnvironment(const std::string& walletFile, const fs::path& dataD
         }
 
         // try again
-        if (!bitdb.Open(dataDir)) {
+        if (!env->Open()) {
             // if it still fails, it probably means we can't even create the database env
             errorStr = strprintf(_("Error initializing wallet database environment %s!"), GetDataDir());
             return false;
@@ -291,12 +313,17 @@ bool CDB::VerifyEnvironment(const std::string& walletFile, const fs::path& dataD
     return true;
 }
 
-bool CDB::VerifyDatabaseFile(const std::string& walletFile, const fs::path& dataDir, std::string& warningStr, std::string& errorStr, CDBEnv::recoverFunc_type recoverFunc)
+bool CDB::VerifyDatabaseFile(const fs::path& file_path, std::string& warningStr, std::string& errorStr, CDBEnv::recoverFunc_type recoverFunc)
 {
+    CDBEnv* env;
+    std::string walletFile;
+    GetWalletEnv(file_path, env, walletFile);
+    fs::path dataDir = env->Directory();
+
     if (fs::exists(dataDir / walletFile))
     {
         std::string backup_filename;
-        CDBEnv::VerifyResult r = bitdb.Verify(walletFile, recoverFunc, backup_filename);
+        CDBEnv::VerifyResult r = env->Verify(walletFile, recoverFunc, backup_filename);
         if (r == CDBEnv::RECOVER_OK)
         {
             warningStr = strprintf(_("Warning: Wallet file corrupt, data salvaged!"
@@ -406,8 +433,8 @@ CDB::CDB(CWalletDBWrapper& dbw, const char* pszMode, bool fFlushOnCloseIn) : pdb
         nFlags |= DB_CREATE;
 
     {
-        LOCK(env->cs_db);
-        if (!env->Open(GetDataDir()))
+        LOCK(cs_db);
+        if (!env->Open())
             throw std::runtime_error("CDB: Failed to open database environment.");
 
         pdb = env->mapDb[strFilename];
@@ -482,7 +509,7 @@ void CDB::Close()
         Flush();
 
     {
-        LOCK(env->cs_db);
+        LOCK(cs_db);
         --env->mapFileUseCount[strFile];
     }
 }
@@ -510,7 +537,7 @@ bool CDB::Rewrite(CWalletDBWrapper& dbw, const char* pszSkip)
     const std::string& strFile = dbw.strFile;
     while (true) {
         {
-            LOCK(env->cs_db);
+            LOCK(cs_db);
             if (!env->mapFileUseCount.count(strFile) || env->mapFileUseCount[strFile] == 0) {
                 // Flush log data to the dat file
                 env->CloseDb(strFile);
@@ -638,7 +665,7 @@ bool CDB::PeriodicFlush(CWalletDBWrapper& dbw)
     bool ret = false;
     CDBEnv *env = dbw.env;
     const std::string& strFile = dbw.strFile;
-    TRY_LOCK(bitdb.cs_db,lockDb);
+    TRY_LOCK(cs_db, lockDb);
     if (lockDb)
     {
         // Don't do this if any databases are in use
@@ -686,7 +713,7 @@ bool CWalletDBWrapper::Backup(const std::string& strDest)
     while (true)
     {
         {
-            LOCK(env->cs_db);
+            LOCK(cs_db);
             if (!env->mapFileUseCount.count(strFile) || env->mapFileUseCount[strFile] == 0)
             {
                 // Flush log data to the dat file

@@ -71,6 +71,13 @@ Low-level RPC changes
   * `getmininginfo`
 - The wallet RPC `getreceivedbyaddress` will return an error if called with an address not in the wallet.
 
+External wallet files
+---------------------
+
+- The `-wallet=<path>` option now accepts full paths instead of requiring
+  wallets to be located in the bitcoin data directory. This change is backwards
+  compatible since relative paths are interpreted from the bitcoin data
+  directory.
 
 Credits
 =======

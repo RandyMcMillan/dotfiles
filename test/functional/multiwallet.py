@@ -25,8 +25,14 @@ class MultiWalletTest(BitcoinTestFramework):
         self.stop_node(0)
         assert_equal(os.path.isfile(data_path("wallet.dat")), True)
 
+        # rename wallet.dat to make sure bitcoin can open two wallets in the
+        # same directory (for backwards compatibility)
+        os.rename(data_path("wallet.dat"), data_path("other_wallet.dat"))
+
         # restart node with a mix of wallet arguments
-        wallet_names = ['w1', 'w2', 'w3', 'sub/w4', os.path.join(self.options.tmpdir, "extern/w5", "wallet.dat")]
+        os.mkdir(data_path("w6"))
+        os.symlink("w6", data_path("w6_symlink"))
+        wallet_names = ['w1', 'w2', 'w3', 'sub/w4', os.path.join(self.options.tmpdir, "extern/w5"), "w6_symlink", "", "other_wallet.dat"]
         extra_args = ['-wallet={}'.format(n) for n in wallet_names]
         self.start_node(0, extra_args)
         assert_equal(set(self.nodes[0].listwallets()), set(wallet_names))
@@ -34,14 +40,16 @@ class MultiWalletTest(BitcoinTestFramework):
         # check that all requested wallets were created
         self.stop_node(0)
         for wallet_name in wallet_names:
-            assert_equal(os.path.isfile(data_path(wallet_name)), True)
+            if os.path.isdir(data_path(wallet_name)):
+                assert_equal(os.path.isfile(data_path(wallet_name, "wallet.dat")), True)
+            else:
+                assert_equal(os.path.isfile(data_path(wallet_name)), True)
 
         # should not initialize if there are duplicate wallets
         self.assert_start_raises_init_error(0, ['-wallet=w1', '-wallet=w1'], 'Error loading wallet w1. Duplicate -wallet filename specified.')
 
-        # should not initialize if wallet file is a directory
-        os.mkdir(data_path('w11'))
-        self.assert_start_raises_init_error(0, ['-wallet=w11'], 'Error loading wallet w11. -wallet filename must be a regular file.')
+        # should not initialize if wallet directory can't be created
+        self.assert_start_raises_init_error(0, ['-wallet=wallet.dat/bad'], 'create_directories: Not a directory')
 
         # should not initialize if two wallets in the same environment are copies of each other
         shutil.copyfile(data_path('wallet.dat'), data_path('wallet_copy.dat'))
@@ -49,10 +57,7 @@ class MultiWalletTest(BitcoinTestFramework):
 
         # should not initialize if wallet file is a symlink
         os.symlink("wallet.dat", data_path("wallet_symlink.dat"))
-        self.assert_start_raises_init_error(0, ['-wallet=wallet_symlink.dat'], 'wallet filename must be a regular file')
-
-        # should not initialize if wallet directory can't be created
-        self.assert_start_raises_init_error(0, ['-wallet=wallet.dat/bad'], 'Not a directory')
+        self.assert_start_raises_init_error(0, ['-wallet=wallet_symlink.dat'], 'wallet path cannot be a symlink to a file')
 
         self.start_node(0, extra_args)
 

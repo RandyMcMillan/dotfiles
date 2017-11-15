@@ -86,8 +86,11 @@ public:
     }
 };
 
-/** Get environment directory and data file name from wallet path. */
-void GetWalletPaths(const fs::path& wallet_path, fs::path* env_directory=nullptr, std::string* database_filename=nullptr);
+/**
+ * Check wallet path and optionally return database path information.
+ * Throws if wallet path is a disallowed symlink.
+ */
+void CheckWalletPath(const fs::path& wallet_path, fs::path* env_directory=nullptr, std::string* database_filename=nullptr);
 
 /** Get CDBEnv and database filename given a wallet path. */
 void GetWalletEnv(const fs::path& wallet_path, CDBEnv*&env, std::string& database_filename);

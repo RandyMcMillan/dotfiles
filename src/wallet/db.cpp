@@ -57,14 +57,40 @@ CCriticalSection cs_db;
 std::map<std::string, CDBEnv> g_dbenvs; //!< Map from directory name to open db environment.
 } // namespace
 
-void GetWalletPaths(const fs::path& wallet_path, fs::path* env_directory, std::string* database_filename) {
-    if (env_directory) *env_directory = wallet_path.parent_path();
-    if (database_filename) *database_filename = wallet_path.filename().string();
+void CheckWalletPath(const fs::path& wallet_path, fs::path* env_directory, std::string* database_filename) {
+    // Ideally, wallet_path will be a directory rather than a file, so each
+    // wallet has its own BerkeleyDB environment, and a single unambiguous
+    // place to store its main data file, its temporary transaction log files,
+    // and its debug log.
+    //
+    // For backwards compatibility, however, wallet_path is also allowed to be
+    // a regular file path, causing the code below to return its parent
+    // directory as the environment. This is needed because previous versions
+    // of bitcoin used to create multiple data files in a single shared
+    // Berkeley DB environment, and we want to be able to keep opening existing
+    // data files in these shared databases even if we don't create them
+    // anymore.
+    if (fs::exists(wallet_path) && fs::is_regular_file(wallet_path)) {
+         // Legacy case
+         if (env_directory) *env_directory = wallet_path.parent_path();
+         if (database_filename) *database_filename = wallet_path.filename().string();
+         if (fs::is_symlink(wallet_path) && fs::is_regular_file(fs::canonical(wallet_path))) {
+            // Symlinks to data files are disallowed because they could lead to the
+            // data file being stored in a different location than the transaction log
+            // files, and data loss if a user changes the symlink or fails to make a
+            // complete backup.
+            throw std::runtime_error(strprintf(_("Error loading wallet %s. wallet path cannot be a symlink to a file."), wallet_path.string()));
+         }
+    } else {
+        // Normal case
+        if (env_directory) *env_directory = wallet_path;
+        if (database_filename) *database_filename = "wallet.dat";
+    }
 }
 
 void GetWalletEnv(const fs::path& wallet_path, CDBEnv*&env, std::string& database_filename) {
     fs::path env_directory;
-    GetWalletPaths(wallet_path, &env_directory, &database_filename);
+    CheckWalletPath(wallet_path, &env_directory, &database_filename);
     LOCK(cs_db);
     env = &g_dbenvs.emplace(std::piecewise_construct, std::forward_as_tuple(env_directory.string()), std::forward_as_tuple(env_directory)).first->second;
 }

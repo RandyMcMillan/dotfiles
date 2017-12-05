@@ -46,6 +46,7 @@ static void WaitForShutdown(NodeContext& node)
 static bool AppInit(interfaces::LocalInit& init, int argc, char* argv[])
 {
     NodeContext& node = init.node();
+    node.args = &gArgs;
     node.chain = interfaces::MakeChain(node);
 
     bool fRet = false;

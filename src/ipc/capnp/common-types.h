@@ -340,6 +340,34 @@ auto CustomPassField(TypeList<LocalTypes...>, ServerContext& server_context, Fn&
                       MaybeInit<Accessor>(server_context.call_context.getResults()),
                       [&](LocalTypes... param) { fn.invoke(server_context, std::forward<Args>(args)..., param...); });
 }
+
+//! Generic ::capnp::Data field builder for any class that a Span can be
+//! constructed from, particularly BaseHash and base_blob classes and
+//! subclasses. It's not currently possible to make a generic ::capnp::Data
+//! ReadField function for these classes because they all have inconsistent
+//! constructors. For example the PKHash class has a constructor specifically
+//! expecting a uint160 argument, and there's no way a generic CustomReadField
+//! implementation would be able to detect the required argument type. This
+//! could be cleaned up in the future by adding Span constructors to all these
+//! classes and writing a ::capnp::Data CustomReadField function that is called
+//! for any class with a single-argument Span constructor.
+template <typename LocalType, typename Value, typename Output>
+void CustomBuildField(
+    TypeList<LocalType>,
+    Priority<2>,
+    InvokeContext& invoke_context,
+    Value&& value,
+    Output&& output,
+    typename std::enable_if<!ipc::capnp::Serializable<
+    typename std::remove_cv<typename std::remove_reference<Value>::type>::type>::value>::type* enable_not_serializable = nullptr,
+    typename std::enable_if<std::is_same<decltype(output.get()), ::capnp::Data::Builder>::value>::type*
+        enable_output = nullptr,
+    decltype(Span{value})* enable_value = nullptr)
+{
+    auto data = Span{value};
+    auto result = output.init(data.size());
+    memcpy(result.begin(), data.data(), data.size());
+}
 } // namespace mp
 
 #endif // BITCOIN_IPC_CAPNP_COMMON_TYPES_H

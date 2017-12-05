@@ -836,6 +836,7 @@ if HARDEN
 endif
 
 libbitcoin_ipc_mpgen_input = \
+  ipc/capnp/common.capnp \
   ipc/capnp/echo.capnp \
   ipc/capnp/init.capnp
 EXTRA_DIST += $(libbitcoin_ipc_mpgen_input)
@@ -844,6 +845,9 @@ EXTRA_DIST += $(libbitcoin_ipc_mpgen_input)
 if BUILD_MULTIPROCESS
 LIBBITCOIN_IPC=libbitcoin_ipc.a
 libbitcoin_ipc_a_SOURCES = \
+  ipc/capnp/common-types.h \
+  ipc/capnp/common.cpp \
+  ipc/capnp/common.h \
   ipc/capnp/context.h \
   ipc/capnp/init-types.h \
   ipc/capnp/protocol.cpp \

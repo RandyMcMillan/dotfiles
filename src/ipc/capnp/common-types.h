@@ -8,8 +8,10 @@
 #include <chainparams.h>
 #include <consensus/validation.h>
 #include <ipc/capnp/common.capnp.proxy.h>
+#include <ipc/capnp/node.capnp.h>
 #include <mp/proxy-types.h>
 #include <net_processing.h>
+#include <net_types.h>
 #include <netbase.h>
 #include <util/translation.h>
 #include <validation.h>
@@ -117,6 +119,15 @@ void CustomBuildMessage(InvokeContext& invoke_context,
 void CustomReadMessage(InvokeContext& invoke_context,
                        const ipc::capnp::messages::UniValue::Reader& reader,
                        UniValue& univalue);
+void CustomReadMessage(InvokeContext& invoke_context,
+                       const capnp::Data::Reader& reader,
+                       CSubNet& subnet);
+void CustomBuildMessage(InvokeContext& invoke_context,
+                        const banmap_t& banmap,
+                        ipc::capnp::messages::Banmap::Builder&& builder);
+void CustomReadMessage(InvokeContext& invoke_context,
+                       const ipc::capnp::messages::Banmap::Reader& reader,
+                       banmap_t& banmap);
 //!@}
 
 template <typename LocalType, typename Reader, typename ReadDest>

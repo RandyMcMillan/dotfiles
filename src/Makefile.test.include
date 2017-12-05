@@ -51,13 +51,11 @@ RAW_TEST_FILES =
 GENERATED_TEST_FILES = $(JSON_TEST_FILES:.json=.json.h) $(RAW_TEST_FILES:.raw=.raw.h)
 
 BITCOIN_TEST_SUITE = \
-  interfaces/config_null.cpp \
   test/main.cpp \
   test/setup_common.h \
   test/setup_common.cpp
 
 FUZZ_SUITE = \
-  interfaces/config_null.cpp \
   test/setup_common.h \
   test/setup_common.cpp \
   test/fuzz/fuzz.cpp \

@@ -13,11 +13,13 @@
 namespace interfaces {
 class Chain;
 class ChainClient;
+class LocalInit;
 } // namespace interfaces
 
 //! Pointers to interfaces used during init and destroyed on shutdown.
 struct InitInterfaces
 {
+    std::unique_ptr<interfaces::LocalInit> init;
     std::unique_ptr<interfaces::Chain> chain;
     std::vector<std::unique_ptr<interfaces::ChainClient>> chain_clients;
 };

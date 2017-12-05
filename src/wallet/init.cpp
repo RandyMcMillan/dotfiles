@@ -5,6 +5,7 @@
 
 #include <init.h>
 #include <interfaces/chain.h>
+#include <interfaces/init.h>
 #include <net.h>
 #include <outputtype.h>
 #include <util/moneystr.h>
@@ -134,5 +135,6 @@ void WalletInit::Construct(InitInterfaces& interfaces) const
         return;
     }
     gArgs.SoftSetArg("-wallet", "");
-    interfaces.chain_clients.emplace_back(interfaces::MakeWalletClient(*interfaces.chain, gArgs.GetArgs("-wallet")));
+    interfaces.chain_clients.emplace_back(
+        interfaces.init->makeWalletClient(*interfaces.chain, gArgs.GetArgs("-wallet")));
 }

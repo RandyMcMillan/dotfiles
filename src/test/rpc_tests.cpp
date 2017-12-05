@@ -9,6 +9,7 @@
 #include <core_io.h>
 #include <init.h>
 #include <interfaces/chain.h>
+#include <interfaces/init.h>
 #include <test/setup_common.h>
 #include <util/time.h>
 

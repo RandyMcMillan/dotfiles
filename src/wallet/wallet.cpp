@@ -10,6 +10,7 @@
 #include <consensus/validation.h>
 #include <fs.h>
 #include <interfaces/chain.h>
+#include <interfaces/ipc.h>
 #include <interfaces/wallet.h>
 #include <key.h>
 #include <key_io.h>
@@ -101,7 +102,11 @@ static void ReleaseWallet(CWallet* wallet)
     // Unregister and delete the wallet right after BlockUntilSyncedToCurrentChain
     // so that it's in sync with the current chainstate.
     wallet->WalletLogPrintf("Releasing wallet\n");
-    wallet->BlockUntilSyncedToCurrentChain();
+    try {
+        wallet->BlockUntilSyncedToCurrentChain();
+    } catch (const interfaces::IpcException&) {
+        // Not an error if disconnected from node.
+    }
     wallet->Flush();
     wallet->m_chain_notifications_handler.reset();
     delete wallet;
@@ -2177,7 +2182,7 @@ bool CWalletTx::SubmitMemoryPoolAndRelay(std::string& err_string, bool relay, in
     // Irrespective of the failure reason, un-marking fInMempool
     // out-of-order is incorrect - it should be unmarked when
     // TransactionRemovedFromMempool fires.
-    bool ret = pwallet->chain().broadcastTransaction(tx, err_string, pwallet->m_default_max_tx_fee, relay);
+    bool ret = pwallet->chain().broadcastTransaction(tx, pwallet->m_default_max_tx_fee, relay, err_string);
     fInMempool |= ret;
     return ret;
 }

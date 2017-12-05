@@ -69,8 +69,7 @@ void PaymentServerTests::paymentServerTests()
 {
     SSL_library_init();
     BasicTestingSetup testing_setup(CBaseChainParams::MAIN);
-    auto node = interfaces::MakeNode();
-    OptionsModel optionsModel(*node);
+    OptionsModel optionsModel(m_node);
     PaymentServer* server = new PaymentServer(nullptr, false);
     X509_STORE* caStore = X509_STORE_new();
     X509_STORE_add_cert(caStore, parse_b64der_cert(caCert1_BASE64));
@@ -149,7 +148,7 @@ void PaymentServerTests::paymentServerTests()
     // Ensure the request is initialized, because network "main" is default, even for
     // uninitialized payment requests and that will fail our test here.
     QVERIFY(r.paymentRequest.IsInitialized());
-    QCOMPARE(PaymentServer::verifyNetwork(*node, r.paymentRequest.getDetails()), false);
+    QCOMPARE(PaymentServer::verifyNetwork(m_node, r.paymentRequest.getDetails()), false);
 
     // Expired payment request (expires is set to 1 = 1970-01-01 00:00:01):
     data = DecodeBase64(paymentrequest2_cert2_BASE64);

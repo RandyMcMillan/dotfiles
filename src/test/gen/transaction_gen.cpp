@@ -49,7 +49,7 @@ CMutableTransaction BuildSpendingTransaction(const CScript& scriptSig, const CSc
 }
 
 /** Helper function to generate a tx that spends a spk */
-SpendingInfo sign(T spk_keys, CScript redeemScript = CScript()) {
+SpendingInfo sign(SPKCKeyTup spk_keys, CScript redeemScript = CScript()) {
     const int inputIndex = 0;
     const CAmount nValue = 0;
     const CScript spk = std::get<0>(spk_keys);
@@ -75,25 +75,25 @@ SpendingInfo sign(T spk_keys, CScript redeemScript = CScript()) {
 
 /** A signed tx that validly spends a P2PKSPK */
 rc::Gen<SpendingInfo> signedP2PKTx() {
-  return rc::gen::map(P2PKSPK(), [](T spk_key) {
+  return rc::gen::map(P2PKSPK(), [](SPKCKeyTup spk_key) {
     return sign(spk_key);
   });
 }
 
 rc::Gen<SpendingInfo> signedP2PKHTx() {
-  return rc::gen::map(P2PKHSPK(), [](T spk_key) {
+  return rc::gen::map(P2PKHSPK(), [](SPKCKeyTup spk_key) {
     return sign(spk_key);
   });
 }
 
 rc::Gen<SpendingInfo> signedMultisigTx() {
-  return rc::gen::map(MultisigSPK(), [](T spk_key) {
+  return rc::gen::map(MultisigSPK(), [](SPKCKeyTup spk_key) {
     return sign(spk_key);
   });
 }
 
 rc::Gen<SpendingInfo> signedP2SHTx() {
-  return rc::gen::map(RawSPK(), [](T spk_keys) {
+  return rc::gen::map(RawSPK(), [](SPKCKeyTup spk_keys) {
     const CScript redeemScript = std::get<0>(spk_keys);
     const std::vector<CKey> keys = std::get<1>(spk_keys);
     //hash the spk
@@ -103,13 +103,13 @@ rc::Gen<SpendingInfo> signedP2SHTx() {
 }
 
 rc::Gen<SpendingInfo> signedP2WPKHTx() {
-  return rc::gen::map(P2WPKHSPK(), [](T spk_keys) {
+  return rc::gen::map(P2WPKHSPK(), [](SPKCKeyTup spk_keys) {
     return sign(spk_keys);
   });
 }
 
 rc::Gen<SpendingInfo> signedP2WSHTx() {
-  return rc::gen::map(MultisigSPK(), [](T spk_keys) {
+  return rc::gen::map(MultisigSPK(), [](SPKCKeyTup spk_keys) {
    const CScript redeemScript = std::get<0>(spk_keys);
    const std::vector<CKey> keys = std::get<1>(spk_keys);
    const CScript p2wsh = GetScriptForWitness(redeemScript);

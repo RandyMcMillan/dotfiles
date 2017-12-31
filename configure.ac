@@ -743,7 +743,6 @@ if test x$use_upnp != xno; then
   )
 fi
 
-
 BITCOIN_QT_INIT
 
 dnl sets $bitcoin_enable_qt, $bitcoin_enable_qt_test, $bitcoin_enable_qt_dbus

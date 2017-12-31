@@ -9,25 +9,25 @@
 #include <rapidcheck/gen/Container.h>
 #include <rapidcheck/gen/Select.h>
 
-typedef std::tuple<CScript, std::vector<CKey>> T;
+typedef std::tuple<CScript, std::vector<CKey>> SPKCKeyTup;
 
 //non witness SPKs
-rc::Gen<T> P2PKSPK();
+rc::Gen<SPKCKeyTup> P2PKSPK();
 
-rc::Gen<T> P2PKHSPK();
+rc::Gen<SPKCKeyTup> P2PKHSPK();
 
-rc::Gen<T> MultisigSPK();
+rc::Gen<SPKCKeyTup> MultisigSPK();
 
 /** Generates a non-P2SH/P2WSH spk */
-rc::Gen<T> RawSPK();
+rc::Gen<SPKCKeyTup> RawSPK();
 
-rc::Gen<T> P2SHSPK();
+rc::Gen<SPKCKeyTup> P2SHSPK();
 
 //witness spks
 
-rc::Gen<T> P2WPKHSPK();
+rc::Gen<SPKCKeyTup> P2WPKHSPK();
 
-rc::Gen<T> P2WSHSPK();
+rc::Gen<SPKCKeyTup> P2WSHSPK();
 
 namespace rc {
   

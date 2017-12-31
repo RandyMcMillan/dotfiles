@@ -28,14 +28,14 @@ namespace rc {
   };
 
   /** Returns [0,100) uint256s */
-  Gen<std::vector<uint256>> betweenZeroAnd100() {
+  Gen<std::vector<uint256>> BetweenZeroAnd100() {
     return gen::suchThat<std::vector<uint256>>([](std::vector<uint256> hashes) {
       return hashes.size() <= 100;
     });
   }
   /** Returns [1,100) uint256s */
-  Gen<std::vector<uint256>> between1And100() {
-    return gen::suchThat(betweenZeroAnd100(), [](std::vector<uint256> hashes) {
+  Gen<std::vector<uint256>> Between1And100() {
+    return gen::suchThat(BetweenZeroAnd100(), [](std::vector<uint256> hashes) {
       return hashes.size() > 0 && hashes.size() <= 100;
     });
   }
@@ -53,14 +53,12 @@ namespace rc {
     };
   };
 
-
-
   /** Generates a CPartialMerkleTree and returns the PartialMerkleTree along 
    * with the txids that should be matched inside of it */
   template<>
   struct Arbitrary<std::pair<CPartialMerkleTree, std::vector<uint256>>> {
     static Gen<std::pair<CPartialMerkleTree, std::vector<uint256>>> arbitrary() {
-      return gen::map(between1And100(), [](std::vector<uint256> txids) {
+      return gen::map(Between1And100(), [](std::vector<uint256> txids) {
         std::vector<bool> matches;
         std::vector<uint256> matchedTxs;  
         for(unsigned int i = 0; i < txids.size(); i++) {

@@ -7,9 +7,8 @@
 #include <rapidcheck/gen/Predicate.h>
 #include <rapidcheck/gen/Container.h>
 
-
 /** Generates 1 to 20 keys for OP_CHECKMULTISIG */
-rc::Gen<std::vector<CKey>> multisigKeys() {
+rc::Gen<std::vector<CKey>> MultisigKeys() {
   return rc::gen::suchThat(rc::gen::arbitrary<std::vector<CKey>>(), [](std::vector<CKey> keys) {
     //TODO: Investigate why we can only allow 15 keys. Consensus rules
     // dictate we can up to 20 keys

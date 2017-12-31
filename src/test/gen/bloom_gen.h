@@ -15,8 +15,6 @@ rc::Gen<double> BetweenZeroAndOne();
 rc::Gen<std::tuple<unsigned int, double, unsigned int, unsigned int>> BloomFilterPrimitives();
 
 namespace rc {
-  
-
   /** Generator for a new CBloomFilter*/
   template<>
   struct Arbitrary<CBloomFilter> {
@@ -33,11 +31,10 @@ namespace rc {
   };
 }
 
-/** Returns a bloom filter loaded with the given uint256s */ 
+/** Returns a bloom filter loaded with the returned uint256s */ 
 rc::Gen<std::tuple<CBloomFilter, std::vector<uint256>>> LoadedBloomFilter();
 
 /** Loads an arbitrary bloom filter with the given hashes */
 rc::Gen<std::tuple<CBloomFilter, std::vector<uint256>>> LoadBloomFilter(std::vector<uint256>& hashes);
-
 
 #endif

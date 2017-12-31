@@ -9,7 +9,8 @@ TEST_SRCDIR = test
 TEST_BINARY=test/test_bitcoin$(EXEEXT)
 
 JSON_TEST_FILES = \
-  test/data/script_tests.json \ test/data/base58_keys_valid.json \
+  test/data/script_tests.json \
+  test/data/base58_keys_valid.json \
   test/data/base58_encode_decode.json \
   test/data/base58_keys_invalid.json \
   test/data/tx_invalid.json \
@@ -83,7 +84,6 @@ BITCOIN_TESTS =\
   test/txvalidationcache_tests.cpp \
   test/versionbits_tests.cpp \
   test/uint256_tests.cpp \
-  test/univalue_tests.cpp \
   test/util_tests.cpp \
   test/gen/crypto_gen.cpp \
   test/gen/crypto_gen.h \
@@ -91,6 +91,7 @@ BITCOIN_TESTS =\
   test/gen/script_gen.h \
   test/gen/transaction_gen.cpp \
   test/gen/transaction_gen.h \
+  test/gen/block_gen.cpp \
   test/gen/block_gen.h \
   test/gen/merkleblock_gen.h \
   test/gen/bloom_gen.cpp \

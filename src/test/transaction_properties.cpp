@@ -65,8 +65,7 @@ RC_BOOST_PROP(ctxout_serialization_symmetry, (CTxOut txOut)) {
 RC_BOOST_PROP(ctransaction_serialization_symmetry, (CTransaction tx)) {
   CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
   ss << tx;
-  deserialize_type t; 
-  CTransaction tx2(t,ss);
+  CTransaction tx2(deserialize,ss);
   RC_ASSERT(tx == tx2);
 }
 

@@ -9,7 +9,7 @@
 
 /** Generates 1 to 20 keys for OP_CHECKMULTISIG */
 rc::Gen<std::vector<CKey>> MultisigKeys() {
-  return rc::gen::suchThat(rc::gen::arbitrary<std::vector<CKey>>(), [](std::vector<CKey> keys) {
+  return rc::gen::suchThat(rc::gen::arbitrary<std::vector<CKey>>(), [](const std::vector<CKey>& keys) {
     //TODO: Investigate why we can only allow 15 keys. Consensus rules
     // dictate we can up to 20 keys
     //https://github.com/bitcoin/bitcoin/blob/10bee0dd4f37eb6cb7a0f1d565fa0fecf8109c35/src/script/script.h#L29

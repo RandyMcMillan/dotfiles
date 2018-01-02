@@ -19,39 +19,38 @@ namespace rc {
   struct Arbitrary<CKey> {
     static Gen<CKey> arbitrary() {
       return rc::gen::map<int>([](int x) {
-        CKey key;  
+        CKey key;
         key.MakeNewKey(true);
-        return key; 
+        return key;
       });
     };
   };
   
   /** Generator for a CPrivKey */ 
-  template<> 
-  struct Arbitrary<CPrivKey> { 
-    static Gen<CPrivKey> arbitrary() { 
-      return gen::map(gen::arbitrary<CKey>(), [](CKey key) { 
+  template<>
+  struct Arbitrary<CPrivKey> {
+    static Gen<CPrivKey> arbitrary() {
+      return gen::map(gen::arbitrary<CKey>(), [](const CKey& key) {
         return key.GetPrivKey();
       });
-    }; 
+    };
   };
 
   /** Generator for a new CPubKey */
   template<>
   struct Arbitrary<CPubKey> {
     static Gen<CPubKey> arbitrary() {
-      return gen::map(gen::arbitrary<CKey>(), [](CKey key) {
-        return key.GetPubKey(); 
+      return gen::map(gen::arbitrary<CKey>(), [](const CKey& key) {
+        return key.GetPubKey();
       });
     };
   };
-  
   /** Generates a arbitrary uint256 */
-  template<> 
-  struct Arbitrary<uint256> { 
-    static Gen<uint256> arbitrary() { 
-       return rc::gen::just(GetRandHash()); 
-    }; 
-  }; 
-}
+  template<>
+  struct Arbitrary<uint256> {
+    static Gen<uint256> arbitrary() {
+       return rc::gen::just(GetRandHash());
+    };
+  };
+} //namespace rc
 #endif

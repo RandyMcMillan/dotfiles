@@ -13,7 +13,7 @@ namespace rc {
   template<>
   struct Arbitrary<std::pair<CMerkleBlock, std::set<uint256>>> { 
     static Gen<std::pair<CMerkleBlock,std::set<uint256>>> arbitrary() {
-      return gen::map(gen::arbitrary<CBlock>(), [](CBlock block) {
+      return gen::map(gen::arbitrary<CBlock>(), [](const CBlock& block) {
         std::set<uint256> hashes;
         for(unsigned int i = 0; i < block.vtx.size(); i++) {
           //pretty naive to include every other txid in the merkle block
@@ -29,13 +29,13 @@ namespace rc {
 
   /** Returns [0,100) uint256s */
   Gen<std::vector<uint256>> BetweenZeroAnd100() {
-    return gen::suchThat<std::vector<uint256>>([](std::vector<uint256> hashes) {
+    return gen::suchThat<std::vector<uint256>>([](const std::vector<uint256>& hashes) {
       return hashes.size() <= 100;
     });
   }
   /** Returns [1,100) uint256s */
   Gen<std::vector<uint256>> Between1And100() {
-    return gen::suchThat(BetweenZeroAnd100(), [](std::vector<uint256> hashes) {
+    return gen::suchThat(BetweenZeroAnd100(), [](const std::vector<uint256>& hashes) {
       return hashes.size() > 0 && hashes.size() <= 100;
     });
   }
@@ -45,10 +45,9 @@ namespace rc {
   struct Arbitrary<CMerkleBlock> { 
     static Gen<CMerkleBlock> arbitrary() {
       return gen::map(gen::arbitrary<std::pair<CMerkleBlock, std::set<uint256>>>(), 
-          [](std::pair<CMerkleBlock, std::set<uint256>> merkleBlockWithTxIds) {
-        CMerkleBlock merkleBlock = merkleBlockWithTxIds.first;
-        std::set<uint256> insertedHashes = merkleBlockWithTxIds.second; 
-        return merkleBlock; 
+          [](const std::pair<const CMerkleBlock&, const std::set<uint256>&>& mb_with_txids) {
+        const CMerkleBlock& mb = mb_with_txids.first;
+        return mb;
       });
     };
   };
@@ -58,18 +57,18 @@ namespace rc {
   template<>
   struct Arbitrary<std::pair<CPartialMerkleTree, std::vector<uint256>>> {
     static Gen<std::pair<CPartialMerkleTree, std::vector<uint256>>> arbitrary() {
-      return gen::map(Between1And100(), [](std::vector<uint256> txids) {
+      return gen::map(Between1And100(), [](const std::vector<uint256>& txids) {
         std::vector<bool> matches;
-        std::vector<uint256> matchedTxs;  
+        std::vector<uint256> matched_txs;
         for(unsigned int i = 0; i < txids.size(); i++) {
           //pretty naive to include every other txid in the merkle block
           //but this will work for now.
           matches.push_back(i % 2 == 1);
           if (i % 2 == 1) { 
-            matchedTxs.push_back(txids[i]);  
+            matched_txs.push_back(txids[i]);
           }
         }
-        return std::make_pair(CPartialMerkleTree(txids,matches),matchedTxs);
+        return std::make_pair(CPartialMerkleTree(txids,matches),matched_txs);
       });
     };
   };
@@ -78,10 +77,10 @@ namespace rc {
   struct Arbitrary<CPartialMerkleTree> {
     static Gen<CPartialMerkleTree> arbitrary() {
       return gen::map(gen::arbitrary<std::pair<CPartialMerkleTree,std::vector<uint256>>>(),
-        [](std::pair<CPartialMerkleTree,std::vector<uint256>> p) { 
+        [](const std::pair<const CPartialMerkleTree&, const std::vector<uint256>&>& p) {
          return p.first;
       });
     };
   };
-}
+} //namespace rc
 #endif

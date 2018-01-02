@@ -14,20 +14,20 @@
 
 BOOST_FIXTURE_TEST_SUITE(bloom_properties, BasicTestingSetup)
 
-RC_BOOST_PROP(no_false_negatives, (CBloomFilter bloomFilter, uint256 hash)) {
-  bloomFilter.insert(hash);
-  bool result = bloomFilter.contains(hash);
+RC_BOOST_PROP(no_false_negatives, (CBloomFilter bloom_filter, const uint256& hash)) {
+  bloom_filter.insert(hash);
+  bool result = bloom_filter.contains(hash);
   RC_ASSERT(result);
 }
 
-RC_BOOST_PROP(serialization_symmetry, (CBloomFilter bloomFilter)) {
+RC_BOOST_PROP(serialization_symmetry, (const CBloomFilter& bloom_filter)) {
   CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-  ss << bloomFilter;
-  CBloomFilter bloomFilter2; 
-  ss >> bloomFilter2; 
+  ss << bloom_filter;
+  CBloomFilter bloom_filter2;
+  ss >> bloom_filter2;
   CDataStream ss1(SER_NETWORK, PROTOCOL_VERSION);
-  ss << bloomFilter;  
-  ss1 << bloomFilter2;
+  ss << bloom_filter;
+  ss1 << bloom_filter2;
   RC_ASSERT(ss.str() == ss1.str());
 }
 BOOST_AUTO_TEST_SUITE_END()

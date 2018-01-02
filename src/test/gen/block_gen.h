@@ -21,14 +21,14 @@ namespace rc {
   template<>
   struct Arbitrary<CBlockHeader> {
     static Gen<CBlockHeader> arbitrary() {
-      return gen::map(BlockHeaderPrimitives(), [](BlockHeaderTup headerPrimitives) {
+      return gen::map(BlockHeaderPrimitives(), [](const BlockHeaderTup& primitives) {
         int32_t nVersion;
         uint256 hashPrevBlock;
         uint256 hashMerkleRoot;
         uint32_t nTime;
         uint32_t nBits;
         uint32_t nNonce;
-        std::tie(nVersion,hashPrevBlock, hashMerkleRoot, nTime,nBits,nNonce) = headerPrimitives;
+        std::tie(nVersion,hashPrevBlock, hashMerkleRoot, nTime,nBits,nNonce) = primitives;
         CBlockHeader header; 
         header.nVersion = nVersion;
         header.hashPrevBlock = hashPrevBlock; 
@@ -45,12 +45,12 @@ namespace rc {
   template<>
   struct Arbitrary<CBlock> {
     static Gen<CBlock> arbitrary() {
-      return gen::map(gen::nonEmpty<std::vector<CTransactionRef>>(), [](std::vector<CTransactionRef> txRefs) {
+      return gen::map(gen::nonEmpty<std::vector<CTransactionRef>>(), [](const std::vector<CTransactionRef>& refs) {
         CBlock block;
-        block.vtx = txRefs;
+        block.vtx = refs;
         return block;
       });
     }
   };
-}
+} //namespace rc
 #endif

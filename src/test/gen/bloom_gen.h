@@ -19,22 +19,22 @@ namespace rc {
   template<>
   struct Arbitrary<CBloomFilter> {
     static Gen<CBloomFilter> arbitrary() {
-      return gen::map(BloomFilterPrimitives(), [](std::tuple<unsigned int, double, unsigned int, unsigned int> filterPrimitives) {   
-        unsigned int numElements;  
-        double fpRate;
-        unsigned int nTweakIn;
-        unsigned int bloomFlag; 
-        std::tie(numElements, fpRate, nTweakIn, bloomFlag) = filterPrimitives; 
-	return CBloomFilter(numElements,fpRate,nTweakIn,bloomFlag);  
+      return gen::map(BloomFilterPrimitives(), [](const std::tuple<unsigned int, double, unsigned int, unsigned int>& primitives) {
+        unsigned int num_elements;
+        double fp_rate;
+        unsigned int n_tweak_in;
+        unsigned int bloom_flag;
+        std::tie(num_elements, fp_rate, n_tweak_in, bloom_flag) = primitives;
+	return CBloomFilter(num_elements,fp_rate,n_tweak_in,bloom_flag);
       });
     };
   };
-}
+} //namespace rc
 
 /** Returns a bloom filter loaded with the returned uint256s */ 
-rc::Gen<std::tuple<CBloomFilter, std::vector<uint256>>> LoadedBloomFilter();
+rc::Gen<std::pair<CBloomFilter, std::vector<uint256>>> LoadedBloomFilter();
 
 /** Loads an arbitrary bloom filter with the given hashes */
-rc::Gen<std::tuple<CBloomFilter, std::vector<uint256>>> LoadBloomFilter(std::vector<uint256>& hashes);
+rc::Gen<std::pair<CBloomFilter, std::vector<uint256>>> LoadBloomFilter(const std::vector<uint256>& hashes);
 
 #endif

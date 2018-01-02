@@ -49,11 +49,11 @@ CMutableTransaction BuildSpendingTransaction(const CScript& scriptSig, const CSc
 }
 
 /** Helper function to generate a tx that spends a spk */
-SpendingInfo sign(SPKCKeyTup spk_keys, CScript redeemScript = CScript()) {
+SpendingInfo sign(const SPKCKeyPair& spk_keys, const CScript& redeemScript = CScript()) {
     const int inputIndex = 0;
     const CAmount nValue = 0;
-    const CScript spk = std::get<0>(spk_keys);
-    const std::vector<CKey> keys = std::get<1>(spk_keys);
+    const CScript& spk = spk_keys.first;
+    const std::vector<CKey>& keys = spk_keys.second;
     CBasicKeyStore store;
     for (const auto k: keys) {
       store.AddKey(k);
@@ -67,59 +67,59 @@ SpendingInfo sign(SPKCKeyTup spk_keys, CScript redeemScript = CScript()) {
     TransactionSignatureCreator creator(&store,&spendingTxConst,inputIndex,0);
     assert(ProduceSignature(creator, spk, sigdata));
     UpdateTransaction(spendingTx,0,sigdata);
-    const CTxOut output = creditingTx.vout[0];
+    const CTxOut& output = creditingTx.vout[0];
     const CTransaction finalTx = CTransaction(spendingTx);
     SpendingInfo tup = std::make_tuple(output,finalTx,inputIndex);
     return tup;
 }
 
 /** A signed tx that validly spends a P2PKSPK */
-rc::Gen<SpendingInfo> signedP2PKTx() {
-  return rc::gen::map(P2PKSPK(), [](SPKCKeyTup spk_key) {
+rc::Gen<SpendingInfo> SignedP2PKTx() {
+  return rc::gen::map(P2PKSPK(), [](const SPKCKeyPair& spk_key) {
     return sign(spk_key);
   });
 }
 
-rc::Gen<SpendingInfo> signedP2PKHTx() {
-  return rc::gen::map(P2PKHSPK(), [](SPKCKeyTup spk_key) {
+rc::Gen<SpendingInfo> SignedP2PKHTx() {
+  return rc::gen::map(P2PKHSPK(), [](const SPKCKeyPair& spk_key) {
     return sign(spk_key);
   });
 }
 
-rc::Gen<SpendingInfo> signedMultisigTx() {
-  return rc::gen::map(MultisigSPK(), [](SPKCKeyTup spk_key) {
+rc::Gen<SpendingInfo> SignedMultisigTx() {
+  return rc::gen::map(MultisigSPK(), [](const SPKCKeyPair& spk_key) {
     return sign(spk_key);
   });
 }
 
-rc::Gen<SpendingInfo> signedP2SHTx() {
-  return rc::gen::map(RawSPK(), [](SPKCKeyTup spk_keys) {
-    const CScript redeemScript = std::get<0>(spk_keys);
-    const std::vector<CKey> keys = std::get<1>(spk_keys);
+rc::Gen<SpendingInfo> SignedP2SHTx() {
+  return rc::gen::map(RawSPK(), [](const SPKCKeyPair& spk_keys) {
+    const CScript& redeemScript = spk_keys.first;
+    const std::vector<CKey>& keys = spk_keys.second;
     //hash the spk
-    const CScript p2sh = GetScriptForDestination(CScriptID(redeemScript));
-    return sign(std::make_tuple(p2sh,keys),redeemScript);
+    const CScript& p2sh = GetScriptForDestination(CScriptID(redeemScript));
+    return sign(std::make_pair(p2sh,keys),redeemScript);
   });
 }
 
-rc::Gen<SpendingInfo> signedP2WPKHTx() {
-  return rc::gen::map(P2WPKHSPK(), [](SPKCKeyTup spk_keys) {
+rc::Gen<SpendingInfo> SignedP2WPKHTx() {
+  return rc::gen::map(P2WPKHSPK(), [](const SPKCKeyPair& spk_keys) {
     return sign(spk_keys);
   });
 }
 
-rc::Gen<SpendingInfo> signedP2WSHTx() {
-  return rc::gen::map(MultisigSPK(), [](SPKCKeyTup spk_keys) {
-   const CScript redeemScript = std::get<0>(spk_keys);
-   const std::vector<CKey> keys = std::get<1>(spk_keys);
+rc::Gen<SpendingInfo> SignedP2WSHTx() {
+  return rc::gen::map(MultisigSPK(), [](const SPKCKeyPair& spk_keys) {
+   const CScript& redeemScript = spk_keys.first;
+   const std::vector<CKey>& keys = spk_keys.second;
    const CScript p2wsh = GetScriptForWitness(redeemScript);
-   return sign(std::make_tuple(p2wsh,keys),redeemScript);
+   return sign(std::make_pair(p2wsh,keys),redeemScript);
   });
 }
 
 /** Generates an arbitrary validly signed tx */
-rc::Gen<SpendingInfo> signedTx() {
-  return rc::gen::oneOf(signedP2PKTx(), signedP2PKHTx(),
-    signedMultisigTx(), signedP2SHTx(), signedP2WPKHTx(),
-    signedP2WSHTx());
+rc::Gen<SpendingInfo> SignedTx() {
+  return rc::gen::oneOf(SignedP2PKTx(), SignedP2PKHTx(),
+    SignedMultisigTx(), SignedP2SHTx(), SignedP2WPKHTx(),
+    SignedP2WSHTx());
 }

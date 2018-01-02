@@ -10,7 +10,7 @@
 
 BOOST_FIXTURE_TEST_SUITE(block_properties, BasicTestingSetup)
 
-RC_BOOST_PROP(blockheader_serialization_symmetry, (CBlockHeader header)) {
+RC_BOOST_PROP(blockheader_serialization_symmetry, (const CBlockHeader& header)) {
   CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
   ss << header;
   CBlockHeader header2; 
@@ -21,7 +21,7 @@ RC_BOOST_PROP(blockheader_serialization_symmetry, (CBlockHeader header)) {
   RC_ASSERT(ss.str() == ss1.str());
 }
 
-RC_BOOST_PROP(block_serialization_symmetry, (CBlock block)) {
+RC_BOOST_PROP(block_serialization_symmetry, (const CBlock& block)) {
   CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
   ss << block;
   CBlock block2;

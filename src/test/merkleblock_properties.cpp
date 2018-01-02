@@ -11,28 +11,28 @@
 #include <iostream>
 BOOST_FIXTURE_TEST_SUITE(merkleblock_properties, BasicTestingSetup)
 
-RC_BOOST_PROP(merkleblock_serialization_symmetry, (CMerkleBlock merkleBlock)) { 
+RC_BOOST_PROP(merkleblock_serialization_symmetry, (const CMerkleBlock& mb)) {
   CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-  ss << merkleBlock;
-  CMerkleBlock merkleBlock2; 
-  ss >> merkleBlock2; 
+  ss << mb;
+  CMerkleBlock mb2;
+  ss >> mb2;
   CDataStream ss1(SER_NETWORK, PROTOCOL_VERSION);
-  ss << merkleBlock; 
-  ss1 << merkleBlock2; 
+  ss << mb;
+  ss1 << mb2;
   RC_ASSERT(ss.str() == ss1.str());
 }
 
 /** Should find all txids we inserted in the merkle block */
-RC_BOOST_PROP(merkle_block_match_symmetry, (std::pair<CMerkleBlock, std::set<uint256>> t)) {
-  CMerkleBlock& merkleBlock = t.first; 
-  std::set<uint256>& insertedHashes = t.second;  
-  for (unsigned int i = 0; i < merkleBlock.vMatchedTxn.size(); i++) { 
-    const auto& h = merkleBlock.vMatchedTxn[i].second; 
-    RC_ASSERT(insertedHashes.find(h) != insertedHashes.end());
+RC_BOOST_PROP(merkle_block_match_symmetry, (std::pair<CMerkleBlock, std::set<uint256>> p)) {
+  const CMerkleBlock& mb = p.first;
+  const std::set<uint256>& inserted_hashes = p.second;
+  for (unsigned int i = 0; i < mb.vMatchedTxn.size(); i++) {
+    const auto& h = mb.vMatchedTxn[i].second;
+    RC_ASSERT(inserted_hashes.find(h) != inserted_hashes.end());
   }
 }
 
-RC_BOOST_PROP(partialmerkletree_serialization_symmetry, (CPartialMerkleTree tree)) {
+RC_BOOST_PROP(partialmerkletree_serialization_symmetry, (const CPartialMerkleTree& tree)) {
   CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
   ss << tree; 
   CPartialMerkleTree tree2;
@@ -46,8 +46,8 @@ RC_BOOST_PROP(partialmerkletree_serialization_symmetry, (CPartialMerkleTree tree
 
 /** Should find all txids we inserted in the PartialMerkleTree */
 RC_BOOST_PROP(partialmerkletree_extract_matches_symmetry, (std::pair<CPartialMerkleTree, std::vector<uint256>> p)) { 
-  CPartialMerkleTree tree = p.first;
-  std::vector<uint256> expectedMatches = p.second;
+  CPartialMerkleTree& tree = p.first;
+  const std::vector<uint256>& expectedMatches = p.second;
   std::vector<uint256> matches;
   std::vector<unsigned int> indices;
   tree.ExtractMatches(matches,indices); 

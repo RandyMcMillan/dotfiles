@@ -13,7 +13,7 @@
 BOOST_FIXTURE_TEST_SUITE(script_properties, BasicTestingSetup)
 
 /** Check CScript serialization symmetry */
-RC_BOOST_PROP(cscript_serialization_symmetry, (CScript script)) {
+RC_BOOST_PROP(cscript_serialization_symmetry, (const CScript& script)) {
   CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
   ss << static_cast<const CScriptBase&>(script);
   std::vector<unsigned char> deserialized; 

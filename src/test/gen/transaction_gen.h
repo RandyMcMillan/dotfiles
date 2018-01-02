@@ -14,24 +14,26 @@
 
 typedef std::tuple<const CTxOut, const CTransaction, const int> SpendingInfo;
 /** A signed tx that validly spends a P2PKSPK and the input index */
-rc::Gen<SpendingInfo> signedP2PKTx();
+rc::Gen<SpendingInfo> SignedP2PKTx();
 
 /** A signed tx that validly spends a P2PKHSPK and the input index */
-rc::Gen<SpendingInfo> signedP2PKHTx();
+rc::Gen<SpendingInfo> SignedP2PKHTx();
 
 /** A signed tx that validly spends a MultisigSPK and the input index */
-rc::Gen<SpendingInfo> signedMultisigTx();
+rc::Gen<SpendingInfo> SignedMultisigTx();
 
 /** A signed tx that validly spends a P2SHSPK and the input index */
-rc::Gen<SpendingInfo> signedP2SHTx();
+rc::Gen<SpendingInfo> SignedP2SHTx();
 
 /** A signed tx that validly spends a P2WPKH and the input index */
-rc::Gen<SpendingInfo> signedP2WPKHTx();
+rc::Gen<SpendingInfo> SignedP2WPKHTx();
+
 /** A signed tx that validly spends a P2WSH output and the input index */
-rc::Gen<SpendingInfo> signedP2WSHTx();
+rc::Gen<SpendingInfo> SignedP2WSHTx();
 
 /** Generates a arbitrary validly signed tx */
-rc::Gen<SpendingInfo> signedTx();
+rc::Gen<SpendingInfo> SignedTx();
+
 namespace rc {
   /** Generator for a COutPoint */ 
   template<>
@@ -48,13 +50,13 @@ namespace rc {
 
   /** Generator for a CTxIn */
   template<> 
-  struct Arbitrary<CTxIn> { 
+  struct Arbitrary<CTxIn> {
     static Gen<CTxIn> arbitrary() { 
-      return gen::map(gen::tuple(gen::arbitrary<COutPoint>(), gen::arbitrary<CScript>(), gen::arbitrary<uint32_t>()), [](std::tuple<COutPoint, CScript, uint32_t> txInPrimitives) { 
+      return gen::map(gen::tuple(gen::arbitrary<COutPoint>(), gen::arbitrary<CScript>(), gen::arbitrary<uint32_t>()), [](const std::tuple<const COutPoint&, const CScript&, uint32_t>& primitives) {
         COutPoint outpoint; 
         CScript script;
         uint32_t sequence; 
-        std::tie(outpoint,script,sequence) = txInPrimitives; 
+        std::tie(outpoint,script,sequence) = primitives;
         return CTxIn(outpoint,script,sequence); 
       });
     };
@@ -74,28 +76,25 @@ namespace rc {
   template<>
   struct Arbitrary<CTxOut> { 
     static Gen<CTxOut> arbitrary() { 
-      return gen::map(gen::tuple(gen::arbitrary<CAmount>(), gen::arbitrary<CScript>()), [](std::tuple<CAmount, CScript> txOutPrimitives) {
-        CAmount amount;  
-        CScript script;
-        std::tie(amount,script) = txOutPrimitives;
-        return CTxOut(amount,script);
+      return gen::map(gen::pair(gen::arbitrary<CAmount>(), gen::arbitrary<CScript>()), [](const std::pair<CAmount, CScript>& primitives) {
+        return CTxOut(primitives.first,primitives.second);
       });
     };
   };
 
   /** Generator for a CTransaction */
   template<> 
-  struct Arbitrary<CTransaction> { 
-    static Gen<CTransaction> arbitrary() { 
+  struct Arbitrary<CTransaction> {
+    static Gen<CTransaction> arbitrary() {
       return gen::map(gen::tuple(gen::arbitrary<int32_t>(), 
-            gen::nonEmpty<std::vector<CTxIn>>(), gen::nonEmpty<std::vector<CTxOut>>(), gen::arbitrary<uint32_t>()), 
-          [](std::tuple<int32_t, std::vector<CTxIn>, std::vector<CTxOut>, uint32_t> txPrimitives) { 
+            gen::nonEmpty<std::vector<CTxIn>>(), gen::nonEmpty<std::vector<CTxOut>>(), gen::arbitrary<uint32_t>()),
+          [](const std::tuple<int32_t, const std::vector<CTxIn>&, const std::vector<CTxOut>&, uint32_t>& primitives) {
         CMutableTransaction tx;
         int32_t nVersion;
         std::vector<CTxIn> vin;
         std::vector<CTxOut> vout;
         uint32_t locktime;
-        std::tie(nVersion, vin, vout, locktime) = txPrimitives;
+        std::tie(nVersion, vin, vout, locktime) = primitives;
         tx.nVersion=nVersion;
         tx.vin=vin;
         tx.vout=vout;
@@ -109,10 +108,10 @@ namespace rc {
   template<>
   struct Arbitrary<CTransactionRef> { 
     static Gen<CTransactionRef> arbitrary() {
-      return gen::map(gen::arbitrary<CTransaction>(), [](CTransaction tx) {
+      return gen::map(gen::arbitrary<CTransaction>(), [](const CTransaction& tx) {
           return MakeTransactionRef(tx); 
       });
     };
   };
-}
+} //namespace rc
 #endif

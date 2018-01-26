@@ -1617,20 +1617,25 @@ int64_t CWallet::RescanFromTime(int64_t startTime, const WalletRescanReserver& r
     // Find starting block. May be null if nCreateTime is greater than the
     // highest blockchain timestamp, in which case there is nothing that needs
     // to be scanned.
-    CBlockIndex* startBlock = nullptr;
+    const CBlockIndex* startBlock = nullptr;
     {
         LOCK(cs_main);
         startBlock = chainActive.FindEarliestAtLeast(startTime - TIMESTAMP_WINDOW);
         LogPrintf("%s: Rescanning last %i blocks\n", __func__, startBlock ? chainActive.Height() - startBlock->nHeight + 1 : 0);
     }
 
-    if (startBlock) {
-        const CBlockIndex* const failedBlock = ScanForWalletTransactions(startBlock, nullptr, reserver, update).last_failed;
-        if (failedBlock) {
-            return failedBlock->GetBlockTimeMax() + TIMESTAMP_WINDOW + 1;
+    const CBlockIndex* first_failed = nullptr;
+    const CBlockIndex* last_failed = nullptr;
+    while (startBlock) {
+        ScanResult result = ScanForWalletTransactions(startBlock, nullptr, reserver, update);
+        LOCK(cs_main);
+        if (result.first_failed && chainActive.Contains(result.first_failed)) {
+            if (!first_failed || !chainActive.Contains(first_failed)) first_failed = result.first_failed;
+            last_failed = chainActive.FindFork(result.last_failed);
         }
+        startBlock = !result.last_scanned || result.last_scanned == chainActive.Tip() ? nullptr : chainActive.FindFork(result.last_scanned);
     }
-    return startTime;
+    return last_failed ? last_failed->GetBlockTimeMax() + TIMESTAMP_WINDOW + 1 : startTime;
 }
 
 void UpdateResult(CWallet::ScanResult& result, const CBlockIndex& block, bool failed)

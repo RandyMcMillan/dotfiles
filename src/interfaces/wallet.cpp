@@ -20,8 +20,8 @@
 #include <wallet/feebumper.h>
 #include <wallet/fees.h>
 #include <wallet/ismine.h>
-#include <wallet/rpcwallet.h>
 #include <wallet/load.h>
+#include <wallet/rpcwallet.h>
 #include <wallet/wallet.h>
 #include <wallet/walletutil.h>
 
@@ -128,14 +128,8 @@ public:
     {
         return m_wallet->SetAddressBook(dest, name, purpose);
     }
-    bool delAddressBook(const CTxDestination& dest) override
-    {
-        return m_wallet->DelAddressBook(dest);
-    }
-    bool getAddress(const CTxDestination& dest,
-        std::string* name,
-        isminetype* is_mine,
-        std::string* purpose) override
+    bool delAddressBook(const CTxDestination& dest) override { return m_wallet->DelAddressBook(dest); }
+    bool getAddress(const CTxDestination& dest, std::string* name, isminetype* is_mine, std::string* purpose) override
     {
         LOCK(m_wallet->cs_wallet);
         auto it = m_wallet->mapAddressBook.find(dest);
@@ -162,7 +156,10 @@ public:
         }
         return result;
     }
-    void learnRelatedScripts(const CPubKey& key, OutputType type) override { m_wallet->LearnRelatedScripts(key, type); }
+    void learnRelatedScripts(const CPubKey& key, OutputType type) override
+    {
+        m_wallet->LearnRelatedScripts(key, type);
+    }
     bool addDestData(const CTxDestination& dest, const std::string& key, const std::string& value) override
     {
         LOCK(m_wallet->cs_wallet);
@@ -212,8 +209,8 @@ public:
         auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         CTransactionRef tx;
-        if (!m_wallet->CreateTransaction(*locked_chain, recipients, tx, fee, change_pos,
-                fail_reason, coin_control, sign)) {
+        if (!m_wallet->CreateTransaction(
+                *locked_chain, recipients, tx, fee, change_pos, fail_reason, coin_control, sign)) {
             return {};
         }
         return tx;
@@ -252,14 +249,17 @@ public:
         CMutableTransaction& mtx) override
     {
         if (total_fee > 0) {
-            return feebumper::CreateTotalBumpTransaction(m_wallet.get(), txid, coin_control, total_fee, errors, old_fee, new_fee, mtx) ==
-                feebumper::Result::OK;
+            return feebumper::CreateTotalBumpTransaction(m_wallet.get(), txid, coin_control, total_fee, errors,
+                       old_fee, new_fee, mtx) == feebumper::Result::OK;
         } else {
-            return feebumper::CreateRateBumpTransaction(m_wallet.get(), txid, coin_control, errors, old_fee, new_fee, mtx) ==
-                feebumper::Result::OK;
+            return feebumper::CreateRateBumpTransaction(
+                       m_wallet.get(), txid, coin_control, errors, old_fee, new_fee, mtx) == feebumper::Result::OK;
         }
     }
-    bool signBumpTransaction(CMutableTransaction& mtx) override { return feebumper::SignTransaction(m_wallet.get(), mtx); }
+    bool signBumpTransaction(CMutableTransaction& mtx) override
+    {
+        return feebumper::SignTransaction(m_wallet.get(), mtx);
+    }
     bool commitBumpTransaction(const uint256& txid,
         CMutableTransaction&& mtx,
         std::vector<std::string>& errors,
@@ -452,10 +452,7 @@ public:
     OutputType getDefaultAddressType() override { return m_wallet->m_default_address_type; }
     OutputType getDefaultChangeType() override { return m_wallet->m_default_change_type; }
     CAmount getDefaultMaxTxFee() override { return m_wallet->m_default_max_tx_fee; }
-    void remove() override
-    {
-        RemoveWallet(m_wallet);
-    }
+    void remove() override { RemoveWallet(m_wallet); }
     std::unique_ptr<Handler> handleUnload(UnloadFn fn) override
     {
         return MakeHandler(m_wallet->NotifyUnload.connect(fn));
@@ -513,7 +510,10 @@ public:
 
 } // namespace
 
-std::unique_ptr<Wallet> MakeWallet(const std::shared_ptr<CWallet>& wallet) { return wallet ? MakeUnique<WalletImpl>(wallet) : nullptr; }
+std::unique_ptr<Wallet> MakeWallet(const std::shared_ptr<CWallet>& wallet)
+{
+    return wallet ? MakeUnique<WalletImpl>(wallet) : nullptr;
+}
 
 std::unique_ptr<ChainClient> MakeWalletClient(Chain& chain, std::vector<std::string> wallet_filenames)
 {

@@ -206,6 +206,7 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
             self.log.exception("Unexpected exception caught during testing")
         except KeyboardInterrupt:
             self.log.warning("Exiting after keyboard interrupt")
+            raise
 
         if success == TestStatus.FAILED and self.options.pdbonfailure:
             print("Testcase failed. Attaching python debugger. Enter ? for help")

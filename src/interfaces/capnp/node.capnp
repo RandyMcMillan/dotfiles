@@ -154,7 +154,7 @@ struct NodeStats $Proxy.wrap("CNodeStats") {
     sendBytesPerMsgCmd @14 :List(Common.PairStr64) $Proxy.name("mapSendBytesPerMsgCmd");
     recvBytes @15 :UInt64 $Proxy.name("nRecvBytes");
     recvBytesPerMsgCmd @16 :List(Common.PairStr64) $Proxy.name("mapRecvBytesPerMsgCmd");
-    whitelisted @17 :Bool $Proxy.name("fWhitelisted");
+    whitelisted @17 :Bool $Proxy.name("m_legacyWhitelisted");
     pingTime @18 :Float64 $Proxy.name("dPingTime");
     pingWait @19 :Float64 $Proxy.name("dPingWait");
     minPing @20 :Float64 $Proxy.name("dMinPing");

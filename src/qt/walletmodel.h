@@ -30,6 +30,7 @@
 enum class OutputType;
 
 class AddressTableModel;
+class ClientModel;
 class OptionsModel;
 class PlatformStyle;
 class RecentRequestsTableModel;
@@ -127,7 +128,7 @@ class WalletModel : public QObject
     Q_OBJECT
 
 public:
-    explicit WalletModel(std::unique_ptr<interfaces::Wallet> wallet, interfaces::Node& node, const PlatformStyle *platformStyle, OptionsModel *optionsModel, QObject *parent = nullptr);
+    explicit WalletModel(std::unique_ptr<interfaces::Wallet> wallet, interfaces::Node& node, const PlatformStyle *platformStyle, OptionsModel *optionsModel, ClientModel *clientModel, QObject *parent = nullptr);
     ~WalletModel();
 
     enum StatusCode // Returned by sendCoins

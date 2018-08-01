@@ -26,23 +26,22 @@ interface Chain $Proxy.wrap("interfaces::Chain") {
     relayIncrementalFee @14 (context :Proxy.Context) -> (result :Data);
     relayDustFee @15 (context :Proxy.Context) -> (result :Data);
     havePruned @16 (context :Proxy.Context) -> (result :Bool);
-    p2pEnabled @17 (context :Proxy.Context) -> (result :Bool);
-    isReadyToBroadcast @18 (context :Proxy.Context) -> (result :Bool);
-    isInitialBlockDownload @19 (context :Proxy.Context) -> (result :Bool);
-    shutdownRequested @20 (context :Proxy.Context) -> (result :Bool);
-    getAdjustedTime @21 (context :Proxy.Context) -> (result :Int64);
-    initMessage @22 (context :Proxy.Context, message :Text) -> ();
-    initWarning @23 (context :Proxy.Context, message :Text) -> ();
-    initError @24 (context :Proxy.Context, message :Text) -> ();
-    loadWallet @25 (context :Proxy.Context, wallet :Wallet.Wallet) -> ();
-    showProgress @26 (context :Proxy.Context, title :Text, progress :Int32, resumePossible :Bool) -> ();
-    handleNotifications @27 (context :Proxy.Context, notifications :ChainNotifications) -> (result :Handler.Handler);
-    waitForNotificationsIfNewBlocksConnected @28 (context :Proxy.Context, oldTip :Data) -> ();
-    handleRpc @29 (context :Proxy.Context, command :RPCCommand) -> (result :Handler.Handler);
-    rpcEnableDeprecated @30 (context :Proxy.Context, method :Text) -> (result :Bool);
-    rpcRunLater @31 (context :Proxy.Context, name :Text, fn: RunLaterCallback, seconds: Int64) -> ();
-    rpcSerializationFlags @32 (context :Proxy.Context) -> (result :Int32);
-    requestMempoolTransactions @33 (context :Proxy.Context, notifications :ChainNotifications) -> ();
+    isReadyToBroadcast @17 (context :Proxy.Context) -> (result :Bool);
+    isInitialBlockDownload @18 (context :Proxy.Context) -> (result :Bool);
+    shutdownRequested @19 (context :Proxy.Context) -> (result :Bool);
+    getAdjustedTime @20 (context :Proxy.Context) -> (result :Int64);
+    initMessage @21 (context :Proxy.Context, message :Text) -> ();
+    initWarning @22 (context :Proxy.Context, message :Text) -> ();
+    initError @23 (context :Proxy.Context, message :Text) -> ();
+    loadWallet @24 (context :Proxy.Context, wallet :Wallet.Wallet) -> ();
+    showProgress @25 (context :Proxy.Context, title :Text, progress :Int32, resumePossible :Bool) -> ();
+    handleNotifications @26 (context :Proxy.Context, notifications :ChainNotifications) -> (result :Handler.Handler);
+    waitForNotificationsIfNewBlocksConnected @27 (context :Proxy.Context, oldTip :Data) -> ();
+    handleRpc @28 (context :Proxy.Context, command :RPCCommand) -> (result :Handler.Handler);
+    rpcEnableDeprecated @29 (context :Proxy.Context, method :Text) -> (result :Bool);
+    rpcRunLater @30 (context :Proxy.Context, name :Text, fn: RunLaterCallback, seconds: Int64) -> ();
+    rpcSerializationFlags @31 (context :Proxy.Context) -> (result :Int32);
+    requestMempoolTransactions @32 (context :Proxy.Context, notifications :ChainNotifications) -> ();
 }
 
 interface ChainLock $Proxy.wrap("interfaces::Chain::Lock") {

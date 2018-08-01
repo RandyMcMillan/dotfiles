@@ -5,6 +5,7 @@
 #include <interfaces/chain.h>
 #include <interfaces/node.h>
 #include <qt/editaddressdialog.h>
+#include <qt/clientmodel.h>
 #include <qt/optionsmodel.h>
 #include <qt/platformstyle.h>
 #include <qt/qvalidatedlineedit.h>
@@ -102,7 +103,8 @@ void TestAddAddressesToSendBook(interfaces::Node& node)
     // Initialize relevant QT models.
     std::unique_ptr<const PlatformStyle> platformStyle(PlatformStyle::instantiate("other"));
     OptionsModel optionsModel(node);
-    WalletModel walletModel(interfaces::MakeWallet(wallet), node, platformStyle.get(), &optionsModel);
+    ClientModel clientModel(node, &optionsModel);
+    WalletModel walletModel(interfaces::MakeWallet(wallet), node, platformStyle.get(), &optionsModel, &clientModel);
     RemoveWallet(wallet);
     EditAddressDialog editAddressDialog(EditAddressDialog::NewSendingAddress);
     editAddressDialog.setModel(walletModel.getAddressTableModel());

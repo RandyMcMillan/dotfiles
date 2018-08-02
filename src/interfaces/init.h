@@ -55,6 +55,8 @@ public:
 std::unique_ptr<LocalInit> MakeGuiInit(int argc, char* argv[], InitInterfaces& interfaces);
 std::unique_ptr<LocalInit> MakeNodeInit(int argc, char* argv[], InitInterfaces& interfaces);
 std::unique_ptr<LocalInit> MakeWalletInit(int argc, char* argv[]);
+
+void DebugStop(int argc, char* argv[], const char* exe_name);
 } // namespace interfaces
 
 #endif // BITCOIN_INTERFACES_INIT_H

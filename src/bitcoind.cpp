@@ -194,6 +194,7 @@ int main(int argc, char* argv[])
 
     // Check if bitcoind is being invoked as an IPC server. If so, then bypass
     // normal execution and just respond to requests over the IPC channel.
+    interfaces::DebugStop(argc, argv, interfaces.init->m_exe_name);
     int exit_status;
     if (interfaces.init->m_process && interfaces.init->m_process->serve(exit_status)) {
         return exit_status;

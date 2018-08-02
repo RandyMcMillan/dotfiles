@@ -82,6 +82,7 @@ int main(int argc, char* argv[])
     // bypass normal execution and just respond to requests over the IPC
     // channel.
     int exit_status;
+    interfaces::DebugStop(argc, argv, init->m_exe_name);
     if (init->m_process && init->m_process->serve(exit_status)) {
         return exit_status;
     }

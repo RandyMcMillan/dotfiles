@@ -93,7 +93,7 @@ static QList<QString> savedPaymentRequests;
 // Warning: ipcSendCommandLine() is called early in init,
 // so don't use "Q_EMIT message()", but "QMessageBox::"!
 //
-void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* argv[])
+void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
 {
     for (int i = 1; i < argc; i++)
     {
@@ -115,11 +115,11 @@ void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* 
                 auto tempChainParams = CreateChainParams(CBaseChainParams::MAIN);
 
                 if (IsValidDestinationString(r.address.toStdString(), *tempChainParams)) {
-                    node.selectParams(CBaseChainParams::MAIN);
+                    SelectParams(CBaseChainParams::MAIN);
                 } else {
                     tempChainParams = CreateChainParams(CBaseChainParams::TESTNET);
                     if (IsValidDestinationString(r.address.toStdString(), *tempChainParams)) {
-                        node.selectParams(CBaseChainParams::TESTNET);
+                        SelectParams(CBaseChainParams::TESTNET);
                     }
                 }
             }
@@ -134,11 +134,11 @@ void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* 
             {
                 if (request.getDetails().network() == "main")
                 {
-                    node.selectParams(CBaseChainParams::MAIN);
+                    SelectParams(CBaseChainParams::MAIN);
                 }
                 else if (request.getDetails().network() == "test")
                 {
-                    node.selectParams(CBaseChainParams::TESTNET);
+                    SelectParams(CBaseChainParams::TESTNET);
                 }
             }
         }

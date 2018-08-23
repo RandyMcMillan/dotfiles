@@ -59,28 +59,28 @@ class NodeImpl : public Node
 public:
     explicit NodeImpl(InitInterfaces& interfaces) : m_interfaces(interfaces) {}
     void initError(const std::string& message) override { InitError(message); }
-    bool parseParameters(int argc, const char* const argv[], std::string& error) override
-    {
-        return gArgs.ParseParameters(argc, argv, error);
-    }
-    bool readConfigFiles(std::string& error) override { return gArgs.ReadConfigFiles(error, true); }
-    bool softSetArg(const std::string& arg, const std::string& value) override { return gArgs.SoftSetArg(arg, value); }
-    bool softSetBoolArg(const std::string& arg, bool value) override { return gArgs.SoftSetBoolArg(arg, value); }
-    void selectParams(const std::string& network) override { SelectParams(network); }
     uint64_t getAssumedBlockchainSize() override { return Params().AssumedBlockchainSize(); }
     uint64_t getAssumedChainStateSize() override { return Params().AssumedChainStateSize(); }
     std::string getNetwork() override { return Params().NetworkIDString(); }
+    std::string getArg(const std::string& arg, const std::string& default_value) override
+    {
+        return gArgs.GetArg(arg, default_value);
+    }
     void initLogging() override { InitLogging(); }
     void initParameterInteraction() override { InitParameterInteraction(); }
     std::string getWarnings(const std::string& type) override { return GetWarnings(type); }
     uint32_t getLogCategories() override { return LogInstance().GetCategoryMask(); }
     bool baseInitialize() override
     {
+        if (m_base_initialized) return true;
+        m_base_initialized = true;
         return AppInitBasicSetup() && AppInitParameterInteraction() && AppInitSanityChecks() &&
                AppInitLockDataDirectory();
     }
     bool appInitMain() override
     {
+        if (m_app_initialized) return true;
+        m_app_initialized = true;
         m_interfaces.chain = m_interfaces.init->makeChain();
         return AppInitMain(m_interfaces);
     }
@@ -100,7 +100,6 @@ public:
             StopMapPort();
         }
     }
-    void setupServerArgs() override { return SetupServerArgs(); }
     bool getProxy(Network net, proxyType& proxy_info) override { return GetProxy(net, proxy_info); }
     size_t getNodeCount(CConnman::NumConnections flags) override
     {
@@ -317,6 +316,8 @@ public:
             }));
     }
     InitInterfaces& m_interfaces;
+    bool m_base_initialized = false;
+    bool m_app_initialized = false;
 };
 
 } // namespace

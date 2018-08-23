@@ -17,6 +17,7 @@
 #include <net.h>
 #include <netbase.h>
 #include <txdb.h> // for -dbcache defaults
+#include <util/system.h>
 
 #include <QNetworkProxy>
 #include <QSettings>
@@ -26,10 +27,10 @@ const char *DEFAULT_GUI_PROXY_HOST = "127.0.0.1";
 
 static const QString GetDefaultProxyAddress();
 
-OptionsModel::OptionsModel(interfaces::Node& node, QObject *parent, bool resetSettings) :
-    QAbstractListModel(parent), m_node(node)
+OptionsModel::OptionsModel(QObject *parent, bool reset_settings) :
+    QAbstractListModel(parent)
 {
-    Init(resetSettings);
+    Init(reset_settings);
 }
 
 void OptionsModel::addOverriddenOption(const std::string &option)
@@ -84,7 +85,7 @@ void OptionsModel::Init(bool resetSettings)
     //
     // If setting doesn't exist create it with defaults.
     //
-    // If gArgs.SoftSetArg() or gArgs.SoftSetBoolArg() return false we were overridden
+    // If try_set or try_set_bool return false we were overridden
     // by command-line and show this in the UI.
 
     // Main
@@ -94,18 +95,18 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("nPruneSize", 2);
     // Convert prune size from GB to MiB:
     const uint64_t nPruneSizeMiB = (settings.value("nPruneSize").toInt() * GB_BYTES) >> 20;
-    if (!m_node.softSetArg("-prune", settings.value("bPrune").toBool() ? std::to_string(nPruneSizeMiB) : "0")) {
+    if (!gArgs.SoftSetArg("-prune", settings.value("bPrune").toBool() ? std::to_string(nPruneSizeMiB) : "0")) {
         addOverriddenOption("-prune");
     }
 
     if (!settings.contains("nDatabaseCache"))
         settings.setValue("nDatabaseCache", (qint64)nDefaultDbCache);
-    if (!m_node.softSetArg("-dbcache", settings.value("nDatabaseCache").toString().toStdString()))
+    if (!gArgs.SoftSetArg("-dbcache", settings.value("nDatabaseCache").toString().toStdString()))
         addOverriddenOption("-dbcache");
 
     if (!settings.contains("nThreadsScriptVerif"))
         settings.setValue("nThreadsScriptVerif", DEFAULT_SCRIPTCHECK_THREADS);
-    if (!m_node.softSetArg("-par", settings.value("nThreadsScriptVerif").toString().toStdString()))
+    if (!gArgs.SoftSetArg("-par", settings.value("nThreadsScriptVerif").toString().toStdString()))
         addOverriddenOption("-par");
 
     if (!settings.contains("strDataDir"))
@@ -115,19 +116,19 @@ void OptionsModel::Init(bool resetSettings)
 #ifdef ENABLE_WALLET
     if (!settings.contains("bSpendZeroConfChange"))
         settings.setValue("bSpendZeroConfChange", true);
-    if (!m_node.softSetBoolArg("-spendzeroconfchange", settings.value("bSpendZeroConfChange").toBool()))
+    if (!gArgs.SoftSetBoolArg("-spendzeroconfchange", settings.value("bSpendZeroConfChange").toBool()))
         addOverriddenOption("-spendzeroconfchange");
 #endif
 
     // Network
     if (!settings.contains("fUseUPnP"))
         settings.setValue("fUseUPnP", DEFAULT_UPNP);
-    if (!m_node.softSetBoolArg("-upnp", settings.value("fUseUPnP").toBool()))
+    if (!gArgs.SoftSetBoolArg("-upnp", settings.value("fUseUPnP").toBool()))
         addOverriddenOption("-upnp");
 
     if (!settings.contains("fListen"))
         settings.setValue("fListen", DEFAULT_LISTEN);
-    if (!m_node.softSetBoolArg("-listen", settings.value("fListen").toBool()))
+    if (!gArgs.SoftSetBoolArg("-listen", settings.value("fListen").toBool()))
         addOverriddenOption("-listen");
 
     if (!settings.contains("fUseProxy"))
@@ -135,7 +136,7 @@ void OptionsModel::Init(bool resetSettings)
     if (!settings.contains("addrProxy"))
         settings.setValue("addrProxy", GetDefaultProxyAddress());
     // Only try to set -proxy, if user has enabled fUseProxy
-    if (settings.value("fUseProxy").toBool() && !m_node.softSetArg("-proxy", settings.value("addrProxy").toString().toStdString()))
+    if ((settings.value("fUseProxy").toBool() && !gArgs.SoftSetArg("-proxy", settings.value("addrProxy").toString().toStdString())))
         addOverriddenOption("-proxy");
     else if(!settings.value("fUseProxy").toBool() && !gArgs.GetArg("-proxy", "").empty())
         addOverriddenOption("-proxy");
@@ -145,7 +146,7 @@ void OptionsModel::Init(bool resetSettings)
     if (!settings.contains("addrSeparateProxyTor"))
         settings.setValue("addrSeparateProxyTor", GetDefaultProxyAddress());
     // Only try to set -onion, if user has enabled fUseSeparateProxyTor
-    if (settings.value("fUseSeparateProxyTor").toBool() && !m_node.softSetArg("-onion", settings.value("addrSeparateProxyTor").toString().toStdString()))
+    if ((settings.value("fUseSeparateProxyTor").toBool() && !gArgs.SoftSetArg("-onion", settings.value("addrSeparateProxyTor").toString().toStdString())))
         addOverriddenOption("-onion");
     else if(!settings.value("fUseSeparateProxyTor").toBool() && !gArgs.GetArg("-onion", "").empty())
         addOverriddenOption("-onion");
@@ -153,7 +154,7 @@ void OptionsModel::Init(bool resetSettings)
     // Display
     if (!settings.contains("language"))
         settings.setValue("language", "");
-    if (!m_node.softSetArg("-lang", settings.value("language").toString().toStdString()))
+    if (!gArgs.SoftSetArg("-lang", settings.value("language").toString().toStdString()))
         addOverriddenOption("-lang");
 
     language = settings.value("language").toString();
@@ -331,7 +332,7 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             break;
         case MapPortUPnP: // core option - can be changed on-the-fly
             settings.setValue("fUseUPnP", value.toBool());
-            m_node.mapPort(value.toBool());
+            node().mapPort(value.toBool());
             break;
         case MinimizeOnClose:
             fMinimizeOnClose = value.toBool();
@@ -476,7 +477,7 @@ bool OptionsModel::getProxySettings(QNetworkProxy& proxy) const
     // Directly query current base proxy, because
     // GUI settings can be overridden with -proxy.
     proxyType curProxy;
-    if (m_node.getProxy(NET_IPV4, curProxy)) {
+    if (node().getProxy(NET_IPV4, curProxy)) {
         proxy.setType(QNetworkProxy::Socks5Proxy);
         proxy.setHostName(QString::fromStdString(curProxy.proxy.ToStringIP()));
         proxy.setPort(curProxy.proxy.GetPort());

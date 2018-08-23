@@ -8,6 +8,9 @@
 
 namespace interfaces {
 void MakeProxy(NodeServerParam&);
+namespace capnp {
+std::string GlobalArgsNetwork();
+} // namespace capnp
 namespace {
 class LocalInitImpl : public LocalInit
 {
@@ -28,6 +31,13 @@ public:
             return *wallet;
         });
         return wallet;
+    }
+    void startServer() override
+    {
+        // TODO in future PR: Refactor bitcoin startup code, dedup this with AppInit.
+        SelectParams(interfaces::capnp::GlobalArgsNetwork());
+        InitLogging();
+        InitParameterInteraction();
     }
     void makeNodeServer(NodeServerParam& param) override { MakeProxy(param); }
     InitInterfaces& m_interfaces;

@@ -8,6 +8,7 @@
 #include <core_io.h>
 #include <init.h>
 #include <interfaces/chain.h>
+#include <interfaces/init.h>
 #include <key_io.h>
 #include <node/transaction.h>
 #include <outputtype.h>

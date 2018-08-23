@@ -27,7 +27,7 @@ struct InitInterfaces;
 
 //! Pointers to interfaces that need to be accessible from RPC methods. Due to
 //! limitations of the RPC framework, there's currently no direct way to pass in
-//! state to RPC method implementations.
+//! state to RPC method implementations, so a global is required.
 extern InitInterfaces* g_rpc_interfaces;
 
 /** Wrapper for UniValue::VType, which includes typeAny:

@@ -341,7 +341,7 @@ static void OnRPCStopped()
     LogPrint(BCLog::RPC, "RPC stopped.\n");
 }
 
-void SetupServerArgs()
+void SetupServerArgs(InitInterfaces& interfaces)
 {
     SetupHelpOptions(gArgs);
     gArgs.AddArg("-help-debug", "Print help message with debugging options and exit", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST); // server-only for now
@@ -534,7 +534,11 @@ void SetupServerArgs()
     gArgs.AddArg("-rpcuser=<user>", "Username for JSON-RPC connections", ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     gArgs.AddArg("-rpcworkqueue=<n>", strprintf("Set the depth of the work queue to service RPC calls (default: %d)", DEFAULT_HTTP_WORKQUEUE), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::RPC);
     gArgs.AddArg("-server", "Accept command line and JSON-RPC commands", ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
-    gArgs.AddArg("-ipcbind=<address>", "Bind bitcoin-node process to tcp or unix socket address.", ArgsManager::ALLOW_ANY, OptionsCategory::IPC);
+
+    if (interfaces.init->m_protocol) {
+        gArgs.AddArg("-ipcbind=<address>", "Bind bitcoin-node process to tcp or unix socket address.", ArgsManager::ALLOW_ANY, OptionsCategory::IPC);
+        gArgs.AddArg("-ipcconnect=<address>", "Instead of starting a bitcoin-node process in the background, connect to the an existing process listening at the specified address. Valid address values are 'unix<socket path>' to connect to '<datadir>/node.sock' socket, or 'unix:<socket path>' to connect to a different socket path.", ArgsManager::ALLOW_ANY, OptionsCategory::IPC);
+    }
 
 #if HAVE_DECL_DAEMON
     gArgs.AddArg("-daemon", "Run in the background as a daemon and accept commands", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);

@@ -56,7 +56,7 @@ class BitcoinApplication: public QApplication
 {
     Q_OBJECT
 public:
-    explicit BitcoinApplication(interfaces::Node& node);
+    explicit BitcoinApplication();
     ~BitcoinApplication();
 
 #ifdef ENABLE_WALLET
@@ -66,7 +66,7 @@ public:
     /// parameter interaction/setup based on rules
     void parameterSetup();
     /// Create options model
-    void createOptionsModel(bool resetSettings);
+    void createOptionsModel(bool reset_settings);
     /// Create main window
     void createWindow(const NetworkStyle *networkStyle);
     /// Create splash screen
@@ -88,6 +88,9 @@ public:
     /// Setup platform style
     void setupPlatformStyle();
 
+    interfaces::Node& node() const { return *m_node; }
+    void setNode(interfaces::Node& node);
+
 public Q_SLOTS:
     void initializeResult(bool success);
     void shutdownResult();
@@ -102,7 +105,6 @@ Q_SIGNALS:
 
 private:
     QThread *coreThread;
-    interfaces::Node& m_node;
     OptionsModel *optionsModel;
     ClientModel *clientModel;
     BitcoinGUI *window;
@@ -114,6 +116,7 @@ private:
     int returnValue;
     const PlatformStyle *platformStyle;
     std::unique_ptr<QWidget> shutdownWindow;
+    interfaces::Node* m_node = nullptr;
 
     void startThread();
 };

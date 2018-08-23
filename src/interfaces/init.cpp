@@ -8,6 +8,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <signal.h>
+#include <tinyformat.h>
 
 namespace interfaces {
 namespace {
@@ -36,6 +37,44 @@ void LocalInit::spawnProcess(const std::string& new_exe_name, std::function<Base
         LogPrint(::BCLog::IPC, "%s pid %i exited with status %i\n", new_exe_name, pid, status);
     }));
     base.addCloseHook(MakeUnique<Deleter<std::unique_ptr<Init>>>(std::move(init)));
+}
+
+std::unique_ptr<Init> SpawnOrConnect(IpcProcess& process,
+    IpcProtocol& protocol,
+    const std::string& dest_exe_name,
+    int& pid)
+{
+    std::unique_ptr<Init> ret;
+    int fd = -1;
+    if (gArgs.IsArgSet("-ipcconnect") && !gArgs.IsArgNegated("-ipcconnect")) {
+        std::string address = gArgs.GetArg("-ipcconnect", "");
+        if (address.empty()) address = "unix";
+        LogPrint(::BCLog::IPC, "Trying to connect to running process '%s' at address '%s'\n", dest_exe_name, address);
+        fd = process.connect(GetDataDir(), dest_exe_name, address);
+    }
+    if (fd < 0) {
+        LogPrint(::BCLog::IPC, "Spawning subprocess process '%s'\n", dest_exe_name);
+        fd = process.spawn(dest_exe_name, pid);
+    }
+    if (fd < 0) {
+        LogPrint(::BCLog::IPC, "Failed to spawn or connect to running process '%s'\n", dest_exe_name);
+    } else {
+        ret = protocol.connect(fd);
+    }
+    return ret;
+}
+
+void Makenode(LocalInit& local_init)
+{
+    int pid;
+    std::unique_ptr<Init> init = SpawnOrConnect(*local_init.m_process, *local_init.m_protocol, "bitcoin-node", pid);
+    std::unique_ptr<Node> node = init->makeNode();
+    // Process init object will be owned by Node. It can be discarded after the Node client is.
+    node->addCloseHook(MakeUnique<CloseFn>([&local_init, pid] {
+        int status = local_init.m_process->wait(pid);
+        LogPrint(::BCLog::IPC, "bitcoin-node pid %i exited with status %i\n", pid, status);
+    }));
+    node->addCloseHook(MakeUnique<Deleter<std::unique_ptr<Init>>>(std::move(init)));
 }
 
 std::unique_ptr<Chain> ConnectChain(LocalInit& local_init, const fs::path& data_dir, std::string& address)

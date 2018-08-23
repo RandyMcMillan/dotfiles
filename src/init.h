@@ -71,7 +71,7 @@ bool AppInitMain(InitInterfaces& interfaces);
 /**
  * Setup the arguments for gArgs
  */
-void SetupServerArgs();
+void SetupServerArgs(InitInterfaces& interfaces);
 
 /** Returns licensing information (for -version) */
 std::string LicenseInfo();

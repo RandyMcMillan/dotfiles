@@ -69,7 +69,7 @@ void PaymentServerTests::paymentServerTests()
 {
     SSL_library_init();
     BasicTestingSetup testing_setup(CBaseChainParams::MAIN);
-    OptionsModel optionsModel(m_node);
+    OptionsModel optionsModel(nullptr /* parent */, false /* reset_settings */);
     PaymentServer* server = new PaymentServer(nullptr, false);
     X509_STORE* caStore = X509_STORE_new();
     X509_STORE_add_cert(caStore, parse_b64der_cert(caCert1_BASE64));

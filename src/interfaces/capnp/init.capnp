@@ -11,7 +11,7 @@ using Proxy = import "/mp/proxy.capnp";
 
 interface Init $Proxy.wrap("interfaces::Init") {
     construct @0 (threadMap: Proxy.ThreadMap) -> (threadMap :Proxy.ThreadMap);
-    makeNode @1 (context :Proxy.Context) -> (result :Node.Node);
+    makeNode @1 (context :Proxy.Context, globalArgs :Common.GlobalArgs) -> (result :Node.Node);
     makeChain @2 (context :Proxy.Context) -> (result :Chain.Chain);
     makeWalletClient @3 (context :Proxy.Context, globalArgs :Common.GlobalArgs, chain :Chain.Chain, walletFilenames :List(Text)) -> (result :Chain.ChainClient);
 }

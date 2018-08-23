@@ -1,9 +1,18 @@
 #include <init.h>
+#include <interfaces/capnp/common.h>
 #include <interfaces/capnp/init-types.h>
 #include <interfaces/init.h>
 #include <rpc/util.h>
 
 namespace mp {
+std::unique_ptr<interfaces::Node> ProxyServerMethodTraits<interfaces::capnp::messages::Init::MakeNodeParams>::invoke(
+    Context& context)
+{
+    interfaces::LocalInit& init = *static_cast<interfaces::LocalInit*>(context.connection.m_loop.m_context);
+    init.startServer();
+    return context.proxy_server.m_impl->makeNode();
+}
+
 std::unique_ptr<interfaces::ChainClient>
 ProxyServerMethodTraits<interfaces::capnp::messages::Init::MakeWalletClientParams>::invoke(Context& context,
     std::vector<std::string> wallet_filenames)

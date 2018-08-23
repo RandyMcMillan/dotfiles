@@ -6,6 +6,7 @@
 #include <crypto/ripemd160.h>
 #include <init.h>
 #include <interfaces/chain.h>
+#include <interfaces/init.h>
 #include <key_io.h>
 #include <httpserver.h>
 #include <outputtype.h>

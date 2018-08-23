@@ -68,7 +68,7 @@ bool AppInitMain(node::NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip
 /**
  * Register all arguments with the ArgsManager
  */
-void SetupServerArgs(ArgsManager& argsman);
+void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc=false);
 
 /** Returns licensing information (for -version) */
 std::string LicenseInfo();

@@ -38,6 +38,32 @@ void LocalInit::spawnProcess(const std::string& new_exe_name, std::function<Base
     base.addCloseHook(MakeUnique<Deleter<std::unique_ptr<Init>>>(std::move(init)));
 }
 
+std::unique_ptr<Chain> ConnectChain(LocalInit& local_init, const fs::path& data_dir, std::string& address)
+{
+    if (address.empty() || address == "0") return {};
+
+    int fd = -1;
+    if (address == "auto") {
+        try {
+            address = "unix";
+            fd = local_init.m_process->connect(data_dir, "bitcoin-node", address);
+        } catch (const std::system_error&) {
+            // failure to connect with "auto" isn't an error. Caller can spawn a child process or just work offline.
+            return {};
+        }
+    } else {
+        fd = local_init.m_process->connect(data_dir, "bitcoin-node", address);
+    }
+    if (fd < 0) {
+        throw std::runtime_error(strprintf("Could not connect to bitcoin-node IPC address '%s'", address));
+    }
+
+    std::unique_ptr<Init> init = local_init.m_protocol->connect(fd);
+    std::unique_ptr<Chain> chain = init->makeChain();
+    chain->addCloseHook(MakeUnique<Deleter<std::unique_ptr<Init>>>(std::move(init)));
+    return chain;
+}
+
 void DebugStop(int argc, char* argv[], const char* exe_name)
 {
     FILE* gdb = fsbridge::fopen("/tmp/gdb.txt", "a");

@@ -255,7 +255,7 @@ public:
     {
         std::vector<std::unique_ptr<Wallet>> wallets;
         for (auto& client : m_interfaces.chain_clients) {
-            auto client_wallets = client->getWallets();
+            auto client_wallets = client.get().getWallets();
             std::move(client_wallets.begin(), client_wallets.end(), std::back_inserter(wallets));
         }
         return wallets;

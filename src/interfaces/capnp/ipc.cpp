@@ -22,6 +22,8 @@
 #include <mp/proxy-types.h>
 #include <mp/util.h>
 #include <string>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <thread>
 #include <utility>
 
@@ -52,6 +54,17 @@ public:
     {
         startLoop();
         return mp::ConnectStream<messages::Init>(*m_loop, fd);
+    }
+    void listen(int listen_fd) override
+    {
+        startLoop();
+        if (::listen(listen_fd, 5 /* backlog */) != 0) {
+            throw std::system_error(errno, std::system_category());
+        }
+        m_loop->sync([&]() {
+            listen(m_loop->m_io_context.lowLevelProvider->wrapListenSocketFd(
+                listen_fd, kj::LowLevelAsyncIoProvider::TAKE_OWNERSHIP));
+        });
     }
     void serve(int fd) override
     {
@@ -89,6 +102,15 @@ private:
             // object on disconnect/close.
             return kj::heap<mp::ProxyServer<messages::Init>>(&m_init, false, connection);
         });
+    }
+    void listen(kj::Own<kj::ConnectionReceiver>&& listener)
+    {
+        auto* ptr = listener.get();
+        m_loop->m_task_set->add(ptr->accept().then(kj::mvCapture(
+            kj::mv(listener), [this](kj::Own<kj::ConnectionReceiver>&& listener, kj::Own<kj::AsyncIoStream>&& stream) {
+                serveStream(kj::mv(stream));
+                listen(kj::mv(listener));
+            })));
     }
     const char* m_exe_name;
     LocalInit& m_init;

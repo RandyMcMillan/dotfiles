@@ -21,7 +21,8 @@ struct InitInterfaces
 {
     std::unique_ptr<interfaces::LocalInit> init;
     std::unique_ptr<interfaces::Chain> chain;
-    std::vector<std::unique_ptr<interfaces::ChainClient>> chain_clients;
+    std::unique_ptr<interfaces::ChainClient> wallet_chain_client;
+    std::list<std::reference_wrapper<interfaces::ChainClient>> chain_clients;
 };
 
 namespace boost

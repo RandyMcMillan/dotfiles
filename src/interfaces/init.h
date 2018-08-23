@@ -1,6 +1,7 @@
 #ifndef BITCOIN_INTERFACES_INIT_H
 #define BITCOIN_INTERFACES_INIT_H
 
+#include <fs.h>
 #include <functional>
 #include <memory>
 #include <string>
@@ -55,6 +56,9 @@ public:
 std::unique_ptr<LocalInit> MakeGuiInit(int argc, char* argv[], InitInterfaces& interfaces);
 std::unique_ptr<LocalInit> MakeNodeInit(int argc, char* argv[], InitInterfaces& interfaces);
 std::unique_ptr<LocalInit> MakeWalletInit(int argc, char* argv[]);
+
+//! Connect to chain ient in existing bitcoin-node process.
+std::unique_ptr<Chain> ConnectChain(LocalInit& local_init, const fs::path& data_dir, std::string& address);
 
 void DebugStop(int argc, char* argv[], const char* exe_name);
 } // namespace interfaces

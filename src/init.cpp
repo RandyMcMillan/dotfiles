@@ -23,6 +23,8 @@
 #include <index/blockfilterindex.h>
 #include <index/txindex.h>
 #include <interfaces/chain.h>
+#include <interfaces/init.h>
+#include <interfaces/ipc.h>
 #include <key.h>
 #include <miner.h>
 #include <net.h>
@@ -190,7 +192,7 @@ void Shutdown(InitInterfaces& interfaces)
     StopRPC();
     StopHTTPServer();
     for (const auto& client : interfaces.chain_clients) {
-        client->flush();
+        client.get().flush();
     }
     StopMapPort();
 
@@ -262,7 +264,7 @@ void Shutdown(InitInterfaces& interfaces)
         pblocktree.reset();
     }
     for (const auto& client : interfaces.chain_clients) {
-        client->stop();
+        client.get().stop();
     }
 
 #if ENABLE_ZMQ
@@ -281,6 +283,7 @@ void Shutdown(InitInterfaces& interfaces)
         LogPrintf("%s: Unable to remove PID file: %s\n", __func__, fsbridge::get_filesystem_error_message(e));
     }
     interfaces.chain_clients.clear();
+    interfaces.wallet_chain_client.reset();
     UnregisterAllValidationInterfaces();
     GetMainSignals().UnregisterBackgroundSignalScheduler();
     GetMainSignals().UnregisterWithMempoolSignals(mempool);
@@ -531,6 +534,7 @@ void SetupServerArgs()
     gArgs.AddArg("-rpcuser=<user>", "Username for JSON-RPC connections", ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     gArgs.AddArg("-rpcworkqueue=<n>", strprintf("Set the depth of the work queue to service RPC calls (default: %d)", DEFAULT_HTTP_WORKQUEUE), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::RPC);
     gArgs.AddArg("-server", "Accept command line and JSON-RPC commands", ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
+    gArgs.AddArg("-ipcbind=<address>", "Bind bitcoin-node process to tcp or unix socket address.", ArgsManager::ALLOW_ANY, OptionsCategory::IPC);
 
 #if HAVE_DECL_DAEMON
     gArgs.AddArg("-daemon", "Run in the background as a daemon and accept commands", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -1270,12 +1274,20 @@ bool AppInitMain(InitInterfaces& interfaces)
     // when load() and start() interface methods are called below.
     g_wallet_init_interface.Construct(interfaces);
 
+    if (interfaces.init->m_protocol) {
+        for (std::string address : gArgs.GetArgs("-ipcbind")) {
+            int fd = interfaces.init->m_process->bind(GetDataDir(), address);
+            LogPrintf("Listening for IPC requests on address %s\n", address);
+            interfaces.init->m_protocol->listen(fd);
+        }
+    }
+
     /* Register RPC commands regardless of -server setting so they will be
      * available in the GUI RPC console even if external calls are disabled.
      */
     RegisterAllCoreRPCCommands(tableRPC);
     for (const auto& client : interfaces.chain_clients) {
-        client->registerRpcs();
+        client.get().registerRpcs();
     }
     g_rpc_interfaces = &interfaces;
 #if ENABLE_ZMQ
@@ -1296,7 +1308,7 @@ bool AppInitMain(InitInterfaces& interfaces)
 
     // ********************************************************* Step 5: verify wallet database integrity
     for (const auto& client : interfaces.chain_clients) {
-        if (!client->verify()) {
+        if (!client.get().verify()) {
             return false;
         }
     }
@@ -1655,7 +1667,7 @@ bool AppInitMain(InitInterfaces& interfaces)
 
     // ********************************************************* Step 9: load wallet
     for (const auto& client : interfaces.chain_clients) {
-        if (!client->load()) {
+        if (!client.get().load()) {
             return false;
         }
     }
@@ -1808,7 +1820,7 @@ bool AppInitMain(InitInterfaces& interfaces)
     uiInterface.InitMessage(_("Done loading").translated);
 
     for (const auto& client : interfaces.chain_clients) {
-        client->start(scheduler);
+        client.get().start(scheduler);
     }
 
     scheduler.scheduleEvery([]{

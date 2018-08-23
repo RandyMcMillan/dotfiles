@@ -367,7 +367,7 @@ static UniValue setmocktime(const JSONRPCRequest& request)
     SetMockTime(time);
     if (g_rpc_interfaces) {
         for (const auto& chain_client : g_rpc_interfaces->chain_clients) {
-            chain_client->setMockTime(time);
+            chain_client.get().setMockTime(time);
         }
     }
 

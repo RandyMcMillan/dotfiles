@@ -8,12 +8,16 @@
 #include <wallet/ismine.h>
 #include <wallet/wallet.h>
 
+namespace interfaces {
+struct Chain;
+} // namespace interfaces
+
 namespace WalletTool {
 
-std::shared_ptr<CWallet> CreateWallet(const std::string& name, const fs::path& path);
-std::shared_ptr<CWallet> LoadWallet(const std::string& name, const fs::path& path);
+std::shared_ptr<CWallet> CreateWallet(interfaces::Chain* chain, const std::string& name, const fs::path& path);
+std::shared_ptr<CWallet> LoadWallet(interfaces::Chain* chain, const std::string& name, const fs::path& path);
 void WalletShowInfo(CWallet* wallet_instance);
-bool ExecuteWalletToolFunc(const std::string& command, const std::string& file);
+bool ExecuteWalletToolFunc(interfaces::Chain* chain, const std::string& command, const std::string& file);
 
 } // namespace WalletTool
 

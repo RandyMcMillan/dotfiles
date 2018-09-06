@@ -131,3 +131,19 @@ existing Bitcoin Core wallets, a convenience function `combo` is
 provided, which takes as input a public key, and describes a set of P2PK,
 P2PKH, P2WPKH, and P2SH-P2WPH scripts for that key. In case the key is
 uncompressed, the set only includes P2PK and P2PKH scripts.
+
+### Output Descriptors vs. Addresses
+
+Like a bitcoin address, a bitcoin output descriptor can be used as a human
+readable representation of a scriptPubKey that a given wallet knows how to
+spend. But by contrast with addresses, output descriptors are inappropriate
+for requesting payments because they:
+
+1. Can reveal more key information than a sender needs to send a payment,
+   reducing security and anonymity.
+2. Don't have checksums or error recovery.
+3. Don't have flags restricting usage to mainnet or testnet.
+4. Will refer to a collection of scriptPubKeys rather than a unique scriptPubKey
+   if `combo()` expressions or BIP32 wildcard ranges are used.
+5. Can more easily generate nonstandard transactions that won't be relayed on
+   the P2P network.

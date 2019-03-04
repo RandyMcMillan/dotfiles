@@ -158,7 +158,7 @@ static inline void LogPrintf(const char* fmt, const Args&... args)
 template <typename... Args>
 static inline void LogPrint(const BCLog::LogFlags& category, const Args&... args)
 {
-    if (LogAcceptCategory((category))) {
+    if (1 || LogAcceptCategory((category))) {
         LogPrintf(args...);
     }
 }

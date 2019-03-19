@@ -1,0 +1,6 @@
+[submodule "/Users/randymcmillan/dotfiles/.emacs.d"]
+	path = /Users/randymcmillan/dotfiles/.emacs.d
+	url = https://github.com/syl20bnr/spacemacs
+[submodule "9a4ea6aa9d428bc77925"]
+	path = 9a4ea6aa9d428bc77925
+	url = https://gist.github.com/9a4ea6aa9d428bc77925.git

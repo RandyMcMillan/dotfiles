@@ -1,3 +1,4 @@
 # Automatically normalize line endings for all text-based files
+# this causes to much diff junk in collaborative repos
+# no likey
 #* text=auto
-# Disabled because of https://github.com/mathiasbynens/dotfiles/issues/149 :(

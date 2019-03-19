@@ -1,0 +1,9 @@
+a,b,c,d,e,f,g,h,i,j,k,l,m
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+Contract Month,Product Code,First Trade,Last Trade,Settlement,First Holding,Last Holding,First Position,Last Position,First Notice,Last Notice,First Delivery,Last Delivery
+November 2018 Bitcoin Futures,BTCX18,2018-09-04,2018-11-30,2018-12-05,-,-,-,-,-,-,-,-
+December 2018 Bitcoin Futures,BTCZ18,2018-07-02,2018-12-28,2019-01-03,-,-,-,-,-,-,-,-
+January 2019 Bitcoin Futures,BTCF19,2018-10-29,2019-01-25,2019-01-30,-,-,-,-,-,-,-,-
+March 2019 Bitcoin Futures,BTCH19,2018-10-01,2019-03-29,2019-04-03,-,-,-,-,-,-,-,-

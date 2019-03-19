@@ -1,151 +1,448 @@
-#!/usr/bin/env bash
+#alias uc="uncrustify *.c -c ~/my-uncrustify-configs/uncrustify.cfg  --no-backup"
 
-# Easier navigation: .., ..., ...., ....., ~ and -
+alias sites="cd /Library/Server/Web/Data/Sites"
+
+alias ucp="git commit -a "
+alias cc="ucp"
+alias ccc="ucp"
+alias cccc="ccc"
+alias ddd="cccc"
+alias dddd="ddd"
+
+alias index="sudo perl ~/f4c040ce48c0d8e590c125379e1ef69b/recursive_index.pl -r"
+alias idx="index"
+alias rdx="index"
+
+alias aa="atom"
+
+#SHUT DOWN
+alias SD="sudo shutdown -r now"
+alias vf="cd"
+alias xs="cd"
+alias got="git"
+
+
+
+#deepspace
+alias deepspace='ssh -Y git@mac.ftpaccess.cc -p 22'
+alias ds='deepspace'
+#boc
+alias boc='ssh -Y git@boc.ftpaccess.cc -p 22'
+#bocmm
+alias bocmm='ssh -Y git@boc.ftpaccess.cc -p 10022'
+
+#awsUbuntu
+alias aws='ssh -i ~/.ssh/AWSUbuntu.pem ubuntu@ec2-18-219-168-237.us-east-2.compute.amazonaws.com'
+
+
+#circe
+circeurl='circe.rc.usf.edu'
+usfuser='rmcmillan1'
+alias circe='ssh -Y $usfuser@$circeurl'
+alias usf=circe
+alias lsusf='ssh rmcmillan1@circe.rc.usf.edu "ls"'
+
+
+function randymcmillan ()
+{
+    rmurl='siteground168.com';
+    me='randymcm';
+    ssh $me@$rmurl -p 18765
+}
+alias randy='randymcmillan'
+
+function rootsinrecovery ()
+{
+#ssh rootsinr@rootsinrecovery.com 18765
+    rmurl='rootsinrecovery.com';
+    me='rootsinr';
+    ssh $me@$rmurl -p 18765
+}
+alias rinr='rootsinrecovery'
+alias roots='rootsinrecovery'
+
+function x2go(){
+#cd /opt/homebrew-cask/Caskroom/x2goclient/latest/
+#open x2goclient.app/
+
+open /opt/homebrew-cask/Caskroom/x2goclient/latest/./x2goclient.app
+
+}
+alias x2='x2go'
+
+alias pt='pipeTree'
+#pipe tree
+function pipeTree(){
+
+ls -R1 /path |
+  while read l; do case $l in *:) d=${l%:};; "") d=;; *) echo "$d/$l";; esac; done
+
+}
+
+#return local foldername
+function folderName(){
+    dest=$PWD;
+    f="${dest##*/}";
+    echo "${f}"
+    }
+alias fn=folderName
+
+
+#makeRemote
+function makeRemote(){
+
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfiles/remoteURL
+    dest=$PWD".git";
+    f="${dest##*/}"; 
+    ssh git@mac.ftpaccess.cc "git init --bare ${f}";
+}
+alias makeremote=makeRemote
+
+#testRemote
+function testRemote(){
+
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfiles/remoteURL
+     dest=$PWD".git";
+     echo $dest;
+     f="${dest##*/}";
+    git ls-remote ssh://git@mac.ftpaccess.cc/Users/git/${f} &>-
+    if [ "$?" -ne 0 ]; then
+    echo "[ERROR] Unable to read from " git ls-remote ssh://git@mac.ftpaccess.cc/Users/git/${f}
+    else
+    return "$?"
+    fi
+}
+#Open location in maps
+alias olim=openLocationInMaps
+function openLocationInMaps(){
+cd ~/get-location
+
+open maps:// < ./get-location
+
+}
+
+#Pipe location
+alias pl=pipeLocationCoords
+function pipeLocationCoords(){
+
+~/get-location/./get-location > ~/location
+
+#printf "%s" "$(<~/location)"
+
+
+FILE_DATA=( $( /bin/cat ~/location ) )
+for I in $(/usr/bin/seq 0 $((${#FILE_DATA[@]} - 1)))
+    do
+        echo $I $FILE_DATA[$i]
+    done
+
+#echo "Read file content!"
+
+}
+
+#myfunc
+#echo myresult = $myresult
+function myfuncOne()
+{
+    myresult='in the .aliases file.'
+}
+#myfunc
+#echo myresult = $myresult
+#forceOrigin
+function forceOrigin(){
+
+while read remoteURL; do echo -e "remoteURL = $remoteURL\n"; done < ~/dotfiles/remoteURL
+ 
+
+   dest=$PWD".git";
+    f="${dest##*/}";
+    git ls-remote --get-url ssh://git@mac.ftpaccess.cc/Users/git/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding remote deepspace repository
+            git remote add deepspace ssh://git@mac.ftpaccess.cc/Users/git/${f};
+            echo setting remote url
+            git remote set-url --origin ssh://git@mac.ftpaccess.cc/Users/git/${f};
+            git remote -v
+        fi
+    git ls-remote --get-url https://github.com/randymcmillan/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding remote github repository
+            git remote add github https://github.com/randymcmillan/${f};
+            echo setting remote url
+            git remote set-url --addurl origin ssh://git@mac.ftpaccess.cc/Users/git/${f};
+            git remote -v
+        fi
+
+
+}
+alias forceorigin=forceOrigin
+alias fo=forceorigin
+
+#forceLocal
+function forceLocal(){
+    dest=$PWD".git";
+    f="${dest##*/}";
+    git ls-remote --get-url ssh://git@192.168.1.10/Users/git/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding "local" deepspace repository
+            git remote add deepspace ssh://git@192.168.1.10/Users/git/${f};
+            echo setting remote url
+            git remote set-url --origin ssh://git@192.168.1.10/Users/git/${f};
+            git remote -v
+        fi
+    git ls-remote --get-url https://github.com/randymcmillan/${f} #&>-
+    if [ "$?" -ne 0 ]; #fail test
+        then
+        git remote -v
+        echo failed to read remote
+        makeRemote;forceOrigin;
+        else
+            echo succeeded to read
+            echo adding remote github repository
+            git remote add github https://github.com/randymcmillan/${f};
+            echo setting remote url
+            git remote set-url --addurl local ssh://git@192.168.1.10/Users/git/${f};
+            git remote -v
+        fi
+
+
+}
+alias forcelocal=forceLocal
+alias fl=forcelocal
+
+alias spoofMacAddress="openssl rand -hex 1 | tr '[:lower:]' '[:upper:]' | xargs echo 'obase=2;ibase=16;' | bc | cut -c1-6 | sed 's/$/00/' | xargs echo 'obase=16;ibase=2;' | bc | sed 's/$/:$(openssl rand -hex 5 | sed 's/\(..\)/\1:/g; s/.$//' | tr '[:lower:]' '[:upper:]')/' | xargs sudo ifconfig en0 ether"
+# Spoof MAC Address
+function spoof(){
+spoofMacAddress; reportMacAddress
+}
+
+function reportMacAddress(){
+
+
+    ifconfig en0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'
+
+}
+#Mou shortcuts http://mouapp.com
+alias mou="open -a Mou"
+
+# git shortcuts
+alias g="git "
+alias got="git "
+alias status="git status "
+alias gs="git status "
+alias ss="gs "
+alias xx="ss "
+
+########
+#alias commit="git commit -m ~/get-location/./get-location "
+#alias     cc="commit "
+######
+
+
+alias push="git push "
+alias    p="git push "
+alias pull="git pull "
+alias   pp="git pull "
+alias tag="git tag "
+alias pusht="git push --tags "
+alias  ppp="pusht "
+alias tags="git tags "
+alias co="gco "
+alias gco="git checkout "
+alias m="merge "
+alias branch="git branch "
+alias clone="git clone "
+alias add="git add "
+alias c="git commit -a"
+
+#exit terminal
+alias x="exit"
+
+alias under="cd ~/Under*"
+alias cdv="cd /Volumes"
+alias cdvioscreate="~/cordova-ios/bin/./create"
+alias cdvosxcreate="~/cordova-osx/bin/./create"
+#alias cdvcreate="~/ios/bin/./create"
+alias cdme="cd ~/"
+alias cdtf="cd ~/Library/Developer/Xcode/Templates/File\ Templates/"
+alias prefs="cd ~/Library/Preferences"
+
+#HomeBrew
+alias forms="cd /usr/local/Library/Formula"
+
+# Easier navigation: .., ..., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
 alias d="cd ~/Documents/Dropbox"
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-alias p="cd ~/projects"
-alias g="git"
+alias p="cd ~/Projects"
+alias g="git "
 
-# Detect which `ls` flavor is in use
-if ls --color > /dev/null 2>&1; then # GNU `ls`
-	colorflag="--color"
-	export LS_COLORS='no=00:fi=00:di=01;31:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
-else # macOS `ls`
-	colorflag="-G"
-	export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
-fi
+#homebrew vim
+alias vim="/usr/local/bin/vim"
+alias v="vim"
+#basic vim
+alias vv="vim -u NONE -N"
+#homebrew macvim
+alias mvim="/usr/local/bin/mvim"
+alias mm="mvim ."
 
+#EMACS
+#http://stackoverflow.com/questions/5795451/how-to-detect-that-emacs-is-in-terminal-mode
+#emacs -nw --color=no
+#for .init.el file or .spacemacs file
+#(if window-system
+#
+#(set-frame-size (selected-frame) 166 100))#
+#
+#    )
+#/Applications/Emacs.app/Contents/MacOS
+alias e="nohup /Applications/Emacs.app/Contents/MacOS/Emacs&"
+alias ee="emacsclient -c -a emacs"
+
+# Create a new directory and enter it
+function mmm() {
+    mm
+    mm
+}
+
+alias s="subl ."
+alias o="open"
+alias oo="open ."
+alias ut="~/Library/Containers/com.apple.iWork.Pages/Data/Library/Application Support/User Templates"
 # List all files colorized in long format
-alias l="ls -lF ${colorflag}"
+alias l="ls -Gl"
 
-# List all files colorized in long format, excluding . and ..
-alias la="ls -lAF ${colorflag}"
-
+# List all files colorized in long format, including dot files
+alias la="ls -Gla"
+alias ll=la
 # List only directories
-alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
+alias lsd='ls -l | grep "^d"'
 
 # Always use color output for `ls`
-alias ls="command ls ${colorflag}"
-
-# Always enable colored `grep` output
-# Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+	alias ls="command ls -G"
+else
+	alias ls="command ls --color"
+	export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
+fi
 
 # Enable aliases to be sudo’ed
-alias sudo='sudo '
+#alias sudo='sudo '
 
-# Get week number
-alias week='date +%V'
-
-# Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
-
-# Google Chrome
-alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
-alias canary='/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary'
+# Get OS X Software Updates, update Homebrew itself, and upgrade installed Homebrew packages
+alias update='sudo softwareupdate -i -a; brew update; brew upgrade'
+#alias update='brew update; brew upgrade'
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+alias localip="ipconfig getifaddr en1"
+alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 
-# Show active network interfaces
-alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+# Enhanced WHOIS lookups
+alias whois="whois -h whois-servers.net"
 
 # Flush Directory Service cache
-alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
+alias flush="dscacheutil -flushcache"
 
-# Clean up LaunchServices to remove duplicates in the “Open With” menu
-alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+# View HTTP traffic
+#alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+#alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 # Canonical hex dump; some systems have this symlinked
-command -v hd > /dev/null || alias hd="hexdump -C"
+type -t hd > /dev/null || alias hd="hexdump -C"
 
-# macOS has no `md5sum`, so use `md5` as a fallback
-command -v md5sum > /dev/null || alias md5sum="md5"
-
-# macOS has no `sha1sum`, so use `shasum` as a fallback
-command -v sha1sum > /dev/null || alias sha1sum="shasum"
-
-# JavaScriptCore REPL
-jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
-[ -e "${jscbin}" ] && alias jsc="${jscbin}";
-unset jscbin;
+# OS X has no `md5sum`, so use `md5` as a fallback
+type -t md5sum > /dev/null || alias md5sum="md5"
 
 # Trim new lines and copy to clipboard
-alias c="tr -d '\n' | pbcopy"
+#alias c="tr -d '\n' | pbcopy"
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 
+# File size
+alias fs="stat -f \"%z bytes\""
+
+# ROT13-encode text. Works for decoding, too! ;)
+alias rot13='tr a-zA-Z n-za-mN-ZA-M'
+
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.
 # Finally, clear download history from quarantine. https://mths.be/bum
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl;"
+alias mt=emptytrash
+alias deleteappstate="sudo rm -rfv ~/Library/Saved\ Application\ State/*;"
+alias das="deleteappstate"
+alias deletegooglelib="sudo rm -rfv ~/Library/Google/*"
+alias dgl="deletegooglelib"
+
 
 # Show/hide hidden files in Finder
-alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
-alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
-
+alias show="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
+alias hide="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
+alias s='show'
+alias h='hide'
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+alias hdt='hidedesktop'
+alias sdt='showdesktop'
 
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
 
-# Merge PDF files
-# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
-alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
-
 # Disable Spotlight
-alias spotoff="sudo mdutil -a -i off"
+#alias spotoff="sudo mdutil -a -i off"
 # Enable Spotlight
-alias spoton="sudo mdutil -a -i on"
+#alias spoton="sudo mdutil -a -i on"
 
 # PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
 alias plistbuddy="/usr/libexec/PlistBuddy"
 
-# Airport CLI alias
-alias airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
-
-# Intuitive map function
-# For example, to list all directories that contain a certain file:
-# find . -name .gitattributes | map dirname
-alias map="xargs -n1"
-
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-	alias "${method}"="lwp-request -m '${method}'"
+	alias "$method"="lwp-request -m '$method'"
 done
-
-# Make Grunt print stack traces by default
-command -v grunt > /dev/null && alias grunt="grunt --stack"
 
 # Stuff I never really use but cannot delete either because of http://xkcd.com/530/
 alias stfu="osascript -e 'set volume output muted true'"
-alias pumpitup="osascript -e 'set volume output volume 100'"
+alias pumpitup="osascript -e 'set volume 10'"
+alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
 
-# Kill all the tabs in Chrome to free up memory
-# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
-alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+alias 0="osascript -e 'set volume 0'"
+alias 1="osascript -e 'set volume 1'"
+alias 2="osascript -e 'set volume 2'"
+alias 3="osascript -e 'set volume 3'"
+alias 4="osascript -e 'set volume 4'"
+alias 5="osascript -e 'set volume 5'"
+alias 6="osascript -e 'set volume 6'"
+alias 7="osascript -e 'set volume 7'"
+alias 8="osascript -e 'set volume 8'"
+alias 9="osascript -e 'set volume 9'"
+alias 10="osascript -e 'set volume 10'"
 
-# Lock the screen (when going AFK)
-alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-
-# Reload the shell (i.e. invoke as a login shell)
-alias reload="exec ${SHELL} -l"
-
-# Print each PATH entry on a separate line
-alias path='echo -e ${PATH//:/\\n}'
+#https://github.com/pasky/speedread
+#usage $ cat *.txt | read
+alias sread="~/speedread/./speedread -w 250"

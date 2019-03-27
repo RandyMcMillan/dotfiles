@@ -31,13 +31,13 @@ private:
     size_t WriteFilterToDisk(FlatFilePos& pos, const BlockFilter& filter);
 
 protected:
-    bool Init() override;
+    bool OnStart() override;
 
-    bool CommitInternal(CDBBatch& batch) override;
+    bool OnFlush(CDBBatch& batch) override;
 
-    bool WriteBlock(const CBlock& block, const CBlockIndex* pindex) override;
+    bool OnBlock(const CBlock& block, const CBlockIndex* pindex) override;
 
-    bool Rewind(const CBlockIndex* current_tip, const CBlockIndex* new_tip) override;
+    bool OnRewind(CDBBatch& batch, const CBlockIndex* current_tip, const CBlockIndex* new_tip) override;
 
     BaseIndex::DB& GetDB() const override { return *m_db; }
 

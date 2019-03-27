@@ -229,7 +229,7 @@ TxIndex::TxIndex(size_t n_cache_size, bool f_memory, bool f_wipe)
 
 TxIndex::~TxIndex() {}
 
-bool TxIndex::Init()
+bool TxIndex::OnStart()
 {
     LOCK(cs_main);
 
@@ -240,10 +240,10 @@ bool TxIndex::Init()
         return false;
     }
 
-    return BaseIndex::Init();
+    return true;
 }
 
-bool TxIndex::WriteBlock(const CBlock& block, const CBlockIndex* pindex)
+bool TxIndex::OnBlock(const CBlock& block, const CBlockIndex* pindex)
 {
     // Exclude genesis block transaction because outputs are not spendable.
     if (pindex->nHeight == 0) return true;

@@ -23,10 +23,10 @@ private:
     const std::unique_ptr<DB> m_db;
 
 protected:
-    /// Override base class init to migrate from old database.
-    bool Init() override;
+    /// Migrate from old database format, if necessary.
+    bool OnStart() override;
 
-    bool WriteBlock(const CBlock& block, const CBlockIndex* pindex) override;
+    bool OnBlock(const CBlock& block, const CBlockIndex* pindex) override;
 
     BaseIndex::DB& GetDB() const override;
 

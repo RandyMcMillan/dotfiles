@@ -54,35 +54,38 @@ private:
     /// over and the sync thread exits.
     void ThreadSync();
 
-    /// Write the current index state (eg. chain block locator and subclass-specific items) to disk.
-    ///
-    /// Recommendations for error handling:
-    /// If called on a successor of the previous committed best block in the index, the index can
-    /// continue processing without risk of corruption, though the index state will need to catch up
-    /// from further behind on reboot. If the new state is not a successor of the previous state (due
-    /// to a chain reorganization), the index must halt until Commit succeeds or else it could end up
-    /// getting corrupted.
-    bool Commit();
+    /// Load index locator from disk, compare to active chain, and set
+    /// m_best_block_index and m_synced.
+    bool LoadPosition();
 
-protected:
+    /// Save index locator to disk, flushing data needed to make the index
+    /// consistent, and updating m_best_block_index. Rewind parameter can be set
+    /// to true to walk the index back to an ancestor of the previous tip.
+    ///
+    /// If new position descends from the previous position, it's safe to ignore
+    /// errors from this function, because even if new data was partially or
+    /// incorrectly written, the old data will still be valid and the previous
+    /// position will still be set.
+    bool SavePosition(const CBlockIndex* new_tip, bool rewind = false);
+
     void BlockConnected(const std::shared_ptr<const CBlock>& block, const CBlockIndex* pindex,
                         const std::vector<CTransactionRef>& txn_conflicted) override;
 
     void ChainStateFlushed(const CBlockLocator& locator) override;
 
-    /// Initialize internal state from the database and block index.
-    virtual bool Init();
+protected:
+    /// Initialize internal state before starting sync.
+    virtual bool OnStart() { return true; }
 
-    /// Write update index entries for a newly connected block.
-    virtual bool WriteBlock(const CBlock& block, const CBlockIndex* pindex) { return true; }
+    /// Update index entries for a newly connected block.
+    virtual bool OnBlock(const CBlock& block, const CBlockIndex* pindex) { return true; }
 
-    /// Virtual method called internally by Commit that can be overridden to atomically
-    /// commit more index state.
-    virtual bool CommitInternal(CDBBatch& batch);
-
-    /// Rewind index to an earlier chain tip during a chain reorg. The tip must
+    /// Rewind index to an earlier chain tip during a chain reorg. The tip will
     /// be an ancestor of the current best block.
-    virtual bool Rewind(const CBlockIndex* current_tip, const CBlockIndex* new_tip);
+    virtual bool OnRewind(CDBBatch& batch, const CBlockIndex* current_tip, const CBlockIndex* new_tip) { return true; }
+
+    /// Save additional state after a set of blocks are added or rewound.
+    virtual bool OnFlush(CDBBatch& batch) { return true; }
 
     virtual DB& GetDB() const = 0;
 

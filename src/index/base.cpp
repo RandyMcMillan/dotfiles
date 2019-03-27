@@ -52,7 +52,7 @@ BaseIndex::~BaseIndex()
     Stop();
 }
 
-bool BaseIndex::Init()
+bool BaseIndex::LoadPosition()
 {
     CBlockLocator locator;
     if (!GetDB().ReadBestBlock(locator)) {
@@ -95,11 +95,10 @@ void BaseIndex::ThreadSync()
         int64_t last_locator_write_time = 0;
         while (true) {
             if (m_interrupt) {
-                m_best_block_index = pindex;
-                // No need to handle errors in Commit. If it fails, the error will be already be
+                // No need to handle errors from SavePosition. If it fails, the error will be already be
                 // logged. The best way to recover is to continue, as index cannot be corrupted by
-                // a missed commit to disk for an advanced index state.
-                Commit();
+                // a failed forward update.
+                SavePosition(pindex);
                 return;
             }
 
@@ -107,13 +106,12 @@ void BaseIndex::ThreadSync()
                 LOCK(cs_main);
                 const CBlockIndex* pindex_next = NextSyncBlock(pindex);
                 if (!pindex_next) {
-                    m_best_block_index = pindex;
+                    // No need to handle errors from SavePosition. See rationale above.
+                    SavePosition(pindex);
                     m_synced = true;
-                    // No need to handle errors in Commit. See rationale above.
-                    Commit();
                     break;
                 }
-                if (pindex_next->pprev != pindex && !Rewind(pindex, pindex_next->pprev)) {
+                if (pindex_next->pprev != pindex && !SavePosition(pindex_next->pprev, /* rewind= */ true)) {
                     FatalError("%s: Failed to rewind index %s to a previous chain tip",
                                __func__, GetName());
                     return;
@@ -129,10 +127,9 @@ void BaseIndex::ThreadSync()
             }
 
             if (last_locator_write_time + SYNC_LOCATOR_WRITE_INTERVAL < current_time) {
-                m_best_block_index = pindex;
+                // No need to handle errors from SavePosition. See rationale above.
+                SavePosition(pindex);
                 last_locator_write_time = current_time;
-                // No need to handle errors in Commit. See rationale above.
-                Commit();
             }
 
             CBlock block;
@@ -141,7 +138,7 @@ void BaseIndex::ThreadSync()
                            __func__, pindex->GetBlockHash().ToString());
                 return;
             }
-            if (!WriteBlock(block, pindex)) {
+            if (!OnBlock(block, pindex)) {
                 FatalError("%s: Failed to write block %s to index database",
                            __func__, pindex->GetBlockHash().ToString());
                 return;
@@ -156,35 +153,32 @@ void BaseIndex::ThreadSync()
     }
 }
 
-bool BaseIndex::Commit()
+bool BaseIndex::SavePosition(const CBlockIndex* new_tip, bool rewind)
 {
     CDBBatch batch(GetDB());
-    if (!CommitInternal(batch) || !GetDB().WriteBatch(batch)) {
+    const CBlockIndex* best_block_index = m_best_block_index.load();
+    if (rewind) {
+        assert(best_block_index->GetAncestor(new_tip->nHeight) == new_tip);
+        if (!OnRewind(batch, best_block_index, new_tip)) {
+            return error("%s: Failed to rewind %s tip", __func__, GetName());
+        }
+    }
+
+    if (!OnFlush(batch)) {
         return error("%s: Failed to commit latest %s state", __func__, GetName());
     }
-    return true;
-}
 
-bool BaseIndex::CommitInternal(CDBBatch& batch)
-{
-    LOCK(cs_main);
-    GetDB().WriteBestBlock(batch, chainActive.GetLocator(m_best_block_index));
-    return true;
-}
-
-bool BaseIndex::Rewind(const CBlockIndex* current_tip, const CBlockIndex* new_tip)
-{
-    assert(current_tip == m_best_block_index);
-    assert(current_tip->GetAncestor(new_tip->nHeight) == new_tip);
-
-    // In the case of a reorg, ensure persisted block locator is not stale.
-    m_best_block_index = new_tip;
-    if (!Commit()) {
-        // If commit fails, revert the best block index to avoid corruption.
-        m_best_block_index = current_tip;
-        return false;
+    CBlockLocator locator;
+    {
+        LOCK(cs_main);
+        locator = chainActive.GetLocator(new_tip);
     }
+    GetDB().WriteBestBlock(batch, locator);
 
+    if (!GetDB().WriteBatch(batch)) {
+        return error("%s: Failed to flush latest %s state", __func__, GetName());
+    }
+    m_best_block_index = new_tip;
     return true;
 }
 
@@ -215,14 +209,14 @@ void BaseIndex::BlockConnected(const std::shared_ptr<const CBlock>& block, const
                       best_block_index->GetBlockHash().ToString());
             return;
         }
-        if (best_block_index != pindex->pprev && !Rewind(best_block_index, pindex->pprev)) {
+        if (best_block_index != pindex->pprev && !SavePosition(pindex->pprev, /* rewind= */ true  )) {
             FatalError("%s: Failed to rewind index %s to a previous chain tip",
                        __func__, GetName());
             return;
         }
     }
 
-    if (WriteBlock(*block, pindex)) {
+    if (OnBlock(*block, pindex)) {
         m_best_block_index = pindex;
     } else {
         FatalError("%s: Failed to write block %s to index",
@@ -264,10 +258,9 @@ void BaseIndex::ChainStateFlushed(const CBlockLocator& locator)
         return;
     }
 
-    // No need to handle errors in Commit. If it fails, the error will be already be logged. The
-    // best way to recover is to continue, as index cannot be corrupted by a missed commit to disk
-    // for an advanced index state.
-    Commit();
+    // No need to handle errors from SavePosition. If it fails, the error will be already be logged. The
+    // best way to recover is to continue, as index cannot be corrupted by a failed forward update.
+    SavePosition(best_block_index);
 }
 
 bool BaseIndex::BlockUntilSyncedToCurrentChain()
@@ -301,10 +294,10 @@ void BaseIndex::Interrupt()
 
 void BaseIndex::Start()
 {
-    // Need to register this ValidationInterface before running Init(), so that
-    // callbacks are not missed if Init sets m_synced to true.
+    // Need to register this ValidationInterface before running LoadPosition, so
+    // that callbacks are not missed if it sets m_synced to true.
     RegisterValidationInterface(this);
-    if (!Init()) {
+    if (!OnStart() || !LoadPosition()) {
         FatalError("%s: %s failed to initialize", __func__, GetName());
         return;
     }

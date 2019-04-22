@@ -6,7 +6,6 @@
 #include <util/system.h>
 
 #include <chainparamsbase.h>
-#include <optional.h>
 #include <util/strencodings.h>
 #include <util/translation.h>
 
@@ -178,106 +177,10 @@ public:
         return (am.m_network == CBaseChainParams::MAIN || am.m_network_only_args.count(arg) == 0);
     }
 
-    /** Convert regular argument into the network-specific setting */
-    static inline std::string NetworkArg(const ArgsManager& am, const std::string& arg)
-    {
-        assert(arg.length() > 1 && arg[0] == '-');
-        return "-" + am.m_network + "." + arg.substr(1);
-    }
-
-    /** Find arguments in a map and add them to a vector */
-    static inline void AddArgs(std::vector<std::string>& res, util::SettingsSpan args)
-    {
-        for (const auto& arg : args) {
-            res.push_back(arg.get_str());
-        }
-    }
-
-    /** Return true/false if an argument is set in a map, and also
-     *  return the first (or last) of the possibly multiple values it has
-     */
-    static inline std::pair<bool,std::string> GetArgHelper(util::SettingsSpan args, bool getLast = false)
-    {
-        if (args.empty()) {
-            return std::make_pair(false, std::string());
-        }
-
-        if (getLast) {
-            return std::make_pair(true, (args.end() - 1)->get_str());
-        } else {
-            return std::make_pair(true, args.begin()->get_str());
-        }
-    }
-
-    /* Get the string value of an argument, returning a pair of a boolean
-     * indicating the argument was found, and the value for the argument
-     * if it was found (or the empty string if not found).
-     */
-    static inline std::pair<bool,std::string> GetArg(const ArgsManager &am, const std::string& arg)
+    static util::SettingsValue Get(const ArgsManager& am, const std::string& arg)
     {
         LOCK(am.cs_args);
-        std::string name = SettingName(arg);
-        std::pair<bool,std::string> found_result(false, std::string());
-
-        // We pass "true" to GetArgHelper in order to return the last
-        // argument value seen from the command line (so "bitcoind -foo=bar
-        // -foo=baz" gives GetArg(am,"foo")=={true,"baz"}
-        if (auto* values = util::FindKey(am.m_settings.command_line_options, name)) {
-            found_result = GetArgHelper(util::SettingsSpan(*values), true);
-            if (found_result.first) {
-                return found_result;
-            }
-        }
-
-        // But in contrast we return the first argument seen in a config file,
-        // so "foo=bar \n foo=baz" in the config file gives
-        // GetArg(am,"foo")={true,"bar"}
-        if (!am.m_network.empty()) {
-            if (auto* map = util::FindKey(am.m_settings.ro_config, am.m_network)) {
-                if (auto* values = util::FindKey(*map, name)) {
-                    found_result = GetArgHelper(util::SettingsSpan(*values));
-                    if (found_result.first) {
-                        return found_result;
-                    }
-                }
-            }
-        }
-
-        if (UseDefaultSection(am, arg)) {
-            if (auto* map = util::FindKey(am.m_settings.ro_config, "")) {
-                if (auto* values = util::FindKey(*map, name)) {
-                    found_result = GetArgHelper(util::SettingsSpan(*values));
-                    if (found_result.first) {
-                        return found_result;
-                    }
-                }
-            }
-        }
-
-        return found_result;
-    }
-
-    /* Special test for -testnet and -regtest args, because we
-     * don't want to be confused by craziness like "[regtest] testnet=1"
-     */
-    static inline bool GetNetBoolArg(const ArgsManager &am, const std::string& net_arg) EXCLUSIVE_LOCKS_REQUIRED(am.cs_args)
-    {
-        std::string name = SettingName(net_arg);
-        std::pair<bool,std::string> found_result(false,std::string());
-        if (auto* values = util::FindKey(am.m_settings.command_line_options, name)) {
-            found_result = GetArgHelper(util::SettingsSpan(*values), true);
-        }
-        if (!found_result.first) {
-            if (auto* map = util::FindKey(am.m_settings.ro_config, "")) {
-                if (auto* values = util::FindKey(*map, name)) {
-                    found_result = GetArgHelper(util::SettingsSpan(*values), true);
-                }
-            }
-            if (!found_result.first) {
-                return false; // not set
-            }
-        }
-        return InterpretBool(found_result.second); // is set, so evaluate
+        return GetSetting(am.m_settings, am.m_network, SettingName(arg), !UseDefaultSection(am, arg), /* get_chain_name= */ false);
     }
 };
 
@@ -288,11 +191,12 @@ public:
  * checks whether there was a double-negative (-nofoo=0 -> -foo=1).
  *
  * If there was not a double negative, it removes the "no" from the key
- * and returns nullopt.
+ * and returns false.
  *
- * If there was a double negative, it removes "no" from the key, and returns "1"
+ * If there was a double negative, it removes "no" from the key, and
+ * returns true.
  *
- * If there was no "no", it returns the value untouched.
+ * If there was no "no", it returns the string value untouched.
  *
  * Where an option was negated can be later checked using the
  * IsArgNegated() method. One use case for this is to have a way to disable
@@ -300,23 +204,21 @@ public:
  * that debug log output is not sent to any file at all).
  */
 
-static Optional<std::string> InterpretOption(std::string& section, std::string& key, const std::string& value, bool& negated)
+static util::SettingsValue InterpretOption(std::string& section, std::string& key, const std::string& value)
 {
     size_t option_index = key.find('.');
     if (option_index != std::string::npos) {
         section = key.substr(0, option_index);
         key.erase(0, option_index + 1);
     }
-    negated = false;
     if (key.substr(0, 2) == "no") {
-        negated = true;
         key.erase(0, 2);
         // Double negatives like -nofoo=0 are supported (but discouraged)
         if (!InterpretBool(value)) {
             LogPrintf("Warning: parsed potentially confusing double-negative -%s=%s\n", key, value);
-            return std::string{"1"};
+            return true;
         }
-        return nullopt;
+        return false;
     }
     return value;
 }
@@ -328,9 +230,9 @@ static Optional<std::string> InterpretOption(std::string& section, std::string& 
  * See "here's how the flags are meant to behave" in
  * https://github.com/bitcoin/bitcoin/pull/16097#issuecomment-514627823
  */
-static bool CheckValid(const std::string& key, const std::string& val, bool negated, unsigned int flags, std::string& error)
+static bool CheckValid(const std::string& key, const util::SettingsValue& val, unsigned int flags, std::string& error)
 {
-    if (negated && !(flags & ArgsManager::ALLOW_BOOL)) {
+    if (val.isBool() && !(flags & ArgsManager::ALLOW_BOOL)) {
         error = strprintf("Negating of -%s is meaningless and therefore forbidden", key);
         return false;
     }
@@ -355,33 +257,9 @@ const std::set<std::string> ArgsManager::GetUnsuitableSectionOnlyArgs() const
     if (m_network == CBaseChainParams::MAIN) return std::set<std::string> {};
 
     for (const auto& arg : m_network_only_args) {
-        std::string name = SettingName(arg);
-        std::pair<bool, std::string> found_result;
-
-        // if this option is overridden it's fine
-        if (auto* values = util::FindKey(m_settings.command_line_options, name)) {
-            found_result = ArgsManagerHelper::GetArgHelper(util::SettingsSpan(*values));
+        if (OnlyHasDefaultSectionSetting(m_settings, m_network, SettingName(arg))) {
+            unsuitables.insert(arg);
         }
-        if (found_result.first) continue;
-
-        // if there's a network-specific value for this option, it's fine
-        if (auto* map = util::FindKey(m_settings.ro_config, m_network)) {
-            if (auto* values = util::FindKey(*map, name)) {
-                found_result = ArgsManagerHelper::GetArgHelper(util::SettingsSpan(*values));
-            }
-        }
-        if (found_result.first) continue;
-
-        // if there isn't a default value for this option, it's fine
-        if (auto* map = util::FindKey(m_settings.ro_config, "")) {
-            if (auto* values = util::FindKey(*map, name)) {
-                found_result = ArgsManagerHelper::GetArgHelper(util::SettingsSpan(*values));
-            }
-        }
-        if (!found_result.first) continue;
-
-        // otherwise, issue a warning
-        unsuitables.insert(arg);
     }
     return unsuitables;
 }
@@ -445,11 +323,10 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
 
         key.erase(0, 1);
         std::string section;
-        bool negated;
-        Optional<std::string> value = InterpretOption(section, key, val, negated);
+        util::SettingsValue value = InterpretOption(section, key, val);
         const unsigned int flags = FlagsOfKnownArg(key);
         if (flags) {
-            if (!CheckValid(key, val, negated, flags, error)) {
+            if (!CheckValid(key, value, flags, error)) {
                 return false;
             }
             // Weird behavior preserved for backwards compatibility: command
@@ -457,11 +334,7 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
             // would be better if these options triggered the Invalid parameter
             // error below.
             if (section.empty()) {
-                if (value) {
-                    m_settings.command_line_options[key].push_back(*value);
-                } else {
-                    m_settings.command_line_options[key].clear();
-                }
+                m_settings.command_line_options[key].push_back(value);
             }
         } else {
             error = strprintf("Invalid parameter -%s", key);
@@ -494,88 +367,42 @@ unsigned int ArgsManager::FlagsOfKnownArg(const std::string& key) const
 
 std::vector<std::string> ArgsManager::GetArgs(const std::string& strArg) const
 {
-    std::vector<std::string> result = {};
-    if (IsArgNegated(strArg)) return result; // special case
-
     LOCK(cs_args);
-
-    std::string name = SettingName(strArg);
-    if (auto* values = util::FindKey(m_settings.command_line_options, name)) {
-        ArgsManagerHelper::AddArgs(result, util::SettingsSpan(*values));
+    bool ignore_default_section_config = !ArgsManagerHelper::UseDefaultSection(*this, strArg);
+    std::vector<std::string> result;
+    for (const util::SettingsValue& value :
+        util::GetSettingsList(m_settings, m_network, SettingName(strArg), ignore_default_section_config)) {
+        result.push_back(value.isFalse() ? "0" : value.isTrue() ? "1" : value.get_str());
     }
-    if (!m_network.empty()) {
-        if (auto* map = util::FindKey(m_settings.ro_config, m_network)) {
-            if (auto* values = util::FindKey(*map, name)) {
-                ArgsManagerHelper::AddArgs(result, util::SettingsSpan(*values));
-            }
-        }
-    }
-
-    if (ArgsManagerHelper::UseDefaultSection(*this, strArg)) {
-        if (auto* map = util::FindKey(m_settings.ro_config, "")) {
-            if (auto* values = util::FindKey(*map, name)) {
-                ArgsManagerHelper::AddArgs(result, util::SettingsSpan(*values));
-            }
-        }
-    }
-
     return result;
 }
 
 bool ArgsManager::IsArgSet(const std::string& strArg) const
 {
-    if (IsArgNegated(strArg)) return true; // special case
-    return ArgsManagerHelper::GetArg(*this, strArg).first;
+    return !ArgsManagerHelper::Get(*this, strArg).isNull();
 }
 
 bool ArgsManager::IsArgNegated(const std::string& strArg) const
 {
-    LOCK(cs_args);
-
-    std::string name = SettingName(strArg);
-    if (auto* values = util::FindKey(m_settings.command_line_options, name)) {
-        return values->empty();
-    }
-
-    if (!m_network.empty()) {
-        if (auto* map = util::FindKey(m_settings.ro_config, m_network)) {
-            if (auto* values = util::FindKey(*map, name)) {
-                return values->empty();
-            }
-        }
-    }
-
-    if (auto* map = util::FindKey(m_settings.ro_config, "")) {
-        if (auto* values = util::FindKey(*map, name)) {
-            return values->empty();
-        }
-    }
-
-    return false;
+    return ArgsManagerHelper::Get(*this, strArg).isFalse();
 }
 
 std::string ArgsManager::GetArg(const std::string& strArg, const std::string& strDefault) const
 {
-    if (IsArgNegated(strArg)) return "0";
-    std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
-    if (found_res.first) return found_res.second;
-    return strDefault;
+    const util::SettingsValue value = ArgsManagerHelper::Get(*this, strArg);
+    return value.isNull() ? strDefault : value.isFalse() ? "0" : value.isTrue() ? "1" : value.get_str();
 }
 
 int64_t ArgsManager::GetArg(const std::string& strArg, int64_t nDefault) const
 {
-    if (IsArgNegated(strArg)) return 0;
-    std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
-    if (found_res.first) return atoi64(found_res.second);
-    return nDefault;
+    const util::SettingsValue value = ArgsManagerHelper::Get(*this, strArg);
+    return value.isNull() ? nDefault : value.isFalse() ? 0 : value.isTrue() ? 1 : value.isNum() ? value.get_int64() : atoi64(value.get_str());
 }
 
 bool ArgsManager::GetBoolArg(const std::string& strArg, bool fDefault) const
 {
-    if (IsArgNegated(strArg)) return false;
-    std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
-    if (found_res.first) return InterpretBool(found_res.second);
-    return fDefault;
+    const util::SettingsValue value = ArgsManagerHelper::Get(*this, strArg);
+    return value.isNull() ? fDefault : value.isBool() ? value.get_bool() : InterpretBool(value.get_str());
 }
 
 bool ArgsManager::SoftSetArg(const std::string& strArg, const std::string& strValue)
@@ -597,7 +424,7 @@ bool ArgsManager::SoftSetBoolArg(const std::string& strArg, bool fValue)
 void ArgsManager::ForceSetArg(const std::string& strArg, const std::string& strValue)
 {
     LOCK(cs_args);
-    m_settings.command_line_options[SettingName(strArg)] = {strValue};
+    m_settings.forced_settings[SettingName(strArg)] = strValue;
 }
 
 void ArgsManager::AddArg(const std::string& name, const std::string& help, unsigned int flags, const OptionsCategory& cat)
@@ -915,18 +742,13 @@ bool ArgsManager::ReadConfigStream(std::istream& stream, const std::string& file
     for (const std::pair<std::string, std::string>& option : options) {
         std::string section;
         std::string key = option.first;
-        bool negated;
-        Optional<std::string> value = InterpretOption(section, key, option.second, negated);
+        util::SettingsValue value = InterpretOption(section, key, option.second);
         const unsigned int flags = FlagsOfKnownArg(key);
         if (flags) {
-            if (!CheckValid(key, option.second, negated, flags, error)) {
+            if (!CheckValid(key, value, flags, error)) {
                 return false;
             }
-            if (value) {
-                m_settings.ro_config[section][key].push_back(*value);
-            } else {
-                m_settings.ro_config[section][key].clear();
-            }
+            m_settings.ro_config[section][key].push_back(value);
         } else {
             if (ignore_invalid_keys) {
                 LogPrintf("Ignoring unknown configuration value %s\n", option.first);
@@ -961,7 +783,7 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
         {
             LOCK(cs_args);
             const std::vector<util::SettingsValue>* const includes = util::FindKey(m_settings.command_line_options, "includeconf");
-            emptyIncludeConf = !(includes && includes->empty());
+            emptyIncludeConf = !(includes && util::SettingsSpan(*includes).last_negated());
         }
         if (emptyIncludeConf) {
             std::string chain_id = GetChainName();
@@ -972,7 +794,7 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
                 LOCK(cs_args);
                 if (auto* section = util::FindKey(m_settings.ro_config, network)) {
                     if (auto* values = util::FindKey(*section, "includeconf")) {
-                        for (size_t i = skip; i < values->size(); ++i) {
+                        for (size_t i = std::max(skip, util::SettingsSpan(*values).negated()); i < values->size(); ++i) {
                             includeconf.push_back((*values)[i].get_str());
                         }
                         num_values = values->size();
@@ -1027,9 +849,16 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
 
 std::string ArgsManager::GetChainName() const
 {
-    LOCK(cs_args);
-    const bool fRegTest = ArgsManagerHelper::GetNetBoolArg(*this, "-regtest");
-    const bool fTestNet = ArgsManagerHelper::GetNetBoolArg(*this, "-testnet");
+    auto get_net = [&](const std::string& arg) {
+        LOCK(cs_args);
+        util::SettingsValue value = GetSetting(m_settings, /* section= */ "", SettingName(arg),
+                                               /* ignore_default_section_config= */ false,
+                                               /* get_chain_name= */ true);
+        return value.isNull() ? false : value.isBool() ? value.get_bool() : InterpretBool(value.get_str());
+    };
+
+    const bool fRegTest = get_net("-regtest");
+    const bool fTestNet = get_net("-testnet");
     const bool is_chain_arg_set = IsArgSet("-chain");
 
     if ((int)is_chain_arg_set + (int)fRegTest + (int)fTestNet > 1) {

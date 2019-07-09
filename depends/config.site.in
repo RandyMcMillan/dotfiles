@@ -19,10 +19,17 @@ fi
 if test -z $with_protoc_bindir && test -z "@no_qt@"; then
   with_protoc_bindir=$depends_prefix/native/bin
 fi
+if test -z $with_mpgen_bin && test -n "@multiprocess@"; then
+  with_mpgen_bin=$depends_prefix/native/bin/mpgen
+fi
 
 
 if test -z $enable_wallet && test -n "@no_wallet@"; then
   enable_wallet=no
+fi
+
+if test -z $enable_multiprocess && test -n "@multiprocess@"; then
+  enable_multiprocess=yes
 fi
 
 if test -z $with_miniupnpc && test -n "@no_upnp@"; then

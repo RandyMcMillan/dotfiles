@@ -6,6 +6,8 @@ qt_packages = qrencode protobuf zlib
 qt_linux_packages:=qt expat libxcb xcb_proto libXau xproto freetype fontconfig
 
 rapidcheck_packages = rapidcheck
+multiprocess_packages = libmultiprocess capnp
+multiprocess_native_packages = native_libmultiprocess native_boost native_capnp
 
 qt_darwin_packages=qt
 qt_mingw32_packages=qt

@@ -42,7 +42,8 @@ bench_bench_bitcoin_SOURCES = \
   test/setup_common.h \
   test/setup_common.cpp \
   test/util.h \
-  test/util.cpp
+  test/util.cpp \
+  interfaces/config_null.cpp
 
 nodist_bench_bench_bitcoin_SOURCES = $(GENERATED_BENCH_FILES)
 
@@ -52,6 +53,7 @@ bench_bench_bitcoin_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_SERVER) \
+  $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CONSENSUS) \

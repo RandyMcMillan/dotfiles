@@ -9,6 +9,7 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\interfaces\config_null.cpp" />
     <ClCompile Include="..\..\src\test\*_tests.cpp" />
     <ClCompile Include="..\..\src\test\*_properties.cpp" />
     <ClCompile Include="..\..\src\test\gen\*_gen.cpp" />

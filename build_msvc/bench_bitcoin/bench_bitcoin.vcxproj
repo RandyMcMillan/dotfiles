@@ -30,6 +30,7 @@
     <ClCompile Include="..\..\src\bench\rollingbloom.cpp" />
     <ClCompile Include="..\..\src\bench\wallet_balance.cpp" />
     <ClCompile Include="..\..\src\bench\verify_script.cpp" />
+    <ClCompile Include="..\..\src\interfaces\config_null.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libbitcoinconsensus\libbitcoinconsensus.vcxproj">

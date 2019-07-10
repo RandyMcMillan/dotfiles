@@ -323,7 +323,7 @@ static UniValue setlabel(const JSONRPCRequest& request)
 }
 
 
-static CTransactionRef SendMoney(interfaces::Chain::Lock& locked_chain, CWallet * const pwallet, const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, const CCoinControl& coin_control, mapValue_t mapValue)
+static CTransactionRef SendMoney(CWallet* const pwallet, const CTxDestination& address, CAmount nValue, bool fSubtractFeeFromAmount, const CCoinControl& coin_control, mapValue_t mapValue)
 {
     CAmount curBalance = pwallet->GetBalance(0, coin_control.m_avoid_address_reuse).m_mine_trusted;
 
@@ -345,7 +345,7 @@ static CTransactionRef SendMoney(interfaces::Chain::Lock& locked_chain, CWallet 
     CRecipient recipient = {scriptPubKey, nValue, fSubtractFeeFromAmount};
     vecSend.push_back(recipient);
     CTransactionRef tx;
-    if (!pwallet->CreateTransaction(locked_chain, vecSend, tx, nFeeRequired, nChangePosRet, strError, coin_control)) {
+    if (!pwallet->CreateTransaction(vecSend, tx, nFeeRequired, nChangePosRet, strError, coin_control)) {
         if (!fSubtractFeeFromAmount && nValue + nFeeRequired > curBalance)
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s", FormatMoney(nFeeRequired));
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
@@ -446,7 +446,7 @@ static UniValue sendtoaddress(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    CTransactionRef tx = SendMoney(*locked_chain, pwallet, dest, nAmount, fSubtractFeeFromAmount, coin_control, std::move(mapValue));
+    CTransactionRef tx = SendMoney(pwallet, dest, nAmount, fSubtractFeeFromAmount, coin_control, std::move(mapValue));
     return tx->GetHash().GetHex();
 }
 
@@ -934,7 +934,7 @@ static UniValue sendmany(const JSONRPCRequest& request)
     int nChangePosRet = -1;
     std::string strFailReason;
     CTransactionRef tx;
-    bool fCreated = pwallet->CreateTransaction(*locked_chain, vecSend, tx, nFeeRequired, nChangePosRet, strFailReason, coin_control);
+    bool fCreated = pwallet->CreateTransaction(vecSend, tx, nFeeRequired, nChangePosRet, strFailReason, coin_control);
     if (!fCreated)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
     pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */);
@@ -1601,8 +1601,8 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
 
     bool include_removed = (request.params[3].isNull() || request.params[3].get_bool());
 
-    const Optional<int> tip_height = locked_chain->getHeight();
-    int depth = tip_height && height ? (1 + *tip_height - *height) : -1;
+    int tip_height = pwallet->GetLastBlockHeight();
+    int depth = height ? (1 + tip_height - *height) : -1;
 
     UniValue transactions(UniValue::VARR);
 
@@ -1634,8 +1634,8 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
         --*altheight;
     }
 
-    int last_height = tip_height ? *tip_height + 1 - target_confirms : -1;
-    uint256 lastblock = last_height >= 0 ? locked_chain->getBlockHash(last_height) : uint256();
+    int lastheight = tip_height + 1 - target_confirms;
+    uint256 lastblock = lastheight >= 0 ? locked_chain->getBlockHash(lastheight) : uint256();
 
     UniValue ret(UniValue::VOBJ);
     ret.pushKV("transactions", transactions);
@@ -3527,7 +3527,7 @@ UniValue rescanblockchain(const JSONRPCRequest& request)
     uint256 start_block, stop_block;
     {
         auto locked_chain = pwallet->chain().lock();
-        Optional<int> tip_height = locked_chain->getHeight();
+        Optional<int> tip_height = pwallet->chain().getHeight();
 
         if (!request.params[0].isNull()) {
             start_height = request.params[0].get_int();

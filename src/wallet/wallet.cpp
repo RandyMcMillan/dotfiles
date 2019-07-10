@@ -1551,7 +1551,7 @@ int64_t CWallet::RescanFromTime(int64_t startTime, const WalletRescanReserver& r
     {
         auto locked_chain = chain().lock();
         const Optional<int> start_height = locked_chain->findFirstBlockWithTimeAndHeight(startTime - TIMESTAMP_WINDOW, 0, &start_block);
-        const Optional<int> tip_height = locked_chain->getHeight();
+        const Optional<int> tip_height = chain().getHeight();
         WalletLogPrintf("%s: Rescanning last %i blocks\n", __func__, tip_height && start_height ? *tip_height - *start_height + 1 : 0);
     }
 
@@ -1611,7 +1611,7 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
     double progress_end;
     {
         auto locked_chain = chain().lock();
-        if (Optional<int> tip_height = locked_chain->getHeight()) {
+        if (Optional<int> tip_height = chain().getHeight()) {
             tip_hash = locked_chain->getBlockHash(*tip_height);
         }
         block_height = locked_chain->getBlockHeight(block_hash);
@@ -1659,7 +1659,7 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
         }
         {
             auto locked_chain = chain().lock();
-            Optional<int> tip_height = locked_chain->getHeight();
+            Optional<int> tip_height = chain().getHeight();
             if (!tip_height || *tip_height <= block_height || !locked_chain->getBlockHeight(block_hash)) {
                 // break successfully when rescan has reached the tip, or
                 // previous block is no longer on the chain due to a reorg
@@ -2416,7 +2416,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nC
     LOCK(cs_wallet);
 
     CTransactionRef tx_new;
-    if (!CreateTransaction(*locked_chain, vecSend, tx_new, nFeeRet, nChangePosInOut, strFailReason, coinControl, false)) {
+    if (!CreateTransaction(vecSend, tx_new, nFeeRet, nChangePosInOut, strFailReason, coinControl, false)) {
         return false;
     }
 
@@ -2444,13 +2444,14 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nC
     return true;
 }
 
-static bool IsCurrentForAntiFeeSniping(interfaces::Chain& chain, interfaces::Chain::Lock& locked_chain)
+static bool IsCurrentForAntiFeeSniping(interfaces::Chain& chain, int block_height)
 {
     if (chain.isInitialBlockDownload()) {
         return false;
     }
     constexpr int64_t MAX_ANTI_FEE_SNIPING_TIP_AGE = 8 * 60 * 60; // in seconds
-    if (locked_chain.getBlockTime(*locked_chain.getHeight()) < (GetTime() - MAX_ANTI_FEE_SNIPING_TIP_AGE)) {
+    auto locked_chain = chain.lock();
+    if (locked_chain->getBlockTime(block_height) < (GetTime() - MAX_ANTI_FEE_SNIPING_TIP_AGE)) {
         return false;
     }
     return true;
@@ -2460,9 +2461,8 @@ static bool IsCurrentForAntiFeeSniping(interfaces::Chain& chain, interfaces::Cha
  * Return a height-based locktime for new transactions (uses the height of the
  * current chain tip unless we are not synced with the current chain
  */
-static uint32_t GetLocktimeForNewTransaction(interfaces::Chain& chain, interfaces::Chain::Lock& locked_chain)
+static uint32_t GetLocktimeForNewTransaction(interfaces::Chain& chain, int block_height)
 {
-    uint32_t const height = locked_chain.getHeight().get_value_or(-1);
     uint32_t locktime;
     // Discourage fee sniping.
     //
@@ -2484,8 +2484,8 @@ static uint32_t GetLocktimeForNewTransaction(interfaces::Chain& chain, interface
     // enough, that fee sniping isn't a problem yet, but by implementing a fix
     // now we ensure code won't be written that makes assumptions about
     // nLockTime that preclude a fix later.
-    if (IsCurrentForAntiFeeSniping(chain, locked_chain)) {
-        locktime = height;
+    if (IsCurrentForAntiFeeSniping(chain, block_height)) {
+        locktime = block_height;
 
         // Secondly occasionally randomly pick a nLockTime even further back, so
         // that transactions that are delayed after signing for whatever reason,
@@ -2499,7 +2499,7 @@ static uint32_t GetLocktimeForNewTransaction(interfaces::Chain& chain, interface
         // unique "nLockTime fingerprint", set nLockTime to a constant.
         locktime = 0;
     }
-    assert(locktime <= height);
+    assert(locktime <= (uint32_t)block_height);
     assert(locktime < LOCKTIME_THRESHOLD);
     return locktime;
 }
@@ -2532,8 +2532,7 @@ OutputType CWallet::TransactionChangeType(OutputType change_type, const std::vec
     return m_default_address_type;
 }
 
-bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CAmount& nFeeRet,
-                         int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign)
+bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CAmount& nFeeRet, int& nChangePosInOut, std::string& strFailReason, const CCoinControl& coin_control, bool sign)
 {
     CAmount nValue = 0;
     const OutputType change_type = TransactionChangeType(coin_control.m_change_type ? *coin_control.m_change_type : m_default_change_type, vecSend);
@@ -2560,8 +2559,6 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
 
     CMutableTransaction txNew;
 
-    txNew.nLockTime = GetLocktimeForNewTransaction(chain(), locked_chain);
-
     FeeCalculation feeCalc;
     CAmount nFeeNeeded;
     int nBytes;
@@ -2569,6 +2566,8 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
         std::set<CInputCoin> setCoins;
         auto locked_chain = chain().lock();
         LOCK(cs_wallet);
+        AssertLockHeld(cs_wallet);
+        txNew.nLockTime = GetLocktimeForNewTransaction(chain(), m_last_block_processed_height);
         {
             std::vector<COutput> vAvailableCoins;
             AvailableCoins(*locked_chain, vAvailableCoins, true, &coin_control, 1, MAX_MONEY, MAX_MONEY, 0);
@@ -3380,8 +3379,7 @@ void CWallet::GetKeyBirthTimes(interfaces::Chain::Lock& locked_chain, std::map<C
     }
 
     // map in which we'll infer heights of other keys
-    const Optional<int> tip_height = locked_chain.getHeight();
-    const int max_height = tip_height && *tip_height > 144 ? *tip_height - 144 : 0; // the tip can be reorganized; use a 144-block safety margin
+    const int max_height = m_last_block_processed_height > 144 ? m_last_block_processed_height - 144 : 0; // the tip can be reorganized; use a 144-block safety margin
     std::map<CKeyID, int> mapKeyFirstBlock;
     for (const CKeyID &keyid : spk_man->GetKeys()) {
         if (mapKeyBirth.count(keyid) == 0)
@@ -3815,7 +3813,7 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(interfaces::Chain& chain,
         }
     }
 
-    const Optional<int> tip_height = locked_chain->getHeight();
+    const Optional<int> tip_height = chain.getHeight();
     if (tip_height) {
         walletInstance->m_last_block_processed = locked_chain->getBlockHash(*tip_height);
         walletInstance->m_last_block_processed_height = *tip_height;

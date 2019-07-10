@@ -152,6 +152,10 @@ BOOST_FIXTURE_TEST_CASE(importmulti_rescan, TestChain100Setup)
     // after.
     {
         std::shared_ptr<CWallet> wallet = std::make_shared<CWallet>(chain.get(), WalletLocation(), WalletDatabase::CreateDummy());
+        {
+            LOCK(wallet->cs_wallet);
+            wallet->SetLastBlockProcessed(::ChainActive().Height(), ::ChainActive().Tip()->GetBlockHash());
+        }
         AddWallet(wallet);
         UniValue keys;
         keys.setArray();
@@ -216,6 +220,10 @@ BOOST_FIXTURE_TEST_CASE(importwallet_rescan, TestChain100Setup)
     // Import key into wallet and call dumpwallet to create backup file.
     {
         std::shared_ptr<CWallet> wallet = std::make_shared<CWallet>(chain.get(), WalletLocation(), WalletDatabase::CreateDummy());
+        {
+            LOCK(wallet->cs_wallet);
+            wallet->SetLastBlockProcessed(::ChainActive().Height(), ::ChainActive().Tip()->GetBlockHash());
+        }
         auto spk_man = wallet->GetLegacyScriptPubKeyMan();
         LOCK(wallet->cs_wallet);
         AssertLockHeld(spk_man->cs_wallet);
@@ -234,6 +242,10 @@ BOOST_FIXTURE_TEST_CASE(importwallet_rescan, TestChain100Setup)
     // were scanned, and no prior blocks were scanned.
     {
         std::shared_ptr<CWallet> wallet = std::make_shared<CWallet>(chain.get(), WalletLocation(), WalletDatabase::CreateDummy());
+        {
+            LOCK(wallet->cs_wallet);
+            wallet->SetLastBlockProcessed(::ChainActive().Height(), ::ChainActive().Tip()->GetBlockHash());
+        }
 
         JSONRPCRequest request;
         request.params.setArray();
@@ -485,7 +497,7 @@ public:
         CCoinControl dummy;
         {
             auto locked_chain = m_chain->lock();
-            BOOST_CHECK(wallet->CreateTransaction(*locked_chain, {recipient}, tx, fee, changePos, error, dummy));
+            BOOST_CHECK(wallet->CreateTransaction({recipient}, tx, fee, changePos, error, dummy));
         }
         wallet->CommitTransaction(tx, {}, {});
         CMutableTransaction blocktx;
@@ -581,6 +593,11 @@ BOOST_FIXTURE_TEST_CASE(wallet_disableprivkeys, TestChain100Setup)
     NodeContext node;
     auto chain = interfaces::MakeChain(node);
     std::shared_ptr<CWallet> wallet = std::make_shared<CWallet>(chain.get(), WalletLocation(), WalletDatabase::CreateDummy());
+    {
+        auto locked_chain = chain->lock();
+        LOCK(wallet->cs_wallet);
+        wallet->SetLastBlockProcessed(::ChainActive().Height(), ::ChainActive().Tip()->GetBlockHash());
+    }
     wallet->SetMinVersion(FEATURE_LATEST);
     wallet->SetWalletFlag(WALLET_FLAG_DISABLE_PRIVATE_KEYS);
     BOOST_CHECK(!wallet->TopUpKeyPool(1000));

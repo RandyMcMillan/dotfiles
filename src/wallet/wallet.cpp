@@ -821,10 +821,9 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
 
 void CWallet::LoadToWallet(CWalletTx& wtxIn)
 {
-    // If wallet doesn't have a chain (e.g bitcoin-wallet), lock can't be taken.
-    auto locked_chain = LockChain();
-    if (locked_chain) {
-        Optional<int> block_height = locked_chain->getBlockHeight(wtxIn.m_confirm.hashBlock);
+    // If wallet doesn't have a chain (e.g wallet-tool), don't bother to update txn.
+    if (HaveChain()) {
+        Optional<int> block_height = chain().getBlockHeight(wtxIn.m_confirm.hashBlock);
         if (block_height) {
             // Update cached block height variable since it not stored in the
             // serialized transaction.
@@ -1614,7 +1613,7 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
         if (Optional<int> tip_height = chain().getHeight()) {
             tip_hash = locked_chain->getBlockHash(*tip_height);
         }
-        block_height = locked_chain->getBlockHeight(block_hash);
+        block_height = m_chain->getBlockHeight(block_hash);
         progress_begin = chain().guessVerificationProgress(block_hash);
         progress_end = chain().guessVerificationProgress(stop_block.IsNull() ? tip_hash : stop_block);
     }
@@ -1633,7 +1632,7 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
         if (chain().findBlock(block_hash, &block) && !block.IsNull()) {
             auto locked_chain = chain().lock();
             LOCK(cs_wallet);
-            if (!locked_chain->getBlockHeight(block_hash)) {
+            if (!chain().getBlockHeight(block_hash)) {
                 // Abort scan if current block is no longer active, to prevent
                 // marking transactions as coming from the wrong block.
                 // TODO: This should return success instead of failure, see
@@ -1660,7 +1659,7 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
         {
             auto locked_chain = chain().lock();
             Optional<int> tip_height = chain().getHeight();
-            if (!tip_height || *tip_height <= block_height || !locked_chain->getBlockHeight(block_hash)) {
+            if (!tip_height || *tip_height <= block_height || !chain().getBlockHeight(block_hash)) {
                 // break successfully when rescan has reached the tip, or
                 // previous block is no longer on the chain due to a reorg
                 break;
@@ -3363,7 +3362,8 @@ void CWallet::ListLockedCoins(std::vector<COutPoint>& vOutpts) const
 
 /** @} */ // end of Actions
 
-void CWallet::GetKeyBirthTimes(interfaces::Chain::Lock& locked_chain, std::map<CKeyID, int64_t>& mapKeyBirth) const {
+void CWallet::GetKeyBirthTimes(interfaces::Chain::Lock& locked_chain, std::map<CKeyID, int64_t>& mapKeyBirth) const
+{
     AssertLockHeld(cs_wallet);
     mapKeyBirth.clear();
 
@@ -3392,17 +3392,15 @@ void CWallet::GetKeyBirthTimes(interfaces::Chain::Lock& locked_chain, std::map<C
 
     // find first block that affects those keys, if there are any left
     for (const auto& entry : mapWallet) {
-        // iterate over all wallet transactions...
+        // iterate over all wallet transactions which are already in a block
         const CWalletTx &wtx = entry.second;
-        if (Optional<int> height = locked_chain.getBlockHeight(wtx.m_confirm.hashBlock)) {
-            // ... which are already in a block
-            for (const CTxOut &txout : wtx.tx->vout) {
-                // iterate over all their outputs
-                for (const auto &keyid : GetAffectedKeys(txout.scriptPubKey, *spk_man)) {
-                    // ... and all their affected keys
-                    std::map<CKeyID, int>::iterator rit = mapKeyFirstBlock.find(keyid);
-                    if (rit != mapKeyFirstBlock.end() && *height < rit->second)
-                        rit->second = *height;
+        for (const CTxOut& txout : wtx.tx->vout) {
+            // iterate over all their outputs
+            for (const auto& keyid : GetAffectedKeys(txout.scriptPubKey, *spk_man)) {
+                // ... and all their affected keys
+                std::map<CKeyID, int>::iterator rit = mapKeyFirstBlock.find(keyid);
+                if (rit != mapKeyFirstBlock.end() && wtx.m_confirm.block_height < rit->second) {
+                    rit->second = wtx.m_confirm.block_height;
                 }
             }
         }

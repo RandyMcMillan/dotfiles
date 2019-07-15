@@ -359,7 +359,8 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
     }
 
     auto locked_chain = pwallet->chain().lock();
-    Optional<int> height = locked_chain->getBlockHeight(merkleBlock.header.GetHash());
+    LOCK(pwallet->cs_wallet);
+    Optional<int> height = pwallet->chain().getBlockHeight(merkleBlock.header.GetHash());
     if (height == nullopt) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found in chain");
     }
@@ -373,8 +374,6 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
 
     CWalletTx::Confirmation confirm(CWalletTx::Status::CONFIRMED, *height, merkleBlock.header.GetHash(), txnIndex);
     wtx.m_confirm = confirm;
-
-    LOCK(pwallet->cs_wallet);
 
     if (pwallet->IsMine(*wtx.tx)) {
         pwallet->AddToWallet(wtx, false);

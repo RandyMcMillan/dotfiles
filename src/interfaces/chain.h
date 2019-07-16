@@ -66,8 +66,6 @@ public:
     public:
         virtual ~Lock() {}
 
-        //! Get block time. Height must be valid or this function will abort.
-        virtual int64_t getBlockTime(int height) = 0;
 
         //! Get block median time past. Height must be valid or this function
         //! will abort.
@@ -125,6 +123,10 @@ public:
     //! Get block hash. Returns nullopt for a block not included in the
     //! current chain.
     virtual Optional<uint256> getBlockHash(int height) = 0;
+
+    //! Get block time. Returns nullopt for a block not included in the
+    //! current chain.
+    virtual Optional<int64_t> getBlockTime(int height) = 0;
 
     //! Return whether node has the block and optionally return block metadata
     //! or contents.

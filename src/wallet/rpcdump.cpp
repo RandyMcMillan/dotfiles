@@ -565,7 +565,10 @@ UniValue importwallet(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot open wallet dump file");
         }
         Optional<int> tip_height = pwallet->chain().getHeight();
-        nTimeBegin = locked_chain->getBlockTime(*tip_height);
+        if (tip_height) {
+            Optional<int64_t> block_time = pwallet->chain().getBlockTime(*tip_height);
+            nTimeBegin = block_time ? *block_time : 0;
+        }
 
         int64_t nFilesize = std::max((int64_t)1, (int64_t)file.tellg());
         file.seekg(0, file.beg);
@@ -774,7 +777,7 @@ UniValue dumpwallet(const JSONRPCRequest& request)
 
     std::map<CKeyID, int64_t> mapKeyBirth;
     const std::map<CKeyID, int64_t>& mapKeyPool = spk_man.GetAllReserveKeys();
-    pwallet->GetKeyBirthTimes(*locked_chain, mapKeyBirth);
+    pwallet->GetKeyBirthTimes(mapKeyBirth);
 
     std::set<CScriptID> scripts = spk_man.GetCScripts();
 
@@ -792,7 +795,8 @@ UniValue dumpwallet(const JSONRPCRequest& request)
     int tip_height = pwallet->GetLastBlockHeight();
     Optional<uint256> block_hash = pwallet->chain().getBlockHash(tip_height);
     file << strprintf("# * Best block at time of backup was %i (%s),\n", tip_height, block_hash ? (*block_hash).ToString() : "(missing block hash)");
-    file << strprintf("#   mined on %s\n", FormatISO8601DateTime(locked_chain->getBlockTime(tip_height)));
+    Optional<int64_t> block_time = pwallet->chain().getBlockTime(tip_height);
+    file << strprintf("#   mined on %s\n", block_time ? FormatISO8601DateTime(*block_time) : "(missing block hash)");
     file << "\n";
 
     // add the base58check encoded extended master if the wallet uses HD
@@ -1374,7 +1378,8 @@ UniValue importmulti(const JSONRPCRequest& mainRequest)
         const int64_t minimumTimestamp = 1;
 
         if (fRescan && tip_height) {
-            nLowestTimestamp = locked_chain->getBlockTime(*tip_height);
+            Optional<int64_t> block_time = pwallet->chain().getBlockTime(*tip_height);
+            nLowestTimestamp = block_time ? *block_time : 0;
         } else {
             fRescan = false;
         }

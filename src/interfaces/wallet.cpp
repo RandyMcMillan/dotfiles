@@ -331,7 +331,11 @@ public:
             return false;
         }
         num_blocks = m_wallet->GetLastBlockHeight();
-        block_time = locked_chain->getBlockTime(num_blocks);
+        block_time = -1;
+        Optional<int64_t> time = m_wallet->chain().getBlockTime(num_blocks);
+        if (time) {
+            block_time = *time;
+        }
         tx_status = MakeWalletTxStatus(*locked_chain, mi->second);
         return true;
     }

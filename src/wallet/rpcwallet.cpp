@@ -149,7 +149,7 @@ static void WalletTxToJSON(interfaces::Chain& chain, interfaces::Chain::Lock& lo
         CHECK_NONFATAL(found_block);
         entry.pushKV("blocktime", block_time);
     } else {
-        entry.pushKV("trusted", wtx.IsTrusted(locked_chain));
+        entry.pushKV("trusted", wtx.IsTrusted());
     }
     uint256 hash = wtx.GetHash();
     entry.pushKV("txid", hash.GetHex());
@@ -639,7 +639,7 @@ static UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
-        if (wtx.IsCoinBase() || !locked_chain->checkFinalTx(*wtx.tx)) {
+        if (wtx.IsCoinBase() || !pwallet->chain().checkFinalTx(*wtx.tx)) {
             continue;
         }
 
@@ -703,7 +703,7 @@ static UniValue getreceivedbylabel(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
-        if (wtx.IsCoinBase() || !locked_chain->checkFinalTx(*wtx.tx)) {
+        if (wtx.IsCoinBase() || !pwallet->chain().checkFinalTx(*wtx.tx)) {
             continue;
         }
 
@@ -1064,7 +1064,7 @@ static UniValue ListReceived(interfaces::Chain::Lock& locked_chain, CWallet * co
     for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
 
-        if (wtx.IsCoinBase() || !locked_chain.checkFinalTx(*wtx.tx)) {
+        if (wtx.IsCoinBase() || !pwallet->chain().checkFinalTx(*wtx.tx)) {
             continue;
         }
 
@@ -1581,7 +1581,7 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
     uint256 blockId;
     if (!request.params[0].isNull() && !request.params[0].get_str().empty()) {
         blockId = ParseHashV(request.params[0], "blockhash");
-        height = locked_chain->findFork(blockId, &altheight);
+        height = pwallet->chain().findFork(blockId, &altheight);
         if (!height) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
         }
@@ -2916,7 +2916,7 @@ static UniValue listunspent(const JSONRPCRequest& request)
         cctl.m_max_depth = nMaxDepth;
         auto locked_chain = pwallet->chain().lock();
         LOCK(pwallet->cs_wallet);
-        pwallet->AvailableCoins(*locked_chain, vecOutputs, !include_unsafe, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
+        pwallet->AvailableCoins(vecOutputs, !include_unsafe, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
     }
 
     LOCK(pwallet->cs_wallet);
@@ -3547,7 +3547,7 @@ UniValue rescanblockchain(const JSONRPCRequest& request)
         }
 
         // We can't rescan beyond non-pruned blocks, stop and throw an error
-        if (locked_chain->findPruned(start_height, stop_height)) {
+        if (pwallet->chain().findPruned(start_height, stop_height)) {
             throw JSONRPCError(RPC_MISC_ERROR, "Can't rescan beyond pruned data. Use RPC call getblockchaininfo to determine your pruned height.");
         }
 

@@ -66,11 +66,6 @@ public:
     public:
         virtual ~Lock() {}
 
-
-        //! Get block median time past. Height must be valid or this function
-        //! will abort.
-        virtual int64_t getBlockMedianTimePast(int height) = 0;
-
         //! Check that the block is available on disk (i.e. has not been
         //! pruned), and contains transactions.
         virtual bool haveBlockOnDisk(int height) = 0;
@@ -127,6 +122,10 @@ public:
     //! Get block time. Returns nullopt for a block not included in the
     //! current chain.
     virtual Optional<int64_t> getBlockTime(int height) = 0;
+
+    //! Get block median time past. Returns nullopt for a block not included
+    //! in the current chain.
+    virtual Optional<int64_t> getBlockMedianTimePast(int height) = 0;
 
     //! Return whether node has the block and optionally return block metadata
     //! or contents.

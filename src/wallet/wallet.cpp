@@ -1610,12 +1610,9 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
     double progress_end;
     {
         auto locked_chain = chain().lock();
-        if (Optional<int> tip_height = chain().getHeight()) {
-            tip_hash = locked_chain->getBlockHash(*tip_height);
-        }
         block_height = m_chain->getBlockHeight(block_hash);
         progress_begin = chain().guessVerificationProgress(block_hash);
-        progress_end = chain().guessVerificationProgress(stop_block.IsNull() ? tip_hash : stop_block);
+        progress_end = chain().guessVerificationProgress(stop_block.IsNull() ? m_last_block_processed : stop_block);
     }
     double progress_current = progress_begin;
     while (block_height && !fAbortRescan && !chain().shutdownRequested()) {
@@ -1657,7 +1654,6 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
             break;
         }
         {
-            auto locked_chain = chain().lock();
             Optional<int> tip_height = chain().getHeight();
             if (!tip_height || *tip_height <= block_height || !chain().getBlockHeight(block_hash)) {
                 // break successfully when rescan has reached the tip, or
@@ -1666,12 +1662,21 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
             }
 
             // increment block and verification progress
-            block_hash = locked_chain->getBlockHash(++*block_height);
+            Optional<uint256> optional_block_hash = chain().getBlockHash(++*block_height);
+            if (!optional_block_hash) {
+                break;
+            }
+            block_hash = *optional_block_hash;
+            auto locked_chain = chain().lock();
             progress_current = chain().guessVerificationProgress(block_hash);
 
             // handle updated tip hash
             const uint256 prev_tip_hash = tip_hash;
-            tip_hash = locked_chain->getBlockHash(*tip_height);
+            Optional<uint256> optional_tip_hash = chain().getBlockHash(*tip_height);
+            if (!optional_tip_hash) {
+                break;
+            }
+            tip_hash = *optional_tip_hash;
             if (stop_block.IsNull() && prev_tip_hash != tip_hash) {
                 // in case the tip has changed, update progress max
                 progress_end = chain().guessVerificationProgress(tip_hash);
@@ -3812,8 +3817,9 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(interfaces::Chain& chain,
     }
 
     const Optional<int> tip_height = chain.getHeight();
-    if (tip_height) {
-        walletInstance->m_last_block_processed = locked_chain->getBlockHash(*tip_height);
+    const Optional<uint256> tip_hash = tip_height ? chain.getBlockHash(*tip_height) : nullopt;
+    if (tip_hash) {
+        walletInstance->m_last_block_processed = *tip_hash;
         walletInstance->m_last_block_processed_height = *tip_height;
     } else {
         walletInstance->m_last_block_processed.SetNull();
@@ -3858,7 +3864,8 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(interfaces::Chain& chain,
 
         {
             WalletRescanReserver reserver(walletInstance.get());
-            if (!reserver.reserve() || (ScanResult::SUCCESS != walletInstance->ScanForWalletTransactions(locked_chain->getBlockHash(rescan_height), {} /* stop block */, reserver, true /* update */).status)) {
+            Optional<uint256> rescan_hash = chain.getBlockHash(rescan_height);
+            if (!reserver.reserve() || (!rescan_hash) || (ScanResult::SUCCESS != walletInstance->ScanForWalletTransactions(*rescan_hash, {} /* stop block */, reserver, true /* update */).status)) {
                 error = _("Failed to rescan the wallet during initialization").translated;
                 return nullptr;
             }

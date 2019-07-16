@@ -790,7 +790,8 @@ UniValue dumpwallet(const JSONRPCRequest& request)
     file << strprintf("# Wallet dump created by Bitcoin %s\n", CLIENT_BUILD);
     file << strprintf("# * Created on %s\n", FormatISO8601DateTime(GetTime()));
     int tip_height = pwallet->GetLastBlockHeight();
-    file << strprintf("# * Best block at time of backup was %i (%s),\n", tip_height, locked_chain->getBlockHash(tip_height).ToString());
+    Optional<uint256> block_hash = pwallet->chain().getBlockHash(tip_height);
+    file << strprintf("# * Best block at time of backup was %i (%s),\n", tip_height, block_hash ? (*block_hash).ToString() : "(missing block hash)");
     file << strprintf("#   mined on %s\n", FormatISO8601DateTime(locked_chain->getBlockTime(tip_height)));
     file << "\n";
 

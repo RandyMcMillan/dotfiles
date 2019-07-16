@@ -1634,8 +1634,8 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
         --*altheight;
     }
 
-    int lastheight = tip_height + 1 - target_confirms;
-    uint256 lastblock = lastheight >= 0 ? locked_chain->getBlockHash(lastheight) : uint256();
+    Optional<uint256> lastblock_hash = pwallet->chain().getBlockHash(tip_height + 1 - target_confirms);
+    uint256 lastblock = lastblock_hash ? *lastblock_hash : uint256();
 
     UniValue ret(UniValue::VOBJ);
     ret.pushKV("transactions", transactions);
@@ -3536,13 +3536,12 @@ UniValue rescanblockchain(const JSONRPCRequest& request)
             }
         }
 
-        Optional<int> stop_height;
+        int stop_height = -1;
         if (!request.params[1].isNull()) {
             stop_height = request.params[1].get_int();
-            if (*stop_height < 0 || !tip_height || *stop_height > *tip_height) {
+            if (stop_height < 0 || !tip_height || stop_height > tip_height) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid stop_height");
-            }
-            else if (*stop_height < start_height) {
+            } else if (stop_height < start_height) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "stop_height must be greater than start_height");
             }
         }
@@ -3553,14 +3552,24 @@ UniValue rescanblockchain(const JSONRPCRequest& request)
         }
 
         if (tip_height) {
-            start_block = locked_chain->getBlockHash(start_height);
+            Optional<uint256> block_hash = pwallet->chain().getBlockHash(start_height);
+            if (block_hash) {
+                start_block = *block_hash;
+            } else {
+                throw JSONRPCError(RPC_MISC_ERROR, "start_block has been reorged out of main chain");
+            }
             // If called with a stop_height, set the stop_height here to
             // trigger a rescan to that height.
             // If called without a stop height, leave stop_height as null here
             // so rescan continues to the tip (even if the tip advances during
             // rescan).
-            if (stop_height) {
-                stop_block = locked_chain->getBlockHash(*stop_height);
+            if (stop_height >= 0) {
+                Optional<uint256> block_hash = pwallet->chain().getBlockHash(stop_height);
+                if (block_hash) {
+                    stop_block = *block_hash;
+                } else {
+                    throw JSONRPCError(RPC_MISC_ERROR, "stop_block has been reorged out of main chain");
+                }
             }
         }
     }

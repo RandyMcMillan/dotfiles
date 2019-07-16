@@ -148,7 +148,7 @@ static void WalletTxToJSON(interfaces::Chain& chain, interfaces::Chain::Lock& lo
         CHECK_NONFATAL(chain.findBlock(wtx.m_confirm.hashBlock, FoundBlock().time(block_time)));
         entry.pushKV("blocktime", block_time);
     } else {
-        entry.pushKV("trusted", wtx.IsTrusted(locked_chain));
+        entry.pushKV("trusted", wtx.IsTrusted());
     }
     uint256 hash = wtx.GetHash();
     entry.pushKV("txid", hash.GetHex());
@@ -628,7 +628,7 @@ static UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
-        if (wtx.IsCoinBase() || !locked_chain->checkFinalTx(*wtx.tx)) {
+        if (wtx.IsCoinBase() || !pwallet->chain().checkFinalTx(*wtx.tx)) {
             continue;
         }
 
@@ -692,7 +692,7 @@ static UniValue getreceivedbylabel(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
-        if (wtx.IsCoinBase() || !locked_chain->checkFinalTx(*wtx.tx)) {
+        if (wtx.IsCoinBase() || !pwallet->chain().checkFinalTx(*wtx.tx)) {
             continue;
         }
 
@@ -1059,7 +1059,7 @@ static UniValue ListReceived(interfaces::Chain::Lock& locked_chain, const CWalle
     for (const std::pair<const uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
 
-        if (wtx.IsCoinBase() || !locked_chain.checkFinalTx(*wtx.tx)) {
+        if (wtx.IsCoinBase() || !pwallet->chain().checkFinalTx(*wtx.tx)) {
             continue;
         }
 
@@ -2939,7 +2939,7 @@ static UniValue listunspent(const JSONRPCRequest& request)
         cctl.m_max_depth = nMaxDepth;
         auto locked_chain = pwallet->chain().lock();
         LOCK(pwallet->cs_wallet);
-        pwallet->AvailableCoins(*locked_chain, vecOutputs, !include_unsafe, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
+        pwallet->AvailableCoins(vecOutputs, !include_unsafe, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
     }
 
     LOCK(pwallet->cs_wallet);

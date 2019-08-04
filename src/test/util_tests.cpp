@@ -5,6 +5,7 @@
 #include <util/system.h>
 
 #include <clientversion.h>
+#include <optional.h>
 #include <sync.h>
 #include <test/util.h>
 #include <util/strencodings.h>
@@ -165,6 +166,174 @@ struct TestArgsManager : public ArgsManager
     using ArgsManager::cs_args;
     using ArgsManager::m_network;
 };
+
+class CheckValueTest : public TestChain100Setup
+{
+public:
+    struct Expect {
+        const char* error = nullptr;
+        bool default_string = false;
+        bool default_int = false;
+        bool default_bool = false;
+        const char* string_value = nullptr;
+        Optional<int64_t> int_value;
+        Optional<bool> bool_value;
+        Optional<std::vector<std::string>> many_value;
+
+        Expect& Error(const char* e) { error = e; return *this; }
+        Expect& DefaultString() { default_string = true; return *this; }
+        Expect& DefaultInt() { default_int = true; return *this; }
+        Expect& DefaultBool() { default_bool = true; return *this; }
+        Expect& String(const char* s) { string_value = s; return *this; }
+        Expect& Int(int64_t i) { int_value = i; return *this; }
+        Expect& Bool(bool b) { bool_value = b; return *this; }
+        Expect& Many(std::vector<std::string> m) { many_value = std::move(m); return *this; }
+    };
+
+    void CheckValue(unsigned int flags, const char* arg, const Expect& expect)
+    {
+        TestArgsManager test;
+        test.SetupArgs({{"-value", flags}});
+        const char* argv[] = {"ignored", arg};
+        std::string error;
+        bool success = test.ParseParameters(2, (char**)argv, error);
+
+        if (expect.error) {
+            BOOST_CHECK(!success);
+            BOOST_CHECK_NE(error.find(expect.error), std::string::npos);
+        } else {
+            BOOST_CHECK(success);
+            BOOST_CHECK_EQUAL(error, "");
+        }
+
+        if (expect.default_string) {
+            BOOST_CHECK_EQUAL(test.GetArg("-value", "zzzzz"), "zzzzz");
+        } else if (expect.string_value) {
+            BOOST_CHECK_EQUAL(test.GetArg("-value", "zzzzz"), expect.string_value);
+        } else if (success) {
+            BOOST_CHECK_THROW(test.GetArg("-value", "zzzzz"), std::logic_error);
+        }
+
+        if (expect.default_int) {
+            BOOST_CHECK_EQUAL(test.GetArg("-value", 99999), 99999);
+        } else if (expect.int_value) {
+            BOOST_CHECK_EQUAL(test.GetArg("-value", 99999), *expect.int_value);
+        } else if (success) {
+            BOOST_CHECK_THROW(test.GetArg("-value", 99999), std::logic_error);
+        }
+
+        if (expect.default_bool) {
+            BOOST_CHECK_EQUAL(test.GetBoolArg("-value", false), false);
+            BOOST_CHECK_EQUAL(test.GetBoolArg("-value", true), true);
+        } else if (expect.bool_value) {
+            BOOST_CHECK_EQUAL(test.GetBoolArg("-value", false), *expect.bool_value);
+            BOOST_CHECK_EQUAL(test.GetBoolArg("-value", true), *expect.bool_value);
+        } else if (success) {
+            BOOST_CHECK_THROW(test.GetBoolArg("-value", false), std::logic_error);
+            BOOST_CHECK_THROW(test.GetBoolArg("-value", true), std::logic_error);
+        }
+
+        if (expect.many_value) {
+            auto m = test.GetArgs("-value");
+            BOOST_CHECK_EQUAL_COLLECTIONS(m.begin(), m.end(), expect.many_value->begin(), expect.many_value->end());
+        } else if (success) {
+            BOOST_CHECK_THROW(test.GetArgs("-value"), std::logic_error);
+        }
+    }
+};
+
+BOOST_FIXTURE_TEST_CASE(util_CheckValue, CheckValueTest)
+{
+    CheckValue(ArgsManager::ALLOW_ANY, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
+    CheckValue(ArgsManager::ALLOW_ANY, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+
+    /* Type checks are mostly not implemented yet, so the tests below for different flags below expect mostly same behavior as ALLOW_ANY */
+
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+
+    CheckValue(ArgsManager::TYPE_INT, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_INT, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_INT, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_INT, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
+    CheckValue(ArgsManager::TYPE_INT, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_INT, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
+    CheckValue(ArgsManager::TYPE_INT, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=0", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=1", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=2", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=abc", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
+    CheckValue(ArgsManager::TYPE_STRING, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+}
+
+BOOST_AUTO_TEST_CASE(CheckSingleValue)
+{
+    TestArgsManager test;
+    test.SetupArgs({{"-single", ArgsManager::TYPE_INT}});
+    std::istringstream stream("single=1\nsingle=2\n");
+    std::string error;
+    BOOST_CHECK(test.ReadConfigStream(stream, "file.conf", error));
+    BOOST_CHECK_EQUAL(error, "");
+}
 
 BOOST_AUTO_TEST_CASE(util_ParseParameters)
 {

@@ -60,7 +60,16 @@ FUZZ_TARGET_INIT(system, initialize_system)
                 if (args_manager.GetArgFlags(argument_name) != std::nullopt) {
                     return;
                 }
-                args_manager.AddArg(argument_name, fuzzed_data_provider.ConsumeRandomLengthString(16), fuzzed_data_provider.ConsumeIntegral<unsigned int>() & ~ArgsManager::COMMAND, options_category);
+                unsigned int flags = fuzzed_data_provider.ConsumeIntegral<unsigned int>();
+                // Avoid hitting "ALLOW_{BOOL|INT|STRING} flags would have no effect with ALLOW_ANY present (ALLOW_ANY disables validation)"
+                if (flags & ArgsManager::ALLOW_ANY) {
+                    flags &= ~(ArgsManager::ALLOW_BOOL | ArgsManager::ALLOW_INT | ArgsManager::ALLOW_STRING);
+                }
+                // Avoid hitting "ALLOW_INT would have no effect with ALLOW_STRING present (any valid integer is also a valid string)"
+                if (flags & ArgsManager::ALLOW_STRING) {
+                    flags &= ~ArgsManager::ALLOW_INT;
+                }
+                args_manager.AddArg(argument_name, fuzzed_data_provider.ConsumeRandomLengthString(16), flags & ~ArgsManager::COMMAND, options_category);
             },
             [&] {
                 // Avoid hitting:

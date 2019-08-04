@@ -263,6 +263,72 @@ public:
 };
 
 /**
+ * Return whether key is negated, and remove "no" prefix. Also return key name without section prefix.
+ */
+static bool InterpretNegated(std::string& key, std::string& key_name)
+{
+    assert(key[0] == '-');
+    size_t section_pos = key.find('.', 1);
+    size_t start = section_pos == std::string::npos ? 1 : section_pos + 1;
+    bool negated = key.compare(start, 2, "no") == 0;
+    if (negated) key.erase(start, 2);
+    key_name = key;
+    if (section_pos != std::string::npos) key_name.erase(1, section_pos);
+    return negated;
+}
+
+/**
+ * Return an error string and false if an invalid value was provided that isn't allowed by the flags.
+ */
+static bool CheckValue(bool negated, const std::string& key, bool has_value, const std::string& value, unsigned int flags, std::string& error)
+{
+    if (flags & ArgsManager::ALLOW_ANY) return true;
+
+    if (negated) {
+        if (!(flags & ArgsManager::ALLOW_NEGATED)) {
+            error = strprintf("Can not negate %s, it is required to have a value.", key);
+            return false;
+        } else if (has_value && value != "1") {
+            error = strprintf("Can not negate %s at the same time as setting value '%s'.", key, value);
+            return false;
+        }
+        return true;
+    }
+
+    if ((flags & ArgsManager::ALLOW_STRING) && has_value) return true;
+    if ((flags & ArgsManager::ALLOW_BOOL) && (!has_value || value == "0" || value == "1")) return true;
+    if ((flags & ArgsManager::ALLOW_INT) && has_value && ParseInt64(value, nullptr)) return true;
+
+    if (has_value) {
+        error = strprintf("Can not set %s value to '%s'", key, value);
+    } else {
+        error = strprintf("Can not set %s with no value", key);
+    }
+    error = strprintf("%s. %s", error,
+                      (flags & ArgsManager::ALLOW_STRING) ? "It must be set to a string." :
+                      (flags & ArgsManager::ALLOW_INT) ? "It must be set to an integer." :
+                      (flags & ArgsManager::ALLOW_BOOL) ? "It must be set to 0 or 1." :
+                      "It must be left unset.");
+    return false;
+}
+
+/**
+ * Raise an exception if a option is being retrieved as an bool/string/int, but
+ * was registered with an incompatible set of flags. This indicates an internal
+ * bug where either the wrong GetArg overload has been called for an option, or
+ * the option was registered incorrectly, with flags that don't actually match
+ * how the option is used.
+ */
+static inline void CheckFlags(const std::string& key, unsigned int flags, unsigned int required, unsigned int disallowed)
+{
+    if (flags & ArgsManager::ALLOW_ANY) return; // Disable all checking for backwards compatibility when ALLOW_ANY is specified.
+    if (flags == ArgsManager::NONE) return;     // Disable all checking for unregistered flags. This simplifies unit test setup.
+    if ((flags & required) != required || (flags & disallowed) != 0) {
+        throw std::logic_error(strprintf("Bug: Option %s registered with flags 0x%08x is calling API that requires 0x%x and doesn't support 0x%x", key, flags, required, disallowed));
+    }
+}
+
+/**
  * Interpret -nofoo as if the user supplied -foo=0.
  *
  * This method also tracks when the -no form was supplied, and if so,
@@ -283,21 +349,15 @@ public:
  * that debug log output is not sent to any file at all).
  */
 
-NODISCARD static bool InterpretOption(std::string key, std::string val, unsigned int flags,
+NODISCARD static bool InterpretOption(bool negated, const std::string& key,
+                                      bool has_value, std::string val, unsigned int flags,
                                       std::map<std::string, std::vector<std::string>>& args,
                                       std::string& error)
 {
     assert(key[0] == '-');
 
-    size_t option_index = key.find('.');
-    if (option_index == std::string::npos) {
-        option_index = 1;
-    } else {
-        ++option_index;
-    }
-    if (key.substr(option_index, 2) == "no") {
-        key.erase(option_index, 2);
-        if (flags & (ArgsManager::ALLOW_NEGATED | ArgsManager::ALLOW_ANY)) {
+    if (CheckValue(negated, key, has_value, val, flags, error)) {
+        if (negated) {
             if (InterpretBool(val)) {
                 args[key].clear();
                 return true;
@@ -305,13 +365,15 @@ NODISCARD static bool InterpretOption(std::string key, std::string val, unsigned
             // Double negatives like -nofoo=0 are supported (but discouraged)
             LogPrintf("Warning: parsed potentially confusing double-negative %s=%s\n", key, val);
             val = "1";
-        } else {
-            error = strprintf("Negating of %s is meaningless and therefore forbidden", key.c_str());
-            return false;
         }
+        if (flags & (ArgsManager::KEEP_MANY | ArgsManager::ALLOW_ANY)) {
+            args[key].push_back(val); // list and legacy settings always accumulate
+        } else {
+            args[key] = {val}; // otherwise new values override previous values
+        }
+        return true;
     }
-    args[key].push_back(val);
-    return true;
+    return false;
 }
 
 ArgsManager::ArgsManager()
@@ -383,7 +445,9 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
         if (key == "-") break; //bitcoin-tx using stdin
         std::string val;
         size_t is_index = key.find('=');
+        bool has_value = false;
         if (is_index != std::string::npos) {
+            has_value = true;
             val = key.substr(is_index + 1);
             key.erase(is_index);
         }
@@ -400,9 +464,11 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
         if (key.length() > 1 && key[1] == '-')
             key.erase(0, 1);
 
-        const unsigned int flags = GetArgFlags(key);
+        std::string key_name;
+        const bool negated = InterpretNegated(key, key_name);
+        const unsigned int flags = GetArgFlags(key_name);
         if (flags) {
-            if (!InterpretOption(key, val, flags, m_override_args, error)) {
+            if (!InterpretOption(negated, key, has_value, val, flags, m_override_args, error)) {
                 return false;
             }
         } else {
@@ -426,23 +492,9 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
 
 unsigned int ArgsManager::GetArgFlags(const std::string& key) const
 {
-    assert(key[0] == '-');
-
-    size_t option_index = key.find('.');
-    if (option_index == std::string::npos) {
-        option_index = 1;
-    } else {
-        ++option_index;
-    }
-    if (key.substr(option_index, 2) == "no") {
-        option_index += 2;
-    }
-
-    const std::string base_arg_name = '-' + key.substr(option_index);
-
     LOCK(cs_args);
     for (const auto& arg_map : m_available_args) {
-        const auto search = arg_map.second.find(base_arg_name);
+        const auto search = arg_map.second.find(key);
         if (search != arg_map.second.end()) {
             return search->second.m_flags;
         }
@@ -452,6 +504,8 @@ unsigned int ArgsManager::GetArgFlags(const std::string& key) const
 
 std::vector<std::string> ArgsManager::GetArgs(const std::string& strArg) const
 {
+    const unsigned int flags = GetArgFlags(strArg);
+    CheckFlags(strArg, flags, /* required= */ ALLOW_STRING | KEEP_MANY, /* disallowed= */ 0);
     std::vector<std::string> result = {};
     if (IsArgNegated(strArg)) return result; // special case
 
@@ -495,7 +549,9 @@ bool ArgsManager::IsArgNegated(const std::string& strArg) const
 
 std::string ArgsManager::GetArg(const std::string& strArg, const std::string& strDefault) const
 {
-    if (IsArgNegated(strArg)) return "0";
+    const unsigned int flags = GetArgFlags(strArg);
+    CheckFlags(strArg, flags, /* required= */ ALLOW_STRING, /* disallowed= */ KEEP_MANY);
+    if (IsArgNegated(strArg)) return flags & ALLOW_STRING ? "" : "0";
     std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
     if (found_res.first) return found_res.second;
     return strDefault;
@@ -503,6 +559,8 @@ std::string ArgsManager::GetArg(const std::string& strArg, const std::string& st
 
 int64_t ArgsManager::GetArg(const std::string& strArg, int64_t nDefault) const
 {
+    const unsigned int flags = GetArgFlags(strArg);
+    CheckFlags(strArg, flags, /* required= */ ALLOW_INT, /* disallowed= */ KEEP_MANY);
     if (IsArgNegated(strArg)) return 0;
     std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
     if (found_res.first) return atoi64(found_res.second);
@@ -511,9 +569,11 @@ int64_t ArgsManager::GetArg(const std::string& strArg, int64_t nDefault) const
 
 bool ArgsManager::GetBoolArg(const std::string& strArg, bool fDefault) const
 {
+    const unsigned int flags = GetArgFlags(strArg);
+    CheckFlags(strArg, flags, /* required= */ ALLOW_NEGATED, /* disallowed= */ KEEP_MANY);
     if (IsArgNegated(strArg)) return false;
     std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
-    if (found_res.first) return InterpretBool(found_res.second);
+    if (found_res.first) return (flags & ALLOW_STRING) ? true : InterpretBool(found_res.second);
     return fDefault;
 }
 
@@ -845,10 +905,15 @@ bool ArgsManager::ReadConfigStream(std::istream& stream, const std::string& file
         return false;
     }
     for (const std::pair<std::string, std::string>& option : options) {
-        const std::string strKey = std::string("-") + option.first;
-        const unsigned int flags = GetArgFlags(strKey);
+        std::string key{"-" + option.first}, key_name;
+        const bool negated = InterpretNegated(key, key_name);
+        const unsigned int flags = GetArgFlags(key_name);
         if (flags) {
-            if (!InterpretOption(strKey, option.second, flags, m_config_args, error)) {
+            if (!(flags & (ALLOW_ANY | KEEP_MANY)) && m_config_args.count(key)) {
+                error = strprintf("Multiple values specified for %s in same section of config file.", key);
+                return false;
+            }
+            if (!InterpretOption(negated, key, /* has_value= */ true, option.second, flags, m_config_args, error)) {
                 return false;
             }
         } else {

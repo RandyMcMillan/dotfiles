@@ -257,72 +257,70 @@ BOOST_FIXTURE_TEST_CASE(util_CheckValue, CheckValueTest)
     CheckValue(ArgsManager::ALLOW_ANY, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
     CheckValue(ArgsManager::ALLOW_ANY, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
 
-    /* Type checks are mostly not implemented yet, so the tests below for different flags below expect mostly same behavior as ALLOW_ANY */
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue", Expect{}.Bool(false));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=", Expect{}.Error("Can not negate -value at the same time as setting value ''"));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=0", Expect{}.Error("Can not negate -value at the same time as setting value '0'"));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=1", Expect{}.Bool(false));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=2", Expect{}.Error("Can not negate -value at the same time as setting value '2'"));
+    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=abc", Expect{}.Error("Can not negate -value at the same time as setting value 'abc'"));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value", Expect{}.Bool(true));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=", Expect{}.Error("It must be set to 0 or 1"));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=0", Expect{}.Bool(false));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=1", Expect{}.Bool(true));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=2", Expect{}.Error("It must be set to 0 or 1"));
+    CheckValue(ArgsManager::TYPE_BOOL, "-value=abc", Expect{}.Error("It must be set to 0 or 1"));
 
-    CheckValue(ArgsManager::TYPE_BOOL, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
-    CheckValue(ArgsManager::TYPE_BOOL, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue", Expect{}.Int(0).Bool(false));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=", Expect{}.Error("Can not negate -value at the same time as setting value ''"));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=0", Expect{}.Error("Can not negate -value at the same time as setting value '0'"));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=1", Expect{}.Int(0).Bool(false));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=2", Expect{}.Error("Can not negate -value at the same time as setting value '2'"));
+    CheckValue(ArgsManager::TYPE_INT, "-novalue=abc", Expect{}.Error("Can not negate -value at the same time as setting value 'abc'"));
+    CheckValue(ArgsManager::TYPE_INT, "-value", Expect{}.Error("It must be set to an integer"));
+    CheckValue(ArgsManager::TYPE_INT, "-value=", Expect{}.Error("It must be set to an integer"));
+    CheckValue(ArgsManager::TYPE_INT, "-value=0", Expect{}.Int(0).Bool(false));
+    CheckValue(ArgsManager::TYPE_INT, "-value=1", Expect{}.Int(1).Bool(true));
+    CheckValue(ArgsManager::TYPE_INT, "-value=2", Expect{}.Int(2).Bool(true));
+    CheckValue(ArgsManager::TYPE_INT, "-value=abc", Expect{}.Error("It must be set to an integer"));
 
-    CheckValue(ArgsManager::TYPE_INT, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_INT, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_INT, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_INT, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_INT, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_INT, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_INT, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_INT, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_INT, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
-    CheckValue(ArgsManager::TYPE_INT, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_INT, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
-    CheckValue(ArgsManager::TYPE_INT, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue", Expect{}.Error("Can not negate -value, it is required to have a value"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=", Expect{}.Error("Can not negate -value, it is required to have a value"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=0", Expect{}.Error("Can not negate -value, it is required to have a value"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=1", Expect{}.Error("Can not negate -value, it is required to have a value"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=2", Expect{}.Error("Can not negate -value, it is required to have a value"));
+    CheckValue(ArgsManager::TYPE_STRING, "-novalue=abc", Expect{}.Error("Can not negate -value, it is required to have a value"));
+    CheckValue(ArgsManager::TYPE_STRING, "-value", Expect{}.Error("It must be set to a string"));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=", Expect{}.String(""));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=0", Expect{}.String("0"));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=1", Expect{}.String("1"));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=2", Expect{}.String("2"));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=abc", Expect{}.String("abc"));
 
-    CheckValue(ArgsManager::TYPE_STRING, "-novalue", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
-    CheckValue(ArgsManager::TYPE_STRING, "-novalue=", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
-    CheckValue(ArgsManager::TYPE_STRING, "-novalue=0", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
-    CheckValue(ArgsManager::TYPE_STRING, "-novalue=1", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
-    CheckValue(ArgsManager::TYPE_STRING, "-novalue=2", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
-    CheckValue(ArgsManager::TYPE_STRING, "-novalue=abc", Expect{}.Error("Negating of -value is meaningless and therefore forbidden"));
-    CheckValue(ArgsManager::TYPE_STRING, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_STRING, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_STRING, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
-    CheckValue(ArgsManager::TYPE_STRING, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_STRING, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
-    CheckValue(ArgsManager::TYPE_STRING, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue", Expect{}.String("").Bool(false));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=", Expect{}.Error("Can not negate -value at the same time as setting value ''"));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=0", Expect{}.Error("Can not negate -value at the same time as setting value '0'"));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=1", Expect{}.String("").Bool(false));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=2", Expect{}.Error("Can not negate -value at the same time as setting value '2'"));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=abc", Expect{}.Error("Can not negate -value at the same time as setting value 'abc'"));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value", Expect{}.Error("It must be set to a string"));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=", Expect{}.String("").Bool(true));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=0", Expect{}.String("0").Bool(true));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=1", Expect{}.String("1").Bool(true));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=2", Expect{}.String("2").Bool(true));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=abc", Expect{}.String("abc").Bool(true));
 
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
-
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=0", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=1", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=2", Expect{}.String("0").Int(0).Bool(false).Many({}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=abc", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=", Expect{}.String("").Int(0).Bool(true).Many({""}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=0", Expect{}.String("0").Int(0).Bool(false).Many({"0"}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=1", Expect{}.String("1").Int(1).Bool(true).Many({"1"}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=2", Expect{}.String("2").Int(2).Bool(true).Many({"2"}));
-    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=abc", Expect{}.String("abc").Int(0).Bool(false).Many({"abc"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue", Expect{}.Many({}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=", Expect{}.Error("Can not negate -value at the same time as setting value ''"));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=0", Expect{}.Error("Can not negate -value at the same time as setting value '0'"));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=1", Expect{}.Many({}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=2", Expect{}.Error("Can not negate -value at the same time as setting value '2'"));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-novalue=abc", Expect{}.Error("Can not negate -value at the same time as setting value 'abc'"));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value", Expect{}.Error("It must be set to a string"));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=", Expect{}.Many({""}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=0", Expect{}.Many({"0"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=1", Expect{}.Many({"1"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=2", Expect{}.Many({"2"}));
+    CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=abc", Expect{}.Many({"abc"}));
 }
 
 BOOST_AUTO_TEST_CASE(CheckSingleValue)
@@ -331,8 +329,8 @@ BOOST_AUTO_TEST_CASE(CheckSingleValue)
     test.SetupArgs({{"-single", ArgsManager::TYPE_INT}});
     std::istringstream stream("single=1\nsingle=2\n");
     std::string error;
-    BOOST_CHECK(test.ReadConfigStream(stream, "file.conf", error));
-    BOOST_CHECK_EQUAL(error, "");
+    BOOST_CHECK(!test.ReadConfigStream(stream, "file.conf", error));
+    BOOST_CHECK_EQUAL(error, "Multiple values specified for -single in same section of config file.");
 }
 
 BOOST_AUTO_TEST_CASE(util_ParseParameters)

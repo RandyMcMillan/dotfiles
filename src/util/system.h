@@ -128,13 +128,27 @@ struct SectionInfo
 class ArgsManager
 {
 public:
-    enum Flags {
-        NONE = 0x00,
-        // Boolean options can accept negation syntax -noOPTION or -noOPTION=1
-        ALLOW_BOOL = 0x01,
-        ALLOW_INT = 0x02,
-        ALLOW_STRING = 0x04,
-        ALLOW_ANY = ALLOW_BOOL | ALLOW_INT | ALLOW_STRING,
+    enum Flags : unsigned int {
+        NONE = 0x0, //<! Indicates flag lookup failed.
+
+        /* Low level validation flags. In most cases these should be avoided,
+         * and standard TYPE_* flag combinations below should be preferred. */
+        ALLOW_ANY = 0x01,     //!< disable validation
+        ALLOW_NEGATED = 0x02, //!< allow -nofoo and -nofoo=1
+        ALLOW_STRING = 0x04,  //!< allow -foo=bar
+        ALLOW_INT = 0x08,     //!< allow -foo=123
+        ALLOW_BOOL = 0x10,    //!< allow -foo and -foo=0 and -foo=1
+        KEEP_MANY = 0x20,     //!< keep many -foo=bar -foo=baz values instead of overwriting
+
+        /* Standard AddArg types. New code should prefer using these types for
+         * consistent behavior, and try to avoid using less usual combinations
+         * of ALLOW_* flags above */
+        TYPE_STRING = ALLOW_STRING,
+        TYPE_OPTIONAL_STRING = ALLOW_STRING | ALLOW_NEGATED,
+        TYPE_STRING_LIST = ALLOW_STRING | ALLOW_NEGATED | KEEP_MANY,
+        TYPE_INT = ALLOW_INT | ALLOW_NEGATED,
+        TYPE_BOOL = ALLOW_BOOL | ALLOW_NEGATED,
+
         DEBUG_ONLY = 0x100,
         /* Some options would cause cross-contamination if values for
          * mainnet were used while running on regtest/testnet (or vice-versa).
@@ -197,7 +211,13 @@ public:
     std::vector<std::string> GetArgs(const std::string& strArg) const;
 
     /**
-     * Return true if the given argument has been manually set
+     * Return true if the given argument has been manually set.
+     *
+     * New code should avoid calling this function. It's been frequently misused
+     * in the past and led to buggy argument handling. There's never any reason
+     * to call this because you can call GetArg() and GetBoolArg() functions
+     * with default values instead, or for list settings, check
+     * GetArgs().empty() instead.
      *
      * @param strArg Argument to get (e.g. "-foo")
      * @return true if the argument has been set
@@ -207,6 +227,12 @@ public:
     /**
      * Return true if the argument was originally passed as a negated option,
      * i.e. -nofoo.
+     *
+     * New code should avoid calling this function. It's been frequently misused
+     * in the past and led to buggy argument handling. There's usually no reason
+     * to call this because GetArg()/GetBoolArg()/GetArg() functions will
+     * appropriately map -nofoo settings to false, 0, empty string, or empty
+     * list values for you.
      *
      * @param strArg Argument to get (e.g. "-foo")
      * @return true if the argument was passed negated

@@ -297,7 +297,7 @@ NODISCARD static bool InterpretOption(std::string key, std::string val, unsigned
     }
     if (key.substr(option_index, 2) == "no") {
         key.erase(option_index, 2);
-        if (flags & ArgsManager::ALLOW_BOOL) {
+        if (flags & (ArgsManager::ALLOW_NEGATED | ArgsManager::ALLOW_ANY)) {
             if (InterpretBool(val)) {
                 args[key].clear();
                 return true;

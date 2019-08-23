@@ -97,7 +97,7 @@ void CConnman::AddOneShot(const std::string& strDest)
 
 unsigned short GetListenPort()
 {
-    return (unsigned short)(gArgs.GetArg("-port", Params().GetDefaultPort()));
+    return (unsigned short)(gArgs.GetIntArg("-port", Params().GetDefaultPort()));
 }
 
 // find 'best' local address for a particular peer

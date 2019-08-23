@@ -130,7 +130,7 @@ Intro::Intro(QWidget *parent, uint64_t blockchain_size, uint64_t chain_state_siz
     );
     ui->lblExplanation2->setText(ui->lblExplanation2->text().arg(PACKAGE_NAME));
 
-    uint64_t pruneTarget = std::max<int64_t>(0, gArgs.GetArg("-prune", 0));
+    uint64_t pruneTarget = std::max<int64_t>(0, gArgs.GetIntArg("-prune", 0));
     requiredSpace = m_blockchain_size;
     QString storageRequiresMsg = tr("At least %1 GB of data will be stored in this directory, and it will grow over time.");
     if (pruneTarget) {

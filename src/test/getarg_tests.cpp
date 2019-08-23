@@ -128,20 +128,20 @@ BOOST_AUTO_TEST_CASE(intarg)
     const auto bar = std::make_pair("-bar", ArgsManager::ALLOW_ANY);
     SetupArgs({foo, bar});
     ResetArgs("");
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-foo", 11), 11);
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-foo", 0), 0);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-foo", 11), 11);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-foo", 0), 0);
 
     ResetArgs("-foo -bar");
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-foo", 11), 0);
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-bar", 11), 0);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-foo", 11), 0);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-bar", 11), 0);
 
     ResetArgs("-foo=11 -bar=12");
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-foo", 0), 11);
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-bar", 11), 12);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-foo", 0), 11);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-bar", 11), 12);
 
     ResetArgs("-foo=NaN -bar=NotANumber");
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-foo", 1), 0);
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-bar", 11), 0);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-foo", 1), 0);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-bar", 11), 0);
 }
 
 BOOST_AUTO_TEST_CASE(doubledash)
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(doubledash)
 
     ResetArgs("--foo=verbose --bar=1");
     BOOST_CHECK_EQUAL(gArgs.GetArg("-foo", ""), "verbose");
-    BOOST_CHECK_EQUAL(gArgs.GetArg("-bar", 0), 1);
+    BOOST_CHECK_EQUAL(gArgs.GetIntArg("-bar", 0), 1);
 }
 
 BOOST_AUTO_TEST_CASE(boolargno)

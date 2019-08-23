@@ -215,11 +215,11 @@ public:
         }
 
         if (expect.default_int) {
-            BOOST_CHECK_EQUAL(test.GetArg("-value", 99999), 99999);
+            BOOST_CHECK_EQUAL(test.GetIntArg("-value", 99999), 99999);
         } else if (expect.int_value) {
-            BOOST_CHECK_EQUAL(test.GetArg("-value", 99999), *expect.int_value);
+            BOOST_CHECK_EQUAL(test.GetIntArg("-value", 99999), *expect.int_value);
         } else if (success) {
-            BOOST_CHECK_THROW(test.GetArg("-value", 99999), std::logic_error);
+            BOOST_CHECK_THROW(test.GetIntArg("-value", 99999), std::logic_error);
         }
 
         if (expect.default_bool) {
@@ -707,9 +707,9 @@ BOOST_AUTO_TEST_CASE(util_GetArg)
 
     BOOST_CHECK_EQUAL(testArgs.GetArg("strtest1", "default"), "string...");
     BOOST_CHECK_EQUAL(testArgs.GetArg("strtest2", "default"), "default");
-    BOOST_CHECK_EQUAL(testArgs.GetArg("inttest1", -1), 12345);
-    BOOST_CHECK_EQUAL(testArgs.GetArg("inttest2", -1), 81985529216486895LL);
-    BOOST_CHECK_EQUAL(testArgs.GetArg("inttest3", -1), -1);
+    BOOST_CHECK_EQUAL(testArgs.GetIntArg("inttest1", -1), 12345);
+    BOOST_CHECK_EQUAL(testArgs.GetIntArg("inttest2", -1), 81985529216486895LL);
+    BOOST_CHECK_EQUAL(testArgs.GetIntArg("inttest3", -1), -1);
     BOOST_CHECK_EQUAL(testArgs.GetBoolArg("booltest1", false), true);
     BOOST_CHECK_EQUAL(testArgs.GetBoolArg("booltest2", false), false);
     BOOST_CHECK_EQUAL(testArgs.GetBoolArg("booltest3", false), false);

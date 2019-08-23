@@ -46,7 +46,7 @@ int main(int argc, char** argv)
         return EXIT_SUCCESS;
     }
 
-    int64_t evaluations = gArgs.GetArg("-evals", DEFAULT_BENCH_EVALUATIONS);
+    int64_t evaluations = gArgs.GetIntArg("-evals", DEFAULT_BENCH_EVALUATIONS);
     std::string regex_filter = gArgs.GetArg("-filter", DEFAULT_BENCH_FILTER);
     std::string scaling_str = gArgs.GetArg("-scaling", DEFAULT_BENCH_SCALING);
     bool is_list_only = gArgs.GetBoolArg("-list", false);
@@ -62,8 +62,8 @@ int main(int argc, char** argv)
     if ("plot" == printer_arg) {
         printer.reset(new benchmark::PlotlyPrinter(
             gArgs.GetArg("-plot-plotlyurl", DEFAULT_PLOT_PLOTLYURL),
-            gArgs.GetArg("-plot-width", DEFAULT_PLOT_WIDTH),
-            gArgs.GetArg("-plot-height", DEFAULT_PLOT_HEIGHT)));
+            gArgs.GetIntArg("-plot-width", DEFAULT_PLOT_WIDTH),
+            gArgs.GetIntArg("-plot-height", DEFAULT_PLOT_HEIGHT)));
     }
 
     benchmark::BenchRunner::RunAll(*printer, evaluations, scaling_factor, regex_filter, is_list_only);

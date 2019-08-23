@@ -558,7 +558,7 @@ std::string ArgsManager::GetArg(const std::string& strArg, const std::string& st
     return strDefault;
 }
 
-int64_t ArgsManager::GetArg(const std::string& strArg, int64_t nDefault) const
+int64_t ArgsManager::GetIntArg(const std::string& strArg, int64_t nDefault) const
 {
     const unsigned int flags = GetArgFlags(strArg);
     CheckFlags(strArg, flags, /* required= */ ALLOW_INT, /* disallowed= */ KEEP_MANY);

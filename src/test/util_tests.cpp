@@ -277,7 +277,7 @@ BOOST_FIXTURE_TEST_CASE(util_CheckValue, CheckValueTest)
     CheckValue(ArgsManager::TYPE_INT, "-novalue=2", Expect{}.Error("Can not negate -value at the same time as setting value '2'"));
     CheckValue(ArgsManager::TYPE_INT, "-novalue=abc", Expect{}.Error("Can not negate -value at the same time as setting value 'abc'"));
     CheckValue(ArgsManager::TYPE_INT, "-value", Expect{}.Error("It must be set to an integer"));
-    CheckValue(ArgsManager::TYPE_INT, "-value=", Expect{}.Error("It must be set to an integer"));
+    CheckValue(ArgsManager::TYPE_INT, "-value=", Expect{}.DefaultInt().DefaultBool());
     CheckValue(ArgsManager::TYPE_INT, "-value=0", Expect{}.Int(0).Bool(false));
     CheckValue(ArgsManager::TYPE_INT, "-value=1", Expect{}.Int(1).Bool(true));
     CheckValue(ArgsManager::TYPE_INT, "-value=2", Expect{}.Int(2).Bool(true));
@@ -290,7 +290,7 @@ BOOST_FIXTURE_TEST_CASE(util_CheckValue, CheckValueTest)
     CheckValue(ArgsManager::TYPE_STRING, "-novalue=2", Expect{}.Error("Can not negate -value, it is required to have a value"));
     CheckValue(ArgsManager::TYPE_STRING, "-novalue=abc", Expect{}.Error("Can not negate -value, it is required to have a value"));
     CheckValue(ArgsManager::TYPE_STRING, "-value", Expect{}.Error("It must be set to a string"));
-    CheckValue(ArgsManager::TYPE_STRING, "-value=", Expect{}.String(""));
+    CheckValue(ArgsManager::TYPE_STRING, "-value=", Expect{}.DefaultString());
     CheckValue(ArgsManager::TYPE_STRING, "-value=0", Expect{}.String("0"));
     CheckValue(ArgsManager::TYPE_STRING, "-value=1", Expect{}.String("1"));
     CheckValue(ArgsManager::TYPE_STRING, "-value=2", Expect{}.String("2"));
@@ -303,7 +303,7 @@ BOOST_FIXTURE_TEST_CASE(util_CheckValue, CheckValueTest)
     CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=2", Expect{}.Error("Can not negate -value at the same time as setting value '2'"));
     CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-novalue=abc", Expect{}.Error("Can not negate -value at the same time as setting value 'abc'"));
     CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value", Expect{}.Error("It must be set to a string"));
-    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=", Expect{}.String("").Bool(true));
+    CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=", Expect{}.DefaultString().DefaultBool());
     CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=0", Expect{}.String("0").Bool(true));
     CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=1", Expect{}.String("1").Bool(true));
     CheckValue(ArgsManager::TYPE_OPTIONAL_STRING, "-value=2", Expect{}.String("2").Bool(true));
@@ -321,6 +321,35 @@ BOOST_FIXTURE_TEST_CASE(util_CheckValue, CheckValueTest)
     CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=1", Expect{}.Many({"1"}));
     CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=2", Expect{}.Many({"2"}));
     CheckValue(ArgsManager::TYPE_STRING_LIST, "-value=abc", Expect{}.Many({"abc"}));
+
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL, "-novalue", Expect{}.Int(0).Bool(false));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL, "-novalue=", Expect{}.Error("Can not negate -value at the same time as setting value ''"));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL, "-novalue=0", Expect{}.Error("Can not negate -value at the same time as setting value '0'"));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL, "-novalue=1", Expect{}.Int(0).Bool(false));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL, "-novalue=2", Expect{}.Error("Can not negate -value at the same time as setting value '2'"));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL, "-novalue=abc", Expect{}.Error("Can not negate -value at the same time as setting value 'abc'"));
+    // Not ideal: Would be better if this returned Int(0) not DefaultInt
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL | ArgsManager::TYPE_BOOL, "-value", Expect{}.DefaultInt().Bool(true));
+    // Not ideal: Would be better if this returned DefaultBool() not Bool(true)
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL | ArgsManager::TYPE_BOOL, "-value=", Expect{}.DefaultInt().Bool(true));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL | ArgsManager::TYPE_BOOL, "-value=0", Expect{}.Int(0).Bool(false));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL | ArgsManager::TYPE_BOOL, "-value=1", Expect{}.Int(1).Bool(true));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL | ArgsManager::TYPE_BOOL, "-value=2", Expect{}.Int(2).Bool(true));
+    CheckValue(ArgsManager::TYPE_INT | ArgsManager::TYPE_BOOL | ArgsManager::TYPE_BOOL, "-value=abc", Expect{}.Error("It must be set to an integer"));
+
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-novalue", Expect{}.String("").Bool(false));
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-novalue=0", Expect{}.Error("Can not negate -value at the same time as setting value '0'"));
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-novalue=1", Expect{}.String("").Bool(false));
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-novalue=2", Expect{}.Error("Can not negate -value at the same time as setting value '2'"));
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-novalue=abc", Expect{}.Error("Can not negate -value at the same time as setting value 'abc'"));
+    // Not ideal: Would be better if this returned String("") not DefaultString
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-value", Expect{}.DefaultString().Bool(true));
+    // Not ideal: Would be better if this returned DefaultBool not Bool(true)
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-value=", Expect{}.DefaultString().Bool(true));
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-value=0", Expect{}.String("0").Bool(true));
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-value=1", Expect{}.String("1").Bool(true));
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-value=2", Expect{}.String("2").Bool(true));
+    CheckValue(ArgsManager::TYPE_STRING | ArgsManager::TYPE_BOOL, "-value=abc", Expect{}.String("abc").Bool(true));
 }
 
 BOOST_AUTO_TEST_CASE(CheckSingleValue)

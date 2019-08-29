@@ -297,7 +297,7 @@ static bool CheckValue(bool negated, const std::string& key, bool has_value, con
 
     if ((flags & ArgsManager::ALLOW_STRING) && has_value) return true;
     if ((flags & ArgsManager::ALLOW_BOOL) && (!has_value || value == "0" || value == "1")) return true;
-    if ((flags & ArgsManager::ALLOW_INT) && has_value && ParseInt64(value, nullptr)) return true;
+    if ((flags & ArgsManager::ALLOW_INT) && has_value && (value.empty() || ParseInt64(value, nullptr))) return true;
 
     if (has_value) {
         error = strprintf("Can not set %s value to '%s'", key, value);
@@ -553,7 +553,8 @@ std::string ArgsManager::GetArg(const std::string& strArg, const std::string& st
     CheckFlags(strArg, flags, /* required= */ ALLOW_STRING, /* disallowed= */ KEEP_MANY);
     if (IsArgNegated(strArg)) return flags & ALLOW_STRING ? "" : "0";
     std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
-    if (found_res.first) return found_res.second;
+    bool empty_reset = found_res.first && found_res.second.empty() && (flags & ALLOW_STRING);
+    if (found_res.first && !empty_reset) return found_res.second;
     return strDefault;
 }
 
@@ -563,7 +564,8 @@ int64_t ArgsManager::GetArg(const std::string& strArg, int64_t nDefault) const
     CheckFlags(strArg, flags, /* required= */ ALLOW_INT, /* disallowed= */ KEEP_MANY);
     if (IsArgNegated(strArg)) return 0;
     std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
-    if (found_res.first) return atoi64(found_res.second);
+    bool empty_reset = found_res.first && found_res.second.empty() && (flags & ALLOW_INT);
+    if (found_res.first && !empty_reset) return atoi64(found_res.second);
     return nDefault;
 }
 
@@ -573,7 +575,8 @@ bool ArgsManager::GetBoolArg(const std::string& strArg, bool fDefault) const
     CheckFlags(strArg, flags, /* required= */ ALLOW_NEGATED, /* disallowed= */ KEEP_MANY);
     if (IsArgNegated(strArg)) return false;
     std::pair<bool,std::string> found_res = ArgsManagerHelper::GetArg(*this, strArg);
-    if (found_res.first) return (flags & ALLOW_STRING) ? true : InterpretBool(found_res.second);
+    bool empty_reset = found_res.first && found_res.second.empty() && flags && !(flags & (ALLOW_ANY | ALLOW_BOOL));
+    if (found_res.first && !empty_reset) return (flags & ALLOW_STRING) ? true : InterpretBool(found_res.second);
     return fDefault;
 }
 

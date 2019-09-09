@@ -296,7 +296,7 @@ public:
      * Return Flags for known arg.
      * Return ArgsManager::NONE for unknown arg.
      */
-    unsigned int FlagsOfKnownArg(const std::string& key) const;
+    unsigned int GetArgFlags(const std::string& key) const;
 };
 
 extern ArgsManager gArgs;

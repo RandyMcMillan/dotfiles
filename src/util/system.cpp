@@ -400,7 +400,7 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
         if (key.length() > 1 && key[1] == '-')
             key.erase(0, 1);
 
-        const unsigned int flags = FlagsOfKnownArg(key);
+        const unsigned int flags = GetArgFlags(key);
         if (flags) {
             if (!InterpretOption(key, val, flags, m_override_args, error)) {
                 return false;
@@ -424,7 +424,7 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
     return true;
 }
 
-unsigned int ArgsManager::FlagsOfKnownArg(const std::string& key) const
+unsigned int ArgsManager::GetArgFlags(const std::string& key) const
 {
     assert(key[0] == '-');
 
@@ -846,7 +846,7 @@ bool ArgsManager::ReadConfigStream(std::istream& stream, const std::string& file
     }
     for (const std::pair<std::string, std::string>& option : options) {
         const std::string strKey = std::string("-") + option.first;
-        const unsigned int flags = FlagsOfKnownArg(strKey);
+        const unsigned int flags = GetArgFlags(strKey);
         if (flags) {
             if (!InterpretOption(strKey, option.second, flags, m_config_args, error)) {
                 return false;

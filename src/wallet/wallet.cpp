@@ -3044,6 +3044,9 @@ unsigned int CWallet::GetKeyPoolSize() const
 bool CWallet::TopUpKeyPool(unsigned int kpSize)
 {
     LOCK(cs_wallet);
+    if (IsWalletFlagSet(WALLET_FLAG_BLANK_WALLET) || IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)) {
+        return false;
+    }
     bool res = true;
     if (auto spk_man = m_spk_man.get()) {
         res &= spk_man->TopUp(kpSize);

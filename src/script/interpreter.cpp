@@ -1500,6 +1500,7 @@ void PrecomputedTransactionData::Init(const T& txTo, std::vector<CTxOut>&& spent
         m_spent_outputs_ready = true;
     }
 
+    bool uses_bip119_ctv = true;
     // Determine which precomputation-impacting features this transaction uses.
     bool uses_bip143_segwit = force;
     bool uses_bip341_taproot = force;
@@ -1522,11 +1523,16 @@ void PrecomputedTransactionData::Init(const T& txTo, std::vector<CTxOut>&& spent
         if (uses_bip341_taproot && uses_bip143_segwit) break; // No need to scan further if we already need all.
     }
 
-    if (uses_bip143_segwit || uses_bip341_taproot) {
+    if (uses_bip143_segwit || uses_bip341_taproot || uses_bip119_ctv) {
         // Computations shared between both sighash schemes.
         m_prevouts_single_hash = GetPrevoutsSHA256(txTo);
         m_sequences_single_hash = GetSequencesSHA256(txTo);
         m_outputs_single_hash = GetOutputsSHA256(txTo);
+
+        // 0 hash used to signal if we should skip scriptSigs
+        // when re-computing for different indexes.
+        m_scriptSigs_single_hash = NoScriptSigs(txTo) ? uint256{} : GetScriptSigsSHA256(txTo);
+        m_bip119_ctv_ready = true;
     }
     if (uses_bip143_segwit) {
         hashPrevouts = SHA256Uint256(m_prevouts_single_hash);
@@ -1881,9 +1887,16 @@ bool GenericTransactionSignatureChecker<T>::CheckDefaultCheckTemplateVerifyHash(
 {
     // Should already be checked before calling...
     assert(hash.size() == 32);
-    assert(txTo != nullptr);
-    uint256 hash_tmpl = GetDefaultCheckTemplateVerifyHash(*txTo, nIn);
-    return std::equal(hash_tmpl.begin(), hash_tmpl.end(), hash.data());
+    if (txdata && txdata->m_bip119_ctv_ready) {
+        assert(txTo != nullptr);
+        uint256 hash_tmpl = txdata->m_scriptSigs_single_hash.IsNull() ?
+            GetDefaultCheckTemplateVerifyHashEmptyScript(*txTo, txdata->m_outputs_single_hash, txdata->m_sequences_single_hash, nIn) :
+            GetDefaultCheckTemplateVerifyHashWithScript(*txTo, txdata->m_outputs_single_hash, txdata->m_sequences_single_hash,
+                    txdata->m_scriptSigs_single_hash, nIn);
+        return std::equal(hash_tmpl.begin(), hash_tmpl.end(), hash.data());
+    } else {
+        return HandleMissingData(m_mdb);
+    }
 }
 // explicit instantiation
 template class GenericTransactionSignatureChecker<CTransaction>;

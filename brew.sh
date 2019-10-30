@@ -32,6 +32,9 @@ if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
   chsh -s "${BREW_PREFIX}/bin/bash";
 fi;
 
+#bitcoin dev
+brew install math,objc
+
 # Install `wget` with IRI support.
 brew install wget --with-iri
 

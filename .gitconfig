@@ -185,3 +185,7 @@
 [url "git://gist.github.com/"]
 
 	insteadOf = "gist:"
+[user]
+	signingkey = 97966C06BB06757B
+	name = randymcmillan
+	email = randy.lee.mcmillan@gmail.com

@@ -72,13 +72,13 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>0 130 224 275 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>10 47 1490 1370 0 0 2560 1417 </string>
+	<string>10 897 650 502 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>1106 47 570 1370 0 0 2560 1417 </string>
+	<string>1292 69 1258 1338 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>10 60 1260 1347 0 0 2560 1417 </string>
+	<string>10 69 1258 1338 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>280 16 570 1370 0 0 2560 1417 </string>
+	<string>1231 48 1258 1338 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
 	<string>10 47 3101 1370 0 0 2560 1417 </string>
 	<key>New Bookmarks</key>
@@ -353,7 +353,7 @@
 			<key>Custom Command</key>
 			<string>No</string>
 			<key>Custom Directory</key>
-			<string>No</string>
+			<string>Yes</string>
 			<key>Default Bookmark</key>
 			<string>No</string>
 			<key>Description</key>
@@ -379,6 +379,8 @@
 			<real>1</real>
 			<key>Idle Code</key>
 			<integer>0</integer>
+			<key>Initial Text</key>
+			<string>git fetch --all</string>
 			<key>Jobs to Ignore</key>
 			<array>
 				<string>rlogin</string>
@@ -693,7 +695,7 @@
 			<key>Normal Font</key>
 			<string>Monaco 14</string>
 			<key>Open Toolbelt</key>
-			<true/>
+			<false/>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -759,7 +761,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/git</string>
+			<string>/Users/git/bitcoin</string>
 		</dict>
 	</array>
 	<key>NoSyncAllAppVersions</key>
@@ -776,15 +778,17 @@
 	<key>NoSyncInstallationId</key>
 	<string>AC23EE57-4497-47C1-A2A8-B8F07AE5E894</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>5</integer>
+	<integer>6</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
 	<integer>0</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
-	<real>594256462.81545997</real>
+	<real>594481423.84024298</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
 	<true/>
+	<key>NoSyncPermissionToShowTip</key>
+	<false/>
 	<key>NoSyncRecordedVariables</key>
 	<dict>
 		<key>0</key>
@@ -1507,6 +1511,10 @@
 			</dict>
 		</array>
 	</dict>
+	<key>NoSyncSearchHistory2</key>
+	<array>
+		<string>.tiff</string>
+	</array>
 	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
 	<real>594083662.81519198</real>
 	<key>PointerActions</key>
@@ -1566,6 +1574,8 @@
 	<integer>3</integer>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 	<key>iTerm Version</key>
 	<string>3.3.6</string>
 </dict>

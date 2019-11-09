@@ -32,9 +32,14 @@ if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
   chsh -s "${BREW_PREFIX}/bin/bash";
 fi;
 
+#travisci
+brew install github
+brew install travis
 
-#bitcoin dev
-brew install math,objc
+#python dev
+brew install math
+brew install gmpy2
+brew install objc
 
 # Install `wget` with IRI support.
 brew install wget --with-iri

@@ -13,7 +13,33 @@ alias d="cd ~/Documents/Dropbox"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias p="cd ~/projects"
+#git
 alias g="git"
+alias LOG="git log --pretty=oneline --abbrev-commit "
+alias STAT="git status "
+alias CO="git  checkout "
+alias GPF="git push -f origin HEAD"
+alias GCA="git commit --amend "
+alias AUTO="./autogen.sh"
+alias CONF="./configure"
+alias DATE="date +%Y/%j/"$(git rev-parse --short HEAD)
+#bitcoin/./configure QUICK
+alias NOGUI="--with-gui=no"
+alias NOCACHE="--disable-ccache=yes"
+alias NOMAN="--disable-man=yes"
+alias DEBUG="--enable-debug=yes"
+alias UTILS="--with-utils=yes"
+alias DAEMON="--with-daemon=yes"
+alias WERROR="--enable-werror=yes"
+alias REDUCE_EXPS="--enable-reduce-exports=yes"
+alias MINIUPNPC="--with-miniupnpc"
+alias NO_TESTS="--disable-tests"
+alias NO_BENCH="--disable-bench=yes"
+alias NO_WALLET="--enable-util-wallet=no"
+alias NO_TX="--enable-util-tx=no"
+alias CLI="--enable-util-cli=yes"
+
+alias QUICK=$NOGUI $NOCACHE $NOMAN $DEBUG $DAEMON $RECUCE_EXPS $NO_BENCH $NO_WALLET $NO_TX $CLI $WERROR
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`

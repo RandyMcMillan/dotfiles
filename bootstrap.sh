@@ -6,12 +6,14 @@ git pull origin master;
 
 function doIt() {
 	rsync --exclude ".git/" \
+        --exclude ".atom" \
 		--exclude ".DS_Store" \
 		--exclude ".vimrc" \
 		--exclude "bootstrap.sh" \
 		--exclude "README.md" \
 		--exclude "LICENSE-MIT.txt" \
 		-avh --no-perms . ~;
+    ln -s $PWD/.atom ~/.atom
 	source ~/.bash_profile;
 }
 

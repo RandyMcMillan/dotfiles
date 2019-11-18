@@ -23,6 +23,10 @@ alias GCA="git commit --amend "
 alias AUTO="./autogen.sh"
 alias CONF="./configure"
 alias DATE="date +%Y/%j/"$(git rev-parse --short HEAD)
+#codespell
+alias CODESPELL="codespell"
+alias SKIP="--skip='.git*,depends*,db*,dist*,autom4te*,build-aux*,qa-assets*,src*,test*,doc*,libtool*,config*,contrib*,.DS_Store,aclocal*,ci*,share*,Makefile*,*.dmg,*.tiff,*.png,*.app'"
+
 #bitcoin/./configure QUICK
 alias NOGUI="--with-gui=no"
 alias NOCACHE="--disable-ccache=yes"

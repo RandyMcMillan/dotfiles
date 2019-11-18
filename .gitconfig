@@ -196,5 +196,3 @@
 [alias]
         DATE = !"date +%Y/%j/"$(git rev-parse --short HEAD)
 
-[alias]
-        LOG = "git log --pretty=oneline --abbrev-commit"

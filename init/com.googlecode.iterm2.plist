@@ -78,15 +78,17 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>0 130 224 275 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>972 64 1170 993 0 0 1920 1057 </string>
+	<string>970 470 810 577 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>657 555 650 502 0 0 1920 1057 </string>
+	<string>970 74 940 973 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>10 69 1258 1338 0 0 2560 1417 </string>
+	<string>80 264 810 577 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>1231 48 1258 1338 0 0 2560 1417 </string>
+	<string>630 480 810 577 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
-	<string>10 47 3101 1370 0 0 2560 1417 </string>
+	<string>0 480 810 577 0 0 1920 1057 </string>
+	<key>NSWindow Frame iTerm Window 5</key>
+	<string>415 480 810 577 0 0 1920 1057 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -767,7 +769,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/git/bitcoin</string>
+			<string>/Users/git/</string>
 		</dict>
 	</array>
 	<key>NoSyncAllAppVersions</key>
@@ -784,7 +786,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>AC23EE57-4497-47C1-A2A8-B8F07AE5E894</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>14</integer>
+	<integer>17</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1532,6 +1534,8 @@
 	</dict>
 	<key>NoSyncSearchHistory2</key>
 	<array>
+		<string>lint</string>
+		<string>functio</string>
 		<string>.dmg</string>
 		<string>.tiff</string>
 	</array>

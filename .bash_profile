@@ -1,3 +1,11 @@
+PYCOIN_CACHE_DIR=~/.pycoin_cache
+PYCOIN_BTC_PROVIDERS="blockchain.info blockexplorer.com chain.so"
+export PYCOIN_CACHE_DIR PYCOIN_BTC_PROVIDERS
+export PYCOIN_XTN_PROVIDERS="blockchain.info"  # For Bitcoin testnet
+
+
+
+
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 

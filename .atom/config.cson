@@ -1,0 +1,35 @@
+"*":
+  core:
+    destroyEmptyPanes: false
+    projectHome: "/Users/git/"
+    restorePreviousWindowsOnStart: "no"
+    telemetryConsent: "no"
+    themes: [
+      "one-dark-ui"
+      "solarized-dark-syntax"
+    ]
+    uriHandlerRegistration: "always"
+  editor:
+    fontSize: 17
+    invisibles: {}
+    scrollPastEnd: true
+    showIndentGuide: true
+    showInvisibles: true
+    softWrap: true
+    softWrapAtPreferredLineLength: true
+  "exception-reporting":
+    userId: "987042eb-4378-4daf-8368-db81d62d1dd6"
+  "git-diff":
+    showIconsInEditorGutter: true
+  github:
+    viewChangesForCurrentFileDiffPaneSplitDirection: "right"
+  "markdown-preview": {}
+  "open-vim":
+    executablePath: "/usr/bin/vim"
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ensureSingleTrailingNewline: false
+    ignoreWhitespaceOnCurrentLine: false
+    ignoreWhitespaceOnlyLines: true
+    removeTrailingWhitespace: false

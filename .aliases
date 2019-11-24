@@ -20,6 +20,7 @@ alias STAT="git status "
 alias CO="git  checkout "
 alias GPF="git push -f origin HEAD"
 alias GCA="git commit --amend "
+alias GCB="git branch | grep -ve ' master$' | xargs git branch -D"
 alias AUTO="./autogen.sh"
 alias CONF="./configure"
 alias DATE="date +%Y/%j/"$(git rev-parse --short HEAD)
@@ -42,6 +43,9 @@ alias NO_BENCH="--disable-bench=yes"
 alias NO_WALLET="--enable-util-wallet=no"
 alias NO_TX="--enable-util-tx=no"
 alias CLI="--enable-util-cli=yes"
+
+alias REFRESH_GPG="gpg --keyserver hkp://keyserver.ubuntu.com --refresh-keys
+"
 
 alias QUICK=$NOGUI $NOCACHE $NOMAN $DEBUG $DAEMON $RECUCE_EXPS $NO_BENCH $NO_WALLET $NO_TX $CLI $WERROR
 
@@ -80,6 +84,7 @@ alias week='date +%V'
 
 # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
+alias BREWDEPS="brew deps --tree --installed"
 
 # Google Chrome
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'

@@ -10,6 +10,7 @@
 #include <protocol.h>
 #include <serialize.h>
 #include <sync.h>
+#include <util/bip32.h>
 #include <util/system.h>
 #include <util/time.h>
 #include <wallet/wallet.h>
@@ -245,6 +246,7 @@ public:
     std::map<uint256, DescriptorCache> m_descriptor_caches;
     std::map<std::pair<uint256, CKeyID>, CKey> m_descriptor_keys;
     std::map<std::pair<uint256, CKeyID>, std::pair<CPubKey, std::vector<unsigned char>>> m_descriptor_crypt_keys;
+    std::map<uint160, CHDChain> m_hd_chains;
 
     CWalletScanState() {
     }
@@ -405,6 +407,57 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             ssValue >> keyMeta;
             wss.nKeyMeta++;
             pwallet->GetOrCreateLegacyScriptPubKeyMan()->LoadKeyMetadata(vchPubKey.GetID(), keyMeta);
+
+            // Extract some CHDChain info from this metadata if it has any
+            if (keyMeta.nVersion >= CKeyMetadata::VERSION_WITH_HDDATA && !keyMeta.hd_seed_id.IsNull() && keyMeta.hdKeypath.size() > 0) {
+                // Get the path from the key origin or from the path string
+                // Not applicable when path is "s" as that indicates a seed
+                bool internal = false;
+                uint32_t index = 0;
+                if (keyMeta.hdKeypath != "s") {
+                    std::vector<uint32_t> path;
+                    if (keyMeta.has_key_origin) {
+                        // We have a key origin, so pull it from it's path vector
+                        path = keyMeta.key_origin.path;
+                    } else {
+                        // No key origin, have to parse the string
+                        // "s" is for a seed, no path info to parse so we skip those
+                        if (!ParseHDKeypath(keyMeta.hdKeypath, path)) {
+                            strErr = "Error reading wallet database: keymeta with invalid HD keypath";
+                            return false;
+                        }
+                    }
+
+                    // Extract the index and internal from the path
+                    // Path string is m/0'/k'/i'
+                    // Path vector is [0', k', i'] (but as ints OR'd with the hardened bit
+                    // k == 0 for external, 1 for internal. i is the index
+                    if (keyMeta.key_origin.path.size() != 3) {
+                        strErr = "Error reading wallet database: keymeta found with unexpected path";
+                        return false;
+                    }
+                    internal = path[1] == 1;
+                    index = path[2] & ~0x80000000;
+                }
+
+                // Insert a new CHDChain, or get the one that already exists
+                auto ins = wss.m_hd_chains.emplace(keyMeta.hd_seed_id, CHDChain());
+                CHDChain& chain = ins.first->second;
+                if (ins.second) {
+                    // For new chains, we want to default to VERSION_HD_BASE until we see an internal
+                    chain.nVersion = CHDChain::VERSION_HD_BASE;
+                    // Set the seed id
+                    chain.seed_id = keyMeta.hd_seed_id;
+                }
+                if (internal) {
+                    if (chain.nVersion < CHDChain::VERSION_HD_CHAIN_SPLIT) {
+                        chain.nVersion = CHDChain::VERSION_HD_CHAIN_SPLIT;
+                    }
+                    chain.nInternalChainCounter = std::max(chain.nInternalChainCounter, index);
+                } else {
+                    chain.nExternalChainCounter = std::max(chain.nExternalChainCounter, index);
+                }
+            }
         } else if (strType == DBKeys::WATCHMETA) {
             CScript script;
             ssKey >> script;
@@ -633,7 +686,7 @@ DBErrors WalletBatch::LoadWallet(CWallet* pwallet)
                 if (IsKeyType(strType) || strType == DBKeys::DEFAULTKEY) {
                     result = DBErrors::CORRUPT;
                 } else if (strType == DBKeys::FLAGS) {
-                    // reading the wallet flags can only fail if unknown flags are present
+                    // reading the wallet flags only fail if unknown flags are present
                     result = DBErrors::TOO_NEW;
                 } else {
                     // Leave other errors alone, if we try to fix them we might make things worse.
@@ -726,6 +779,20 @@ DBErrors WalletBatch::LoadWallet(CWallet* pwallet)
         pwallet->UpgradeKeyMetadata();
     } catch (...) {
         result = DBErrors::CORRUPT;
+    }
+
+    // Set the inactive chain
+    if (wss.m_hd_chains.size() > 0) {
+        LegacyScriptPubKeyMan* legacy_spkm = pwallet->GetLegacyScriptPubKeyMan();
+        if (!legacy_spkm) {
+            pwallet->WalletLogPrintf("Inactive HD Chains found but no Legacy ScriptPubKeyMan");
+            return DBErrors::CORRUPT;
+        }
+        for (const auto& chain_pair : wss.m_hd_chains) {
+            if (chain_pair.first != pwallet->GetLegacyScriptPubKeyMan()->GetHDChain().seed_id) {
+                pwallet->GetLegacyScriptPubKeyMan()->AddInactiveHDChain(chain_pair.second);
+            }
+        }
     }
 
     return result;

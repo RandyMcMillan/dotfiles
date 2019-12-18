@@ -200,25 +200,21 @@ public:
     }
     void lockCoin(const COutPoint& output) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->LockCoin(output);
     }
     void unlockCoin(const COutPoint& output) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->UnlockCoin(output);
     }
     bool isLockedCoin(const COutPoint& output) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->IsLockedCoin(output.hash, output.n);
     }
     void listLockedCoins(std::vector<COutPoint>& outputs) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->ListLockedCoins(outputs);
     }
@@ -229,7 +225,6 @@ public:
         CAmount& fee,
         std::string& fail_reason) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         CTransactionRef tx;
         if (!m_wallet->CreateTransaction(recipients, tx, fee, change_pos,
@@ -242,14 +237,12 @@ public:
         WalletValueMap value_map,
         WalletOrderForm order_form) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         m_wallet->CommitTransaction(std::move(tx), std::move(value_map), std::move(order_form));
     }
     bool transactionCanBeAbandoned(const uint256& txid) override { return m_wallet->TransactionCanBeAbandoned(txid); }
     bool abandonTransaction(const uint256& txid) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->AbandonTransaction(txid);
     }
@@ -284,7 +277,6 @@ public:
     }
     CTransactionRef getTx(const uint256& txid) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         auto mi = m_wallet->mapWallet.find(txid);
         if (mi != m_wallet->mapWallet.end()) {
@@ -294,7 +286,6 @@ public:
     }
     WalletTx getWalletTx(const uint256& txid) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         auto mi = m_wallet->mapWallet.find(txid);
         if (mi != m_wallet->mapWallet.end()) {
@@ -304,7 +295,6 @@ public:
     }
     std::vector<WalletTx> getWalletTxs() override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         std::vector<WalletTx> result;
         result.reserve(m_wallet->mapWallet.size());
@@ -318,10 +308,6 @@ public:
         int& num_blocks,
         int64_t& block_time) override
     {
-        auto locked_chain = m_wallet->chain().lock(true /* try_lock */);
-        if (!locked_chain) {
-            return false;
-        }
         TRY_LOCK(m_wallet->cs_wallet, locked_wallet);
         if (!locked_wallet) {
             return false;
@@ -345,7 +331,6 @@ public:
         bool& in_mempool,
         int& num_blocks) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         auto mi = m_wallet->mapWallet.find(txid);
         if (mi != m_wallet->mapWallet.end()) {
@@ -382,8 +367,6 @@ public:
     }
     bool tryGetBalances(WalletBalances& balances, int& num_blocks) override
     {
-        auto locked_chain = m_wallet->chain().lock(true /* try_lock */);
-        if (!locked_chain) return false;
         TRY_LOCK(m_wallet->cs_wallet, locked_wallet);
         if (!locked_wallet) {
             return false;
@@ -399,31 +382,26 @@ public:
     }
     isminetype txinIsMine(const CTxIn& txin) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->IsMine(txin);
     }
     isminetype txoutIsMine(const CTxOut& txout) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->IsMine(txout);
     }
     CAmount getDebit(const CTxIn& txin, isminefilter filter) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->GetDebit(txin, filter);
     }
     CAmount getCredit(const CTxOut& txout, isminefilter filter) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         return m_wallet->GetCredit(txout, filter);
     }
     CoinsList listCoins() override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         CoinsList result;
         for (const auto& entry : m_wallet->ListCoins()) {
@@ -437,7 +415,6 @@ public:
     }
     std::vector<WalletTxOut> getCoins(const std::vector<COutPoint>& outputs) override
     {
-        auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         std::vector<WalletTxOut> result;
         result.reserve(outputs.size());

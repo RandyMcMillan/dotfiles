@@ -59,7 +59,6 @@ void SetLoggingOptions(const ArgsManager& args)
 
 void SetLoggingLevel(const ArgsManager& args)
 {
-    if (args.IsArgSet("-loglevel")) {
         for (const std::string& level_str : args.GetArgs("-loglevel")) {
             if (level_str.find_first_of(':', 3) == std::string::npos) {
                 // user passed a global log level, i.e. -loglevel=<level>
@@ -74,13 +73,13 @@ void SetLoggingLevel(const ArgsManager& args)
                 }
             }
         }
-    }
 }
 
 void SetLoggingCategories(const ArgsManager& args)
 {
-    if (args.IsArgSet("-debug")) {
-        // Special-case: if -debug=0/-nodebug is set, turn off debugging messages
+    const std::vector<std::string> categories = args.GetArgs("-debug");
+    if (!categories.empty()) {
+        // Special-case: if -debug=0/-debug=none is set, turn off debugging messages
         const std::vector<std::string> categories = args.GetArgs("-debug");
 
         if (std::none_of(categories.begin(), categories.end(),

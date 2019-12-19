@@ -281,7 +281,7 @@ public:
         std::vector<uint8_t> bin;
         vSeeds.clear();
 
-        if (!args.IsArgSet("-signetchallenge")) {
+        if (args.GetArgs("-signetchallenge").empty()) {
             bin = ParseHex("512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae");
             vSeeds.emplace_back("seed.signet.bitcoin.sprovoost.nl.");
 
@@ -318,7 +318,7 @@ public:
             LogPrintf("Signet with challenge %s\n", signet_challenge[0]);
         }
 
-        if (args.IsArgSet("-signetseednode")) {
+        if (!args.GetArgs("-signetseednode").empty()) {
             vSeeds = args.GetArgs("-signetseednode");
         }
 
@@ -522,8 +522,6 @@ static void MaybeUpdateHeights(const ArgsManager& args, Consensus::Params& conse
 void CRegTestParams::UpdateActivationParametersFromArgs(const ArgsManager& args)
 {
     MaybeUpdateHeights(args, consensus);
-
-    if (!args.IsArgSet("-vbparams")) return;
 
     for (const std::string& strDeployment : args.GetArgs("-vbparams")) {
         std::vector<std::string> vDeploymentParams = SplitString(strDeployment, ':');

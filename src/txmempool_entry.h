@@ -12,19 +12,16 @@
 
 class CBlockIndex;
 
-struct LockPoints
-{
+struct LockPoints {
     // Will be set to the blockchain height and median time past
     // values that would be necessary to satisfy all relative locktime
     // constraints (BIP68) of this tx given our view of block chain history
-    int height;
-    int64_t time;
+    int height{0};
+    int64_t time{0};
     // As long as the current chain descends from the highest height block
     // containing one of the inputs used in the calculation, then the cached
     // values are still valid even after a reorg.
-    CBlockIndex* maxInputBlock;
-
-    LockPoints() : height(0), time(0), maxInputBlock(nullptr) { }
+    CBlockIndex* maxInputBlock{nullptr};
 };
 
 /** \class CTxMemPoolEntry

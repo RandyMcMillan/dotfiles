@@ -5,7 +5,7 @@
 #include <bench/bench.h>
 #include <policy/policy.h>
 #include <txmempool.h>
-
+#include <txmempool_entry.h>
 
 static void AddTx(const CTransactionRef& tx, const CAmount& nFee, CTxMemPool& pool) EXCLUSIVE_LOCKS_REQUIRED(cs_main, pool.cs)
 {

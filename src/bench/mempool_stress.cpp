@@ -5,6 +5,7 @@
 #include <bench/bench.h>
 #include <policy/policy.h>
 #include <txmempool.h>
+#include <txmempool_entry.h>
 
 #include <vector>
 

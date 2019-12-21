@@ -208,6 +208,7 @@ BITCOIN_CORE_H = \
   torcontrol.h \
   txdb.h \
   txmempool.h \
+  txmempool_entry.h \
   ui_interface.h \
   undo.h \
   util/bip32.h \
@@ -313,6 +314,7 @@ libbitcoin_server_a_SOURCES = \
   torcontrol.cpp \
   txdb.cpp \
   txmempool.cpp \
+  txmempool_entry.cpp \
   ui_interface.cpp \
   validation.cpp \
   validationinterface.cpp \

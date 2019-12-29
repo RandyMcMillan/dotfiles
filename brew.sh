@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
+checkbrew() {
+
+	if hash brew 2>/dev/null; then
+		# Make sure we’re using the latest Homebrew.
+		brew update
+		# Upgrade any already-installed formulae.
+		brew upgrade
+        brew cask install iterm2
+        brew cask install gpg-suite
+	else
+		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	fi
+}
+
+checkbrew()
+
 # Install command-line tools using Homebrew.
 
 # Make sure we’re using the latest Homebrew.
@@ -33,7 +49,6 @@ if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
 fi;
 
 #travisci
-brew install github
 brew install travis
 
 #python dev
@@ -56,10 +71,10 @@ brew install php
 brew install gmp
 
 # Install font tools.
-brew tap bramstein/webfonttools
-brew install sfnt2woff
-brew install sfnt2woff-zopfli
-brew install woff2
+# brew tap bramstein/webfonttools
+# brew install sfnt2woff
+# brew install sfnt2woff-zopfli
+# brew install woff2
 
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
 brew install aircrack-ng

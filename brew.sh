@@ -8,6 +8,7 @@ checkbrew() {
 		# Upgrade any already-installed formulae.
 		brew upgrade
         brew cask install iterm2
+	brew cask install macvim
         brew cask install gpg-suite
 	else
 		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

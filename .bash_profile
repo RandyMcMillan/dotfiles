@@ -3,9 +3,6 @@ PYCOIN_BTC_PROVIDERS="blockchain.info blockexplorer.com chain.so"
 export PYCOIN_CACHE_DIR PYCOIN_BTC_PROVIDERS
 export PYCOIN_XTN_PROVIDERS="blockchain.info"  # For Bitcoin testnet
 
-
-
-
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 
@@ -47,8 +44,6 @@ fi;
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
 . $(brew --prefix)/etc/bash_completion
 fi
-
-
 
 # Enable tab completion for `g` by marking it as an alias for `git`
 if type _git &> /dev/null; then

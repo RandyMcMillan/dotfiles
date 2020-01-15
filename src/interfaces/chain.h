@@ -59,31 +59,10 @@ class Chain
 public:
     virtual ~Chain() {}
 
-    //! Get current chain height, not including genesis block (returns 0 if
-    //! chain only contains genesis block, nullopt if chain does not contain
-    //! any blocks)
-    virtual Optional<int> getHeight() = 0;
-
     //! Get block height above genesis block. Returns 0 for genesis block,
     //! 1 for following block, and so on. Returns nullopt for a block not
     //! included in the current chain.
     virtual Optional<int> getBlockHeight(const uint256& hash) = 0;
-
-    //! Get block hash. Returns nullopt for a block not included in the
-    //! current chain.
-    virtual Optional<uint256> getBlockHash(int height) = 0;
-
-    //! Get block time. Returns nullopt for a block not included in the
-    //! current chain.
-    virtual Optional<int64_t> getBlockTime(int height) = 0;
-
-    //! Get block median time past. Returns nullopt for a block not included
-    //! in the current chain.
-    virtual Optional<int64_t> getBlockMedianTimePast(int height) = 0;
-
-    //! Check that the block is available on disk (i.e. has not been
-    //! pruned), and contains transactions.
-    virtual bool haveBlockOnDisk(int height) = 0;
 
     //! Return height of the first block in the chain with timestamp equal
     //! or greater than the given time and height equal or greater than the
@@ -92,28 +71,28 @@ public:
     //! (to avoid the cost of a second lookup in case this information is needed.)
     virtual Optional<int> findFirstBlockWithTimeAndHeight(int64_t time, int height, uint256* hash) = 0;
 
-    //! Return height of last block in the specified range which is pruned, or
+    //! Return whether data in the specified range is pruned, or
     //! nullopt if no block in the range is pruned. Range is inclusive.
-    virtual Optional<int> findPruned(int start_height = 0, Optional<int> stop_height = nullopt) = 0;
-
-    //! Return height of the specified block if it is on the chain, otherwise
-    //! return the height of the highest block on chain that's an ancestor
-    //! of the specified block, or nullopt if there is no common ancestor.
-    //! Also return the height of the specified block as an optional output
-    //! parameter (to avoid the cost of a second hash lookup in case this
-    //! information is desired).
-    virtual Optional<int> findFork(const uint256& hash, Optional<int>* height) = 0;
+    virtual bool isPruned(const uint256& start_block, const uint256& end_block) = 0;
 
     //! Get locator for the current chain tip.
     virtual CBlockLocator getTipLocator() = 0;
 
-    //! Return height of the highest block on chain in common with the locator,
-    //! which will either be the original block used to create the locator,
-    //! or one of its ancestors.
-    virtual Optional<int> findLocatorFork(const CBlockLocator& locator) = 0;
-
     //! Check if transaction will be final given chain height current time.
     virtual bool checkFinalTx(const CTransaction& tx) = 0;
+
+    //! Return height of ancestor block, or nullopt if ancestor_hash is not an ancenstor of descendant_hash or either
+    //! block hash is unknown.
+    virtual Optional<int> findAncestorHeight(const uint256& block, const uint256& ancestor_hash) = 0;
+
+    //! Return ancestor of block at specified height.
+    virtual uint256 findAncestorHash(const uint256& block, int ancestor_height) = 0;
+
+    //! Find most recent common ancestor and return hash and height. Also return height of first block.
+    virtual Optional<int> findFork(const uint256& hash1,
+        const uint256& hash2,
+        uint256* ancestor_hash,
+        int* ancestor_height) = 0;
 
     //! Return whether node has the block and optionally return block metadata
     //! or contents.
@@ -124,7 +103,11 @@ public:
     virtual bool findBlock(const uint256& hash,
         CBlock* block = nullptr,
         int64_t* time = nullptr,
-        int64_t* max_time = nullptr) = 0;
+        int64_t* max_time = nullptr,
+        int64_t* mtp_time = nullptr) = 0;
+
+    //! Get hash of next block if block is part of current chain. Return false otherwise.
+    virtual bool findNextBlock(uint256& block_hash, int& block_height) = 0;
 
     //! Look up unspent output information. Returns coins in the mempool and in
     //! the current chain UTXO set. Iterates through all the keys in the map and
@@ -218,8 +201,47 @@ public:
         virtual void ChainStateFlushed(const CBlockLocator& locator) {}
     };
 
-    //! Register handler for notifications.
-    virtual std::unique_ptr<Handler> handleNotifications(Notifications& notifications) = 0;
+    using ScanFn = std::function<Optional<uint256>(const uint256& start_hash, int start_height, int tip_height)>;
+    using MempoolFn = std::function<void(std::vector<CTransactionRef>)>;
+
+    //! Register handler for notifications. Before returning and before sending
+    //! the first notification, call ScanFn with the hash of the first block
+    //! after the provided previous sync location, and then call MempoolFn
+    //! with a snapshot of transactions in the mempool the first
+    //! TransactionAddedToMempool/TransactionRemovedFromMempool notifications.
+    //!
+    //! @param[in] notify        object to send notifications to after returning
+    //! @param[in] scan_fn       callback invoked to scan any new blocks that
+    //!                          were added before sending new notifications.
+    //!                          This should return the hash of the last block
+    //!                          scanned, and will be called more than once if
+    //!                          the tip changes the call and the last block
+    //!                          scanned is behind the chain tip at the point
+    //!                          notifications would be attached.
+    //! @param[in] mempool_fn    callback invoked with snapshot of the mempool at
+    //!                          the point notifications are attached
+    //! @param[in] scan_locator  location of last block already scanned. scan_fn
+    //!                          will be only be called for new blocks after
+    //!                          this point. If null scan may begin at the
+    //!                          genesis block, depending on scan_time
+    //! @param[in] scan_time     minimum block timestamp for beginning the scan.
+    //!                          The first block with timestamp greater or equal
+    //!                          to this time is eligible to be scanned,
+    //!                          depending on scan_locator
+    //! @param[out] tip_hash     hash of the tip at the point notifications will
+    //!                          begin. The first block Connected / Disconnected
+    //!                          notifications will be relative to this tip
+    //! @param[out] tip_height   height of block at tip_hash
+    //! @param[out] tip_locator  locator for tip_hash
+    virtual std::unique_ptr<Handler> handleNotifications(Notifications& notifications,
+        ScanFn scan_fn,
+        MempoolFn mempool_fn,
+        const CBlockLocator* scan_locator,
+        int64_t scan_time,
+        uint256& tip_hash,
+        int& tip_height,
+        CBlockLocator& tip_locator,
+        bool& missing_block_data) = 0;
 
     //! Wait for pending notifications to be processed unless block hash points to the current
     //! chain tip.
@@ -237,16 +259,6 @@ public:
 
     //! Current RPC serialization flags.
     virtual int rpcSerializationFlags() = 0;
-
-    //! Synchronously send TransactionAddedToMempool notifications about all
-    //! current mempool transactions to the specified handler and return after
-    //! the last one is sent. These notifications aren't coordinated with async
-    //! notifications sent by handleNotifications, so out of date async
-    //! notifications from handleNotifications can arrive during and after
-    //! synchronous notifications from requestMempoolTransactions. Clients need
-    //! to be prepared to handle this by ignoring notifications about unknown
-    //! removed transactions and already added new transactions.
-    virtual void requestMempoolTransactions(Notifications& notifications) = 0;
 };
 
 //! Interface to let node manage chain clients (wallets, or maybe tools for

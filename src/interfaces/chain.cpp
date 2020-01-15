@@ -32,11 +32,21 @@
 #include <validation.h>
 #include <validationinterface.h>
 
+#include <future>
 #include <memory>
 #include <utility>
 
 namespace interfaces {
 namespace {
+
+//! Return whether block data is missing in block range
+bool MissingBlockData(const CBlockIndex* start, const CBlockIndex* end)
+{
+    for (const CBlockIndex* block = end; block != start; block = block->pprev) {
+        if ((block->nStatus & BLOCK_HAVE_DATA) == 0 || block->nTx == 0) return true;
+    }
+    return false;
+}
 
 class NotificationsHandlerImpl : public Handler, CValidationInterface
 {
@@ -124,15 +134,6 @@ class ChainImpl : public Chain
 {
 public:
     explicit ChainImpl(NodeContext& node) : m_node(node) {}
-    Optional<int> getHeight() override
-    {
-        LOCK(cs_main);
-        int height = ::ChainActive().Height();
-        if (height >= 0) {
-            return height;
-        }
-        return nullopt;
-    }
     Optional<int> getBlockHeight(const uint256& hash) override
     {
         LOCK(::cs_main);
@@ -141,39 +142,6 @@ public:
             return block->nHeight;
         }
         return nullopt;
-    }
-    Optional<uint256> getBlockHash(int height) override
-    {
-        LOCK(::cs_main);
-        CBlockIndex* block = ::ChainActive()[height];
-        if (block != nullptr) {
-            return block->GetBlockHash();
-        }
-        return nullopt;
-    }
-    Optional<int64_t> getBlockTime(int height) override
-    {
-        LOCK(::cs_main);
-        CBlockIndex* block = ::ChainActive()[height];
-        if (block != nullptr) {
-            return block->GetBlockTime();
-        }
-        return nullopt;
-    }
-    Optional<int64_t> getBlockMedianTimePast(int height) override
-    {
-        LOCK(::cs_main);
-        CBlockIndex* block = ::ChainActive()[height];
-        if (block != nullptr) {
-            return block->GetMedianTimePast();
-        }
-        return nullopt;
-    }
-    bool haveBlockOnDisk(int height) override
-    {
-        LOCK(::cs_main);
-        CBlockIndex* block = ::ChainActive()[height];
-        return block && ((block->nStatus & BLOCK_HAVE_DATA) != 0) && block->nTx > 0;
     }
     Optional<int> findFirstBlockWithTimeAndHeight(int64_t time, int height, uint256* hash) override
     {
@@ -185,46 +153,69 @@ public:
         }
         return nullopt;
     }
-    Optional<int> findPruned(int start_height, Optional<int> stop_height) override
+    bool isPruned(const uint256& start_block, const uint256& end_block) override
     {
         LOCK(::cs_main);
         if (::fPruneMode) {
-            CBlockIndex* block = stop_height ? ::ChainActive()[*stop_height] : ::ChainActive().Tip();
-            while (block && block->nHeight >= start_height) {
+            CBlockIndex* start = start_block.IsNull() ? ::ChainActive().Genesis() : LookupBlockIndex(start_block);
+            CBlockIndex* block = end_block.IsNull() ? ::ChainActive().Tip() : LookupBlockIndex(end_block);
+            assert(start);
+            assert(block);
+            assert(block->GetAncestor(start->nHeight) == start);
+            while (block && block != start) {
                 if ((block->nStatus & BLOCK_HAVE_DATA) == 0) {
-                    return block->nHeight;
+                    return true;
                 }
                 block = block->pprev;
             }
         }
-        return nullopt;
+        return false;
     }
-    Optional<int> findFork(const uint256& hash, Optional<int>* height) override
+    Optional<int> findAncestorHeight(const uint256& block_hash, const uint256& ancestor_hash) override
     {
         LOCK(::cs_main);
-        const CBlockIndex* block = LookupBlockIndex(hash);
-        const CBlockIndex* fork = block ? ::ChainActive().FindFork(block) : nullptr;
-        if (height) {
-            if (block) {
-                *height = block->nHeight;
-            } else {
-                height->reset();
-            }
-        }
-        if (fork) {
-            return fork->nHeight;
-        }
+        const CBlockIndex* block = LookupBlockIndex(block_hash);
+        const CBlockIndex* ancestor = LookupBlockIndex(ancestor_hash);
+        if (block && ancestor && block->GetAncestor(ancestor->nHeight) == block) return ancestor->nHeight;
         return nullopt;
     }
-    Optional<int> findLocatorFork(const CBlockLocator& locator) override
+    uint256 findAncestorHash(const uint256& block_hash, int ancestor_height) override
     {
         LOCK(::cs_main);
-        if (CBlockIndex* fork = FindForkInGlobalIndex(::ChainActive(), locator)) {
-            return fork->nHeight;
+        if (const CBlockIndex* block = LookupBlockIndex(block_hash)) {
+            const CBlockIndex* ancestor = block->GetAncestor(ancestor_height);
+            if (ancestor) return ancestor->GetBlockHash();
+        }
+        return {};
+    }
+    Optional<int> findFork(const uint256& block_hash1,
+        const uint256& block_hash2,
+        uint256* ancestor_hash,
+        int* ancestor_height) override
+    {
+        LOCK(::cs_main);
+        const CBlockIndex* block1 = LookupBlockIndex(block_hash1);
+        const CBlockIndex* block2 = LookupBlockIndex(block_hash2);
+        const CBlockIndex* parent1 = block1->GetAncestor(std::min(block1->nHeight, block2->nHeight));
+        const CBlockIndex* parent2 = block2->GetAncestor(std::min(block1->nHeight, block2->nHeight));
+        while (parent1->pskip != parent2->pskip) {
+            assert(parent1->nHeight == parent2->nHeight);
+            parent1 = parent1->pskip;
+            parent2 = parent2->pskip;
+        }
+        while (parent1 != parent2) {
+            assert(parent1->nHeight == parent2->nHeight);
+            parent1 = parent1->pprev;
+            parent2 = parent2->pprev;
+        }
+        if (parent1) {
+            if (ancestor_hash) *ancestor_hash = parent1->GetBlockHash();
+            if (ancestor_height) *ancestor_height = parent1->nHeight;
+            return block1->nHeight;
         }
         return nullopt;
     }
-    bool findBlock(const uint256& hash, CBlock* block, int64_t* time, int64_t* time_max) override
+    bool findBlock(const uint256& hash, CBlock* block, int64_t* time, int64_t* time_max, int64_t* time_mtp) override
     {
         CBlockIndex* index;
         {
@@ -239,11 +230,30 @@ public:
             if (time_max) {
                 *time_max = index->GetBlockTimeMax();
             }
+            if (time_mtp) {
+                *time_mtp = index->GetMedianTimePast();
+            }
         }
         if (block && !ReadBlockFromDisk(*block, index, Params().GetConsensus())) {
             block->SetNull();
         }
         return true;
+    }
+    bool findNextBlock(uint256& block_hash, int& block_height) override
+    {
+        LOCK(::cs_main);
+        CChain& chain = ::ChainActive();
+        CBlockIndex* block = chain[block_height];
+        if (block) {
+            assert(block->nHeight == block_height);
+            block = chain[block_height + 1];
+            if (block) {
+                block_height = block->nHeight;
+                block_hash = block->GetBlockHash();
+                return true;
+            }
+        }
+        return false;
     }
     void findCoins(std::map<COutPoint, Coin>& coins) override { return FindCoins(m_node, coins); }
     CBlockLocator getTipLocator() override
@@ -335,9 +345,75 @@ public:
     {
         ::uiInterface.ShowProgress(title, progress, resume_possible);
     }
-    std::unique_ptr<Handler> handleNotifications(Notifications& notifications) override
+    std::unique_ptr<Handler> handleNotifications(Notifications& notifications,
+        ScanFn scan_fn,
+        MempoolFn mempool_fn,
+        const CBlockLocator* scan_locator,
+        int64_t scan_time,
+        uint256& tip_hash,
+        int& tip_height,
+        CBlockLocator& tip_locator,
+        bool& missing_block_data) override LOCKS_EXCLUDED(::cs_main, ::mempool.cs)
     {
-        return MakeUnique<NotificationsHandlerImpl>(*this, notifications);
+        std::packaged_task<std::unique_ptr<Handler>()> register_task;
+        tip_hash = uint256{};
+        tip_hash.SetNull();
+        tip_height = 0;
+        tip_locator.SetNull();
+        missing_block_data = false;
+        {
+            AssertLockNotHeld(::cs_main);
+            AssertLockNotHeld(::mempool.cs);
+            WAIT_LOCK(::cs_main, lock);
+
+            // Call scan_fn until it has scanned all blocks after specified and time
+            if (scan_fn) {
+                int scan_height =
+                    scan_locator ? FindForkInGlobalIndex(::ChainActive(), *scan_locator)->nHeight + 1 : 0;
+                CBlockIndex* scan_start = scan_start = ChainActive().FindEarliestAtLeast(scan_time, scan_height);
+                while (scan_start) {
+                    if (MissingBlockData(scan_start, ChainActive().Tip())) {
+                        missing_block_data = true;
+                        return nullptr;
+                    }
+                    int tip_height = ChainActive().Height();
+                    lock.unlock();
+                    Optional<uint256> scanned_hash =
+                        scan_fn(scan_start->GetBlockHash(), scan_start->nHeight, tip_height);
+                    if (!scanned_hash) {
+                        return nullptr;
+                    }
+                    lock.lock();
+                    scan_start = ChainActive().Next(ChainActive().FindFork(LookupBlockIndex(*scanned_hash)));
+                }
+            }
+
+            // Take a snapshot of mempool transactions if needed
+            LOCK(::mempool.cs);
+            std::vector<CTransactionRef> mempool_snapshot;
+            if (mempool_fn) {
+                for (const CTxMemPoolEntry& entry : ::mempool.mapTx) {
+                    mempool_snapshot.push_back(entry.GetSharedTx());
+                }
+            }
+
+            // Declare an asynchronous task to send the mempool snapshot and
+            // register for notifications
+            register_task = std::packaged_task<std::unique_ptr<Handler>()>([&] {
+                if (mempool_fn) mempool_fn(std::move(mempool_snapshot));
+                return MakeUnique<NotificationsHandlerImpl>(*this, notifications);
+            });
+
+            // Register for notifications. Avoid receiving stale notifications
+            // that may be backed up in the queue by delaying registration with
+            // CallFunctionInValidationInterfaceQueue. Avoid missing any new
+            // notifications that happen after scanning blocks and taking the
+            // mempool snapshot above by holding on to cs_main and mempool.cs
+            // while calling CallFunctionInValidationInterfaceQueue, so the new
+            // notifications are queued after register_task
+            CallFunctionInValidationInterfaceQueue([&] { register_task(); });
+        }
+        return register_task.get_future().get();
     }
     void waitForNotificationsIfTipChanged(const uint256& old_tip) override
     {
@@ -357,13 +433,6 @@ public:
         RPCRunLater(name, std::move(fn), seconds);
     }
     int rpcSerializationFlags() override { return RPCSerializationFlags(); }
-    void requestMempoolTransactions(Notifications& notifications) override
-    {
-        LOCK2(::cs_main, ::mempool.cs);
-        for (const CTxMemPoolEntry& entry : ::mempool.mapTx) {
-            notifications.TransactionAddedToMempool(entry.GetSharedTx());
-        }
-    }
     NodeContext& m_node;
 };
 } // namespace

@@ -318,10 +318,7 @@ public:
         }
         num_blocks = m_wallet->GetLastBlockHeight();
         block_time = -1;
-        Optional<int64_t> time = m_wallet->chain().getBlockTime(num_blocks);
-        if (time) {
-            block_time = *time;
-        }
+        m_wallet->chain().findBlock(m_wallet->GetLastBlockHash(), nullptr, &block_time);
         tx_status = MakeWalletTxStatus(*m_wallet, mi->second);
         return true;
     }

@@ -762,7 +762,8 @@ public:
     std::unique_ptr<interfaces::Handler> m_chain_notifications_handler;
 
     /** Register the wallet for chain notifications */
-    void handleNotifications();
+    enum class ScanStatus { SUCCESS, FAILED, MISSING_BLOCKS, SKIPPED };
+    ScanStatus handleNotifications(bool scan_chain = false) LOCKS_EXCLUDED(cs_wallet);
 
     /** Interface for accessing chain state. */
     interfaces::Chain& chain() const { assert(m_chain); return *m_chain; }
@@ -879,7 +880,7 @@ public:
     };
     ScanResult ScanForWalletTransactions(const uint256& first_block, const uint256& last_block, const WalletRescanReserver& reserver, bool fUpdate);
     void TransactionRemovedFromMempool(const CTransactionRef &ptx) override;
-    void ReacceptWalletTransactions() EXCLUSIVE_LOCKS_REQUIRED(cs_wallet);
+    void ReacceptWalletTransactions() LOCKS_EXCLUDED(cs_wallet);
     void ResendWalletTransactions();
     struct Balance {
         CAmount m_mine_trusted{0};           //!< Trusted, at depth=GetBalance.min_depth or more
@@ -1144,6 +1145,12 @@ public:
         assert(m_last_block_processed_height >= 0);
         return m_last_block_processed_height;
     };
+    uint256 GetLastBlockHash() const EXCLUSIVE_LOCKS_REQUIRED(cs_wallet)
+    {
+        AssertLockHeld(cs_wallet);
+        assert(m_last_block_processed_height >= 0);
+        return m_last_block_processed;
+    }
     /** Set last block processed height, currently only use in unit test */
     void SetLastBlockProcessed(int block_height, uint256 block_hash) EXCLUSIVE_LOCKS_REQUIRED(cs_wallet)
     {

@@ -8,6 +8,10 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
+#run docker images https://docs.docker.com/engine/reference/commandline/run/
+alias DOCKER_PYTHON="docker run -t -i --rm python bash"
+alias DOCKER_UBUNTU="docker run -t -i --rm ubuntu bash"
+
 # Shortcuts
 alias d="cd ~/Documents/Dropbox"
 alias dl="cd ~/Downloads"

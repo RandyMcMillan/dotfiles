@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+alias RICHLIST="cd ~/pycoin/utilities/mac/ && ./richLists.py"
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -21,14 +21,14 @@ alias CO="git  checkout "
 alias GPF="git push -f origin HEAD"
 alias GCA="git commit --amend "
 alias GCB="git branch | grep -ve ' master$' | xargs git branch -D"
-alias AUTO="./autogen.sh"
-alias CONF="./configure"
 alias DATE="date +%Y/%j/"$(git rev-parse --short HEAD)
 #codespell
 alias CODESPELL="codespell"
 alias SKIP="--skip='.git*,depends*,db*,dist*,autom4te*,build-aux*,qa-assets*,src*,test*,doc*,libtool*,config*,contrib*,.DS_Store,aclocal*,ci*,share*,Makefile*,*.dmg,*.tiff,*.png,*.app'"
 
 #bitcoin/./configure QUICK
+alias AUTO="./autogen.sh"
+alias CONF="./configure"
 alias NOGUI="--with-gui=no"
 alias NOCACHE="--disable-ccache=yes"
 alias NOMAN="--disable-man=yes"
@@ -44,8 +44,11 @@ alias NO_WALLET="--enable-util-wallet=no"
 alias NO_TX="--enable-util-tx=no"
 alias CLI="--enable-util-cli=yes"
 
-alias REFRESH_GPG="gpg --keyserver hkp://keyserver.ubuntu.com --refresh-keys
-"
+alias REFRESH_GPG="gpg --keyserver hkp://keyserver.ubuntu.com --refresh-keys"
+
+alias BREW_INSTALL="/usr/bin/ruby -e '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)'"
+alias BREW_UNINSTALL="/usr/bin/ruby -e '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)'"
+alias BREW_RELINK="brew list -1 | while read line; do brew unlink $line; brew link --force $line; done"
 
 alias QUICK=$NOGUI $NOCACHE $NOMAN $DEBUG $DAEMON $RECUCE_EXPS $NO_BENCH $NO_WALLET $NO_TX $CLI $WERROR
 

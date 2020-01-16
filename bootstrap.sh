@@ -13,8 +13,15 @@ function doIt() {
 		--exclude "README.md" \
 		--exclude "LICENSE-MIT.txt" \
 		-avh --no-perms . ~;
-    ln -s $PWD/.atom ~/.atom
 	source ~/.bash_profile;
+    if [[ -d ~/quick-vim ]]; then
+        cd ~/quick-vim
+        git pull
+        ./quick-vim upgrade
+    else
+        cd ~/
+        git clone --recurse-submodules -j8 https://github.com/randymcmillan/quick-vim
+    fi
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then

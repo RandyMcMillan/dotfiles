@@ -259,6 +259,15 @@ public:
         }
         return true;
     }
+    uint256 findAncestorByHeight(const uint256& block_hash, int ancestor_height) override
+    {
+        LOCK(::cs_main);
+        if (const CBlockIndex* block = LookupBlockIndex(block_hash)) {
+            const CBlockIndex* ancestor = block->GetAncestor(ancestor_height);
+            if (ancestor) return ancestor->GetBlockHash();
+        }
+        return {};
+    }
     bool findAncestorByHash(const uint256& block_hash, const uint256& ancestor_hash, int* height) override
     {
         LOCK(::cs_main);
@@ -267,6 +276,22 @@ public:
         if (!block || !ancestor || block->GetAncestor(ancestor->nHeight) != ancestor) return false;
         if (height) *height = ancestor->nHeight;
         return true;
+    }
+    Optional<int> findCommonAncestor(const uint256& block_hash1,
+        const uint256& block_hash2,
+        uint256* ancestor_hash,
+        int* ancestor_height) override
+    {
+        LOCK(::cs_main);
+        const CBlockIndex* block1 = LookupBlockIndex(block_hash1);
+        const CBlockIndex* block2 = LookupBlockIndex(block_hash2);
+        if (block1 && block2) {
+            const CBlockIndex* ancestor = LastCommonAncestor(block1, block2);
+            if (ancestor_hash) *ancestor_hash = ancestor->GetBlockHash();
+            if (ancestor_height) *ancestor_height = ancestor->nHeight;
+            return block1->nHeight;
+        }
+        return nullopt;
     }
     void findCoins(std::map<COutPoint, Coin>& coins) override { return FindCoins(m_node, coins); }
     double guessVerificationProgress(const uint256& block_hash) override

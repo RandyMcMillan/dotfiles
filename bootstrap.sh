@@ -20,7 +20,11 @@ function doIt() {
         ./quick-vim upgrade
     else
         cd ~/
-        git clone --recurse-submodules -j8 https://github.com/randymcmillan/quick-vim
+        git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
+        sh ~/.vim_runtime/install_awesome_vimrc.sh
+        ln -s ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+
+        
     fi
 }
 

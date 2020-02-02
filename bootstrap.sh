@@ -14,18 +14,10 @@ function doIt() {
 		--exclude "LICENSE-MIT.txt" \
 		-avh --no-perms . ~;
 	source ~/.bash_profile;
-    if [[ -d ~/quick-vim ]]; then
-        cd ~/quick-vim
-        git pull
-        ./quick-vim upgrade
-    else
         cd ~/
         git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
         sh ~/.vim_runtime/install_awesome_vimrc.sh
         ln -s ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
-
-        
-    fi
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then

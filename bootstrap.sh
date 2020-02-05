@@ -12,8 +12,10 @@ function doIt() {
 		--exclude "bootstrap.sh" \
 		--exclude "README.md" \
 		--exclude "LICENSE-MIT.txt" \
+		--exclude "brew.sh" \
 		-avh --no-perms . ~;
 	source ~/.bash_profile;
+	source ~/.macos;
         cd ~/
         git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
         sh ~/.vim_runtime/install_awesome_vimrc.sh

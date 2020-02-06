@@ -141,6 +141,19 @@ defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault
     fi
 #https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
 gpg --list-secret-keys --keyid-format LONG
+read -p 'ENTER your Github.com username: ' GITHUB_USER_NAME
+#read -sp 'Password: ' GITHUB_USER_PASSWORD
+git config --global user.name $GITHUB_USER_NAME
+echo
+echo Thankyou $GITHUB_USER_NAME
+read -p 'ENTER your Github.com user email: ' GITHUB_USER_EMAIL
+git config --global user.email $GITHUB_USER_EMAIL
+echo
+echo Thankyou $GITHUB_USER_NAME for your email.
+read -p 'ENTER your public gpg signing key id: ' PUBLIC_GPG_SIGNING_KEY_ID
+git config --global user.signingkey $PUBLIC_GPG_SIGNING_KEY_ID
+echo
+echo Thankyou $GITHUB_USER_NAME for public gpg signing key id.
 
 }
 

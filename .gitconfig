@@ -1,5 +1,4 @@
 [alias]
-
 	# View abbreviated SHA, description, and history graph of the latest 20 commits
 	l = log --pretty=oneline -n 20 --graph --abbrev-commit
 
@@ -189,7 +188,11 @@
 [user]
 	signingkey = 97966C06BB06757B
 	name = randymcmillan
-    email = randy.lee.mcmillan@gmail.com
+		email = randy.lee.mcmillan@gmail.com
+
+git config --global gpg.program gpg  # perhaps you had this already? On linux maybe gpg2
+git config --global commit.gpgsign true  # if you want to sign every commit
+
 
 [alias]
     ls-subtrees = !"for i in $(git log | grep git-subtree-dir | sed -e 's/^.*: //g' | uniq); do test -d $i && echo $i; done"

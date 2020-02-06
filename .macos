@@ -24,6 +24,7 @@ scutil --get HostName
 scutil --get LocalHostName
 scutil --get ComputerName
 export COMPUTER_NAME=$(echo '"\uD83D\uDE01"' | jq .) &&
+export COMPUTER_NAME=$(echo "${COMPUTER_NAME//\"}")
 echo $COMPUTER_NAME &&
 sudo scutil --set ComputerName "$COMPUTER_NAME"
 sudo scutil --set HostName "$COMPUTER_NAME"

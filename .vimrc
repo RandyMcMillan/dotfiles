@@ -44,6 +44,8 @@ set secure
 set number
 " Enable syntax highlighting
 syntax on
+" enable all Python syntax highlighting features
+let python_highlight_all = 1
 " Highlight current line
 set cursorline
 " Make tabs as wide as two spaces

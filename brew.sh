@@ -7,6 +7,7 @@ checkbrew() {
         brew update
         # Upgrade any already-installed formulae.
         brew upgrade
+				brew install jq
 				brew install git
 				brew install vim
         brew cask install iterm2

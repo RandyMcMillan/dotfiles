@@ -49,8 +49,35 @@ while [ $tasksDone -le $taskCount ]; do
 
     #do task
 
+    #sudo rm -rf ~/.vim_runtime
+    if [ -d "$HOME/.vim_runtime/" ]; then
+    echo "Directory ~/.vim_runtime exists."
+    increment
+      cd ~/.vim_runtime
+    increment
+      git pull -f  origin master
+    increment
+      sh ~/.vim_runtime/install_awesome_vimrc.sh
+    increment
+      #we exclude from ~/ because we link to here
+      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+    increment
+
+    else
+
+      git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
+    increment
+      sh ~/.vim_runtime/install_awesome_vimrc.sh
+    increment
+      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+    increment
+
+fi
     #then
     increment
+
+
+
 
     #do task
 

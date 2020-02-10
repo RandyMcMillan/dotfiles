@@ -1,43 +1,52 @@
 #!/usr/bin/env bash
+
+# usage getpid [varname]
+getpid(){
+    pid=$(exec sh -c 'echo "$PPID"')
+    test "$1" && eval "$1=\$pid"
+}
+
+
 progressBarWidth=20
 
 # Function to draw progress bar
 progressBar() {
 
-  # Calculate number of fill/empty slots in the bar
-  progress=$(echo "$progressBarWidth/$taskCount*$tasksDone" | bc -l)
-  fill=$(printf "%.0f\n" $progress)
-  if [ $fill -gt $progressBarWidth ]; then
+
+    # Calculate number of fill/empty slots in the bar
+    progress=$(echo "$progressBarWidth/$taskCount*$tasksDone" | bc -l)
+    fill=$(printf "%.0f\n" $progress)
+    if [ $fill -gt $progressBarWidth ]; then
     fill=$progressBarWidth
-  fi
-  empty=$(($fill-$progressBarWidth))
+    fi
+    empty=$(($fill-$progressBarWidth))
 
-  # Percentage Calculation
-  percent=$(echo "100/$taskCount*$tasksDone" | bc -l)
-  percent=$(printf "%0.2f\n" $percent)
-  if [ $(echo "$percent>100" | bc) -gt 0 ]; then
+    # Percentage Calculation
+    percent=$(echo "100/$taskCount*$tasksDone" | bc -l)
+    percent=$(printf "%0.2f\n" $percent)
+    if [ $(echo "$percent>100" | bc) -gt 0 ]; then
     percent="100.00"
-  fi
+    fi
 
-  # Output to screen
-  printf "\r["
-  printf "%${fill}s" '' | tr ' ' ▉
-  printf "%${empty}s" '' | tr ' ' ░
-  printf "] $percent%% - $text "
+    # Output to screen
+    printf "\r["
+    printf "%${fill}s" '' | tr ' ' ▉
+    printf "%${empty}s" '' | tr ' ' ░
+    printf "] $percent%% - $text "
 }
 
 increment() {
 
-# Do your task
-  (( tasksDone += 1 ))
+    # Do your task
+    (( tasksDone += 1 ))
 
-  # Add some friendly output
+    # Add some friendly output
     #text=$(echo "somefile-$tasksDone.dat")
 
-  # Draw the progress bar
-  progressBar $taskCount $taskDone $text
+    # Draw the progress bar
+    progressBar $taskCount $taskDone $text
 
-  sleep 0.01
+    sleep 0.01
 
 }
 
@@ -66,11 +75,11 @@ while [ $tasksDone -le $taskCount ]; do
 
     else
 
-      git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
+    git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
     increment
-      sh ~/.vim_runtime/install_awesome_vimrc.sh
+    sh ~/.vim_runtime/install_awesome_vimrc.sh
     increment
-      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+    ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
     increment
     fi
 
@@ -84,38 +93,39 @@ linkAndSource() {
 
 while [ $tasksDone -le $taskCount ]; do
 
-ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
+    ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
     increment
-ln -sf ~/dotfiles/.bash_prompt  ~/.bash_prompt
+    ln -sf ~/dotfiles/.bash_prompt  ~/.bash_prompt
     increment
-ln -sf ~/dotfiles/.functions    ~/.functions
+    ln -sf ~/dotfiles/.functions    ~/.functions
     increment
-ln -sf ~/dotfiles/.gvimrc       ~/.gvimrc
+    ln -sf ~/dotfiles/.gvimrc       ~/.gvimrc
     increment
-ln -sf ~/dotfiles/.macos        ~/.macos
+    ln -sf ~/dotfiles/.macos        ~/.macos
     increment
-ln -sf ~/dotfiles/.osx          ~/.osx
+    ln -sf ~/dotfiles/.osx          ~/.osx
     increment
-#ln -sf ~/dotfiles/.editorconfig ~/.editorconfig
-
-source ~/.bash_profile;
-    increment
-source ~/.bash_prompt;
-    increment
-source ~/.functions
-    increment
-source ~/.macos;
-    increment
-source ~/.osx;
+    ln -sf ~/dotfiles/.editorconfig ~/.editorconfig
     increment
 
-done
+    source ~/.bash_profile;
+    increment
+    source ~/.bash_prompt;
+    increment
+    source ~/.functions
+    increment
+    source ~/.macos;
+    increment
+    source ~/.osx;
+    increment
+
+    done
 
 }
 
 function doIt() {
 
-    rsync --exclude ".git/" \
+    sudo rsync --exclude ".git/" \
           --exclude ".atom" \
           --exclude ".DS_Store" \
           --exclude ".vimrc" \
@@ -137,13 +147,17 @@ function doIt() {
 if  csrutil status | grep 'disabled' &> /dev/null; then
     printf "System Integrity Protection status: \033[1;31mdisabled\033[0m\n";
     increment
-#    sudo rm /private/var/vm/sleepimage
+    sudo pmset -a hibernatemode 0
     increment
-#    sudo touch /private/var/vm/sleepimage
+    yes | sudo rm /private/var/vm/sleepimage
     increment
-#    sudo chflags uchg /private/var/vm/sleepimage
+    sudo touch /private/var/vm/sleepimage
     increment
-#    sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
+    sudo chflags uchg /private/var/vm/sleepimage
+    increment
+    ls -la /private/var/vm
+    increment
+    sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
     increment
 #   defaults write com.apple.spotlight orderedItems -array \
 #   '{"enabled" = 1;"name" = "APPLICATIONS";}' \

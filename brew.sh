@@ -7,13 +7,14 @@ checkbrew() {
         brew update
         # Upgrade any already-installed formulae.
         brew upgrade
-				brew install jq
-				brew install git
-				brew install vim
+        brew install jq
+        brew install git
+        brew install vim
         brew cask install iterm2
         brew cask install gpg-suite
-	else
-		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+			else
+					/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
 	fi
 }
 

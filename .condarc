@@ -1,0 +1,11 @@
+create_default_packages:
+  - site
+	- subprocess
+	- requests
+  - bs4
+	- itertools
+	- gmpy2
+	- psutil
+  - pip
+  - pycoin
+  - scipy=0.15.0

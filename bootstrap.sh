@@ -1,4 +1,72 @@
 #!/usr/bin/env bash
+progressBarWidth=20
+
+# Function to draw progress bar
+progressBar () {
+
+  # Calculate number of fill/empty slots in the bar
+  progress=$(echo "$progressBarWidth/$taskCount*$tasksDone" | bc -l)
+  fill=$(printf "%.0f\n" $progress)
+  if [ $fill -gt $progressBarWidth ]; then
+    fill=$progressBarWidth
+  fi
+  empty=$(($fill-$progressBarWidth))
+
+  # Percentage Calculation
+  percent=$(echo "100/$taskCount*$tasksDone" | bc -l)
+  percent=$(printf "%0.2f\n" $percent)
+  if [ $(echo "$percent>100" | bc) -gt 0 ]; then
+    percent="100.00"
+  fi
+
+  # Output to screen
+  printf "\r["
+  printf "%${fill}s" '' | tr ' ' ▉
+  printf "%${empty}s" '' | tr ' ' ░
+  printf "] $percent%% - $text "
+}
+
+increment(){
+
+# Do your task
+  (( tasksDone += 1 ))
+
+  # Add some friendly output
+  text=$(echo "somefile-$tasksDone.dat")
+
+  # Draw the progress bar
+  progressBar $taskCount $taskDone $text
+
+  sleep 0.01
+
+}
+
+## Collect task count
+taskCount=33
+tasksDone=0
+
+while [ $tasksDone -le $taskCount ]; do
+
+    #do task
+
+    #then
+    increment
+
+    #do task
+
+    #then
+    increment
+
+
+
+done
+
+echo
+
+
+
+
+
 
 #sudo rm -rf ~/.vim_runtime
 if [ -d "$HOME/.vim_runtime/" ]; then
@@ -17,7 +85,7 @@ else
 
 fi
 
-cd "$(dirname "${BASH_SOURCE}")";
+#cd "$(dirname "${BASH_SOURCE}")";
 #git pull origin master;
 
 
@@ -156,6 +224,15 @@ echo
 echo Thankyou $GITHUB_USER_NAME for public gpg signing key id.
 
 }
+
+
+
+
+
+
+
+
+
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt;

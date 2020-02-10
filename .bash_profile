@@ -60,18 +60,5 @@ complete -W "NSGlobalDomain" defaults;
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Dock Finder Mail Safari iTunes* SystemUIServer Terminal Twitter bitcoind" killall;
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/git/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/git/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/git/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/git/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
+# Added by install_latest_perl_osx.pl
+[ -r /Users/git/.bashrc ] && source /Users/git/.bashrc

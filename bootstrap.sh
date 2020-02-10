@@ -32,7 +32,7 @@ increment(){
   (( tasksDone += 1 ))
 
   # Add some friendly output
-  text=$(echo "somefile-$tasksDone.dat")
+    #text=$(echo "somefile-$tasksDone.dat")
 
   # Draw the progress bar
   progressBar $taskCount $taskDone $text
@@ -42,7 +42,7 @@ increment(){
 }
 
 ## Collect task count
-taskCount=33
+taskCount=5
 tasksDone=0
 
 while [ $tasksDone -le $taskCount ]; do
@@ -73,9 +73,6 @@ while [ $tasksDone -le $taskCount ]; do
     increment
 
 fi
-    #then
-    increment
-
 
 
 
@@ -91,26 +88,6 @@ done
 echo
 
 
-
-
-
-
-#sudo rm -rf ~/.vim_runtime
-if [ -d "$HOME/.vim_runtime/" ]; then
-echo "Directory ~/.vim_runtime exists."
-	cd ~/.vim_runtime
-	git pull -f  origin master
-	sh ~/.vim_runtime/install_awesome_vimrc.sh
-	#we exclude from ~/ because we link to here
-	ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
-
-else
-
-	git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
-	sh ~/.vim_runtime/install_awesome_vimrc.sh
-	ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
-
-fi
 
 #cd "$(dirname "${BASH_SOURCE}")";
 #git pull origin master;

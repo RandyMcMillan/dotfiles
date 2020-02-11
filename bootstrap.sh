@@ -9,10 +9,8 @@ tasksDone=0
 # usage getpid [varname]
 getpid(){
 
-    echo
-
     pid=$(exec sh -c 'echo "$PPID"')
-    test "$1" && eval "$1=\$pid"
+    #test "$1" && eval "$1=\$pid"
 
 }
 
@@ -73,7 +71,7 @@ installVim() {
     if [[ $REPLY =~ ^[Yy]$ ]]; then
 
     ## Collect task count
-    taskCount=2
+    taskCount=1
     tasksDone=0
 
     while [ $tasksDone -le $taskCount ]; do
@@ -158,20 +156,16 @@ configGithub() {
     #https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
     gpg --list-secret-keys --keyid-format LONG
     increment
-    read -p 'ENTER your Github.com username: ' GITHUB_USER_NAME
+    echo randymcmillan | read -p 'ENTER your Github.com username: ' GITHUB_USER_NAME
     #read -sp 'Password: ' GITHUB_USER_PASSWORD
     git config --global user.name $GITHUB_USER_NAME
-    echo
     echo Thankyou $GITHUB_USER_NAME
-    read -p 'ENTER your Github.com user email: ' GITHUB_USER_EMAIL
+    echo randy.lee.mcmillan@gmail.com | read -p 'ENTER your Github.com user email: ' GITHUB_USER_EMAIL
     git config --global user.email $GITHUB_USER_EMAIL
-    echo
     echo Thankyou $GITHUB_USER_NAME for your email.
-    read -p 'ENTER your public gpg signing key id: ' PUBLIC_GPG_SIGNING_KEY_ID
+    echo 97966C06BB06757B | read -p 'ENTER your public gpg signing key id: ' PUBLIC_GPG_SIGNING_KEY_ID
     git config --global user.signingkey $PUBLIC_GPG_SIGNING_KEY_ID
-    echo
     echo Thankyou $GITHUB_USER_NAME for public gpg signing key id.
-    increment
     fi;
 
 }
@@ -265,12 +259,10 @@ while [ $tasksDone -le $taskCount ]; do
         increment;
         #defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
         increment;
-        hash tmutil &> /dev/null && sudo tmutil disablelocal
+        hash tmutil &> /dev/null && sudo tmutil disable
         increment;
     #    defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault -bool false
     #    increment
-
-    echo
 
     else
 
@@ -285,7 +277,6 @@ while [ $tasksDone -le $taskCount ]; do
         printf "$ csrutil disable\n"
         increment;
 
-        echo
     fi
 done
 }
@@ -298,7 +289,6 @@ if [ "$1" == "--force" -o "$1" == "-f" ]; then
 else
 
     read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
-    echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         getpid;
         doIt;

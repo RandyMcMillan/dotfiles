@@ -26,7 +26,7 @@
 
 #include <univalue.h>
 
-
+using interfaces::FoundBlock;
 
 std::string static EncodeDumpString(const std::string &str) {
     std::stringstream ret;
@@ -361,7 +361,7 @@ UniValue importprunedfunds(const JSONRPCRequest& request)
     auto locked_chain = pwallet->chain().lock();
     LOCK(pwallet->cs_wallet);
     int height;
-    if (!pwallet->chain().findAncestorByHash(pwallet->GetLastBlockHash(), merkleBlock.header.GetHash(), &height)) {
+    if (!pwallet->chain().findAncestorByHash(pwallet->GetLastBlockHash(), merkleBlock.header.GetHash(), FoundBlock().height(height))) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found in chain");
     }
 
@@ -564,7 +564,7 @@ UniValue importwallet(const JSONRPCRequest& request)
         if (!file.is_open()) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot open wallet dump file");
         }
-        pwallet->chain().findBlock(pwallet->GetLastBlockHash(), nullptr, &nTimeBegin);
+        pwallet->chain().findBlock(pwallet->GetLastBlockHash(), FoundBlock().time(nTimeBegin).require());
 
         int64_t nFilesize = std::max((int64_t)1, (int64_t)file.tellg());
         file.seekg(0, file.beg);
@@ -789,7 +789,7 @@ UniValue dumpwallet(const JSONRPCRequest& request)
     file << strprintf("# * Created on %s\n", FormatISO8601DateTime(GetTime()));
     file << strprintf("# * Best block at time of backup was %i (%s),\n", pwallet->GetLastBlockHeight(), pwallet->GetLastBlockHash().ToString());
     int64_t block_time = 0;
-    pwallet->chain().findBlock(pwallet->GetLastBlockHash(), nullptr, &block_time);
+    pwallet->chain().findBlock(pwallet->GetLastBlockHash(), FoundBlock().time(block_time).require());
     file << strprintf("#   mined on %s\n", block_time);
     file << "\n";
 
@@ -1363,7 +1363,7 @@ UniValue importmulti(const JSONRPCRequest& mainRequest)
         EnsureWalletIsUnlocked(pwallet);
 
         // Verify all timestamps are present before importing any keys.
-        pwallet->chain().findBlock(pwallet->GetLastBlockHash(), nullptr, &nLowestTimestamp, nullptr, &now);
+        pwallet->chain().findBlock(pwallet->GetLastBlockHash(), FoundBlock().time(nLowestTimestamp).mtpTime(now).require());
         for (const UniValue& data : requests.getValues()) {
             GetImportTimestamp(data, now);
         }

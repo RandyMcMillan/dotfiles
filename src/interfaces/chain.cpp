@@ -19,6 +19,7 @@
 #include <policy/settings.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
+#include <reverselock.h>
 #include <rpc/protocol.h>
 #include <rpc/server.h>
 #include <shutdown.h>
@@ -28,6 +29,7 @@
 #include <ui_interface.h>
 #include <uint256.h>
 #include <univalue.h>
+#include <util/check.h>
 #include <util/system.h>
 #include <validation.h>
 #include <validationinterface.h>
@@ -37,6 +39,25 @@
 
 namespace interfaces {
 namespace {
+
+bool FillBlock(UniqueLock<RecursiveMutex>& lock, const CBlockIndex* index, const FoundBlock& block)
+{
+    AssertLockHeld(::cs_main);
+    if (!index) {
+        CHECK_NONFATAL(!block.m_require);
+        return false;
+    }
+    if (block.m_height) *block.m_height = index->nHeight;
+    if (block.m_hash) *block.m_hash = index->GetBlockHash();
+    if (block.m_time) *block.m_time = index->GetBlockTime();
+    if (block.m_max_time) *block.m_max_time = index->GetBlockTimeMax();
+    if (block.m_mtp_time) *block.m_mtp_time = index->GetMedianTimePast();
+    if (block.m_data) {
+        reverse_lock<UniqueLock<RecursiveMutex>> unlock(lock);
+        if (!ReadBlockFromDisk(*block.m_data, index, Params().GetConsensus())) block.m_data->SetNull();
+    }
+    return true;
+}
 
 class LockImpl : public Chain::Lock, public UniqueLock<RecursiveMutex>
 {
@@ -214,83 +235,49 @@ public:
         // LockImpl to Lock pointer
         return std::move(result);
     }
-    bool findBlock(const uint256& hash, CBlock* block, int64_t* time, int64_t* time_max, int64_t* time_mtp) override
+    bool findBlock(const uint256& hash, const FoundBlock& block) override
     {
-        CBlockIndex* index;
-        {
-            LOCK(cs_main);
-            index = LookupBlockIndex(hash);
-            if (!index) {
-                return false;
-            }
-            if (time) {
-                *time = index->GetBlockTime();
-            }
-            if (time_max) {
-                *time_max = index->GetBlockTimeMax();
-            }
-            if (time_mtp) {
-                *time_mtp = index->GetMedianTimePast();
-            }
-        }
-        if (block && !ReadBlockFromDisk(*block, index, Params().GetConsensus())) {
-            block->SetNull();
-        }
-        return true;
+        WAIT_LOCK(cs_main, lock);
+        return FillBlock(lock, LookupBlockIndex(hash), block);
     }
-    Optional<uint256> findFirstBlockWithTimeAndHeight(int64_t min_time, int min_height, int* height = nullptr) override
+    bool findFirstBlockWithTimeAndHeight(int64_t min_time, int min_height, const FoundBlock& block) override
     {
-        LOCK(::cs_main);
-        CBlockIndex* block = ::ChainActive().FindEarliestAtLeast(min_time, min_height);
-        if (block) {
-            if (height) *height = block->nHeight;
-            return block->GetBlockHash();
-        }
-        return nullopt;
+        WAIT_LOCK(cs_main, lock);
+        return FillBlock(lock, ChainActive().FindEarliestAtLeast(min_time, min_height), block);
     }
-    Optional<uint256> findNextBlock(const uint256& block_hash, int block_height, bool& reorg) override {
-        LOCK(::cs_main);
+    bool findNextBlock(const uint256& block_hash, int block_height, const FoundBlock& block_out, bool* reorg_out) override {
+        WAIT_LOCK(cs_main, lock);
         CChain& chain = ::ChainActive();
         CBlockIndex* block = chain[block_height];
-        reorg = !block || block->GetBlockHash() != block_hash;
-        if (reorg) return nullopt;
-        block = chain[block_height + 1];
-        if (!block) return nullopt;
-        return block->GetBlockHash();
+        bool reorg = !block || block->GetBlockHash() != block_hash;
+        if (reorg_out) *reorg_out = reorg;
+        return FillBlock(lock, reorg ? nullptr : chain[block_height + 1], block_out);
     }
-    uint256 findAncestorByHeight(const uint256& block_hash, int ancestor_height) override
+    bool findAncestorByHeight(const uint256& block_hash, int ancestor_height, const FoundBlock& ancestor_out) override
     {
-        LOCK(::cs_main);
+        WAIT_LOCK(cs_main, lock);
         if (const CBlockIndex* block = LookupBlockIndex(block_hash)) {
-            const CBlockIndex* ancestor = block->GetAncestor(ancestor_height);
-            if (ancestor) return ancestor->GetBlockHash();
+            if (const CBlockIndex* ancestor = block->GetAncestor(ancestor_height)) {
+                return FillBlock(lock, ancestor, ancestor_out);
+            }
         }
-        return {};
+        return FillBlock(lock, nullptr, ancestor_out);
     }
-    bool findAncestorByHash(const uint256& block_hash, const uint256& ancestor_hash, int* height) override
+    bool findAncestorByHash(const uint256& block_hash, const uint256& ancestor_hash, const FoundBlock& ancestor_out) override
     {
-        LOCK(::cs_main);
+        WAIT_LOCK(cs_main, lock);
         const CBlockIndex* block = LookupBlockIndex(block_hash);
         const CBlockIndex* ancestor = LookupBlockIndex(ancestor_hash);
-        if (!block || !ancestor || block->GetAncestor(ancestor->nHeight) != ancestor) return false;
-        if (height) *height = ancestor->nHeight;
-        return true;
+        if (block && ancestor && block->GetAncestor(ancestor->nHeight) != ancestor) ancestor = nullptr;
+        return FillBlock(lock, ancestor, ancestor_out);
     }
-    Optional<int> findCommonAncestor(const uint256& block_hash1,
-        const uint256& block_hash2,
-        uint256* ancestor_hash,
-        int* ancestor_height) override
+    bool findCommonAncestor(const uint256& block_hash1, const uint256& block_hash2, const FoundBlock& ancestor_out, const FoundBlock& block1_out, const FoundBlock& block2_out) override
     {
-        LOCK(::cs_main);
+        WAIT_LOCK(cs_main, lock);
         const CBlockIndex* block1 = LookupBlockIndex(block_hash1);
         const CBlockIndex* block2 = LookupBlockIndex(block_hash2);
-        if (block1 && block2) {
-            const CBlockIndex* ancestor = LastCommonAncestor(block1, block2);
-            if (ancestor_hash) *ancestor_hash = ancestor->GetBlockHash();
-            if (ancestor_height) *ancestor_height = ancestor->nHeight;
-            return block1->nHeight;
-        }
-        return nullopt;
+        const CBlockIndex* ancestor = block1 && block2 ? LastCommonAncestor(block1, block2) : nullptr;
+        return FillBlock(lock, ancestor, ancestor_out) & FillBlock(lock, block1, block1_out) & FillBlock(lock, block2, block2_out);
     }
     void findCoins(std::map<COutPoint, Coin>& coins) override { return FindCoins(m_node, coins); }
     double guessVerificationProgress(const uint256& block_hash) override

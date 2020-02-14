@@ -36,6 +36,7 @@
 
 #include <univalue.h>
 
+using interfaces::FoundBlock;
 
 static const std::string WALLET_ENDPOINT_BASE = "/wallet/";
 
@@ -149,8 +150,7 @@ static void WalletTxToJSON(interfaces::Chain& chain, interfaces::Chain::Lock& lo
         entry.pushKV("blockheight", wtx.m_confirm.block_height);
         entry.pushKV("blockindex", wtx.m_confirm.nIndex);
         int64_t block_time;
-        bool found_block = chain.findBlock(wtx.m_confirm.hashBlock, nullptr /* block */, &block_time);
-        CHECK_NONFATAL(found_block);
+        chain.findBlock(wtx.m_confirm.hashBlock, FoundBlock().time(block_time).require());
         entry.pushKV("blocktime", block_time);
     } else {
         entry.pushKV("trusted", wtx.IsTrusted(locked_chain));
@@ -1586,8 +1586,8 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
     if (!request.params[0].isNull() && !request.params[0].get_str().empty()) {
         blockId = ParseHashV(request.params[0], "blockhash");
         height.emplace();
-        altheight = pwallet->chain().findCommonAncestor(blockId, pwallet->GetLastBlockHash(), nullptr, height.get_ptr());
-        if (!altheight) {
+        altheight.emplace();
+        if (!pwallet->chain().findCommonAncestor(blockId, pwallet->GetLastBlockHash(), FoundBlock().height(*height), FoundBlock().height(*altheight))) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
         }
     }
@@ -1623,7 +1623,7 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
     UniValue removed(UniValue::VARR);
     while (include_removed && altheight && *altheight > *height) {
         CBlock block;
-        if (!pwallet->chain().findBlock(blockId, &block) || block.IsNull()) {
+        if (!pwallet->chain().findBlock(blockId, FoundBlock().data(block)) || block.IsNull()) {
             throw JSONRPCError(RPC_INTERNAL_ERROR, "Can't read block from disk");
         }
         for (const CTransactionRef& tx : block.vtx) {
@@ -1638,7 +1638,8 @@ static UniValue listsinceblock(const JSONRPCRequest& request)
         --*altheight;
     }
 
-    uint256 lastblock = pwallet->chain().findAncestorByHeight(pwallet->GetLastBlockHash(), pwallet->GetLastBlockHeight() + 1 - target_confirms);
+    uint256 lastblock;
+    pwallet->chain().findAncestorByHeight(pwallet->GetLastBlockHash(), pwallet->GetLastBlockHeight() + 1 - target_confirms, FoundBlock().hash(lastblock).require());
 
     UniValue ret(UniValue::VOBJ);
     ret.pushKV("transactions", transactions);
@@ -3574,7 +3575,7 @@ UniValue rescanblockchain(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_MISC_ERROR, "Can't rescan beyond pruned data. Use RPC call getblockchaininfo to determine your pruned height.");
         }
 
-        start_block = pwallet->chain().findAncestorByHeight(pwallet->GetLastBlockHash(), start_height);
+        pwallet->chain().findAncestorByHeight(pwallet->GetLastBlockHash(), start_height, FoundBlock().hash(start_block).require());
     }
 
     CWallet::ScanResult result =

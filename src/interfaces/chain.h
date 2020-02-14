@@ -30,6 +30,26 @@ namespace interfaces {
 class Handler;
 class Wallet;
 
+class FoundBlock
+{
+public:
+    FoundBlock& hash(uint256& hash) { m_hash = &hash; return *this; }
+    FoundBlock& height(int& height) { m_height = &height; return *this; }
+    FoundBlock& data(CBlock& data) { m_data = &data; return *this; }
+    FoundBlock& time(int64_t& time) { m_time = &time; return *this; }
+    FoundBlock& maxTime(int64_t& max_time) { m_max_time = &max_time; return *this; }
+    FoundBlock& mtpTime(int64_t& mtp_time) { m_mtp_time = &mtp_time; return *this; }
+    FoundBlock& require() { m_require = true; return *this; }
+
+    uint256* m_hash = nullptr;
+    int* m_height = nullptr;
+    CBlock* m_data = nullptr;
+    int64_t* m_time = nullptr;
+    int64_t* m_max_time = nullptr;
+    int64_t* m_mtp_time = nullptr;
+    bool m_require = false;
+};
+
 //! Interface giving clients (wallet processes, maybe other analysis tools in
 //! the future) ability to access to the chain state, receive notifications,
 //! estimate fees, and submit transactions.
@@ -120,40 +140,37 @@ public:
     //! If a block pointer is provided to retrieve the block contents, and the
     //! block exists but doesn't have data (for example due to pruning), the
     //! block will be empty and all fields set to null.
-    virtual bool findBlock(const uint256& hash,
-        CBlock* block = nullptr,
-        int64_t* time = nullptr,
-        int64_t* max_time = nullptr,
-        int64_t* mtp_time = nullptr) = 0;
+    virtual bool findBlock(const uint256& hash, const FoundBlock& block={}) = 0;
 
     //! Return hash of first block in the chain with timestamp >= the given time
     //! and height >= than the given height, or nullopt if there is no block
     //! with a high enough timestamp and height. Also return the block height as
     //! an optional output parameter (to avoid the cost of a second lookup in
     //! case this information is needed.)
-    virtual Optional<uint256> findFirstBlockWithTimeAndHeight(int64_t min_time, int min_height, int* height = nullptr) = 0;
+    virtual bool findFirstBlockWithTimeAndHeight(int64_t min_time, int min_height, const FoundBlock& block={}) = 0;
 
     //! Get hash of next block if block is part of current chain. Also flag if
     //! there was a reorg and the specified block hash is no longer in the
     //! current chain.
-    virtual Optional<uint256> findNextBlock(const uint256& block_hash, int block_height, bool& reorg) = 0;
+    virtual bool findNextBlock(const uint256& block_hash, int block_height, const FoundBlock& block={}, bool* reorg=nullptr) = 0;
 
     //! Find ancestor of block at specified height and return its hash.
-    virtual uint256 findAncestorByHeight(const uint256& block_hash, int ancestor_height) = 0;
+    virtual bool findAncestorByHeight(const uint256& block_hash, int ancestor_height, const FoundBlock& block={}) = 0;
 
     //! Return whether block descends from a specified ancestor, and
     //! optionally return height of the ancestor.
     virtual bool findAncestorByHash(const uint256& block_hash,
         const uint256& ancestor_hash,
-        int* height = 0) = 0;
+        const FoundBlock& block={}) = 0;
 
     //! Find most recent common ancestor between two blocks and optionally
     //! return its hash and/or height. Also return height of first block. Return
     //! nullopt if either block is unknown or there is no common ancestor.
-    virtual Optional<int> findCommonAncestor(const uint256& block_hash1,
+    virtual bool findCommonAncestor(const uint256& block_hash1,
         const uint256& block_hash2,
-        uint256* ancestor_hash,
-        int* ancestor_height) = 0;
+        const FoundBlock& ancestor={},
+        const FoundBlock& block1={},
+        const FoundBlock& block2={}) = 0;
 
     //! Look up unspent output information. Returns coins in the mempool and in
     //! the current chain UTXO set. Iterates through all the keys in the map and

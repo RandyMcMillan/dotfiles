@@ -35,6 +35,8 @@
 
 #include <boost/algorithm/string/replace.hpp>
 
+using interfaces::FoundBlock;
+
 const std::map<uint64_t,std::string> WALLET_FLAG_CAVEATS{
     {WALLET_FLAG_AVOID_REUSE,
         "You need to rescan the blockchain in order to correctly mark used "
@@ -1585,17 +1587,16 @@ int64_t CWallet::RescanFromTime(int64_t startTime, const WalletRescanReserver& r
     // highest blockchain timestamp, in which case there is nothing that needs
     // to be scanned.
     int start_height = 0;
-    Optional<uint256> start_block = chain().findFirstBlockWithTimeAndHeight(startTime - TIMESTAMP_WINDOW, 0, &start_height);
-    WalletLogPrintf("%s: Rescanning last %i blocks\n", __func__, start_block ? WITH_LOCK(cs_wallet, return GetLastBlockHeight()) - start_height + 1 : 0);
+    uint256 start_block;
+    bool start = chain().findFirstBlockWithTimeAndHeight(startTime - TIMESTAMP_WINDOW, 0, FoundBlock().hash(start_block).height(start_height));
+    WalletLogPrintf("%s: Rescanning last %i blocks\n", __func__, start ? WITH_LOCK(cs_wallet, return GetLastBlockHeight()) - start_height + 1 : 0);
 
-    if (start_block) {
+    if (start) {
         // TODO: this should take into account failure by ScanResult::USER_ABORT
-        ScanResult result = ScanForWalletTransactions(*start_block, start_height, {} /* max_height */, reserver, update);
+        ScanResult result = ScanForWalletTransactions(start_block, start_height, {} /* max_height */, reserver, update);
         if (result.status == ScanResult::FAILURE) {
             int64_t time_max;
-            if (!chain().findBlock(result.last_failed_block, nullptr /* block */, nullptr /* time */, &time_max)) {
-                throw std::logic_error("ScanForWalletTransactions returned invalid block hash");
-            }
+            chain().findBlock(result.last_failed_block, FoundBlock().maxTime(time_max).require());
             return time_max + TIMESTAMP_WINDOW + 1;
         }
     }
@@ -1638,8 +1639,10 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
     fAbortRescan = false;
     ShowProgress(strprintf("%s " + _("Rescanning...").translated, GetDisplayName()), 0); // show rescan progress in GUI as dialog or on splashscreen, if -rescan on startup
     uint256 tip_hash = WITH_LOCK(cs_wallet, return GetLastBlockHash());
+    uint256 end_hash = tip_hash;
+    if (max_height) chain().findAncestorByHeight(tip_hash, *max_height, FoundBlock().hash(end_hash));
     double progress_begin = chain().guessVerificationProgress(block_hash);
-    double progress_end = chain().guessVerificationProgress(max_height ? chain().findAncestorByHeight(tip_hash, *max_height) : tip_hash);
+    double progress_end = chain().guessVerificationProgress(end_hash);
     double progress_current = progress_begin;
     while (!fAbortRescan && !chain().shutdownRequested()) {
         m_scanning_progress = (progress_current - progress_begin) / (progress_end - progress_begin);
@@ -1652,12 +1655,13 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
         }
 
         CBlock block;
-        Optional<uint256> next_block;
+        bool next_block;
+        uint256 next_block_hash;
         bool reorg = false;
-        if (chain().findBlock(block_hash, &block) && !block.IsNull()) {
+        if (chain().findBlock(block_hash, FoundBlock().data(block)) && !block.IsNull()) {
             auto locked_chain = chain().lock();
             LOCK(cs_wallet);
-            next_block = chain().findNextBlock(block_hash, block_height, reorg);
+            next_block = chain().findNextBlock(block_hash, block_height, FoundBlock().hash(next_block_hash), &reorg);
             if (reorg) {
                 // Abort scan if current block is no longer active, to prevent
                 // marking transactions as coming from the wrong block.
@@ -1678,7 +1682,7 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
             // could not scan block, keep scanning but record this block as the most recent failure
             result.last_failed_block = block_hash;
             result.status = ScanResult::FAILURE;
-            next_block = chain().findNextBlock(block_hash, block_height, reorg);
+            next_block = chain().findNextBlock(block_hash, block_height, FoundBlock().hash(next_block_hash), &reorg);
         }
         if (max_height && block_height >= *max_height) {
             break;
@@ -1692,7 +1696,7 @@ CWallet::ScanResult CWallet::ScanForWalletTransactions(const uint256& start_bloc
             }
 
             // increment block and verification progress
-            block_hash = *next_block;
+            block_hash = next_block_hash;
             ++block_height;
             progress_current = chain().guessVerificationProgress(block_hash);
 
@@ -2479,8 +2483,7 @@ static bool IsCurrentForAntiFeeSniping(interfaces::Chain& chain, const uint256& 
     }
     constexpr int64_t MAX_ANTI_FEE_SNIPING_TIP_AGE = 8 * 60 * 60; // in seconds
     int64_t block_time;
-    bool found_block = chain.findBlock(block_hash, nullptr, &block_time);
-    assert(found_block);
+    chain.findBlock(block_hash,  FoundBlock().time(block_time).require());
     if (block_time < (GetTime() - MAX_ANTI_FEE_SNIPING_TIP_AGE)) {
         return false;
     }
@@ -3434,7 +3437,7 @@ void CWallet::GetKeyBirthTimes(interfaces::Chain::Lock& locked_chain, std::map<C
     std::map<CKeyID, const CWalletTx::Confirmation*> mapKeyFirstBlock;
     CWalletTx::Confirmation max_confirm;
     max_confirm.block_height = GetLastBlockHeight() > 144 ? GetLastBlockHeight() - 144 : 0; // the tip can be reorganized; use a 144-block safety margin
-    max_confirm.hashBlock = chain().findAncestorByHeight(GetLastBlockHash(), max_confirm.block_height);
+    chain().findAncestorByHeight(GetLastBlockHash(), max_confirm.block_height, FoundBlock().hash(max_confirm.hashBlock).require());
     for (const CKeyID &keyid : spk_man->GetKeys()) {
         if (mapKeyBirth.count(keyid) == 0)
             mapKeyFirstBlock[keyid] = &max_confirm;
@@ -3466,8 +3469,7 @@ void CWallet::GetKeyBirthTimes(interfaces::Chain::Lock& locked_chain, std::map<C
     // Extract block timestamps for those keys
     for (const auto& entry : mapKeyFirstBlock) {
         int64_t block_time;
-        bool found_block = chain().findBlock(entry.second->hashBlock, nullptr, &block_time);
-        assert(found_block);
+        chain().findBlock(entry.second->hashBlock, FoundBlock().time(block_time).require());
         mapKeyBirth[entry.first] = block_time - TIMESTAMP_WINDOW; // block times can be 2h off
     }
 }
@@ -3498,7 +3500,7 @@ unsigned int CWallet::ComputeTimeSmart(const CWalletTx& wtx) const
     unsigned int nTimeSmart = wtx.nTimeReceived;
     if (!wtx.isUnconfirmed() && !wtx.isAbandoned()) {
         int64_t blocktime;
-        if (chain().findBlock(wtx.m_confirm.hashBlock, nullptr /* block */, &blocktime)) {
+        if (chain().findBlock(wtx.m_confirm.hashBlock, FoundBlock().time(blocktime))) {
             int64_t latestNow = wtx.nTimeReceived;
             int64_t latestEntry = 0;
 

@@ -2,6 +2,10 @@
 
 # ~/.macos — https://mths.be/macos
 
+#For MacFUSE
+defaults write com.apple.DiskUtility DUDebugMenuEnabled 1
+defaults write com.apple.finder ShowMountedServersOnDesktop 1
+
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'

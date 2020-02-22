@@ -12,11 +12,13 @@ checkbrew() {
         brew install vim
         brew cask install iterm2
         brew cask install gpg-suite
-				brew cask install moom
-			else
-					/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	brew cask install moom
+	brew cask install vmware-fusion
 
-	fi
+    else
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    fi
 }
 
 checkbrew

@@ -10,13 +10,16 @@ checkbrew() {
         brew install jq
         brew install git
         brew install vim
+        brew install gnupg
         brew cask install iterm2
         brew cask install gpg-suite
-	brew cask install moom
-	brew cask install vmware-fusion
+        brew cask install moom
+        brew cask install vmware-fusion
 
     else
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        checkbrew
 
     fi
 }
@@ -35,7 +38,7 @@ brew upgrade
 BREW_PREFIX=$(brew --prefix)
 
 # Install GnuPG to enable PGP-signing commits.
-brew install gnupg
+#brew install gnupg
 
 # Install GNU core utilities (those that come with macOS are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
@@ -59,7 +62,7 @@ brew install gnupg
 #fi;
 
 # Install GnuPG to enable PGP-signing commits.
-brew install gnupg
+#brew install gnupg
 
 #travisci
 #brew install travis

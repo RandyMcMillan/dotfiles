@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+defaults write com.apple.AppleMultitouchTrackpad DragLock -bool true
+defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+defaults read com.apple.AppleMultitouchTrackpad
 # ~/.macos — https://mths.be/macos
 
 #For MacFUSE

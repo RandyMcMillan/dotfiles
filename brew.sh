@@ -18,16 +18,23 @@ checkbrew() {
         brew install vim
         brew install gnupg
         brew cask install iterm2
+        curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
+        #chmod a+x /usr/local/bin/dockutil
+        #hash -r
+        #dockutil --add '/Applications/iTerm' --replacing 'iTerm'
         brew cask install gpg-suite
         brew cask install moom
-        #sudo tccutil -i com.manytricks.Moom
-        #sudo tccutil -e com.manytricks.Moom
         brew cask install onyx
-        #sudo tccutil -i com.titanium.OnyX
-        #sudo tccutil -e com.titanium.OnyX
-        brew cask install vmware-fusion
-        #sudo tccutil -i com.vmware.fusion
-        #sudo tccutil -e com.vmware.fusion
+        #REF:https://github.com/sindresorhus/quick-look-plugins
+        brew cask install qlcolorcode
+        brew cask install qlstephen
+        brew cask install qlmarkdown
+        brew cask install quicklook-json
+        brew cask install qlimagesize
+        brew cask install suspicious-package
+        brew cask install quicklookase
+        brew cask install qlvideo
+
 
     else
 

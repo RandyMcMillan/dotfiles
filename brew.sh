@@ -7,6 +7,12 @@ checkbrew() {
         brew update
         # Upgrade any already-installed formulae.
         brew upgrade
+
+        #REF:https://github.com/jacobsalmela/tccutil
+        brew install tccutil
+        #sudo tccutil --list
+        sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" 'UPDATE access SET allowed = "1";'
+
         brew install jq
         brew install git
         brew install vim
@@ -14,7 +20,14 @@ checkbrew() {
         brew cask install iterm2
         brew cask install gpg-suite
         brew cask install moom
+        #sudo tccutil -i com.manytricks.Moom
+        #sudo tccutil -e com.manytricks.Moom
+        brew cask install onyx
+        #sudo tccutil -i com.titanium.OnyX
+        #sudo tccutil -e com.titanium.OnyX
         brew cask install vmware-fusion
+        #sudo tccutil -i com.vmware.fusion
+        #sudo tccutil -e com.vmware.fusion
 
     else
 
@@ -23,16 +36,7 @@ checkbrew() {
 
     fi
 }
-
 checkbrew
-
-# Install command-line tools using Homebrew.
-
-# Make sure we’re using the latest Homebrew.
-brew update
-
-# Upgrade any already-installed formulae.
-brew upgrade
 
 # Save Homebrew’s installed location.
 BREW_PREFIX=$(brew --prefix)

@@ -24,6 +24,7 @@ checkbrew() {
         #dockutil --add '/Applications/iTerm' --replacing 'iTerm'
         brew cask install gpg-suite
         brew cask install moom
+        brew cask install vyprvpn
         brew cask install onyx
         #REF:https://github.com/sindresorhus/quick-look-plugins
         brew cask install qlcolorcode

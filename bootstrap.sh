@@ -59,52 +59,10 @@ increment() {
 
 }
 
-installVim() {
-echo 'installVim'
-    getpid;
-
-    read -p "Install Vim? (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-
-    ## Collect task count
-    taskCount=1
-    tasksDone=0
-
-    while [ $tasksDone -le $taskCount ]; do
-
-        #sudo rm -rf ~/.vim_runtime
-        if [ -d "$HOME/.vim_runtime/" ]; then
-          cd ~/.vim_runtime
-          git pull -f  origin master
-          increment
-          sh ~/.vim_runtime/install_awesome_vimrc.sh
-          increment
-          #we exclude from ~/ because we link to here
-          ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
-          increment
-
-        else
-
-          git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
-          increment
-          sh ~/.vim_runtime/install_awesome_vimrc.sh
-          increment
-          ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
-          increment
-        fi
-
-    done
-    fi
-    echo
-
-}
-installVim
-
 linkAndSource() {
 
     read -p "link and source dotfiles? (y/n) " -n 1;
-    echo "";
+    echo
 
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo 'linkAndSource'
@@ -151,47 +109,6 @@ linkAndSource() {
 }
 linkAndSource
 
-configHOSTSfile() {
-
-#REF:https://github.com/StevenBlack/hosts.git
-echo 'configHOSTSfile'
-    read -p "Config hosts file? (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        git clone --depth 1 https://github.com/StevenBlack/hosts.git
-        cd hosts && python3 -m pip install --user -r requirements.txt
-        python3 testUpdateHostsFile.py
-        python3 updateHostsFile.py -a -r -e fakenews gambling porn social
-    fi
-
-}
-configHOSTSfile
-
-configGithub() {
-
-    getpid;
-
-    read -p "Config github? (y/n) " -n 1;
-    echo "";
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-    #https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
-    gpg --list-secret-keys --keyid-format LONG
-    increment
-    echo randymcmillan | read -p 'ENTER your Github.com username: ' GITHUB_USER_NAME
-    #read -sp 'Password: ' GITHUB_USER_PASSWORD
-    git config --global user.name $GITHUB_USER_NAME
-    echo Thankyou $GITHUB_USER_NAME
-    echo randy.lee.mcmillan@gmail.com | read -p 'ENTER your Github.com user email: ' GITHUB_USER_EMAIL
-    git config --global user.email $GITHUB_USER_EMAIL
-    echo Thankyou $GITHUB_USER_NAME for your email.
-    echo 97966C06BB06757B | read -p 'ENTER your public gpg signing key id: ' PUBLIC_GPG_SIGNING_KEY_ID
-    git config --global user.signingkey $PUBLIC_GPG_SIGNING_KEY_ID
-    echo Thankyou $GITHUB_USER_NAME for public gpg signing key id.
-    fi;
-
-}
-configGithub
-
 function doIt() {
 
     ## Collect task count
@@ -200,8 +117,9 @@ function doIt() {
 
     getpid;
 
-while [ $tasksDone -le $taskCount ]; do
-echo 'rsync'
+    while [ $tasksDone -le $taskCount ]; do
+
+    echo 'rsync'
 
     rsync --exclude ".git/" \
           --exclude ".atom" \
@@ -213,9 +131,28 @@ echo 'rsync'
           --exclude "brew.sh" \
           --exclude ".editorconfig" \
           --exclude "hosts/" \
+          --exclude "hosts/*" \
+          --exclude "B.sh" \
+          --exclude "bootstrap.sh" \
+          --exclude "brew-bitcoin-gui.sh" \
+          --exclude "brew-bitcoin-no-gui.sh" \
+          --exclude "brew-vmware.sh" \
+          --exclude "brew.sh" \
+          --exclude "condarc" \
+          --exclude "debian-bitcoin.sh" \
+          --exclude "iterm2.json" \
+          --exclude "LICENSE-MIT.txt" \
+          --exclude "Miniconda3-latest-MacOSX-x86_64.sh" \
+          --exclude "configGithub.sh" \
+          --exclude "configHOSTSfile.sh" \
+          --exclude "*.sh" \
+          --exclude "*.txt" \
+          --exclude "*.json" \
+          --exclude "*.md" \
           -avh --no-perms . ~;
     increment;
     done
+    echo
 
     ## Collect task count
     taskCount=11
@@ -223,22 +160,22 @@ echo 'rsync'
     getpid;
 
 while [ $tasksDone -le $taskCount ]; do
-echo 'line 218'
+echo 'line 244\n'
     if  csrutil status | grep 'disabled' &> /dev/null; then
         printf "System Integrity Protection status: \033[1;31mdisabled\033[0m\n";
         increment;
         sudo pmset -a hibernatemode 0
         increment;
-        yes | sudo rm /private/var/vm/sleepimage
+        #yes | sudo chflags uchg /private/var/vm/sleepimage
         increment;
-        yes | sudo touch /private/var/vm/sleepimage
+        #yes | sudo rm /private/var/vm/sleepimage
         increment;
-        yes | sudo chflags uchg /private/var/vm/sleepimage
+        #yes | sudo touch /private/var/vm/sleepimage
         increment;
-        ls -la /private/var/vm
-        increment;
-    #    sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
-    #    increment;
+        #ls -la /private/var/vm
+        #increment;
+        #sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
+        #increment;
         defaults write com.apple.spotlight orderedItems -array \
         '{"enabled" = 1;"name" = "APPLICATIONS";}' \
         '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
@@ -272,12 +209,13 @@ echo 'line 218'
         # Rebuild the index from scratch
         sudo mdutil -E / > /dev/null
         increment;
-        #defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+        defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
         increment;
         hash tmutil &> /dev/null && sudo tmutil disable
         increment;
-    #    defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault -bool false
-    #    increment
+        defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault -bool false
+        increment
+    echo
 
     else
 
@@ -293,6 +231,7 @@ echo 'line 218'
         increment;
 
     fi
+echo
 done
 }
 

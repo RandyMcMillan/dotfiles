@@ -34,6 +34,7 @@ checkbrew() {
         brew cask install suspicious-package
         brew cask install quicklookase
         brew cask install qlvideo
+        brew cask install little-snitch
 
 
     else

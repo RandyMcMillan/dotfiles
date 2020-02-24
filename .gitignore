@@ -1360,3 +1360,6 @@ src/zmq/.deps/
 test/config.ini
 Thumbs.db
 xcuserdata/
+
+/target
+Cargo.lock

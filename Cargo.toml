@@ -1,4 +1,5 @@
 [package]
+<<<<<<< HEAD
 name = "rust-project-template"
 version = "0.0.3"
 authors = ["randymcmillan <randy.lee.mcmillan@gmail.com>", "Xithrius <xithrius@gmail.com>"]

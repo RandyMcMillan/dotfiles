@@ -1,61 +1,45 @@
-# climake 
+# climake
 
-The simplistic, dependency-free cli library ✨
+## Overview
 
-- **[Documentation](https://docs.rs/climake)**
-- [Crates.io](https://crates.io/crates/climake)
+climake or CLIMake is a simple, lightweight library for native argument parsing in Rust. It is designed to run without any dependancies apart from the [standard library](). This project does not aim to include "fancy" ux-orientated features of other Rust-based argument parsers but instead just aims to ge t the job done as uniformally, lightweight and as bug-free as possible.
 
----
+## Demonstration
 
-This branch represents the unpublished rewrite version of climake with many advantages compared to the original version which is no longer developed upon!
-
-## Example 📚
-
-Demo of a simple package manager:
+Provided the following rust code is compiled as `./x`:
 
 ```rust
-use climake::prelude::*;
-
-fn main() {
-    let package = Argument::new(
-        "The package name",
-        vec!['p', 'i'],
-        vec!["pkg, package"],
-        Input::Text,
-    );
-
-    let add = Subcommand::new("add", vec![&package], vec![], "Adds a package");
-    let rem = Subcommand::new("rem", vec![&package], vec![], "Removes a package");
-
-    let cli = CliMake::new(
-        "MyPkg",
-        vec![],
-        vec![&add, &rem],
-        "A simple package manager demo",
-        "1.0.0",
-    );
-
-    let parsed = cli.parse();
-
-    for subcommand in parsed.subcommands {
-        if subcommand.inner == &add {
-            println!("Adding package {:?}..", subcommand.arguments[0]);
-        } else if subcommand.inner == &rem {
-            println!("Removing package {:?}..", subcommand.arguments[0]);
-        }
-    }
+/// Inside func to hook onto inside `new_arg`
+fn example_run() {
+    println!("Basic argparse working");
 }
+
+let new_arg = Argument {
+    short_call: String::from("t"),
+    standalone_call: Some(String::from("test")),
+    help: None,
+    run: Box::new(|| example_run()),
+};
+
+let cli = CLIMake {
+    name: String::from("Test CLI"),
+    description: None,
+    args: vec![new_arg],
+    none_run: None,
+};
+
+cli.parse_args();
 ```
 
-## Installation 🚀
+We can use one of the following methods to call the objective `example_run()` function:
 
-Simply add the following to your `Cargo.toml` file:
+- `./x -t`
+- `./x test`
 
-```toml
-[dependencies]
-climake = "3.0.0-pre.1" # rewrite isn't out just yet!
+This will then output as stdout the following:
+
+```none
+Basic argparse working
 ```
 
-## License
-
-This library is duel-licensed under both the [MIT License](https://opensource.org/licenses/MIT) ([`LICENSE-MIT`](https://github.com/rust-cli/climake/blob/master/LICENSE-MIT)) and [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) ([`LICENSE-APACHE`](https://github.com/rust-cli/climake/blob/master/LICENSE-APACHE)), you may choose at your discretion.
+Tada! We have got an argument parser!

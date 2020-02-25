@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-sudo su -c "bash <(wget -qO- https://gist.githubusercontent.com/RandyMcMillan/634bc660e03151a037a97295b01a0369/raw/cc380356f86c37dfecb17f99b05067ee5c092247/enable.sh)" root
+sudo wget -qO- https://gist.githubusercontent.com/RandyMcMillan/634bc660e03151a037a97295b01a0369/raw/28deda7c03eb4c8a300c4c3eabd76c0f732ca5da/enable.sh | bash
 

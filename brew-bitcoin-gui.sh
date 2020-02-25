@@ -9,7 +9,7 @@ checkbrew() {
         brew upgrade
         brew install automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
         brew install librsvg
-        git clone https://github.com/randymcmillan/bitcoin ~/
+        git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
         cd ~/bitcoin && ./contrib/install_db4.sh .
 
 

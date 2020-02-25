@@ -36,7 +36,6 @@ checkbrew() {
         brew cask install qlvideo
         brew cask install little-snitch
 
-
     else
 
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

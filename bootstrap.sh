@@ -70,7 +70,7 @@ linkAndSource() {
         taskCount=12
         tasksDone=0
 
-        getpid;
+        getpid
 
         while [ $tasksDone -le $taskCount ]; do
 
@@ -86,21 +86,22 @@ linkAndSource() {
             increment
             ln -sf ~/dotfiles/.macos        ~/.macos
             increment
-            #REF:https://devhints.io/editorconfig
             ln -sf ~/dotfiles/.editorconfig ~/.editorconfig
             increment
 
-            source ~/.bash_profile;
-            increment
-            source ~/.bash_prompt;
-            increment
-            source ~/.functions
-            increment
-            echo 'source ~/.osx'
-            source ~/.osx;
-            increment
-            #echo 'source ~/.macos'
-            #source ~/.macos;
+						#echo "sourcing" && echo
+
+            #source ~/.bash_profile
+            #increment
+            #source ~/.bash_prompt;
+            #increment
+            #source ~/.functions
+            #increment
+            ##echo 'source ~/.osx'
+            ##source ~/.osx;
+            #increment
+            ##echo 'source ~/.macos'
+            ##source ~/.macos;
             #increment
 
         done
@@ -112,14 +113,14 @@ linkAndSource
 function doIt() {
 
     ## Collect task count
-    taskCount=2
+    taskCount=1
     tasksDone=0
 
-    getpid;
+    getpid
 
     while [ $tasksDone -le $taskCount ]; do
 
-    echo 'rsync'
+    echo 'rsync' && echo
 
     rsync --exclude ".git/" \
           --exclude ".atom" \
@@ -145,10 +146,6 @@ function doIt() {
           --exclude "Miniconda3-latest-MacOSX-x86_64.sh" \
           --exclude "configGithub.sh" \
           --exclude "configHOSTSfile.sh" \
-          --exclude "*.sh" \
-          --exclude "*.txt" \
-          --exclude "*.json" \
-          --exclude "*.md" \
           -avh --no-perms . ~;
     increment;
     done
@@ -157,11 +154,13 @@ function doIt() {
     ## Collect task count
     taskCount=11
     tasksDone=0
-    getpid;
+    getpid
 
 while [ $tasksDone -le $taskCount ]; do
-echo 'line 244\n'
-    if  csrutil status | grep 'disabled' &> /dev/null; then
+
+echo 'line 164'
+
+if  csrutil status | grep 'disabled' &> /dev/null; then
         printf "System Integrity Protection status: \033[1;31mdisabled\033[0m\n";
         increment;
         sudo pmset -a hibernatemode 0
@@ -173,9 +172,9 @@ echo 'line 244\n'
         #yes | sudo touch /private/var/vm/sleepimage
         increment;
         #ls -la /private/var/vm
-        #increment;
+        increment;
         #sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
-        #increment;
+        increment;
         defaults write com.apple.spotlight orderedItems -array \
         '{"enabled" = 1;"name" = "APPLICATIONS";}' \
         '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
@@ -199,7 +198,7 @@ echo 'line 244\n'
         '{"enabled" = 0;"name" = "MENU_EXPRESSION";}' \
         '{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
         '{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
-        increment
+        increment;
         # Load new settings before rebuilding the index
         killall mds > /dev/null 2>&1
         increment;
@@ -214,12 +213,13 @@ echo 'line 244\n'
         hash tmutil &> /dev/null && sudo tmutil disable
         increment;
         defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault -bool false
-        increment
+        increment;
+
     echo
 
     else
 
-        getpid;
+        getpid
 
         printf "System Integrity Protection status: \033[1;32menabled\033[0m\n";
         increment;
@@ -238,18 +238,19 @@ done
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 
     echo 'getpid'
-    getpid;
+    getpid
     echo 'doIt'
     doIt;
 
 else
 
+		echo
     read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo 'getpid'
-        getpid;
+        getpid
         echo 'doIt'
-        doIt;
+        doIt
     fi;
 fi;
 unset doIt;

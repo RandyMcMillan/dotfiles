@@ -7,13 +7,10 @@ checkbrew() {
         brew update
         # Upgrade any already-installed formulae.
         brew upgrade
-				brew install autoconf
-				brew install automake
-				brew install libtool
-				brew install pkg-config
-				brew install berkeley-db4
-				brew install boost
-				#brew install boost-build
+        brew install automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
+        brew install librsvg
+        git clone https://github.com/randymcmillan/bitcoin ~/
+        cd ~/bitcoin && ./contrib/install_db4.sh .
 
 
 	else

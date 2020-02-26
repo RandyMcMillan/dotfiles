@@ -2,7 +2,6 @@
 
 installVim() {
 echo 'installVim'
-    getpid;
 
     read -p "Install Vim? (y/n) " -n 1;
     echo "";

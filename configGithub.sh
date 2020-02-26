@@ -2,14 +2,12 @@
 
 configGithub() {
 
-    getpid;
 
     read -p "Config github? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-    #https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
+    #REF:https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
     gpg --list-secret-keys --keyid-format LONG
-    increment
     echo randymcmillan | read -p 'ENTER your Github.com username: ' GITHUB_USER_NAME
     #read -sp 'Password: ' GITHUB_USER_PASSWORD
     git config --global user.name $GITHUB_USER_NAME

@@ -11,31 +11,18 @@ checkbrew() {
         #REF:https://github.com/jacobsalmela/tccutil
         brew install tccutil
         #sudo tccutil --list
-        sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" 'UPDATE access SET allowed = "1";'
+        #sudo sqlite3 "/Library/Application Support/com.apple.TCC/TCC.db" 'UPDATE access SET allowed = "1";'
 
         brew install jq
         brew install git
         brew install vim
-        brew install gnupg
+	#$(PWD)/./installVim.sh
         brew cask install iterm2
         curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
-        #chmod a+x /usr/local/bin/dockutil
+        chmod a+x /usr/local/bin/dockutil
         #hash -r
-        #dockutil --add '/Applications/iTerm' --replacing 'iTerm'
-        brew cask install gpg-suite
-        brew cask install vyprvpn
-        brew cask install onyx
-        #REF:https://github.com/sindresorhus/quick-look-plugins
-        brew cask install qlcolorcode
-        brew cask install qlstephen
-        brew cask install qlmarkdown
-        brew cask install quicklook-json
-        brew cask install qlimagesize
-        brew cask install suspicious-package
-        brew cask install quicklookase
-        brew cask install qlvideo
-        brew cask install little-snitch
-
+        dockutil --add '/Applications/iTerm.app' --replacing 'iTerm'
+    
     else
 
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

@@ -10,6 +10,12 @@
 
 class ValidationState;
 
+enum class DownloadState {
+    INIT_REINDEX,
+    INIT_DOWNLOAD,
+    POST_INIT
+};
+
 /** Convert ValidationState to a human-readable message for logging */
 std::string FormatStateMessage(const ValidationState &state);
 

@@ -17,6 +17,7 @@ class CBlock;
 class CBlockIndex;
 class CTxMemPool;
 class UniValue;
+enum class DownloadState;
 struct NodeContext;
 
 static constexpr int NUM_GETBLOCKSTATS_PERCENTILES = 5;
@@ -30,7 +31,7 @@ static constexpr int NUM_GETBLOCKSTATS_PERCENTILES = 5;
 double GetDifficulty(const CBlockIndex* blockindex);
 
 /** Callback for when block tip changed. */
-void RPCNotifyBlockChange(bool ibd, const CBlockIndex *);
+void RPCNotifyBlockChange(DownloadState, const CBlockIndex *);
 
 /** Block description to JSON */
 UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIndex* blockindex, bool txDetails = false) LOCKS_EXCLUDED(cs_main);

@@ -15,6 +15,7 @@
 #include <net.h>
 #include <netbase.h>
 #include <util/system.h>
+#include <util/validation.h>
 
 #include <stdint.h>
 
@@ -226,13 +227,13 @@ static void BannedListChanged(ClientModel *clientmodel)
     assert(invoked);
 }
 
-static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, int height, int64_t blockTime, double verificationProgress, bool fHeader)
+static void BlockTipChanged(ClientModel *clientmodel, DownloadState state, int height, int64_t blockTime, double verificationProgress, bool fHeader)
 {
     // lock free async UI updates in case we have a new block tip
     // during initial sync, only update the UI if the last update
     // was > 250ms (MODEL_UPDATE_DELAY) ago
     int64_t now = 0;
-    if (initialSync)
+    if (state != DownloadState::POST_INIT)
         now = GetTimeMillis();
 
     int64_t& nLastUpdateNotification = fHeader ? nLastHeaderTipUpdateNotification : nLastBlockTipUpdateNotification;
@@ -243,8 +244,9 @@ static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, int heig
         clientmodel->cachedBestHeaderTime = blockTime;
     }
 
-    // During initial sync, block notifications, and header notifications from reindexing are both throttled.
-    if (!initialSync || (fHeader && !clientmodel->node().getReindex()) || now - nLastUpdateNotification > MODEL_UPDATE_DELAY) {
+    // Throttle blocks during initial sync, and both blocks and headers during reindex.
+    bool throttle = (state != DownloadState::POST_INIT && !fHeader) || state == DownloadState::INIT_REINDEX;
+    if (!throttle || now - nLastUpdateNotification > MODEL_UPDATE_DELAY) {
         //pass an async signal to the UI thread
         bool invoked = QMetaObject::invokeMethod(clientmodel, "numBlocksChanged", Qt::QueuedConnection,
                                   Q_ARG(int, height),

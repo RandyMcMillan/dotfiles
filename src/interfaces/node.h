@@ -29,6 +29,7 @@ class UniValue;
 class proxyType;
 struct CNodeStateStats;
 struct NodeContext;
+enum class DownloadState;
 enum class WalletCreationStatus;
 
 namespace interfaces {
@@ -248,12 +249,12 @@ public:
 
     //! Register handler for block tip messages.
     using NotifyBlockTipFn =
-        std::function<void(bool initial_download, int height, int64_t block_time, double verification_progress)>;
+        std::function<void(DownloadState, int height, int64_t block_time, double verification_progress)>;
     virtual std::unique_ptr<Handler> handleNotifyBlockTip(NotifyBlockTipFn fn) = 0;
 
     //! Register handler for header tip messages.
     using NotifyHeaderTipFn =
-        std::function<void(bool initial_download, int height, int64_t block_time, double verification_progress)>;
+        std::function<void(DownloadState, int height, int64_t block_time, double verification_progress)>;
     virtual std::unique_ptr<Handler> handleNotifyHeaderTip(NotifyHeaderTipFn fn) = 0;
 
     //! Return pointer to internal chain interface, useful for testing.

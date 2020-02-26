@@ -342,7 +342,7 @@ static void OnRPCStarted()
 static void OnRPCStopped()
 {
     rpc_notify_block_change_connection.disconnect();
-    RPCNotifyBlockChange(false, nullptr);
+    RPCNotifyBlockChange(DownloadState::POST_INIT, nullptr);
     g_best_block_cv.notify_all();
     LogPrint(BCLog::RPC, "RPC stopped.\n");
 }
@@ -582,9 +582,9 @@ std::string LicenseInfo()
 }
 
 #if HAVE_SYSTEM
-static void BlockNotifyCallback(bool initialSync, const CBlockIndex *pBlockIndex)
+static void BlockNotifyCallback(DownloadState download_state, const CBlockIndex *pBlockIndex)
 {
-    if (initialSync || !pBlockIndex)
+    if (download_state != DownloadState::POST_INIT || !pBlockIndex)
         return;
 
     std::string strCmd = gArgs.GetArg("-blocknotify", "");
@@ -600,7 +600,7 @@ static bool fHaveGenesis = false;
 static Mutex g_genesis_wait_mutex;
 static std::condition_variable g_genesis_wait_cv;
 
-static void BlockNotifyGenesisWait(bool, const CBlockIndex *pBlockIndex)
+static void BlockNotifyGenesisWait(DownloadState, const CBlockIndex *pBlockIndex)
 {
     if (pBlockIndex != nullptr) {
         {
@@ -1598,7 +1598,7 @@ bool AppInitMain(NodeContext& node)
                     }
 
                     CBlockIndex* tip = ::ChainActive().Tip();
-                    RPCNotifyBlockChange(true, tip);
+                    RPCNotifyBlockChange(DownloadState::INIT_DOWNLOAD, tip);
                     if (tip && tip->nTime > GetAdjustedTime() + 2 * 60 * 60) {
                         strLoadError = _("The block database contains a block which appears to be from the future. "
                                 "This may be due to your computer's date and time being set incorrectly. "

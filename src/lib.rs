@@ -71,9 +71,11 @@ impl CLIMake {
             std::process::exit(0);
         }
 
-        let mut valid_count = false;
+        // below block only changed on valid arg
+        let mut valid_count = false; // checks valid args
+        let mut valid_ind = 0; // similar to an enumerate
 
-        for (ind, arg) in self.args.iter().enumerate() {
+        for arg in self.args.iter() {
             let short_call_pass = match &arg.short_call {
                 Some(x) => check_args(format!("-{}", x)),
                 None => false,
@@ -86,15 +88,16 @@ impl CLIMake {
 
             if short_call_pass || standalone_call_pass {
                 valid_count = true;
+                valid_ind += 1;
 
                 let run_args = match arg.got_param {
                     true => {
-                        if passed_args.len() < ind + 1 {
+                        if passed_args.len() < valid_ind + 1 {
                             println!("{}No body given for argument!", self.header_text());
                             std::process::exit(1); // TODO: Fix
                         }
 
-                        Some(passed_args[ind + 1].clone()) // TODO: Fix
+                        Some(passed_args[valid_ind + 1].clone()) // TODO: Fix
                     }
                     false => None,
                 };

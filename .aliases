@@ -25,6 +25,7 @@ alias LOG="git log --pretty=oneline --abbrev-commit "
 alias STAT="git status "
 alias CO="git  checkout "
 alias GPF="git push -f origin HEAD"
+alias GPFU="git push -f upstream HEAD"
 alias GCA="git commit --amend "
 alias GCB="git branch | grep -ve ' master$' | xargs git branch -D"
 #alias DATE="date +%Y/%j/"$(git rev-parse --short HEAD)

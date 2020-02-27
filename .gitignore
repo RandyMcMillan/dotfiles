@@ -41,3 +41,5 @@ DerivedData/
 /*.gcno
 
 hosts
+etc-dnsmasq.d
+etc-pihole

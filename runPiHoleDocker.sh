@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#run pi-hole as a docker service on macos
 checkbrew() {
 
     if hash brew 2>/dev/null; then

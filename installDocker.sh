@@ -8,12 +8,12 @@ checkbrew() {
         # Upgrade any already-installed formulae.
         brew upgrade
 
-	#install brew libs
-	brew install docker
-        brew install docker-compose
-	brew install docker-compose-completion
-	brew cask install docker-toolbox
-	
+        #install brew libs
+        brew install cask docker
+        brew link --overwrite docker
+        ls -l /usr/local/bin/docker*
+        open /Applications/Docker.app
+
     else
 	#example - execute script with perl
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

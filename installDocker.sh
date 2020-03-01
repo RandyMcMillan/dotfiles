@@ -9,7 +9,7 @@ checkbrew() {
         brew upgrade
 
         #install brew libs
-        brew install cask docker
+        brew cask install docker
         brew link --overwrite docker
         ls -l /usr/local/bin/docker*
         open /Applications/Docker.app

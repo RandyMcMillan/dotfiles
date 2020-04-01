@@ -83,7 +83,7 @@ set showcmd
 " Enable line numbers
 set number
 
-" Use relative line numbers
+" Use hybrid line numbers
 if exists("&relativenumber")
 	set number relativenumber
 	au BufReadPost * set relativenumber

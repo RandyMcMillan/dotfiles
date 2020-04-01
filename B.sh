@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# ₿
 # Set computer name (as done via System Preferences → Sharing)
 scutil --get HostName
 scutil --get LocalHostName

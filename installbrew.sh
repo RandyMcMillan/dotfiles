@@ -26,6 +26,7 @@ checkbrew() {
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt update
     sudo apt -y install wget curl
+    sudo apt install linuxbrew-wrapper
     checkbrew
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew

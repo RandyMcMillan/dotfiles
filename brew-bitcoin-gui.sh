@@ -28,7 +28,7 @@ brew cleanup
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
     sudo apt update
-    sudo apt -y install wget curl libtool autoconf autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode librsvg
+    sudo apt -y install wget curl libtool autoconf autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode librsvg pkg-config
     sudo apt install linuxbrew-wrapper
     checkbrew
 

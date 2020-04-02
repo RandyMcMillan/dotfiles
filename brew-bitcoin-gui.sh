@@ -12,7 +12,6 @@ checkbrew() {
         cd ~/bitcoin && ./contrib/install_db4.sh .
         ./autogen.sh && ./configure && make deploy
 
-
     else
         $(pwd)/installbrew.sh
         #/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -27,21 +26,36 @@ brew cleanup
 
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
+
     sudo apt update
-    sudo apt -y install wget curl libtool autoconf
+    sudo apt -y install wget curl libtool autoconf autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode librsvg
     sudo apt install linuxbrew-wrapper
     checkbrew
+
 elif [[ "$OSTYPE" == "darwin"* ]]; then
+
+    brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode librsvg
     checkbrew
+
 elif [[ "$OSTYPE" == "cygwin" ]]; then
+
     echo TODO add support for $OSTYPE
+
 elif [[ "$OSTYPE" == "msys" ]]; then
+
     echo TODO add support for $OSTYPE
+
 elif [[ "$OSTYPE" == "win32" ]]; then
+
     echo TODO add support for $OSTYPE
+
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
+
     echo TODO add support for $OSTYPE
+
 else
+
     echo TODO add support for $OSTYPE
+
 fi
 

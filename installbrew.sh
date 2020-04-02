@@ -18,7 +18,7 @@ checkbrew() {
 
     #example - execute script with perl
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        checkbrew
+    checkbrew
 
     fi
 }

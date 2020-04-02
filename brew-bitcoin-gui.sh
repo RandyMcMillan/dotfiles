@@ -14,9 +14,10 @@ checkbrew() {
         ./autogen.sh && ./configure && make deploy
 
 
-	else
-		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	fi
+    else
+        $(pwd)/installbrew.sh
+        #/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
 }
 
 checkbrew

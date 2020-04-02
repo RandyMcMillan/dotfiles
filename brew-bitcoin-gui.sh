@@ -11,8 +11,9 @@ checkbrew() {
         git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
         cd ~/bitcoin && ./contrib/install_db4.sh .
         ./autogen.sh
+        export BDB_PREFIX='/home/$(whoami)/bitcoin/db4'
         ./configure
-        make deploy
+        make
 
     else
         $(pwd)/installbrew.sh

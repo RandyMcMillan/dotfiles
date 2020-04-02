@@ -7,8 +7,7 @@ checkbrew() {
         brew update
         # Upgrade any already-installed formulae.
         brew upgrade
-        brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
-        brew install librsvg
+        brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode librsvg
         git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
         cd ~/bitcoin && ./contrib/install_db4.sh .
         ./autogen.sh && ./configure && make deploy
@@ -29,7 +28,7 @@ brew cleanup
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt update
-    sudo apt -y install wget curl autoconf
+    sudo apt -y install wget curl libtool autoconf
     sudo apt install linuxbrew-wrapper
     checkbrew
 elif [[ "$OSTYPE" == "darwin"* ]]; then

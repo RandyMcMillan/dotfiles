@@ -22,7 +22,7 @@ checkbrew() {
         chmod a+x /usr/local/bin/dockutil
         #hash -r
         dockutil --add '/Applications/iTerm.app' --replacing 'iTerm'
-    
+
     else
 
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

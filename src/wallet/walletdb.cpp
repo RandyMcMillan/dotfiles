@@ -609,7 +609,12 @@ ReadKeyValue(CWallet* pwallet, DataStream& ssKey, CDataStream& ssValue,
             ssKey >> strAddress;
             ssKey >> strKey;
             ssValue >> strValue;
-            pwallet->LoadDestData(DecodeDestination(strAddress), strKey, strValue);
+            const CTxDestination& dest{DecodeDestination(strAddress)};
+            if (strKey.compare("used") == 0) {
+                pwallet->LoadAddressPreviouslySpent(dest);
+            } else if (strKey.compare(0, 2, "rr") == 0) {
+                pwallet->LoadAddressReceiveRequest(dest, strKey.substr(2), strValue);
+            }
         } else if (strType == DBKeys::HDCHAIN) {
             CHDChain chain;
             ssValue >> chain;
@@ -1082,16 +1087,28 @@ void MaybeCompactWalletDB(WalletContext& context)
     fOneThread = false;
 }
 
-bool WalletBatch::WriteDestData(const std::string &address, const std::string &key, const std::string &value)
+bool WalletBatch::WriteAddressPreviouslySpent(const CTxDestination& dest, bool previously_spent)
 {
-    return WriteIC(std::make_pair(DBKeys::DESTDATA, std::make_pair(address, key)), value);
+    auto key{std::make_pair(DBKeys::DESTDATA, std::make_pair(EncodeDestination(dest), std::string("used")))};
+    return previously_spent ? WriteIC(key, std::string("1")) : EraseIC(key);
 }
 
-bool WalletBatch::EraseDestData(const std::string &address, const std::string &key)
+bool WalletBatch::WriteAddressReceiveRequest(const CTxDestination& dest, const std::string& id, const std::string& receive_request)
 {
-    return EraseIC(std::make_pair(DBKeys::DESTDATA, std::make_pair(address, key)));
+    return WriteIC(std::make_pair(DBKeys::DESTDATA, std::make_pair(EncodeDestination(dest), "rr" + id)), receive_request);
 }
 
+bool WalletBatch::EraseAddressReceiveRequest(const CTxDestination& dest, const std::string& id)
+{
+    return EraseIC(std::make_pair(DBKeys::DESTDATA, std::make_pair(EncodeDestination(dest), "rr" + id)));
+}
+
+bool WalletBatch::EraseAddressData(const CTxDestination& dest)
+{
+    DataStream prefix;
+    prefix << DBKeys::DESTDATA << EncodeDestination(dest);
+    return m_batch->ErasePrefix(prefix);
+}
 
 bool WalletBatch::WriteHDChain(const CHDChain& chain)
 {

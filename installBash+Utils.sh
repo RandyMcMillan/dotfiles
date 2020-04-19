@@ -7,6 +7,7 @@ addPath() {
 export -f addPath
 
 installBashInfinity() {
+
 REPO=~/infinity
 URL=https://github.com/niieani/bash-oo-framework.git
     mkdir    $REPO
@@ -18,9 +19,12 @@ URL=https://github.com/niieani/bash-oo-framework.git
     echo "lib/*" >> .git/info/sparse-checkout
     git pull --depth=1 origin master
     #ln -s /lib/oo-bootstrap.sh ~/ #     $( cd "${BASH_SOURCE[0]%/*}" && pwd )
-		$(PWD)/test-infinity.sh
-    #find $REPO -name '*.sh' -exec bash -c 'addPath "$0"' {} \;
-
+    rm -f ~/test-infinity.sh
+    ln -s  ~/dotfiles/test-infinity.sh ~/test-infinity.sh
+#    ln -s  ~/dotfiles/infinity $PWD
+    ln -s  ~/dotfiles/infinity ~/dotfiles
+    ~/./test-infinity.sh
+    ~/test-infinity.sh
 
 }
 
@@ -36,9 +40,10 @@ installBash() {
 
 
     else
-	#example - execute script with perl
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    checkbrew
+
+        #example - execute script with perl
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        checkbrew
 
     fi
 }

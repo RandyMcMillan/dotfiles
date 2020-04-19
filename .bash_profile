@@ -8,6 +8,7 @@ export PATH="$HOME/bin:$PATH";
 
 # REF installBash+Utils.sh
 export PATH="$HOME/infinity/lib:$PATH";
+export PATH="$HOME/infinity/lib/oo-bootstrap.sh:$PATH";
 
 
 # Load the shell dotfiles, and then some:

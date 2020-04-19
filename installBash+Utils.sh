@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
+addPath() {
+    echo "Adding $1 to PATH";
+    chmod +x $1
+    export PATH="$PATH:$1";
+}
+export -f addPath
 
 installBashInfinity() {
-REPO=~/inifinity
+REPO=~/infinity
 URL=https://github.com/niieani/bash-oo-framework.git
     mkdir    $REPO
     cd       $REPO
@@ -11,6 +17,10 @@ URL=https://github.com/niieani/bash-oo-framework.git
     git config core.sparsecheckout true
     echo "lib/*" >> .git/info/sparse-checkout
     git pull --depth=1 origin master
+    #ln -s /lib/oo-bootstrap.sh ~/ #     $( cd "${BASH_SOURCE[0]%/*}" && pwd )
+		$(PWD)/test-infinity.sh
+    #find $REPO -name '*.sh' -exec bash -c 'addPath "$0"' {} \;
+
 
 }
 

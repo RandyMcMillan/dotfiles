@@ -155,6 +155,7 @@ BASE_SCRIPTS = [
     'rpc_signrawtransaction.py',
     'wallet_groups.py',
     'p2p_disconnect_ban.py',
+    'feature_fs_permissions.py',
     'rpc_decodescript.py',
     'rpc_blockchain.py',
     'rpc_deprecated.py',

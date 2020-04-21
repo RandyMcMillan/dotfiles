@@ -3975,6 +3975,8 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(interfaces::Chain& chain,
 
     LOCK(walletInstance->cs_wallet);
 
+#define ENABLE_RACE_CONDITION_BUG 0
+#if !ENABLE_RACE_CONDITION_BUG
     // Register wallet with validationinterface. It's done before rescan to avoid
     // missing block connections between end of rescan and validation subscribing.
     // Because of wallet lock being hold, block connection notifications are going to
@@ -3984,6 +3986,7 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(interfaces::Chain& chain,
     // This is temporary until rescan and notifications delivery are unified under same
     // interface.
     walletInstance->m_chain_notifications_handler = walletInstance->chain().handleNotifications(walletInstance);
+#endif
 
     int rescan_height = 0;
     if (!gArgs.GetBoolArg("-rescan", false))
@@ -4085,6 +4088,10 @@ std::shared_ptr<CWallet> CWallet::CreateWalletFromFile(interfaces::Chain& chain,
         }
     }
 
+#if ENABLE_RACE_CONDITION_BUG
+    // Register with the validation interface. It's ok to do this after rescan since we're still holding locked_chain.
+    walletInstance->m_chain_notifications_handler = walletInstance->chain().handleNotifications(walletInstance);
+#endif
     walletInstance->SetBroadcastTransactions(gArgs.GetBoolArg("-walletbroadcast", DEFAULT_WALLETBROADCAST));
 
     {

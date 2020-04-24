@@ -9,7 +9,7 @@
 #include <util/translation.h>
 #include <validation.h>
 
-#include <boost/thread.hpp>
+#include <boost/thread/thread.hpp>
 
 constexpr char DB_BEST_BLOCK = 'B';
 constexpr char DB_TXINDEX = 't';

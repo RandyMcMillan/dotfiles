@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 #endif
 
-#include <boost/thread.hpp>
+#include <boost/thread/thread.hpp>
 
 namespace {
 

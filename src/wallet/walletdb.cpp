@@ -18,7 +18,7 @@
 #include <atomic>
 #include <string>
 
-#include <boost/thread.hpp>
+#include <boost/thread/thread.hpp>
 
 namespace DBKeys {
 const std::string ACENTRY{"acentry"};

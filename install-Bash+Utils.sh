@@ -6,7 +6,7 @@ addPath() {
 }
 export -f addPath
 
-installBashInfinity() {
+install-bash-infinity() {
 
 REPO=~/infinity
 URL=https://github.com/niieani/bash-oo-framework.git
@@ -28,24 +28,18 @@ URL=https://github.com/niieani/bash-oo-framework.git
 
 }
 
-
-installBash() {
+install-bash() {
 
     if hash brew 2>/dev/null; then
-        # Make sure we’re using the latest Homebrew.
-        brew update
-        # Upgrade any already-installed formulae.
-        brew upgrade
-        brew install bash bash-completion
 
+        brew install bash bash-completion
 
     else
 
-        #example - execute script with perl
-        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        checkbrew
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        install-bash
 
     fi
 }
-installBash
-installBashInfinity
+install-bash
+install-bash-infinity

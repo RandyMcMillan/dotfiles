@@ -5,11 +5,13 @@
 
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
+# Add `~/init` to the `$PATH`
+export PATH="$HOME/init:$PATH";
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
+for file in ~/.{path,bash_prompt,exports,aliases,functions,extra,~/dotfiles/*.sh}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -58,11 +60,18 @@ fi;
 complete -W "NSGlobalDomain" defaults;
 
 # Add `killall` tab completion for common apps
-complete -o "nospace" -W "Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Dock Finder Mail Safari iTunes* SystemUIServer Terminal Twitter bitcoind" killall;
+complete -o "nospace" -W "Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Dock Finder Mail Safari iTunes* SystemUIServer Terminal iTerm* Twitter bitcoind" killall;
 
 # Added by install_latest_perl_osx.pl
 #[ -r /Users/git/.bashrc ] && source /Users/git/.bashrc
 
-# REF: dotfiles/installFastLane.sh
+# REF: dotfiles/install-fastlane.sh
 export PATH="$HOME/.fastlane/bin:$PATH"
 
+#USeing rbenv for stuff ruby 2.2.2 doent compile on macos
+
+#eval "$(rbenv init -)"
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+export GPG_TTY=$(tty)

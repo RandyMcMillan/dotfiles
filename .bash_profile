@@ -63,3 +63,6 @@ complete -o "nospace" -W "Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Do
 # Added by install_latest_perl_osx.pl
 #[ -r /Users/git/.bashrc ] && source /Users/git/.bashrc
 
+# REF: dotfiles/installFastLane.sh
+export PATH="$HOME/.fastlane/bin:$PATH"
+

@@ -9,11 +9,21 @@ checkbrew() {
         brew upgrade
 
         #install brew libs
-        brew install docker
-        brew cask install docker
-        brew link --overwrite docker
-        ls -l /usr/local/bin/docker*
-        open /Applications/Docker.app
+        brew install ruby@2.4
+        brew install brew-gem
+        
+        echo 'export PATH="/usr/local/opt/ruby@2.4/bin:$PATH"' >> ~/.bash_profile
+        brew unlink ruby@2.4
+        brew link --force  ruby@2.4
+        which ruby
+        which gem
+        gem update --system
+        gem list
+        gem outdated
+        gem update
+        brew gem install pluto
+        brew gem install jekyll
+        
 
     else
 	#example - execute script with perl

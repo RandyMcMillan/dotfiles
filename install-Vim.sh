@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
+install-mac-vim() {
 
-installVim() {
-echo 'installVim'
+sudo rm -rf /Applications/MacVim.app
+brew cask install -f macvim
+
+}
+install-vim() {
 
     read -p "Install Vim? (y/n) " -n 1;
     echo "";
@@ -25,6 +29,11 @@ echo 'installVim'
 
     fi
     echo
+cd ~/dotfiles
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    install-mac-vim
+fi
 
 }
-installVim
+install-vim
+

@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+DOTFILES=~/dotfiles
+
+if [ -d $DOTFILES  ]; then
+    cd $DOTFILES
+    git pull -f origin +master:master
+else
+   git clone https://github.com/randymcmillan/dotfiles $DOTFILES
+    cd $DOTFILES
+    git pull -f origin +master:master
+fi
+
 #set -x #debug
 ## Collect task count
 taskCount=0
@@ -74,8 +85,13 @@ linkAndSource() {
 
         while [ $tasksDone -le $taskCount ]; do
 
+            rm -f ~/.aliases
+            ln -sf ~/dotfiles/.aliases ~/.aliases
+            increment
+            rm -f ~/.bash_profile
             ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
             increment
+            rm -f ~/.bash_prompt
             ln -sf ~/dotfiles/.bash_prompt  ~/.bash_prompt
             increment
             ln -sf ~/dotfiles/.functions    ~/.functions
@@ -88,21 +104,30 @@ linkAndSource() {
             increment
             ln -sf ~/dotfiles/.editorconfig ~/.editorconfig
             increment
+            ln -sf ~/dotfiles/init ~/init
+            increment
+            ln -sf ~/dotfiles/bin ~/bin
+            increment
+            ln -sf ~/dotfiles/.config ~/.config
+            increment
 
-						#echo "sourcing" && echo
+            #echo "sourcing" && echo
 
-            #source ~/.bash_profile
+            source ~/.aliases
+            increment
+            source ~/.bash_profile
+            increment
+            source ~/.bash_prompt
+            increment
+            source ~/.functions
+            increment
+            #echo 'source ~/.osx'
+            #source ~/.osx;
             #increment
-            #source ~/.bash_prompt;
+            #echo 'source ~/.macos'
+            #source ~/.macos
             #increment
-            #source ~/.functions
-            #increment
-            ##echo 'source ~/.osx'
-            ##source ~/.osx;
-            #increment
-            ##echo 'source ~/.macos'
-            ##source ~/.macos;
-            #increment
+            source $(pwd)/*.sh
 
         done
     fi
@@ -126,26 +151,15 @@ function doIt() {
           --exclude ".atom" \
           --exclude ".DS_Store" \
           --exclude ".vimrc" \
-          --exclude "bootstrap.sh" \
+          --exclude "*.sh" \
           --exclude "README.md" \
           --exclude "LICENSE-MIT.txt" \
-          --exclude "brew.sh" \
-          --exclude ".editorconfig" \
           --exclude "hosts/" \
           --exclude "hosts/*" \
-          --exclude "B.sh" \
-          --exclude "bootstrap.sh" \
-          --exclude "brew-bitcoin-gui.sh" \
-          --exclude "brew-bitcoin-no-gui.sh" \
-          --exclude "brew-vmware.sh" \
-          --exclude "brew.sh" \
-          --exclude "condarc" \
-          --exclude "debian-bitcoin.sh" \
           --exclude "iterm2.json" \
           --exclude "LICENSE-MIT.txt" \
-          --exclude "Miniconda3-latest-MacOSX-x86_64.sh" \
-          --exclude "configGithub.sh" \
-          --exclude "configHOSTSfile.sh" \
+          --exclude ".macos" \
+          --exclude ".osx" \
           -avh --no-perms . ~;
     increment;
     done
@@ -214,6 +228,18 @@ if  csrutil status | grep 'disabled' &> /dev/null; then
         increment;
         defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault -bool false
         increment;
+        defaults write com.apple.dt.Xcode DVTTextShowInvisibleCharacters 1
+        defaults write com.apple.AppleMultitouchTrackpad Dragging -bool true
+        defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true
+        defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad DragLock -bool true
+        defaults write com.apple.finder AppleShowAllFiles -bool true
+        defaults write com.apple.dock DragLock -bool true
+        defaults write com.apple.dock wvous-bl-corner -int 11
+        defaults write com.apple.dock wvous-br-corner -int 4
+        defaults write com.apple.dock wvous-tl-corner -int 7
+        defaults write com.apple.dock wvous-tr-corner -int 2
+        killall Dock
+
 
     echo
 
@@ -254,3 +280,4 @@ else
     fi;
 fi;
 unset doIt;
+open ~/init/Solarized Dark.terminal

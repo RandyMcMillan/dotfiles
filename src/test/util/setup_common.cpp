@@ -134,9 +134,8 @@ TestingSetup::TestingSetup(const std::string& chainName, const std::vector<const
 
     pblocktree.reset(new CBlockTreeDB(1 << 20, true));
 
-    // Start script-checking threads. Set g_parallel_script_checks to true so they are used.
+    // Start script-checking threads.
     constexpr int script_check_threads = 2;
-    g_parallel_script_checks = true;
     m_node.chainman = &::g_chainman;
     m_node.chainman->InitializeChainstate(uint256(), script_check_threads);
     ::ChainstateActive().InitCoinsDB(

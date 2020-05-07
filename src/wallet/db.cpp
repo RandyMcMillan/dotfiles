@@ -164,7 +164,7 @@ BerkeleyEnvironment::~BerkeleyEnvironment()
     Close();
 }
 
-bool BerkeleyEnvironment::Open(bool retry)
+bool BerkeleyEnvironment::Open(bilingual_str& err)
 {
     if (fDbEnvInit) {
         return true;
@@ -213,23 +213,11 @@ bool BerkeleyEnvironment::Open(bool retry)
             LogPrintf("BerkeleyEnvironment::Open: Error %d closing failed database environment: %s\n", ret2, DbEnv::strerror(ret2));
         }
         Reset();
-        if (retry) {
-            // try moving the database env out of the way
-            fs::path pathDatabaseBak = pathIn / strprintf("database.%d.bak", GetTime());
-            try {
-                fs::rename(pathLogDir, pathDatabaseBak);
-                LogPrintf("Moved old %s to %s. Retrying.\n", pathLogDir.string(), pathDatabaseBak.string());
-            } catch (const fs::filesystem_error&) {
-                // failure is ok (well, not really, but it's not worse than what we started with)
-            }
-            // try opening it again one more time
-            if (!Open(false /* retry */)) {
-                // if it still fails, it probably means we can't even create the database env
-                return false;
-            }
-        } else {
-            return false;
+        err = strprintf(_("Error %d received while opening database environment %s: %s."), ret, strPath, DbEnv::strerror(ret));
+        if (ret == DB_RUNRECOVERY) {
+           err = strprintf(_("Error %d received while opening database environment %s: %s. This error could occur if this wallet was not shutdown cleanly and was last loaded using a build with a newver version of Berkeley DB. If so, please use the software that last loaded this wallet"), ret, strPath, DbEnv::strerror(ret));
         }
+        return false;
     }
 
     fDbEnvInit = true;
@@ -402,8 +390,7 @@ bool BerkeleyBatch::VerifyEnvironment(const fs::path& file_path, bilingual_str& 
     LogPrintf("Using BerkeleyDB version %s\n", DbEnv::version(nullptr, nullptr, nullptr));
     LogPrintf("Using wallet %s\n", file_path.string());
 
-    if (!env->Open(true /* retry */)) {
-        errorStr = strprintf(_("Error initializing wallet database environment %s!"), walletDir);
+    if (!env->Open(errorStr)) {
         return false;
     }
 
@@ -530,7 +517,8 @@ BerkeleyBatch::BerkeleyBatch(BerkeleyDatabase& database, const char* pszMode, bo
 
     {
         LOCK(cs_db);
-        if (!env->Open(false /* retry */))
+        bilingual_str open_err;
+        if (!env->Open(open_err))
             throw std::runtime_error("BerkeleyBatch: Failed to open database environment.");
 
         pdb = database.m_db.get();
@@ -669,7 +657,8 @@ void BerkeleyEnvironment::ReloadDbEnv()
     // Reset the environment
     Flush(true); // This will flush and close the environment
     Reset();
-    Open(true);
+    bilingual_str open_err;
+    Open(open_err);
 }
 
 bool BerkeleyBatch::Rewrite(BerkeleyDatabase& database, const char* pszSkip)

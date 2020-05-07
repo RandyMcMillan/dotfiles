@@ -80,7 +80,7 @@ public:
     typedef std::pair<std::vector<unsigned char>, std::vector<unsigned char> > KeyValPair;
     bool Salvage(const std::string& strFile, bool fAggressive, std::vector<KeyValPair>& vResult);
 
-    bool Open(bool retry);
+    bool Open(bilingual_str& open_err);
     void Close();
     void Flush(bool fShutdown);
     void CheckpointLSN(const std::string& strFile);

@@ -244,22 +244,117 @@ void SQLiteBatch::Close()
 
 bool SQLiteBatch::ReadKey(CDataStream&& key, CDataStream& value)
 {
-    return false;
+    if (!m_database.m_db) return false;
+    assert(m_read_stmt);
+
+    // Bind: leftmost parameter in statement is index 1
+    int res = sqlite3_bind_blob(m_read_stmt, 1, key.data(), key.size(), SQLITE_STATIC);
+    if (res != SQLITE_OK) {
+        LogPrintf("SQLiteBatch::ReadKey: Unable to bind read statement :%s\n", sqlite3_errstr(res));
+        sqlite3_clear_bindings(m_read_stmt);
+        sqlite3_reset(m_read_stmt);
+        return false;
+    }
+    res = sqlite3_step(m_read_stmt);
+    if (res != SQLITE_ROW) {
+        LogPrintf("SQLiteBatch::ReadKey: Unable to execute read statement :%s\n", sqlite3_errstr(res));
+        sqlite3_clear_bindings(m_read_stmt);
+        sqlite3_reset(m_read_stmt);
+        return false;
+    }
+    // Leftmost column in result is index 0
+    const char* data = (const char*)sqlite3_column_blob(m_read_stmt, 0);
+    int data_size = sqlite3_column_bytes(m_read_stmt, 0);
+    value.write(data, data_size);
+
+    sqlite3_clear_bindings(m_read_stmt);
+    sqlite3_reset(m_read_stmt);
+    return true;
 }
 
 bool SQLiteBatch::WriteKey(CDataStream&& key, CDataStream&& value, bool overwrite)
 {
-    return false;
+    if (!m_database.m_db) return false;
+    if (m_read_only) throw std::runtime_error("Write called on database in read-only mode");
+    assert(m_insert_stmt && m_overwrite_stmt);
+
+    sqlite3_stmt* stmt;
+    if (overwrite) {
+        stmt = m_overwrite_stmt;
+    } else {
+        stmt = m_insert_stmt;
+    }
+
+    // Bind: leftmost parameter in statement is index 1
+    // Insert index 1 is key, 2 is value
+    int res = sqlite3_bind_blob(stmt, 1, key.data(), key.size(), SQLITE_STATIC);
+    if (res != SQLITE_OK) {
+        LogPrintf("SQLiteBatch::WriteKey: Unable to bind key to write statement :%s\n", sqlite3_errstr(res));
+        sqlite3_clear_bindings(stmt);
+        sqlite3_reset(stmt);
+        return false;
+    }
+    res = sqlite3_bind_blob(stmt, 2, value.data(), value.size(), SQLITE_STATIC);
+    if (res != SQLITE_OK) {
+        LogPrintf("SQLiteBatch::WriteKey: Unable to bind value to write statement :%s\n", sqlite3_errstr(res));
+        sqlite3_clear_bindings(stmt);
+        sqlite3_reset(stmt);
+        return false;
+    }
+
+    // Execute
+    res = sqlite3_step(stmt);
+    sqlite3_clear_bindings(stmt);
+    sqlite3_reset(stmt);
+    if (res != SQLITE_DONE) {
+        LogPrintf("SQLiteBatch::WriteKey: Unable to execute write statement: %s\n", sqlite3_errstr(res));
+    }
+    return res == SQLITE_DONE;
 }
 
 bool SQLiteBatch::EraseKey(CDataStream&& key)
 {
-    return false;
+    if (!m_database.m_db) return false;
+    if (m_read_only) throw std::runtime_error("Erase called on database in read-only mode");
+    assert(m_delete_stmt);
+
+    // Bind: leftmost parameter in statement is index 1
+    int res = sqlite3_bind_blob(m_delete_stmt, 1, key.data(), key.size(), SQLITE_STATIC);
+    if (res != SQLITE_OK) {
+        LogPrintf("SQLiteBatch::EraseKey: Unable to bind erase statement :%s\n", sqlite3_errstr(res));
+        sqlite3_clear_bindings(m_delete_stmt);
+        sqlite3_reset(m_delete_stmt);
+        return false;
+    }
+
+    // Execute
+    res = sqlite3_step(m_delete_stmt);
+    sqlite3_clear_bindings(m_delete_stmt);
+    sqlite3_reset(m_delete_stmt);
+    if (res != SQLITE_DONE) {
+        LogPrintf("SQLiteBatch::EraseKey: Unable to execute erase statement: %s\n", sqlite3_errstr(res));
+    }
+    return res == SQLITE_DONE;
 }
 
 bool SQLiteBatch::HasKey(CDataStream&& key)
 {
-    return false;
+    if (!m_database.m_db) return false;
+    assert(m_read_stmt);
+
+    // Bind: leftmost parameter in statement is index 1
+    bool ret = false;
+    int res = sqlite3_bind_blob(m_read_stmt, 1, key.data(), key.size(), SQLITE_STATIC);
+    if (res == SQLITE_OK) {
+        res = sqlite3_step(m_read_stmt);
+        if (res == SQLITE_ROW) {
+            ret = true;
+        }
+    }
+
+    sqlite3_clear_bindings(m_read_stmt);
+    sqlite3_reset(m_read_stmt);
+    return ret;
 }
 
 bool SQLiteBatch::StartCursor()

@@ -102,6 +102,43 @@ SQLiteDatabase::~SQLiteDatabase()
     }
 }
 
+bool SQLiteDatabase::Verify(bilingual_str& error)
+{
+    assert(m_db);
+
+    sqlite3_stmt* stmt{nullptr};
+    ret = sqlite3_prepare_v2(m_db, "PRAGMA integrity_check", -1, &stmt, nullptr);
+    if (ret != SQLITE_OK) {
+        sqlite3_finalize(stmt);
+        error = strprintf(_("SQLiteDatabase: Failed to prepare statement to verify database: %s"), sqlite3_errstr(ret));
+        return false;
+    }
+    while (true) {
+        ret = sqlite3_step(stmt);
+        if (ret == SQLITE_DONE) {
+            break;
+        } else if (ret != SQLITE_ROW) {
+            error = strprintf(_("SQLiteDatabase: Failed to execute statement to verify database: %s"), sqlite3_errstr(ret));
+            break;
+        }
+        const char* msg = (const char*)sqlite3_column_text(stmt, 0);
+        if (!msg) {
+            error = strprintf(_("SQLiteDatabase: Failed to read database verification error: %s"), sqlite3_errstr(ret));
+            break;
+        }
+        std::string str_msg(msg);
+        if (str_msg == "ok") {
+            continue;
+        }
+        if (error.original.empty()) {
+            error = _("Failed to verify database\n");
+        }
+        error += Untranslated(strprintf("%s\n", str_msg));
+    }
+    sqlite3_finalize(stmt);
+    return error.original.empty();
+}
+
 void SQLiteDatabase::Open(const char* mode)
 {
     int flags = SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
@@ -457,7 +494,18 @@ bool ExistsSQLiteDatabase(const fs::path& path)
 
 std::unique_ptr<SQLiteDatabase> MakeSQLiteDatabase(const fs::path& path, const DatabaseOptions& options, DatabaseStatus& status, bilingual_str& error)
 {
-    return MakeUnique<SQLiteDatabase>(path, path / DATABASE_FILENAME);
+    fs::path file = path / DATABASE_FILENAME;
+    try {
+        auto db = MakeUnique<SQLiteDatabase>(path, file);
+        if (options.verify && fs::is_regular_file(file) && !db->Verify(error)) {
+            status = DatabaseStatus::FAILED_VERIFY;
+            return nullptr;
+        }
+        return db;
+    } catch (const std::runtime_error& e) {
+        error.original = e.what();
+        return nullptr;
+    }
 }
 
 std::string SQLiteDatabaseVersion()

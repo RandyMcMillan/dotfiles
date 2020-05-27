@@ -179,7 +179,29 @@ bool SQLiteDatabase::Rewrite(const char* skip)
 
 bool SQLiteDatabase::Backup(const std::string& dest) const
 {
-    return false;
+    sqlite3* db_copy;
+    int res = sqlite3_open(dest.c_str(), &db_copy);
+    if (res != SQLITE_OK) {
+        sqlite3_close(db_copy);
+        return false;
+    }
+    sqlite3_backup* backup = sqlite3_backup_init(db_copy, "main", m_db, "main");
+    if (!backup) {
+        LogPrintf("SQLiteDatabase::Backup: Unable to begin backup: %s\n", sqlite3_errmsg(m_db));
+        sqlite3_close(db_copy);
+        return false;
+    }
+    // Copy all of the pages using -1
+    res = sqlite3_backup_step(backup, -1);
+    if (res != SQLITE_DONE) {
+        LogPrintf("SQLiteDatabase::Backup: Unable to backup: %s\n", sqlite3_errstr(res));
+        sqlite3_backup_finish(backup);
+        sqlite3_close(db_copy);
+        return false;
+    }
+    res = sqlite3_backup_finish(backup);
+    sqlite3_close(db_copy);
+    return res == SQLITE_OK;
 }
 
 void SQLiteDatabase::Close()

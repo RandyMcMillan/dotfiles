@@ -107,9 +107,9 @@ void WalletInit::Construct(NodeContext& node) const
         LogPrintf("Wallet disabled!\n");
         return;
     }
-    // If there's no -wallet setting with a list of wallets to load, set it to
-    // load the default "" wallet.
-    if (!args.IsArgSet("wallet")) {
+    // For backwards compatibility if an unnamed top level wallet exists in the
+    // wallets directory, include it in the default list of wallets to load.
+    if (!args.IsArgSet("wallet") && HasDefaultWallet()) {
         args.LockSettings([&](util::Settings& settings) {
             util::SettingsValue wallets(util::SettingsValue::VARR);
             wallets.push_back(""); // Default wallet name is ""

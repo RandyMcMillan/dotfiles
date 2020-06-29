@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#
 checkbrew() {
 
     if hash brew 2>/dev/null; then

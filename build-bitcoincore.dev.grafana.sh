@@ -34,15 +34,15 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
     brew install curl git go
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-    echo 'export PATH=export NVM_DIR="$HOME/.nvm"' >> /Users/git/.bash_profile
+#    echo 'export PATH=export NVM_DIR="$HOME/.nvm"' >> /Users/git/.bash_profile
     brew unlink node node@10 node@12
     brew uninstall node node@10 node@12
     rm -rf /usr/local/Cellar/node/*
     rm -rf /usr/local/bin/npm
     brew install --force node@12 npm
     brew link --force --overwrite node@12 npm
-    echo 'export PATH="/usr/local/opt/node@12/bin:$PATH"' >> /Users/git/.bash_profile
-    echo 'export PATH="export GOPATH=$HOME/go/:$PATH"' >> /Users/git/.bash_profile
+#    echo 'export PATH="/usr/local/opt/node@12/bin:$PATH"' >> /Users/git/.bash_profile
+#    echo 'export PATH="export GOPATH=$HOME/go/:$PATH"' >> /Users/git/.bash_profile
     cd ~/go/src/github.com/bitcoincore-dev/grafana/
 
     npm install -g npm-install-peers

@@ -44,9 +44,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo 'export PATH="/usr/local/opt/node@12/bin:$PATH"' >> /Users/git/.bash_profile
     echo 'export PATH="export GOPATH=$HOME/go/:$PATH"' >> /Users/git/.bash_profile
     cd ~/go/src/github.com/bitcoincore-dev/grafana/
-    
+
+    npm install -g npm-install-peers
+
     npm install -g npm storybook
-    npm install -g yarn
+    npm install -gW yarn
     npx -p @storybook/cli sb init
     export GOPATH=$HOME/go/
     go get github.com/bitcoincore-dev/grafana

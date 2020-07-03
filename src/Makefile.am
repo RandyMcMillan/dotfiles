@@ -214,6 +214,7 @@ BITCOIN_CORE_H = \
   torcontrol.h \
   txdb.h \
   txmempool.h \
+  txmempool_entry.h \
   undo.h \
   util/asmap.h \
   util/bip32.h \

@@ -72,6 +72,7 @@ public:
     void setupPlatformStyle();
 
     interfaces::Node& node() const { assert(m_node); return *m_node; }
+    bool nodeExternal() const { return m_node_external; }
 
 public Q_SLOTS:
     void initializeResult(bool success, interfaces::BlockAndHeaderTipInfo tip_info);
@@ -88,7 +89,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void requestedInitialize();
-    void requestedShutdown();
+    void requestedShutdown(bool node_shutdown);
     void windowShown(BitcoinGUI* window);
 
 protected:
@@ -109,6 +110,10 @@ private:
     std::unique_ptr<QWidget> shutdownWindow;
     SplashScreen* m_splash = nullptr;
     std::unique_ptr<interfaces::Node> m_node;
+    //! Whether node is external to the application and running in a
+    //! pre-existing process, or internal and initialized and shutdown when the
+    //! application is.
+    bool m_node_external = false;
 
     void startThread();
 };

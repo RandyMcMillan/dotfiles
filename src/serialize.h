@@ -214,47 +214,7 @@ template<typename X> const X& AsBase(const X& x) { return x; }
     template<typename Stream, typename Type, typename Operation> \
     static inline void SerializationOps(Type& obj, Stream& s, Operation ser_action) \
 
-/** Variant of FORMATTER_METHODS that supports a declared parameter type.
- *
- * If a formatter has a declared parameter type, it must be invoked directly or
- * indirectly with a parameter of that type. This permits making serialization
- * depend on run-time context in a type-safe way.
- *
- * Example use:
- *   struct BarParameter { bool fancy; ... };
- *   struct Bar { ... };
- *   struct FooFormatter {
- *     FORMATTER_METHODS(Bar, obj, BarParameter, param) {
- *       if (param.fancy) {
- *         READWRITE(VARINT(obj.value));
- *       } else {
- *         READWRITE(obj.value);
- *       }
- *     }
- *   };
- * which would then be invoked as
- *   READWRITE(WithParams(BarParameter{...}, Using<FooFormatter>(obj.foo)))
- *
- * Note that WithParams(parameter, obj) can be invoked anywhere in the call
- * stack; it is passed down recursively into all serialization code, until
- * another WithParams overrides it.
- *
- * Parameters will be implicitly converted where appropriate. This means that
- * "parent" serialization code can use a parameter that derives from, or is
- * convertible to, a "child" formatter's parameter type.
- *
- * Compilation will fail in any context where serialization is invoked but
- * no parameter of a type convertible to BarParameter is provided.
- */
-#define FORMATTER_METHODS_PARAMS(cls, obj, paramcls, paramobj) \
-    template<typename Stream> \
-    static void Ser(Stream& s, const cls& obj) { SerializationOps(obj, s, CSerActionSerialize(), s.GetParams()); } \
-    template<typename Stream> \
-    static void Unser(Stream& s, cls& obj) { SerializationOps(obj, s, CSerActionUnserialize(), s.GetParams()); } \
-    template<typename Stream, typename Type, typename Operation> \
-    static inline void SerializationOps(Type& obj, Stream& s, Operation ser_action, const paramcls& paramobj) \
-
-#define BASE_SERIALIZE_METHODS(cls)                                                 \
+#define SERIALIZE_METHODS(cls, obj)                                                 \
     template<typename Stream>                                                       \
     void Serialize(Stream& s) const                                                 \
     {                                                                               \
@@ -266,26 +226,13 @@ template<typename X> const X& AsBase(const X& x) { return x; }
     {                                                                               \
         static_assert(std::is_same<cls&, decltype(*this)>::value, "Unserialize type mismatch"); \
         Unser(s, *this);                                                            \
-    }
-
-/**
- * Implement the Serialize and Unserialize methods by delegating to a single templated
- * static method that takes the to-be-(de)serialized object as a parameter. This approach
- * has the advantage that the constness of the object becomes a template parameter, and
- * thus allows a single implementation that sees the object as const for serializing
- * and non-const for deserializing, without casts.
- */
-#define SERIALIZE_METHODS(cls, obj) \
-    BASE_SERIALIZE_METHODS(cls) \
+    }                                                                               \
     FORMATTER_METHODS(cls, obj)
 
-/** Variant of SERIALIZE_METHODS that supports a declared parameter type.
- *
- *  See FORMATTER_METHODS_PARAMS for more information on parameters.
- */
+/** Variant of SERIALIZE_METHODS that supports WithParams serialization. */
 #define SERIALIZE_METHODS_PARAMS(cls, obj, paramcls, paramobj) \
-    BASE_SERIALIZE_METHODS(cls) \
-    FORMATTER_METHODS_PARAMS(cls, obj, paramcls, paramobj)
+    template<typename Stream, typename Type, typename Operation> \
+    static inline void SerializeWithParams(Type& obj, Stream& s, Operation ser_action, const paramcls& paramobj)
 
 #ifndef CHAR_EQUALS_INT8
 template<typename Stream> inline void Serialize(Stream& s, char a    ) { ser_writedata8(s, a); } // TODO Get rid of bare char
@@ -513,10 +460,11 @@ class Wrapper
     static_assert(std::is_lvalue_reference<T>::value, "Wrapper needs an lvalue reference type T");
 protected:
     T m_object;
+    mutable Formatter m_formatter;
 public:
-    explicit Wrapper(T obj) : m_object(obj) {}
-    template<typename Stream> void Serialize(Stream &s) const { Formatter().Ser(s, m_object); }
-    template<typename Stream> void Unserialize(Stream &s) { Formatter().Unser(s, m_object); }
+    template<typename... Args> Wrapper(T obj, Args&&... args) : m_object(obj), m_formatter(std::forward<Args>(args)...) {}
+    template<typename Stream> void Serialize(Stream &s) const { m_formatter.Ser(s, m_object); }
+    template<typename Stream> void Unserialize(Stream &s) { m_formatter.Unser(s, m_object); }
 };
 
 /** Cause serialization/deserialization of an object to be done using a specified formatter class.
@@ -656,10 +604,13 @@ struct LimitedStringFormatter
 template<class Formatter>
 struct VectorFormatter
 {
+    Formatter formatter;
+
+    template<typename... Args> VectorFormatter(Args&&... args) : formatter(std::forward<Args>(args)...) {}
+
     template<typename Stream, typename V>
     void Ser(Stream& s, const V& v)
     {
-        Formatter formatter;
         WriteCompactSize(s, v.size());
         for (const typename V::value_type& elem : v) {
             formatter.Ser(s, elem);
@@ -669,7 +620,6 @@ struct VectorFormatter
     template<typename Stream, typename V>
     void Unser(Stream& s, V& v)
     {
-        Formatter formatter;
         v.clear();
         size_t size = ReadCompactSize(s);
         size_t allocated = 0;
@@ -1182,74 +1132,28 @@ size_t GetSerializeSizeMany(int nVersion, const T&... t)
     return sc.size();
 }
 
-/** Wrapper that overrides the GetParams() function of a stream. */
-template<typename Params, typename Stream>
-class ParamsStream
+/** Formatter that serializes objects with the specified parameters. */
+template<typename Params>
+struct ParamsFormatter
 {
-    const Params& m_params;
-    Stream& m_substream;
-public:
-    ParamsStream(const Params& params, Stream& substream) : m_params(params), m_substream(substream) {}
-    template<typename U> inline ParamsStream& operator<<(const U& obj) { ::Serialize(*this, obj); return *this; }
-    template<typename U> inline ParamsStream& operator>>(U&& obj) { ::Unserialize(*this, obj); return *this; }
-    inline void write(const char* ptr, size_t size) { m_substream.write(ptr, size); }
-    inline void read(char* ptr, size_t size) { m_substream.read(ptr, size); }
-    inline size_t size() const { return m_substream.size(); }
-    inline const Params& GetParams() { return m_params; }
-    inline int GetVersion() const { return m_substream.GetVersion(); }
-    inline int GetType() const { return m_substream.GetType(); }
-    inline Stream& GetSubStream() const { return m_substream; }
+    const Params& params;
+
+    ParamsFormatter(const Params& params) : params(params) {}
+
+    template<typename Stream, typename T> void Ser(Stream& s, const T& obj) { T::SerializeWithParams(obj, s, CSerActionSerialize(), params); }
+    template<typename Stream, typename T> void Unser(Stream& s, T& obj) { T::SerializeWithParams(obj, s, CSerActionUnserialize(), params); }
 };
 
-/** Wrapper that serializes objects with the specified parameters. */
-template<typename Params, typename T>
-class ParamsWrapper
-{
-    static_assert(std::is_lvalue_reference<T>::value, "ParamsWrapper needs an lvalue reference type T");
-    const Params& m_params;
-    T m_object;
-
-public:
-    explicit ParamsWrapper(const Params& params, T obj) : m_params(params), m_object(obj) {}
-
-    //! Serialize to another ParamsStream: optimize by skipping it.
-    template<typename Stream, typename PrevParams>
-    inline void Serialize(ParamsStream<PrevParams, Stream>& s) const
-    {
-        ParamsStream<Params, Stream> ss(m_params, s.GetSubStream());
-        ::Serialize(ss, m_object);
-    }
-
-    //! Serialize to any other stream
-    template<typename Stream>
-    inline void Serialize(Stream& s) const
-    {
-        ParamsStream<Params, Stream> ss(m_params, s);
-        ::Serialize(ss, m_object);
-    }
-
-    //! Deserialize from another ParamsStream: optimize by skipping it.
-    template<typename Stream, typename PrevParams>
-    inline void Unserialize(ParamsStream<PrevParams, Stream>& s)
-    {
-        ParamsStream<Params, Stream> ss(m_params, s.GetSubStream());
-        ::Unserialize(ss, m_object);
-    }
-
-    //! Deserialize from any other stream
-    template<typename Stream>
-    inline void Unserialize(Stream& s)
-    {
-        ParamsStream<Params, Stream> ss(m_params, s);
-        ::Unserialize(ss, m_object);
-    }
-};
+/** Declare-only overloads to help WithParams figure out the right formatter type. */
+template<typename T, typename Params> ParamsFormatter<Params> FormatterType(const T&, const Params&);
+template<typename T, typename Params> VectorFormatter<ParamsFormatter<Params>> FormatterType(const std::vector<T>&, const Params&);
 
 /** Return a wrapper around t that (de)serializes it with specified parameter params.
  *
  * See FORMATTER_METHODS_PARAMS for more information on serialization parameters.
  */
+// FIXME: Argument order should be (t, params) not (params, t) and params should be a vararg
 template<typename Params, typename T>
-static inline ParamsWrapper<Params, T&> WithParams(const Params& params, T&& t) { return ParamsWrapper<Params, T&>(params, t); }
+auto WithParams(const Params& params, T&& t) -> Wrapper<decltype(FormatterType(t, params)), T&> { return {t, params}; }
 
 #endif // BITCOIN_SERIALIZE_H

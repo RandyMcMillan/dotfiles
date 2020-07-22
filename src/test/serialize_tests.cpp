@@ -391,7 +391,7 @@ public:
     Base() : m_base_data(17) {}
     explicit Base(uint8_t data) : m_base_data(data) {}
 
-#if 0 // the following two are equivalent
+#if 1 // the following two are equivalent
     SERIALIZE_METHODS_PARAMS(Base, obj, BaseFormat, fmt)
     {
         if (ser_action.ForRead()) {
@@ -401,7 +401,7 @@ public:
             uint32_t data;
             bool ok;
             if (fmt == BaseFormat::DEC) {
-                ok = ParseUint32(str, &data);
+                ok = ParseUInt32(str, &data);
             } else {
                 ok = IsHex(str);
                 data = ParseHex(str)[0];

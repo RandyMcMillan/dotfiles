@@ -45,11 +45,13 @@
 #include <QFontDatabase>
 #include <QFontMetrics>
 #include <QGuiApplication>
+#include <QJsonDocument>
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QList>
 #include <QMenu>
 #include <QMouseEvent>
+#include <QPluginLoader>
 #include <QProgressDialog>
 #include <QScreen>
 #include <QSettings>
@@ -912,6 +914,10 @@ void LogQtInfo()
     const std::string plugin_link{"dynamic"};
 #endif
     LogPrintf("Qt %s (%s), plugin=%s (%s)\n", qVersion(), qt_link, QGuiApplication::platformName().toStdString(), plugin_link);
+    for (const QStaticPlugin p : QPluginLoader::staticPlugins()) {
+        LogPrintf("Static Plugin: %s\n", QJsonDocument(p.metaData()).toJson(QJsonDocument::Compact).toStdString());
+    }
+    LogPrintf("Style=%s / %s\n", QApplication::style()->objectName().toStdString(), QApplication::style()->metaObject()->className());
     LogPrintf("System: %s, %s\n", QSysInfo::prettyProductName().toStdString(), QSysInfo::buildAbi().toStdString());
     for (const QScreen* s : QGuiApplication::screens()) {
         LogPrintf("Screen: %s %dx%d, pixel ratio=%.1f\n", s->name().toStdString(), s->size().width(), s->size().height(), s->devicePixelRatio());

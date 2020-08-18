@@ -5,6 +5,15 @@ The headless daemon `bitcoind` has the JSON-RPC API enabled by default, the GUI
 option. In the GUI it is possible to execute RPC methods in the Debug Console
 Dialog.
 
+## Parameter passing
+
+The JSON-RPC server supports both _by-position_ and _by-name_ [parameter
+structures](https://www.jsonrpc.org/specification#parameter_structures)
+described in the JSON-RPC specification. For extra convenience, to avoid the
+need to name every parameter value, all RPC methods accept a named parameter
+called `args`, which can be set to an array of positional values that are
+combined with named values.
+
 ## Versioning
 
 The RPC interface might change from one major version of Bitcoin Core to the

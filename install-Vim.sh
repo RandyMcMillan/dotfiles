@@ -29,7 +29,7 @@ install-vim() {
 
     fi
     echo
-cd ~/dotfiles
+cd $DOTFILES
 if [[ "$OSTYPE" == "darwin"* ]]; then
     install-mac-vim
 fi

@@ -252,13 +252,13 @@ UniValue RPCConvertNamedValues(const std::string &strMethod, const std::vector<s
 
     for (const std::string &s: strParams) {
         size_t pos = s.find('=');
-        if (pos == std::string::npos) {
-            positional_args.push_back(rpcCvtTable.convert(strMethod, positional_args.size()) ? ParseNonRFCJSONValue(s) : s);
+        std::string name = s.substr(0, pos == std::string::npos ? 0 : pos);
+        std::string value = s.substr(pos == std::string::npos ? 0 : pos+1);
+
+        if (name.empty()) {
+            positional_args.push_back(rpcCvtTable.convert(strMethod, positional_args.size()) ? ParseNonRFCJSONValue(value) : value);
             continue;
         }
-
-        std::string name = s.substr(0, pos);
-        std::string value = s.substr(pos+1);
 
         if (!rpcCvtTable.convert(strMethod, name)) {
             // insert string value directly

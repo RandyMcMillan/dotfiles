@@ -2,7 +2,7 @@
 install-mac-vim() {
 
 sudo rm -rf /Applications/MacVim.app
-brew cask install -f macvim
+brew cask install macvim
 
 }
 install-vim() {

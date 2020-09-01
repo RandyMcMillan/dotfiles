@@ -75,3 +75,4 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 export GPG_TTY=$(tty)
+export PATH="/usr/local/opt/qt/bin:$PATH"

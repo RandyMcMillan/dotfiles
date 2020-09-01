@@ -29,15 +29,15 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
     sudo apt-get install libqrencode-dev
 
-    git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
-    cd ~/bitcoin && ./contrib/install_db4.sh .
+#    git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
+    cd ~/jonatack && ./contrib/install_db4.sh .
     ./autogen.sh && ./configure && make deploy
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
-    git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
-    cd ~/bitcoin && ./contrib/install_db4.sh .
-    ./autogen.sh && ./configure && make deploy
+    #git clone https://github.com/jonatack/bitcoin ~/jonatack
+    cd ~/fanquake && ./contrib/install_db4.sh .
+    ./autogen.sh && ./configure --disable-tests && make deploy
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "msys" ]]; then

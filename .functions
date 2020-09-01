@@ -1,5 +1,91 @@
 #!/usr/bin/env bash
 
+
+#We agreed to the Qt open source license for you.
+#If this is unacceptable you should uninstall.
+#
+#qt is keg-only, which means it was not symlinked into /usr/local,
+#because Qt 5 has CMake issues when linked.
+#
+#If you need to have qt first in your PATH run:
+#  echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> /Users/git/.bash_profile
+#
+#For compilers to find qt you may need to set:
+#  export LDFLAGS="-L/usr/local/opt/qt/lib"
+#  export CPPFLAGS="-I/usr/local/opt/qt/include"
+#
+#For pkg-config to find qt you may need to set:
+#  export PKG_CONFIG_PATH="/usr/local/opt/qt/lib/pkgconfig"
+#
+#==> Summary
+#🍺  /usr/local/Cellar/qt/5.15.0: 10,574 files, 374.2MB
+
+
+
+
+
+function install-bitcoin-depends(){
+
+
+#If you need to have qt first in your PATH run:
+  echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> /Users/git/.bash_profile
+
+#For compilers to find qt you may need to set:
+  export LDFLAGS="-L/usr/local/opt/qt/lib"
+  export CPPFLAGS="-I/usr/local/opt/qt/include"
+
+#For pkg-config to find qt you may need to set:
+  export PKG_CONFIG_PATH="/usr/local/opt/qt/lib/pkgconfig"
+
+#🍺  /usr/local/Cellar/qt/5.15.0: 10,574 files, 374.2MB
+
+
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+
+        apt install linuxbrew-wrapper
+        apt-get install autoconf
+        apt-get install libdb4.8++-dev
+        apt-get -y install libboost libevent miniupnpc libdb4.8 qt libqrencode univalue libzmq3
+        apt-get install build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
+        apt-get install libevent-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev libboost-thread-dev
+        apt-get install libminiupnpc-dev
+        apt-get install libzmq3-dev
+        apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
+        apt-get install libqrencode-dev
+
+        ./contrib/install_db4.sh .
+        ./autogen.sh && ./configure --disable-tests && make download -D depends
+
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+
+    if hash brew 2>/dev/null; then
+        #brew update
+        #brew upgrade
+        #install brew libs
+        brew install wget
+        brew install curl
+        brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
+        brew install librsvg
+    else
+        #example - execute script with perl
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        install-bitcoin-depends
+    fi
+        ./contrib/install_db4.sh .
+        ./autogen.sh && ./configure --disable-tests && make download -D depends
+        ./autogen.sh && ./configure --disable-tests #&& make deploy
+fi
+}
+
+
+function git-fetch-branches(){
+	git branch -r | grep -v '\->' | while read remote; do git branch "${remote#origin/}" "$remote"; done
+	git fetch --all
+	git pull --all
+}
+
+
 # Create a new directory and enter it
 function mkd() {
 	mkdir -p "$@" && cd "$_";

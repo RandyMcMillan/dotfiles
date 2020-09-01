@@ -12,13 +12,14 @@ config-github() {
     git config --global user.name $GITHUB_USER_NAME
     echo Thankyou $GITHUB_USER_NAME
     read -p 'ENTER your Github.com user email: ' GITHUB_USER_EMAIL
-    git config --global user.email $GITHUB_USER_EMAIL
+    #git config --global user.email $GITHUB_USER_EMAIL
+    git config --global user.email randy.lee.mcmillan@gmail.com
     echo Thankyou $GITHUB_USER_NAME for your email.
     #REF:https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
     gpg --list-secret-keys --keyid-format LONG
     read -p 'ENTER your GPG Signing Key: ' GPG_SIGNING_KEY
-    git config --global user.signingkey $GPG_SIGNING_KEY
-		#git config --global user.signingkey 97966C06BB06757B
+    #git config --global user.signingkey $GPG_SIGNING_KEY
+		git config --global user.signingkey 97966C06BB06757B
     echo && echo
     echo Your GPG Siging Key has been added...
     echo && echo
@@ -44,6 +45,7 @@ config-github() {
     ssh-add ~/.ssh/docker_rsa
     ssh-add ~/.ssh/$DATE.github_rsa
     ssh-add ~/.ssh/$DATE.docker_rsa
+		ssh-add ~/.ssh/*_rsa
 
     echo "Copy this pub key to your github profile..."
     cat ~/.ssh/$DATE.github_rsa.pub

@@ -91,9 +91,3 @@ std::vector<fs::path> ListWalletDir()
 
     return paths;
 }
-
-bool HasDefaultWallet()
-{
-    const fs::path default_wallet_path = GetWalletDir() / "wallet.dat";
-    return fs::symlink_status(default_wallet_path).type() == fs::regular_file;
-}

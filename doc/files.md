@@ -64,14 +64,21 @@ Subdirectory       | File(s)               | Description
 
 ## Multi-wallet environment
 
-Wallets are Berkeley DB (BDB) databases:
+By default, Wallets are Berkeley DB (BDB) databases:
 
 Subdirectory | File(s)           | Description
 -------------|-------------------|------------
 `database/`  | BDB logging files | Part of BDB environment; created at start and deleted on shutdown; a user *must keep it as safe* as personal wallet `wallet.dat`
 `./`         | `db.log`          | BDB error file
-`./`         | `wallet.dat`      | Personal wallet (BDB) with keys and transactions
+`./`         | `wallet.dat`      | Personal wallet with keys and transactions.
 `./`         | `.walletlock`     | Wallet lock file
+
+Descriptor wallets are SQLite databases:
+
+Subdirectory | File(s)                 | Description
+-------------|-------------------------|------------
+`./`         | `wallet.sqlite`         | SQLite data file containing keys and transactions.
+`./`         | `wallet.sqlite-journal` | SQLite journal file containing temporary data used for crash and error recovery. File should be kept and not discarded if it is present.
 
 1. Each user-defined wallet named "wallet_name" resides in `wallets/wallet_name/` subdirectory.
 

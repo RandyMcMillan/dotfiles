@@ -51,5 +51,6 @@ config-github() {
     cat ~/.ssh/$DATE.github_rsa.pub
     echo "a docker key pair"
     cat ~/.ssh/$DATE.docker_rsa.pub
+		echo https://gorails.com/setup/osx/10.14-mojave
 }
 config-github

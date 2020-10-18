@@ -36,4 +36,5 @@ fi
 
 }
 install-vim
+git config --global core.editor vim
 

@@ -47,3 +47,4 @@ hosts
 etc-dnsmasq.d
 etc-pihole
 .DS_Store
+.config/QtProject

@@ -3,6 +3,14 @@ install-mac-vim() {
 
 sudo rm -rf /Applications/MacVim.app
 brew cask install macvim
+brew link macvim
+    if hash mvim 2>/dev/null; then
+        echo
+        echo Usage:
+        echo mvim $(pwd)
+        echo
+    fi
+
 
 }
 install-vim() {
@@ -10,7 +18,6 @@ install-vim() {
     read -p "Install Vim? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-
 
         #sudo rm -rf ~/.vim_runtime
         if [ -d "$HOME/.vim_runtime/" ]; then
@@ -31,7 +38,18 @@ install-vim() {
     echo
 cd $DOTFILES
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    install-mac-vim
+
+    if hash brew 2>/dev/null; then
+
+        install-mac-vim
+
+    else
+
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        install-mac-vim
+
+    fi
+
 fi
 
 }

@@ -5,6 +5,7 @@
 #ifndef BITCOIN_IPC_CAPNP_INIT_H
 #define BITCOIN_IPC_CAPNP_INIT_H
 
+#include <interfaces/echo.h>
 #include <interfaces/init.h>
 
 #endif // BITCOIN_IPC_CAPNP_INIT_H

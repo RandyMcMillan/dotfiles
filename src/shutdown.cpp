@@ -3,12 +3,14 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include <node/ui_interface.h>
 #include <shutdown.h>
 
 #include <config/bitcoin-config.h>
 
 #include <assert.h>
 #include <atomic>
+#include <boost/signals2/connection.hpp>
 #ifdef WIN32
 #include <condition_variable>
 #else
@@ -17,6 +19,8 @@
 #include <unistd.h>
 #endif
 
+static void RequestShutdown();
+boost::signals2::scoped_connection g_request_shutdown;
 static std::atomic<bool> fRequestShutdown(false);
 #ifdef WIN32
 /** On windows it is possible to simply use a condition variable. */
@@ -31,6 +35,7 @@ static int g_shutdown_pipe[2];
 
 bool InitShutdownState()
 {
+    g_request_shutdown = uiInterface.RequestShutdown_connect(RequestShutdown);
 #ifndef WIN32
 #if HAVE_O_CLOEXEC
     // If we can, make sure that the file descriptors are closed on exec()
@@ -47,7 +52,7 @@ bool InitShutdownState()
     return true;
 }
 
-void StartShutdown()
+void RequestShutdown()
 {
 #ifdef WIN32
     std::unique_lock<std::mutex> lk(g_shutdown_mutex);
@@ -73,6 +78,11 @@ void StartShutdown()
         }
     }
 #endif
+}
+
+void StartShutdown()
+{
+    ::uiInterface.RequestShutdown();
 }
 
 void AbortShutdown()

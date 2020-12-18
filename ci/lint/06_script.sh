@@ -7,12 +7,12 @@
 export LC_ALL=C
 
 if [ -n "$CIRRUS_PR" ]; then
-  # CIRRUS_PR will be present in a Cirrus environment. For builds triggered
-  # by a pull request this is the name of the branch targeted by the pull request.
-  # https://cirrus-ci.org/guide/writing-tasks/#environment-variables
-  COMMIT_RANGE="$CIRRUS_BRANCH..HEAD"
+  COMMIT_RANGE="$CIRRUS_BASE_BRANCH..HEAD"
   test/lint/commit-script-check.sh $COMMIT_RANGE
+else
+  COMMIT_RANGE="$(git fetch $CIRRUS_REPO_CLONE_URL $CIRRUS_LAST_GREEN_CHANGE && git merge-base $CIRRUS_LAST_GREEN_CHANGE HEAD)..HEAD"
 fi
+export COMMIT_RANGE
 
 # This only checks that the trees are pure subtrees, it is not doing a full
 # check with -r to not have to fetch all the remotes.

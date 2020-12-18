@@ -6,4 +6,4 @@
 
 export LC_ALL=C
 
-git fetch
+git fetch $CIRRUS_REPO_CLONE_URL $CIRRUS_BASE_BRANCH

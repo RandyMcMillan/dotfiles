@@ -1363,4 +1363,3 @@ xcuserdata/
 
 /target
 Cargo.lock
-scripts/text.rs

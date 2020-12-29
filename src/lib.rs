@@ -1,7 +1,7 @@
-//! The simple, dependency-free cli library ✨
+//! The simplistic, dependency-free cli library ✨
 //!
+//! - **[Documentation](https://docs.rs/climake)**
 //! - [Crates.io](https://crates.io/crates/climake)
-//! - [Documentation](https://docs.rs/climake)
 //!
 //! # Example 📚
 //!
@@ -47,7 +47,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! climake = "3.0" # note: rewrite isn't out just yet!
+//! climake = "3.0.0-pre.1" # rewrite isn't out just yet!
 //! ```
 //!
 //! # License

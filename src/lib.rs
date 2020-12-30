@@ -181,7 +181,7 @@ pub enum Data {
 impl Data {
     /// Creates a new [Data] from with types mapping from [Input] using passed
     /// `data`. This may map the `data` string vec into types such as `PathBuf`
-    pub fn new(input: Input, data: impl IntoIterator<Item = String>) -> Self {
+    fn new(input: Input, data: impl IntoIterator<Item = String>) -> Self {
         match input {
             Input::None => Data::None, // ignore passed `data` (if any)
             Input::Text => match data.into_iter().next() {
@@ -304,7 +304,7 @@ impl<'a> Argument<'a> {
     /// ```none
     ///   (-v, --verbose) — Verbose mode
     /// ```
-    pub fn help_name_msg(&self, buf: &mut impl Write) -> std::io::Result<()> {
+    fn help_name_msg(&self, buf: &mut impl Write) -> std::io::Result<()> {
         let mut lc_buf: Vec<String> = Vec::new();
         let mut sc_buf: Vec<char> = Vec::new();
 
@@ -389,7 +389,7 @@ impl<'a> Subcommand<'a> {
     /// A referenced [CliMake] is needed for this method due to it displaying a
     /// header message using [CliMake::header_msg] with an altered usage line, as
     /// seen in the examples.
-    pub fn help_msg(&self, climake: &CliMake, buf: &mut impl Write) -> std::io::Result<()> {
+    fn help_msg(&self, climake: &CliMake, buf: &mut impl Write) -> std::io::Result<()> {
         climake.header_msg(self.name, buf)?;
 
         match self.help {
@@ -451,7 +451,7 @@ impl<'a> Subcommand<'a> {
     /// ```none
     ///   example — A simple example subcommand
     /// ```
-    pub fn help_name_msg(&self, buf: &mut impl Write) -> std::io::Result<()> {
+    fn help_name_msg(&self, buf: &mut impl Write) -> std::io::Result<()> {
         let formatted_help = match self.help {
             Some(msg) => msg,
             None => HELP_DEFAULT,
@@ -623,10 +623,10 @@ impl<'a> CliMake<'a> {
         self
     }
 
-    /// Sets tabbing distance for current [CliMake], default is `2` spaces for
-    /// tabs, chainable
-    pub fn tabbing(&mut self, tab_size: &'static str) -> &mut Self {
-        self.tabbing = tab_size;
+    /// Sets the tabbing characters for cli help, the default for this is 2 spaces,
+    /// i.e. `  `.
+    pub fn tabbing(&mut self, tab_chars: &'static str) -> &mut Self {
+        self.tabbing = tab_chars;
         self
     }
 
@@ -663,7 +663,7 @@ impl<'a> CliMake<'a> {
     ///
     ///   My app v0.1.0 — A simple application
     /// ```
-    pub fn header_msg(
+    fn header_msg(
         &self,
         usage_suffix: impl Into<Option<&'a str>>,
         buf: &mut impl Write,
@@ -739,7 +739,7 @@ impl<'a> CliMake<'a> {
     /// Arguments:
     ///   (-v, --verbose) — Verbose mode
     /// ```
-    pub fn help_msg(&self, buf: &mut impl Write) -> std::io::Result<()> {
+    fn help_msg(&self, buf: &mut impl Write) -> std::io::Result<()> {
         self.header_msg(None, buf)?;
 
         buf.write("\nArguments:\n".as_bytes())?;

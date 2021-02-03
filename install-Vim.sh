@@ -2,7 +2,8 @@
 install-mac-vim() {
 
 sudo rm -rf /Applications/MacVim.app
-brew cask install macvim
+brew cask install macvim lua luarocks
+brew unlink macvim && brew link macvim
 brew link macvim
     if hash mvim 2>/dev/null; then
         echo
@@ -42,13 +43,35 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     if hash brew 2>/dev/null; then
 
         install-mac-vim
+        read -p "Install VCM? (y/n) " -n 1;
+        echo "";
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-    else
+            brew install         python mono go nodejs gcc
+            brew upgrade         python mono go nodejs gcc
+            brew install --cask  cmake macvim
 
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-        install-mac-vim
+            ##sudo rm -rf ~/.vim_runtime
+            #if [ -d "$HOME/.vim_runtime/" ]; then
+            #  cd ~/.vim_runtime
+            #  mkdir -p  bundle && cd bundle && rm -rf YouCompleteMe && git clone https://github.com/ycm-core/YouCompleteMe.git && \
+            #      cd YouCompleteMe && git submodule update --init --recursive && python3 install.py --all
 
-    fi
+            #else
+            #    echo no YCM
+
+            #fi
+
+        fi
+        echo
+
+
+        else
+
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+            install-mac-vim
+
+        fi
 
 fi
 

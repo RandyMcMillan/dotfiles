@@ -62,10 +62,13 @@ alias NO_BENCH="--disable-bench=yes"
 alias NO_WALLET="--enable-util-wallet=no"
 alias NO_TX="--enable-util-tx=no"
 alias CLI="--enable-util-cli=yes"
+alias QUICK=$NOGUI $NOCACHE $NOMAN $DEBUG $DAEMON $RECUCE_EXPS $NO_BENCH $NO_WALLET $NO_TX $CLI $WERROR
+alias RUN-BITCOIN="rm -f src/bitcoind && rm -rf Bitcoin-Qt.app && rm -rf ~/Library/Saved\ Application\
+    State/org.bitcoinfoundation.Bitcoin-Qt.savedState && rm -rf ~/Library/Preferences/org.bitcoin.Bitcoin-Qt.plist &&
+    make appbundle && wait && ./Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -resetguisettings"
+
 
 alias REFRESH_GPG="gpg --keyserver hkp://keyserver.ubuntu.com --refresh-keys"
-
-alias QUICK=$NOGUI $NOCACHE $NOMAN $DEBUG $DAEMON $RECUCE_EXPS $NO_BENCH $NO_WALLET $NO_TX $CLI $WERROR
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`

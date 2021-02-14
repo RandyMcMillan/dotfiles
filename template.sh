@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
-#
+
+case "$OSTYPE" in
+  solaris*) echo "SOLARIS" ;;
+  darwin*)  echo "OSX" ;;
+  linux*)   echo "LINUX" ;;
+  bsd*)     echo "BSD" ;;
+  msys*)    echo "WINDOWS" ;;
+  *)        echo "unknown: $OSTYPE" ;;
+esac
+
 checkbrew() {
 
     if hash brew 2>/dev/null; then
@@ -10,8 +19,10 @@ checkbrew() {
         checkbrew
     fi
 }
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    echo
+if [[ "$OSTYPE" == "linux-"* ]]; then
+    if [[ "$OSTYPE" == "linux-"* ]]; then
+        echo
+    fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then

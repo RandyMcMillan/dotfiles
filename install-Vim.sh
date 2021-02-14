@@ -2,7 +2,8 @@
 install-mac-vim() {
 
 sudo rm -rf /Applications/MacVim.app
-brew cask install macvim lua luarocks
+brew install --cask macvim
+brew install lua luarocks
 brew unlink macvim && brew link macvim
 brew link macvim
     if hash mvim 2>/dev/null; then

@@ -10,6 +10,7 @@
 
 namespace init {
 namespace {
+
 class BitcoindInit : public interfaces::Init
 {
 public:

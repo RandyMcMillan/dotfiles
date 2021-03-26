@@ -20,7 +20,7 @@ public:
     BitcoinAltnetInit(AltnetContext& altnet, const char* arg0)
         : m_altnet(altnet),
           m_ipc(interfaces::MakeIpc(EXE_NAME, arg0, *this)) {}
-    std::unique_ptr<interfaces::Altnet> makeAltnet(interfaces::Validation& validation) override { return MakeUnique<AltnetImpl>(m_altnet, validation); }
+    std::unique_ptr<interfaces::Altnet> makeAltnet(interfaces::Validation& validation) override { return MakeAltnet(m_altnet, validation); }
     interfaces::Ipc* ipc() override { return m_ipc.get(); }
     AltnetContext& m_altnet;
     std::unique_ptr<interfaces::Ipc> m_ipc;

@@ -1,21 +1,12 @@
 #!/usr/bin/env bash
-install-mac-vim() {
 
-sudo rm -rf /Applications/MacVim.app
-brew cask install macvim lua luarocks
-brew unlink macvim && brew link macvim
-brew link macvim
-    if hash mvim 2>/dev/null; then
-        echo
-        echo Usage:
-        echo mvim $(pwd)
-        echo
-    fi
+if hash git 2>/dev/null; then
+    git config --global core.editor vim
+    git config --global pull.rebase true
+fi
 
-
-}
 install-vim() {
-
+#WE install this regaurdless of OSTYPE
     read -p "Install Vim? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -37,45 +28,30 @@ install-vim() {
 
     fi
     echo
-cd $DOTFILES
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
     if hash brew 2>/dev/null; then
-
-        install-mac-vim
-        read -p "Install VCM? (y/n) " -n 1;
-        echo "";
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-
-            brew install         python mono go nodejs gcc
-            brew upgrade         python mono go nodejs gcc
-            brew install --cask  cmake macvim
-
-            ##sudo rm -rf ~/.vim_runtime
-            #if [ -d "$HOME/.vim_runtime/" ]; then
-            #  cd ~/.vim_runtime
-            #  mkdir -p  bundle && cd bundle && rm -rf YouCompleteMe && git clone https://github.com/ycm-core/YouCompleteMe.git && \
-            #      cd YouCompleteMe && git submodule update --init --recursive && python3 install.py --all
-
-            #else
-            #    echo no YCM
-
-            #fi
-
+    read -p "Install MacVim? (y/n) " -n 1;
+    echo "";
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        if !hash mvim 2>/dev/null; then
+            sudo rm -rf /Applications/MacVim.app
+            brew unlink macvim
+            brew install --cask  macvim
+            brew link macvim
+        elif
+            hash mvim 2>/dev/null; then
+            echo MacVim already installed.
+            echo Usage:
+            echo mvim .
+            echo
         fi
-        echo
+    fi
 
+    else
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-        else
-
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-            install-mac-vim
-
-        fi
-
+    fi
 fi
-
 }
 install-vim
-git config --global core.editor vim
-

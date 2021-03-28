@@ -3,6 +3,7 @@ git config --global core.editor "vim"
 git config --global commit.gpgsign true
 git config --global core.ignorecase false
 git config --global advice.addIgnoredFile false
+git config --global pull.rebase true
 config-github() {
 
     read -p "Config github? (y/n) " -n 1;

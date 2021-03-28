@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
 DOTFILES=~/dotfiles
+export DOTFILES
 
 if [ -d $DOTFILES  ]; then
     cd $DOTFILES
-    git pull -f origin +master:master
 else
    git clone https://github.com/randymcmillan/dotfiles $DOTFILES
     cd $DOTFILES
-    git pull -f origin +master:master
 fi
 
 #set -x #debug
@@ -111,8 +110,6 @@ linkAndSource() {
             ln -sf ~/dotfiles/.config ~/.config
             increment
 
-            #echo "sourcing" && echo
-
             source ~/.aliases
             increment
             source ~/.bash_profile
@@ -127,11 +124,8 @@ linkAndSource() {
             #echo 'source ~/.macos'
             #source ~/.macos
             #increment
-            source $(pwd)/*.sh
-
         done
     fi
-
 }
 linkAndSource
 
@@ -280,4 +274,4 @@ else
     fi;
 fi;
 unset doIt;
-open ~/init/Solarized Dark.terminal
+#open ~/init/Solarized\ Dark.terminal

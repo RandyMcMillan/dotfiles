@@ -1,15 +1,11 @@
 ### Global defaults
 
 env:
-  PACKAGE_MANAGER_INSTALL: "apt-get update && apt-get install -y"
   MAKEJOBS: "-j4"
-  DANGER_RUN_CI_ON_HOST: "1"  # Containers will be discarded after the run, so there is no risk that the ci scripts modify the system
   TEST_RUNNER_PORT_MIN: "14000"  # Must be larger than 12321, which is used for the http cache. See https://cirrus-ci.org/guide/writing-tasks/#http-cache
-  CCACHE_SIZE: "200M"
-  CCACHE_DIR: "/tmp/ccache_dir"
 
 # https://cirrus-ci.org/guide/tips-and-tricks/#sharing-configuration-between-tasks
-base_template: &BASE_TEMPLATE
+base_template: &INIT_TEMPLATE
   skip: $CIRRUS_REPO_FULL_NAME == "bitcoin-core/gui" && $CIRRUS_PR == ""  # No need to run on the read-only mirror, unless it is a PR. https://cirrus-ci.org/guide/writing-tasks/#conditional-task-execution
   merge_base_script:
     - if [ "$CIRRUS_PR" = "" ]; then exit 0; fi
@@ -19,6 +15,14 @@ base_template: &BASE_TEMPLATE
     - git config --global user.name "ci"
     - git merge FETCH_HEAD  # Merge base to detect silent merge conflicts
   stateful: false  # https://cirrus-ci.org/guide/writing-tasks/#stateful-tasks
+
+base_template: &BASE_TEMPLATE
+  env:
+    PACKAGE_MANAGER_INSTALL: "apt-get update && apt-get install -y"
+    DANGER_RUN_CI_ON_HOST: "1"  # Containers will be discarded after the run, so there is no risk that the ci scripts modify the system
+    CCACHE_SIZE: "200M"
+    CCACHE_DIR: "/tmp/ccache_dir"
+  << : *INIT_TEMPLATE
 
 global_task_template: &GLOBAL_TASK_TEMPLATE
   << : *BASE_TEMPLATE
@@ -45,6 +49,7 @@ compute_credits_template: &CREDITS_TEMPLATE
 
 task:
   name: "Windows"
+#  << : *INIT_TEMPLATE
   windows_container:
     image: cirrusci/windowsservercore:2019
   timeout_in: 120m
@@ -104,7 +109,7 @@ task:
 
 task:
   name: 'lint [bionic]'
-  << : *BASE_TEMPLATE
+  << : *INIT_TEMPLATE
   container:
     image: ubuntu:bionic  # For python 3.6, oldest supported version according to doc/dependencies.md
     cpu: 1

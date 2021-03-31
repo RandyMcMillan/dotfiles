@@ -20,12 +20,31 @@
 #==> Summary
 #🍺  /usr/local/Cellar/qt/5.15.0: 10,574 files, 374.2MB
 
+function autogen (){
 
+    ./autogen.sh
+}
 
+function configure-disable-wallet-tests-bench(){
+
+ ./configure --disable-wallet --disable-tests --disable-bench
+
+}
+
+function make-bitcoin-appbundle (){
+
+rm -f src/bitcoind && rm -rf Bitcoin-Qt.app && rm -rf ~/Library/Saved\ Application\ State/org.bitcoinfoundation.Bitcoin-Qt.savedState && rm -rf ~/Library/Preferences/org.bitcoin.Bitcoin-Qt.plist && make appbundle && wait && ./Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -resetguisettings
+
+}
+
+function make-bitcoin-depends () {
+
+make -C depends
+
+}
 
 
 function install-bitcoin-depends(){
-
 
 #If you need to have qt first in your PATH run:
   echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> /Users/git/.bash_profile

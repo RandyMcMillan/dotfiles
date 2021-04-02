@@ -13,8 +13,9 @@ install-vim() {
 
         #sudo rm -rf ~/.vim_runtime
         if [ -d "$HOME/.vim_runtime/" ]; then
+
           cd ~/.vim_runtime
-          git pull -f  origin master
+          git pull -f origin master
           sh ~/.vim_runtime/install_awesome_vimrc.sh
           #we exclude from ~/ because we link to here
           ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
@@ -34,11 +35,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     read -p "Install MacVim? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        if !hash mvim 2>/dev/null; then
-            sudo rm -rf /Applications/MacVim.app
-            brew unlink macvim
-            brew install --cask  macvim
-            brew link macvim
+        if  hash mvim 2>/dev/null; then
+            brew install -f macvim
+            brew link --overwrite macvim
         elif
             hash mvim 2>/dev/null; then
             echo MacVim already installed.

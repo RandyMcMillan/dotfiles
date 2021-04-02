@@ -1,11 +1,7 @@
 set go+=!,
 
-
-
-
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
 
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && v:this_session == "" | NERDTree | endif
@@ -13,11 +9,10 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && v:this_session == ""
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 
-
-map <C-n> :NERDTreeToggle<CR>
-
-
-
+let NERDTreeWinPos=0
+let NERDTreeShowHidden=1
+" map nerdtree to the ctrl+n
+nnoremap <silent> <expr> <C-\> g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
 " Use the Solarized Dark theme
 set background=dark
 colorscheme solarized

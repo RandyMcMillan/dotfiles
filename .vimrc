@@ -1,5 +1,7 @@
 set go+=!,
 
+" let mapleader = "\<C-n>"
+
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
@@ -11,11 +13,12 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 let NERDTreeWinPos=0
 let NERDTreeShowHidden=1
-" map nerdtree to the ctrl+n
-nnoremap <silent> <expr> <C-\> g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
 " Use the Solarized Dark theme
 set background=dark
 colorscheme solarized
+set colorcolumn=80
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
 let g:solarized_termtrans=1
 
 " Make Vim more useful
@@ -35,7 +38,7 @@ set gdefault
 " Use UTF-8 without BOM
 set encoding=utf-8 nobomb
 " Change mapleader
-let mapleader=","
+" let mapleader=","
 " Don’t add empty newlines at the end of files
 set binary
 set noeol

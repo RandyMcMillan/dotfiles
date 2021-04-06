@@ -16,7 +16,7 @@ let NERDTreeShowHidden=1
 " Use the Solarized Dark theme
 set background=dark
 colorscheme solarized
-set colorcolumn=80
+set colorcolumn=40,50,79,81,120,160
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 let g:solarized_termtrans=1

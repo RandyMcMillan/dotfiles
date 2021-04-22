@@ -4,7 +4,7 @@ install-docker() {
 
     if hash brew 2>/dev/null; then
         brew install docker
-        brew cask install docker
+        brew install --cask docker
         brew link --overwrite docker
         ls -l /usr/local/bin/docker*
     else

@@ -3,11 +3,7 @@
 checkbrew() {
 
     if hash brew 2>/dev/null; then
-        # Make sure we’re using the latest Homebrew.
-        brew update
-        # Upgrade any already-installed formulae.
-        brew upgrade
-        brew cask install vyprvpn
+        brew install --cask vyprvpn
 
     else
 	#example - execute script with perl

@@ -9,8 +9,7 @@ checkbrew() {
         brew install wget
         brew install curl
         brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
-        brew install librsvg
-        brew install afl-fuzz codespell shellcheck
+        brew install librsvg codespell shellcheck
     else
         #example - execute script with perl
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -30,19 +29,12 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
     sudo apt-get install libqrencode-dev
 
-    git clone https://github.com/randymcmillan/bitcoin ~/randymcmillan-bitcoin
-    cd ~/bitcoin && ./contrib/install_db4.sh .
-    ./autogen.sh && ./configure --disable-wallet --disable-tests --disable-bench && make appbundle
-
-    git clone https://github.com/randymcmillan/gui ~/gui
+    git clone https://github.com/bitcoincore-dev/bitcoin ~/bitcoincore-dev-bitcoin
     cd ~/gui && ./contrib/install_db4.sh .
     ./autogen.sh && ./configure --disable-wallet --disable-tests --disable-bench && make appbundle
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
-    git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
-    cd ~/bitcoin && ./contrib/install_db4.sh .
-    ./autogen.sh && ./configure --disable-wallet --disable-tests --disable-bench && make appbundle
 
     git clone https://github.com/randymcmillan/gui ~/gui
     cd ~/gui && ./contrib/install_db4.sh .

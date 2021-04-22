@@ -35,7 +35,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     read -p "Install MacVim? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        if  hash mvim 2>/dev/null; then
+        if  ! hash mvim 2>/dev/null; then
             brew install -f macvim
             brew link --overwrite macvim
         elif

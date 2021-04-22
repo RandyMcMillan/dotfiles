@@ -29,7 +29,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
     sudo apt-get install libqrencode-dev
 
-    git clone https://github.com/randymcmillan/gui ~/gui
+    git clone https://github.com/randymcmillan/gui ~/randymcmillan-gui
     cd ~/gui && ./contrib/install_db4.sh .
     ./autogen.sh && ./configure --disable-wallet --disable-tests --disable-bench && make appbundle
 

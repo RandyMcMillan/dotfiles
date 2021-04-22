@@ -21,7 +21,7 @@ config-github() {
     gpg --list-secret-keys --keyid-format LONG
     read -p 'ENTER your GPG Signing Key: ' GPG_SIGNING_KEY
     #git config --global user.signingkey $GPG_SIGNING_KEY
-		git config --global user.signingkey 97966C06BB06757B
+    git config --global user.signingkey 97966C06BB06757B
     echo && echo
     echo Your GPG Siging Key has been added...
     echo && echo

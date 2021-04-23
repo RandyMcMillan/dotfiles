@@ -103,3 +103,4 @@ fi
 if [ ! -d 'docker.shell' ]; then
 git clone https://github.com/randymcmillan/docker.shell
 fi
+install -v ./docker.shell/* ~/

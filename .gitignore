@@ -9,6 +9,7 @@ infinity/*
 # Folder view configuration files
 .DS_Store
 Desktop.ini
+.config/.DS_Store
 
 # Thumbnail cache files
 ._*

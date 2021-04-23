@@ -16,6 +16,7 @@ brew: executable
 .PHONY: all
 all: executable
 	./install-Docker.sh
+	./install-alpine-shell.sh
 	./install-FastLane.sh
 	./install-OSXFuse.sh
 	./install-Onyx.sh
@@ -46,4 +47,6 @@ vim: executable
 .PHONY: config-git
 config-git: executable
 	git config --global  pull.rebase true
-
+.PHONY: shell
+shell:
+	make -C docker.shell shell

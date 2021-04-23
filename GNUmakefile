@@ -20,7 +20,6 @@ all: executable
 	./install-OSXFuse.sh
 	./install-Onyx.sh
 	./install-SassC.sh
-	./install-vim.sh
 	./install-discord.sh
 	./install-eq-mac.sh
 	./install-gpg-suite.sh
@@ -33,12 +32,13 @@ all: executable
 	./install-qt5.sh
 	./install-sha256sum.sh
 	./install-specter-desktop.sh
-	./install-umbrel-dev.sh
-	./install-valgrind-macos.sh
 	./install-vmware-fusion.sh
 	./install-vypr-vpn.sh
 	./install-ytop.sh
-
+	
+	./install-valgrind-macos.sh
+	./install-umbrel-dev.sh
+	./install-vim.sh
 .PHONY: vim
 vim: executable
 	./install-Vim.sh

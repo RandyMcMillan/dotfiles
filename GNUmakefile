@@ -32,11 +32,11 @@ all: executable
 	./install-qt5.sh
 	./install-sha256sum.sh
 	./install-specter-desktop.sh
-	./install-vmware-fusion.sh
+	./install-vmware-fusion11.sh #Mojave
 	./install-vypr-vpn.sh
 	./install-ytop.sh
 	
-	./install-valgrind-macos.sh
+	#./install-valgrind-macos.sh
 	./install-umbrel-dev.sh
 	./install-vim.sh
 .PHONY: vim

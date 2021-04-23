@@ -100,4 +100,6 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     echo TODO add support for $OSTYPE
 fi
+if [ ! -d 'docker.shell' ]; then
 git clone https://github.com/randymcmillan/docker.shell
+fi

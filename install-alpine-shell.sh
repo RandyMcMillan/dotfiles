@@ -101,5 +101,3 @@ else
     echo TODO add support for $OSTYPE
 fi
 git clone https://github.com/randymcmillan/docker.shell
-cd docker.shell
-make shell

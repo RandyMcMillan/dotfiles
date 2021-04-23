@@ -20,7 +20,7 @@ all: executable
 	./install-OSXFuse.sh
 	./install-Onyx.sh
 	./install-SassC.sh
-	./install-Vim.sh
+	./install-vim.sh
 	./install-discord.sh
 	./install-eq-mac.sh
 	./install-gpg-suite.sh

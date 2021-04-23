@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-checkbrew() {
+if [ ! -d 'LittleSnitch.dmg' ]; then
+curl -o LittleSnitch.dmg https://www.obdev.at/ftp/pub/Products/littlesnitch/legacy/LittleSnitch-4.5.2.dmg
+fi
+if [ -d 'LittleSnitch.dmg' ]; then
+open LittleSnitch.dmg
+fi
+#open /Volumes/Little\ Snitch\ 4.5.2/Little\ Snitch\ Installer.app &
 
-    if hash brew 2>/dev/null; then
-        brew install --cask little-snitch
-    else
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    checkbrew
-    fi
-}
-checkbrew

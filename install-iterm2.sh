@@ -4,7 +4,7 @@ install-iterm2() {
 
     if hash brew 2>/dev/null; then
 
-        brew cask install iterm2
+        brew install --cask iterm2
         brew install tccutil
         curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
         chmod a+x /usr/local/bin/dockutil

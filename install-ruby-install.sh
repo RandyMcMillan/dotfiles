@@ -3,9 +3,9 @@
 checkbrew() {
 
     if hash brew 2>/dev/null; then
-        brew update
-        brew upgrade
-        brew install ruby-install
+        if hash ruby-install 2>/dev/null; then
+            brew install ruby-install
+        fi
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew
@@ -15,7 +15,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
-    ruby-install --system ruby 2.5.8
+#    ruby-install --system ruby 2.5.8
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "msys" ]]; then

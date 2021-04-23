@@ -17,8 +17,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     brew install lukechilds/tap/umbrel-dev
     git clone https://github.com/getumbrel/umbrel-dev.git ~/.umbrel-dev
     export PATH="$PATH:$HOME/.umbrel-dev/bin"
-    brew install git
-    brew cask install virtualbox vagrant
+    brew install --cask virtualbox vagrant
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "msys" ]]; then

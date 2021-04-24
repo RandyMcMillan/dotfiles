@@ -103,7 +103,16 @@ function git-fetch-branches(){
 	git fetch --all
 	git pull --all
 }
+function git-add-remote-bitcoin-devs(){
 
+git remote add marco-falke https://github.com/MarcoFalke/bitcoin-core-gui.git
+git remote add jonatack https://github.com/jonatack/gui.git
+git remote add jonas https://github.com/jonasschnelli/gui.git
+git remote add hebasto https://github.com/hebasto/gui.git
+
+
+
+}
 
 # Create a new directory and enter it
 function mkd() {

@@ -8,6 +8,8 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 alias P3="python3"
 
+alias nproc="sysctl -n hw.logicalcpu"
+
 #run docker images https://docs.docker.com/engine/reference/commandline/run/
 alias PYTHON="docker run -t -i --rm python bash"
 #alias PYTHONRUNNER="docker run -t -i --rm codewars/python-runner bash"

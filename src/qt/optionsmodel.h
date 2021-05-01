@@ -44,30 +44,30 @@ public:
     explicit OptionsModel(QObject *parent = nullptr, bool resetSettings = false);
 
     enum OptionID {
-        StartAtStartup,         // bool
-        ShowTrayIcon,           // bool
-        MinimizeToTray,         // bool
-        MapPortUPnP,            // bool
-        MapPortNatpmp,          // bool
-        MinimizeOnClose,        // bool
-        ProxyUse,               // bool
-        ProxyIP,                // QString
-        ProxyPort,              // int
-        ProxyUseTor,            // bool
-        ProxyIPTor,             // QString
-        ProxyPortTor,           // int
-        DisplayUnit,            // BitcoinUnits::Unit
-        ThirdPartyTxUrls,       // QString
-        Language,               // QString
-        UseEmbeddedMonospacedFont, // bool
+        StartAtStartup,               // bool
+        ShowTrayIcon,                 // bool
+        MinimizeToTray,               // bool
+        MapPortUPnP,                  // bool
+        MapPortNatpmp,                // bool
+        MinimizeOnClose,              // bool
+        ProxyUse,                     // bool
+        ProxyIP,                      // QString
+        ProxyPort,                    // int
+        ProxyUseTor,                  // bool
+        ProxyIPTor,                   // QString
+        ProxyPortTor,                 // int
+        DisplayUnit,                  // BitcoinUnits::Unit
+        ThirdPartyTxUrls,             // QString
+        Language,                     // QString
+        UseEmbeddedMonospacedFont,    // bool
         PeersTabAlternatingRowColors, // bool
-        CoinControlFeatures,    // bool
-        ThreadsScriptVerif,     // int
-        Prune,                  // bool
-        PruneSize,              // int
-        DatabaseCache,          // int
-        SpendZeroConfChange,    // bool
-        Listen,                 // bool
+        CoinControlFeatures,          // bool
+        ThreadsScriptVerif,           // int
+        Prune,                        // bool
+        PruneSize,                    // int
+        DatabaseCache,                // int
+        SpendZeroConfChange,          // bool
+        Listen,                       // bool
         OptionIDRowCount,
     };
 

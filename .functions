@@ -39,7 +39,7 @@ function bitcoin-make-depends () {
     make -C depends
 }
 
-function bitcoin-install-depends(){
+function bitcoin-dl-install-depends(){
 
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
@@ -55,14 +55,11 @@ function bitcoin-install-depends(){
             apt install libqrencode-dev
 
             ./contrib/install_db4.sh .
-            ./autogen.sh && ./configure --disable-tests && make download -D depends
+            ./autogen.sh && ./configure --disable-tests && make download install -C depends
 
     elif [[ "$OSTYPE" == "darwin"* ]]; then
 
         if hash brew 2>/dev/null; then
-            #brew update
-            #brew upgrade
-            #install brew libs
             brew install wget
             brew install curl
             brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
@@ -72,9 +69,14 @@ function bitcoin-install-depends(){
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
             install-bitcoin-depends
         fi
-            ./contrib/install_db4.sh .
-            ./autogen.sh && ./configure --disable-tests && make download -D depends
-            ./autogen.sh && ./configure --disable-tests #&& make deploy
+        pushd ~/gui
+        make download install -C depends
+        ./autogen.sh && ./configure --disable-tests && make download install -C depends
+        popd
+        pushd ~/bitcoin
+        make download install -C depends
+        ./autogen.sh && ./configure --disable-tests && make download install -C depends
+        popd
     fi
 }
 
@@ -89,8 +91,6 @@ git remote add marco-falke https://github.com/MarcoFalke/bitcoin-core-gui.git
 git remote add jonatack https://github.com/jonatack/gui.git
 git remote add jonas https://github.com/jonasschnelli/gui.git
 git remote add hebasto https://github.com/hebasto/gui.git
-
-
 
 }
 

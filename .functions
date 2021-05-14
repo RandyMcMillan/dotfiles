@@ -107,12 +107,12 @@ for branch in $(git branch -r --merged | grep -v HEAD | grep -v develop | grep -
 done
 }
 function git-delete-old-remotes(){
-if [ $? -lt 1 ]; then
+if [[ -z $@ ]]; then
 echo "Example:"
 echo "git-delete-old-remotes 'Jun 15, 2020'"
 else
 for branch in $(git branch -r --merged | grep -v HEAD | grep -v develop | grep -v master | grep -v master | sed /\*/d); do
-        if [ -z "$(git log -1 --before='$1' -s ${branch})" ]; then
+        if [ -z "$(git log -1 --since='$1' -s ${branch})" ]; then
                 echo -e `git show --format="%ci %cr %an" ${branch} | head -n 1` \\t$branch
                 remote_branch=$(echo ${branch} | sed 's#origin/##' )
                 # To delete the branches uncomment the bellow git delete command

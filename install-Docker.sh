@@ -11,7 +11,7 @@ install-docker() {
         fi
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-        checkbrew
+        install-docker
     fi
 }
 install-docker

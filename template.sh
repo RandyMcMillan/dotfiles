@@ -11,24 +11,21 @@ export ARCH
 
 report() {
 echo OS:
-echo "$OS" | awk '{print tolower($0)}'
+echo "$OS" | gawk '{print tolower($0)}'
 echo OS_VERSION:
-echo "$OS_VERSION" | awk '{print tolower($0)}'
+echo "$OS_VERSION" | gawk '{print tolower($0)}'
 echo UNAME_M:
-echo "$UNAME_M" | awk '{print tolower($0)}'
+echo "$UNAME_M" | gawk '{print tolower($0)}'
 echo ARCH:
-echo "$ARCH" | awk '{print tolower($0)}'
+echo "$ARCH" | gawk '{print tolower($0)}'
 echo OSTYPE:
-echo "$OSTYPE" | awk '{print tolower($0)}'
+echo "$OSTYPE" | gawk '{print tolower($0)}'
 }
 
 checkbrew() {
 
     if hash brew 2>/dev/null; then
-        brew install awk git
-        ./install-Vim.sh
-        #brew update
-        #brew upgrade
+        brew install gawk git
         echo
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -60,14 +57,14 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     #CHECK APT
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         if hash apt 2>/dev/null; then
-            apt install awk
+            apt install gawk
             report
             echo 'Using apt...'
         fi
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then
         if hash apk 2>/dev/null; then
-            apk add awk
+            apk add gawk
             report
             echo 'Using apk...'
         fi
@@ -75,7 +72,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     if [[ "$OSTYPE" == "linux-arm"* ]]; then
         checkraspi
         if hash apt 2>/dev/null; then
-            apt install awk
+            apt install gawk
             report
             echo 'Using apt...'
         fi

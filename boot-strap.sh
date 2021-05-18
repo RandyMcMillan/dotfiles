@@ -85,31 +85,39 @@ linkAndSource() {
         while [ $tasksDone -le $taskCount ]; do
 
             rm -f ~/.aliases
-            ln -sf ~/dotfiles/.aliases ~/.aliases
+            ln -sf ~/dotfiles/.aliases           ~/.aliases
             increment
             rm -f ~/.bash_profile
-            ln -sf ~/dotfiles/.bash_profile ~/.bash_profile
+            ln -sf ~/dotfiles/.bash_profile      ~/.bash_profile
             increment
             rm -f ~/.bash_prompt
-            ln -sf ~/dotfiles/.bash_prompt  ~/.bash_prompt
+            ln -sf ~/dotfiles/.bash_prompt       ~/.bash_prompt
             increment
-            ln -sf ~/dotfiles/.functions    ~/.functions
+            rm -f ~/.functions
+            ln -sf ~/dotfiles/.functions         ~/.functions
             increment
-            ln -sf ~/dotfiles/.gvimrc       ~/.gvimrc
+            rm -f ~/.gvimrc
+            ln -sf ~/dotfiles/.gvimrc            ~/.gvimrc
             increment
-            ln -sf ~/dotfiles/.osx          ~/.osx
+            rm -f ~/.osx
+            ln -sf ~/dotfiles/.osx               ~/.osx
             increment
-            ln -sf ~/dotfiles/.macos        ~/.macos
+            rm -f ~/.macos
+            ln -sf ~/dotfiles/.macos             ~/.macos
             increment
-            ln -sf ~/dotfiles/.editorconfig ~/.editorconfig
+            rm -f ~/.editorconfig
+            ln -sf ~/dotfiles/.editorconfig      ~/.editorconfig
             increment
-            ln -sf ~/dotfiles/init ~/init
+            rm -f ~/init
+            ln -sf ~/dotfiles/init               ~/init
             increment
-            ln -sf ~/dotfiles/bin ~/bin
+            rm -f ~/bin
+            ln -sf ~/dotfiles/bin                ~/bin
             increment
-            ln -sf ~/dotfiles/.config ~/.config
+            rm -f ~/.config
+            ln -sf ~/dotfiles/.config            ~/.config
             increment
-
+#####################
             source ~/.aliases
             increment
             source ~/.bash_profile
@@ -118,12 +126,12 @@ linkAndSource() {
             increment
             source ~/.functions
             increment
-            #echo 'source ~/.osx'
-            #source ~/.osx;
-            #increment
-            #echo 'source ~/.macos'
-            #source ~/.macos
-            #increment
+            echo 'source ~/.osx'
+            source ~/.osx;
+            increment
+            echo 'source ~/.macos'
+            source ~/.macos
+            increment
         done
     fi
 }
@@ -134,10 +142,6 @@ function doIt() {
     ## Collect task count
     taskCount=1
     tasksDone=0
-
-    getpid
-
-    while [ $tasksDone -le $taskCount ]; do
 
     echo 'rsync' && echo
 
@@ -155,20 +159,9 @@ function doIt() {
           --exclude ".macos" \
           --exclude ".osx" \
           -avh --no-perms . ~;
-    increment;
-    done
-    echo
 
-    ## Collect task count
-    taskCount=11
-    tasksDone=0
-    getpid
-
-while [ $tasksDone -le $taskCount ]; do
-
-echo 'line 164'
-
-if  csrutil status | grep 'disabled' &> /dev/null; then
+if hash csrutil 2>/dev/null; then
+if csrutil status | grep 'disabled' &> /dev/null; then
         printf "System Integrity Protection status: \033[1;31mdisabled\033[0m\n";
         increment;
         sudo pmset -a hibernatemode 0
@@ -233,13 +226,7 @@ if  csrutil status | grep 'disabled' &> /dev/null; then
         defaults write com.apple.dock wvous-tl-corner -int 7
         defaults write com.apple.dock wvous-tr-corner -int 2
         killall Dock
-
-
-    echo
-
-    else
-
-        getpid
+fi
 
         printf "System Integrity Protection status: \033[1;32menabled\033[0m\n";
         increment;
@@ -252,26 +239,21 @@ if  csrutil status | grep 'disabled' &> /dev/null; then
 
     fi
 echo
-done
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 
-    echo 'getpid'
-    getpid
-    echo 'doIt'
     doIt;
 
 else
 
-		echo
+    echo
     read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo 'getpid'
-        getpid
-        echo 'doIt'
         doIt
     fi;
 fi;
 unset doIt;
-#open ~/init/Solarized\ Dark.terminal
+if [[ "$OSTYPE" == "Darwin"* ]]; then
+open ~/init/Solarized\ Dark.terminal
+fi

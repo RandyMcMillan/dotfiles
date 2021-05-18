@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+if [[ "$OSTYPE" == "Darwin"* ]]; then
+
 defaults write com.apple.AppleMultitouchTrackpad DragLock -bool true
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 defaults read com.apple.AppleMultitouchTrackpad
@@ -904,3 +906,4 @@ for app in "Activity Monitor" \
 	killall "${app}" &> /dev/null
 done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
+fi

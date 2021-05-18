@@ -1,0 +1,131 @@
+Sorting...
+Full Text Search...
+braillegraph/focal,focal 0.3-1 all
+  simple histogram tool producing text dot-matrix graphs
+
+brailleutils/focal,focal 1.2.3-5 all
+  command-line interface for the brailleutils library
+
+brltty/focal,now 6.0+dfsg-4ubuntu6 amd64 [installed,automatic]
+  Access software for a blind person using a braille display
+
+brltty-espeak/focal 6.0+dfsg-4ubuntu6 amd64
+  Access software for a blind person - espeak driver
+
+brltty-flite/focal 6.0+dfsg-4ubuntu6 amd64
+  Access software for a blind person - Flite speech driver
+
+brltty-speechd/focal 6.0+dfsg-4ubuntu6 amd64
+  Access software for a blind person - Speech Dispatcher driver
+
+brltty-x11/focal 6.0+dfsg-4ubuntu6 amd64
+  Access software for a blind person using a braille display - X11 drivers
+
+cl-brlapi/focal,focal 6.0+dfsg-4ubuntu6 all
+  Common Lisp bindings for BrlAPI
+
+console-braille/focal 1.8 amd64
+  Fonts and keymaps for reading/typing unicode braille
+
+daisy-player/focal 11.7.3-1 amd64
+  player for DAISY Digital Talking Books
+
+ebook-speaker/focal 5.3-2 amd64
+  eBook reader that reads aloud in a synthetic voice
+
+emacspeak-ss/focal 1.12.1-8 amd64
+  Emacspeak speech servers for several synthesizers
+
+ibus-braille/focal,focal 0.3-5 all
+  Braille input engine for IBus
+
+libaccessodf-java/focal,focal 0.1.1~b-1 all
+  library for checking accessibility in ODF/ODT documents using Libreoffice
+
+libbrailleutils-java/focal,focal 1.2.3-5 all
+  cross platform library for embossing/converting PEF-files
+
+libbrailleutils-java-doc/focal,focal 1.2.3-5 all
+  javadoc for brailleUtils for converting/embossing PEF files
+
+libbrlapi-dev/focal 6.0+dfsg-4ubuntu6 amd64
+  Library for communication with BRLTTY - static libs and headers
+
+libbrlapi-java/focal,focal 6.0+dfsg-4ubuntu6 all
+  Java bindings for BrlAPI
+
+libbrlapi-jni/focal 6.0+dfsg-4ubuntu6 amd64
+  Java bindings for BrlAPI (native library)
+
+libbrlapi0.7/focal,now 6.0+dfsg-4ubuntu6 amd64 [installed,automatic]
+  braille display access via BRLTTY - shared library
+
+liblouis-bin/focal 3.12.0-3 amd64
+  Braille translation library - utilities
+
+liblouis-data/focal,focal,now 3.12.0-3 all [installed,automatic]
+  Braille translation library - data
+
+liblouis-dev/focal 3.12.0-3 amd64
+  Braille translation library - static libs and headers
+
+liblouis20/focal,now 3.12.0-3 amd64 [installed,automatic]
+  Braille translation library - shared libs
+
+liblouisutdml-bin/focal,now 2.8.0-3 amd64 [installed,automatic]
+  Braille UTDML translation utilities
+
+liblouisutdml-data/focal,focal,now 2.8.0-3 all [installed,automatic]
+  Braille UTDML translation library - data
+
+liblouisutdml-dev/focal 2.8.0-3 amd64
+  Braille UTDML translation library - static libs and headers
+
+liblouisutdml-java/focal,focal 2.8.0-3 all
+  Braille UTDML translation library - java bindings
+
+liblouisutdml-java-doc/focal,focal 2.8.0-3 all
+  Braille UTDML translation library - java bindings documentation
+
+liblouisutdml9/focal,now 2.8.0-3 amd64 [installed,automatic]
+  Braille UTDML translation library - shared libs
+
+liblouisxml-bin/focal 2.4.0-10 amd64
+  Braille XML translation utilities
+
+liblouisxml-data/focal,focal 2.4.0-10 all
+  Braille XML translation library - data
+
+liblouisxml-dev/focal 2.4.0-10 amd64
+  Braille XML translation library - static libs and headers
+
+liblouisxml1/focal 2.4.0-10 amd64
+  Braille XML translation library - shared libs
+
+natbraille/focal,focal 2.0rc3-8 all
+  French braille typesetting program
+
+natbraille-doc/focal,focal 2.0rc3-8 all
+  Documentation for natbraille
+
+printer-driver-indexbraille/focal 1.2.3-1 amd64
+  CUPS printing to Index Braille printers
+
+python3-brlapi/focal,now 6.0+dfsg-4ubuntu6 amd64 [installed,automatic]
+  Braille display access via BRLTTY - Python3 bindings
+
+python3-louis/focal,focal,now 3.12.0-3 all [installed,automatic]
+  Python bindings for liblouis
+
+speakup-doc/focal,focal 3.1.6.dfsg.1-6 all
+  Documentation for speakup kernel modules
+
+texlive-extra-utils/focal,focal 2019.202000218-1 all
+  TeX Live: TeX auxiliary programs
+
+texlive-fonts-extra/focal,focal 2019.202000218-1 all
+  TeX Live: Additional fonts
+
+xbrlapi/focal,now 6.0+dfsg-4ubuntu6 amd64 [installed,automatic]
+  Access software for a blind person using a braille display - xbrlapi
+

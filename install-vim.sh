@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ hash git 2>/dev/nulli ]; then
+if [ hash git 2>/dev/null ]; then
     git config --global core.editor vim
     git config --global pull.rebase true
 else

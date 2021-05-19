@@ -9,7 +9,7 @@ export OS_VERSION
 export UNAME_M
 export ARCH
 
-if [["$OSTYPE" == "Darwin"* ]]; then
+if [[ "$OSTYPE" == "Darwin"* ]]; then
     AWK='awk'
 else
     AWK='gawk'

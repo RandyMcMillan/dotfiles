@@ -1,10 +1,10 @@
 ifeq ($(notdir $(PWD)),dotfiles)
-DOTFILES=:$(notdir $(PWD))
+DOTFILES=:	
 else
-##assume clone into $HOME
-$(shell git clone git@github.com:randymcmillan/dotfiles ~)
 DOTFILES=:$(HOME)/dotfiles
 endif
+export DOTFILES
+
 .PHONY:all
 all: executable
 

@@ -9,23 +9,30 @@ export OS_VERSION
 export UNAME_M
 export ARCH
 
+if [[ "$OSTYPE" == "Darwin"* ]]; then
+    AWK='awk'
+else
+    AWK='gawk'
+fi
+export AWK
+
 report() {
 echo OS:
-echo "$OS" | awk '{print tolower($0)}'
+echo "$OS" | $AWK '{print tolower($0)}'
 echo OS_VERSION:
-echo "$OS_VERSION" | awk '{print tolower($0)}'
+echo "$OS_VERSION" | $AWK '{print tolower($0)}'
 echo UNAME_M:
-echo "$UNAME_M" | awk '{print tolower($0)}'
+echo "$UNAME_M" | $AWK '{print tolower($0)}'
 echo ARCH:
-echo "$ARCH" | awk '{print tolower($0)}'
+echo "$ARCH" | $AWK '{print tolower($0)}'
 echo OSTYPE:
-echo "$OSTYPE" | awk '{print tolower($0)}'
+echo "$OSTYPE" | $AWK '{print tolower($0)}'
 }
 
 checkbrew() {
 
     if hash brew 2>/dev/null; then
-        brew install awk git python@3.8
+        brew install $AWK git python@3.8
         alias python3.8=/usr/local/opt/python@3.8/bin/./python3.8
         echo
     else
@@ -58,14 +65,14 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     #CHECK APT
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         if hash apt 2>/dev/null; then
-            apt install awk
+            apt install $AWK
             report
             echo 'Using apt...'
         fi
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then
         if hash apk 2>/dev/null; then
-            apk add awk
+            apk add $AWK
             report
             echo 'Using apk...'
         fi
@@ -73,7 +80,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     if [[ "$OSTYPE" == "linux-arm"* ]]; then
         checkraspi
         if hash apt 2>/dev/null; then
-            apt install awk
+            apt install $AWK
             report
             echo 'Using apt...'
         fi

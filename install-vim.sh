@@ -14,9 +14,11 @@ else
     fi
 fi
 
+if [[ "$OSTYPE" == "Darwin"* ]]; then
 VIM=$(find /usr/local/Cellar/macvim -name vim)
 export VIM
 echo   $VIM
+fi
 install-vim() {
 #WE install this regaurdless of OSTYPE
 VIMRC_REPO="https://github.com/randymcmillan/vimrc.git"
@@ -40,12 +42,14 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     fi
 fi
 }
+if [[ "$OSTYPE" == "Darwin"* ]]; then
 MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
 export MACVIM
 echo   $MACVIM
 MVIM=$(find /usr/local/Cellar/macvim -name mvim)
 export MVIM
 echo   $MVIM
+fi
 install-macvim(){
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if hash brew 2>/dev/null; then

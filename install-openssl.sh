@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -xv
+#!/usr/bin/env bash
 checkbrew() {
 
     if hash brew 2>/dev/null; then

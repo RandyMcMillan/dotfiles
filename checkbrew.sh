@@ -11,8 +11,7 @@ checkbrew() {
     fi
 }
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    checkbrew
-    sudo apt install linuxbrew-wrapper
+    echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then

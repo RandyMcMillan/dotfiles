@@ -17,8 +17,7 @@ checkbrew() {
     fi
 }
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    checkbrew
-    sudo apt-get -y install ytop
+    echo
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
     brew tap cjbassi/ytop

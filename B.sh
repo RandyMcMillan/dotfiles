@@ -3,11 +3,9 @@
 B() {
 
     if hash brew 2>/dev/null; then
-        brew update
-        brew upgrade
         #install brew libs
         brew install jq
-        # ₿
+        echo ₿
         # Set computer name (as done via System Preferences → Sharing)
         scutil --get HostName
         scutil --get LocalHostName

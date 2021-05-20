@@ -20,6 +20,29 @@
 #==> Summary
 #🍺  /usr/local/Cellar/qt/5.15.0: 10,574 files, 374.2MB
 
+function geten0(){
+ifconfig en0 | grep --word-regexp inet | awk '{print $2}'
+}
+function geten1(){
+ifconfig en1 | grep --word-regexp inet | awk '{print $2}'
+}
+
+function iftop (){
+
+
+    if hash geten0 2>/dev/null; then
+DEVICE=en0
+    fi
+    if hash geten1 2>/dev/null; then
+DEVICE=en1
+    fi
+    if [ -e /usr/local/sbin/iftop ];then
+        sudo /usr/local/sbin/iftop -i $DEVICE
+    else
+        ./install-iftop.sh
+    fi
+}
+
 function bitcoin-autogen (){
     ./autogen.sh
 }
@@ -92,6 +115,23 @@ git remote add jonatack https://github.com/jonatack/gui.git
 git remote add jonas https://github.com/jonasschnelli/gui.git
 git remote add hebasto https://github.com/hebasto/gui.git
 
+}
+
+function git-branch-D (){
+
+git branch -D $1
+
+}
+
+# Bitcoin IRC 
+function irc-bitcoin-core-dev(){
+open https://webchat.freenode.net/\#bitcoin-core-dev
+}
+function irc-bitcoin(){
+open https://webchat.freenode.net/\#bitcoin
+}
+function irc-bitcoin-commits(){
+open https://webchat.freenode.net/\#bitcoin-core-dev
 }
 
 # Create a new directory and enter it

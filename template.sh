@@ -10,15 +10,15 @@ export UNAME_M
 export ARCH
 report() {
 echo OS:
-echo "$OS" | $AWK '{print tolower($0)}'
+echo "$OS" | awk '{print tolower($0)}'
 echo OS_VERSION:
-echo "$OS_VERSION" | $AWK '{print tolower($0)}'
+echo "$OS_VERSION" | awk '{print tolower($0)}'
 echo UNAME_M:
-echo "$UNAME_M" | $AWK '{print tolower($0)}'
+echo "$UNAME_M" | awk '{print tolower($0)}'
 echo ARCH:
-echo "$ARCH" | $AWK '{print tolower($0)}'
+echo "$ARCH" | awk '{print tolower($0)}'
 echo OSTYPE:
-echo "$OSTYPE" | $AWK '{print tolower($0)}'
+echo "$OSTYPE" | awk '{print tolower($0)}'
 }
 checkbrew() {
     if hash brew 2>/dev/null; then
@@ -65,7 +65,6 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
             report
-            echo 'Using apt...'
         fi
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then
@@ -78,7 +77,6 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         if hash apk 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
             report
-            echo 'Using apk...'
         fi
     fi
     if [[ "$OSTYPE" == "linux-arm"* ]]; then
@@ -86,17 +84,24 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export PACKAGE_MANAGER
         INSTALL=install
         export INSTALL
-        checkraspi
         AWK=gawk
+        echo $AWK
         export AWK
+        checkraspi
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
             report
-            echo 'Using apt...'
         fi
     fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    checkbrew
+        report
+        PACKAGE_MANAGER=brew
+        export PACKAGE_MANAGER
+        INSTALL=install
+        export INSTALL
+        AWK=awk
+        export AWK
+        checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "msys" ]]; then

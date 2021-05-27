@@ -7,6 +7,7 @@ infinity/*
 *.pyc
 
 # Folder view configuration files
+./config/.DS_Store
 .DS_Store
 Desktop.ini
 .config/.DS_Store

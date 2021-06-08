@@ -3,7 +3,9 @@
 checkbrew() {
 
     if hash brew 2>/dev/null; then
+        if !hash sassc 2>/dev/null; then
         brew install sassc
+        fi
         #REF: https://github.com/sass/sassc
     else
 
@@ -15,7 +17,7 @@ checkbrew() {
 }
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    checkbrew
+    echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
 elif [[ "$OSTYPE" == "win32" ]]; then

@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+VMWARE=$(find /usr/local/Cellar/ -name VMware\ Fusion.app)
+export VMWARE
+echo   $VMWARE
+
 checkbrew() {
 if hash brew 2>/dev/null; then
     brew install --cask vmware-fusion11

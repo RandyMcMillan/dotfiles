@@ -28,6 +28,11 @@ checkbrew() {
         if !hash git 2>/dev/null; then
             brew install git
         fi
+#        if !hash docker 2>/dev/null; then
+            brew install --cask docker
+            brew install docker-compose
+#        fi
+
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew

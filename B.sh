@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+sudo xcodebuild -license accept
 B() {
 
     if hash brew 2>/dev/null; then

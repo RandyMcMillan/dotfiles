@@ -28,10 +28,36 @@ checkbrew() {
         if !hash git 2>/dev/null; then
             brew install git
         fi
-#        if !hash docker 2>/dev/null; then
-            brew install --cask docker
-            brew install docker-compose
-#        fi
+        if hash brew 2>/dev/null; then
+	#==> Formulae
+	brew install docker
+	brew install docker-clean
+	brew install docker-completion
+	brew install docker-compose
+	brew install docker-compose-completion
+	brew install docker-credential-helper
+	brew install docker-credential-helper-ecr
+	brew install docker-gen
+	brew install docker-ls
+	brew install docker-machine
+	brew install docker-machine-completion
+	brew install docker-machine-driver-hyperkit
+	brew install docker-machine-driver-vmware
+	brew install docker-machine-driver-vultr
+	brew install docker-machine-driver-xhyve
+	brew install docker-machine-nfs
+	brew install docker-machine-parallels
+	brew install docker-slim
+	brew install docker-squash
+	brew install docker-swarm
+	brew install docker2aci
+	brew install dockerize
+	brew install lazydocker
+	#==> Casks
+	brew install --cask docker
+	brew install --cask docker-toolbox
+	brew install --cask homebrew/cask-versions/docker-edge
+        fi
 
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -143,3 +169,31 @@ else
     echo TODO add support for $OSTYPE
 fi
 
+==> Formulae
+docker
+docker-clean
+docker-completion
+docker-compose
+docker-compose-completion
+docker-credential-helper
+docker-credential-helper-ecr
+docker-gen
+docker-ls
+docker-machine
+docker-machine-completion
+docker-machine-driver-hyperkit
+docker-machine-driver-vmware
+docker-machine-driver-vultr
+docker-machine-driver-xhyve
+docker-machine-nfs
+docker-machine-parallels
+docker-slim
+docker-squash
+docker-swarm
+docker2aci
+dockerize
+lazydocker
+==> Casks
+docker
+docker-toolbox
+homebrew/cask-versions/docker-edge

@@ -28,7 +28,7 @@ all: executable
 	./install-keeping-you-awake.sh
 	./install-little-snitch.sh
 	./install-openssl.sh
-	./install-python3.8.sh
+	./install-python3.X.sh
 	./install-ql-plugins.sh
 	./install-qt5.sh
 	./install-sha256sum.sh

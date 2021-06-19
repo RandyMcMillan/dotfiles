@@ -9,6 +9,9 @@ bootstrap: executable
 executable:
 	chmod +x *.sh
 
+.PHONY: exec
+exec: executable
+
 .PHONY: brew
 brew: executable
 	./checkbrew.sh
@@ -35,6 +38,7 @@ all: executable
 	./install-specter-desktop.sh
 	./install-vmware-fusion11.sh #Mojave
 	./install-vypr-vpn.sh
+	./install-youtube-dl.sh
 	./install-ytop.sh
 	
 	#./install-valgrind-macos.sh

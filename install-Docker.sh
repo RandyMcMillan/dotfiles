@@ -169,31 +169,3 @@ else
     echo TODO add support for $OSTYPE
 fi
 
-==> Formulae
-docker
-docker-clean
-docker-completion
-docker-compose
-docker-compose-completion
-docker-credential-helper
-docker-credential-helper-ecr
-docker-gen
-docker-ls
-docker-machine
-docker-machine-completion
-docker-machine-driver-hyperkit
-docker-machine-driver-vmware
-docker-machine-driver-vultr
-docker-machine-driver-xhyve
-docker-machine-nfs
-docker-machine-parallels
-docker-slim
-docker-squash
-docker-swarm
-docker2aci
-dockerize
-lazydocker
-==> Casks
-docker
-docker-toolbox
-homebrew/cask-versions/docker-edge

@@ -837,6 +837,15 @@ if test x$ac_cv_sys_large_files != x &&
 fi
 
 if test x$use_glibc_compat != xno; then
+  case $host in
+    *arm*)
+      dnl fcntl64 wrapper implementation doesn't currently work for ARM.
+      dnl See https://github.com/bitcoin/bitcoin/pull/22287
+      ;;
+    *)
+      AX_CHECK_LINK_FLAG([-Wl,--wrap=fcntl64], [COMPAT_LDFLAGS="$COMPAT_LDFLAGS -Wl,--wrap=fcntl64"])
+      ;;
+  esac
   AX_CHECK_LINK_FLAG([[-Wl,--wrap=__divmoddi4]], [COMPAT_LDFLAGS="$COMPAT_LDFLAGS -Wl,--wrap=__divmoddi4"])
   AX_CHECK_LINK_FLAG([[-Wl,--wrap=log2f]], [COMPAT_LDFLAGS="$COMPAT_LDFLAGS -Wl,--wrap=log2f"])
   case $host in

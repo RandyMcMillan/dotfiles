@@ -3,6 +3,7 @@
 checkbrew() {
 
     if hash brew 2>/dev/null; then
+        brew update
         brew install --cask onyx
 
     else

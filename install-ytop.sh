@@ -1,28 +1,108 @@
 #!/usr/bin/env bash
-
+#ENV VARS
+OS=$(uname)
+OS_VERSION=$(uname -r)
+UNAME_M=$(uname -m)
+ARCH=$(uname -m)
+export OS
+export OS_VERSION
+export UNAME_M
+export ARCH
+report() {
+echo OS:
+echo "$OS" | awk '{print tolower($0)}'
+echo OS_VERSION:
+echo "$OS_VERSION" | awk '{print tolower($0)}'
+echo UNAME_M:
+echo "$UNAME_M" | awk '{print tolower($0)}'
+echo ARCH:
+echo "$ARCH" | awk '{print tolower($0)}'
+echo OSTYPE:
+echo "$OSTYPE" | awk '{print tolower($0)}'
+}
 checkbrew() {
-
     if hash brew 2>/dev/null; then
-        brew update
-        brew upgrade
-        #install brew libs
-        brew install wget
-        #do something else after installed dep
-        #example - pipe remote script into bash with wget
-        #sudo wget -qO - https://gist.githubusercontent.com/RandyMcMillan/634bc660e03151a037a97295b01a0369/raw/28deda7c03eb4c8a300c4c3eabd76c0f732ca5da/disable.sh | bash
+        if !hash $AWK 2>/dev/null; then
+            brew install $AWK
+        fi
+        if !hash git 2>/dev/null; then
+            brew install git
+        fi
     else
-        #example - execute script with perl
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew
     fi
 }
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    checkbrew
-    sudo apt-get -y install ytop
+checkraspi(){
+    echo 'Checking Raspi'
+    if [ -e /etc/rpi-issue ]; then
+    echo "- Original Installation"
+    cat /etc/rpi-issue
+    fi
+    if [ -e /usr/bin/lsb_release ]; then
+    echo "- Current OS"
+    lsb_release -irdc
+    fi
+    echo "- Kernel"
+    uname -r
+    echo "- Model"
+    cat /proc/device-tree/model && echo
+    echo "- hostname"
+    hostname
+    echo "- Firmware"
+    /opt/vc/bin/vcgencmd version
+}
+
+if [[ "$OSTYPE" == "linux"* ]]; then
+    #CHECK APT
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        PACKAGE_MANAGER=apt
+        export PACKAGE_MANAGER
+        INSTALL=install
+        export INSTALL
+        AWK=gawk
+        export AWK
+        if hash apt 2>/dev/null; then
+            $PACKAGE_MANAGER $INSTALL $AWK
+            report
+        fi
+    fi
+    if [[ "$OSTYPE" == "linux-musl" ]]; then
+        PACKAGE_MANAGER=apk
+        export PACKAGE_MANAGER
+        INSTALL=install
+        export INSTALL
+        AWK=gawk
+        export AWK
+        if hash apk 2>/dev/null; then
+            $PACKAGE_MANAGER $INSTALL $AWK
+            report
+        fi
+    fi
+    if [[ "$OSTYPE" == "linux-arm"* ]]; then
+        PACKAGE_MANAGER=apt
+        export PACKAGE_MANAGER
+        INSTALL=install
+        export INSTALL
+        AWK=gawk
+        echo $AWK
+        export AWK
+        checkraspi
+        if hash apt 2>/dev/null; then
+            $PACKAGE_MANAGER $INSTALL $AWK
+            report
+        fi
+    fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    checkbrew
-    brew tap cjbassi/ytop
-    brew install ytop
+        report
+        PACKAGE_MANAGER=brew
+        export PACKAGE_MANAGER
+        INSTALL=install
+        export INSTALL
+        AWK=awk
+        export AWK
+	brew install cjbassi/ytop/ytop
+        checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "msys" ]]; then

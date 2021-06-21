@@ -29,14 +29,14 @@ jobs:
      steps:
       - uses: actions/checkout@v2
       - name: bootstrap
-        run: ./boot-strap.sh
+        run: echo y | ./boot-strap.sh
 
   macos-latest-bootstrap:
      runs-on: macos-latest
      steps:
       - uses: actions/checkout@v2
       - name: bootstrap
-        run: ./boot-strap.sh
+        run: echo y | ./boot-strap.sh
 
   ubuntu-latest-make:
     runs-on: ubuntu-latest

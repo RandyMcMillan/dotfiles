@@ -78,5 +78,6 @@ jobs:
      steps:
       - uses: actions/checkout@v2
       - name: install-alpine-shell
-        run: ./install-alpine-shell.sh
+        run: |
+          ./install-alpine-shell.sh
 

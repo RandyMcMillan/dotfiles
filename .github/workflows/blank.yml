@@ -73,3 +73,12 @@ jobs:
       - name: Make
         run: make
 
+  macos-latest-make-shell:
+     runs-on: macos-latest
+     steps:
+      - uses: actions/checkout@v2
+      - name: Make Shell
+        run: | 
+          ./install-alpine-shell.sh
+          make shell
+

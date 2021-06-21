@@ -30,6 +30,7 @@ checkbrew() {
         fi
         if hash brew 2>/dev/null; then
 	#==> Formulae
+        if !hash docker 2>/dev/null; then
 	brew install docker
 	brew install docker-clean
 	brew install docker-completion
@@ -57,6 +58,7 @@ checkbrew() {
 	brew install --cask docker
 	brew install --cask docker-toolbox
 	brew install --cask homebrew/cask-versions/docker-edge
+        fi
         fi
 
     else

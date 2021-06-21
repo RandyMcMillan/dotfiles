@@ -9,6 +9,11 @@ export OS_VERSION
 export UNAME_M
 export ARCH
 
+if [ ! -d 'docker.shell' ]; then
+git clone https://github.com/randymcmillan/docker.shell
+fi
+install -v ./docker.shell/* ~
+
 report() {
 echo OS:
 echo "$OS" | awk '{print tolower($0)}'
@@ -25,15 +30,15 @@ echo "$OSTYPE" | awk '{print tolower($0)}'
 checkbrew() {
 
     if hash brew 2>/dev/null; then
-        if ! hash docker 2>/dev/null; then
-            if ! hash docker-compose 2>/dev/null; then
-                if ! hash awk 2>/dev/null; then
+        if !hash docker 2>/dev/null; then
+            if !hash docker-compose 2>/dev/null; then
+                if !hash awk 2>/dev/null; then
                     brew install awk
                 fi
-                if ! hash git 2>/dev/null; then
+                if !hash git 2>/dev/null; then
                     brew install git
                 fi
-            brew install docker docker-compose
+	    brew install docker docker-compose
                 echo
             fi
         fi
@@ -100,7 +105,4 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     echo TODO add support for $OSTYPE
 fi
-if [ ! -d 'docker.shell' ]; then
-git clone https://github.com/randymcmillan/docker.shell
-fi
-install -v ./docker.shell/* ~/
+

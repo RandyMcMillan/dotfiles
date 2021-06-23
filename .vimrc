@@ -1,5 +1,8 @@
 set go+=!,
 
+nmap <leader>l :set list!<CR>
+set listchars=tab:▸\ ,eol:¬
+
 " let mapleader = "\<C-n>"
 
 autocmd StdinReadPre * let s:std_in=1
@@ -70,8 +73,8 @@ set cursorline
 " Make tabs as wide as two spaces
 set tabstop=2
 " Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set list
+" set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+" set list
 " Highlight searches
 set hlsearch
 " Ignore case of searches

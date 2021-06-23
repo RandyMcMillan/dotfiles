@@ -17,6 +17,7 @@ fi
 VIM=$(find /usr/local/Cellar/macvim -name vim)
 export VIM
 echo   $VIM
+
 install-vim() {
 #WE install this regaurdless of OSTYPE
 VIMRC_REPO="https://github.com/randymcmillan/vimrc.git"
@@ -25,7 +26,7 @@ echo $VIMRC_REPO
 VIMRC_DESTINATION="$HOME/.vim_runtime"
 export VIMRC_DESTINATION
 echo $VIMRC_DESTINATION
-read -t 2 -p "Install .vim_runtime ? (y/n) " -n 1;
+read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [ -d "$VIMRC_DESTINATION" ]; then
       cd ~/.vim_runtime
@@ -40,17 +41,19 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     fi
 fi
 }
+
 MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
 export MACVIM
 echo   $MACVIM
 MVIM=$(find /usr/local/Cellar/macvim -name mvim)
 export MVIM
 echo   $MVIM
+
 install-macvim(){
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if hash brew 2>/dev/null; then
         if ! hash mvim 2>/dev/null; then
-            read -t 3 -p "Install MacVim? (y/n) " -n 1;
+            read -t 5 -p "Install MacVim? (y/n) " -n 1;
             echo "";
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 if [ ! hash mvim 2>/dev/null ]; then
@@ -79,5 +82,5 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     fi
 fi
 }
-install-vim
 install-macvim
+install-vim

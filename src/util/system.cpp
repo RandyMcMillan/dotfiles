@@ -6,6 +6,11 @@
 #include <util/system.h>
 
 #ifdef ENABLE_EXTERNAL_SIGNER
+#if defined(WIN32) && !defined(__kernel_entry)
+// A workaround for https://github.com/boostorg/process/issues/96
+// See: https://stackoverflow.com/a/59338759
+#define __kernel_entry
+#endif
 #include <boost/process.hpp>
 #endif // ENABLE_EXTERNAL_SIGNER
 

@@ -7,33 +7,35 @@ addPath() {
 export -f addPath
 
 install-bash-infinity() {
+mkdir -p /usr/local/bin
 
-REPO=~/infinity
-URL=https://github.com/niieani/bash-oo-framework.git
-    mkdir    $REPO
-    cd       $REPO
-    git init $REPO
-    cd $REPO
-    git remote add origin $URL
-    git config core.sparsecheckout true
-    echo "lib/*" >> .git/info/sparse-checkout
-    git pull --depth=1 origin master
-    #ln -s /lib/oo-bootstrap.sh ~/ #     $( cd "${BASH_SOURCE[0]%/*}" && pwd )
-    rm -f ~/test-infinity.sh
-    ln -s  ~/dotfiles/test-infinity.sh ~/test-infinity.sh
-#    ln -s  ~/dotfiles/infinity $PWD
-    ln -s  ~/dotfiles/infinity ~/dotfiles
-    ~/./test-infinity.sh
-    ~/test-infinity.sh
+if [ ! -d "${BASH_SOURCE[0]%/*}"/bin/bash-oo-framework ]; then \
+    git clone https://github.com/niieani/bash-oo-framework.git bin/bash-oo-framework
+fi
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
+# load the type system
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/util/log.sh"
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/util/exception.sh"
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/util/tryCatch.sh"
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/util/namedParameters.sh"
+#import util/log util/exception util/tryCatch util/namedParameters
+
+# load the standard library for basic types and type the system
+#import util/class
+
+
 
 }
 
 install-bash() {
 
     if hash brew 2>/dev/null; then
-
-        brew install bash bash-completion
-
+        if ! hash bash 2>/dev/null; then
+                brew install bash
+            if ! hash bash-completion 2>/dev/null; then
+                brew install bash-completion
+            fi
+        fi
     else
 
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"

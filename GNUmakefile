@@ -121,7 +121,7 @@ shell:
 .PHONY: push
 .ONESHELL:
 push: touch-time
-	bash -c "git add -f * .github && \
+	bash -c "git add -f * .gitignore .bash* .github && \
 		git commit -m 'update from $(GIT_USER_NAME) on $(TIME)'"
 	git push -f origin	+master:master
 

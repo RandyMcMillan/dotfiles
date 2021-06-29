@@ -80,7 +80,7 @@ brew: executable
 
 .PHONY: all
 all: executable
-	./install-Bash+Utils.bash
+	#TODO ./install-Bash+Utils.bash
 	./install-Docker.sh
 	./install-alpine-shell.sh
 	./install-FastLane.sh

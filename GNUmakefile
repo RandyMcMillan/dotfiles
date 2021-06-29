@@ -108,10 +108,14 @@ all: executable
 	./install-umbrel-dev.sh
 	./install-vim.sh
 
+.PHONY: shell
+shell:
+	bash -c "make alpine-shell"
+
 .PHONY:
 alpine-shell:
 	./install-alpine-shell.sh
-	cd ~ && make shell
+	cd ~ && make -f ~/GNUmakefile alpine-build &&  make -f ~/GNUmakefile shell
 
 .PHONY: vim
 vim: executable
@@ -120,9 +124,6 @@ vim: executable
 .PHONY: config-git
 config-git: executable
 	git config --global  pull.rebase true
-.PHONY: shell
-shell:
-	make -C docker.shell shell
 
 .PHONY: push
 .ONESHELL:
@@ -148,3 +149,5 @@ touch-time:
 	#$(shell git rm -f 1618*)
 	touch $(TIME)
 	echo $(TIME) $(shell git rev-parse HEAD) >> $(TIME)
+
+

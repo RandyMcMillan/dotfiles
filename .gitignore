@@ -55,3 +55,4 @@ etc-pihole
 1.1.1i
 docker.shell
 bin/bash-oo-framework
+docker.shell

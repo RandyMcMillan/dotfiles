@@ -26,8 +26,8 @@ echo $VIMRC_REPO
 VIMRC_DESTINATION="$HOME/.vim_runtime"
 export VIMRC_DESTINATION
 echo $VIMRC_DESTINATION
-read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+#read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
+#if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [ -d "$VIMRC_DESTINATION" ]; then
       cd ~/.vim_runtime
       git pull -f origin master
@@ -39,7 +39,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       sh ~/.vim_runtime/install_awesome_vimrc.sh
       ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
     fi
-fi
+#fi
 }
 
 MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)

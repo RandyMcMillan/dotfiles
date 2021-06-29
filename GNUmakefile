@@ -18,6 +18,7 @@ brew: executable
 
 .PHONY: all
 all: executable
+	./check-brew.sh
 	./install-Docker.sh
 	./install-alpine-shell.sh
 	./install-FastLane.sh

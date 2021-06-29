@@ -107,6 +107,12 @@ all: executable
 	#./install-valgrind-macos.sh
 	./install-umbrel-dev.sh
 	./install-vim.sh
+
+.PHONY:
+alpine-shell:
+	./install-alpine-shell.sh
+	cd ~ && make shell
+
 .PHONY: vim
 vim: executable
 	./install-Vim.sh

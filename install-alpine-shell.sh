@@ -10,9 +10,9 @@ export UNAME_M
 export ARCH
 
 if [ ! -d 'docker.shell' ]; then
-git clone https://github.com/randymcmillan/docker.shell
+git clone git@github.com:RandyMcMillan/docker.shell.git ~/docker.shell
 fi
-install -v ./docker.shell/* ~
+cd ~/docker.shell && install -v * ~
 
 report() {
 echo OS:

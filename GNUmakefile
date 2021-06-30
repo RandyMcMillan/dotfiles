@@ -98,7 +98,7 @@ all: executable
 	./install-ql-plugins.sh
 	./install-qt5.sh
 	./install-sha256sum.sh
-	./install-specter-desktop.sh
+	#./install-specter-desktop.sh
 	./install-vmware-fusion11.sh #Mojave
 	./install-vypr-vpn.sh
 	./install-youtube-dl.sh

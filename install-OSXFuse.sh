@@ -4,7 +4,8 @@ checkbrew() {
 
     if hash brew 2>/dev/null; then
         brew install --cask osxfuse
-        #brew install ext4fuse
+        brew install --cask macfuse
+        brew install ext4fuse
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew

@@ -5,7 +5,6 @@ checkbrew() {
     if hash brew 2>/dev/null; then
         #brew install tor tor-browser
         #open https://orangepill.blog/bitcoin/2020/12/14/connect-specter-desktop-on-mac-os-to-your-raspiblitz.html
-
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew

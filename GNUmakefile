@@ -88,7 +88,7 @@ all: executable
 	./install-Onyx.sh
 	./install-SassC.sh
 	./install-discord.sh
-	./install-eq-mac.sh
+	#./install-eq-mac.sh
 	./install-gpg-suite.sh
 	./install-iterm2.sh
 	./install-keeping-you-awake.sh

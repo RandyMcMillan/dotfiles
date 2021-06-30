@@ -82,7 +82,6 @@ brew: executable
 all: executable
 	#TODO ./install-Bash+Utils.bash
 	./install-Docker.sh
-	./install-alpine-shell.sh
 	./install-FastLane.sh
 	./install-OSXFuse.sh
 	./install-Onyx.sh

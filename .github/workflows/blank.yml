@@ -31,12 +31,12 @@ jobs:
       - name: bootstrap
         run: echo y | ./boot-strap.sh
 
-  macos-11-4-bootstrap:
-     runs-on: macos-11.4
-     steps:
-      - uses: actions/checkout@v2
-      - name: bootstrap
-        run: echo y | ./boot-strap.sh
+          #  macos-11-4-bootstrap:
+          #     runs-on: macos-11.4
+          #     steps:
+          #      - uses: actions/checkout@v2
+          #      - name: bootstrap
+          #        run: echo y | ./boot-strap.sh
 
   macos-latest-bootstrap:
      runs-on: macos-latest
@@ -59,12 +59,12 @@ jobs:
       - name: Make
         run: make
 
-  macos-11-4-make:
-     runs-on: macos-11.4
-     steps:
-      - uses: actions/checkout@v2
-      - name: Make
-        run: make
+          #  macos-11-4-make:
+          #     runs-on: macos-11.4
+          #     steps:
+          #      - uses: actions/checkout@v2
+          #      - name: Make
+          #        run: make
 
   macos-latest-make:
      runs-on: macos-latest

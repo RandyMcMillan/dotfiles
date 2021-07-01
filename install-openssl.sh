@@ -3,6 +3,7 @@ checkbrew() {
 
     if hash brew 2>/dev/null; then
         brew install openssl@1.1
+        brew reinstall --force openssl@1.1
         true
     else
         #We install homebrew if not exist
@@ -17,20 +18,39 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     fi
     true #checkbrew linuxbrew acting weird in travis-ci
 elif [[ "$OSTYPE" == "darwin"* ]]; then
+    which openssl
     checkbrew
     #symlink on your machine too...
+    echo brew list --versions
+    brew list --versions
+    echo
     OPENSSL_VERSION=$(brew list --versions | grep -i -E  "openssl" | sed 's%openssl@1.1% %')
     echo openssl version
     echo $OPENSSL_VERSION
     export OPENSSL_VERSION
-    rm -rf /usr/local/include/openssl
-    mkdir -p /usr/local/include/openssl/$OPENSSL_VERSION
-    install -v /usr/local/opt/openssl/include/openssl/*                      /usr/local/include/openssl/$OPENSSL_VERSION
-    install -v /usr/local/Cellar/openssl/$OPENSSL_VERSION/include/openssl    /usr/bin/openssl
-    install -v /usr/local/Cellar/openssl/$OPENSSL_VERSION/include/openssl    /usr/local/bin/openssl
-    install -v /usr/local/opt/openssl/lib/libssl.1.1.dylib                   /usr/local/lib/
-    install -v /usr/local/opt/openssl/lib/libcrypto.1.1.dylib                /usr/local/lib/
-    install -v /usr/local/opt/openssl/lib/libcrypto.a                        /usr/local/lib/
+
+    #ln: 1.1.1k: No such file or directory
+    #ln: /usr/bin/openssl: No such file or directory
+    #ln: /usr/local/bin/openssl: No such file or directory
+    #ln: /usr/local/lib/libcrypto.a: File exists
+    #ln: 1.1.1k: No such file or directory
+    #ln: /usr/bin/openssl: No such file or directory
+    #ln: /usr/local/bin/openssl: No such file or directory
+    #ln: /usr/local/lib/libcrypto.a: File exists
+    #/usr/local/opt/openssl@1.1/bin/openssl
+    sudo mkdir -p /usr/local/include/openssl/$OPENSSL_VERSION
+    rm -rf /usr/local/include/openssl/$OPENSSL_VERSION
+    sudo ln -s /usr/local/opt/openssl/include/openssl /usr/local/include/openssl/$OPENSSL_VERSION
+    rm -rf /usr/bin/openssl
+    sudo ln -s /usr/local/Cellar/openssl/$OPENSSL_VERSION/include/openssl    /usr/bin/openssl
+    rm -rf /usr/local/bin/openssl
+    sudo ln -s /usr/local/Cellar/openssl/$OPENSSL_VERSION/include/openssl    /usr/local/bin/openssl
+    sudo rm -rf /usr/local/lib/libssl.*.*.dylib
+    sudo rm -rf /usr/local/lib/libcrypto.*.*.dylib
+    sudo rm -rf /usr/local/lib/libcrypto.*.*.a
+    ln -s /usr/local/opt/openssl/lib/libssl.1.1.dylib                   /usr/local/lib/libssl.1.1.dylib
+    ln -s /usr/local/opt/openssl/lib/libcrypto.1.1.dylib                /usr/local/lib/libcrypto.1.1.dylib
+    ln -s /usr/local/opt/openssl/lib/libcrypto.a                        /usr/local/lib/libcrypto.a
     which openssl
 
 elif [[ "$OSTYPE" == "cygwin" ]]; then

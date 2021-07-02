@@ -81,6 +81,7 @@ brew: executable
 .PHONY: all
 all: executable
 	#TODO ./install-Bash+Utils.bash
+	./install-firefox.sh
 	./install-Docker.sh
 	./install-FastLane.sh
 	./install-OSXFuse.sh

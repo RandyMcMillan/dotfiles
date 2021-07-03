@@ -3,7 +3,6 @@ checkbrew() {
 
     if hash brew 2>/dev/null; then
         brew install openssl@1.1
-        brew reinstall --force openssl@1.1
         true
     else
         #We install homebrew if not exist

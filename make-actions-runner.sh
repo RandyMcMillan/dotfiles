@@ -128,4 +128,4 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     echo TODO add support for $OSTYPE
 fi
-
+echo https://github.com/organizations/bitcoincore-dev/settings/actions/runners

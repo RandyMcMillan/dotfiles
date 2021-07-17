@@ -31,33 +31,34 @@ checkbrew() {
         if hash brew 2>/dev/null; then
 	#==> Formulae
         if !hash docker 2>/dev/null; then
-	brew install docker
-	brew install docker-clean
-	brew install docker-completion
-	brew install docker-compose
-	brew install docker-compose-completion
-	brew install docker-credential-helper
-	brew install docker-credential-helper-ecr
-	brew install docker-gen
-	brew install docker-ls
-	brew install docker-machine
-	brew install docker-machine-completion
-	brew install docker-machine-driver-hyperkit
-	brew install docker-machine-driver-vmware
-	brew install docker-machine-driver-vultr
-	brew install docker-machine-driver-xhyve
-	brew install docker-machine-nfs
-	brew install docker-machine-parallels
-	brew install docker-slim
-	brew install docker-squash
-	brew install docker-swarm
-	brew install docker2aci
-	brew install dockerize
-	brew install lazydocker
+	#brew install docker #use the cask desktop app
+        brew install docker-compose
+	#brew install docker-clean
+	#brew install docker-completion
+	#brew install docker-compose
+	#brew install docker-compose-completion
+	#brew install docker-credential-helper
+	#brew install docker-credential-helper-ecr
+	#brew install docker-gen
+	#brew install docker-ls
+	#brew install docker-machine
+	#brew install docker-machine-completion
+	#brew install docker-machine-driver-hyperkit
+	#brew install docker-machine-driver-vmware
+	#brew install docker-machine-driver-vultr
+	#brew install docker-machine-driver-xhyve
+	#brew install docker-machine-nfs
+	#brew install docker-machine-parallels
+	#brew install docker-slim
+	#brew install docker-squash
+	#brew install docker-swarm
+	#brew install docker2aci
+	#brew install dockerize
+	#brew install lazydocker
 	#==> Casks
 	brew install --cask docker
-	brew install --cask docker-toolbox
-	brew install --cask homebrew/cask-versions/docker-edge
+	#brew install --cask docker-toolbox
+	#brew install --cask homebrew/cask-versions/docker-edge
         fi
         fi
 

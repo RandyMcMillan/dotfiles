@@ -28,9 +28,6 @@ checkbrew() {
         brew install awk git qt@5
         export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig"
         echo 'export PATH="/usr/local/opt/qt@5/bin:$PATH"' >> /Users/git/.bash_profile
-        #./install-Vim.sh
-        #brew update
-        #brew upgrade
         echo
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"

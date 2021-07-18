@@ -53,8 +53,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         brew install tccutil
     fi
     if ! hash dockutil 2>/dev/null; then
-        curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
-        chmod a+x /usr/local/bin/dockutil
+        sudo -s curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
+        sudo -s chmod a+x /usr/local/bin/dockutil
     fi
         dockutil --add /Applications/MacVim.app --replacing 'MacVim'
 fi

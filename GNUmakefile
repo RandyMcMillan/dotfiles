@@ -154,7 +154,7 @@ docs:
 touch-time:
 	#rm -f 1618*
 	#$(shell git rm -f 1618*)
-	touch $(TIME)
-	echo $(TIME) $(shell git rev-parse HEAD) >> $(TIME)
+	touch TIME
+	echo $(TIME) $(shell git rev-parse HEAD) >> TIME
 
 

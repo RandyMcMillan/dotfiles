@@ -31,6 +31,7 @@ checkbrew() {
         #./install-Vim.sh
         #brew update
         #brew upgrade
+        which qmake
         echo
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"

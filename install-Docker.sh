@@ -57,7 +57,7 @@ checkbrew() {
 	#==> Casks
 	brew install --cask docker
 	brew install --cask docker-toolbox
-	brew install --cask homebrew/cask-versions/docker-edge
+	#brew install --cask homebrew/cask-versions/docker-edge
         fi
         fi
 

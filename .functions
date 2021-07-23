@@ -116,10 +116,22 @@ git remote add jonas https://github.com/jonasschnelli/gui.git
 git remote add hebasto https://github.com/hebasto/gui.git
 
 }
-
 function git-branch-D (){
 
 git branch -D $1
+
+}
+
+function git-delete-local-branches(){
+
+#git branch -a --list 'dongcarl/*' | sed "s/origin\///" | xargs -I {} git branch -D {}
+git branch -a --list $1/* | sed "s/origin\///" | xargs -I {} git branch -D {}
+
+}
+function git-delete-remote-branches(){
+
+#git branch -r --list 'origin/dongcarl/*' | sed "s/origin\///" | xargs -I {} git push origin --delete {}
+git branch -r --list $1/* | sed "s/origin\///" | xargs -I {} git push origin --delete {}
 
 }
 

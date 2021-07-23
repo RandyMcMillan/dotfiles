@@ -114,6 +114,17 @@ git remote add marco-falke https://github.com/MarcoFalke/bitcoin-core-gui.git
 git remote add jonatack https://github.com/jonatack/gui.git
 git remote add jonas https://github.com/jonasschnelli/gui.git
 git remote add hebasto https://github.com/hebasto/gui.git
+git remote add fanquake https://github.com/bitcoin/bitcoin.git
+git remote add laanwj https://github.com/laanwj/bitcoin.git
+
+}
+function gpg-recv-keys-bitcoin-devs(){
+
+curl  -fsSL https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt  -o  keys.txt
+
+while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:41}; done < keys.txt
+
+
 
 }
 function git-branch-D (){

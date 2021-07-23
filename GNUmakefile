@@ -38,6 +38,13 @@ export GIT_REPO_PATH
 .PHONY: help
 help: report
 	@echo ""
+	@echo "  make all"
+	@echo "  make bootstrap"
+	@echo "  make executable"
+	@echo "  make alpine-shell"
+	@echo "  make shell"
+	@echo "  make vim"
+	@echo "  make config-git"
 	@echo "  make push"
 	@echo ""
 

@@ -28,6 +28,9 @@ checkbrew() {
         if !hash git 2>/dev/null; then
             brew install git
         fi
+        if !hash docker 2>/dev/null; then
+            brew install --cask docker
+        fi
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew
@@ -70,7 +73,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     if [[ "$OSTYPE" == "linux-musl" ]]; then
         PACKAGE_MANAGER=apk
         export PACKAGE_MANAGER
-        INSTALL=install
+        INSTALL=add
         export INSTALL
         AWK=gawk
         export AWK
@@ -100,21 +103,6 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         INSTALL=install
         export INSTALL
         AWK=awk
-	#REF:https://github.com/sindresorhus/quick-look-plugins
-        brew install --cask qlance
-        brew install --cask qladdict
-        brew install --cask qlcolorcode
-        brew install --cask qldds
-        brew install --cask qlstephen
-        brew install --cask qlmarkdown
-        brew install --cask qlplayground
-        brew install --cask qlprettypatch
-        brew install --cask qlcomonmark
-        brew install --cask quicklook-json
-        brew install --cask qlimagesize
-        brew install --cask suspicious-package
-        brew install --cask quicklookase
-        brew install --cask qlvideo
         export AWK
         checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then
@@ -128,4 +116,4 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     echo TODO add support for $OSTYPE
 fi
-
+docker pull gitea/gitea

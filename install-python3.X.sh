@@ -27,11 +27,14 @@ checkbrew() {
     if hash brew 2>/dev/null; then
         brew install awk git
         brew install python@3.9 python-tk@3.9
-        brew install python@3.8
-        brew install python@3.7
-        alias python3.7=/usr/local/opt/python@3.7/bin/./python3.7
-        alias python3.8=/usr/local/opt/python@3.8/bin/./python3.8
+        #brew install python@3.8
+        #brew install python@3.7
+        #alias python3.7=/usr/local/opt/python@3.7/bin/./python3.7
+        #python3.7 -m pip install --upgrade pip
+        #alias python3.8=/usr/local/opt/python@3.8/bin/./python3.8
+        #python3.8 -m pip install --upgrade pip
         alias python3.9=/usr/local/opt/python@3.9/bin/./python3.9
+        python3.9 -m pip install --upgrade pip
         echo
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"

@@ -71,6 +71,7 @@
 #endif
 
 #include <boost/algorithm/string/replace.hpp>
+#include <optional>
 #include <thread>
 #include <typeinfo>
 #include <univalue.h>
@@ -185,26 +186,17 @@ static std::string SettingName(const std::string& arg)
 }
 
 /**
- * Interpret -nofoo as if the user supplied -foo=0.
- *
- * This method also tracks when the -no form was supplied, and if so,
- * checks whether there was a double-negative (-nofoo=0 -> -foo=1).
- *
- * If there was not a double negative, it removes the "no" from the key
- * and returns false.
- *
- * If there was a double negative, it removes "no" from the key, and
- * returns true.
- *
- * If there was no "no", it returns the string value untouched.
+ * Interpret key portion of a "key=value" config string. Strip "section." and
+ * "no" prefixes from the key if they are present, updating the section output
+ * argument if a section was found, and returning false if the key was negated,
+ * true otherwise.
  *
  * Where an option was negated can be later checked using the
  * IsArgNegated() method. One use case for this is to have a way to disable
  * options that are not normally boolean (e.g. using -nodebuglogfile to request
  * that debug log output is not sent to any file at all).
  */
-
-static util::SettingsValue InterpretOption(std::string& section, std::string& key, const std::string& value)
+static bool InterpretKey(std::string& section, std::string& key)
 {
     // Split section name from key name for keys like "testnet.foo" or "regtest.bar"
     size_t option_index = key.find('.');
@@ -214,6 +206,29 @@ static util::SettingsValue InterpretOption(std::string& section, std::string& ke
     }
     if (key.substr(0, 2) == "no") {
         key.erase(0, 2);
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Interpret settings value and apply ALLOW checking flags.
+ *
+ * Return an error string and nullopt if an invalid value was provided that
+ * isn't allowed by the flags, otherwise return the parsed value.
+ */
+static std::optional<util::SettingsValue> InterpretValue(const std::string& key,
+    const std::string& value,
+    bool negated,
+    unsigned int flags,
+    std::string& error)
+{
+    // Return negated settings as false values.
+    if (negated) {
+        if (flags & ArgsManager::DISALLOW_NEGATION) {
+            error = strprintf("Negating of -%s is meaningless and therefore forbidden", key);
+            return std::nullopt;
+        }
         // Double negatives like -nofoo=0 are supported (but discouraged)
         if (!InterpretBool(value)) {
             LogPrintf("Warning: parsed potentially confusing double-negative -%s=%s\n", key, value);
@@ -222,22 +237,6 @@ static util::SettingsValue InterpretOption(std::string& section, std::string& ke
         return false;
     }
     return value;
-}
-
-/**
- * Check settings value validity according to flags.
- *
- * TODO: Add more meaningful error checks here in the future
- * See "here's how the flags are meant to behave" in
- * https://github.com/bitcoin/bitcoin/pull/16097#issuecomment-514627823
- */
-static bool CheckValid(const std::string& key, const util::SettingsValue& val, unsigned int flags, std::string& error)
-{
-    if (val.isBool() && !(flags & ArgsManager::ALLOW_BOOL)) {
-        error = strprintf("Negating of -%s is meaningless and therefore forbidden", key);
-        return false;
-    }
-    return true;
 }
 
 namespace {
@@ -354,20 +353,21 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
         // Transform -foo to foo
         key.erase(0, 1);
         std::string section;
-        util::SettingsValue value = InterpretOption(section, key, val);
+        bool negated = !InterpretKey(section, key);
         std::optional<unsigned int> flags = GetArgFlags('-' + key);
 
         // Unknown command line options and command line options with dot
-        // characters (which are returned from InterpretOption with nonempty
+        // characters (which are returned from InterpretKey with nonempty
         // section strings) are not valid.
         if (!flags || !section.empty()) {
             error = strprintf("Invalid parameter %s", argv[i]);
             return false;
         }
 
-        if (!CheckValid(key, value, *flags, error)) return false;
+        std::optional<util::SettingsValue> value = InterpretValue(key, val, negated, *flags, error);
+        if (!value) return false;
 
-        m_settings.command_line_options[key].push_back(value);
+        m_settings.command_line_options[key].push_back(*value);
     }
 
     // we do not allow -includeconf from command line, only -noincludeconf
@@ -552,7 +552,7 @@ bool ArgsManager::ReadSettingsFile(std::vector<std::string>* errors)
     for (const auto& setting : m_settings.rw_settings) {
         std::string section;
         std::string key = setting.first;
-        (void)InterpretOption(section, key, /* value */ {}); // Split setting key into section and argname
+        (void)InterpretKey(section, key); // Split setting key into section and argname
         if (!GetArgFlags('-' + key)) {
             LogPrintf("Ignoring unknown rw_settings value %s\n", setting.first);
         }
@@ -650,6 +650,7 @@ void ArgsManager::AddArg(const std::string& name, const std::string& help, unsig
 
     LOCK(cs_args);
     std::map<std::string, Arg>& arg_map = m_available_args[cat];
+    if ((flags & (ALLOW_ANY | ALLOW_BOOL)) == 0) flags |= DISALLOW_NEGATION; // Temporary, removed in next scripted-diff
     auto ret = arg_map.emplace(arg_name, Arg{name.substr(eq_index, name.size() - eq_index), help, flags});
     assert(ret.second); // Make sure an insertion actually happened
 
@@ -874,13 +875,12 @@ bool ArgsManager::ReadConfigStream(std::istream& stream, const std::string& file
     for (const std::pair<std::string, std::string>& option : options) {
         std::string section;
         std::string key = option.first;
-        util::SettingsValue value = InterpretOption(section, key, option.second);
+        bool negated = !InterpretKey(section, key);
         std::optional<unsigned int> flags = GetArgFlags('-' + key);
         if (flags) {
-            if (!CheckValid(key, value, *flags, error)) {
-                return false;
-            }
-            m_settings.ro_config[section][key].push_back(value);
+            std::optional<util::SettingsValue> value = InterpretValue(key, option.second, negated, *flags, error);
+            if (!value) return false;
+            m_settings.ro_config[section][key].push_back(*value);
         } else {
             if (ignore_invalid_keys) {
                 LogPrintf("Ignoring unknown configuration value %s\n", option.first);

@@ -89,11 +89,11 @@ class InitStressTest(BitcoinTestFramework):
             f"Terminate at some random point in the init process (max logs: {num_total_logs})")
 
         for _ in range(40):
-            num_logs = len(Path(node.debug_log_path).read_text().splitlines())
+            num_logs = len(Path(node.debug_log_path(wallet=False)).read_text().splitlines())
             additional_lines = random.randint(1, num_total_logs)
             self.log.debug(f"Starting node and will exit after {additional_lines} lines")
             node.start(extra_args=['-txindex=1'])
-            logfile = open(node.debug_log_path, 'r', encoding='utf8')
+            logfile = open(node.debug_log_path(wallet=False), 'r', encoding='utf8')
 
             MAX_SECS_TO_WAIT = 10
             start = time.time()

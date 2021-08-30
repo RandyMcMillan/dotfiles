@@ -319,13 +319,14 @@ void BitcoinApplication::startThread()
     connect(this, &BitcoinApplication::requestedShutdown, &m_executor.value(), &InitExecutor::shutdown);
 }
 
-void BitcoinApplication::parameterSetup()
+void BitcoinApplication::parameterSetup(interfaces::Init& init)
 {
     // Default printtoconsole to false for the GUI. GUI programs should not
     // print to the console unnecessarily.
     gArgs.SoftSetBoolArg("-printtoconsole", false);
 
-    InitLogging(gArgs);
+    interfaces::Ipc* ipc = init.ipc();
+    InitLogging(gArgs, ipc ? ipc->logSuffix() : nullptr);
     InitParameterInteraction(gArgs);
 }
 
@@ -626,7 +627,7 @@ int GuiMain(int argc, char* argv[])
     // Install qDebug() message handler to route to debug.log
     qInstallMessageHandler(DebugMessageHandler);
     // Allow parameter interaction before we create the options model
-    app.parameterSetup();
+    app.parameterSetup(*init);
     GUIUtil::LogQtInfo();
     // Load GUI settings from QSettings
     app.createOptionsModel(gArgs.GetBoolArg("-resetguisettings", false));

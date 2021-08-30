@@ -11,6 +11,8 @@
 #include <init.h>
 #include <interfaces/chain.h>
 #include <interfaces/handler.h>
+#include <interfaces/init.h>
+#include <interfaces/ipc.h>
 #include <interfaces/node.h>
 #include <interfaces/wallet.h>
 #include <mapport.h>
@@ -83,7 +85,11 @@ class NodeImpl : public Node
 {
 public:
     explicit NodeImpl(NodeContext& context) { setContext(&context); }
-    void initLogging() override { InitLogging(*Assert(m_context->args)); }
+    void initLogging() override
+    {
+        interfaces::Ipc* ipc = m_context->init->ipc();
+        InitLogging(*Assert(m_context->args), ipc ? ipc->logSuffix() : nullptr);
+    }
     void initParameterInteraction() override { InitParameterInteraction(*Assert(m_context->args)); }
     bilingual_str getWarnings() override { return GetWarnings(true); }
     uint32_t getLogCategories() override { return LogInstance().GetCategoryMask(); }

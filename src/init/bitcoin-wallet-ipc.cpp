@@ -41,19 +41,19 @@ const char* EXE_NAME = "bitcoin-wallet";
 class BitcoinWalletInit : public interfaces::Init
 {
 public:
-    BitcoinWalletInit(const char* arg0) : m_ipc(interfaces::MakeIpc(EXE_NAME, arg0, *this))
+    BitcoinWalletInit(const char* arg0) : m_ipc(interfaces::MakeIpc(EXE_NAME, ".wallet", arg0, *this))
     {
         // Extra initialization code that runs when a bitcoin-wallet process is
         // spawned by a bitcoin-node process, after the ArgsManager
         // configuration is transferred from the parent process to the child
         // process.
-        m_ipc->context().init_process = [] {
+        m_ipc->context().init_process = [this] {
             init::SetGlobals();
             if (!init::SanityChecks()) {
                 throw std::runtime_error("Initial sanity checks failure");
             }
             SelectParams(ipc::capnp::GlobalArgsNetwork());
-            init::SetLoggingOptions(gArgs);
+            init::SetLoggingOptions(gArgs, m_ipc->logSuffix());
             init::SetLoggingCategories(gArgs);
             if (!init::StartLogging(gArgs)) {
                 throw std::runtime_error("Logging start failure");

@@ -6,10 +6,74 @@
 #define BITCOIN_NET_TYPES_H
 
 #include <map>
+#include <serialize.h>
 
-class CBanEntry;
 class CSubNet;
+class UniValue;
+
+class CBanEntry
+{
+public:
+    static const int CURRENT_VERSION=1;
+    int nVersion;
+    int64_t nCreateTime;
+    int64_t nBanUntil;
+
+    CBanEntry()
+    {
+        SetNull();
+    }
+
+    explicit CBanEntry(int64_t nCreateTimeIn)
+    {
+        SetNull();
+        nCreateTime = nCreateTimeIn;
+    }
+
+    /**
+     * Create a ban entry from JSON.
+     * @param[in] json A JSON representation of a ban entry, as created by `ToJson()`.
+     * @throw std::runtime_error if the JSON does not have the expected fields.
+     */
+    explicit CBanEntry(const UniValue& json);
+
+    SERIALIZE_METHODS(CBanEntry, obj)
+    {
+        uint8_t ban_reason = 2; //! For backward compatibility
+        READWRITE(obj.nVersion, obj.nCreateTime, obj.nBanUntil, ban_reason);
+    }
+
+    void SetNull()
+    {
+        nVersion = CBanEntry::CURRENT_VERSION;
+        nCreateTime = 0;
+        nBanUntil = 0;
+    }
+
+    /**
+     * Generate a JSON representation of this ban entry.
+     * @return JSON suitable for passing to the `CBanEntry(const UniValue&)` constructor.
+     */
+    UniValue ToJson() const;
+};
 
 using banmap_t = std::map<CSubNet, CBanEntry>;
+
+/**
+ * Convert a `banmap_t` object to a JSON array.
+ * @param[in] bans Bans list to convert.
+ * @return a JSON array, similar to the one returned by the `listbanned` RPC. Suitable for
+ * passing to `BanMapFromJson()`.
+ */
+UniValue BanMapToJson(const banmap_t& bans);
+
+/**
+ * Convert a JSON array to a `banmap_t` object.
+ * @param[in] bans_json JSON to convert, must be as returned by `BanMapToJson()`.
+ * @param[out] bans Bans list to create from the JSON.
+ * @throws std::runtime_error if the JSON does not have the expected fields or they contain
+ * unparsable values.
+ */
+void BanMapFromJson(const UniValue& bans_json, banmap_t& bans);
 
 #endif // BITCOIN_NET_TYPES_H

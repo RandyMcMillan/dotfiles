@@ -6,7 +6,7 @@ export TIME
 RC=v22.0rc3
 export RC
 
-BITCOIN_CONF1="proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases.
+BITCOIN_CONF1="proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases. \
 listen=1
 bind=127.0.0.1
 onlynet=onion
@@ -39,9 +39,9 @@ doIt(){
 
 
     [[ $(find ~/$BITCOIN_TEST_BATTERY -type d 2>/dev/null) ]] && \
-        pushd ~/$BITCOIN_TEST_BATTERY || git clone https://github.com/bitcoin/bitcoin ~/$BITCOIN_TEST_BATTERY
+        pushd ~/$BITCOIN_TEST_BATTERY || git clone -b $RC https://github.com/bitcoin/bitcoin ~/$BITCOIN_TEST_BATTERY
 
-    pushd ~/$BITCOIN_TEST_BATTERY && make clean
+    pushd ~/$BITCOIN_TEST_BATTERY #&& make clean
     git checkout $RC
     pushd ~/$BITCOIN_TEST_BATTERY && ./autogen.sh && ./configure --with-gui=yes --with-sqlite=yes --without-bdb && make -j $(nproc --all)
     mkdir -p /tmp/$TIME
@@ -64,8 +64,6 @@ doIt(){
 checkbrew() {
 
     if hash brew 2>/dev/null; then
-        brew update
-        brew upgrade
         #install brew libs
         brew install wget
         brew install curl

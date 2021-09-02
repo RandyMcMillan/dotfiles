@@ -69,7 +69,8 @@ checkbrew() {
         brew install curl
         brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
         brew install librsvg
-        brew install afl-fuzz codespell shellcheck
+        brew install codespell shellcheck
+        brew install --build-from-source afl-fuzz
     else
         #example - execute script with perl
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"

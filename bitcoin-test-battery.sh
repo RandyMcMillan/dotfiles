@@ -47,7 +47,7 @@ doIt(){
     mkdir -p /tmp/$TIME
     export DATA_DIR=/tmp/$TIME
     mkdir -p $DATA_DIR
-    echo $BITCOIN_CONF1 > $DATA_DIR/bitcoin.conf
+    echo -e $BITCOIN_CONF1 > $DATA_DIR/bitcoin.conf
     export BINARY_PATH=$(pwd)/src
     export QT_PATH=$(pwd)/src/qt
     export BINARY_PATH=$(pwd)/bin

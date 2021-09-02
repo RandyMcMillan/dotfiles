@@ -74,7 +74,7 @@ checkbrew() {
         #install brew libs
         brew install wget
         brew install curl
-        brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
+        brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt@5 libevent qrencode
         brew install librsvg
         brew install codespell shellcheck
         brew install --build-from-source afl-fuzz

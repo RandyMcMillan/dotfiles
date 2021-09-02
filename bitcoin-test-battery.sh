@@ -74,7 +74,7 @@ checkbrew() {
         #install brew libs
         brew install wget
         brew install curl
-        brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt@5 libevent qrencode
+        brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt@5 libevent qrencode tor
         brew install librsvg
         brew install codespell shellcheck
         brew install --build-from-source afl-fuzz
@@ -83,6 +83,7 @@ checkbrew() {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew
     fi
+    tor &
 }
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     checkbrew

@@ -6,33 +6,33 @@ export TIME
 RC=v22.0rc3
 export RC
 
-BITCOIN_CONF1="proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases. \
-listen=1
-bind=127.0.0.1
-onlynet=onion
-
-connect=ygwcypmb2qiotrp3.onion:8333
-connect=stcwaszw352kkjis.onion:8333
-connect=nrrmkgmulpgsbwlt.onion
-connect=orrxr4kfntzawea3.onion:8333
-connect=q2fhnnyt5b2ayvce.onion
-connect=rk4vbyca7xnn3top.onion
-connect=7ndbwnmgbyupv47f.onion
-connect=bitcoinzi27kiwf6.onion
-connect=w4ja2rt6wvqn6rfw.onion:8333
-connect=6maigxjvcet4pite.onion:8333
-connect=cehok4dxukhnoopi.onion:8333
-connect=r6apa5ssujxbwd34.onion:8333
-connect=ggvnc3v5pmrlsupw.onion:8333
-connect=er4mwkhxzxgavrvo.onion:8333
-connect=35yncj7et6k3koqy.onion
-connect=nesxfmano25clfvn.onion:8333
-connect=5d5vtnm6xlsqzq7p.onion
-connect=34jtv2p5pw4e5bp3.onion
-connect=z5nt64xh4d3vnll2.onion
-connect=lncmdma3namzrbnx.onion:8333
-connect=lncmdmx7ezlplcck.onion:8333
-connect=lncmdmgoddecttey.onion:8444
+BITCOIN_CONF1="proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases. \n
+listen=1 \n
+bind=127.0.0.1 \n
+onlynet=onion \n
+ \n
+connect=ygwcypmb2qiotrp3.onion:8333 \n
+connect=stcwaszw352kkjis.onion:8333 \n
+connect=nrrmkgmulpgsbwlt.onion \n
+connect=orrxr4kfntzawea3.onion:8333 \n
+connect=q2fhnnyt5b2ayvce.onion \n
+connect=rk4vbyca7xnn3top.onion \n
+connect=7ndbwnmgbyupv47f.onion \n
+connect=bitcoinzi27kiwf6.onion \n
+connect=w4ja2rt6wvqn6rfw.onion:8333 \n
+connect=6maigxjvcet4pite.onion:8333 \n
+connect=cehok4dxukhnoopi.onion:8333 \n
+connect=r6apa5ssujxbwd34.onion:8333 \n
+connect=ggvnc3v5pmrlsupw.onion:8333 \n
+connect=er4mwkhxzxgavrvo.onion:8333 \n
+connect=35yncj7et6k3koqy.onion \n
+connect=nesxfmano25clfvn.onion:8333 \n
+connect=5d5vtnm6xlsqzq7p.onion \n
+connect=34jtv2p5pw4e5bp3.onion \n
+connect=z5nt64xh4d3vnll2.onion \n
+connect=lncmdma3namzrbnx.onion:8333 \n
+connect=lncmdmx7ezlplcck.onion:8333 \n
+connect=lncmdmgoddecttey.onion:8444 \n
 "
 
 doIt(){

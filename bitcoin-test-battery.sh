@@ -41,9 +41,9 @@ doIt(){
     [[ $(find ~/$BITCOIN_TEST_BATTERY -type d 2>/dev/null) ]] && \
         pushd ~/$BITCOIN_TEST_BATTERY || git clone https://github.com/bitcoin/bitcoin ~/$BITCOIN_TEST_BATTERY
 
-    pushd ~/$BITCOIN_TEST_BATTERY
+    pushd ~/$BITCOIN_TEST_BATTERY && make clean
     git checkout $RC
-    cd $BITCOIN_TEST_BATTERY && ./autogen.sh && ./configure --with-gui=yes --with-sqlite=yes --without-bdb && make -j $(nproc --all)
+    pushd ~/$BITCOIN_TEST_BATTERY && ./autogen.sh && ./configure --with-gui=yes --with-sqlite=yes --without-bdb && make -j $(nproc --all)
     mkdir -p /tmp/$TIME
     export DATA_DIR=/tmp/$TIME
     mkdir -p $DATA_DIR
@@ -91,51 +91,33 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
     sudo apt-get install libqrencode-dev
 
-    [[ $(find ~/$BITCOIN_TEST_BATTERY -type d 2>/dev/null) ]] && \
-        pushd ~/$BITCOIN_TEST_BATTERY || git clone https://github.com/bitcoin/bitcoin ~/$BITCOIN_TEST_BATTERY
-
-    pushd ~/$BITCOIN_TEST_BATTERY
-    git checkout $RC
-    cd $BITCOIN_TEST_BATTERY && ./autogen.sh && ./configure --with-gui=yes --with-sqlite=yes --without-bdb && make -j $(nproc --all)
-    mkdir -p /tmp/$TIME
-    export DATA_DIR=/tmp/$TIME
-    mkdir -p $DATA_DIR
-    echo $BITCOIN_CONF1 > $DATA_DIR/bitcoin.conf
-    export BINARY_PATH=$(pwd)/src
-    export QT_PATH=$(pwd)/src/qt
-    export BINARY_PATH=$(pwd)/bin
-    export QT_PATH=$BINARY_PATH
-    #REF: https://github.com/bitcoin-core/bitcoin-devwiki/wiki/22.0-Release-Candidate-Testing-Guide
-    #$BINARY_PATH/bitcoin-cli -datadir=$DATA_DIR [cli args]
-    # for starting bitcoin-qt
-    #$QT_PATH/bitcoin-qt -datadir=$DATA_DIR [cli args]
-
-
-    #cd ~/BITCOIN_TEST_BATTERY && ./contrib/install_db4.sh .
-
-
-
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew
-    git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
-    cd ~/bitcoin && ./contrib/install_db4.sh .
-    ./autogen.sh && ./configure --disable-wallet --disable-tests --disable-bench && make appbundle
-
-    git clone https://github.com/randymcmillan/gui ~/gui
-    cd ~/gui && ./contrib/install_db4.sh .
-    ./autogen.sh && ./configure --disable-wallet --disable-tests --disable-bench && make appbundle
+#    git clone https://github.com/randymcmillan/bitcoin ~/bitcoin
+#    cd ~/bitcoin && ./contrib/install_db4.sh .
+#    ./autogen.sh && ./configure --disable-wallet --disable-tests --disable-bench && make appbundle
+#
+#    git clone https://github.com/randymcmillan/gui ~/gui
+#    cd ~/gui && ./contrib/install_db4.sh .
+#    ./autogen.sh && ./configure --disable-wallet --disable-tests --disable-bench && make appbundle
+    doIt
 
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
+    doIt
 elif [[ "$OSTYPE" == "msys" ]]; then
     echo TODO add support for $OSTYPE
+    doIt
 elif [[ "$OSTYPE" == "win32" ]]; then
     echo TODO add support for $OSTYPE
+    doIt
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
     echo TODO add support for $OSTYPE
+    doIt
 else
     echo TODO add support for $OSTYPE
+    doIt
 fi
 
 
-
+doIt

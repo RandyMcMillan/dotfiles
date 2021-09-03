@@ -157,4 +157,7 @@ touch-time:
 	touch TIME
 	echo $(TIME) $(shell git rev-parse HEAD) >> TIME
 
+.PHONY: bitcoin-test-battery
+bitcoin-test-battery:
+	bash -c "./bitcoin-test-battery.sh"
 

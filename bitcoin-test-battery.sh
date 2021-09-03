@@ -3,7 +3,9 @@ BITCOIN_TEST_BATTERY=bitcoin-test-battery
 export BITCOIN_TEST_BATTERY
 TIME=$(date +%s)
 export TIME
-RC=v22.0rc3
+GH_USER=randymcmillan
+export GH_USER
+RC=v22.0rc3-boost-fetch
 export RC
 
 BITCOIN_CONF1="proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases.\r
@@ -50,15 +52,23 @@ make-data-dir
 
 
     [[ $(find ~/$BITCOIN_TEST_BATTERY -type d 2>/dev/null) ]] && \
-        pushd ~/$BITCOIN_TEST_BATTERY || git clone -b $RC https://github.com/bitcoin/bitcoin ~/$BITCOIN_TEST_BATTERY
+        pushd ~/$BITCOIN_TEST_BATTERY || git clone -b $RC https://github.com/$GH_USER/bitcoin ~/$BITCOIN_TEST_BATTERY
 
-    pushd ~/$BITCOIN_TEST_BATTERY #&& make clean
+    pushd ~/$BITCOIN_TEST_BATTERY && make clean
     git checkout $RC
-    pushd ~/$BITCOIN_TEST_BATTERY && ./autogen.sh && ./configure --with-gui=yes --with-sqlite=yes --without-bdb && make -j $(nproc --all)
+    #
+    make -C depends clean-all
+    make -C depends boost_fetched
+    #
+    ./contrib/install_db4.sh .
+    export BDB_PREFIX='/Users/git/bitcoin-test-battery/db4'
+    #
     export BINARY_PATH=$(pwd)/src
     export QT_PATH=$(pwd)/src/qt
     export BINARY_PATH=$(pwd)/bin
     export QT_PATH=$BINARY_PATH
+    ./autogen.sh && ./configure --with-gui=yes BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" && make -j $(nproc --all)
+    #./autogen.sh && ./configure --with-gui=yes --with-sqlite=yes --without-bdb && make -j $(nproc --all)
     #REF: https://github.com/bitcoin-core/bitcoin-devwiki/wiki/22.0-Release-Candidate-Testing-Guide
     #$BINARY_PATH/bitcoin-cli -datadir=$DATA_DIR [cli args]
     # for starting bitcoin-qt

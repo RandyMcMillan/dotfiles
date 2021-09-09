@@ -394,7 +394,7 @@ const fs::path& ArgsManager::GetBlocksDirPath() const
     if (IsArgSet("-blocksdir")) {
         path = fs::absolute(GetArg("-blocksdir", ""));
         if (!fs::is_directory(path)) {
-            path = "";
+            path = fs::path("");
             return path;
         }
     } else {
@@ -421,7 +421,7 @@ const fs::path& ArgsManager::GetDataDir(bool net_specific) const
     if (!datadir.empty()) {
         path = fs::absolute(datadir);
         if (!fs::is_directory(path)) {
-            path = "";
+            path = fs::path("");
             return path;
         }
     } else {

@@ -36,7 +36,7 @@ FILE *fopen(const fs::path& p, const char *mode)
 fs::path AbsPathJoin(const fs::path& base, const fs::path& path)
 {
     assert(base.is_absolute());
-    return path.empty() ? base : base / path;
+    return path.empty() ? fs::path(base) : base / path;
 }
 
 #ifndef WIN32

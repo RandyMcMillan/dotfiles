@@ -27,7 +27,7 @@ InitWalletDirTestingSetup::InitWalletDirTestingSetup(const std::string& chainNam
     m_walletdir_path_cases["trailing2"] = m_datadir / ("wallets" + sep + sep);
 
     fs::current_path(m_datadir);
-    m_walletdir_path_cases["relative"] = "wallets";
+    m_walletdir_path_cases["relative"] = fs::path("wallets");
 
     fs::create_directories(m_walletdir_path_cases["default"]);
     fs::create_directories(m_walletdir_path_cases["custom"]);

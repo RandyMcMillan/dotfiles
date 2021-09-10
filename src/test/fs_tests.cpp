@@ -11,6 +11,26 @@
 
 BOOST_FIXTURE_TEST_SUITE(fs_tests, BasicTestingSetup)
 
+BOOST_AUTO_TEST_CASE(fsbridge_pathtostring)
+{
+    std::string u8_str = "fs_tests_₿_🏃";
+    BOOST_CHECK_EQUAL(fs::PathToString(fs::PathFromString(u8_str)), u8_str);
+    BOOST_CHECK_EQUAL(fs::u8path(u8_str).u8string(), u8_str);
+    BOOST_CHECK_EQUAL(fs::PathFromString(u8_str).u8string(), u8_str);
+    BOOST_CHECK_EQUAL(fs::PathToString(fs::u8path(u8_str)), u8_str);
+#ifndef WIN32
+    // On non-windows systems, verify that non-UTF8 strings can be round
+    // tripped successfully. On windows, file paths are natively represented as
+    // unicode strings, so an invalid UTF-8 sequence that does not map to any
+    // unicode string won't work correctly with path conversion methods. On
+    // POSIX, file paths natively are 8-bit strings and character coding is not
+    // relevant when converting between strings and paths.
+    std::string invalid_u8_str = "\xf0";
+    BOOST_CHECK_EQUAL(invalid_u8_str.size(), 1);
+    BOOST_CHECK_EQUAL(fs::PathToString(fs::PathFromString(invalid_u8_str)), invalid_u8_str);
+#endif
+}
+
 BOOST_AUTO_TEST_CASE(fsbridge_fstream)
 {
     fs::path tmpfolder = m_args.GetDataDirBase();

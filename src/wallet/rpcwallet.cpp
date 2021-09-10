@@ -2536,7 +2536,7 @@ static RPCHelpMan listwalletdir()
     UniValue wallets(UniValue::VARR);
     for (const auto& path : ListDatabases(GetWalletDir())) {
         UniValue wallet(UniValue::VOBJ);
-        wallet.pushKV("name", path.string());
+        wallet.pushKV("name", path.u8string());
         wallets.push_back(wallet);
     }
 
@@ -2845,14 +2845,14 @@ static RPCHelpMan restorewallet()
 
     std::string wallet_name = request.params[0].get_str();
 
-    const fs::path wallet_path = fsbridge::AbsPathJoin(GetWalletDir(), wallet_name);
+    const fs::path wallet_path = fsbridge::AbsPathJoin(GetWalletDir(), fs::u8path(wallet_name));
 
     if (fs::exists(wallet_path)) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Wallet name already exists.");
     }
 
     if (!TryCreateDirectories(wallet_path)) {
-        throw JSONRPCError(RPC_WALLET_ERROR, strprintf("Failed to create database path '%s'. Database already exists.", wallet_path.string()));
+        throw JSONRPCError(RPC_WALLET_ERROR, strprintf("Failed to create database path '%s'. Database already exists.", wallet_path.u8string()));
     }
 
     auto wallet_file = wallet_path / "wallet.dat";

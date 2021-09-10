@@ -15,7 +15,55 @@
 #include <boost/filesystem/fstream.hpp>
 
 /** Filesystem operations and types */
-namespace fs = boost::filesystem;
+namespace fs {
+
+using namespace boost::filesystem;
+
+/**
+ * Path class wrapper to prepare application code for transition from
+ * boost::filesystem::path to std::filesystem::path.
+ *
+ * The new std::filesystem::path class lacks imbue functionality boost provided
+ * to make implicit path/string functionality work safely on windows, so this
+ * class hides the unsafe methods, and provides explicit PathToString /
+ * PathFromString functions which be needed after the transition from boost to
+ * convert to native path strings, and explicit u8string / u8path functions to
+ * convert to UTF-8 strings. See
+ * https://github.com/bitcoin/bitcoin/pull/20744#issuecomment-916627496 for more
+ * information about the boost path transition and windows encoding ambiguities.
+ */
+class path : public boost::filesystem::path
+{
+public:
+    using boost::filesystem::path::path;
+    path(boost::filesystem::path path) : boost::filesystem::path::path(std::move(path)) {}
+    path(const std::string& string) = delete;
+    path& operator=(std::string&) = delete;
+    std::string string() const = delete;
+    std::string u8string() const { return boost::filesystem::path::string(); }
+};
+
+static inline path operator+(path p1, path p2)
+{
+    p1 += std::move(p2);
+    return p1;
+}
+
+static inline std::string PathToString(const boost::filesystem::path& path)
+{
+    return path.string();
+}
+
+static inline path PathFromString(const std::string& string)
+{
+    return boost::filesystem::path(string);
+}
+
+static inline path u8path(const std::string& string)
+{
+    return boost::filesystem::path(string);
+}
+}
 
 /** Bridge operations to C stdio */
 namespace fsbridge {

@@ -529,14 +529,14 @@ void ThreadImport(ChainstateManager& chainman, std::vector<fs::path> vImportFile
         for (const fs::path& path : vImportFiles) {
             FILE* file = fsbridge::fopen(path, "rb");
             if (file) {
-                LogPrintf("Importing blocks file %s...\n", path.string());
+                LogPrintf("Importing blocks file %s...\n", fs::PathToString(path));
                 chainman.ActiveChainstate().LoadExternalBlockFile(file);
                 if (ShutdownRequested()) {
                     LogPrintf("Shutdown requested. Exit %s\n", __func__);
                     return;
                 }
             } else {
-                LogPrintf("Warning: Could not open blocks file %s\n", path.string());
+                LogPrintf("Warning: Could not open blocks file %s\n", fs::PathToString(path));
             }
         }
 

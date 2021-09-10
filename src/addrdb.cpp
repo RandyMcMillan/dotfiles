@@ -58,7 +58,7 @@ bool SerializeFileDB(const std::string& prefix, const fs::path& path, const Data
     if (fileout.IsNull()) {
         fileout.fclose();
         remove(pathTmp);
-        return error("%s: Failed to open file %s", __func__, pathTmp.string());
+        return error("%s: Failed to open file %s", __func__, fs::PathToString(pathTmp));
     }
 
     // Serialize
@@ -70,7 +70,7 @@ bool SerializeFileDB(const std::string& prefix, const fs::path& path, const Data
     if (!FileCommit(fileout.Get())) {
         fileout.fclose();
         remove(pathTmp);
-        return error("%s: Failed to flush file %s", __func__, pathTmp.string());
+        return error("%s: Failed to flush file %s", __func__, fs::PathToString(pathTmp));
     }
     fileout.fclose();
 
@@ -122,8 +122,8 @@ void DeserializeFileDB(const fs::path& path, Data& data, int version)
 } // namespace
 
 CBanDB::CBanDB(fs::path ban_list_path)
-    : m_banlist_dat(ban_list_path.string() + ".dat"),
-      m_banlist_json(ban_list_path.string() + ".json")
+    : m_banlist_dat(ban_list_path + ".dat"),
+      m_banlist_json(ban_list_path + ".json")
 {
 }
 
@@ -155,7 +155,7 @@ bool CBanDB::Read(banmap_t& banSet)
 
     if (!util::ReadSettings(m_banlist_json, settings, errors)) {
         for (const auto& err : errors) {
-            LogPrintf("Cannot load banlist %s: %s\n", m_banlist_json.string(), err);
+            LogPrintf("Cannot load banlist %s: %s\n", fs::PathToString(m_banlist_json), err);
         }
         return false;
     }
@@ -163,7 +163,7 @@ bool CBanDB::Read(banmap_t& banSet)
     try {
         BanMapFromJson(settings[JSON_KEY], banSet);
     } catch (const std::runtime_error& e) {
-        LogPrintf("Cannot parse banlist %s: %s\n", m_banlist_json.string(), e.what());
+        LogPrintf("Cannot parse banlist %s: %s\n", fs::PathToString(m_banlist_json), e.what());
         return false;
     }
 

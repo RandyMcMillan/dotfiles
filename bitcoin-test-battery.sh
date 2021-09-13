@@ -3,9 +3,11 @@ BITCOIN_TEST_BATTERY=bitcoin-test-battery
 export BITCOIN_TEST_BATTERY
 TIME=$(date +%s)
 export TIME
-GH_USER=randymcmillan
+#GH_USER=randymcmillan
+GH_USER=bitcoin
 export GH_USER
-RC=v22.0rc3-boost-fetch
+#RC=v22.0rc3-boost-fetch
+RC=v22.0rc3
 export RC
 
 BITCOIN_CONF1="proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases.\r
@@ -55,6 +57,7 @@ make-data-dir
         pushd ~/$BITCOIN_TEST_BATTERY || git clone -b $RC https://github.com/$GH_USER/bitcoin ~/$BITCOIN_TEST_BATTERY
 
     pushd ~/$BITCOIN_TEST_BATTERY && make clean
+    git fetch --all
     git checkout $RC
     #
     make -C depends clean-all

@@ -1,9 +1,8 @@
 set go+=!,
 
+let mapleader = "\\"
 nmap <leader>l :set list!<CR>
 set listchars=tab:▸\ ,eol:¬
-
-" let mapleader = "\<C-n>"
 
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -40,8 +39,6 @@ set ttyfast
 set gdefault
 " Use UTF-8 without BOM
 set encoding=utf-8 nobomb
-" Change mapleader
-" let mapleader=","
 " Don’t add empty newlines at the end of files
 set binary
 set noeol

@@ -145,7 +145,10 @@ unset jscbin;
 alias c="tr -d '\n' | pbcopy"
 
 # Recursively delete `.DS_Store` files
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+alias clean-ds-store="find . -type f -name '*.DS_Store' -ls -delete &"
+alias clean-spotlight="find . -type f -name '*.Spotlight-*' -ls -delete &"
+alias clean-trashes="find . -type f -name '*.Trashes' -ls -delete &"
+alias clean-fseventsd="find . -type f -name '*.fseventsd' -ls -delete &"
 
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.

@@ -32,8 +32,6 @@ checkbrew() {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew
     fi
-        brew install --cask protonvpn
-        brew install --cask protonmail-bridge
 }
 checkraspi(){
     echo 'Checking Raspi'

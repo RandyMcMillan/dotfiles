@@ -50,6 +50,7 @@ help: report
 	@echo "  make shell"
 	@echo "  make vim"
 	@echo "  make config-git"
+	@echo "  make config-github"
 	@echo "  make push"
 	@echo ""
 	@echo "  make all force=true"
@@ -141,7 +142,12 @@ protonvpn: executable
 
 .PHONY: config-git
 config-git: executable
-	git config --global  pull.rebase true
+	cat config-git.sh
+	./config-git.sh
+.PHONY: config-github
+config-github: executable
+	cat config-git.sh
+	./config-github.sh
 
 .PHONY: push
 .ONESHELL:

@@ -1,83 +1,104 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: blank.yml
 
 # Controls when the action will run. 
 on:
+  pull_request:
+    branches:       #[ master ]
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+      - 'master'    # includes master
+      - 'main'      # includes main
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    #paths:
+    #  - '.github/workflows/automate.yml'
+    #schedule:
+    #  - cron: "*/5 * * * *"
+    branches:       #[ master ]
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+      - 'master'    # includes master
+      - 'main'      # includes main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-
-  ubuntu-latest-bootstrap:
-    runs-on: ubuntu-latest
+  github-workspace:
+    name: github-workspace
+    runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
-      - name: bootstrap
-        run: echo y | ./boot-strap.sh
-
-
-  macos-10-15-bootstrap:
-     runs-on: macos-10.15
-     steps:
-      - uses: actions/checkout@v2
-      - name: bootstrap
-        run: echo y | ./boot-strap.sh
-
-          #  macos-11-4-bootstrap:
-          #     runs-on: macos-11.4
-          #     steps:
-          #      - uses: actions/checkout@v2
-          #      - name: bootstrap
-          #        run: echo y | ./boot-strap.sh
-
-  macos-latest-bootstrap:
-     runs-on: macos-latest
-     steps:
-      - uses: actions/checkout@v2
-      - name: bootstrap
-        run: echo y | ./boot-strap.sh
-
-  ubuntu-latest-make:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Make
-        run: make
-
-  macos-10-15-make:
-     runs-on: macos-10.15
-     steps:
-      - uses: actions/checkout@v2
-      - name: Make
-        run: make
-
-          #  macos-11-4-make:
-          #     runs-on: macos-11.4
-          #     steps:
-          #      - uses: actions/checkout@v2
-          #      - name: Make
-          #        run: make
-
-  macos-latest-make:
-     runs-on: macos-latest
-     steps:
-      - uses: actions/checkout@v2
-      - name: Make
-        run: make
-
-  macos-latest-install-alpine-shell:
-     runs-on: macos-latest
-     steps:
-      - uses: actions/checkout@v2
-      - name: install-alpine-shell
+      - name: Print github workspace
         run: |
-          ./install-alpine-shell.sh
+          printenv
+
+  ubuntu-latest-build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: styfle/cancel-workflow-action@0.8.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: install, build, and test
+        run: |
+          echo y | ./boot-strap.sh
+          echo y | make all
+
+  ubuntu-20-build_and_test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: styfle/cancel-workflow-action@0.8.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: install, build, and test
+        run: |
+          echo y | ./boot-strap.sh
+          echo y | make all
+
+  ubuntu-site-matrix:
+    name: github-workspace
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+    steps:
+      - uses: styfle/cancel-workflow-action@0.8.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+      - name: printenv
+        run: |
+          printenv
+      - name: install-codespell-asciidoctor
+        run: |
+          sudo apt install asciidoctor
+          pip3 install -U codespell
+          go get github.com/client9/misspell/cmd/misspell
+      - name: markdown-syntax
+        run: |
+          git grep -n --color $'\r' -- "*.md" && echo "^ Possible Windows style line ending detected. Please use Unix style line endings (\n)." && exit 0 || true
+          git grep -n --color ' $' -- "*.md" && echo "^ Trailing space detected at end of line. Please remove." && exit 0 || true
+          git grep  -n --color  $'\t' -- "*.md" && echo "^ Use of tabs detected. Please use space for indentation." && exit 0 || true
+          git grep -iE  -n --color '(^| )(\w+) \2(\.|,|:|;| |$)' -- "*.md" && echo "^ Detected lexical illusion in the form of a duplicated word. Please correct." && exit 0 || true
+          for FILE in $(git ls-files -- "*.md"); do if [[ $(tail -c1 $FILE) != "" ]]; then echo "File ${FILE} does not end with a newline character (\n)."; exit 0; fi; done
+          git grep "" -- "*.md" | uniq -c | grep -1 "^      [2-9] " | cut -b9- | sed 's/:$/:[more-than-one-blank-line-here-please-remove]/' \ 
+          | grep ":" && echo "^ Multiple blank lines detected. Please use only one blank line between paragraphs." && exit 0 || true
+      - name: codespell-py-md
+        run: |
+          codespell --config .codespellrc --ignore-words .codespell-ignore $(git ls-files -- "*.py" "*.md")
+      - name: codespell-html
+        run: |
+          codespell --config .codespellrc --ignore-words .codespell-ignore ./docs/docs/*.html
+      - name: git-grep-terms-debug
+        run: |
+          echo "change when needed for PRs"
+          git grep ARCH
+          git grep TRIPLET
+          git grep "version: \"3"
 

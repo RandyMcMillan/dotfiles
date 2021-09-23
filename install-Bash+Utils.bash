@@ -13,16 +13,15 @@ if [ ! -d "${BASH_SOURCE[0]%/*}"/bin/bash-oo-framework ]; then \
     git clone https://github.com/niieani/bash-oo-framework.git bin/bash-oo-framework
 fi
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
-# load the type system
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/util/log.sh"
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/util/exception.sh"
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/util/tryCatch.sh"
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/util/namedParameters.sh"
-#import util/log util/exception util/tryCatch util/namedParameters
 
-# load the standard library for basic types and type the system
-#import util/class
-
+#!/usr/bin/env bash
+import util/log
+import util/exception
+import util/tryCatch
+import util/namedParameters
+import util/variable
+import util/type
+import util/class
 
 
 }
@@ -32,7 +31,7 @@ install-bash() {
     if hash brew 2>/dev/null; then
         if ! hash bash 2>/dev/null; then
                 echo $BASH_VERSION
-                brew install bash
+                test bash && brew upgrade bash && brew install bash
                 echo $BASH_VERSION
             if ! hash bash-completion 2>/dev/null; then
                 brew install bash-completion
@@ -51,3 +50,4 @@ install-bash() {
 }
 install-bash
 install-bash-infinity
+

@@ -35,38 +35,12 @@ jobs:
         run: |
           printenv
 
-  ubuntu-latest-build_and_test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: styfle/cancel-workflow-action@0.8.0
-        with:
-          access_token: ${{ github.token }}
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: install, build, and test
-        run: |
-          echo y | ./boot-strap.sh
-          echo y | make all
-
-  ubuntu-20-build_and_test:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: styfle/cancel-workflow-action@0.8.0
-        with:
-          access_token: ${{ github.token }}
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: install, build, and test
-        run: |
-          echo y | ./boot-strap.sh
-          echo y | make all
-
   ubuntu-site-matrix:
     name: github-workspace
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest, macos-10.15, macos-latest]
     steps:
       - uses: styfle/cancel-workflow-action@0.8.0
         with:
@@ -77,7 +51,8 @@ jobs:
           printenv
       - name: install-codespell-asciidoctor
         run: |
-          sudo apt install asciidoctor
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then sudo apt install bash asciidoctor; else echo; fi
+          if [[ "$OSTYPE" == "darwin"* ]]; then brew install bash asciidoctor; else echo; fi
           pip3 install -U codespell
           go get github.com/client9/misspell/cmd/misspell
       - name: markdown-syntax
@@ -95,6 +70,10 @@ jobs:
       - name: codespell-html
         run: |
           codespell --config .codespellrc --ignore-words .codespell-ignore ./docs/docs/*.html
+      - name: install, build, and test
+        run: |
+          echo y | ./boot-strap.sh
+          echo y | make all
       - name: git-grep-terms-debug
         run: |
           echo "change when needed for PRs"

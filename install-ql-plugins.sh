@@ -102,7 +102,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         AWK=awk
 	#REF:https://github.com/sindresorhus/quick-look-plugins
         brew install --cask glance
-        open /Applications/Glance.app &
+        open /Applications/Glance.app
+        bash -c "if pgrep Glance; then pkill Glance; fi"
         brew install --cask qladdict
         brew install --cask qlcolorcode
         brew install --cask qldds
@@ -110,7 +111,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         brew install --cask qlmarkdown
         brew install --cask qlplayground
         brew install --cask qlprettypatch
-        brew install --cask qlcomonmark
+        brew install --cask qlcommonmark
         brew install --cask quicklook-json
         brew install --cask qlimagesize
         brew install --cask suspicious-package

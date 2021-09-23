@@ -10,6 +10,7 @@ checkbrew() {
         checkbrew
     fi
 }
+setup(){
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     if hash apt 2>/dev/null; then
         sudo apt-get update
@@ -27,16 +28,6 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo openssl version
     echo $OPENSSL_VERSION
     export OPENSSL_VERSION
-
-    #ln: 1.1.1k: No such file or directory
-    #ln: /usr/bin/openssl: No such file or directory
-    #ln: /usr/local/bin/openssl: No such file or directory
-    #ln: /usr/local/lib/libcrypto.a: File exists
-    #ln: 1.1.1k: No such file or directory
-    #ln: /usr/bin/openssl: No such file or directory
-    #ln: /usr/local/bin/openssl: No such file or directory
-    #ln: /usr/local/lib/libcrypto.a: File exists
-    #/usr/local/opt/openssl@1.1/bin/openssl
     sudo mkdir -p /usr/local/include/openssl/$OPENSSL_VERSION
     rm -rf /usr/local/include/openssl/$OPENSSL_VERSION
     sudo ln -s /usr/local/opt/openssl/include/openssl /usr/local/include/openssl/$OPENSSL_VERSION
@@ -63,6 +54,7 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     echo TODO add support for $OSTYPE
 fi
+}
 #!/usr/bin/env bash
 #ENV VARS
 OS=$(uname)

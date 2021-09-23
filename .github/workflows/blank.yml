@@ -98,7 +98,4 @@ jobs:
       - name: git-grep-terms-debug
         run: |
           echo "change when needed for PRs"
-          git grep ARCH
-          git grep TRIPLET
-          git grep "version: \"3"
 

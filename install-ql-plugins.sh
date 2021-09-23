@@ -101,7 +101,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         export INSTALL
         AWK=awk
 	#REF:https://github.com/sindresorhus/quick-look-plugins
-        brew install --cask qlance
+        brew install --cask glance
+        open /Applications/Glance.app &
         brew install --cask qladdict
         brew install --cask qlcolorcode
         brew install --cask qldds

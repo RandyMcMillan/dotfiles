@@ -49,12 +49,18 @@ jobs:
       - name: printenv
         run: |
           printenv
-      - name: install-codespell-asciidoctor
+      - name: git-submodule-init-update
         run: |
-          if [[ "$OSTYPE" == "linux-gnu" ]]; then sudo apt install bash asciidoctor; else echo; fi
-          if [[ "$OSTYPE" == "darwin"* ]]; then brew install bash asciidoctor; else echo; fi
+          git submodule init
+          git submodule update
+      - name: install-bash-bash-completion-codespell-asciidoctor
+        run: |
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then sudo apt install bash bash-completion asciidoctor; else echo; fi
+          if [[ "$OSTYPE" == "darwin"* ]]; then brew install bash bash-completion asciidoctor; else echo; fi
+          #if [[ "$OSTYPE" == "darwin"* ]]; then chsh -s /bin/bash; else echo; fi
+      - name: pip3-install--U-codespell
+        run: |
           pip3 install -U codespell
-          go get github.com/client9/misspell/cmd/misspell
       - name: markdown-syntax
         run: |
           git grep -n --color $'\r' -- "*.md" && echo "^ Possible Windows style line ending detected. Please use Unix style line endings (\n)." && exit 0 || true
@@ -70,9 +76,11 @@ jobs:
       - name: codespell-html
         run: |
           codespell --config .codespellrc --ignore-words .codespell-ignore ./docs/docs/*.html
-      - name: install, build, and test
+      - name: boot-strap=sh
         run: |
           echo y | ./boot-strap.sh
+      - name: make-all
+        run: |
           echo y | make all
       - name: git-grep-terms-debug
         run: |

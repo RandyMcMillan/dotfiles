@@ -4,13 +4,13 @@ if [ hash git 2>/dev/null ]; then
     git config --global pull.rebase true
 else
     if [ hash brew 2>/dev/null ]; then
-        brew install git
+        brew install git bash
     fi
     if [ hash apt 2>/dev/null ]; then
-        apt install git
+        apt install git bash
     fi
     if [ hash apk 2>/dev/null ]; then
-        apk add git
+        apk add git bash
     fi
 fi
 

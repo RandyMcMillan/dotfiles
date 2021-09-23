@@ -9,10 +9,8 @@ export OS_VERSION
 export UNAME_M
 export ARCH
 
-if [ ! -d 'docker.shell' ]; then
-git clone http://github.com/RandyMcMillan/docker.shell.git ~/docker.shell
-fi
-cd ~/docker.shell && install -v * ~
+test ~/docker.shell &&  pushd ~/docker.shell || git clone http://github.com/RandyMcMillan/docker.shell.git ~/docker.shell \
+    && pushd ~/docker.shell && make alpine user=root
 
 report() {
 echo OS:

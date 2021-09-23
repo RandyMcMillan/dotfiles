@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-./install-Bash+Utils.bash
 
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
 

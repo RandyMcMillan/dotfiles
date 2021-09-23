@@ -52,7 +52,6 @@ checkraspi(){
     echo "- Firmware"
     /opt/vc/bin/vcgencmd version
 }
-
 if [[ "$OSTYPE" == "linux"* ]]; then
     #CHECK APT
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
@@ -66,6 +65,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
             $PACKAGE_MANAGER $INSTALL $AWK
             report
         fi
+        checkbrew
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then
         PACKAGE_MANAGER=apk

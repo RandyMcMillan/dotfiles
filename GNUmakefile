@@ -94,7 +94,7 @@ brew: executable
 
 .PHONY: all
 all: executable
-	#TODO ./install-Bash+Utils.bash
+	#./install-Bash+Utils.bash
 	./checkbrew.sh
 	./install-firefox.sh $(FORCE)
 	./install-Docker.sh
@@ -108,7 +108,7 @@ all: executable
 	./install-iterm2.sh
 	./install-keeping-you-awake.sh
 	./install-little-snitch.sh
-	./install-openssl.sh
+	y | ./install-openssl.sh
 	./install-python3.X.sh
 	./install-protonvpn.sh
 	./install-ql-plugins.sh

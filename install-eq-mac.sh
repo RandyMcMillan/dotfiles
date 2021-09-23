@@ -101,7 +101,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         export INSTALL
         AWK=awk
         export AWK
-        brew install --cask eqmac
+        test /Applications/eqMac && brew upgrade --cask eqmac || brew install --cask eqmac
         checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE

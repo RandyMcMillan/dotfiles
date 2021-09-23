@@ -13,6 +13,11 @@ PROJECT_NAME							:= $(project)
 endif
 export PROJECT_NAME
 
+ifeq ($(force),true)
+FORCE                                   := --force
+endif
+export FORCE
+
 #GIT CONFIG
 GIT_USER_NAME							:= $(shell git config user.name)
 export GIT_USER_NAME
@@ -47,6 +52,7 @@ help: report
 	@echo "  make config-git"
 	@echo "  make push"
 	@echo ""
+	@echo "  make all force=true"
 
 .PHONY: report
 report: 
@@ -88,7 +94,7 @@ brew: executable
 .PHONY: all
 all: executable
 	#TODO ./install-Bash+Utils.bash
-	./install-firefox.sh
+	./install-firefox.sh $(FORCE)
 	./install-Docker.sh
 	./install-FastLane.sh
 	./install-OSXFuse.sh
@@ -102,6 +108,7 @@ all: executable
 	./install-little-snitch.sh
 	./install-openssl.sh
 	./install-python3.X.sh
+	./install-protonvpn.sh
 	./install-ql-plugins.sh
 	./install-qt5.sh
 	./install-sha256sum.sh
@@ -126,7 +133,11 @@ alpine-shell:
 
 .PHONY: vim
 vim: executable
-	./install-Vim.sh
+	./install-vim.sh
+
+.PHONY: protonvpn
+protonvpn: executable
+	./install-protonvpn.sh
 
 .PHONY: config-git
 config-git: executable

@@ -29,37 +29,34 @@ checkbrew() {
             brew install git
         fi
         if hash brew 2>/dev/null; then
-	#==> Formulae
-    #    if !hash docker 2>/dev/null; then
-	brew install docker-clean
-	brew install docker-completion
-	brew install docker-compose
-	brew install docker-compose-completion
-	#brew install docker-credential-helper
-	#brew install docker-credential-helper-ecr
-	#brew install docker-gen
-	#brew install docker-ls
-	#brew install docker-machine
-	#brew install docker-machine-completion
-	#brew install docker-machine-driver-hyperkit
-	#brew install docker-machine-driver-vmware
-	#brew install docker-machine-driver-vultr
-	#brew install docker-machine-driver-xhyve
-	#brew install docker-machine-nfs
-	#brew install docker-machine-parallels
-	brew install docker-slim
-	brew install docker-squash
-	brew install docker-swarm
-	brew install docker2aci
-	brew install dockerize
-	brew install lazydocker
-	#==> Casks
-	brew install --cask docker
-	brew install --cask docker-toolbox
-	#brew install --cask homebrew/cask-versions/docker-edge
-    #    fi
+            #==> Formulae
+            #    if !hash docker 2>/dev/null; then
+            test docker-clean || brew instal docker-clean || brew upgrade docker-clean
+            test docker-completion || brew instal docker-completion || brew upgrade docker-completion
+            test docker-compose || brew instal docker-compose || brew upgrade docker-compose
+            test docker-compose-completion || brew instal docker-compose-completion || brew upgrade docker-compose-completion
+            #brew install docker-credential-helper
+            #brew install docker-credential-helper-ecr
+            #brew install docker-gen
+            #brew install docker-ls
+            #brew install docker-machine
+            #brew install docker-machine-completion
+            #brew install docker-machine-driver-hyperkit
+            #brew install docker-machine-driver-vmware
+            #brew install docker-machine-driver-vultr
+            #brew install docker-machine-driver-xhyve
+            #brew install docker-machine-nfs
+            #brew install docker-machine-parallels
+            test docker-slim || brew instal docker-slim || brew upgrade docker-slim
+            test docker-squash || brew instal docker-squash || brew upgrade docker-squash
+            test docker-swarm || brew instal docker-swarm || brew upgrade docker-swarm
+            test docker2aci || brew instal docker2aci || brew upgrade docker2aci
+            test dockerize || brew instal dockerize || brew upgrade dockerize
+            test lazydocker || brew instal lazydocker || brew upgrade lazydocker
+            test docker || brew install --cask docker || brew upgrade --cask docker
+            test docker-toolbox || brew install --cask docker-toolbox || brew upgrade --cask docker-toolbox
+            test docker-edge || brew install --cask docker-edge || brew upgrade --cask docker-edge
         fi
-
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew

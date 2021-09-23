@@ -95,6 +95,7 @@ brew: executable
 .PHONY: all
 all: executable
 	#TODO ./install-Bash+Utils.bash
+	./checkbrew.sh
 	./install-firefox.sh $(FORCE)
 	./install-Docker.sh
 	./install-FastLane.sh

@@ -54,5 +54,3 @@ etc-pihole
 .config/QtProject
 1.1.1i
 docker.shell
-bin/bash-oo-framework
-docker.shell

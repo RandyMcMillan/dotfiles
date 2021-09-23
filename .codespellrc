@@ -1,6 +1,6 @@
 [codespell]
 
-skip = ./docs/material,./.github/workflows/codeql-analysis.yml
+skip = ./docs/material,./.github/workflows/codeql-analysis.yml,.github
 
 ignore-words-list = qwerty
 

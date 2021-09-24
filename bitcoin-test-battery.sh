@@ -114,16 +114,16 @@ checkbrew() {
 }
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     checkbrew
-    sudo apt install linuxbrew-wrapper
-    sudo apt-get install autoconf
-    sudo apt-get install libdb4.8++-dev
-    sudo apt-get -y install libboost libevent miniupnpc libdb4.8 qt libqrencode univalue libzmq3
-    sudo apt-get install build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
-    sudo apt-get install libevent-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev libboost-thread-dev
-    sudo apt-get install libminiupnpc-dev
-    sudo apt-get install libzmq3-dev
-    sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
-    sudo apt-get install libqrencode-dev
+    apt install linuxbrew-wrapper
+    apt-get install autoconf
+    apt-get install libdb4.8++-dev
+    apt-get -y install libboost libevent miniupnpc libdb4.8 qt libqrencode univalue libzmq3
+    apt-get install build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
+    apt-get install libevent-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev libboost-thread-dev
+    apt-get install libminiupnpc-dev
+    apt-get install libzmq3-dev
+    apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
+    apt-get install libqrencode-dev
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     checkbrew

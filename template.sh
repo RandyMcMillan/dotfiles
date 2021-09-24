@@ -1,46 +1,46 @@
 #!/usr/bin/env bash
 
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
-
-# load the type system
-import util/log util/exception util/tryCatch util/namedParameters
-import util/variable
-
-# using colors:
-echo "$(UI.Color.Blue)I'm blue...$(UI.Color.Default)"
-
-# enable basic logging for this file by declaring a namespace
-namespace myApp
-# make the Log method direct everything in the namespace 'myApp' to the log handler called DEBUG
-Log::AddOutput myApp DEBUG
-
-# now we can write with the DEBUG output set
-Log "Play me some Jazz, will ya? $(UI.Powerline.Saxophone)"
-
-# redirect error messages to STDERR
-Log::AddOutput error STDERR
-subject=error Log "test error log"
-
-# reset outputs
-#Log::ResetAllOutputsAndFilters
-
-# You may also hardcode the use for the StdErr output directly:
-#Console::WriteStdErr "This will be printed to STDERR, no matter what."
-
-try {
-    # something...
-    rm -rf ~/test
-    touch ~/test
-    cp ~/test ~/test2
-    # something more...
-} catch {
-    echo "The hard disk is not connected properly!"
-    echo "Caught Exception:$(UI.Color.Red) $__BACKTRACE_COMMAND__ $(UI.Color.Default)"
-    echo "File: $__BACKTRACE_SOURCE__, Line: $__BACKTRACE_LINE__"
-
-    ## printing a caught exception couldn't be simpler, as it's stored in "${__EXCEPTION__[@]}"
-    Exception::PrintException "${__EXCEPTION__[@]}"
-}
+#source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
+#
+## load the type system
+#import util/log util/exception util/tryCatch util/namedParameters
+#import util/variable
+#
+## using colors:
+#echo "$(UI.Color.Blue)I'm blue...$(UI.Color.Default)"
+#
+## enable basic logging for this file by declaring a namespace
+#namespace myApp
+## make the Log method direct everything in the namespace 'myApp' to the log handler called DEBUG
+#Log::AddOutput myApp DEBUG
+#
+## now we can write with the DEBUG output set
+#Log "Play me some Jazz, will ya? $(UI.Powerline.Saxophone)"
+#
+## redirect error messages to STDERR
+#Log::AddOutput error STDERR
+#subject=error Log "test error log"
+#
+## reset outputs
+##Log::ResetAllOutputsAndFilters
+#
+## You may also hardcode the use for the StdErr output directly:
+##Console::WriteStdErr "This will be printed to STDERR, no matter what."
+#
+#try {
+#    # something...
+#    rm -rf ~/test
+#    touch ~/test
+#    cp ~/test ~/test2
+#    # something more...
+#} catch {
+#    echo "The hard disk is not connected properly!"
+#    echo "Caught Exception:$(UI.Color.Red) $__BACKTRACE_COMMAND__ $(UI.Color.Default)"
+#    echo "File: $__BACKTRACE_SOURCE__, Line: $__BACKTRACE_LINE__"
+#
+#    ## printing a caught exception couldn't be simpler, as it's stored in "${__EXCEPTION__[@]}"
+#    Exception::PrintException "${__EXCEPTION__[@]}"
+#}
 
 checkbrew() {
     if hash brew 2>/dev/null; then

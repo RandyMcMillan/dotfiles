@@ -54,3 +54,6 @@ etc-pihole
 .config/QtProject
 1.1.1i
 docker.shell
+
+
+bitcoin-test-battery

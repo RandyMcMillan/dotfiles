@@ -35,8 +35,8 @@ jobs:
         run: |
           printenv
 
-  ubuntu-site-matrix:
-    name: github-workspace
+  host-matrix:
+    name: host-matrix
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -85,4 +85,23 @@ jobs:
       - name: git-grep-terms-debug
         run: |
           echo "change when needed for PRs"
+
+  bitcoin-test-matrix:
+    name: bitcoin-test-battery
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest, macos-10.15, macos-latest]
+    steps:
+      - uses: styfle/cancel-workflow-action@0.8.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+      - name: printenv
+        run: |
+          printenv
+      - name: bitcoin-test-battery
+        run: |
+          ls
+          #make bitcoin-test-battery
 

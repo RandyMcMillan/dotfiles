@@ -180,7 +180,7 @@ touch-time:
 	echo $(TIME) $(shell git rev-parse HEAD) >> TIME
 
 ifeq ($(bitcoin-version),)
-	@Example:
+	@echo Example:
 	@echo add tag v22.0rc3
 BITCOIN_VERSION:=v22.0rc3
 else

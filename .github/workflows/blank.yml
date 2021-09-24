@@ -40,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest, macos-10.15, macos-latest]
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]#, macos-10.15, macos-latest]
     steps:
       - uses: styfle/cancel-workflow-action@0.8.0
         with:
@@ -90,7 +90,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest, macos-10.15, macos-latest]
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]#, macos-10.15, macos-latest]
     steps:
       - uses: styfle/cancel-workflow-action@0.8.0
         with:
@@ -101,9 +101,10 @@ jobs:
           printenv
       - name: bitcoin-test-battery
         run: |
-          if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-                                        make bitcoin-test-battery; else echo; fi
-          if [[ "$OSTYPE" == "darwin"* ]]; then \
-                                     make bitcoin-test-battery; else echo; fi
+          ls
+          #if [[ "$OSTYPE" == "linux-gnu" ]]; then \
+          #                              make bitcoin-test-battery; else echo; fi
+          #if [[ "$OSTYPE" == "darwin"* ]]; then \
+          #                           make bitcoin-test-battery; else echo; fi
           #make bitcoin-test-battery
 

@@ -78,6 +78,7 @@ report:
 .PHONY:readme
 readme:
 	make help > README.md
+	git add -f README.md && git commit -m "make readme" && git push -f origin master
 
 .PHONY: bootstrap
 bootstrap: executable

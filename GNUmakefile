@@ -41,7 +41,7 @@ GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
 .PHONY:-
--: help all
+-: help
 .PHONY: help
 help: report
 	@echo ""

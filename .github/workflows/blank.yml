@@ -49,10 +49,6 @@ jobs:
       - name: printenv
         run: |
           printenv
-      - name: git-submodule-init-update
-        run: |
-          git submodule init
-          git submodule update
       - name: install-bash-bash-completion-codespell-asciidoctor
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then sudo apt install bash bash-completion asciidoctor; else echo; fi
@@ -81,7 +77,10 @@ jobs:
           echo y | ./boot-strap.sh
       - name: make-all
         run: |
-          echo y | make all
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then \
+                                        apt install -y make && make all; else echo; fi
+          if [[ "$OSTYPE" == "darwin"* ]]; then \
+                                     make all; else echo; fi
       - name: git-grep-terms-debug
         run: |
           echo "change when needed for PRs"
@@ -102,6 +101,9 @@ jobs:
           printenv
       - name: bitcoin-test-battery
         run: |
-          ls
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then \
+                                        make bitcoin-test-battery; else echo; fi
+          if [[ "$OSTYPE" == "darwin"* ]]; then \
+                                     make bitcoin-test-battery; else echo; fi
           #make bitcoin-test-battery
 

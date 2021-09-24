@@ -129,22 +129,30 @@ while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:4
 }
 function git-branch-D (){
 
-git branch -D $1
+if [ -z "$1" ]
+    then
+
+    git branch
+    echo "try:"
+    echo "git-branch-D *string*"
+    #git branch -D $(git branch --list "$1")
+
+else
+    git branch -D $(git branch --list "$1")
+fi
 
 }
 
-function git-delete-local-branches(){
-
-#git branch -a --list 'dongcarl/*' | sed "s/origin\///" | xargs -I {} git branch -D {}
-git branch -a --list $1/* | sed "s/origin\///" | xargs -I {} git branch -D {}
-
-}
-function git-delete-remote-branches(){
-
-#git branch -r --list 'origin/dongcarl/*' | sed "s/origin\///" | xargs -I {} git push origin --delete {}
-git branch -r --list $1/* | sed "s/origin\///" | xargs -I {} git push origin --delete {}
-
-}
+#function git-delete-local-branches(){
+#
+#git branch -D $(git branch --list "$1")
+#
+#}
+#function git-delete-remote-branches(){
+#
+#git branch -r --list $1/* | sed "s/origin\///" | xargs -I {} git push origin --delete {}
+#
+#}
 
 # Bitcoin IRC 
 function irc-bitcoin-core-dev(){

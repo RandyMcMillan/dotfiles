@@ -6,8 +6,17 @@ export TIME
 #GH_USER=randymcmillan
 GH_USER=bitcoin
 export GH_USER
+if [ -z "$1" ]; then
 #RC=v22.0rc3-boost-fetch
-RC=v22.0rc3
+#RC=v22.0rc3
+git ls-remote --tags https://github.com/bitcoin/bitcoin.git v2*
+echo Example:
+echo add refs/tags/v22.0rc3
+echo ./bitcoin-test-battery.sh refs/tags/v22.0rc3
+exit;
+else
+RC=$1
+fi
 export RC
 
 BITCOIN_CONF1="proxy=127.0.0.1:9050 #If you use Windows, this could possibly be 127.0.0.1:9150 in some cases.\r
@@ -52,11 +61,16 @@ doIt(){
 
 make-data-dir
 
+echo $BITCOIN_TEST_BATTERY
 
-    [[ $(find ~/$BITCOIN_TEST_BATTERY -type d 2>/dev/null) ]] && \
-        pushd ~/$BITCOIN_TEST_BATTERY || git clone -b $RC https://github.com/$GH_USER/bitcoin ~/$BITCOIN_TEST_BATTERY
-
-    pushd ~/$BITCOIN_TEST_BATTERY && make clean
+pushd $PWD
+    if [[ -d "$PWD/bitcoin-test-battery" ]];then
+        pushd $PWD/bitcoin-test-battery
+    else
+        git clone -b $RC https://github.com/$GH_USER/bitcoin $PWD/bitcoin-test-battery && pushd $PWD/bitcoin-test-battery
+    fi
+    #[[ -d "~/bitcoin-test-battery" ]] && echo && pushd ~/bitcoin-test-battery \
+    #    || git clone -b $RC https://github.com/$GH_USER/bitcoin ~/bitcoin-test-battery && pushd $PWD/bitcoin-test-battery
     git fetch --all
     git checkout $RC
     #

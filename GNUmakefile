@@ -54,6 +54,7 @@ help: report
 	@echo "	make config-git	"
 	@echo "	make config-github	"
 	@echo "	make push	"
+	@echo "	make readme	"
 	@echo "	"
 	@echo "	make all force=true	"
 

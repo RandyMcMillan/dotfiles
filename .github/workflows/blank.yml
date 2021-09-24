@@ -49,7 +49,12 @@ jobs:
       - name: printenv
         run: |
           printenv
-      - name: install-codespell-asciidoctor
+      - name: install-bash-bash-completion-codespell-asciidoctor
+        run: |
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then sudo apt install bash bash-completion asciidoctor; else echo; fi
+          if [[ "$OSTYPE" == "darwin"* ]]; then brew install bash bash-completion asciidoctor; else echo; fi
+          #if [[ "$OSTYPE" == "darwin"* ]]; then chsh -s /bin/bash; else echo; fi
+      - name: pip3-install--U-codespell
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then sudo apt install bash asciidoctor; else echo; fi
           if [[ "$OSTYPE" == "darwin"* ]]; then brew install bash asciidoctor; else echo; fi
@@ -73,7 +78,12 @@ jobs:
       - name: install, build, and test
         run: |
           echo y | ./boot-strap.sh
-          echo y | make all
+      - name: make-all
+        run: |
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then \
+                                        apt install -y make && make all; else echo; fi
+          if [[ "$OSTYPE" == "darwin"* ]]; then \
+                                     make all; else echo; fi
       - name: git-grep-terms-debug
         run: |
           echo "change when needed for PRs"
@@ -94,6 +104,9 @@ jobs:
           printenv
       - name: bitcoin-test-battery
         run: |
-          ls
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then \
+                                        make bitcoin-test-battery; else echo; fi
+          if [[ "$OSTYPE" == "darwin"* ]]; then \
+                                     make bitcoin-test-battery; else echo; fi
           #make bitcoin-test-battery
 

@@ -179,7 +179,15 @@ touch-time:
 	touch TIME
 	echo $(TIME) $(shell git rev-parse HEAD) >> TIME
 
+ifeq ($(bitcoin-version),)
+	@Example:
+	@echo add tag v22.0rc3
+BITCOIN_VERSION:=v22.0rc3
+else
+BITCOIN_VERSION:=$(bitcoin-version)
+endif
+export BITCOIN_VERSION
 .PHONY: bitcoin-test-battery
 bitcoin-test-battery:
-	bash -c "./bitcoin-test-battery.sh"
+	bash -c "./bitcoin-test-battery.sh $(BITCOIN_VERSION) "
 

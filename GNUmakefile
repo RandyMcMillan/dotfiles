@@ -40,42 +40,44 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
+.PHONY:-
+-: help all
 .PHONY: help
 help: report
 	@echo ""
-	@echo "  make all"
-	@echo "  make bootstrap"
-	@echo "  make executable"
-	@echo "  make alpine-shell"
-	@echo "  make shell"
-	@echo "  make vim"
-	@echo "  make config-git"
-	@echo "  make config-github"
-	@echo "  make push"
-	@echo ""
-	@echo "  make all force=true"
+	@echo "	make all	"
+	@echo "	make bootstrap	"
+	@echo "	make executable	"
+	@echo "	make alpine-shell	"
+	@echo "	make shell	"
+	@echo "	make vim	"
+	@echo "	make config-git	"
+	@echo "	make config-github	"
+	@echo "	make push	"
+	@echo "	"
+	@echo "	make all force=true	"
 
 .PHONY: report
 report: 
 	@echo ''
 	@echo '	[ARGUMENTS]	'
-	@echo '      args:'
-	@echo '        - TIME=${TIME}'
-	@echo '        - PROJECT_NAME=${PROJECT_NAME}'
-	@echo '        - GIT_USER_NAME=${GIT_USER_NAME}'
-	@echo '        - GIT_USER_EMAIL=${GIT_USER_EMAIL}'
-	@echo '        - GIT_SERVER=${GIT_SERVER}'
-	@echo '        - GIT_PROFILE=${GIT_PROFILE}'
-	@echo '        - GIT_BRANCH=${GIT_BRANCH}'
-	@echo '        - GIT_HASH=${GIT_HASH}'
-	@echo '        - GIT_PREVIOUS_HASH=${GIT_PREVIOUS_HASH}'
-	@echo '        - GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}'
-	@echo '        - GIT_REPO_NAME=${GIT_REPO_NAME}'
-	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}'
+	@echo '      args:	'
+	@echo '        - TIME=${TIME}	'
+	@echo '        - PROJECT_NAME=${PROJECT_NAME}	'
+	@echo '        - GIT_USER_NAME=${GIT_USER_NAME}	'
+	@echo '        - GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
+	@echo '        - GIT_SERVER=${GIT_SERVER}	'
+	@echo '        - GIT_PROFILE=${GIT_PROFILE}	'
+	@echo '        - GIT_BRANCH=${GIT_BRANCH}	'
+	@echo '        - GIT_HASH=${GIT_HASH}	'
+	@echo '        - GIT_PREVIOUS_HASH=${GIT_PREVIOUS_HASH}	'
+	@echo '        - GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
+	@echo '        - GIT_REPO_NAME=${GIT_REPO_NAME}	'
+	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}	'
 
-
-.PHONY:all
-all: executable
+.PHONY:readme
+readme:
+	make help > README.md
 
 .PHONY: bootstrap
 bootstrap: executable

@@ -19,13 +19,13 @@ Log "Play me some Jazz, will ya? $(UI.Powerline.Saxophone)"
 
 # redirect error messages to STDERR
 Log::AddOutput error STDERR
-subject=error Log "Something bad happened."
+subject=error Log "test error log"
 
 # reset outputs
-Log::ResetAllOutputsAndFilters
+#Log::ResetAllOutputsAndFilters
 
 # You may also hardcode the use for the StdErr output directly:
-Console::WriteStdErr "This will be printed to STDERR, no matter what."
+#Console::WriteStdErr "This will be printed to STDERR, no matter what."
 
 try {
     # something...
@@ -42,62 +42,6 @@ try {
     Exception::PrintException "${__EXCEPTION__[@]}"
 }
 
-#array someArray=( 'one' 'two' )
-## the above is an equivalent of: declare -a someArray=( 'one' 'two' )
-## except this one creates a $var:someArray method handler
-#
-#passingArraysInput() {
-#  [array] passedInArray
-#
-#  # chained usage, see below for more details:
-#  $var:passedInArray : \
-#    { map 'echo "${index} - $(var: item)"' } \
-#    { forEach 'var: item toUpper' }
-#
-#  $var:passedInArray push 'will work only for references'
-#}
-#
-#echo 'passing by $var:'
-#
-### 2 ways of passing a copy of an array (passing by it's definition)
-#passingArraysInput "$(@get someArray)"
-#passingArraysInput $var:someArray
-#
-### no changes yet
-#$var:someArray toJSON
-#
-#echo
-#echo 'passing by $ref:'
-#
-### in bash >=4.3, which supports references, you may pass by reference
-### this way any changes done to the variable within the function will affect the variable itself
-#passingArraysInput $ref:someArray
-#
-### should show changes
-#$var:someArray toJSON
-
-
-#ENV VARS
-OS=$(uname)
-OS_VERSION=$(uname -r)
-UNAME_M=$(uname -m)
-ARCH=$(uname -m)
-export OS
-export OS_VERSION
-export UNAME_M
-export ARCH
-report() {
-echo OS:
-echo "$OS" | awk '{print tolower($0)}'
-echo OS_VERSION:
-echo "$OS_VERSION" | awk '{print tolower($0)}'
-echo UNAME_M:
-echo "$UNAME_M" | awk '{print tolower($0)}'
-echo ARCH:
-echo "$ARCH" | awk '{print tolower($0)}'
-echo OSTYPE:
-echo "$OSTYPE" | awk '{print tolower($0)}'
-}
 checkbrew() {
     if hash brew 2>/dev/null; then
         if !hash $AWK 2>/dev/null; then
@@ -142,7 +86,6 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export AWK
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
         fi
         checkbrew
     fi
@@ -155,7 +98,6 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export AWK
         if hash apk 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
         fi
     fi
     if [[ "$OSTYPE" == "linux-arm"* ]]; then
@@ -169,11 +111,9 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         checkraspi
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
         fi
     fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-        report
         PACKAGE_MANAGER=brew
         export PACKAGE_MANAGER
         INSTALL=install

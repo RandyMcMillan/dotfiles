@@ -109,7 +109,7 @@ private:
                 //   all workers finish approximately simultaneously.
                 // * Try to account for idle jobs which will instantly start helping.
                 // * Don't do batches smaller than 1 (duh), or larger than nBatchSize.
-                nNow = std::max(1U, std::min(nBatchSize, (unsigned int)queue.size() / (nTotal + nIdle + 1)));
+                nNow = std::clamp<unsigned int>(queue.size() / (nTotal + nIdle + 1), 1, nBatchSize);
                 vChecks.resize(nNow);
                 for (unsigned int i = 0; i < nNow; i++) {
                     // We want the lock on the m_mutex to be as short as possible, so swap jobs from the global

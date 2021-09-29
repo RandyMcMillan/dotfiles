@@ -104,7 +104,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         AWK=awk
         export AWK
         checkbrew
-        brew install firefox
+        test /Applications/Firefox.app && brew reinstall firefox | brew install firefox
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "msys" ]]; then

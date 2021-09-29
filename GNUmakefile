@@ -100,7 +100,7 @@ brew: executable
 all: executable
 	#./install-Bash+Utils.bash
 	./checkbrew.sh
-	./install-firefox.sh $(FORCE)
+	#./install-firefox.sh $(FORCE)
 	./install-Docker.sh
 	./install-FastLane.sh
 	./install-OSXFuse.sh

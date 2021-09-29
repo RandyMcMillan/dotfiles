@@ -94,7 +94,7 @@ exec: executable
 
 .PHONY: brew
 brew: executable
-	./checkbrew.sh
+	./checkbrew.sh $(FORCE)
 
 .PHONY: all
 all: executable
@@ -123,7 +123,6 @@ all: executable
 	./install-vypr-vpn.sh
 	./install-youtube-dl.sh
 	./install-ytop.sh
-	
 	#./install-valgrind-macos.sh
 	./install-umbrel-dev.sh
 	./install-vim.sh
@@ -139,11 +138,11 @@ alpine-shell:
 
 .PHONY: vim
 vim: executable
-	./install-vim.sh
+	./install-vim.sh $(FORCE)
 
 .PHONY: protonvpn
 protonvpn: executable
-	./install-protonvpn.sh
+	./install-protonvpn.sh $(FORCE)
 
 .PHONY: config-git
 config-git: executable

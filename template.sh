@@ -50,7 +50,7 @@ checkbrew() {
         if !hash git 2>/dev/null; then
             brew install git
         fi
-        brew install bash
+        brew reinstall $FORCE bash
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew

@@ -1,29 +1,7 @@
 #!/usr/bin/env bash
-#ENV VARS
-OS=$(uname)
-OS_VERSION=$(uname -r)
-UNAME_M=$(uname -m)
-ARCH=$(uname -m)
-export OS
-export OS_VERSION
-export UNAME_M
-export ARCH
 
-test ~/docker.shell &&  pushd ~/docker.shell || git clone http://github.com/RandyMcMillan/docker.shell.git ~/docker.shell \
-    && pushd ~/docker.shell && make alpine user=root
-
-report() {
-echo OS:
-echo "$OS" | awk '{print tolower($0)}'
-echo OS_VERSION:
-echo "$OS_VERSION" | awk '{print tolower($0)}'
-echo UNAME_M:
-echo "$UNAME_M" | awk '{print tolower($0)}'
-echo ARCH:
-echo "$ARCH" | awk '{print tolower($0)}'
-echo OSTYPE:
-echo "$OSTYPE" | awk '{print tolower($0)}'
-}
+[[ -f report.sh ]] && . report.sh || VARIABLE="No report.sh file" && echo $VARIABLE
+[[ -f whatami.sh ]] && . whatami.sh || VARIABLE="No whatami.sh file" && echo $VARIABLE
 
 checkbrew() {
 
@@ -44,6 +22,8 @@ checkbrew() {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew
     fi
+[[ -d ~/docker.shell ]] && pushd ~/docker.shell && make alpine || \
+    pushd ~ &&  git clonehttps://github.com/randymcmillan/docker.shell && pushd ~/docker.shell && make user=root
 }
 checkraspi(){
 

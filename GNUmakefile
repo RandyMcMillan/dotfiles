@@ -49,13 +49,13 @@ help: report
 	@echo "	make bootstrap	"
 	@echo "	make executable	"
 	@echo "	make alpine-shell	"
+	@echo "	sudo -s make alpine-shell"
 	@echo "	make shell	"
 	@echo "	make vim	"
 	@echo "	make config-git	"
 	@echo "	make config-github	"
 	@echo "	make push	"
 	@echo "	make readme	"
-	@echo "	"
 	@echo "	make all force=true	"
 
 .PHONY: report

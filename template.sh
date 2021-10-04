@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+[[ -f report.sh ]] && . report.sh || VARIABLE="No report.sh file" && echo $VARIABLE
+
+
 #source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
 #
 ## load the type system

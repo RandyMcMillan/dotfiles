@@ -289,7 +289,7 @@ public:
     virtual void requestMempoolTransactions(Notifications& notifications) = 0;
 
     //! Check if Taproot has activated
-    virtual bool isTaprootActive() const = 0;
+    virtual bool isTaprootActive() = 0;
 };
 
 //! Interface to let node manage chain clients (wallets, or maybe tools for
@@ -308,7 +308,8 @@ public:
     //! Load saved state.
     virtual bool load() = 0;
 
-    //! Start client execution and provide a scheduler.
+    //! Start client execution and provide a scheduler. (Scheduler is
+    //! ignored if client is out-of-process).
     virtual void start(CScheduler& scheduler) = 0;
 
     //! Save state to disk.

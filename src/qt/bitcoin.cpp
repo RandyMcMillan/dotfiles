@@ -10,10 +10,11 @@
 
 #include <chainparams.h>
 #include <init.h>
+#include <init/common.h>
 #include <interfaces/handler.h>
 #include <interfaces/init.h>
+#include <interfaces/ipc.h>
 #include <interfaces/node.h>
-#include <node/context.h>
 #include <node/ui_interface.h>
 #include <noui.h>
 #include <qt/bitcoingui.h>
@@ -273,7 +274,6 @@ void BitcoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
     // We don't hold a direct pointer to the splash screen after creation, but the splash
     // screen will take care of deleting itself when finish() happens.
     m_splash->show();
-    connect(this, &BitcoinApplication::requestedInitialize, m_splash, &SplashScreen::handleLoadWallet);
     connect(this, &BitcoinApplication::splashFinished, m_splash, &SplashScreen::finish);
     connect(this, &BitcoinApplication::requestedShutdown, m_splash, &QWidget::close);
 }
@@ -282,6 +282,18 @@ void BitcoinApplication::createNode(interfaces::Init& init)
 {
     assert(!m_node);
     m_node = init.makeNode();
+    if (!m_node) {
+        // If node is not part of current process, need to initialize logging.
+        if (!init::StartLogging(gArgs)) {
+            throw std::runtime_error("StartLogging failed");
+        }
+
+        // If node is not part of current process, spawn new bitcoin-node
+        // process.
+        auto node_init = init.ipc()->spawnProcess("bitcoin-node");
+        m_node = node_init->makeNode();
+        init.ipc()->addCleanup(*m_node, [node_init = node_init.release()] { delete node_init; });
+    }
     if (optionsModel) optionsModel->setNode(*m_node);
     if (m_splash) m_splash->setNode(*m_node);
 }
@@ -304,13 +316,14 @@ void BitcoinApplication::startThread()
     connect(this, &BitcoinApplication::requestedShutdown, &m_executor.value(), &InitExecutor::shutdown);
 }
 
-void BitcoinApplication::parameterSetup()
+void BitcoinApplication::parameterSetup(interfaces::Init& init)
 {
     // Default printtoconsole to false for the GUI. GUI programs should not
     // print to the console unnecessarily.
     gArgs.SoftSetBoolArg("-printtoconsole", false);
 
-    InitLogging(gArgs);
+    interfaces::Ipc* ipc = init.ipc();
+    InitLogging(gArgs, ipc ? ipc->logSuffix() : nullptr);
     InitParameterInteraction(gArgs);
 }
 
@@ -463,9 +476,7 @@ int GuiMain(int argc, char* argv[])
     std::tie(argc, argv) = winArgs.get();
 #endif
 
-    NodeContext node_context;
-    int unused_exit_status;
-    std::unique_ptr<interfaces::Init> init = interfaces::MakeNodeInit(node_context, argc, argv, unused_exit_status);
+    std::unique_ptr<interfaces::Init> init = interfaces::MakeGuiInit(argc, argv);
 
     SetupEnvironment();
     util::ThreadSetInternalName("main");
@@ -613,7 +624,7 @@ int GuiMain(int argc, char* argv[])
     // Install qDebug() message handler to route to debug.log
     qInstallMessageHandler(DebugMessageHandler);
     // Allow parameter interaction before we create the options model
-    app.parameterSetup();
+    app.parameterSetup(*init);
     GUIUtil::LogQtInfo();
     // Load GUI settings from QSettings
     app.createOptionsModel(gArgs.GetBoolArg("-resetguisettings", false));

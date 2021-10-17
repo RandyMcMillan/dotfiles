@@ -25,6 +25,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     brew list --versions
     echo
     OPENSSL_VERSION=$(brew list --versions | grep -i -E  "openssl" | sed 's%openssl@1.1% %')
+    export OPENSSL_VERSION
     echo openssl version
     echo $OPENSSL_VERSION
     export OPENSSL_VERSION
@@ -55,6 +56,7 @@ else
     echo TODO add support for $OSTYPE
 fi
 }
+setup
 #!/usr/bin/env bash
 #ENV VARS
 OS=$(uname)
@@ -88,6 +90,7 @@ checkbrew() {
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew
+        setup
     fi
 }
 checkraspi(){

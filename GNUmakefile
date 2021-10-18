@@ -131,6 +131,12 @@ all: executable
 shell:
 	bash -c "make alpine-shell"
 
+.PHONY: jedi-vim
+jedi-vim:
+	#sources_non_forked
+	git clone --recursive https://github.com/davidhalter/jedi-vim.git ~/.vim_runtime/sources_non_forked/jedi-vim
+
+
 .PHONY:
 alpine-shell:
 	./install-alpine-shell.sh

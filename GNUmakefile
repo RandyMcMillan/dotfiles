@@ -139,6 +139,8 @@ alpine-shell:
 .PHONY: vim
 vim: executable
 	./install-vim.sh $(FORCE)
+	[[ -f ~/.vim_runtime/sources_non_forked/python-mode/README.md ]] && echo || git clone --recurse-submodules https://github.com/python-mode/python-mode.git ~/.vim_runtime/sources_non_forked/python-mode
+
 
 .PHONY: protonvpn
 protonvpn: executable

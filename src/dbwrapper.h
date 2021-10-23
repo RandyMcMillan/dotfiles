@@ -220,15 +220,24 @@ private:
     std::vector<unsigned char> CreateObfuscateKey() const;
 
 public:
-    /**
-     * @param[in] path        Location in the filesystem where leveldb data will be stored.
-     * @param[in] nCacheSize  Configures various leveldb cache settings.
-     * @param[in] fMemory     If true, use leveldb's memory environment.
-     * @param[in] fWipe       If true, remove all existing data.
-     * @param[in] obfuscate   If true, store data obfuscated via simple XOR. If false, XOR
-     *                        with a zero'd byte array.
-     */
-    CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory = false, bool fWipe = false, bool obfuscate = false);
+
+    struct Options {
+        fs::path db_path;
+        size_t cache_size;
+        bool in_memory = false;
+        bool wipe_existing = false;
+        bool obfuscate_data = false;
+    };
+
+    CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory = false, bool fWipe = false, bool obfuscate = false)
+        : CDBWrapper{{
+                .db_path = path,
+                .cache_size = nCacheSize,
+                .in_memory = fMemory,
+                .wipe_existing = fWipe,
+                .obfuscate_data = obfuscate,
+            }} {}
+    CDBWrapper(const Options& opts);
     ~CDBWrapper();
 
     CDBWrapper(const CDBWrapper&) = delete;

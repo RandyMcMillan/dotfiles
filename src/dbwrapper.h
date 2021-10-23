@@ -227,6 +227,7 @@ public:
         bool in_memory = false;
         bool wipe_existing = false;
         bool obfuscate_data = false;
+        bool do_compact = false;
     };
 
     CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory = false, bool fWipe = false, bool obfuscate = false)
@@ -236,6 +237,7 @@ public:
                 .in_memory = fMemory,
                 .wipe_existing = fWipe,
                 .obfuscate_data = obfuscate,
+                .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
             }} {}
     CDBWrapper(const Options& opts);
     ~CDBWrapper();

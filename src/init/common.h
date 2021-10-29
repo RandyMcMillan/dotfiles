@@ -19,7 +19,7 @@ void UnsetGlobals();
  */
 bool SanityChecks();
 void AddLoggingArgs(ArgsManager& args);
-void SetLoggingOptions(const ArgsManager& args);
+void SetLoggingOptions(const ArgsManager& args, const char* log_suffix);
 void SetLoggingCategories(const ArgsManager& args);
 bool StartLogging(const ArgsManager& args);
 void LogPackageVersion();

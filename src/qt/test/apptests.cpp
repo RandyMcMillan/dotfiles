@@ -56,7 +56,7 @@ void TestRpcCommand(RPCConsole* console)
 } // namespace
 
 //! Entry point for BitcoinApplication tests.
-void AppTests::appTests()
+void AppTests::appTests(interfaces::Init& init)
 {
 #ifdef Q_OS_MAC
     if (QApplication::platformName() == "minimal") {
@@ -76,7 +76,7 @@ void AppTests::appTests()
     }());
 
     qRegisterMetaType<interfaces::BlockAndHeaderTipInfo>("interfaces::BlockAndHeaderTipInfo");
-    m_app.parameterSetup();
+    m_app.parameterSetup(init);
     m_app.createOptionsModel(true /* reset settings */);
     QScopedPointer<const NetworkStyle> style(NetworkStyle::instantiate(Params().NetworkIDString()));
     m_app.setupPlatformStyle();

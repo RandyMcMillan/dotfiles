@@ -138,6 +138,7 @@ if has("autocmd")
 
 " configure expanding of tabs for various file types
 au BufRead,BufNewFile *.py set expandtab
+au BufRead,BufNewFile *.py set list
 au BufRead,BufNewFile *.c set noexpandtab
 au BufRead,BufNewFile *.h set noexpandtab
 au BufRead,BufNewFile *akefile* set noexpandtab

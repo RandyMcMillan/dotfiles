@@ -46,7 +46,7 @@ export GIT_REPO_PATH
 	#REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null
 .PHONY: help
-help: report
+help: - report
 	@echo ""
 	@echo "	make all	"
 	@echo "	make bootstrap	"
@@ -62,7 +62,7 @@ help: report
 	@echo "	make all force=true	"
 
 .PHONY: report
-report: 
+report: -
 	@echo ''
 	@echo '	[ARGUMENTS]	'
 	@echo '      args:	'

@@ -57,6 +57,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
             echo "";
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 if [ ! hash mvim 2>/dev/null ]; then
+                    brew link --overwrite macvim
                     brew install -f macvim
                     brew link --overwrite macvim
                 else

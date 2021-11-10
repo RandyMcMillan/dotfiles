@@ -45,6 +45,8 @@ export GIT_REPO_PATH
 -: help
 	#REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null
+	source .aliases
+	source .functions
 .PHONY: help
 help: - report
 	@echo ""

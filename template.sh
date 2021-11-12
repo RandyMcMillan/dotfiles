@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-[[ -f report.sh ]] && . report.sh || VARIABLE="No report.sh file" && echo $VARIABLE
-[[ -f whatami.sh ]] && . whatami.sh || VARIABLE="No whatami.sh file" && echo $VARIABLE
+#[[ -f report.sh ]] && . report.sh || VARIABLE="No report.sh file" && echo $VARIABLE
+#[[ -f whatami.sh ]] && . whatami.sh || VARIABLE="No whatami.sh file" && echo $VARIABLE
 
 
 #source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
@@ -91,7 +91,6 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
         fi
-        checkbrew
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then
         PACKAGE_MANAGER=apk

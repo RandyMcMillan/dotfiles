@@ -64,7 +64,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export AWK
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then
@@ -76,7 +76,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export AWK
         if hash apk 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
     fi
     if [[ "$OSTYPE" == "linux-arm"* ]]; then
@@ -90,24 +90,25 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         checkraspi
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
     fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-        report
+        #report
         PACKAGE_MANAGER=brew
         export PACKAGE_MANAGER
         INSTALL=install
         export INSTALL
         AWK=awk
         export AWK
-
-        brew install --cask iterm2
-        brew install tccutil
+        rm -rf /Applications/iTerm.app
+        brew install --cask iterm2 | echo
+        brew install -f tccutil |  brew reinstall tccutil | echo
+        #sudo rm -f /usr/local/bin/dockutil | echo
         curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
         chmod a+x /usr/local/bin/dockutil
         dockutil --add '/Applications/iTerm.app' --replacing 'iTerm'
-	ln -sf $(pwd)/init/com.googlecode.iterm2.plist ~/Library/Preferences/
+        ln -sf $(pwd)/init/com.googlecode.iterm2.plist ~/Library/Preferences/
 
         checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then

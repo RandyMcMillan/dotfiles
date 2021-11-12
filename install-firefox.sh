@@ -64,7 +64,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export AWK
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
         checkbrew
         brew install firefox
@@ -78,7 +78,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export AWK
         if hash apk 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
     fi
     if [[ "$OSTYPE" == "linux-arm"* ]]; then
@@ -92,11 +92,11 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         checkraspi
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
     fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-        report
+        #report
         PACKAGE_MANAGER=brew
         export PACKAGE_MANAGER
         INSTALL=install

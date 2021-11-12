@@ -101,6 +101,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         export INSTALL
         AWK=awk
         export AWK
+        rm -rf '/Applications/VyprVPN.app'
         brew install --cask vyprvpn
         checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then

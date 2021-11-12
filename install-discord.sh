@@ -26,6 +26,7 @@ checkbrew() {
 
     if hash brew 2>/dev/null; then
         brew install awk git
+        rm -rf /Applications/Discord.app
         brew install --cask discord
         echo
     else
@@ -59,14 +60,14 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         if hash apt 2>/dev/null; then
             apt install awk
-            report
+            #report
             echo 'Using apt...'
         fi
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then
         if hash apk 2>/dev/null; then
             apk add awk
-            report
+            #report
             echo 'Using apk...'
         fi
     fi
@@ -74,7 +75,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         checkraspi
         if hash apt 2>/dev/null; then
             apt install awk
-            report
+            #report
             echo 'Using apt...'
         fi
     fi

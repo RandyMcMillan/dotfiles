@@ -24,17 +24,27 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo brew list --versions
     brew list --versions
     echo
-    OPENSSL_VERSION=$(brew list --versions | grep -i -E  "openssl" | sed 's%openssl@1.1% %')
-    export OPENSSL_VERSION
+    OPENSSL_VERSION_v1=$(brew list --versions | grep -i -E  "openssl" | sed 's%openssl@1.1% %')
+    OPENSSL_VERSION_v3=$(brew list --versions | grep -i -E  "openssl" | sed 's%openssl@3% %')
+    export OPENSSL_VERSION_v1
+    echo $OPENSSL_VERSION_v1
+    export OPENSSL_VERSION_v3
+    echo $OPENSSL_VERSION_v3
     echo openssl version
-    echo $OPENSSL_VERSION
+    echo $OPENSSL_VERSION_v1
+    echo $OPENSSL_VERSION_v3
+    export OPENSSL_VERSION_v1
+    export OPENSSL_VERSION_v3
+    echo using $OPENSSL_VERSION_v3
+    OPENSSL_VERSION=OPENSSL_VERSION_v3
     export OPENSSL_VERSION
+    echo "OPENSSL_VERSION = $OPENSSL_VERSION"
     sudo mkdir -p /usr/local/include/openssl/$OPENSSL_VERSION
-    rm -rf /usr/local/include/openssl/$OPENSSL_VERSION
+    sudo rm -rf /usr/local/include/openssl/$OPENSSL_VERSION
     sudo ln -s /usr/local/opt/openssl/include/openssl /usr/local/include/openssl/$OPENSSL_VERSION
-    rm -rf /usr/bin/openssl
-    sudo ln -s /usr/local/Cellar/openssl/$OPENSSL_VERSION/include/openssl    /usr/bin/openssl
-    rm -rf /usr/local/bin/openssl
+    #sudo rm -rf /usr/bin/openssl
+    #sudo ln -s /usr/local/Cellar/openssl/$OPENSSL_VERSION/include/openssl    /usr/bin/openssl
+    sudo rm -rf /usr/local/bin/openssl
     sudo ln -s /usr/local/Cellar/openssl/$OPENSSL_VERSION/include/openssl    /usr/local/bin/openssl
     sudo rm -rf /usr/local/lib/libssl.*.*.dylib
     sudo rm -rf /usr/local/lib/libcrypto.*.*.dylib
@@ -124,7 +134,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export AWK
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then
@@ -136,7 +146,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         export AWK
         if hash apk 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
     fi
     if [[ "$OSTYPE" == "linux-arm"* ]]; then
@@ -150,11 +160,11 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         checkraspi
         if hash apt 2>/dev/null; then
             $PACKAGE_MANAGER $INSTALL $AWK
-            report
+            #report
         fi
     fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-        report
+        #report
         PACKAGE_MANAGER=brew
         export PACKAGE_MANAGER
         INSTALL=install

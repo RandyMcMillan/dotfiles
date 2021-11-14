@@ -9,7 +9,7 @@
 #include <qt/clientmodel.h>
 #include <qt/guiutil.h>
 
-static const char *LABEL_FONT = "Arial";
+static const char *LABEL_FONT = "Roboto Mono";
 static int LABEL_TITLE_SIZE = 22;
 static int LABEL_KV_SIZE = 12;
 
@@ -157,7 +157,7 @@ void MempoolStats::drawChart()
         m_scene->addPath(tx_count_grid_path, gridPen);
 
 
-        // draw fee ranges
+        // draw fee ranges;
         QGraphicsTextItem *fee_range_title = m_scene->addText("Fee ranges\n(sat/b)", gridFont);
         fee_range_title->setPos(2, bottom+10);
 

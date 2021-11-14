@@ -83,7 +83,8 @@ void MempoolStats::drawChart()
     const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_TOP-GRAPH_PADDING_TOP_LABEL-GRAPH_PADDING_BOTTOM);
     size_t max_txcount=0;
     QFont gridFont;
-    gridFont.setPointSize(8);
+    gridFont.setPointSize(12);
+	gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
     qreal maxwidth = m_gfx_view->scene()->sceneRect().width()-GRAPH_PADDING_LEFT-GRAPH_PADDING_RIGHT;
     {

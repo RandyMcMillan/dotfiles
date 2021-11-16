@@ -50,7 +50,7 @@ struct BlockAndHeaderTipInfo
     double verification_progress;
 };
 
-<<<<<<< HEAD
+
 //! External signer interface used by the GUI.
 class ExternalSigner
 {

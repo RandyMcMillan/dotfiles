@@ -324,7 +324,20 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
     m_gfx_view->resize(size());
-    m_gfx_view->scene()->setSceneRect(rect().left(), rect().top(),rect().width(),std::max(rect().width(), rect().height()));
+    //m_gfx_view->scene()->setSceneRect(rect().left(), rect().top(),rect().width(),std::max(rect().width(), rect().height()));
+    //m_gfx_view->scene()->setSceneRect(rect().left()/2, rect().top()/2,rect().width(),std::max(rect().width()/2, rect().height()/2));//width working
+    //m_gfx_view->scene()->setSceneRect(rect().left()/2, rect().top()/1,rect().width(),std::max(rect().width()/2, rect().height()/2));//working better
+    //m_gfx_view->scene()->setSceneRect(rect().left()/2, rect().top()/1,rect().width()-GRAPH_PADDING_RIGHT,std::max(rect().width()/2, rect().height()/2));//better
+    //m_gfx_view->scene()->setSceneRect(rect().left()/2, rect().top()/1,rect().width()-GRAPH_PADDING_RIGHT,std::max(rect().width()/2, rect().height()/1));//best so far
+    m_gfx_view->scene()->setSceneRect(
+            rect().left()/2,
+            rect().top()/1,
+            rect().width()-GRAPH_PADDING_RIGHT,
+            std::max(
+                rect().width()/2,
+                rect().height()/1
+            )
+        );//best so far
     drawChart();
 }
 

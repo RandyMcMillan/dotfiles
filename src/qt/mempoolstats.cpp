@@ -63,26 +63,52 @@ void MempoolStats::setClientModel(ClientModel *model)
 
 // define the colors for the feeranges
 // TODO: find a more dynamic way to assign colors
-const static std::vector<QColor> colors = { QColor("#535154"), QColor("#0000ac"),
-                                            QColor("#0000c2"), QColor("#0000d8"),
-                                            QColor("#0000ec"), QColor("#0000ff"),
-                                            QColor("#2c2cff"), QColor("#5858ff"),
-                                            QColor("#8080ff"), QColor("#008000"),
-                                            QColor("#00a000"), QColor("#00c000"),
-                                            QColor("#00e000"), QColor("#30e030"),
-                                            QColor("#60e060"), QColor("#90e090"),
-                                            QColor("#808000"), QColor("#989800"),
-                                            QColor("#b0b000"), QColor("#c8c800"),
-                                            QColor("#e0e000"), QColor("#e0e030"),
-                                            QColor("#e0e060"), QColor("#800000"),
-                                            QColor("#a00000"), QColor("#c00000"),
-                                            QColor("#e00000"), QColor("#e02020"),
-                                            QColor("#e04040"), QColor("#e06060"),
-                                            QColor("#800080"), QColor("#ac00ac"),
-                                            QColor("#d800d8"), QColor("#ff00ff"),
-                                            QColor("#ff2cff"), QColor("#ff58ff"),
-                                            QColor("#ff80ff"), QColor("#000000")
-                                          };
+const static std::vector<QColor> colors = {
+
+QColor("#2a4858"), //Bottom
+QColor("#275162"),
+QColor("#225b6c"),
+QColor("#1b6474"),
+QColor("#106e7c"),
+QColor("#007882"),
+QColor("#008288"),
+QColor("#008c8b"),
+QColor("#00968e"),
+QColor("#0ba08f"),
+QColor("#23aa8f"),
+QColor("#37b38e"),
+QColor("#4abd8c"),
+QColor("#5ec688"),
+QColor("#72cf85"),
+QColor("#86d780"),
+QColor("#9cdf7c"),
+QColor("#b2e777"),
+QColor("#c9ee73"),
+QColor("#e1f470"),
+QColor("#fafa6e"), //Middle
+QColor("#ffe862"),
+QColor("#ffd759"),
+QColor("#ffc554"),
+QColor("#ffb351"),
+QColor("#fea251"),
+QColor("#f99152"),
+QColor("#f38154"),
+QColor("#ea7157"),
+QColor("#e0635a"),
+QColor("#d4555d"),
+QColor("#c74860"),
+QColor("#b73d62"),
+QColor("#a73364"),
+QColor("#952b64"),
+QColor("#832564"),
+QColor("#6f2062"),
+QColor("#5b1c5f"),
+QColor("#451a5b"),
+QColor("#2e1756"),
+QColor("#12144f") //Top
+
+};
+
 void MempoolStats::drawChart()
 {
     if (!m_clientmodel)

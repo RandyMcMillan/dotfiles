@@ -248,17 +248,15 @@ void MempoolStats::drawChart()
             m_scene->addItem(fee_rect);
 
             //TODO: fix bug/crash on click
-            ClickableTextItem *fee_text = new ClickableTextItem();
-            fee_text->setText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
+            QGraphicsTextItem *fee_text = m_scene->addText("fee_text", gridFont);
+            fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
             if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                fee_text->setText(QString::number(list_entry.fee_from)+"+");
+                fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
             }
             fee_text->setFont(gridFont);
-            fee_text->setPos(4+c_w+2, c_y);
-            //m_scene->addItem(fee_text);
-            connect(fee_text, &ClickableTextItem::objectClicked, [&fee_rect](QGraphicsItem*item) {
-                fee_rect->objectClicked(item);
-            });
+            fee_text->setPos(4+c_w-7, c_y-7);
+            m_scene->addItem(fee_text);
+            m_scene->addItem(fee_rect);
 
             c_y-=c_h+c_margin;
             i++;

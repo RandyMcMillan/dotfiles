@@ -13,7 +13,7 @@ static const char *LABEL_FONT = "Roboto Mono";
 static int LABEL_TITLE_SIZE = 22;
 static int LABEL_KV_SIZE = 12;
 
-static const int LABEL_LEFT_SIZE = 30;
+static const int LABEL_LEFT_SIZE = 100;//30;
 static const int LABEL_RIGHT_SIZE = 30;
 static const int GRAPH_PADDING_LEFT = 30+LABEL_LEFT_SIZE;
 static const int GRAPH_PADDING_RIGHT = 30+LABEL_RIGHT_SIZE;
@@ -116,11 +116,14 @@ void MempoolStats::drawChart()
 
     m_scene->clear();
 
-    std::vector<QPainterPath> fee_paths;
-    std::vector<size_t> fee_subtotal_txcount;
+    //
     qreal current_x = GRAPH_PADDING_LEFT;
     const qreal bottom = m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_BOTTOM;
     const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_TOP-GRAPH_PADDING_TOP_LABEL-GRAPH_PADDING_BOTTOM);
+
+
+    std::vector<QPainterPath> fee_paths;
+    std::vector<size_t> fee_subtotal_txcount;
     size_t max_txcount=0;
     QFont gridFont;
     gridFont.setPointSize(12);
@@ -167,7 +170,7 @@ void MempoolStats::drawChart()
         }
 
         // make a nice y-axis scale
-        const int amount_of_h_lines = 5;
+        const int amount_of_h_lines = 10;
         if (max_txcount > 0) {
             int val = qFloor(log10(1.0*max_txcount/amount_of_h_lines));
             int stepbase = qPow(10.0f, val);
@@ -203,7 +206,7 @@ void MempoolStats::drawChart()
 
         qreal c_y = bottom;
         const qreal c_w = 10;
-        const qreal c_h = 10;
+        const qreal c_h = 20;//10;
         const qreal c_margin = 2;
         c_y-=c_margin;
         int i = 0;
@@ -212,7 +215,8 @@ void MempoolStats::drawChart()
                 continue;
             }
             ClickableRectItem *fee_rect = new ClickableRectItem();
-            fee_rect->setRect(4, c_y, c_w, c_h);
+                            //(L,   B,   R, Top)
+            fee_rect->setRect(10, c_y-7, c_w+100, c_h);
 
             QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
             brush_color.setAlpha(85);
@@ -222,6 +226,7 @@ void MempoolStats::drawChart()
             }
 
             fee_rect->setBrush(QBrush(brush_color));
+            fee_rect->setPen(Qt::NoPen);//no outline only fill with QBrush
             fee_rect->setCursor(Qt::PointingHandCursor);
             connect(fee_rect, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
                 // if clicked, we select or deselect if selected
@@ -242,6 +247,7 @@ void MempoolStats::drawChart()
             });
             m_scene->addItem(fee_rect);
 
+            //TODO: fix bug/crash on click
             ClickableTextItem *fee_text = new ClickableTextItem();
             fee_text->setText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
             if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
@@ -249,7 +255,7 @@ void MempoolStats::drawChart()
             }
             fee_text->setFont(gridFont);
             fee_text->setPos(4+c_w+2, c_y);
-            m_scene->addItem(fee_text);
+            //m_scene->addItem(fee_text);
             connect(fee_text, &ClickableTextItem::objectClicked, [&fee_rect](QGraphicsItem*item) {
                 fee_rect->objectClicked(item);
             });
@@ -281,7 +287,7 @@ void MempoolStats::drawChart()
             }
             first = false;
         }
-    } // release lock for the acctual drawing
+    } // release lock for the actual drawing
 
     int i = 0;
     QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));

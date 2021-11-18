@@ -19,7 +19,7 @@ static const int GRAPH_PADDING_LEFT = 30+LABEL_LEFT_SIZE;
 static const int GRAPH_PADDING_RIGHT = 30+LABEL_RIGHT_SIZE;
 static const int GRAPH_PADDING_TOP = 10;
 static const int GRAPH_PADDING_TOP_LABEL = 10;
-static const int GRAPH_PADDING_BOTTOM = 50;
+static const int GRAPH_PADDING_BOTTOM = 20;
 
 void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -47,6 +47,7 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_gfx_view = new QGraphicsView(this);
     m_scene = new QGraphicsScene(m_gfx_view);
     m_gfx_view->setScene(m_scene);
+    m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 0));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     if (m_clientmodel)
         drawChart();
@@ -65,47 +66,34 @@ void MempoolStats::setClientModel(ClientModel *model)
 // TODO: find a more dynamic way to assign colors
 const static std::vector<QColor> colors = {
 
-QColor("#2a4858"), //Bottom
-QColor("#275162"),
-QColor("#225b6c"),
-QColor("#1b6474"),
-QColor("#106e7c"),
-QColor("#007882"),
-QColor("#008288"),
-QColor("#008c8b"),
-QColor("#00968e"),
-QColor("#0ba08f"),
-QColor("#23aa8f"),
-QColor("#37b38e"),
-QColor("#4abd8c"),
-QColor("#5ec688"),
-QColor("#72cf85"),
-QColor("#86d780"),
-QColor("#9cdf7c"),
-QColor("#b2e777"),
-QColor("#c9ee73"),
-QColor("#e1f470"),
-QColor("#fafa6e"), //Middle
-QColor("#ffe862"),
-QColor("#ffd759"),
-QColor("#ffc554"),
-QColor("#ffb351"),
-QColor("#fea251"),
-QColor("#f99152"),
-QColor("#f38154"),
-QColor("#ea7157"),
-QColor("#e0635a"),
-QColor("#d4555d"),
-QColor("#c74860"),
-QColor("#b73d62"),
-QColor("#a73364"),
-QColor("#952b64"),
-QColor("#832564"),
-QColor("#6f2062"),
-QColor("#5b1c5f"),
-QColor("#451a5b"),
-QColor("#2e1756"),
-QColor("#12144f") //Top
+QColor(212,29,97,255),   //0-1
+QColor(140,43,168,0),    //1-2
+QColor(93,58,175,255),   //2-3
+QColor(57,76,169,255),   //3-4
+QColor(40,138,226,0),    //4-5
+QColor(30,157,227,0),    //5-6
+QColor(34,172,192,255),  //6-8
+QColor(25,137,123,255),  //8-10
+QColor(74,159,75,255),  //10-12
+QColor(127,178,72,255), //12-15
+QColor(192,201,64,0),   //15-20
+QColor(252,214,69,255), //20-30
+QColor(253,178,39,255), //30-40
+QColor(248,139,33,255), //40-50
+QColor(240,80,42,0),    //60-70
+QColor(108,76,66,0),    //70-80
+QColor(117,117,117,255),//80-90
+QColor(85,110,121,0),  //100-125
+QColor(180,28,34,0),   //125-150
+QColor(134,17,79,255), //175-200
+QColor(73,27,138,255), //200-250
+QColor(48,33,144,255), //250-300
+QColor(26,39,124,255), //300-350
+QColor(18,74,159,255), //350-400
+QColor(12,89,153,255), //450-500
+QColor(14,96,99,255),  //500-550
+QColor(10,77,64,0),    //600-650
+QColor(33,93,35,255),  //700-750
 
 };
 
@@ -170,7 +158,7 @@ void MempoolStats::drawChart()
         }
 
         // make a nice y-axis scale
-        const int amount_of_h_lines = 10;
+        const int amount_of_h_lines = 5;
         if (max_txcount > 0) {
             int val = qFloor(log10(1.0*max_txcount/amount_of_h_lines));
             int stepbase = qPow(10.0f, val);
@@ -196,7 +184,7 @@ void MempoolStats::drawChart()
             item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
         }
 
-        QPen gridPen(QColor(100,100,100, 200), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         m_scene->addPath(tx_count_grid_path, gridPen);
 
 
@@ -218,11 +206,13 @@ void MempoolStats::drawChart()
                             //(L,   B,   R, Top)
             fee_rect->setRect(10, c_y-7, c_w+100, c_h);
 
+            //Stack of rects on left
+
             QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
-            brush_color.setAlpha(85);
+            brush_color.setAlpha(100);
             if (m_selected_range >= 0 && m_selected_range != i) {
                 // if one item is selected, hide out the other ones
-                brush_color.setAlpha(30);
+                brush_color.setAlpha(90);
             }
 
             fee_rect->setBrush(QBrush(brush_color));
@@ -245,7 +235,7 @@ void MempoolStats::drawChart()
                 //file << m_clientmodel->m_mempool_feehist;
                 //file.fclose();
             });
-            m_scene->addItem(fee_rect);
+            //m_scene->addItem(fee_rect);
 
             //TODO: fix bug/crash on click
             QGraphicsTextItem *fee_text = m_scene->addText("fee_text", gridFont);
@@ -300,11 +290,12 @@ void MempoolStats::drawChart()
         }
         QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
         QColor brush_color = pen_color;
-        pen_color.setAlpha(95);
-        brush_color.setAlpha(85);
+        //mempool paths 
+        pen_color.setAlpha(100);
+        brush_color.setAlpha(90);
         if (m_selected_range >= 0 && m_selected_range != i) {
-            pen_color.setAlpha(40);
-            brush_color.setAlpha(30);
+            pen_color.setAlpha(90);
+            brush_color.setAlpha(80);
         }
         if (m_selected_range >= 0 && m_selected_range == i) {
             total_text = "transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);

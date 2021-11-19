@@ -66,34 +66,34 @@ void MempoolStats::setClientModel(ClientModel *model)
 // TODO: find a more dynamic way to assign colors
 const static std::vector<QColor> colors = {
 
-QColor(212,29,97,255),   //0-1
-QColor(140,43,168,0),    //1-2
-QColor(93,58,175,255),   //2-3
-QColor(57,76,169,255),   //3-4
-QColor(40,138,226,0),    //4-5
-QColor(30,157,227,0),    //5-6
-QColor(34,172,192,255),  //6-8
-QColor(25,137,123,255),  //8-10
-QColor(74,159,75,255),  //10-12
+QColor(212,29, 97,255), //0-1
+QColor(140,43,168,255), //1-2
+QColor(93, 58,175,255), //2-3
+QColor(57, 76,169,255), //3-4
+QColor(40,138,226,255), //4-5
+QColor(30,157,227,255), //5-6
+QColor(34,172,192,255), //6-8
+QColor(25,137,123,255), //8-10
+QColor(74,159, 75,255), //10-12
 QColor(127,178,72,255), //12-15
-QColor(192,201,64,0),   //15-20
+QColor(192,201,64,255), //15-20
 QColor(252,214,69,255), //20-30
 QColor(253,178,39,255), //30-40
 QColor(248,139,33,255), //40-50
-QColor(240,80,42,0),    //60-70
-QColor(108,76,66,0),    //70-80
+QColor(240,80, 42,255), //60-70
+QColor(108,76, 66,255), //70-80
 QColor(117,117,117,255),//80-90
-QColor(85,110,121,0),  //100-125
-QColor(180,28,34,0),   //125-150
-QColor(134,17,79,255), //175-200
-QColor(73,27,138,255), //200-250
-QColor(48,33,144,255), //250-300
-QColor(26,39,124,255), //300-350
-QColor(18,74,159,255), //350-400
-QColor(12,89,153,255), //450-500
-QColor(14,96,99,255),  //500-550
-QColor(10,77,64,0),    //600-650
-QColor(33,93,35,255),  //700-750
+QColor(85,110,121,255), //100-125
+QColor(180,28, 34,255), //125-150
+QColor(134,17, 79,255), //175-200
+QColor(73, 27,138,255), //200-250
+QColor(48, 33,144,255), //250-300
+QColor(26, 39,124,255), //300-350
+QColor(18, 74,159,255), //350-400
+QColor(12, 89,153,255), //450-500
+QColor(14, 96,99,255),  //500-550
+QColor(10, 77,64,255),  //600-650
+QColor(33, 93,35,255),  //700-750
 
 };
 
@@ -212,7 +212,8 @@ void MempoolStats::drawChart()
             brush_color.setAlpha(100);
             if (m_selected_range >= 0 && m_selected_range != i) {
                 // if one item is selected, hide out the other ones
-                brush_color.setAlpha(90);
+                // fee range boxes
+                brush_color.setAlpha(10);
             }
 
             fee_rect->setBrush(QBrush(brush_color));
@@ -295,7 +296,7 @@ void MempoolStats::drawChart()
         brush_color.setAlpha(90);
         if (m_selected_range >= 0 && m_selected_range != i) {
             pen_color.setAlpha(90);
-            brush_color.setAlpha(80);
+            brush_color.setAlpha(85);
         }
         if (m_selected_range >= 0 && m_selected_range == i) {
             total_text = "transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);

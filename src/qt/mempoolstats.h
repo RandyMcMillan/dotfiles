@@ -13,6 +13,8 @@
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsView>
 
+#include <policy/fees.h>
+
 class ClientModel;
 
 class ClickableTextItem : public QObject, public QGraphicsSimpleTextItem

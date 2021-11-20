@@ -101,6 +101,7 @@ config-github() {
 }
 eval "$(ssh-agent -s)"
 config-github
+ssh-add
 ssh-add ~/.ssh/*.github_rsa
 ./config-git.sh
 #git config --global -l

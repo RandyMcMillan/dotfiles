@@ -144,6 +144,9 @@ au BufRead,BufNewFile *.h set noexpandtab
 au BufRead,BufNewFile *akefile* set noexpandtab
 au BufRead,BufNewFile *akefile* set list
 
+au BufRead,BufNewFile *ockerfile* set noexpandtab
+au BufRead,BufNewFile *ockerfile* set list
+
 " --------------------------------------------------------------------------------
 " configure editor with tabs and nice stuff...
 " --------------------------------------------------------------------------------

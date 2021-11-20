@@ -44,12 +44,15 @@ export GIT_REPO_PATH
 .SILENT:
 -: help
 	#REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
-	hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null
-	source .aliases
-	source .functions
+	hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1
+	eval "$(ssh-agent -s)"
+	ssh-add > /dev/null 2>&1
+	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
 .PHONY: help
-help: - report
+help:
 	@echo ""
+	@echo "	make                       default -: function"
+	@echo "	make help	"
 	@echo "	make all	"
 	@echo "	make bootstrap	"
 	@echo "	make executable	"

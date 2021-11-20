@@ -29,18 +29,7 @@ import util/class
 install-bash() {
 
     if hash brew 2>/dev/null; then
-        if ! hash bash 2>/dev/null; then
-                echo $BASH_VERSION
-                test bash && brew upgrade bash && brew install bash
-                echo $BASH_VERSION
-            if ! hash bash-completion 2>/dev/null; then
-                brew install bash-completion
-            fi
-        else
-            echo $BASH_VERSION
-            brew upgrade bash
-            echo $BASH_VERSION
-        fi
+        brew install -f bash-completion bash
     else
 
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"

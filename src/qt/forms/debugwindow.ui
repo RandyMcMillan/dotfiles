@@ -859,7 +859,7 @@
       <attribute name="title">
        <string>Mempool</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_9" stretch="0">
+      <layout class="QVBoxLayout" name="mempool_vert_layout" stretch="0">
        <property name="leftMargin">
         <number>0</number>
        </property>

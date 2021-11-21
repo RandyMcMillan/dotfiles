@@ -17,9 +17,9 @@ static const int LABEL_LEFT_SIZE = 100;//30;
 static const int LABEL_RIGHT_SIZE = 30;
 static const int GRAPH_PADDING_LEFT = 30+LABEL_LEFT_SIZE;
 static const int GRAPH_PADDING_RIGHT = 30+LABEL_RIGHT_SIZE;
-static const int GRAPH_PADDING_TOP = 10;
+static const int GRAPH_PADDING_TOP = 0;//10;
 static const int GRAPH_PADDING_TOP_LABEL = 10;
-static const int GRAPH_PADDING_BOTTOM = 20;
+static const int GRAPH_PADDING_BOTTOM = 0;//20;
 
 void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -106,8 +106,8 @@ void MempoolStats::drawChart()
 
     //
     qreal current_x = GRAPH_PADDING_LEFT;
-    const qreal bottom = m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_BOTTOM;
-    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_TOP-GRAPH_PADDING_TOP_LABEL-GRAPH_PADDING_BOTTOM);
+    const qreal bottom = m_gfx_view->scene()->sceneRect().height();//-GRAPH_PADDING_BOTTOM;
+    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height());//-GRAPH_PADDING_TOP-GRAPH_PADDING_TOP_LABEL-GRAPH_PADDING_BOTTOM);
 
 
     std::vector<QPainterPath> fee_paths;
@@ -327,7 +327,7 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
             rect().width()-GRAPH_PADDING_RIGHT,
             std::max(
                 rect().width()/2,
-                rect().height()/1
+                rect().height()/2
             )
         );//best so far
     drawChart();

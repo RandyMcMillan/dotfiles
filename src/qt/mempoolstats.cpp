@@ -2,34 +2,12 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/mempoolstats.h>
-#include <qt/forms/ui_mempoolstats.h>
 #include <QtMath>
-
-#include <qt/clientmodel.h>
 #include <qt/guiutil.h>
-
-static const char *LABEL_FONT = "Roboto Mono";
-static int LABEL_TITLE_SIZE = 22;
-static int LABEL_KV_SIZE = 12;
-
-static const int LABEL_LEFT_SIZE = 100;//30;
-static const int LABEL_RIGHT_SIZE = 30;
-static const int GRAPH_PADDING_LEFT = 30+LABEL_LEFT_SIZE;
-static const int GRAPH_PADDING_RIGHT = 30+LABEL_RIGHT_SIZE;
-static const int GRAPH_PADDING_TOP = 0;//10;
-static const int GRAPH_PADDING_TOP_LABEL = 10;
-static const int GRAPH_PADDING_BOTTOM = 0;//20;
-
-void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_EMIT objectClicked(this);
-}
-
-void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_EMIT objectClicked(this);
-}
+#include <qt/clientmodel.h>
+#include <qt/mempoolstats.h>
+#include <qt/mempoolconstants.h>
+#include <qt/forms/ui_mempoolstats.h>
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 {
@@ -47,55 +25,11 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_gfx_view = new QGraphicsView(this);
     m_scene = new QGraphicsScene(m_gfx_view);
     m_gfx_view->setScene(m_scene);
-    m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 0));
+    m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     if (m_clientmodel)
         drawChart();
 }
-
-void MempoolStats::setClientModel(ClientModel *model)
-{
-    m_clientmodel = model;
-    if (model) {
-        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
-        drawChart();
-    }
-}
-
-// define the colors for the feeranges
-// TODO: find a more dynamic way to assign colors
-const static std::vector<QColor> colors = {
-
-QColor(212,29, 97,255), //0-1
-QColor(140,43,168,255), //1-2
-QColor(93, 58,175,255), //2-3
-QColor(57, 76,169,255), //3-4
-QColor(40,138,226,255), //4-5
-QColor(30,157,227,255), //5-6
-QColor(34,172,192,255), //6-8
-QColor(25,137,123,255), //8-10
-QColor(74,159, 75,255), //10-12
-QColor(127,178,72,255), //12-15
-QColor(192,201,64,255), //15-20
-QColor(252,214,69,255), //20-30
-QColor(253,178,39,255), //30-40
-QColor(248,139,33,255), //40-50
-QColor(240,80, 42,255), //60-70
-QColor(108,76, 66,255), //70-80
-QColor(117,117,117,255),//80-90
-QColor(85,110,121,255), //100-125
-QColor(180,28, 34,255), //125-150
-QColor(134,17, 79,255), //175-200
-QColor(73, 27,138,255), //200-250
-QColor(48, 33,144,255), //250-300
-QColor(26, 39,124,255), //300-350
-QColor(18, 74,159,255), //350-400
-QColor(12, 89,153,255), //450-500
-QColor(14, 96,99,255),  //500-550
-QColor(10, 77,64,255),  //600-650
-QColor(33, 93,35,255),  //700-750
-
-};
 
 void MempoolStats::drawChart()
 {
@@ -117,6 +51,7 @@ void MempoolStats::drawChart()
     gridFont.setPointSize(12);
 	gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
+    //let view touch boths sides//we will place an over lay of boxes 
     qreal maxwidth = m_gfx_view->scene()->sceneRect().width()-GRAPH_PADDING_LEFT-GRAPH_PADDING_RIGHT;
     {
         // we are going to access the clientmodel feehistogram directly avoding a copy
@@ -209,11 +144,23 @@ void MempoolStats::drawChart()
             //Stack of rects on left
 
             QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
+            //brush_color.setAlpha(100);
             brush_color.setAlpha(100);
             if (m_selected_range >= 0 && m_selected_range != i) {
                 // if one item is selected, hide out the other ones
                 // fee range boxes
-                brush_color.setAlpha(10);
+                //
+                //
+                //
+                //
+                brush_color.setAlpha(70);//not pressed
+                //
+                //
+                //
+                //
+                //
+                //
+                //
             }
 
             fee_rect->setBrush(QBrush(brush_color));
@@ -241,7 +188,8 @@ void MempoolStats::drawChart()
             //TODO: fix bug/crash on click
             QGraphicsTextItem *fee_text = m_scene->addText("fee_text", gridFont);
             fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
-            if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
+            //if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
+            if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
                 fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
             }
             fee_text->setFont(gridFont);
@@ -308,7 +256,8 @@ void MempoolStats::drawChart()
 
     QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
     item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);
-}
+
+}//end drawChart()
 
 // We override the virtual resizeEvent of the QWidget to adjust tables column
 // sizes as the tables width is proportional to the dialogs width.
@@ -316,11 +265,6 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
     m_gfx_view->resize(size());
-    //m_gfx_view->scene()->setSceneRect(rect().left(), rect().top(),rect().width(),std::max(rect().width(), rect().height()));
-    //m_gfx_view->scene()->setSceneRect(rect().left()/2, rect().top()/2,rect().width(),std::max(rect().width()/2, rect().height()/2));//width working
-    //m_gfx_view->scene()->setSceneRect(rect().left()/2, rect().top()/1,rect().width(),std::max(rect().width()/2, rect().height()/2));//working better
-    //m_gfx_view->scene()->setSceneRect(rect().left()/2, rect().top()/1,rect().width()-GRAPH_PADDING_RIGHT,std::max(rect().width()/2, rect().height()/2));//better
-    //m_gfx_view->scene()->setSceneRect(rect().left()/2, rect().top()/1,rect().width()-GRAPH_PADDING_RIGHT,std::max(rect().width()/2, rect().height()/1));//best so far
     m_gfx_view->scene()->setSceneRect(
             rect().left()/2,
             rect().top()/1,
@@ -329,7 +273,7 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
                 rect().width()/2,
                 rect().height()/2
             )
-        );//best so far
+        );
     drawChart();
 }
 
@@ -339,3 +283,16 @@ void MempoolStats::showEvent(QShowEvent *event)
     if (m_clientmodel)
         drawChart();
 }
+
+void MempoolStats::setClientModel(ClientModel *model)
+{
+    m_clientmodel = model;
+    if (model) {
+        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
+        drawChart();
+    }
+}
+
+void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
+void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
+

@@ -46,6 +46,17 @@ public:
 
 public Q_SLOTS:
     void drawChart();
+    void drawHorzLines(
+			const qreal x_increment,
+			QPointF current_x_bottom,
+			const int amount_of_h_lines,
+			qreal maxheight_g,
+			qreal maxwidth,
+			qreal bottom,
+			size_t max_txcount_graph,
+			QFont gridFont
+			);
+    void drawFeeRanges();
 
 private:
     ClientModel* m_clientmodel = Q_NULLPTR;

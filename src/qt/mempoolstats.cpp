@@ -283,8 +283,13 @@ void MempoolStats::drawChart()
         i++;
     }
 
-    QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
-    item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);
+    bool ADD_TOTAL_TEXT = true;
+    if(ADD_TOTAL_TEXT){
+
+        QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
+        item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);
+
+    }
 
 }//end drawChart()
 

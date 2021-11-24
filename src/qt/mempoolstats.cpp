@@ -31,7 +31,11 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
         drawChart();
 }
 
-void MempoolStats::drawFeeRanges(){}
+void MempoolStats::drawFeeRanges( qreal bottom, QFont gridFont){
+    QGraphicsTextItem *fee_range_title =
+        m_scene->addText("Fee ranges\n(sat/b)", gridFont);
+    fee_range_title->setPos(2, bottom+10);
+}
 void MempoolStats::drawHorzLines(
         const qreal x_increment,
         QPointF current_x_bottom,
@@ -42,22 +46,23 @@ void MempoolStats::drawHorzLines(
         size_t max_txcount_graph,
         QFont gridFont){
 
-        // draw horizontal grid
-        QPainterPath tx_count_grid_path(current_x_bottom);
-        int bottomTxCount = 0;
-        for (int i=0; i < amount_of_h_lines; i++)
-        {
-            qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
-            tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT, lY);
-            tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
+    QPainterPath tx_count_grid_path(current_x_bottom);
+    int bottomTxCount = 0;
+    for (int i=0; i < amount_of_h_lines; i++)
+    {
+        qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
+        tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT, lY);
+        tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
 
-            size_t grid_tx_count = (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
-            QGraphicsTextItem *item_tx_count = m_scene->addText(QString::number(grid_tx_count), gridFont);
-            item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
-        }
+        size_t grid_tx_count =
+            (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
+        QGraphicsTextItem *item_tx_count =
+            m_scene->addText(QString::number(grid_tx_count), gridFont);
+        item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
+    }
 
-        QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        m_scene->addPath(tx_count_grid_path, gridPen);
+QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+m_scene->addPath(tx_count_grid_path, gridPen);
 
 }
 void MempoolStats::drawChart()
@@ -135,10 +140,11 @@ void MempoolStats::drawChart()
         const qreal x_increment = 1.0 * (width()-GRAPH_PADDING_LEFT-GRAPH_PADDING_RIGHT) / m_clientmodel->m_mempool_max_samples; //samples.size();
         QPointF current_x_bottom = QPointF(current_x,bottom);
         drawHorzLines(x_increment,current_x_bottom,amount_of_h_lines,maxheight_g,maxwidth,bottom,max_txcount_graph,gridFont);
+        drawFeeRanges(bottom,gridFont);
 
         // draw fee ranges;
-        QGraphicsTextItem *fee_range_title = m_scene->addText("Fee ranges\n(sat/b)", gridFont);
-        fee_range_title->setPos(2, bottom+10);
+        //QGraphicsTextItem *fee_range_title = m_scene->addText("Fee ranges\n(sat/b)", gridFont);
+        //fee_range_title->setPos(2, bottom+10);
 
         qreal c_y = bottom;
         const qreal c_w = 10;

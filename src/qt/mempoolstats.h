@@ -56,7 +56,7 @@ public Q_SLOTS:
 			size_t max_txcount_graph,
 			QFont gridFont
 			);
-    void drawFeeRanges();
+    void drawFeeRanges(qreal bottom, QFont gridFont);
 
 private:
     ClientModel* m_clientmodel = Q_NULLPTR;

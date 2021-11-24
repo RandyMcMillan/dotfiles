@@ -31,11 +31,6 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
         drawChart();
 }
 
-void MempoolStats::drawFeeRanges( qreal bottom, QFont gridFont){
-    QGraphicsTextItem *fee_range_title =
-        m_scene->addText("Fee ranges\n(sat/b)", gridFont);
-    fee_range_title->setPos(2, bottom+10);
-}
 void MempoolStats::drawHorzLines(
         const qreal x_increment,
         QPointF current_x_bottom,
@@ -44,7 +39,7 @@ void MempoolStats::drawHorzLines(
         qreal maxwidth,
         qreal bottom,
         size_t max_txcount_graph,
-        QFont gridFont){
+        QFont LABELFONT){
 
     QPainterPath tx_count_grid_path(current_x_bottom);
     int bottomTxCount = 0;
@@ -57,7 +52,7 @@ void MempoolStats::drawHorzLines(
         size_t grid_tx_count =
             (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
         QGraphicsTextItem *item_tx_count =
-            m_scene->addText(QString::number(grid_tx_count), gridFont);
+            m_scene->addText(QString::number(grid_tx_count), LABELFONT);
         item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
     }
 
@@ -65,6 +60,91 @@ QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::Round
 m_scene->addPath(tx_count_grid_path, gridPen);
 
 }
+
+void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
+    QGraphicsTextItem *fee_range_title =
+        m_scene->addText("Fee ranges\n(sat/b)", LABELFONT);
+    fee_range_title->setPos(2, bottom+10);
+}
+
+void MempoolStats::drawFeeRects( qreal bottom, int display_up_to_range, QFont LABELFONT){
+
+        qreal c_y = bottom;
+        const qreal c_w = 10;
+        const qreal c_h = 20;//10;
+        const qreal c_margin = 2;
+        c_y-=c_margin;
+        int i = 0;
+        for (const interfaces::mempool_feeinfo& list_entry : m_clientmodel->m_mempool_feehist[0].second) {
+            if (i > display_up_to_range) {
+                continue;
+            }
+            ClickableRectItem *fee_rect = new ClickableRectItem();
+                            //(L,   B,   R, Top)
+            fee_rect->setRect(10, c_y-7, c_w+100, c_h);
+
+            //Stack of rects on left
+
+            QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
+            //brush_color.setAlpha(100);
+            brush_color.setAlpha(100);
+            if (m_selected_range >= 0 && m_selected_range != i) {
+                // if one item is selected, hide out the other ones
+                // fee range boxes
+                //
+                //
+                //
+                //
+                brush_color.setAlpha(70);//not pressed
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+            }
+
+            fee_rect->setBrush(QBrush(brush_color));
+            fee_rect->setPen(Qt::NoPen);//no outline only fill with QBrush
+            fee_rect->setCursor(Qt::PointingHandCursor);
+            connect(fee_rect, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
+                // if clicked, we select or deselect if selected
+                if (m_selected_range == i) {
+                    m_selected_range = -1;
+                } else {
+                    m_selected_range = i;
+                }
+                drawChart();
+
+                /*TODO remove
+                  store the existing feehistory to a temporary file
+                */
+                //FILE *filestr = fsbridge::fopen("/tmp/statsdump", "wb");
+                //CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);
+                //file << m_clientmodel->m_mempool_feehist;
+                //file.fclose();
+            });
+            //m_scene->addItem(fee_rect);
+
+            //TODO: fix bug/crash on click
+            QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
+            fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
+            //if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
+            if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
+                fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
+            }
+            fee_text->setFont(LABELFONT);
+            fee_text->setPos(4+c_w-7, c_y-7);
+            m_scene->addItem(fee_text);
+            m_scene->addItem(fee_rect);
+
+            c_y-=c_h+c_margin;
+            i++;
+        }
+
+}
+
 void MempoolStats::drawChart()
 {
     if (!m_clientmodel)
@@ -139,86 +219,10 @@ void MempoolStats::drawChart()
         // we ignore the time difference of collected samples due to locking issues
         const qreal x_increment = 1.0 * (width()-GRAPH_PADDING_LEFT-GRAPH_PADDING_RIGHT) / m_clientmodel->m_mempool_max_samples; //samples.size();
         QPointF current_x_bottom = QPointF(current_x,bottom);
-        drawHorzLines(x_increment,current_x_bottom,amount_of_h_lines,maxheight_g,maxwidth,bottom,max_txcount_graph,gridFont);
-        drawFeeRanges(bottom,gridFont);
 
-        // draw fee ranges;
-        //QGraphicsTextItem *fee_range_title = m_scene->addText("Fee ranges\n(sat/b)", gridFont);
-        //fee_range_title->setPos(2, bottom+10);
-
-        qreal c_y = bottom;
-        const qreal c_w = 10;
-        const qreal c_h = 20;//10;
-        const qreal c_margin = 2;
-        c_y-=c_margin;
-        int i = 0;
-        for (const interfaces::mempool_feeinfo& list_entry : m_clientmodel->m_mempool_feehist[0].second) {
-            if (i > display_up_to_range) {
-                continue;
-            }
-            ClickableRectItem *fee_rect = new ClickableRectItem();
-                            //(L,   B,   R, Top)
-            fee_rect->setRect(10, c_y-7, c_w+100, c_h);
-
-            //Stack of rects on left
-
-            QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
-            //brush_color.setAlpha(100);
-            brush_color.setAlpha(100);
-            if (m_selected_range >= 0 && m_selected_range != i) {
-                // if one item is selected, hide out the other ones
-                // fee range boxes
-                //
-                //
-                //
-                //
-                brush_color.setAlpha(70);//not pressed
-                //
-                //
-                //
-                //
-                //
-                //
-                //
-            }
-
-            fee_rect->setBrush(QBrush(brush_color));
-            fee_rect->setPen(Qt::NoPen);//no outline only fill with QBrush
-            fee_rect->setCursor(Qt::PointingHandCursor);
-            connect(fee_rect, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
-                // if clicked, we select or deselect if selected
-                if (m_selected_range == i) {
-                    m_selected_range = -1;
-                } else {
-                    m_selected_range = i;
-                }
-                drawChart();
-
-                /*TODO remove
-                  store the existing feehistory to a temporary file
-                */
-                //FILE *filestr = fsbridge::fopen("/tmp/statsdump", "wb");
-                //CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);
-                //file << m_clientmodel->m_mempool_feehist;
-                //file.fclose();
-            });
-            //m_scene->addItem(fee_rect);
-
-            //TODO: fix bug/crash on click
-            QGraphicsTextItem *fee_text = m_scene->addText("fee_text", gridFont);
-            fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
-            //if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-            if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
-            }
-            fee_text->setFont(gridFont);
-            fee_text->setPos(4+c_w-7, c_y-7);
-            m_scene->addItem(fee_text);
-            m_scene->addItem(fee_rect);
-
-            c_y-=c_h+c_margin;
-            i++;
-        }
+        drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
+        drawFeeRanges(bottom, gridFont);
+        drawFeeRects(bottom, display_up_to_range, gridFont);
 
         // draw the paths
         bool first = true;

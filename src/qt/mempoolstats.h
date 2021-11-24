@@ -54,9 +54,10 @@ public Q_SLOTS:
 			qreal maxwidth,
 			qreal bottom,
 			size_t max_txcount_graph,
-			QFont gridFont
+			QFont LABELFONT
 			);
-    void drawFeeRanges(qreal bottom, QFont gridFont);
+    void drawFeeRanges(qreal bottom, QFont LABELFONT);
+    void drawFeeRects(qreal bottom, int display_up_to_range, QFont LABELFONT);
 
 private:
     ClientModel* m_clientmodel = Q_NULLPTR;

@@ -154,8 +154,8 @@ void MempoolStats::drawChart()
 
     //
     qreal current_x = GRAPH_PADDING_LEFT;
-    const qreal bottom = m_gfx_view->scene()->sceneRect().height();//-GRAPH_PADDING_BOTTOM;
-    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height());//-GRAPH_PADDING_TOP-GRAPH_PADDING_TOP_LABEL-GRAPH_PADDING_BOTTOM);
+    const qreal bottom = m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_BOTTOM;
+    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_TOP-GRAPH_PADDING_TOP_LABEL-GRAPH_PADDING_BOTTOM);
 
 
     std::vector<QPainterPath> fee_paths;

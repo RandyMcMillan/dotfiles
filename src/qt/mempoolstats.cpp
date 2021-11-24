@@ -67,7 +67,7 @@ void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
     fee_range_title->setPos(2, bottom+10);
 }
 
-void MempoolStats::drawFeeRects( qreal bottom, int display_up_to_range, QFont LABELFONT){
+void MempoolStats::drawFeeRects( qreal bottom, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT){
 
         qreal c_y = bottom;
         const qreal c_w = 10;
@@ -128,15 +128,20 @@ void MempoolStats::drawFeeRects( qreal bottom, int display_up_to_range, QFont LA
             //m_scene->addItem(fee_rect);
 
             //TODO: fix bug/crash on click
-            QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
-            fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
-            //if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-            if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
+            if (ADD_TEXT){
+
+                QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
+                fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
+                //if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
+                if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
+                    fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
+                }
+                fee_text->setFont(LABELFONT);
+                fee_text->setPos(4+c_w-7, c_y-7);
+                m_scene->addItem(fee_text);
+
             }
-            fee_text->setFont(LABELFONT);
-            fee_text->setPos(4+c_w-7, c_y-7);
-            m_scene->addItem(fee_text);
+
             m_scene->addItem(fee_rect);
 
             c_y-=c_h+c_margin;
@@ -222,7 +227,8 @@ void MempoolStats::drawChart()
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
         drawFeeRanges(bottom, gridFont);
-        drawFeeRects(bottom, display_up_to_range, gridFont);
+        bool ADD_TEXT = true;
+        drawFeeRects(bottom, display_up_to_range, ADD_TEXT, gridFont);
 
         // draw the paths
         bool first = true;

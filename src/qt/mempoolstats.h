@@ -57,7 +57,7 @@ public Q_SLOTS:
 			QFont LABELFONT
 			);
     void drawFeeRanges(qreal bottom, QFont LABELFONT);
-    void drawFeeRects(qreal bottom, int display_up_to_range, QFont LABELFONT);
+    void drawFeeRects(qreal bottom, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT);
 
 private:
     ClientModel* m_clientmodel = Q_NULLPTR;

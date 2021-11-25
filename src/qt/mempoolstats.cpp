@@ -46,14 +46,20 @@ void MempoolStats::drawHorzLines(
     for (int i=0; i < amount_of_h_lines; i++)
     {
         qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
-        tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT, lY);
-        tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
+        //TODO: use text rect width to adjust
+        tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT-0, lY);
+        //tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
+        tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT, lY);
 
         size_t grid_tx_count =
             (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
+
+        //Add text ornament
         QGraphicsTextItem *item_tx_count =
-            m_scene->addText(QString::number(grid_tx_count), LABELFONT);
-        item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
+            m_scene->addText(QString::number(grid_tx_count)+QString(" vB"), LABELFONT);
+        //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
+        //TODO: use text rect width to adjust
+        item_tx_count->setPos(GRAPH_PADDING_LEFT-0, lY-(item_tx_count->boundingRect().height()/2));
     }
 
 QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
@@ -81,7 +87,8 @@ void MempoolStats::drawFeeRects( qreal bottom, int display_up_to_range, bool ADD
             }
             ClickableRectItem *fee_rect = new ClickableRectItem();
                             //(L,   B,   R, Top)
-            fee_rect->setRect(10, c_y-7, c_w+100, c_h);
+            //fee_rect->setRect(10, c_y-7, c_w+100, c_h);
+            fee_rect->setRect(0, c_y-18, c_w+80, c_h);
 
             //Stack of rects on left
 
@@ -226,9 +233,9 @@ void MempoolStats::drawChart()
         QPointF current_x_bottom = QPointF(current_x,bottom);
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
-        drawFeeRanges(bottom, gridFont);
+        //drawFeeRanges(bottom, gridFont);
         bool ADD_TEXT = true;
-        drawFeeRects(bottom, display_up_to_range, ADD_TEXT, gridFont);
+        //drawFeeRects(bottom, display_up_to_range, ADD_TEXT, gridFont);
 
         // draw the paths
         bool first = true;

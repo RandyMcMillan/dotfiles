@@ -4,13 +4,13 @@ static const char *LABEL_FONT = "Roboto Mono";
 static int LABEL_TITLE_SIZE = 22;
 static int LABEL_KV_SIZE = 12;
 
-static const int LABEL_LEFT_SIZE = 100;// space + #.# MvB -- //
-static const int LABEL_RIGHT_SIZE = 50;
+static const int LABEL_LEFT_SIZE = 0;// space + #.# MvB -- //
+static const int LABEL_RIGHT_SIZE = 0;
 static const int GRAPH_PADDING_LEFT = 0+LABEL_LEFT_SIZE;
 static const int GRAPH_PADDING_RIGHT = 0+LABEL_RIGHT_SIZE;
-static const int GRAPH_PADDING_TOP = 0;//10;
-static const int GRAPH_PADDING_TOP_LABEL = 10;
-static const int GRAPH_PADDING_BOTTOM = 0;//20;
+static const int GRAPH_PADDING_TOP = 0;
+static const int GRAPH_PADDING_TOP_LABEL = 0;
+static const int GRAPH_PADDING_BOTTOM = 0;
 
 const static std::vector<QColor> colors = {
 

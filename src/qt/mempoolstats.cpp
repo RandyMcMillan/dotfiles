@@ -166,8 +166,20 @@ void MempoolStats::drawChart()
 
     //
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
+    // TODO: calc dynamic GRAPH_PADDING_BOTTOM
     const qreal bottom = m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_BOTTOM;
     const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
+    LogPrintf("\n");
+    LogPrintf("\n");
+    LogPrintf("\n");
+    LogPrintf("\n");
+    LogPrintf("bottom = %s\n",bottom);
+    LogPrintf("maxheight_g = %s\n",maxheight_g);
+    LogPrintf("\n");
+    LogPrintf("\n");
+    LogPrintf("\n");
+    LogPrintf("\n");
+    LogPrintf("\n");
 
 
     std::vector<QPainterPath> fee_paths;
@@ -225,6 +237,13 @@ void MempoolStats::drawChart()
             int stepbase = qPow(10.0f, val);
             int step = qCeil((1.0*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
             max_txcount_graph = step*amount_of_h_lines;
+            LogPrintf("\n");
+            LogPrintf("\n");
+            LogPrintf("\n");
+            LogPrintf("max_txcount_graph = %s\n",max_txcount_graph);
+            LogPrintf("\n");
+            LogPrintf("\n");
+            LogPrintf("\n");
         }
 
         // calculate the x axis step per sample
@@ -251,10 +270,12 @@ void MempoolStats::drawChart()
                 y -= (maxheight_g / max_txcount_graph * list_entry.tx_count);
                 if (first) {
                     // first sample, initiate the path with first point
-                    fee_paths.emplace_back(QPointF(current_x, y));
+                    //                        TODO:dynamic scalar
+                    fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR*current_x, y));//affects scale height draw
                 }
                 else {
-                    fee_paths[i].lineTo(current_x, y);
+                    //              TODO:dynamic scalar
+                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR*current_x, y);//affects scale height draw
                 }
                 i++;
             }

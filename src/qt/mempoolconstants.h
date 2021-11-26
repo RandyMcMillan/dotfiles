@@ -10,7 +10,9 @@ static const int GRAPH_PADDING_LEFT = 70+LABEL_LEFT_SIZE;
 static const int GRAPH_PADDING_RIGHT = 50+LABEL_RIGHT_SIZE;
 static const int GRAPH_PADDING_TOP = 0;
 static const int GRAPH_PADDING_TOP_LABEL = 0;
-static const int GRAPH_PADDING_BOTTOM = 0;
+static const int GRAPH_PADDING_BOTTOM = 50;
+
+static const int GRAPH_PATH_SCALAR = 1.0;
 
 const static std::vector<QColor> colors = {
 

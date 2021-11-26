@@ -48,8 +48,8 @@ void MempoolStats::drawHorzLines(
         qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
         //TODO: use text rect width to adjust
         tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT-0, lY);
-        //tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
-        tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT, lY);
+        tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
+        //tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT, lY);
 
         size_t grid_tx_count =
             (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;

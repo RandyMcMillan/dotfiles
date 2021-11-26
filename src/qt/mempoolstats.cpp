@@ -56,7 +56,7 @@ void MempoolStats::drawHorzLines(
 
         //Add text ornament
         QGraphicsTextItem *item_tx_count =
-            m_scene->addText(QString::number(grid_tx_count).rightJustified(5, ' ')+QString("vB"), LABELFONT);
+            m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
         //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
         //TODO: use text rect width to adjust
         item_tx_count->setPos(GRAPH_PADDING_LEFT-60, lY-(item_tx_count->boundingRect().height()/2));

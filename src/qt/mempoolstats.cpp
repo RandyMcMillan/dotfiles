@@ -355,6 +355,11 @@ void MempoolStats::setClientModel(ClientModel *model)
     }
 }
 
-void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
-void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
+void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent  *event) { Q_EMIT objectClicked(this); }
+void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent  *event) { Q_EMIT objectClicked(this); }
+
+void MempoolStats::mousePressEvent(QMouseEvent       *event) { Q_EMIT objectClicked(this); }
+void MempoolStats::mouseReleaseEvent(QMouseEvent     *event) { Q_EMIT objectClicked(this); }
+void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this); }
+void MempoolStats::mouseMoveEvent(QMouseEvent        *event) { Q_EMIT objectClicked(this); }
 

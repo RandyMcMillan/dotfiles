@@ -47,17 +47,24 @@ public:
 public Q_SLOTS:
     void drawChart();
     void drawHorzLines(
-			const qreal x_increment,
-			QPointF current_x_bottom,
-			const int amount_of_h_lines,
-			qreal maxheight_g,
-			qreal maxwidth,
-			qreal bottom,
-			size_t max_txcount_graph,
-			QFont LABELFONT
-			);
+    const qreal x_increment,
+    QPointF current_x_bottom,
+    const int amount_of_h_lines,
+    qreal maxheight_g,
+    qreal maxwidth,
+    qreal bottom,
+    size_t max_txcount_graph,
+    QFont LABELFONT
+);
     void drawFeeRanges(qreal bottom, QFont LABELFONT);
     void drawFeeRects(qreal bottom, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT);
+
+    void mousePressEvent(QMouseEvent       * event) override;
+    void mouseReleaseEvent(QMouseEvent     * event) override;
+    void mouseDoubleClickEvent(QMouseEvent * event) override;
+    void mouseMoveEvent(QMouseEvent        * event) override;
+Q_SIGNALS:
+    void objectClicked(QWidget*);
 
 private:
     ClientModel* m_clientmodel = Q_NULLPTR;

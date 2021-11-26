@@ -6,7 +6,7 @@ static int LABEL_KV_SIZE = 12;
 
 static const int LABEL_LEFT_SIZE = 0;// space + #.# MvB -- //
 static const int LABEL_RIGHT_SIZE = 0;
-static const int GRAPH_PADDING_LEFT = 0+LABEL_LEFT_SIZE;
+static const int GRAPH_PADDING_LEFT = 50+LABEL_LEFT_SIZE;
 static const int GRAPH_PADDING_RIGHT = 0+LABEL_RIGHT_SIZE;
 static const int GRAPH_PADDING_TOP = 0;
 static const int GRAPH_PADDING_TOP_LABEL = 0;

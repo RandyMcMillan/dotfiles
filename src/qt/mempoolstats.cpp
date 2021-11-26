@@ -165,7 +165,7 @@ void MempoolStats::drawChart()
     m_scene->clear();
 
     //
-    qreal current_x = GRAPH_PADDING_LEFT;
+    qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
     const qreal bottom = m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_BOTTOM;
     const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_TOP-GRAPH_PADDING_TOP_LABEL-GRAPH_PADDING_BOTTOM);
 

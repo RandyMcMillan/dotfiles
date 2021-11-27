@@ -18,7 +18,7 @@ let NERDTreeShowHidden=1
 " Use the Solarized Dark theme
 set background=dark
 colorscheme solarized
-set colorcolumn=40,50,79,81,120,160
+set colorcolumn=40,50,79,81,129,131,159,161,209,211
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 let g:solarized_termtrans=1
@@ -139,8 +139,10 @@ if has("autocmd")
 " configure expanding of tabs for various file types
 au BufRead,BufNewFile *.py set expandtab
 au BufRead,BufNewFile *.py set list
-au BufRead,BufNewFile *.c set noexpandtab
 au BufRead,BufNewFile *.h set noexpandtab
+au BufRead,BufNewFile *.c set noexpandtab
+au BufRead,BufNewFile *.h set list
+au BufRead,BufNewFile *.c set list
 au BufRead,BufNewFile *akefile* set noexpandtab
 au BufRead,BufNewFile *akefile* set list
 

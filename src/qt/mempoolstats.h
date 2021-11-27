@@ -59,10 +59,11 @@ public Q_SLOTS:
     void drawFeeRanges(qreal bottom, QFont LABELFONT);
     void drawFeeRects(qreal bottom, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT);
 
-    void mousePressEvent(QMouseEvent       * event) override;
-    void mouseReleaseEvent(QMouseEvent     * event) override;
-    void mouseDoubleClickEvent(QMouseEvent * event) override;
-    void mouseMoveEvent(QMouseEvent        * event) override;
+    void mousePressEvent(QMouseEvent        * event) override;
+    void mouseReleaseEvent(QMouseEvent      * event) override;
+    void mouseDoubleClickEvent(QMouseEvent  * event) override;
+    void mouseMoveEvent(QMouseEvent         * event) override;
+
 Q_SIGNALS:
     void objectClicked(QWidget*);
 
@@ -72,8 +73,10 @@ private:
     QGraphicsView *m_gfx_view;
     QGraphicsScene *m_scene;
 
+	virtual void enterEvent(QEvent * event) override;
+    virtual void leaveEvent(QEvent * event) override;
     virtual void resizeEvent(QResizeEvent* event) override;
-    virtual void showEvent(QShowEvent* event) override;
+    virtual void showEvent(QShowEvent* event)     override;
 
     int m_selected_range = -1;
 };

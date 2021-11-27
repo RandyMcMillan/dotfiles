@@ -3,6 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <QtMath>
+#include <QMouseEvent>
 #include <qt/guiutil.h>
 #include <qt/clientmodel.h>
 #include <qt/mempoolstats.h>
@@ -15,6 +16,7 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
         parent->installEventFilter(this);
         raise();
     }
+    //setMouseTracking(true);
 
     // autoadjust font size
     QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
@@ -355,11 +357,57 @@ void MempoolStats::setClientModel(ClientModel *model)
     }
 }
 
-void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent  *event) { Q_EMIT objectClicked(this); }
-void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent  *event) { Q_EMIT objectClicked(this); }
+void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
+void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 
-void MempoolStats::mousePressEvent(QMouseEvent       *event) { Q_EMIT objectClicked(this); }
-void MempoolStats::mouseReleaseEvent(QMouseEvent     *event) { Q_EMIT objectClicked(this); }
-void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this); }
-void MempoolStats::mouseMoveEvent(QMouseEvent        *event) { Q_EMIT objectClicked(this); }
+void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+
+    QWidget::mousePressEvent(event);
+    LogPrintf("mousePressEvent\n");
+    LogPrintf("event->pos().x() %s\n",event->pos().x());
+    LogPrintf("event->pos().y() %s\n",event->pos().y());
+
+}
+void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+
+    QWidget::mouseReleaseEvent(event);
+    LogPrintf("mousePressEvent\n");
+    LogPrintf("event->pos().x() %s\n",event->pos().x());
+    LogPrintf("event->pos().y() %s\n",event->pos().y());
+
+}
+void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+
+    QWidget::mouseDoubleClickEvent(event);
+    LogPrintf("mousePressEvent\n");
+    LogPrintf("event->pos().x() %s\n",event->pos().x());
+    LogPrintf("event->pos().y() %s\n",event->pos().y());
+
+}
+void MempoolStats::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+
+    QWidget::mouseMoveEvent(event);
+    LogPrintf("mousePressEvent\n");
+    LogPrintf("event->pos().x() %s\n",event->pos().x());
+    LogPrintf("event->pos().y() %s\n",event->pos().y());
+
+}
+
+void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
+
+    QEvent *this_event = event;
+    LogPrintf("enterEvent\n");
+    LogPrintf("this_event->type() %s\n",this_event->type());
+    LogPrintf("this_event->type() %s\n",this_event->type());
+
+}
+
+void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
+
+    QEvent *this_event = event;
+    LogPrintf("leaveEvent\n");
+    LogPrintf("this_event->type() %s\n",this_event->type());
+    LogPrintf("this_event->type() %s\n",this_event->type());
+
+}
 

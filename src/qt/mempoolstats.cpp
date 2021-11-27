@@ -400,6 +400,9 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
     LogPrintf("this_event->type() %s\n",this_event->type());
     LogPrintf("this_event->type() %s\n",this_event->type());
 
+    showFeeRanges(this_event);
+    showFeeRects(this_event);
+
 }
 
 void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
@@ -409,5 +412,41 @@ void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
     LogPrintf("this_event->type() %s\n",this_event->type());
     LogPrintf("this_event->type() %s\n",this_event->type());
 
+    hideFeeRanges(this_event);
+    hideFeeRects(this_event);
+
 }
 
+void MempoolStats::showFeeRanges(QEvent *event){
+
+    QEvent *this_event = event;
+    LogPrintf("leaveEvent\n");
+    LogPrintf("this_event->type() %s\n",this_event->type());
+    LogPrintf("this_event->type() %s\n",this_event->type());
+
+};
+void MempoolStats::hideFeeRanges(QEvent *event){
+
+    QEvent *this_event = event;
+    LogPrintf("leaveEvent\n");
+    LogPrintf("this_event->type() %s\n",this_event->type());
+    LogPrintf("this_event->type() %s\n",this_event->type());
+
+};
+
+void MempoolStats::showFeeRects(QEvent *event){
+
+    QEvent *this_event = event;
+    LogPrintf("leaveEvent\n");
+    LogPrintf("this_event->type() %s\n",this_event->type());
+    LogPrintf("this_event->type() %s\n",this_event->type());
+
+};
+void MempoolStats::hideFeeRects(QEvent *event){
+
+    QEvent *this_event = event;
+    LogPrintf("leaveEvent\n");
+    LogPrintf("this_event->type() %s\n",this_event->type());
+    LogPrintf("this_event->type() %s\n",this_event->type());
+
+};

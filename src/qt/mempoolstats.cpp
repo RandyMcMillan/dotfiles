@@ -10,7 +10,7 @@
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempoolstats.h>
 
-bool const ADD_TEXT = false;
+bool const ADD_TEXT = true;
 bool const MEMPOOL_GRAPH_LOGGING = true;
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
@@ -102,7 +102,8 @@ void MempoolStats::drawFeeRects( qreal bottom, int display_up_to_range, bool ADD
             ClickableRectItem *fee_rect = new ClickableRectItem();
                             //(L,   B,   R, Top)
             //fee_rect->setRect(10, c_y-7, c_w+100, c_h);
-            fee_rect->setRect(0, c_y-18, c_w+80, c_h);
+            //                x will be dyanmic base on mouse position
+            fee_rect->setRect(200, c_y-18, c_w+80, c_h);
 
             //Stack of rects on left
 

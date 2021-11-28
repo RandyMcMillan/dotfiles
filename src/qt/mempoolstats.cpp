@@ -61,6 +61,7 @@ void MempoolStats::drawHorzLines(
             m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
         //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
         //TODO: use text rect width to adjust
+        item_tx_count->setDefaultTextColor(Qt::white);
         item_tx_count->setPos(GRAPH_PADDING_LEFT-60, lY-(item_tx_count->boundingRect().height()/2));
     }
 
@@ -70,6 +71,7 @@ m_scene->addPath(tx_count_grid_path, gridPen);
 }
 
 void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
+
     QGraphicsTextItem *fee_range_title =
         m_scene->addText("Fee ranges\n(sat/b)", LABELFONT);
     fee_range_title->setPos(2, bottom+10);
@@ -145,6 +147,7 @@ void MempoolStats::drawFeeRects( qreal bottom, int display_up_to_range, bool ADD
                 if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
                     fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
                 }
+                fee_text->setDefaultTextColor(Qt::white);
                 fee_text->setFont(LABELFONT);
                 fee_text->setPos(4+c_w-7, c_y-7);
                 m_scene->addItem(fee_text);

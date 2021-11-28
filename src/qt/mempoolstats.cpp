@@ -10,7 +10,7 @@
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempoolstats.h>
 
-bool const ADD_TEXT = true;
+bool const ADD_TEXT = false;
 bool const MEMPOOL_GRAPH_LOGGING = true;
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
@@ -273,7 +273,7 @@ void MempoolStats::drawChart()
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
         //drawFeeRanges(bottom, gridFont);
-        //drawFeeRects(bottom, display_up_to_range, ADD_TEXT, gridFont);
+        drawFeeRects(bottom, display_up_to_range, ADD_TEXT, gridFont);
 
         // draw the paths
         bool first = true;

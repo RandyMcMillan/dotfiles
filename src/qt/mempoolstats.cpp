@@ -87,7 +87,7 @@ void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
         }
 }
 
-void MempoolStats::drawFeeRects( qreal bottom, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT){
+void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT){
 
         qreal c_y = bottom;
         const qreal c_w = 10;
@@ -274,7 +274,7 @@ void MempoolStats::drawChart()
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
         //drawFeeRanges(bottom, gridFont);
-        drawFeeRects(bottom, display_up_to_range, ADD_TEXT, gridFont);
+        drawFeeRects(bottom, maxwidth, display_up_to_range, ADD_TEXT, gridFont);
 
         // draw the paths
         bool first = true;

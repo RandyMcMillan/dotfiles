@@ -12,6 +12,7 @@
 
 bool const ADD_TEXT = true;
 bool const ADD_FEE_RANGES = false;
+bool const ADD_FEE_RECTS = false;
 bool const MEMPOOL_GRAPH_LOGGING = true;
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
@@ -87,7 +88,7 @@ m_scene->addPath(tx_count_grid_path, gridPen);
 
 void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
 
-    if (ADD_TEXT) {
+    if (ADD_FEE_RANGES) {
         QGraphicsTextItem *fee_range_title =
             m_scene->addText("Fee ranges\n(sat/b)", LABELFONT);
         fee_range_title->setPos(2, bottom+10);
@@ -186,7 +187,9 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
 
             }
 
+            if (ADD_FEE_RECTS){
             m_scene->addItem(fee_rect);
+            }
 
             c_y-=c_h+c_margin;
             i++;

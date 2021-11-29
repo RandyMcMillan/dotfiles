@@ -10,7 +10,8 @@
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempoolstats.h>
 
-bool const ADD_TEXT = false;
+bool const ADD_TEXT = true;
+bool const ADD_FEE_RANGES = false;
 bool const MEMPOOL_GRAPH_LOGGING = true;
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
@@ -26,6 +27,12 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
     LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
     LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
+
+    if (MEMPOOL_GRAPH_LOGGING){
+
+        LogPrintf("LABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
+        LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
+    }
 
     m_gfx_view = new QGraphicsView(this);
     m_scene = new QGraphicsScene(m_gfx_view);
@@ -164,7 +171,7 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
             //m_scene->addItem(fee_rect);
 
             //TODO: fix bug/crash on click
-            if (ADD_TEXT){
+            if (ADD_FEE_RANGES){
 
                 QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
                 fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
@@ -197,7 +204,7 @@ void MempoolStats::drawChart()
     //
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
     // TODO: calc dynamic GRAPH_PADDING_BOTTOM
-    const qreal bottom = m_gfx_view->scene()->sceneRect().height()-GRAPH_PADDING_BOTTOM;
+    const qreal bottom = (m_gfx_view->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
     const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
     if (MEMPOOL_GRAPH_LOGGING){
 
@@ -361,15 +368,17 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
     m_gfx_view->resize(size());
+
     m_gfx_view->scene()->setSceneRect(
-            rect().left()/2,
-            rect().top()/1,
+            rect().left()/1.618,
+            rect().top()/1.618,
             rect().width()-GRAPH_PADDING_RIGHT,
             std::max(
-                rect().width()/2,
-                rect().height()/2
-            )
-        );
+                (0.1 * rect().width() ),
+                (0.9 * rect().height())
+        ));
+    m_gfx_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     drawChart();
 }
 

@@ -10,7 +10,7 @@
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempoolstats.h>
 
-bool const ADD_TEXT = true;
+bool const ADD_TEXT = false;
 bool const MEMPOOL_GRAPH_LOGGING = true;
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
@@ -89,8 +89,22 @@ void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
 
 void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT){
 
+    if (MEMPOOL_GRAPH_LOGGING){
+
+        LogPrintf("\n");
+        LogPrintf("\n");
+        LogPrintf("\n");
+        LogPrintf("\n");
+        LogPrintf("bottom = %s\n",bottom);
+        LogPrintf("maxwidth = %s\n",maxwidth);
+        LogPrintf("display_up_to_range = %s\n",display_up_to_range);
+        LogPrintf("\n");
+        LogPrintf("\n");
+        LogPrintf("\n");
+
+    }
         qreal c_y = bottom;
-        const qreal c_w = 10;
+        const qreal c_w = 90;
         const qreal c_h = 20;//10;
         const qreal c_margin = 2;
         c_y-=c_margin;
@@ -103,7 +117,7 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
                             //(L,   B,   R, Top)
             //fee_rect->setRect(10, c_y-7, c_w+100, c_h);
             //                x will be dyanmic base on mouse position
-            fee_rect->setRect(200, c_y-18, c_w+80, c_h);
+            fee_rect->setRect(maxwidth-0, c_y-18, c_w, c_h);
 
             //Stack of rects on left
 

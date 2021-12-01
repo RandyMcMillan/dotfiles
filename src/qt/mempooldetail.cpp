@@ -313,9 +313,9 @@ void MempoolDetail::drawChart()
         const qreal x_increment = 1.0 * (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT) ) / m_clientmodel->m_mempool_max_samples; //samples.size();
         QPointF current_x_bottom = QPointF(current_x,bottom);
 
-        drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
+        //drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
         //drawFeeRanges(bottom, gridFont);
-        //drawFeeRects(bottom, maxwidth, display_up_to_range, ADD_TEXT, gridFont);
+        drawFeeRects(bottom, maxwidth, display_up_to_range, ADD_TEXT, gridFont);
 
         // draw the paths
         bool first = true;
@@ -369,7 +369,7 @@ void MempoolDetail::drawChart()
             total_text = "transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);
         }
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
+        //m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
         i++;
     }
 

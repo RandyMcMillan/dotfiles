@@ -6,16 +6,16 @@
 #include <QMouseEvent>
 #include <qt/guiutil.h>
 #include <qt/clientmodel.h>
-#include <qt/mempoolstats.h>
+#include <qt/mempooldetail.h>
 #include <qt/mempoolconstants.h>
-#include <qt/forms/ui_mempoolstats.h>
+#include <qt/forms/ui_mempooldetail.h>
 
 bool const ADD_TEXT = true;
 bool const ADD_FEE_RANGES = false;
 bool const ADD_FEE_RECTS = true;
 bool const MEMPOOL_GRAPH_LOGGING = true;
 
-MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
+MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 {
     if (parent) {
         parent->installEventFilter(this);
@@ -35,17 +35,17 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
         LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
     }
 
-    m_gfx_view = new QGraphicsView(this);
-    m_scene = new QGraphicsScene(m_gfx_view);
-    m_gfx_view->setScene(m_scene);
-    m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
-    m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    m_gfx_detail = new QGraphicsView(this);
+    m_scene = new QGraphicsScene(m_gfx_detail);
+    m_gfx_detail->setScene(m_scene);
+    m_gfx_detail->setBackgroundBrush(QColor(16, 18, 31, 127));
+    m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     if (m_clientmodel)
         drawChart();
 }
 
-void MempoolStats::drawHorzLines(
+void MempoolDetail::drawHorzLines(
         const qreal x_increment,
         QPointF current_x_bottom,
         const int amount_of_h_lines,
@@ -90,7 +90,7 @@ m_scene->addPath(tx_count_grid_path, gridPen);
 
 }
 
-void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
+void MempoolDetail::drawFeeRanges( qreal bottom, QFont LABELFONT){
 
     if (ADD_FEE_RANGES) {
         QGraphicsTextItem *fee_range_title =
@@ -99,7 +99,7 @@ void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
         }
 }
 
-void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT){
+void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT){
 
     double bottom_display_ratio = (bottom/display_up_to_range);
 
@@ -128,13 +128,13 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
             if (i > display_up_to_range) {
                 continue;
             }
-            ClickableRectItem *fee_rect = new ClickableRectItem();
+            ClickableRectItem *fee_rect_detail = new ClickableRectItem();
                             //(L,   B,   R, Top)
-            //fee_rect->setRect(10, c_y-7, c_w+100, c_h);
+            //fee_rect_detail->setRect(10, c_y-7, c_w+100, c_h);
             //                x will be dyanmic base on mouse position
             if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
-                //fee_rect->setRect(maxwidth-0, (c_y-18), c_w, (bottom/display_up_to_range)-20);//interesting effect
-                fee_rect->setRect(maxwidth-0, (c_y-18), c_w, (c_h ));
+                //fee_rect_detail->setRect(maxwidth-0, (c_y-18), c_w, (bottom/display_up_to_range)-20);//interesting effect
+                fee_rect_detail->setRect(maxwidth-0, (c_y-18), c_w, (c_h ));
 
             //Stack of rects on left
 
@@ -158,10 +158,10 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
                 //
             }
 
-            fee_rect->setBrush(QBrush(brush_color));
-            fee_rect->setPen(Qt::NoPen);//no outline only fill with QBrush
-            fee_rect->setCursor(Qt::PointingHandCursor);
-            connect(fee_rect, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
+            fee_rect_detail->setBrush(QBrush(brush_color));
+            fee_rect_detail->setPen(Qt::NoPen);//no outline only fill with QBrush
+            fee_rect_detail->setCursor(Qt::PointingHandCursor);
+            connect(fee_rect_detail, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
                 // if clicked, we select or deselect if selected
                 if (m_selected_range == i) {
                     m_selected_range = -1;
@@ -178,7 +178,7 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
                 //file << m_clientmodel->m_mempool_feehist;
                 //file.fclose();
             });
-            //m_scene->addItem(fee_rect);
+            //m_scene->addItem(fee_rect_detail);
 
             //TODO: fix bug/crash on click
             if (ADD_FEE_RANGES){
@@ -197,7 +197,7 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
             }
 
             if (ADD_FEE_RECTS){
-            m_scene->addItem(fee_rect);
+            m_scene->addItem(fee_rect_detail);
             }
 
             c_y-=c_h+c_margin;
@@ -206,7 +206,7 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
 
 }
 
-void MempoolStats::drawChart()
+void MempoolDetail::drawChart()
 {
     if (!m_clientmodel)
         return;
@@ -216,8 +216,8 @@ void MempoolStats::drawChart()
     //
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
     // TODO: calc dynamic GRAPH_PADDING_BOTTOM
-    const qreal bottom = (m_gfx_view->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
-    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
+    const qreal bottom = (m_gfx_detail->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
+    const qreal maxheight_g = (m_gfx_detail->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
     if (MEMPOOL_GRAPH_LOGGING){
 
         LogPrintf("\n");
@@ -242,7 +242,7 @@ void MempoolStats::drawChart()
 	gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
     //let view touch boths sides//we will place an over lay of boxes 
-    qreal maxwidth = m_gfx_view->scene()->sceneRect().width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);
+    qreal maxwidth = m_gfx_detail->scene()->sceneRect().width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);
     {
         // we are going to access the clientmodel feehistogram directly avoding a copy
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);
@@ -385,12 +385,12 @@ void MempoolStats::drawChart()
 
 // We override the virtual resizeEvent of the QWidget to adjust tables column
 // sizes as the tables width is proportional to the dialogs width.
-void MempoolStats::resizeEvent(QResizeEvent *event)
+void MempoolDetail::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
-    m_gfx_view->resize(size());
+    m_gfx_detail->resize(size());
 
-    m_gfx_view->scene()->setSceneRect(
+    m_gfx_detail->scene()->setSceneRect(
             rect().left()/1.618,
             rect().top()/1.618,
             rect().width()-GRAPH_PADDING_RIGHT,
@@ -398,31 +398,31 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
                 (0.1 * rect().width() ),
                 (0.9 * rect().height())
         ));
-    m_gfx_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     drawChart();
 }
 
-void MempoolStats::showEvent(QShowEvent *event)
+void MempoolDetail::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
     if (m_clientmodel)
         drawChart();
 }
 
-void MempoolStats::setClientModel(ClientModel *model)
+void MempoolDetail::setClientModel(ClientModel *model)
 {
     m_clientmodel = model;
     if (model) {
-        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
+        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::drawChart);
         drawChart();
     }
 }
 
-void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
-void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
+void ClickableTextItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
+void ClickableRectItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 
-void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+void MempoolDetail::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mousePressEvent(event);
 
@@ -432,7 +432,7 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
 }
-void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+void MempoolDetail::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mouseReleaseEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
@@ -441,7 +441,7 @@ void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
 }
-void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+void MempoolDetail::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mouseDoubleClickEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
@@ -450,7 +450,7 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
 }
-void MempoolStats::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+void MempoolDetail::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mouseMoveEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
@@ -460,7 +460,7 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(thi
     }
 }
 
-void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
+void MempoolDetail::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
@@ -474,7 +474,7 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
 }
 
-void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
+void MempoolDetail::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
@@ -488,7 +488,7 @@ void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
 }
 
-void MempoolStats::showFeeRanges(QEvent *event){
+void MempoolDetail::showFeeRanges(QEvent *event){
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
@@ -498,7 +498,7 @@ void MempoolStats::showFeeRanges(QEvent *event){
     }
 
 };
-void MempoolStats::hideFeeRanges(QEvent *event){
+void MempoolDetail::hideFeeRanges(QEvent *event){
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
@@ -509,7 +509,7 @@ void MempoolStats::hideFeeRanges(QEvent *event){
 
 };
 
-void MempoolStats::showFeeRects(QEvent *event){
+void MempoolDetail::showFeeRects(QEvent *event){
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
@@ -519,7 +519,7 @@ void MempoolStats::showFeeRects(QEvent *event){
     }
 
 };
-void MempoolStats::hideFeeRects(QEvent *event){
+void MempoolDetail::hideFeeRects(QEvent *event){
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){

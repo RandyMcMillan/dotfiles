@@ -936,7 +936,7 @@
             <number>10</number>
            </property>
            <item>
-            <widget class="QWidget" name="widget_2" native="true">
+            <widget class="QWidget" name="mempooldetail" native="true">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(17,19,31)</string>
              </property>
@@ -1731,7 +1731,7 @@
   <customwidget>
    <class>MempoolStats</class>
    <extends>QWidget</extends>
-   <header>qt/mempoolstats.h</header>
+   <header>qt/mempooldetail.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

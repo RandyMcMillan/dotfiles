@@ -8,6 +8,7 @@
 #include <qt/guiutil.h>
 #include <qt/peertablemodel.h>
 #include <qt/mempoolstats.h>
+#include <qt/mempooldetail.h>
 
 #include <net.h>
 

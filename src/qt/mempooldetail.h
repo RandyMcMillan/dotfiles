@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_MEMPOOLSTATS_H
-#define BITCOIN_QT_MEMPOOLSTATS_H
+#ifndef BITCOIN_QT_MEMPOOLDETAIL_H
+#define BITCOIN_QT_MEMPOOLDETAIL_H
 
 #include <QEvent>
 #include <QWidget>
@@ -17,7 +17,7 @@
 
 class ClientModel;
 
-class ClickableTextItem : public QObject, public QGraphicsSimpleTextItem
+class ClickableTextItemDetail : public QObject, public QGraphicsSimpleTextItem
 {
     Q_OBJECT
 protected:
@@ -26,7 +26,7 @@ Q_SIGNALS:
     void objectClicked(QGraphicsItem*);
 };
 
-class ClickableRectItem : public QObject, public QGraphicsRectItem
+class ClickableRectItemDetail : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 protected:
@@ -36,12 +36,12 @@ Q_SIGNALS:
 };
 
 
-class MempoolStats : public QWidget
+class MempoolDetail : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MempoolStats(QWidget *parent = Q_NULLPTR);
+    explicit MempoolDetail(QWidget *parent = Q_NULLPTR);
     void setClientModel(ClientModel *model);
 
 public Q_SLOTS:
@@ -76,7 +76,7 @@ Q_SIGNALS:
 private:
     ClientModel* m_clientmodel = Q_NULLPTR;
 
-    QGraphicsView *m_gfx_view;
+    QGraphicsView *m_gfx_detail;
     QGraphicsScene *m_scene;
 
     virtual void enterEvent(QEvent           *event) override;
@@ -87,4 +87,4 @@ private:
     int m_selected_range = -1;
 };
 
-#endif // BITCOIN_QT_MEMPOOLSTATS_H
+#endif // BITCOIN_QT_MEMPOOLDETAIL_H

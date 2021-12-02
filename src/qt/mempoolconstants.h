@@ -13,6 +13,8 @@ static const int GRAPH_PADDING_TOP = 50;
 static const int GRAPH_PADDING_TOP_LABEL = 0;
 static const int GRAPH_PADDING_BOTTOM = 50;
 
+static const int AMOUNT_OF_H_LINES = 9;
+
 static const int GRAPH_PATH_SCALAR = 1.0;
 
 const static std::vector<QColor> colors = {

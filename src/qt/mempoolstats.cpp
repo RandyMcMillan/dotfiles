@@ -14,6 +14,7 @@ bool const ADD_TEXT = true;
 bool const ADD_FEE_RANGES = false;
 bool const ADD_FEE_RECTS = true;
 bool const MEMPOOL_GRAPH_LOGGING = true;
+bool ADD_TOTAL_TEXT = true;
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 {
@@ -374,7 +375,6 @@ void MempoolStats::drawChart()
         i++;
     }
 
-    bool ADD_TOTAL_TEXT = true;
     if(ADD_TOTAL_TEXT){
 
         QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);

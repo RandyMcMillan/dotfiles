@@ -14,6 +14,7 @@ bool const ADD_TEXT = true;
 bool const ADD_FEE_RANGES = false;
 bool const ADD_FEE_RECTS = true;
 bool const MEMPOOL_GRAPH_LOGGING = true;
+bool ADD_TOTAL_TEXT = true;
 
 MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 {
@@ -116,6 +117,12 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
         LogPrintf("\n");
         LogPrintf("\n");
         LogPrintf("\n");
+        LogPrintf("fee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble());
+        LogPrintf("fee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble());
+        LogPrintf("fee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble());
+        LogPrintf("fee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble());
+        LogPrintf("fee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble());
+        LogPrintf("fee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble());
 
     }
         qreal c_y = bottom;
@@ -134,10 +141,29 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             //                x will be dyanmic base on mouse position
             if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
                 //fee_rect_detail->setRect(maxwidth-0, (c_y-18), c_w, (bottom/display_up_to_range)-20);//interesting effect
-                fee_rect_detail->setRect(maxwidth-0, (c_y-18), c_w, (c_h ));
+                //fee_rect_detail->setRect(10, (c_y-18), c_w+100, (c_h ));
+                fee_rect_detail->setRect(10, (c_y-18), maxwidth, (c_h ));
+
+
+    if (MEMPOOL_GRAPH_LOGGING){
+
+        LogPrintf("\n");
+        LogPrintf("\n");
+        LogPrintf("\n");
+        LogPrintf("fee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
+        //LogPrintf("fee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
+        //LogPrintf("fee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
+        //LogPrintf("fee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
+        //LogPrintf("fee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
+        //LogPrintf("fee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
+        LogPrintf("\n");
+        LogPrintf("\n");
+        LogPrintf("\n");
+
+    }
+
 
             //Stack of rects on left
-
             QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
             //brush_color.setAlpha(100);
             brush_color.setAlpha(255-i);
@@ -242,7 +268,7 @@ void MempoolDetail::drawChart()
 	gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
     //let view touch boths sides//we will place an over lay of boxes 
-    qreal maxwidth = m_gfx_detail->scene()->sceneRect().width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);
+    qreal maxwidth = m_gfx_detail->scene()->sceneRect().width();// - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);
     {
         // we are going to access the clientmodel feehistogram directly avoding a copy
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);
@@ -346,11 +372,17 @@ void MempoolDetail::drawChart()
 
     int i = 0;
     QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+    //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall));//10800 units
     for (auto feepath : fee_paths) {
         // close paths
         if (i > 0) {
             feepath.lineTo(fee_paths[i-1].currentPosition());
             feepath.connectPath(fee_paths[i-1].toReversed());
+            //
+            int fee_path_delta = QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble();
+            if (MEMPOOL_GRAPH_LOGGING){
+                LogPrintf("fee_path_delta = %s\n",fee_path_delta);
+            }
         } else {
             feepath.lineTo(current_x, bottom);
             feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
@@ -366,18 +398,17 @@ void MempoolDetail::drawChart()
             brush_color.setAlpha(100);
         }
         if (m_selected_range >= 0 && m_selected_range == i) {
-            total_text = "transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);
+            total_text = "Transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);
         }
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         //m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
         i++;
     }
 
-    bool ADD_TOTAL_TEXT = true;
     if(ADD_TOTAL_TEXT){
 
         QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
-        item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);
+        item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom);
 
     }
 

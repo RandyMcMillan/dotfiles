@@ -292,7 +292,7 @@ void MempoolStats::drawChart()
         }
 
         // make a nice y-axis scale
-        const int amount_of_h_lines = 5;
+        const int amount_of_h_lines = 7;
         if (max_txcount > 0) {
             int val = qFloor(log10(1.0*max_txcount/amount_of_h_lines));
             int stepbase = qPow(10.0f, val);

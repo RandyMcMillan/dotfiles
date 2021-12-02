@@ -371,7 +371,7 @@ void MempoolDetail::drawChart()
     } // release lock for the actual drawing
 
     int i = 0;
-    QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+    QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
     //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall));//10800 units
     for (auto feepath : fee_paths) {
         // close paths
@@ -398,7 +398,7 @@ void MempoolDetail::drawChart()
             brush_color.setAlpha(100);
         }
         if (m_selected_range >= 0 && m_selected_range == i) {
-            total_text = "Transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);
+            total_text = "TXs in this range: "+QString::number(fee_subtotal_txcount[i]);
         }
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         //m_scene->addPath(feepath, pen_blue, QBrush(brush_color));

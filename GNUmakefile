@@ -156,6 +156,12 @@ protonvpn: executable
 config-git: executable
 	cat config-git.sh
 	./config-git.sh
+
+.PHONY: qt
+qt: executable
+	./install-qt.sh
+	./install-qt5-creator.sh
+
 .PHONY: config-github
 config-github: executable
 	cat config-git.sh

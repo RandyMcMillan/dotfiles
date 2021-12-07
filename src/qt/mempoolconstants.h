@@ -1,21 +1,28 @@
 #include <qt/mempoolstats.h>
 #include <qt/mempooldetail.h>
 
-static const char *LABEL_FONT = "Roboto Mono";
-static int LABEL_TITLE_SIZE = 22;
-static int LABEL_KV_SIZE = 12;
+static const char    *LABEL_FONT                 = "Roboto Mono";
+static int           LABEL_TITLE_SIZE            = 22;
+static int           LABEL_KV_SIZE               = 12;
 
-static const int LABEL_LEFT_SIZE = 0;// space + #.# MvB -- //
-static const int LABEL_RIGHT_SIZE = 0;
-static const int GRAPH_PADDING_LEFT = 100+LABEL_LEFT_SIZE;
-static const int GRAPH_PADDING_RIGHT = 50+LABEL_RIGHT_SIZE;
-static const int GRAPH_PADDING_TOP = 50;
-static const int GRAPH_PADDING_TOP_LABEL = 0;
-static const int GRAPH_PADDING_BOTTOM = 50;
+static const int     LABEL_LEFT_SIZE             = 0;// space + #.# MvB -- //
+static const int     LABEL_RIGHT_SIZE            = 0;
+static const int     GRAPH_PADDING_LEFT          = 100+LABEL_LEFT_SIZE;
+static const int     GRAPH_PADDING_RIGHT         = 50 +LABEL_RIGHT_SIZE;
+static const int     GRAPH_PADDING_TOP           = 50;
+static const int     GRAPH_PADDING_TOP_LABEL     = 0;
+static const int     GRAPH_PADDING_BOTTOM        = 50;
 
-static const int ITEM_TX_COUNT_PADDING_LEFT = 5;
-static const int AMOUNT_OF_H_LINES = 9;
-static const double GRAPH_PATH_SCALAR = 1.0;
+static const int     ITEM_TX_COUNT_PADDING_LEFT  = 5;
+static const int     ITEM_TX_COUNT_PADDING_RIGHT = 5;
+static const int     AMOUNT_OF_H_LINES           = 9;
+static const double  GRAPH_PATH_SCALAR           = 1.0;
+
+const qreal C_X                                  = 10;
+const qreal C_W                                  = 20;
+const qreal C_H                                  = 20;
+const qreal C_MARGIN                             = 2;
+
 
 const static std::vector<QColor> colors = {
 

@@ -57,7 +57,7 @@ public Q_SLOTS:
     QFont LABELFONT
 );
     void drawFeeRanges(qreal bottom, QFont LABELFONT);
-    void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT);
+    void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx, bool ADD_TEXT, QFont LABELFONT);
 
     void mousePressEvent(QMouseEvent        *event) override;
     void mouseReleaseEvent(QMouseEvent      *event) override;

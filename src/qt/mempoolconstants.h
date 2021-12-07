@@ -23,6 +23,11 @@ const qreal C_W                                  = 20;
 const qreal C_H                                  = 20;
 const qreal C_MARGIN                             = 2;
 
+bool const ADD_TEXT                              = true;
+bool const ADD_FEE_RANGES                        = true;
+bool const ADD_FEE_RECTS                         = true;
+bool const MEMPOOL_GRAPH_LOGGING                 = true;
+bool const ADD_TOTAL_TEXT                        = true;
 
 const static std::vector<QColor> colors = {
 

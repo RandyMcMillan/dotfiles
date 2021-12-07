@@ -10,12 +10,6 @@
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempoolstats.h>
 
-bool const ADD_TEXT = true;
-bool const ADD_FEE_RANGES = false;
-bool const ADD_FEE_RECTS = true;
-bool const MEMPOOL_GRAPH_LOGGING = true;
-bool ADD_TOTAL_TEXT = true;
-
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 {
     if (parent) {
@@ -357,6 +351,7 @@ void MempoolStats::drawChart()
             feepath.lineTo(current_x, bottom);
             feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
         }
+
         QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
         QColor brush_color = pen_color;
         //mempool paths 

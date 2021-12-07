@@ -892,8 +892,8 @@
          <property name="childrenCollapsible">
           <bool>false</bool>
          </property>
-         <widget class="QWidget" name="verticalLayoutWidget">
-          <layout class="QVBoxLayout" name="QVBOX1">
+         <widget class="QWidget" name="mempool_left">
+          <layout class="QVBoxLayout" name="qvbox_left">
            <property name="leftMargin">
             <number>10</number>
            </property>
@@ -921,8 +921,8 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="verticalLayoutWidget2">
-          <layout class="QVBoxLayout" name="QVBOX2">
+         <widget class="QWidget" name="mempool_right">
+          <layout class="QVBoxLayout" name="qvox_right">
            <property name="leftMargin">
             <number>10</number>
            </property>

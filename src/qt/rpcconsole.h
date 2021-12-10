@@ -65,12 +65,12 @@ public:
     enum class TabTypes {
         INFO,
         CONSOLE,
-        MEMPOOL,
         GRAPH,
+        MEMPOOL,
         PEERS
     };
 
-    std::vector<TabTypes> tabs() const { return {TabTypes::INFO, TabTypes::CONSOLE, TabTypes::MEMPOOL, TabTypes::GRAPH, TabTypes::PEERS}; }
+    std::vector<TabTypes> tabs() const { return {  TabTypes::INFO, TabTypes::CONSOLE, TabTypes::GRAPH, TabTypes::MEMPOOL, TabTypes::PEERS}; }
 
     QString tabTitle(TabTypes tab_type) const;
     QKeySequence tabShortcut(TabTypes tab_type) const;

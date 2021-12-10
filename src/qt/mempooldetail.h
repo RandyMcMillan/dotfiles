@@ -81,8 +81,9 @@ private:
 
     virtual void enterEvent(QEvent           *event) override;
     virtual void leaveEvent(QEvent           *event) override;
-    virtual void resizeEvent(QResizeEvent*    event) override;
-    virtual void showEvent(QShowEvent*        event) override;
+    virtual void resizeEvent(QResizeEvent    *event) override;
+    virtual void showEvent(QShowEvent        *event) override;
+    virtual void hideEvent(QHideEvent        *event) override;
 
     int m_selected_range = -1;
 };

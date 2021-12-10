@@ -13,8 +13,10 @@
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 {
     if (parent) {
+
         parent->installEventFilter(this);
         raise();
+
     }
     //setMouseTracking(true);
 
@@ -28,6 +30,7 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 
         LogPrintf("LABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
+
     }
 
     m_gfx_view = new QGraphicsView(this);
@@ -64,8 +67,10 @@ void MempoolStats::drawHorzLines(
             (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
 
         if (MEMPOOL_GRAPH_LOGGING){
+
             LogPrintf("i = %s\n",i);
             LogPrintf("lY = %s\n",lY);
+
         }
         //Add text ornament
         if (ADD_TEXT) {
@@ -101,17 +106,10 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
 
     if (MEMPOOL_GRAPH_LOGGING){
 
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("bottom = %s\n",bottom);
-        LogPrintf("bottom_display_ratio = %s\n",bottom_display_ratio);
-        LogPrintf("maxwidth = %s\n",maxwidth);
-        LogPrintf("display_up_to_range = %s\n",display_up_to_range);
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
+        LogPrintf("\nbottom = %s\n",bottom);
+        LogPrintf("\nbottom_display_ratio = %s\n",bottom_display_ratio);
+        LogPrintf("\nmaxwidth = %s\n",maxwidth);
+        LogPrintf("\ndisplay_up_to_range = %s\n",display_up_to_range);
 
     }
         qreal c_y = bottom;
@@ -138,20 +136,7 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
             //brush_color.setAlpha(100);
             brush_color.setAlpha(255-i);
             if (m_selected_range >= 0 && m_selected_range != i) {
-                // if one item is selected, hide out the other ones
-                // fee range boxes
-                //
-                //
-                //
-                //
                 brush_color.setAlpha(200);//not pressed
-                //
-                //
-                //
-                //
-                //
-                //
-                //
             }
 
             fee_rect->setBrush(QBrush(brush_color));
@@ -166,15 +151,7 @@ void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_r
                 }
                 drawChart();
 
-                /*TODO remove
-                  store the existing feehistory to a temporary file
-                */
-                //FILE *filestr = fsbridge::fopen("/tmp/statsdump", "wb");
-                //CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);
-                //file << m_clientmodel->m_mempool_feehist;
-                //file.fclose();
             });
-            //m_scene->addItem(fee_rect);
 
             //TODO: fix bug/crash on click
             if (ADD_FEE_RANGES){
@@ -216,17 +193,8 @@ void MempoolStats::drawChart()
     const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
     if (MEMPOOL_GRAPH_LOGGING){
 
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
         LogPrintf("bottom = %s\n",bottom);
         LogPrintf("maxheight_g = %s\n",maxheight_g);
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
 
     }
 
@@ -235,21 +203,13 @@ void MempoolStats::drawChart()
     size_t max_txcount=0;
     QFont gridFont;
     gridFont.setPointSize(12);
-	gridFont.setWeight(QFont::Bold);
+    gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
     //let view touch boths sides//we will place an over lay of boxes 
     qreal maxwidth = m_gfx_view->scene()->sceneRect().width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);
     {
         // we are going to access the clientmodel feehistogram directly avoding a copy
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);
-
-        /* TODO: remove
-           helpful for testing/development (loading a prestored dataset)
-        */
-        //FILE *filestr = fsbridge::fopen("/tmp/statsdump", "rb");
-        //CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);
-        //file >> m_clientmodel->m_mempool_feehist;
-        //file.fclose();
 
         size_t max_txcount_graph=0;
 
@@ -294,13 +254,9 @@ void MempoolStats::drawChart()
             int step = qCeil((1.0*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
             max_txcount_graph = step*amount_of_h_lines;
             if (MEMPOOL_GRAPH_LOGGING){
-                LogPrintf("\n");
-                LogPrintf("\n");
-                LogPrintf("\n");
+
                 LogPrintf("max_txcount_graph = %s\n",max_txcount_graph);
-                LogPrintf("\n");
-                LogPrintf("\n");
-                LogPrintf("\n");
+
             }
         }
 
@@ -345,16 +301,20 @@ void MempoolStats::drawChart()
     for (auto feepath : fee_paths) {
         // close paths
         if (i > 0) {
+
             feepath.lineTo(fee_paths[i-1].currentPosition());
             feepath.connectPath(fee_paths[i-1].toReversed());
+
         } else {
+
             feepath.lineTo(current_x, bottom);
             feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
+
         }
 
         QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
         QColor brush_color = pen_color;
-        //mempool paths 
+        //mempool paths
         pen_color.setAlpha(255);
         brush_color.setAlpha(200);
         if (m_selected_range >= 0 && m_selected_range != i) {
@@ -432,7 +392,7 @@ void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(
 
     QWidget::mouseReleaseEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mousePressEvent\n");
+        LogPrintf("mouseReleaseEvent\n");
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
@@ -441,16 +401,17 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
 
     QWidget::mouseDoubleClickEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mousePressEvent\n");
+        LogPrintf("mouseDoubleClickEvent\n");
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
+    //mempool_right->show();
 }
 void MempoolStats::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mouseMoveEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mousePressEvent\n");
+        LogPrintf("mouseMoveEvent\n");
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
@@ -461,7 +422,6 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("enterEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
 
@@ -476,7 +436,6 @@ void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("leaveEvent\n");
         LogPrintf("this_event->type() %s\n",this_event->type());
-        LogPrintf("this_event->type() %s\n",this_event->type());
     }
 
     hideFeeRanges(this_event);
@@ -488,8 +447,7 @@ void MempoolStats::showFeeRanges(QEvent *event){
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
+        LogPrintf("showFeeRanges\n");
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
 
@@ -498,8 +456,7 @@ void MempoolStats::hideFeeRanges(QEvent *event){
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
+        LogPrintf("hideFeeRanges\n");
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
 
@@ -511,7 +468,6 @@ void MempoolStats::showFeeRects(QEvent *event){
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("leaveEvent\n");
         LogPrintf("this_event->type() %s\n",this_event->type());
-        LogPrintf("this_event->type() %s\n",this_event->type());
     }
 
 };
@@ -520,7 +476,6 @@ void MempoolStats::hideFeeRects(QEvent *event){
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
 

@@ -152,12 +152,6 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             if (ADD_FEE_RANGES){
 
-
-
-
-
-
-
                 QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
                 fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
                 //if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
@@ -168,9 +162,6 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_text->setDefaultTextColor(Qt::white);
                 fee_text->setFont(LABELFONT);
                 fee_text->setPos(4+C_W-7, c_y-7);
-                
-
-
 
 			QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 
@@ -192,37 +183,15 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             }
 
-
-
-
-
-
-
-
-
                 m_scene->addItem(fee_text);
 
             }
 
             if (ADD_FEE_RECTS){
 
-
-
-
-
-
                 m_scene->addItem(fee_rect_detail);
 
             }
-
-
-
-
-
-
-
-
-
 
             c_y-=C_H+C_MARGIN;
             LogPrintf("\nc_y = %s",c_y);
@@ -436,6 +405,13 @@ void MempoolDetail::showEvent(QShowEvent *event)
         drawChart();
 }
 
+void MempoolDetail::hideEvent(QHideEvent *event)
+{
+    QWidget::hideEvent(event);
+    if (m_clientmodel)
+        drawChart();
+}
+
 void MempoolDetail::setClientModel(ClientModel *model)
 {
     m_clientmodel = model;
@@ -451,11 +427,12 @@ void ClickableRectItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 void MempoolDetail::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mousePressEvent(event);
-
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("mousePressEvent\n");
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
+        LogPrintf("event->type() %s\n",event->type());
+        LogPrintf("event->type() %s\n",event->type());
     }
 }
 void MempoolDetail::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
@@ -465,6 +442,8 @@ void MempoolDetail::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked
         LogPrintf("mousePressEvent\n");
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
+        LogPrintf("event->type() %s\n",event->type());
+        LogPrintf("event->type() %s\n",event->type());
     }
 }
 void MempoolDetail::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);

@@ -14,8 +14,7 @@
 #include <QGraphicsView>
 
 #include <policy/fees.h>
-
-class ClientModel;
+#include <qt/mempooldetail.h>
 
 class ClickableTextItem : public QObject, public QGraphicsSimpleTextItem
 {

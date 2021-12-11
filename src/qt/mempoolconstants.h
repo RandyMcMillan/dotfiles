@@ -29,6 +29,8 @@ bool const ADD_FEE_RECTS                         = true;
 bool const MEMPOOL_GRAPH_LOGGING                 = true;
 bool const ADD_TOTAL_TEXT                        = true;
 
+static const qreal FEE_TEXT_Z                    = 1000;
+
 const static std::vector<QColor> colors = {
 
 QColor(212,29, 97,255), //0-1

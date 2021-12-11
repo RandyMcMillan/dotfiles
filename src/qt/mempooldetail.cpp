@@ -117,7 +117,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             ClickableRectItem *fee_rect_detail = new ClickableRectItem();
             if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
-                fee_rect_detail->setRect(C_X, c_y-7, C_W+100, C_H);
+                fee_rect_detail->setRect(C_X, c_y-7, C_W, C_H);
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
@@ -153,15 +153,16 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             if (ADD_FEE_RANGES){
 
                 QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
-                fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
-                //if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
+                fee_text->setPlainText(QString::number(list_entry.fee_from)+" - "+QString::number(list_entry.fee_to));
+                if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
+                //if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
                     fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
                 }
 
+                fee_text->setZValue(FEE_TEXT_Z);
                 fee_text->setDefaultTextColor(Qt::white);
                 fee_text->setFont(LABELFONT);
-                fee_text->setPos(4+C_W-7, c_y-7);
+                fee_text->setPos(C_W, c_y-7);
 
 			QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 
@@ -179,7 +180,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
                 QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
                 //item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom);
-                item_tx_count->setPos(C_W+10, c_y-40);
+                item_tx_count->setPos(C_W-3, c_y-20);
 
             }
 
@@ -359,6 +360,10 @@ void MempoolDetail::drawChart()
         if (m_selected_range >= 0 && m_selected_range == i) {
             total_text = "TXs in this range: "+QString::number(fee_subtotal_txcount[i]);
             LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
+            if (ADD_TOTAL_TEXT){
+                QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
+                item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
+            }
         }
 
         LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
@@ -367,13 +372,6 @@ void MempoolDetail::drawChart()
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         //m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
         i++;
-    }
-
-    if(ADD_TOTAL_TEXT){
-
-        QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
-        item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom);
-
     }
 
 }//end drawChart()

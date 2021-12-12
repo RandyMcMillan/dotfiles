@@ -127,6 +127,7 @@ while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:4
 
 
 }
+
 function git-branch-D (){
 
 if [ -z "$1" ]
@@ -139,6 +140,18 @@ if [ -z "$1" ]
 
 else
     git branch -D $(git branch --list "$1")
+fi
+
+}
+function git-checkout-b (){
+
+if [ -z "$1" ]
+    then
+
+    git checkout -b $(date +%s)
+
+else
+    git checkout -b $(date +%s)-$1
 fi
 
 }

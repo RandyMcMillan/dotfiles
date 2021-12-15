@@ -873,90 +873,22 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QSplitter" name="mempool_splitter">
+        <widget class="MempoolStats" name="mempool_graph" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+         <property name="minimumSize">
+          <size>
+           <width>747</width>
+           <height>360</height>
+          </size>
          </property>
-         <property name="lineWidth">
-          <number>0</number>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(17,19,31)</string>
          </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="childrenCollapsible">
-          <bool>false</bool>
-         </property>
-         <widget class="QWidget" name="mempool_left">
-          <layout class="QVBoxLayout" name="qvbox_left">
-           <property name="leftMargin">
-            <number>10</number>
-           </property>
-           <property name="topMargin">
-            <number>10</number>
-           </property>
-           <property name="rightMargin">
-            <number>10</number>
-           </property>
-           <property name="bottomMargin">
-            <number>10</number>
-           </property>
-           <item>
-            <widget class="MempoolStats" name="mempool_graph" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(17,19,31)</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="mempool_right">
-          <layout class="QVBoxLayout" name="qvox_right">
-           <property name="leftMargin">
-            <number>10</number>
-           </property>
-           <property name="topMargin">
-            <number>10</number>
-           </property>
-           <property name="rightMargin">
-            <number>10</number>
-           </property>
-           <property name="bottomMargin">
-            <number>10</number>
-           </property>
-           <item>
-            <widget class="MempoolDetail" name="mempool_detail" native="true">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(17,19,31)</string>
-             </property>
-             <widget class="QLabel" name="label">
-              <property name="geometry">
-               <rect>
-                <x>140</x>
-                <y>170</y>
-                <width>71</width>
-                <height>16</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Detail Stub</string>
-              </property>
-             </widget>
-            </widget>
-           </item>
-          </layout>
-         </widget>
         </widget>
        </item>
       </layout>
@@ -1732,12 +1664,6 @@
    <class>MempoolStats</class>
    <extends>QWidget</extends>
    <header>qt/mempoolstats.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>MempoolDetail</class>
-   <extends>QWidget</extends>
-   <header>qt/mempooldetail.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -76,6 +76,7 @@ private:
     ClientModel* m_clientmodel = Q_NULLPTR;
 
     QGraphicsView *m_gfx_view;
+    MempoolDetail *m_detail;
     QGraphicsScene *m_scene;
 
     virtual void enterEvent(QEvent           *event) override;

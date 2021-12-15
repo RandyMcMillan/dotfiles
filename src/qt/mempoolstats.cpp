@@ -33,7 +33,7 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 
     m_gfx_view = new QGraphicsView(this);
     m_detail = new MempoolDetail(this);
-    m_detail->setGeometry(100,100,100,100);
+    //m_detail->setGeometry(100,100,100,100);
     m_scene = new QGraphicsScene(m_gfx_view);
     m_gfx_view->setScene(m_scene);
     m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
@@ -41,6 +41,21 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 
     if (m_clientmodel)
         drawChart();
+}
+
+void MempoolStats::drawDetailView(
+        qreal maxheight_g,
+        qreal maxwidth
+        ){
+
+    if (MEMPOOL_DETAIL_LOGGING){
+
+        LogPrintf("maxheight_g = %s\n",maxheight_g);
+        LogPrintf("maxwidth = %s\n",maxwidth);
+
+    }
+    m_detail->setGeometry(100,100,100,100);
+
 }
 
 void MempoolStats::drawHorzLines(
@@ -268,6 +283,8 @@ void MempoolStats::drawChart()
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
         //drawFeeRanges(bottom, gridFont);
         //drawFeeRects(bottom, maxwidth, display_up_to_range, ADD_TEXT, gridFont);
+
+        drawDetailView(maxheight_g, maxwidth);
 
         // draw the paths
         bool first = true;

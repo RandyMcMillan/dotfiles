@@ -45,6 +45,10 @@ public:
 
 public Q_SLOTS:
     void drawChart();
+    void drawDetailView(
+    qreal maxheight_g,
+    qreal maxwidth
+    );
     void drawHorzLines(
     const qreal x_increment,
     QPointF current_x_bottom,

@@ -162,7 +162,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_text->setZValue(FEE_TEXT_Z);
                 fee_text->setDefaultTextColor(Qt::white);
                 fee_text->setFont(LABELFONT);
-                fee_text->setPos(C_W, c_y-7);
+                fee_text->setPos(C_W*2, c_y-7);
 
 			QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 

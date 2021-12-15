@@ -58,7 +58,7 @@ void MempoolStats::drawDetailView(
         LogPrintf("detail_height = %s\n", detail_height);
 
     }
-    m_detail_view->setGeometry(detailX(), detail_y, detail_width, detail_height);
+    m_detail_view->setGeometry(detail_x, detail_y, detail_width, detail_height);
 
 }
 
@@ -288,7 +288,7 @@ void MempoolStats::drawChart()
         //drawFeeRanges(bottom, gridFont);
         //drawFeeRects(bottom, maxwidth, display_up_to_range, ADD_TEXT, gridFont);
 
-        drawDetailView(100,100,100,100);
+        //drawDetailView(detailX(),70,100,100);
 
         // draw the paths
         bool first = true;
@@ -407,7 +407,7 @@ int MempoolStats::detailX(){
     //    LogPrintf("event->pos().y() %s\n",event->pos().y());
     //}
 
-    int x = 100;
+    int x = 150;
     return x;
 
 }
@@ -464,6 +464,8 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     showFeeRanges(this_event);
     showFeeRects(this_event);
+    drawDetailView(detailX(),70,100,100);
+
 
 }
 
@@ -477,6 +479,7 @@ void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     hideFeeRanges(this_event);
     hideFeeRects(this_event);
+    drawDetailView(detailX(),70,0,0);
 
 }
 

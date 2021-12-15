@@ -46,9 +46,12 @@ public:
 public Q_SLOTS:
     void drawChart();
     void drawDetailView(
-    qreal maxheight_g,
-    qreal maxwidth
+    qreal detail_x,
+    qreal detail_y,
+    qreal detail_width,
+    qreal detail_height
     );
+    int detailX();
     void drawHorzLines(
     const qreal x_increment,
     QPointF current_x_bottom,
@@ -79,8 +82,8 @@ Q_SIGNALS:
 private:
     ClientModel* m_clientmodel = Q_NULLPTR;
 
-    QGraphicsView *m_gfx_view;
-    MempoolDetail *m_detail;
+    QGraphicsView  *m_gfx_view;
+    MempoolDetail  *m_detail_view;
     QGraphicsScene *m_scene;
 
     virtual void enterEvent(QEvent           *event) override;

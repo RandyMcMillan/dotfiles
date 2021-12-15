@@ -27,7 +27,7 @@ bool const ADD_TEXT                              = true;
 bool const ADD_FEE_RANGES                        = true;
 bool const ADD_FEE_RECTS                         = true;
 bool const MEMPOOL_GRAPH_LOGGING                 = true;
-bool const MEMPOOL_DETAIL_LOGGING                 = true;
+bool const MEMPOOL_DETAIL_LOGGING                = true;
 bool const ADD_TOTAL_TEXT                        = true;
 
 static const qreal FEE_TEXT_Z                    = 1000;

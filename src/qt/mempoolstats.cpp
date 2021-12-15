@@ -32,7 +32,7 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     }
 
     m_gfx_view = new QGraphicsView(this);
-    m_detail = new MempoolDetail(this);
+    m_detail_view = new MempoolDetail(this);
     //m_detail->setGeometry(100,100,100,100);
     m_scene = new QGraphicsScene(m_gfx_view);
     m_gfx_view->setScene(m_scene);
@@ -44,17 +44,21 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 }
 
 void MempoolStats::drawDetailView(
-        qreal maxheight_g,
-        qreal maxwidth
+        qreal detail_x,
+        qreal detail_y,
+        qreal detail_width,
+        qreal detail_height
         ){
 
     if (MEMPOOL_DETAIL_LOGGING){
 
-        LogPrintf("maxheight_g = %s\n",maxheight_g);
-        LogPrintf("maxwidth = %s\n",maxwidth);
+        LogPrintf("detail_x = %s\n", detail_x);
+        LogPrintf("detail_y = %s\n", detail_y);
+        LogPrintf("detail_width = %s\n", detail_width);
+        LogPrintf("detail_height = %s\n", detail_height);
 
     }
-    m_detail->setGeometry(100,100,100,100);
+    m_detail_view->setGeometry(detailX(), detail_y, detail_width, detail_height);
 
 }
 
@@ -284,7 +288,7 @@ void MempoolStats::drawChart()
         //drawFeeRanges(bottom, gridFont);
         //drawFeeRects(bottom, maxwidth, display_up_to_range, ADD_TEXT, gridFont);
 
-        drawDetailView(maxheight_g, maxwidth);
+        drawDetailView(100,100,100,100);
 
         // draw the paths
         bool first = true;
@@ -388,9 +392,24 @@ void MempoolStats::setClientModel(ClientModel *model)
     m_clientmodel = model;
     if (model) {
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
-        m_detail->setClientModel(model);
+        m_detail_view->setClientModel(model);
         drawChart();
     }
+}
+
+
+int MempoolStats::detailX(){
+
+    //QWidget::mouseMoveEvent(event);
+    //if (MEMPOOL_GRAPH_LOGGING){
+    //    LogPrintf("mouseMoveEvent\n");
+    //    LogPrintf("event->pos().x() %s\n",event->pos().x());
+    //    LogPrintf("event->pos().y() %s\n",event->pos().y());
+    //}
+
+    int x = 100;
+    return x;
+
 }
 
 void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }

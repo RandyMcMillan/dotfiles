@@ -33,11 +33,13 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 
     m_gfx_view = new QGraphicsView(this);
     m_detail_view = new MempoolDetail(this);
-    //m_detail->setGeometry(100,100,100,100);
+    m_detail_view->setStyleSheet("background-color: rgb(28,31,49)");
+
     m_scene = new QGraphicsScene(m_gfx_view);
     m_gfx_view->setScene(m_scene);
     m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    m_gfx_view->setMouseTracking(true);
 
     if (m_clientmodel)
         drawChart();
@@ -58,7 +60,20 @@ void MempoolStats::drawDetailView(
         LogPrintf("detail_height = %s\n", detail_height);
 
     }
-    m_detail_view->setGeometry(detail_x, detail_y, detail_width, detail_height);
+    //m_detail_view->setGeometry(detail_x, detail_y, detail_width, detail_height);
+
+    m_detail_view->setGeometry(
+            //rect().left()/1.618,
+            detail_x,
+            //rect().top()/1.618,
+            detail_y,
+            //rect().width()-GRAPH_PADDING_RIGHT,
+            detail_width,
+            std::max(
+                (0.1 * rect().width() ),
+                (0.9 * rect().height())
+        ));
+
 
 }
 
@@ -312,15 +327,18 @@ void MempoolStats::setClientModel(ClientModel *model)
 
 int MempoolStats::detailX(){
 
-    //QWidget::mouseMoveEvent(event);
-    //if (MEMPOOL_GRAPH_LOGGING){
-    //    LogPrintf("mouseMoveEvent\n");
-    //    LogPrintf("event->pos().x() %s\n",event->pos().x());
-    //    LogPrintf("event->pos().y() %s\n",event->pos().y());
-    //}
+    if (MEMPOOL_GRAPH_LOGGING){
+        LogPrintf("m_gfx_view()->width() =  %s\n",m_gfx_view->width());
+    }
+    return m_gfx_view->width()*0.7;
 
-    int x = 150;
-    return x;
+}
+int MempoolStats::detailY(){
+
+    if (MEMPOOL_GRAPH_LOGGING){
+        LogPrintf("m_gfx_view()->height() =  %s\n",m_gfx_view->height());
+    }
+    return m_gfx_view->height()*0.1;
 
 }
 
@@ -364,30 +382,31 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(thi
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
+    if (m_gfx_view->width()/2 > event->pos().x()){
+
+        LogPrintf("event->pos().x() %s\n",event->pos().x());
+        LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
+
+    }
 }
 
 void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     QEvent *this_event = event;
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+
+    mPoint.setX(mouseEvent->pos().x());
+    mPoint.setY(mouseEvent->pos().y());
+    drawDetailView(detailX(), detailY(), m_gfx_view->width()*0.1, m_gfx_view->height()*0.8);
+
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("enterEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
+        LogPrintf("mPoint.rx()\n",mPoint.rx());
+        LogPrintf("mPoint.ry()\n",mPoint.ry());
+        LogPrintf("this_event->type()    %s\n",this_event->type());
+        LogPrintf("mouseEvent->pos().x() %s\n",mouseEvent->pos().x());
+        LogPrintf("mouseEvent->pos().y() %s\n",mouseEvent->pos().y());
     }
-
-if (event->type() == QEvent::MouseMove)
-  {
-    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-    if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mouseMoveEvent\n");
-        LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
-        LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
-    }
-  }
-
-    //showFeeRanges(this_event);
-    //showFeeRects(this_event);
-    drawDetailView(detailX(),70,100,100);
-
 
 }
 
@@ -404,6 +423,12 @@ if (event->type() == QEvent::MouseMove)
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("mouseMoveEvent\n");
+        LogPrintf("mouseMoveEvent\n");
+        LogPrintf("mouseMoveEvent\n");
+        LogPrintf("mouseMoveEvent\n");
+        LogPrintf("mouseMoveEvent\n");
+        LogPrintf("mouseMoveEvent\n");
+        LogPrintf("mouseMoveEvent\n");
         LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
         LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
     }
@@ -411,7 +436,7 @@ if (event->type() == QEvent::MouseMove)
 
     //hideFeeRanges(this_event);
     //hideFeeRects(this_event);
-    drawDetailView(detailX(),70,0,0);
+    drawDetailView(0,0,0,0);
 
 }
 

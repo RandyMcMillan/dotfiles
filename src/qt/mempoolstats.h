@@ -52,6 +52,7 @@ public Q_SLOTS:
     qreal detail_height
     );
     int detailX();
+    int detailY();
     void drawHorzLines(
     const qreal x_increment,
     QPointF current_x_bottom,
@@ -90,6 +91,7 @@ private:
     virtual void showEvent(QShowEvent*        event) override;
 
     int m_selected_range = -1;
+    QPoint mPoint;
 };
 
 #endif // BITCOIN_QT_MEMPOOLSTATS_H

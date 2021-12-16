@@ -110,94 +110,6 @@ m_scene->addPath(tx_count_grid_path, gridPen);
 
 }
 
-void MempoolStats::drawFeeRanges( qreal bottom, QFont LABELFONT){
-
-    if (ADD_FEE_RANGES) {
-        QGraphicsTextItem *fee_range_title =
-            m_scene->addText("Fee ranges\n(sat/b)", LABELFONT);
-        fee_range_title->setPos(2, bottom+10);
-        }
-}
-
-void MempoolStats::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT){
-
-    double bottom_display_ratio = (bottom/display_up_to_range);
-
-    if (MEMPOOL_GRAPH_LOGGING){
-
-        LogPrintf("\nbottom = %s\n",bottom);
-        LogPrintf("\nbottom_display_ratio = %s\n",bottom_display_ratio);
-        LogPrintf("\nmaxwidth = %s\n",maxwidth);
-        LogPrintf("\ndisplay_up_to_range = %s\n",display_up_to_range);
-
-    }
-        qreal c_y = bottom;
-        const qreal c_w = 20;
-        const qreal c_h = 20;//10;
-        const qreal c_margin = 2;
-        c_y-=c_margin;
-        int i = 0;
-        for (const interfaces::mempool_feeinfo& list_entry : m_clientmodel->m_mempool_feehist[0].second) {
-            if (i > display_up_to_range) {
-                continue;
-            }
-            ClickableRectItem *fee_rect = new ClickableRectItem();
-                            //(L,   B,   R, Top)
-            //fee_rect->setRect(10, c_y-7, c_w+100, c_h);
-            //                x will be dyanmic base on mouse position
-            if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
-                //fee_rect->setRect(maxwidth-0, (c_y-18), c_w, (bottom/display_up_to_range)-20);//interesting effect
-                fee_rect->setRect(maxwidth-0, (c_y-18), c_w, (c_h ));
-
-            //Stack of rects on left
-
-            QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
-            //brush_color.setAlpha(100);
-            brush_color.setAlpha(255-i);
-            if (m_selected_range >= 0 && m_selected_range != i) {
-                brush_color.setAlpha(200);//not pressed
-            }
-
-            fee_rect->setBrush(QBrush(brush_color));
-            fee_rect->setPen(Qt::NoPen);//no outline only fill with QBrush
-            fee_rect->setCursor(Qt::PointingHandCursor);
-            connect(fee_rect, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
-                // if clicked, we select or deselect if selected
-                if (m_selected_range == i) {
-                    m_selected_range = -1;
-                } else {
-                    m_selected_range = i;
-                }
-                drawChart();
-
-            });
-
-            //TODO: fix bug/crash on click
-            if (ADD_FEE_RANGES){
-
-                QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
-                fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
-                if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                //if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                    fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
-                }
-                fee_text->setDefaultTextColor(Qt::white);
-                fee_text->setFont(LABELFONT);
-                fee_text->setPos(4+c_w-7, c_y-7);
-                m_scene->addItem(fee_text);
-
-            }
-
-            if (ADD_FEE_RECTS){
-            m_scene->addItem(fee_rect);
-            }
-
-            c_y-=c_h+c_margin;
-            i++;
-        }
-
-}
-
 void MempoolStats::drawChart()
 {
     if (!m_clientmodel)
@@ -462,8 +374,18 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
 
-    showFeeRanges(this_event);
-    showFeeRects(this_event);
+if (event->type() == QEvent::MouseMove)
+  {
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+    if (MEMPOOL_GRAPH_LOGGING){
+        LogPrintf("mouseMoveEvent\n");
+        LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
+        LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
+    }
+  }
+
+    //showFeeRanges(this_event);
+    //showFeeRects(this_event);
     drawDetailView(detailX(),70,100,100);
 
 
@@ -471,14 +393,24 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
 void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
-    QEvent *this_event = event;
-    if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
-    }
+QEvent *this_event = event;
+if (MEMPOOL_GRAPH_LOGGING){
+    LogPrintf("leaveEvent\n");
+    LogPrintf("this_event->type() %s\n",this_event->type());
+}
 
-    hideFeeRanges(this_event);
-    hideFeeRects(this_event);
+if (event->type() == QEvent::MouseMove)
+  {
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+    if (MEMPOOL_GRAPH_LOGGING){
+        LogPrintf("mouseMoveEvent\n");
+        LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
+        LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
+    }
+  }
+
+    //hideFeeRanges(this_event);
+    //hideFeeRects(this_event);
     drawDetailView(detailX(),70,0,0);
 
 }

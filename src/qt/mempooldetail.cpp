@@ -105,7 +105,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
         LogPrintf("\nbottom_display_ratio = %s\n",bottom_display_ratio);
         LogPrintf("\nmaxwidth = %s\n",maxwidth);
         LogPrintf("\ndisplay_up_to_range = %s\n",display_up_to_range);
-        LogPrintf("\nfee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble());
+        //LogPrintf("\nfee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600);
 
     }
         qreal c_y = bottom;
@@ -120,9 +120,9 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_rect_detail->setRect(C_X, c_y-7, C_W, C_H);
 
             if (MEMPOOL_GRAPH_LOGGING){
-                LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
+                //LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
               //LogPrintf("fee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
-                LogPrintf("\n");
+                LogPrintf("c_y = %s\n",c_y);
 
             }
 
@@ -169,7 +169,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 			std::vector<size_t> fee_subtotal_txcount;
 
 			fee_subtotal_txcount.resize(m_clientmodel->m_mempool_feehist[0].second.size());
-            LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
+            //LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
 			QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
 
             if(ADD_TOTAL_TEXT){

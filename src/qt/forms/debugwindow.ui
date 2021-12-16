@@ -886,6 +886,9 @@
            <height>360</height>
           </size>
          </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(17,19,31)</string>
          </property>
@@ -1062,7 +1065,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>274</width>
+                <width>159</width>
                 <height>616</height>
                </rect>
               </property>

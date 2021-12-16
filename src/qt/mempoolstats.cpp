@@ -330,7 +330,7 @@ int MempoolStats::detailX(){
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("m_gfx_view()->width() =  %s\n",m_gfx_view->width());
     }
-    return m_gfx_view->width()*0.7;
+    return m_gfx_view->width()*0.66;
 
 }
 int MempoolStats::detailY(){
@@ -397,7 +397,7 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     mPoint.setX(mouseEvent->pos().x());
     mPoint.setY(mouseEvent->pos().y());
-    drawDetailView(detailX(), detailY(), m_gfx_view->width()*0.1, m_gfx_view->height()*0.8);
+    drawDetailView(detailX(), detailY(), m_gfx_view->width()*0.33, m_gfx_view->height()*0.5);
 
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("enterEvent\n");

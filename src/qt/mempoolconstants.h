@@ -22,8 +22,8 @@ static const int     AMOUNT_OF_H_LINES           = 9;
 static const double  GRAPH_PATH_SCALAR           = 1.0;
 
 const qreal C_X                                  = 10;
-const qreal C_W                                  = 20;
-const qreal C_H                                  = 20;
+const qreal C_W                                  = 12;
+const qreal C_H                                  = 12;
 const qreal C_MARGIN                             = 2;
 
 bool const ADD_TEXT                              = true;

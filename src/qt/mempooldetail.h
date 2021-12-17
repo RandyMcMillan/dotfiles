@@ -46,18 +46,8 @@ public:
 
 public Q_SLOTS:
     void drawChart();
-    void drawHorzLines(
-    const qreal x_increment,
-    QPointF current_x_bottom,
-    const int amount_of_h_lines,
-    qreal maxheight_g,
-    qreal maxwidth,
-    qreal bottom,
-    size_t max_txcount_graph,
-    QFont LABELFONT
-);
-    void drawFeeRanges(qreal bottom, QFont LABELFONT);
-    void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx, bool ADD_TEXT, QFont LABELFONT);
+    void drawFeeRanges(qreal bottom);
+    void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx, bool ADD_TEXT);
 
     void mousePressEvent(QMouseEvent        *event) override;
     void mouseReleaseEvent(QMouseEvent      *event) override;

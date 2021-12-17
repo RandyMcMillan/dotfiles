@@ -16,11 +16,11 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
         parent->installEventFilter(this);
         raise();
     }
-    //setMouseTracking(true);
+    setMouseTracking(true);
 
     // autoadjust font size
     QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
-    testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
+    testText.setFont(QFont("Roboto Mono", LABEL_TITLE_SIZE, QFont::Light));
     LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
     LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
 
@@ -34,70 +34,31 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_gfx_detail = new QGraphicsView(this);
     m_scene = new QGraphicsScene(m_gfx_detail);
     m_gfx_detail->setScene(m_scene);
-    m_gfx_detail->setBackgroundBrush(QColor(16, 18, 31, 127));
-    m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    m_gfx_detail->setBackgroundBrush(QColor(28, 31, 49, 127));
+    m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
 
     if (m_clientmodel)
         drawChart();
 }
 
-void MempoolDetail::drawHorzLines(
-        const qreal x_increment,
-        QPointF current_x_bottom,
-        const int amount_of_h_lines,
-        qreal maxheight_g,
-        qreal maxwidth,
-        qreal bottom,
-        size_t max_txcount_graph,
-        QFont LABELFONT){
+void MempoolDetail::drawFeeRanges( qreal bottom ){
 
-    QPainterPath tx_count_grid_path(current_x_bottom);
-    int bottomTxCount = 0;
-    for (int i=0; i < amount_of_h_lines; i++)
-    {
-        qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
-        //TODO: use text rect width to adjust
-        tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT-0, lY);
-        tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
-        //tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT, lY);
-
-        size_t grid_tx_count =
-            (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
-
-        if (MEMPOOL_DETAIL_LOGGING){
-            LogPrintf("i = %s\n",i);
-            LogPrintf("lY = %s\n",lY);
-        }
-        //Add text ornament
-        if (ADD_TEXT) {
-
-            QGraphicsTextItem *item_tx_count =
-                m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
-            //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
-            //TODO: use text rect width to adjust
-            item_tx_count->setDefaultTextColor(Qt::white);
-            item_tx_count->setPos(GRAPH_PADDING_LEFT-60, lY-(item_tx_count->boundingRect().height()/2));
-
-        }
-    }
-
-QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-m_scene->addPath(tx_count_grid_path, gridPen);
-
-}
-
-void MempoolDetail::drawFeeRanges( qreal bottom, QFont LABELFONT){
-
+    QFont gridFont;
+    gridFont.setPointSize(12);
+    gridFont.setWeight(QFont::Light);
     if (ADD_FEE_RANGES) {
         QGraphicsTextItem *fee_range_title =
-            m_scene->addText("Fee ranges\n(sat/b)", LABELFONT);
+        m_scene->addText("Fee ranges\n(sat/b)", gridFont);
         fee_range_title->setPos(2, bottom+10);
         }
 }
 
-void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_txcount, bool ADD_TEXT, QFont LABELFONT){
+void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_txcount, bool ADD_TEXT){
 
     double bottom_display_ratio = (bottom/display_up_to_range);
+    QFont gridFont;
+    gridFont.setPointSize(12);
+    gridFont.setWeight(QFont::Bold);
 
     if (MEMPOOL_DETAIL_LOGGING){
 
@@ -117,7 +78,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             ClickableRectItem *fee_rect_detail = new ClickableRectItem();
             if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
-                fee_rect_detail->setRect(C_X, c_y-7, C_W, C_H);
+                fee_rect_detail->setRect(C_X, c_y-5, C_W, C_H);
 
             if (MEMPOOL_DETAIL_LOGGING){
               //LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
@@ -139,29 +100,21 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             fee_rect_detail->setBrush(QBrush(brush_color));
             fee_rect_detail->setPen(Qt::NoPen);//no outline only fill with QBrush
-            fee_rect_detail->setCursor(Qt::PointingHandCursor);
-            connect(fee_rect_detail, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
-                // if clicked, we select or deselect if selected
-                if (m_selected_range == i) {
-                    m_selected_range = -1;
-                } else {
-                    m_selected_range = i;
-                }
-                drawChart();
-            });
 
             if (ADD_FEE_RANGES){
 
-                QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
+                QFont gridFont;
+                gridFont.setPointSize(10);
+                gridFont.setWeight(QFont::Light);
+
+                QGraphicsTextItem *fee_text = m_scene->addText(QString::number(list_entry.fee_from)+" - "+QString::number(list_entry.fee_to), gridFont);
                 fee_text->setPlainText(QString::number(list_entry.fee_from)+" - "+QString::number(list_entry.fee_to));
+
                 if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                //if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                    fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
+                    fee_text->setHtml(QString::number(list_entry.fee_from)+"+");
                 }
 
                 fee_text->setZValue(FEE_TEXT_Z);
-                fee_text->setDefaultTextColor(Qt::white);
-                fee_text->setFont(LABELFONT);
                 fee_text->setPos(C_W*2, c_y-7);
 
 			QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
@@ -176,11 +129,12 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
                 QFont gridFont;
                 gridFont.setPointSize(12);
-                gridFont.setWeight(QFont::Bold);
+                //gridFont.setWeight(QFont::Bold);
 
                 QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
                 //item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom);
-                item_tx_count->setPos(C_W-3, c_y-20);
+                //item_tx_count->setPos(C_W-3, c_y-20);
+                item_tx_count->setPos(C_W+3, c_y-20);
 
             }
 
@@ -193,6 +147,17 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 m_scene->addItem(fee_rect_detail);
 
             }
+
+            fee_rect_detail->setCursor(Qt::PointingHandCursor);
+            connect(fee_rect_detail, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
+                // if clicked, we select or deselect if selected
+                if (m_selected_range == i) {
+                    m_selected_range = -1;
+                } else {
+                    m_selected_range = i;
+                }
+                drawChart();
+            });
 
             c_y-=C_H+C_MARGIN;
             if (MEMPOOL_DETAIL_LOGGING){
@@ -259,28 +224,27 @@ void MempoolDetail::drawChart()
             int i = 0;
             for (const interfaces::mempool_feeinfo& list_entry : sample.second) {
                 if (MEMPOOL_DETAIL_LOGGING){
-                LogPrintf("i = %s\n", i);
+                    LogPrintf("i = %s\n", i);
                 }
                 txcount += list_entry.tx_count;
 
                 if (MEMPOOL_DETAIL_LOGGING){
-                LogPrintf("txcount = %s\n", txcount);
+                    LogPrintf("txcount = %s\n", txcount);
                 }
 
                 fee_subtotal_txcount[i] += list_entry.tx_count;
 
                 if (MEMPOOL_DETAIL_LOGGING){
-                LogPrintf("list_entry.tx_count = %s\n", list_entry.tx_count );
-                LogPrintf("fee_subtotal_txcount[i] = %s\n",fee_subtotal_txcount[i]);
+                    LogPrintf("list_entry.tx_count = %s\n", list_entry.tx_count );
+                    LogPrintf("fee_subtotal_txcount[i] = %s\n",fee_subtotal_txcount[i]);
                 }
                 i++;
             }
             if (txcount > max_txcount) max_txcount = txcount;
-                if (MEMPOOL_DETAIL_LOGGING){
+            if (MEMPOOL_DETAIL_LOGGING){
                 LogPrintf("maxcount = %s\n", max_txcount);
-                }
+            }
         }
-
 
         // hide ranges we don't have txns
         for(size_t i = 0; i < fee_subtotal_txcount.size(); i++) {
@@ -357,7 +321,6 @@ void MempoolDetail::drawChart()
             feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
         }
 
-
         QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
         QColor brush_color = pen_color;
         //mempool paths 
@@ -378,12 +341,13 @@ void MempoolDetail::drawChart()
         }
 
         if (MEMPOOL_DETAIL_LOGGING){
-        LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
+            LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
         }
-        drawFeeRects(bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i], ADD_TEXT, gridFont);
 
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         //m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
+
+        drawFeeRects(bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i], ADD_TEXT);
         i++;
     }
 

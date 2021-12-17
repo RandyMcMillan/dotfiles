@@ -53,6 +53,8 @@ public Q_SLOTS:
     );
     int detailX();
     int detailY();
+    int detailWidth();
+    int detailHeight();
     void drawHorzLines(
     const qreal x_increment,
     QPointF current_x_bottom,

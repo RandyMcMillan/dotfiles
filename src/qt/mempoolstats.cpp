@@ -370,6 +370,10 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
+    QFont gridFont;
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 }
 void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
@@ -379,6 +383,10 @@ void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
+    QFont gridFont;
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 }
 void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
@@ -388,6 +396,10 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
+    QFont gridFont;
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
     //mempool_right->show();
 }
 void MempoolStats::mouseMoveEvent(QMouseEvent *mouseEvent) { Q_EMIT objectClicked(this);
@@ -409,6 +421,9 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *mouseEvent) { Q_EMIT objectClicke
         LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
 
     }
+    QFont gridFont;
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 }
 
 void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
@@ -422,8 +437,8 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
     //drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
     //drawDetailView(detailX(), detailY(), 1*detailWidth(), 1*detailWidth());
     //drawDetailView(detailX(), detailY(), 1*detailHeight()/2, 1*detailHeight()/2);
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x()), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().x());
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("enterEvent\n");
@@ -438,6 +453,8 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
         LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
         LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
 
+        LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
+        LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
         drawDetailView(detailX(), detailY(), 1*detailHeight()/2, 1*detailHeight()/2);
 
     } else {
@@ -486,6 +503,9 @@ if (event->type() == QEvent::MouseMove)
 
     }
 
+    QFont gridFont;
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
     //hideFeeRanges(this_event);
     //hideFeeRects(this_event);
     drawDetailView(0,0,0,0);

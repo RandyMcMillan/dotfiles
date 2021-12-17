@@ -73,9 +73,10 @@ void MempoolStats::drawDetailView(
             //rect().width()-GRAPH_PADDING_RIGHT,
             detail_width,
             std::max(
-                (1.0 * rect().width()*0.33),
-                (1.0 * rect().height()*0.66)
-        ));
+                (0.9 * rect().height()),
+            //  OR
+                (350.0))
+            );
 
 
 }
@@ -368,7 +369,7 @@ int MempoolStats::detailY(){
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("m_gfx_view()->height() =  %s\n",m_gfx_view->height());
     }
-    return m_gfx_view->height()*0.1;
+    return m_gfx_view->height()*0.05;
 
 }
 int MempoolStats::detailWidth(){
@@ -384,7 +385,7 @@ int MempoolStats::detailHeight(){
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("m_gfx_view()->height() =  %s\n",m_gfx_view->height());
     }
-    return m_gfx_view->height()*0.66;
+    return m_gfx_view->height()*0.8;
 
 }
 
@@ -417,6 +418,15 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
     QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
     enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+    if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
+
+        drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+
+    } else {
+
+        drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+
+    }
 }
 void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
@@ -470,6 +480,15 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
     QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
     enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+    if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
+
+        drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+
+    } else {
+
+        drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+
+    }
     //mempool_right->show();
 }
 void MempoolStats::mouseMoveEvent(QMouseEvent *mouseEvent) { Q_EMIT objectClicked(this);
@@ -501,6 +520,16 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *mouseEvent) { Q_EMIT objectClicke
 
         LogPrintf("LABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
+
+    }
+
+    if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
+
+        drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+
+    } else {
+
+        drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
 
     }
 
@@ -540,25 +569,18 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
         LogPrintf("LABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
 
+        LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
+        LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
+
+        LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
+        LogPrintf("m_gfx_view->height()/2 %s\n",m_gfx_view->height()/2);
     }
 
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
-        LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
-        LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
-
-        LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
-        LogPrintf("m_gfx_view->height()/2 %s\n",m_gfx_view->height()/2);
-
         drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
 
     } else {
-
-        LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
-        LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
-
-        LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
-        LogPrintf("m_gfx_view->height()/2 %s\n",m_gfx_view->height()/2);
 
         drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
 
@@ -578,13 +600,6 @@ QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
 if (event->type() == QEvent::MouseMove)
   {
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mouseMoveEvent\n");
-        LogPrintf("mouseMoveEvent\n");
-        LogPrintf("mouseMoveEvent\n");
-        LogPrintf("mouseMoveEvent\n");
-        LogPrintf("mouseMoveEvent\n");
-        LogPrintf("mouseMoveEvent\n");
-        LogPrintf("mouseMoveEvent\n");
         LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
         LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
     }

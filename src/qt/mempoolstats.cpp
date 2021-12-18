@@ -90,11 +90,15 @@ void MempoolStats::drawHorzLines(
         size_t max_txcount_graph,
         QFont LABELFONT){
 
+
+    qreal _maxheight = std::max((double)(maxheight_g),(double)(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
+
     QPainterPath tx_count_grid_path(current_x_bottom);
     int bottomTxCount = 0;
     for (int i=0; i < amount_of_h_lines; i++)
     {
-        qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
+        //qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
+        qreal lY = bottom-i*(_maxheight/(amount_of_h_lines-1));
         //TODO: use text rect width to adjust
         tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT-0, lY);
         tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
@@ -248,7 +252,8 @@ void MempoolStats::drawChart()
     } // release lock for the actual drawing
 
     int i = 0;
-    QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+    //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+    QString total_text = "";
     for (auto feepath : fee_paths) {
         // close paths
         if (i > 0) {
@@ -307,6 +312,8 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
         ));
 
     drawChart();
+    drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+
 
     QFont gridFont;
     QGraphicsTextItem *enterEvent = m_scene->addText(QString::number(rect().left())+","+QString::number(rect().top()), gridFont);

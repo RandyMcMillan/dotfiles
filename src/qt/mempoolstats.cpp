@@ -422,8 +422,10 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
 
     QFont gridFont;
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+    //QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString("."), gridFont);
     enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
         drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());

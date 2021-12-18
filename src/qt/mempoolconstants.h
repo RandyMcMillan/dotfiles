@@ -33,6 +33,8 @@ bool const MEMPOOL_GRAPH_LOGGING                 = true;
 bool const MEMPOOL_DETAIL_LOGGING                = false;
 bool const ADD_TOTAL_TEXT                        = true;
 
+bool const DETAIL_VIEW_HIDE_EVENT                = false;
+
 static const qreal FEE_TEXT_Z                    = 1000;
 
 const static std::vector<QColor> colors = {

@@ -136,10 +136,10 @@ void MempoolStats::drawChart()
     m_scene->clear();
 
     //
-    qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
-    // TODO: calc dynamic GRAPH_PADDING_BOTTOM
+    qreal current_x = 0 + GRAPH_PADDING_LEFT;
     const qreal bottom = (m_gfx_view->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
-    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
+    //const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
+    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (m_gfx_view->scene()->sceneRect().height() * 0.2));
     if (MEMPOOL_GRAPH_LOGGING){
 
         LogPrintf("bottom = %s\n",bottom);
@@ -366,15 +366,15 @@ int MempoolStats::detailX(){
 int MempoolStats::detailY(){
 
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("m_gfx_view()->height() =  %s\n",m_gfx_view->height());
+        LogPrintf("m_gfx_view()->height()*0.12 =  %s\n",m_gfx_view->height()*0.12);
     }
-    return m_gfx_view->height()*0.05;
+    return (m_gfx_view->height()*0.12);
 
 }
 int MempoolStats::detailWidth(){
 
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("m_gfx_view()->width() =  %s\n",m_gfx_view->width());
+        LogPrintf("m_gfx_view()->width()*0.33 =  %s\n",m_gfx_view->width()*0.33);
     }
     return m_gfx_view->width()*0.33;
 
@@ -382,9 +382,9 @@ int MempoolStats::detailWidth(){
 int MempoolStats::detailHeight(){
 
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("m_gfx_view()->height() =  %s\n",m_gfx_view->height());
+        LogPrintf("m_gfx_view()->height()*0.5 =  %s\n",m_gfx_view->height()*0.5);
     }
-    return m_gfx_view->height()*0.8;
+    return m_gfx_view->height()*0.5;
 
 }
 
@@ -633,7 +633,9 @@ if (event->type() == QEvent::MouseMove)
     enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
     //hideFeeRanges(this_event);
     //hideFeeRects(this_event);
-    m_detail_view->hide();
+    if (DETAIL_VIEW_HIDE_EVENT) {
+        m_detail_view->hide();
+    }
     //drawDetailView(0,0,0,0);
 
 }

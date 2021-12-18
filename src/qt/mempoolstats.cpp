@@ -66,18 +66,17 @@ void MempoolStats::drawDetailView(
     //m_detail_view->setGeometry(detail_x, detail_y, detail_width, detail_height);
 
     m_detail_view->setGeometry(
-            //rect().left()/1.618,
             detail_x,
-            //rect().top()/1.618,
             detail_y,
-            //rect().width()-GRAPH_PADDING_RIGHT,
-            detail_width,
+            std::max(
+                (0.25 * rect().width()),
+                (DETAIL_VIEW_MIN_WIDTH)),
             std::max(
                 (0.9 * rect().height()),
-            //  OR
-                (350.0))
+                (DETAIL_VIEW_MIN_HEIGHT))
             );
 
+    m_detail_view->show();
 
 }
 
@@ -361,7 +360,7 @@ int MempoolStats::detailX(){
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("m_gfx_view()->width() =  %s\n",m_gfx_view->width());
     }
-    return m_gfx_view->width()*0.66;
+    return m_gfx_view->width()-detailWidth()-50;
 
 }
 int MempoolStats::detailY(){
@@ -634,7 +633,8 @@ if (event->type() == QEvent::MouseMove)
     enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
     //hideFeeRanges(this_event);
     //hideFeeRects(this_event);
-    drawDetailView(0,0,0,0);
+    m_detail_view->hide();
+    //drawDetailView(0,0,0,0);
 
 }
 

@@ -33,7 +33,7 @@ bool const MEMPOOL_GRAPH_LOGGING                 = true;
 bool const MEMPOOL_DETAIL_LOGGING                = false;
 bool const ADD_TOTAL_TEXT                        = true;
 
-bool const DETAIL_VIEW_HIDE_EVENT                = false;
+bool const DETAIL_VIEW_HIDE_EVENT                = true;
 
 static const qreal FEE_TEXT_Z                    = 1000;
 

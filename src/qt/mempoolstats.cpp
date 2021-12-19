@@ -560,8 +560,8 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("enterEvent\n");
-        LogPrintf("mPoint.rx()\n",mPoint.rx());
-        LogPrintf("mPoint.ry()\n",mPoint.ry());
+        LogPrintf("mPoint.rx()\n",(int)mPoint.rx());
+        LogPrintf("mPoint.ry()\n",(int)mPoint.ry());
         LogPrintf("this_event->type()    %s\n",this_event->type());
         LogPrintf("mouseEvent->pos().x() %s\n",(int)mouseEvent->pos().x());
         LogPrintf("mouseEvent->pos().y() %s\n",(int)mouseEvent->pos().y());
@@ -672,7 +672,7 @@ void MempoolStats::showFeeRects(QEvent *event){
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("leaveEvent\n");
+        LogPrintf("showFeeRects\n");
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
 
@@ -681,7 +681,7 @@ void MempoolStats::hideFeeRects(QEvent *event){
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("leaveEvent\n");
+        LogPrintf("hideFeeRects\n");
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
 

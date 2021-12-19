@@ -35,7 +35,7 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_detail_view = new MempoolDetail(this);
     m_detail_view->setStyleSheet("background-color: rgb(28,31,49)");
     m_detail_view->setMinimumHeight(DETAIL_VIEW_MIN_HEIGHT);
-    m_detail_view->setMaximumHeight(DETAIL_VIEW_MAX_HEIGHT);
+//    m_detail_view->setMaximumHeight(DETAIL_VIEW_MAX_HEIGHT);
     m_detail_view->setMinimumWidth(DETAIL_VIEW_MIN_WIDTH);
     m_detail_view->setMaximumWidth(DETAIL_VIEW_MAX_WIDTH);
 

@@ -80,8 +80,12 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
         if (i > display_up_to_range) { continue; }
 
+        m_gfx_detail->setMaximumHeight(DETAIL_VIEW_MAX_HEIGHT + c_y);
+
+
             ClickableRectItem *fee_rect_detail = new ClickableRectItem();
-            if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
+            //if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
+            if (c_y < (DETAIL_VIEW_MAX_HEIGHT + DETAIL_PADDING_BOTTOM + 80))
                 //we make slight adjustments for Qt::NoPen set below
                 fee_rect_detail->setRect(C_X-10, c_y-5, C_W, C_H);
 

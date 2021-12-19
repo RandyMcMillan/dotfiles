@@ -13,8 +13,19 @@ static const int     GRAPH_PADDING_TOP           = 50;
 static const int     GRAPH_PADDING_TOP_LABEL     = 0;
 static const int     GRAPH_PADDING_BOTTOM        = 50;
 
-static const double  DETAIL_VIEW_MIN_WIDTH       = 250.0;
-static const double  DETAIL_VIEW_MIN_HEIGHT      = 350.0;
+static const int     DETAIL_PADDING_LEFT          = 50;
+static const int     DETAIL_PADDING_RIGHT         = 50;
+static const int     DETAIL_PADDING_TOP           = 50;
+static const int     DETAIL_PADDING_BOTTOM        = 50;
+
+static const double  DETAIL_VIEW_MIN_WIDTH       = 0.0;
+static const double  DETAIL_VIEW_MAX_WIDTH       = 250.0;
+
+static const double  DETAIL_VIEW_MIN_HEIGHT      = 300.0;
+static const double  DETAIL_VIEW_MAX_HEIGHT      = 400.0;
+
+bool const MEMPOOL_DETAIL_LOGGING                = false;
+bool const DETAIL_VIEW_HIDE_EVENT                = false;
 
 static const int     ITEM_TX_COUNT_PADDING_LEFT  = 5;
 static const int     ITEM_TX_COUNT_PADDING_RIGHT = 5;
@@ -30,10 +41,7 @@ bool const ADD_TEXT                              = true;
 bool const ADD_FEE_RANGES                        = true;
 bool const ADD_FEE_RECTS                         = true;
 bool const MEMPOOL_GRAPH_LOGGING                 = true;
-bool const MEMPOOL_DETAIL_LOGGING                = false;
 bool const ADD_TOTAL_TEXT                        = true;
-
-bool const DETAIL_VIEW_HIDE_EVENT                = true;
 
 static const qreal FEE_TEXT_Z                    = 1000;
 

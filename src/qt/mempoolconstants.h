@@ -7,31 +7,31 @@ static int           LABEL_KV_SIZE               = 12;
 
 static const int     LABEL_LEFT_SIZE             = 0;// space + #.# MvB -- //
 static const int     LABEL_RIGHT_SIZE            = 0;
-static const int     GRAPH_PADDING_LEFT          = 100+LABEL_LEFT_SIZE;
+static const int     GRAPH_PADDING_LEFT          = 50+LABEL_LEFT_SIZE;
 static const int     GRAPH_PADDING_RIGHT         = 50 +LABEL_RIGHT_SIZE;
 static const int     GRAPH_PADDING_TOP           = 50;
 static const int     GRAPH_PADDING_TOP_LABEL     = 0;
 static const int     GRAPH_PADDING_BOTTOM        = 50;
-
-static const int     DETAIL_PADDING_LEFT          = 0;
-static const int     DETAIL_PADDING_RIGHT         = 50;
-static const double  DETAIL_VIEW_MIN_WIDTH       = 0.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
-static const double  DETAIL_VIEW_MAX_WIDTH       = 150.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
-
-static const int     DETAIL_PADDING_TOP           = 50;
-static const int     DETAIL_PADDING_BOTTOM        = 20;//used to calculate qreal bottom
-static const double  DETAIL_VIEW_MIN_HEIGHT      = 300.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
-static const double  DETAIL_VIEW_MAX_HEIGHT      = 400.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
-
-bool const MEMPOOL_DETAIL_LOGGING                = false;
-bool const DETAIL_VIEW_HIDE_EVENT                = false;
 
 static const int     ITEM_TX_COUNT_PADDING_LEFT  = 5;
 static const int     ITEM_TX_COUNT_PADDING_RIGHT = 5;
 static const int     AMOUNT_OF_H_LINES           = 9;
 static const double  GRAPH_PATH_SCALAR           = 1.0;
 
-const qreal C_X                                  = 10;
+static const int     DETAIL_PADDING_LEFT          = 0;
+static const int     DETAIL_PADDING_RIGHT         = 50;
+static const double  DETAIL_VIEW_MIN_WIDTH       = 100.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
+static const double  DETAIL_VIEW_MAX_WIDTH       = 150.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
+
+static const int     DETAIL_PADDING_TOP           = 0;
+static const int     DETAIL_PADDING_BOTTOM        = 30;//used to calculate qreal bottom in mempooldetail.cpp
+static const double  DETAIL_VIEW_MIN_HEIGHT      = 400.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
+static const double  DETAIL_VIEW_MAX_HEIGHT      = 400.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
+
+bool const MEMPOOL_DETAIL_LOGGING                = false;
+bool const DETAIL_VIEW_HIDE_EVENT                = false;
+
+const qreal C_X                                  = DETAIL_PADDING_LEFT+10;
 const qreal C_W                                  = 12;
 const qreal C_H                                  = 12;
 const qreal C_MARGIN                             = 2;

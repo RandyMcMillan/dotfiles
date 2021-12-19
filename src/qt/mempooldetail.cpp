@@ -36,6 +36,10 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_gfx_detail->setScene(m_scene);
     m_gfx_detail->setBackgroundBrush(QColor(28, 31, 49, 127));
     m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
+    m_gfx_detail->setMinimumHeight(DETAIL_VIEW_MIN_HEIGHT);
+    m_gfx_detail->setMaximumHeight(DETAIL_VIEW_MAX_HEIGHT);
+    m_gfx_detail->setMinimumWidth(DETAIL_VIEW_MIN_WIDTH);
+    m_gfx_detail->setMaximumWidth(DETAIL_VIEW_MAX_WIDTH);
 
     if (m_clientmodel)
         drawChart();
@@ -179,7 +183,7 @@ void MempoolDetail::drawChart()
     //
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
     // TODO: calc dynamic GRAPH_PADDING_BOTTOM
-    const qreal bottom = (m_gfx_detail->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
+    const qreal bottom = (m_gfx_detail->scene()->sceneRect().height() - DETAIL_PADDING_BOTTOM);
     const qreal maxheight_g = (m_gfx_detail->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
     if (MEMPOOL_DETAIL_LOGGING){
 

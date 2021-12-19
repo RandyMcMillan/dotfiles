@@ -82,12 +82,14 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             ClickableRectItem *fee_rect_detail = new ClickableRectItem();
             if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
-                fee_rect_detail->setRect(C_X, c_y-5, C_W, C_H);
+                //we make slight adjustments for Qt::NoPen set below
+                fee_rect_detail->setRect(C_X-10, c_y-5, C_W, C_H);
 
             if (MEMPOOL_DETAIL_LOGGING){
               //LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
               //LogPrintf("fee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
                 LogPrintf("\nc_y = %s",c_y);
+                LogPrintf("\nc_y-5 = %s",c_y-5);
 
             }
 
@@ -120,7 +122,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 }
 
                 fee_text->setZValue(FEE_TEXT_Z);
-                fee_text->setPos(C_W*2, c_y-7);
+                fee_text->setPos(C_W-7, c_y-C_H+C_MARGIN);
 
 			QString total_text = "test 121";//tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 

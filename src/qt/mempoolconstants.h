@@ -31,7 +31,7 @@ static const double  DETAIL_VIEW_MAX_HEIGHT      = 400.0+DETAIL_PADDING_TOP+DETA
 bool const MEMPOOL_DETAIL_LOGGING                = false;
 bool const DETAIL_VIEW_HIDE_EVENT                = false;
 
-const qreal C_X                                  = DETAIL_PADDING_LEFT+10;
+const qreal C_X                                  = DETAIL_PADDING_LEFT+0;
 const qreal C_W                                  = 12;
 const qreal C_H                                  = 12;
 const qreal C_MARGIN                             = 2;

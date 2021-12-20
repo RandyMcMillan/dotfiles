@@ -24,7 +24,7 @@ static const double  DETAIL_VIEW_MIN_WIDTH       = 100.0+DETAIL_PADDING_LEFT+DET
 static const double  DETAIL_VIEW_MAX_WIDTH       = 150.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
 
 static const int     DETAIL_PADDING_TOP           = 0;
-static const int     DETAIL_PADDING_BOTTOM        = 30;//used to calculate qreal bottom in mempooldetail.cpp
+static const int     DETAIL_PADDING_BOTTOM        = 50;//used to calculate qreal bottom in mempooldetail.cpp
 static const double  DETAIL_VIEW_MIN_HEIGHT      = 400.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
 static const double  DETAIL_VIEW_MAX_HEIGHT      = 400.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
 

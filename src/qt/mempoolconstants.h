@@ -19,7 +19,7 @@ static const int     AMOUNT_OF_H_LINES           = 9;
 static const double  GRAPH_PATH_SCALAR           = 1.0;
 
 static const int     DETAIL_PADDING_LEFT          = 0;
-static const int     DETAIL_PADDING_RIGHT         = 50;
+static const int     DETAIL_PADDING_RIGHT         = 100;//inside m_gfx_view
 static const double  DETAIL_VIEW_MIN_WIDTH       = 100.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
 static const double  DETAIL_VIEW_MAX_WIDTH       = 150.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
 

@@ -76,6 +76,7 @@ private:
     virtual void hideEvent(QHideEvent        *event) override;
 
     int m_selected_range = -1;
+	qreal bottom = 0;
 };
 
 #endif // BITCOIN_QT_MEMPOOLDETAIL_H

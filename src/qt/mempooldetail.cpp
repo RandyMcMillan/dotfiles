@@ -84,8 +84,9 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
 
             ClickableRectItem *fee_rect_detail = new ClickableRectItem();
-            //if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
-            if (c_y < (DETAIL_VIEW_MAX_HEIGHT + DETAIL_PADDING_BOTTOM + 80))
+            if (c_y < (bottom + DETAIL_PADDING_BOTTOM + 80))
+            //if (c_y < (DETAIL_VIEW_MAX_HEIGHT + DETAIL_PADDING_BOTTOM + 80))
+            //if (c_y < (DETAIL_VIEW_MAX_HEIGHT + DETAIL_PADDING_BOTTOM))
                 //we make slight adjustments for Qt::NoPen set below
                 fee_rect_detail->setRect(C_X-10, c_y-5, C_W, C_H);
 
@@ -190,7 +191,7 @@ void MempoolDetail::drawChart()
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
     // TODO: calc dynamic GRAPH_PADDING_BOTTOM
     const qreal bottom = (m_gfx_detail->scene()->sceneRect().height() - DETAIL_PADDING_BOTTOM);
-    const qreal maxheight_g = (m_gfx_detail->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
+    const qreal maxheight_g = (m_gfx_detail->scene()->sceneRect().height() - (DETAIL_PADDING_TOP + DETAIL_PADDING_BOTTOM) );
     if (MEMPOOL_DETAIL_LOGGING){
 
         LogPrintf("\n");
@@ -376,8 +377,9 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
             rect().width()-GRAPH_PADDING_RIGHT,
             std::max(
                 (0.1 * rect().width() ),
-                (0.9 * rect().height())
-        ));
+                //(0.9 * rect().height())
+                (0.6 * rect().height())
+                ));
     //m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     drawChart();

@@ -198,8 +198,14 @@ void MempoolStats::drawChart()
 
         // hide ranges we don't have txns
         for(size_t i = 0; i < fee_subtotal_txcount.size(); i++) {
+            if (MEMPOOL_GRAPH_LOGGING){
+                LogPrintf("fee_subtotal_txcount.size() = %s\n",fee_subtotal_txcount.size());
+            }
             if (fee_subtotal_txcount[i] > 0) {
                 display_up_to_range = i;
+                if (MEMPOOL_GRAPH_LOGGING){
+                    LogPrintf("fee_subtotal_txcount[i] = %s\n",fee_subtotal_txcount[i]);
+                }
             }
         }
 
@@ -371,7 +377,7 @@ int MempoolStats::detailX(){
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("m_gfx_view()->width() =  %s\n",m_gfx_view->width());
     }
-    return m_gfx_view->width()-detailWidth()-50;
+    return m_gfx_view->width()-detailWidth()-DETAIL_PADDING_RIGHT;
 
 }
 int MempoolStats::detailY(){
@@ -385,9 +391,9 @@ int MempoolStats::detailY(){
 int MempoolStats::detailWidth(){
 
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("m_gfx_view()->width()*0.33 =  %s\n",m_gfx_view->width()*0.33);
+        LogPrintf("m_gfx_view()->width()*0.15 =  %s\n",m_gfx_view->width()*0.15);
     }
-    return m_gfx_view->width()*0.33;
+    return m_gfx_view->width()*0.15;
 
 }
 int MempoolStats::detailHeight(){
@@ -395,7 +401,7 @@ int MempoolStats::detailHeight(){
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("m_gfx_view()->height()*0.5 =  %s\n",m_gfx_view->height()*0.5);
     }
-    return m_gfx_view->height()*0.5;
+    return m_gfx_view->height()*0.0;
 
 }
 

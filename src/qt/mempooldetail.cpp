@@ -265,27 +265,25 @@ void MempoolDetail::drawChart()
         for (const ClientModel::mempool_feehist_sample& sample : m_clientmodel->m_mempool_feehist) {
             uint64_t txcount = 0;
             int i = 0;
+        if (MEMPOOL_DETAIL_LOGGING){
+            LogPrintf("\ni = %s", i);
+            LogPrintf("\nm_clientmodel->m_mempool_feehist[i].second.size() = %s\n", m_clientmodel->m_mempool_feehist[i].second.size());
+        }
             for (const interfaces::mempool_feeinfo& list_entry : sample.second) {
-                if (MEMPOOL_DETAIL_LOGGING){
-                    LogPrintf("\ni = %s", i);
-                }
+
                 txcount += list_entry.tx_count;
+
+                fee_subtotal_txcount[i] += list_entry.tx_count;
+                if (txcount > max_txcount) max_txcount = txcount;
 
                 if (MEMPOOL_DETAIL_LOGGING){
                     LogPrintf("\ntxcount = %s", txcount);
-                }
-
-                fee_subtotal_txcount[i] += list_entry.tx_count;
-
-                if (MEMPOOL_DETAIL_LOGGING){
                     LogPrintf("\nlist_entry.tx_count = %s", list_entry.tx_count );
+                    LogPrintf("\ni = %s", i);
                     LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
+                    LogPrintf("\nmaxcount = %s", max_txcount);
                 }
                 i++;
-            }
-            if (txcount > max_txcount) max_txcount = txcount;
-            if (MEMPOOL_DETAIL_LOGGING){
-                LogPrintf("\nmaxcount = %s", max_txcount);
             }
         }
 
@@ -344,6 +342,17 @@ void MempoolDetail::drawChart()
                     //              TODO:dynamic scalar
                     fee_paths[i].lineTo(GRAPH_PATH_SCALAR*current_x, y);//affects scale height draw
                 }
+
+
+
+
+
+
+
+
+
+
+
                 i++;
             }
             first = false;
@@ -379,7 +388,8 @@ void MempoolDetail::drawChart()
             LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
             if (ADD_TOTAL_TEXT){
                 QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
-                item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
+                //item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
+                item_tx_count->setDefaultTextColor(pen_color);//REF: mempoolconstants.h
                 item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
             }
         }

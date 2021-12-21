@@ -113,25 +113,31 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             }
 
             fee_rect_detail->setBrush(QBrush(brush_color));
-            fee_rect_detail->setPen(Qt::NoPen);//no outline only fill with QBrush
+            //fee_rect_detail->setPen(QPen(brush_color));//no outline only fill with QBrush
             fee_rect_detail->setCursor(Qt::PointingHandCursor);
 
             if (ADD_FEE_RANGES){
 
                 QFont gridFont;
-                gridFont.setPointSize(20);
-                gridFont.setWeight(QFont::Light);
+                gridFont.setPointSize(12);
+                //gridFont.setWeight(QFont::Light);
 
-                ClickableTextItem *fee_text = new ClickableTextItem();
-                fee_text->setText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
-                fee_text->setBrush(QBrush(brush_color));
+                //ClickableTextItem *fee_text = new ClickableTextItem();
+                //
+                //QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
+                //item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
+                //item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
+
+                QGraphicsTextItem *fee_text = m_scene->addText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to),gridFont);
+                fee_text->setDefaultTextColor(colors[16]);//REF: empoolconstants.h
+                //fee_text->setBrush(QBrush(brush_color));
+                //fee_text->setBrush(QBrush(colors[16]));
                 if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                    fee_text->setText(QString::number(list_entry.fee_from)+"+");
+                    m_scene->addText(QString::number(list_entry.fee_from)+"+");
                 }
                 fee_text->setFont(gridFont);
-                //fee_text->setPos(4+c_w+2, c_y);
                 m_scene->addItem(fee_text);
-                //connect(fee_text, &ClickableTextItem::objectClicked, [&fee_rect_detail](QGraphicsItem*item) { fee_rect_detail->objectClicked(item); });
+                //connect(fee_text, &QGraphicsClickableTextItem::objectClicked, [&fee_text](QGraphicsClickableTextItem*item) { fee_text->objectClicked(item); });
 
 
                 fee_text->setZValue(FEE_TEXT_Z);

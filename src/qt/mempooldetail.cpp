@@ -40,6 +40,8 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_gfx_detail->setMaximumHeight(DETAIL_VIEW_MAX_HEIGHT);
     m_gfx_detail->setMinimumWidth(DETAIL_VIEW_MIN_WIDTH);
     m_gfx_detail->setMaximumWidth(DETAIL_VIEW_MAX_WIDTH);
+    m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     if (m_clientmodel)
         drawChart();
@@ -382,8 +384,6 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
                 //(0.9 * rect().height())
                 (0.6 * rect().height())
                 ));
-    //m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     drawChart();
 }
 

@@ -579,11 +579,11 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("enterEvent\n");
-        LogPrintf("mPoint.rx()\n",(int)mPoint.rx());
-        LogPrintf("mPoint.ry()\n",(int)mPoint.ry());
+        LogPrintf("mPoint.rx()\n",(int){mPoint.rx()});
+        LogPrintf("mPoint.ry()\n",(int){mPoint.ry()});
         LogPrintf("this_event->type()    %s\n",this_event->type());
-        LogPrintf("mouseEvent->pos().x() %s\n",(int)mouseEvent->pos().x());
-        LogPrintf("mouseEvent->pos().y() %s\n",(int)mouseEvent->pos().y());
+        LogPrintf("mouseEvent->pos().x() %s\n",(int){mouseEvent->pos().x()});
+        LogPrintf("mouseEvent->pos().y() %s\n",(int){mouseEvent->pos().y()});
     }
     // autoadjust font size
     QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string

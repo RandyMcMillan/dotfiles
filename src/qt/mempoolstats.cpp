@@ -33,7 +33,7 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 
     m_gfx_view = new QGraphicsView(this);
     m_detail_view = new MempoolDetail(this);
-    m_detail_view->setStyleSheet("background-color: rgb(28,31,49)");
+    //m_detail_view->setStyleSheet("color:rgb(174,174,174);background-color: rgb(28,31,49);");
     m_detail_view->setMinimumHeight(DETAIL_VIEW_MIN_HEIGHT);
 //    m_detail_view->setMaximumHeight(DETAIL_VIEW_MAX_HEIGHT);
     m_detail_view->setMinimumWidth(DETAIL_VIEW_MIN_WIDTH);
@@ -115,6 +115,7 @@ void MempoolStats::drawHorzLines(
 
             LogPrintf("i = %s\n",i);
             LogPrintf("lY = %s\n",lY);
+            LogPrintf("grid_tx_count = %s\n",grid_tx_count);
 
         }
         //Add text ornament
@@ -377,6 +378,7 @@ int MempoolStats::detailX(){
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("m_gfx_view()->width() =  %s\n",m_gfx_view->width());
     }
+    //Calculate a distance from right side of m_gfx_view
     return m_gfx_view->width()-detailWidth()-DETAIL_PADDING_RIGHT;
 
 }
@@ -442,7 +444,7 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
 
     } else {
 
-        drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY(), detailWidth(), detailHeight());
 
     }
 }
@@ -487,24 +489,27 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
     LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
     LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
 
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+
     if (MEMPOOL_GRAPH_LOGGING){
 
         LogPrintf("LABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
 
+        QFont gridFont;
+        QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+        enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+
     }
 
-    QFont gridFont;
-    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
         drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
 
     } else {
 
-        drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+        //drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY(), detailWidth(), detailHeight());
 
     }
     //mempool_right->show();
@@ -547,14 +552,18 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *mouseEvent) { Q_EMIT objectClicke
 
     } else {
 
-        drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+        //drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY(), detailWidth(), detailHeight());
 
     }
 
-    QFont gridFont;
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+    if (MEMPOOL_GRAPH_LOGGING){
 
+        QFont gridFont;
+        QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+        enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+
+    }
 }
 
 void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
@@ -600,7 +609,8 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     } else {
 
-        drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+        //drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
+        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY(), detailWidth(), detailHeight());
 
     }
 
@@ -645,13 +655,12 @@ if (event->type() == QEvent::MouseMove)
         LogPrintf("LABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
 
+        QFont gridFont;
+        QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+        enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+        //hideFeeRanges(this_event);
+        //hideFeeRects(this_event);
     }
-
-    QFont gridFont;
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
-    //hideFeeRanges(this_event);
-    //hideFeeRects(this_event);
     if (DETAIL_VIEW_HIDE_EVENT) {
         m_detail_view->hide();
     }

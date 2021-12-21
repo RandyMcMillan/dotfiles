@@ -128,6 +128,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
                 fee_text->setZValue(FEE_TEXT_Z);
                 fee_text->setPos(C_W-7, c_y-C_H+C_MARGIN);
+                fee_text->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
 
 			QString total_text = "test 121";//tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 
@@ -347,6 +348,7 @@ void MempoolDetail::drawChart()
             LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
             if (ADD_TOTAL_TEXT){
                 QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
+                item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
                 item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
             }
         }

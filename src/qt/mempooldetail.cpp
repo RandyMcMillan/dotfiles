@@ -128,7 +128,19 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 //item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
                 //item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
 
+                if (MEMPOOL_DETAIL_LOGGING){
+                    LogPrintf("\nlist_entry.fee_from = %s",list_entry.fee_from);
+                    LogPrintf("\nlist_entry.fee_to = %s",list_entry.fee_to);
+                    LogPrintf("\ni = %s\n",i);
+                }
+
+
+
                 QGraphicsTextItem *fee_text = m_scene->addText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to),gridFont);
+
+
+
+
                 fee_text->setDefaultTextColor(colors[16]);//REF: empoolconstants.h
                 //fee_text->setBrush(QBrush(brush_color));
                 //fee_text->setBrush(QBrush(colors[16]));

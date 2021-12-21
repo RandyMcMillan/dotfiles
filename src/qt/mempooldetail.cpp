@@ -119,19 +119,28 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             if (ADD_FEE_RANGES){
 
                 QFont gridFont;
-                gridFont.setPointSize(10);
+                gridFont.setPointSize(20);
                 gridFont.setWeight(QFont::Light);
 
-                QGraphicsTextItem *fee_text = m_scene->addText(QString::number(list_entry.fee_from)+" - "+QString::number(list_entry.fee_to), gridFont);
-                //fee_text->setPlainText(QString::number(list_entry.fee_from)+" - "+QString::number(list_entry.fee_to));
-
+                ClickableTextItem *fee_text = new ClickableTextItem();
+                fee_text->setText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
+                fee_text->setBrush(QBrush(brush_color));
                 if (i+1 == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-                    fee_text->setHtml(QString::number(list_entry.fee_from)+"+");
+                    fee_text->setText(QString::number(list_entry.fee_from)+"+");
                 }
+                fee_text->setFont(gridFont);
+                //fee_text->setPos(4+c_w+2, c_y);
+                m_scene->addItem(fee_text);
+                //connect(fee_text, &ClickableTextItem::objectClicked, [&fee_rect_detail](QGraphicsItem*item) { fee_rect_detail->objectClicked(item); });
+
 
                 fee_text->setZValue(FEE_TEXT_Z);
                 fee_text->setPos(C_W-7, c_y-C_H+C_MARGIN);
-                fee_text->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
+                //fee_text->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
+                //fee_text->setStyleSheet("color: white;");//REF: mempoolconstants.h
+                //fee_text->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
+            //};
+
 
 			QString total_text = "test 121";//tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 

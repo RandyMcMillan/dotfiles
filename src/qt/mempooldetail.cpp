@@ -22,7 +22,7 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
     testText.setFont(QFont("Roboto Mono", LABEL_TITLE_SIZE, QFont::Light));
     LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
-    LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
+    LABEL_KV_SIZE    *= 27.5/testText.boundingRect().width();
 
     if (MEMPOOL_DETAIL_LOGGING){
 
@@ -40,8 +40,9 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_gfx_detail->setMaximumHeight(DETAIL_VIEW_MAX_HEIGHT);
     m_gfx_detail->setMinimumWidth(DETAIL_VIEW_MIN_WIDTH);
     m_gfx_detail->setMaximumWidth(DETAIL_VIEW_MAX_WIDTH);
-    m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_gfx_detail->setStyleSheet("QScrollBar {width:0px;}");
+    //m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     if (m_clientmodel)
         drawChart();
@@ -160,6 +161,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             if (ADD_FEE_RECTS){
 
                 m_scene->addItem(fee_rect_detail);
+                LogPrintf("\n__________________________items().length() = %s\n",(int)m_scene->items().length());
 
             }
 

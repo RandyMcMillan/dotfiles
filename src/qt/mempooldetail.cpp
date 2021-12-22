@@ -361,6 +361,11 @@ void MempoolDetail::drawChart()
 
     int i = 0;
     QString total_text = "test 311";//tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+    if (MEMPOOL_DETAIL_LOGGING){
+            LogPrintf("\nm_clientmodel->m_mempool_max_samples = %s",(int)m_clientmodel->m_mempool_max_samples);
+            LogPrintf("\nm_clientmodel->m_mempool_collect_interval = %s",(int)m_clientmodel->m_mempool_collect_intervall);
+            LogPrintf("\nm_clientmodel->m_mempool_collect_interval/3600 = %s",(int)m_clientmodel->m_mempool_collect_intervall/3600);
+    }
     //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall));//10800 units
     for (auto feepath : fee_paths) {
         // close paths
@@ -404,6 +409,12 @@ void MempoolDetail::drawChart()
         drawFeeRects(bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i], ADD_TEXT);
         i++;
     }
+
+
+
+
+
+
 
 }//end drawChart()
 

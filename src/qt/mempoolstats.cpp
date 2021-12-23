@@ -94,15 +94,22 @@ void MempoolStats::drawHorzLines(
         size_t max_txcount_graph,
         QFont LABELFONT){
 
-
     qreal _maxheight = std::max((double)(maxheight_g),(double)(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
+
+    if (MEMPOOL_GRAPH_LOGGING){
+
+        LogPrintf("\nbottom = %s\n",bottom);
+        LogPrintf("\nmaxheight_g = %s\n",maxheight_g);
+        LogPrintf("\n_maxheight = %s\n",_maxheight);
+
+    }
 
     QPainterPath tx_count_grid_path(current_x_bottom);
     int bottomTxCount = 0;
     for (int i=0; i < amount_of_h_lines; i++)
     {
-        //qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
-        qreal lY = bottom-i*(_maxheight/(amount_of_h_lines-1));
+        qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
+        //qreal lY = bottom-i*(_maxheight/(amount_of_h_lines-1));
         //TODO: use text rect width to adjust
         tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT-0, lY);
         tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
@@ -149,10 +156,11 @@ void MempoolStats::drawChart()
     const qreal bottom = (m_gfx_view->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
     //const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
     const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (m_gfx_view->scene()->sceneRect().height() * 0.2));
+
     if (MEMPOOL_GRAPH_LOGGING){
 
-        LogPrintf("bottom = %s\n",bottom);
-        LogPrintf("maxheight_g = %s\n",maxheight_g);
+        LogPrintf("\nbottom = %s\n",bottom);
+        LogPrintf("\nmaxheight_g = %s\n",maxheight_g);
 
     }
 

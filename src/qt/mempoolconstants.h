@@ -30,8 +30,8 @@ const qreal C_H                                  = 12;
 const qreal C_MARGIN                             = 2;
 
 static const int     DETAIL_PADDING_LEFT         = C_W+5;
-static const int     DETAIL_PADDING_RIGHT        = 300;//inside m_gfx_view
-static const double  DETAIL_VIEW_MIN_WIDTH       = 100.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
+static const int     DETAIL_PADDING_RIGHT        = 50;//inside m_gfx_view
+static const double  DETAIL_VIEW_MIN_WIDTH       = 250.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
 static const double  DETAIL_VIEW_MAX_WIDTH       = 250.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
 
 static const int     DETAIL_PADDING_TOP          = 0;

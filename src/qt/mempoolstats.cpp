@@ -220,7 +220,7 @@ void MempoolStats::drawChart()
         }
 
         // make a nice y-axis scale
-        const int amount_of_h_lines = AMOUNT_OF_H_LINES;
+        const int amount_of_h_lines = GRAPH_AMOUNT_OF_H_LINES;
         if (max_txcount > 0) {
             int val = qFloor(log10(GRAPH_PATH_SCALAR*max_txcount/amount_of_h_lines));
             int stepbase = qPow(10.0f, val);
@@ -328,7 +328,7 @@ void MempoolStats::drawChart()
         i++;
     }
 
-    if(ADD_TOTAL_TEXT){
+    if(GRAPH_ADD_TOTAL_TEXT){
 
         QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
         item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);
@@ -424,9 +424,20 @@ int MempoolStats::detailY(){
 int MempoolStats::detailWidth(){
 
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("m_gfx_view()->width()*0.15 =  %s\n",m_gfx_view->width()*0.15);
+        LogPrintf("m_gfx_view()->width() =  %s\n", m_gfx_view->width());
+        LogPrintf("25*rect().width()     =  %s\n", (25*rect().width()));
+        LogPrintf("DETAIL_VIEW_MIN_WIDTH =  %s\n", DETAIL_VIEW_MIN_WIDTH);
     }
-    return m_gfx_view->width()*0.15;
+
+       return std::max(
+               (0.25*rect().width()),
+               (DETAIL_VIEW_MIN_WIDTH)
+               );
+
+
+
+
+    //return m_gfx_view->width()*0.15;
 
 }
 int MempoolStats::detailHeight(){
@@ -599,6 +610,8 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *mouseEvent) { Q_EMIT objectClicke
 
 void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
+    drawChart();
+
     QEvent *this_event = event;
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
 
@@ -649,6 +662,7 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
 void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
+    drawChart();
 QEvent *this_event = event;
 if (MEMPOOL_GRAPH_LOGGING){
     LogPrintf("leaveEvent\n");

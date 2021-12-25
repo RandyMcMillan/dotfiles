@@ -45,7 +45,7 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     //m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     if (m_clientmodel)
-        drawChart();
+        drawDetail();
 }
 
 void MempoolDetail::drawFeeRanges( qreal bottom ){
@@ -182,7 +182,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             //LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
 			QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
 
-            if(ADD_TOTAL_TEXT){
+            if (DETAIL_ADD_TOTAL_TEXT){
 
                 QFont gridFont;
                 gridFont.setPointSize(12);
@@ -213,7 +213,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 } else {
                     m_selected_range = i;
                 }
-                drawChart();
+                drawDetail();
             });
 
             c_y-=C_H+C_MARGIN;
@@ -226,7 +226,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
 }
 
-void MempoolDetail::drawChart()
+void MempoolDetail::drawDetail()
 {
     if (!m_clientmodel)
         return;
@@ -405,7 +405,7 @@ void MempoolDetail::drawChart()
         if (m_selected_range >= 0 && m_selected_range == i) {
             total_text = "TXs in this range: "+QString::number(fee_subtotal_txcount[i]);
             LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
-            if (ADD_TOTAL_TEXT){
+            if (DETAIL_ADD_TOTAL_TEXT){
                 QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
                 //item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
                 item_tx_count->setDefaultTextColor(pen_color);//REF: mempoolconstants.h
@@ -430,7 +430,7 @@ void MempoolDetail::drawChart()
 
 
 
-}//end drawChart()
+}//end drawDetail()
 
 // We override the virtual resizeEvent of the QWidget to adjust tables column
 // sizes as the tables width is proportional to the dialogs width.
@@ -448,29 +448,29 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
                 //(0.9 * rect().height())
                 (0.6 * rect().height())
                 ));
-    drawChart();
+    drawDetail();
 }
 
 void MempoolDetail::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
     if (m_clientmodel)
-        drawChart();
+        drawDetail();
 }
 
 void MempoolDetail::hideEvent(QHideEvent *event)
 {
     QWidget::hideEvent(event);
     if (m_clientmodel)
-        drawChart();
+        drawDetail();
 }
 
 void MempoolDetail::setClientModel(ClientModel *model)
 {
     m_clientmodel = model;
     if (model) {
-        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::drawChart);
-        drawChart();
+        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::drawDetail);
+        drawDetail();
     }
 }
 
@@ -528,6 +528,8 @@ void MempoolDetail::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
 
 void MempoolDetail::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
+    drawDetail();
+
     QEvent *this_event = event;
     if (MEMPOOL_DETAIL_LOGGING){
         LogPrintf("\nDETAIL enterEvent");
@@ -541,6 +543,8 @@ void MempoolDetail::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 }
 
 void MempoolDetail::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
+
+    drawDetail();
 
     QEvent *this_event = event;
     if (MEMPOOL_DETAIL_LOGGING){

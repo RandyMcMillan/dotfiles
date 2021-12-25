@@ -45,7 +45,7 @@ public:
     void setClientModel(ClientModel *model);
 
 public Q_SLOTS:
-    void drawChart();
+    void drawDetail();
     void drawFeeRanges(qreal bottom);
     void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx);
 

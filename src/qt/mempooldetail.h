@@ -47,7 +47,7 @@ public:
 public Q_SLOTS:
     void drawChart();
     void drawFeeRanges(qreal bottom);
-    void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx, bool ADD_TEXT);
+    void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx);
 
     void mousePressEvent(QMouseEvent        *event) override;
     void mouseReleaseEvent(QMouseEvent      *event) override;

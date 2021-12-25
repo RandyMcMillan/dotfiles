@@ -13,31 +13,36 @@ static const int     GRAPH_PADDING_LEFT_ADJUST   = 35;
 static const int     GRAPH_PADDING_TOP           = 50;
 static const int     GRAPH_PADDING_TOP_LABEL     = 0;
 static const int     GRAPH_PADDING_BOTTOM        = 50;
+//scalar
+static const double  GRAPH_PATH_SCALAR           = 1.0;
+//static const double  GRAPH_HORZ_LINE_SCALAR      = 1.03;
+static const double  GRAPH_HORZ_LINE_SCALAR      = 1.0;
 
 static const int     ITEM_TX_COUNT_PADDING_LEFT  = 5;
 static const int     ITEM_TX_COUNT_PADDING_RIGHT = 5;
-static const int     AMOUNT_OF_H_LINES           = 9;
-static const double  GRAPH_PATH_SCALAR           = 1.0;
-static const double  GRAPH_HORZ_LINE_SCALAR      = 1.0;
+static const int     AMOUNT_OF_H_LINES           = 7;
 
-static const int     DETAIL_PADDING_LEFT          = 0;
-static const int     DETAIL_PADDING_RIGHT         = 100;//inside m_gfx_view
-static const double  DETAIL_VIEW_MIN_WIDTH       = 100.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
-static const double  DETAIL_VIEW_MAX_WIDTH       = 150.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
+const qreal C_X                                  = 0;
+const qreal C_W                                  = 12;
+const qreal C_H                                  = 12;
+const qreal C_MARGIN                             = 2;
+
+static const int     DETAIL_PADDING_LEFT         = C_W+5;
+static const int     DETAIL_PADDING_RIGHT        = 100;//inside m_gfx_view
+static const double  DETAIL_VIEW_MIN_WIDTH       = 200.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
+static const double  DETAIL_VIEW_MAX_WIDTH       = 250.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
 
 static const int     DETAIL_PADDING_TOP          = 0;
 static const int     DETAIL_PADDING_BOTTOM       = 50;//used to calculate qreal bottom in mempooldetail.cpp
-static const double  DETAIL_VIEW_MIN_HEIGHT      = 400.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
-static const double  DETAIL_VIEW_MAX_HEIGHT      = 800.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
+static const double  DETAIL_VIEW_MIN_HEIGHT      = 100.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
+static const double  DETAIL_VIEW_MAX_HEIGHT      = 500.0+DETAIL_PADDING_TOP+DETAIL_PADDING_BOTTOM;
+
+static const double  DETAIL_WIDTH_SCALAR         = 1.0;
+static const double  DETAIL_HEIGHT_SCALAR        = 1.0;
 
 bool const MEMPOOL_GRAPH_LOGGING                 = true;
 bool const MEMPOOL_DETAIL_LOGGING                = true;
 bool const DETAIL_VIEW_HIDE_EVENT                = false;
-
-const qreal C_X                                  = DETAIL_PADDING_LEFT+0;
-const qreal C_W                                  = 12;
-const qreal C_H                                  = 12;
-const qreal C_MARGIN                             = 2;
 
 bool const ADD_TEXT                              = true;
 bool const ADD_FEE_RANGES                        = true;

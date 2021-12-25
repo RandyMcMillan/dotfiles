@@ -51,7 +51,7 @@ bool const ADD_TEXT                              = true;
 bool const ADD_FEE_RANGES                        = true;
 bool const ADD_FEE_RECTS                         = true;
 
-static const qreal FEE_TEXT_Z                    = 1000;
+static const qreal FEE_TEXT_Z                    = 10;
 
 const static std::vector<QColor> colors = {
 

@@ -100,6 +100,7 @@ void MempoolStats::drawHorzLines(
 
         LogPrintf("\nbottom = %s\n",bottom);
         LogPrintf("\nmaxheight_g = %s\n",maxheight_g);
+        LogPrintf("\nmaxwidth = %s\n",maxwidth);
         LogPrintf("\n_maxheight = %s\n",_maxheight);
 
     }
@@ -111,9 +112,9 @@ void MempoolStats::drawHorzLines(
         qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
         //qreal lY = bottom-i*(_maxheight/(amount_of_h_lines-1));
         //TODO: use text rect width to adjust
-        tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT-0, lY);
-        tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
-        //tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT, lY);
+        tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT-0), lY);
+        tx_count_grid_path.lineTo(GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+maxwidth), lY);
+
 
         size_t grid_tx_count =
             (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
@@ -221,20 +222,23 @@ void MempoolStats::drawChart()
         // make a nice y-axis scale
         const int amount_of_h_lines = AMOUNT_OF_H_LINES;
         if (max_txcount > 0) {
-            int val = qFloor(log10(1.0*max_txcount/amount_of_h_lines));
+            int val = qFloor(log10(GRAPH_PATH_SCALAR*max_txcount/amount_of_h_lines));
             int stepbase = qPow(10.0f, val);
-            int step = qCeil((1.0*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
+            int step = qCeil((GRAPH_PATH_SCALAR*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
             max_txcount_graph = step*amount_of_h_lines;
             if (MEMPOOL_GRAPH_LOGGING){
 
-                LogPrintf("max_txcount_graph = %s\n",max_txcount_graph);
+                LogPrintf("val = %s\n", val);
+                LogPrintf("stepbase = %s\n", stepbase);
+                LogPrintf("step = %s\n", step);
+                LogPrintf("max_txcount_graph = %s\n", max_txcount_graph);
 
             }
         }
 
         // calculate the x axis step per sample
         // we ignore the time difference of collected samples due to locking issues
-        const qreal x_increment = 1.0 * (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT) ) / m_clientmodel->m_mempool_max_samples; //samples.size();
+        const qreal x_increment = GRAPH_PATH_SCALAR * (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT) ) / m_clientmodel->m_mempool_max_samples; //samples.size();
         QPointF current_x_bottom = QPointF(current_x,bottom);
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
@@ -277,6 +281,8 @@ void MempoolStats::drawChart()
             LogPrintf("\nm_clientmodel->m_mempool_max_samples = %s",(int)m_clientmodel->m_mempool_max_samples);
             LogPrintf("\nm_clientmodel->m_mempool_collect_interval = %s",(int)m_clientmodel->m_mempool_collect_intervall);
             LogPrintf("\nm_clientmodel->m_mempool_collect_interval/3600 = %s",(int)m_clientmodel->m_mempool_collect_intervall/3600);
+            LogPrintf("\ncurrent_x = %s",current_x);
+            LogPrintf("\nbottom = %s",bottom);
     }
 
     //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
@@ -287,11 +293,20 @@ void MempoolStats::drawChart()
 
             feepath.lineTo(fee_paths[i-1].currentPosition());
             feepath.connectPath(fee_paths[i-1].toReversed());
-
+            if (MEMPOOL_GRAPH_LOGGING){
+                //LogPrintf("\nfee_paths[i-1].currentPosition().x() = %s",(int)fee_paths[i-1].currentPosition().x());
+                //LogPrintf("\nfee_paths[i-1].currentPosition().y() = %s",(int)fee_paths[i-1].currentPosition().y());
+                LogPrintf("\nfee_paths[i-1].toReversed().length() = %s",(double)fee_paths[i-1].toReversed().length());
+            }
         } else {
 
             feepath.lineTo(current_x, bottom);
             feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
+            if (MEMPOOL_GRAPH_LOGGING){
+                //LogPrintf("\nfee_paths[i-1].currentPosition().x() = %s",(int)fee_paths[i].currentPosition().x());
+                //LogPrintf("\nfee_paths[i-1].currentPosition().y() = %s",(int)fee_paths[i].currentPosition().y());
+                LogPrintf("\nfee_paths[i-1].toReversed().length() = %s",(double)fee_paths[i].toReversed().length());
+            }
 
         }
 

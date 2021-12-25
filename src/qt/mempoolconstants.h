@@ -27,7 +27,7 @@ static const int     AMOUNT_OF_H_LINES           = 7;
 const qreal C_X                                  = 0;
 const qreal C_W                                  = 12;
 const qreal C_H                                  = 12;
-const qreal C_MARGIN                             = 2;
+const qreal C_MARGIN                             = 4;
 
 static const int     DETAIL_PADDING_LEFT         = C_W+5;
 static const int     DETAIL_PADDING_RIGHT        = 50;//inside m_gfx_view

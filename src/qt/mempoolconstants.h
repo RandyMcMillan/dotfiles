@@ -4,9 +4,10 @@
 static const char    *LABEL_FONT                 = "Roboto Mono";
 static int           LABEL_TITLE_SIZE            = 22;
 static int           LABEL_KV_SIZE               = 12;
-
 static const int     LABEL_LEFT_SIZE             = 0;// space + #.# MvB -- //
 static const int     LABEL_RIGHT_SIZE            = 0;
+
+
 static const int     GRAPH_PADDING_LEFT          = 50+LABEL_LEFT_SIZE;
 static const int     GRAPH_PADDING_RIGHT         = 50+LABEL_RIGHT_SIZE;
 static const int     GRAPH_PADDING_LEFT_ADJUST   = 35;
@@ -15,8 +16,9 @@ static const int     GRAPH_PADDING_TOP_LABEL     = 0;
 static const int     GRAPH_PADDING_BOTTOM        = 50;
 //scalar
 static const double  GRAPH_PATH_SCALAR           = 1.0;
-//static const double  GRAPH_HORZ_LINE_SCALAR      = 1.03;
 static const double  GRAPH_HORZ_LINE_SCALAR      = 1.0;
+static const int     GRAPH_AMOUNT_OF_H_LINES     = 7;
+bool const GRAPH_ADD_TOTAL_TEXT                  = true;
 
 static const int     ITEM_TX_COUNT_PADDING_LEFT  = 5;
 static const int     ITEM_TX_COUNT_PADDING_RIGHT = 5;
@@ -28,8 +30,8 @@ const qreal C_H                                  = 12;
 const qreal C_MARGIN                             = 2;
 
 static const int     DETAIL_PADDING_LEFT         = C_W+5;
-static const int     DETAIL_PADDING_RIGHT        = 100;//inside m_gfx_view
-static const double  DETAIL_VIEW_MIN_WIDTH       = 200.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
+static const int     DETAIL_PADDING_RIGHT        = 300;//inside m_gfx_view
+static const double  DETAIL_VIEW_MIN_WIDTH       = 100.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
 static const double  DETAIL_VIEW_MAX_WIDTH       = 250.0+DETAIL_PADDING_LEFT+DETAIL_PADDING_RIGHT;
 
 static const int     DETAIL_PADDING_TOP          = 0;
@@ -39,6 +41,7 @@ static const double  DETAIL_VIEW_MAX_HEIGHT      = 500.0+DETAIL_PADDING_TOP+DETA
 
 static const double  DETAIL_WIDTH_SCALAR         = 1.0;
 static const double  DETAIL_HEIGHT_SCALAR        = 1.0;
+bool const DETAIL_ADD_TOTAL_TEXT                 = true;
 
 bool const MEMPOOL_GRAPH_LOGGING                 = true;
 bool const MEMPOOL_DETAIL_LOGGING                = true;
@@ -47,7 +50,6 @@ bool const DETAIL_VIEW_HIDE_EVENT                = false;
 bool const ADD_TEXT                              = true;
 bool const ADD_FEE_RANGES                        = true;
 bool const ADD_FEE_RECTS                         = true;
-bool const ADD_TOTAL_TEXT                        = true;
 
 static const qreal FEE_TEXT_Z                    = 1000;
 

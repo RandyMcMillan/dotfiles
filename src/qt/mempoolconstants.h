@@ -1,7 +1,7 @@
 #include <qt/mempoolstats.h>
 #include <qt/mempooldetail.h>
 
-static const char    *LABEL_FONT                 = "Roboto Mono";
+static const char    *LABEL_FONT                 = "Arial";
 static int           LABEL_TITLE_SIZE            = 22;
 static int           LABEL_KV_SIZE               = 12;
 static const int     LABEL_LEFT_SIZE             = 0;// space + #.# MvB -- //

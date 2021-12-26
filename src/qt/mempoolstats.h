@@ -47,9 +47,7 @@ public Q_SLOTS:
     void drawChart();
     void drawDetailView(
     qreal detail_x,
-    qreal detail_y,
-    qreal detail_width,
-    qreal detail_height
+    qreal detail_y
     );
     int detailX();
     int detailY();

@@ -49,17 +49,13 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 
 void MempoolStats::drawDetailView(
         qreal detail_x,
-        qreal detail_y,
-        qreal detail_width,
-        qreal detail_height
+        qreal detail_y
         ){
 
     if (MEMPOOL_GRAPH_LOGGING | MEMPOOL_DETAIL_LOGGING){
 
         LogPrintf("detail_x = %s\n", detail_x);
         LogPrintf("detail_y = %s\n", detail_y);
-        LogPrintf("detail_width = %s\n", detail_width);
-        LogPrintf("detail_height = %s\n", detail_height);
 
     }
 
@@ -239,8 +235,6 @@ void MempoolStats::drawChart()
         //drawFeeRanges(bottom, gridFont);
         //drawFeeRects(bottom, maxwidth, display_up_to_range, ADD_TEXT, gridFont);
 
-        //drawDetailView(detailX(),70,100,100);
-
         // draw the paths
         bool first = true;
         for (const ClientModel::mempool_feehist_sample& sample : m_clientmodel->m_mempool_feehist) {
@@ -348,7 +342,7 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
         ));
 
     drawChart();
-    drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+    drawDetailView(detailX(), detailY());
 
 
     QFont gridFont;
@@ -476,11 +470,11 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
 
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
-        drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+        drawDetailView(detailX(), detailY());
 
     } else {
 
-        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY(), detailWidth(), detailHeight());
+        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY());
 
     }
 }
@@ -540,12 +534,11 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
 
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
-        drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+        drawDetailView(detailX(), detailY());
 
     } else {
 
-        //drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
-        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY(), detailWidth(), detailHeight());
+        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY());
 
     }
     //mempool_right->show();
@@ -584,12 +577,11 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *mouseEvent) { Q_EMIT objectClicke
 
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
-        drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+        drawDetailView(detailX(), detailY());
 
     } else {
 
-        //drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
-        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY(), detailWidth(), detailHeight());
+        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY());;
 
     }
 
@@ -643,12 +635,11 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
-        drawDetailView(detailX(), detailY(), detailWidth(), detailHeight());
+        drawDetailView(detailX(), detailY());
 
     } else {
 
-        //drawDetailView(m_gfx_view->width()/15, detailY(), detailWidth(), detailHeight());
-        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY(), detailWidth(), detailHeight());
+        drawDetailView(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, detailY());
 
     }
 
@@ -703,7 +694,6 @@ if (event->type() == QEvent::MouseMove)
     if (DETAIL_VIEW_HIDE_EVENT) {
         m_detail_view->hide();
     }
-    //drawDetailView(0,0,0,0);
 
 }
 

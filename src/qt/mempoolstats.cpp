@@ -454,7 +454,6 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
     QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
     testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
     LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
-    LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
 
     if (MEMPOOL_GRAPH_LOGGING){
 
@@ -465,9 +464,8 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
 
     QFont gridFont;
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-    //QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString("."), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString("⦿"), gridFont);
+    enterEventX->setPos(mouseEvent->pos().x()-35.9, mouseEvent->pos().y()-19.8);
 
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
@@ -502,8 +500,8 @@ void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(
 
     QFont gridFont;
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+    QGraphicsTextItem *mouseReleaseItem = m_scene->addText("mouseReleaseEvent: ("+QString::number(mouseEvent->pos().y())+","+QString::number(mouseEvent->pos().x())+")", gridFont);
+    mouseReleaseItem->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 }
 void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
@@ -528,8 +526,8 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
         LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
 
         QFont gridFont;
-        QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
-        enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+        QGraphicsTextItem *mouseDoubleClickItem = m_scene->addText("mouseDoubleClickEvent: ("+QString::number(mouseEvent->pos().y())+","+QString::number(mouseEvent->pos().x())+")", gridFont);
+        mouseDoubleClickItem->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 
     }
 

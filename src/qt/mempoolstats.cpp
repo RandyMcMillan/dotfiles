@@ -33,13 +33,8 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 
     m_gfx_view = new QGraphicsView(this);
     m_detail_view = new MempoolDetail(this);
-    //m_detail_view->setStyleSheet("color:rgb(174,174,174);background-color: rgb(28,31,49);");
-    m_detail_view->setMinimumHeight(DETAIL_VIEW_MIN_HEIGHT);
-//    m_detail_view->setMaximumHeight(DETAIL_VIEW_MAX_HEIGHT);
-    m_detail_view->setMinimumWidth(DETAIL_VIEW_MIN_WIDTH);
-    m_detail_view->setMaximumWidth(DETAIL_VIEW_MAX_WIDTH);
-
     m_scene = new QGraphicsScene(m_gfx_view);
+
     m_gfx_view->setScene(m_scene);
     m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -67,16 +62,15 @@ void MempoolStats::drawDetailView(
         LogPrintf("detail_height = %s\n", detail_height);
 
     }
-    //m_detail_view->setGeometry(detail_x, detail_y, detail_width, detail_height);
 
     m_detail_view->setGeometry(
             detail_x,
             detail_y,
             std::max(
-                (0.25 * rect().width()),
+                (0.0),
                 (DETAIL_VIEW_MIN_WIDTH)),
             std::max(
-                (0.9 * rect().height()),
+                (0.0),
                 (DETAIL_VIEW_MIN_HEIGHT))
             );
 

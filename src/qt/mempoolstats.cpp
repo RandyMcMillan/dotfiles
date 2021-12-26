@@ -604,8 +604,8 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
     mPoint.setX(mouseEvent->pos().x());
     mPoint.setY(mouseEvent->pos().y());
     QFont gridFont;
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+    QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().y())+","+QString::number(mouseEvent->pos().x()), gridFont);
+    enterEventX->setPos(mouseEvent->pos().y(), mouseEvent->pos().x());
 
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("enterEvent\n");
@@ -633,7 +633,7 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
         LogPrintf("m_gfx_view->height()/2 %s\n",m_gfx_view->height()/2);
     }
 
-    if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
+    if (mouseEvent->pos().y() <= m_gfx_view->width()/2 ){
 
         drawDetailView(detailX(), detailY());
 
@@ -662,14 +662,16 @@ if (event->type() == QEvent::MouseMove)
         LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
     }
   }
-    if (m_gfx_view->width()/2 >= mouseEvent->pos().x()){
+    if (mouseEvent->pos().y() <= m_gfx_view->width()/2 ){
 
         LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
+        LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
         LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
 
     } else {
 
         LogPrintf("event->pos().x() %s\n",mouseEvent->pos().x());
+        LogPrintf("event->pos().y() %s\n",mouseEvent->pos().y());
         LogPrintf("m_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
 
     }

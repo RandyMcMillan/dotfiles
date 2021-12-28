@@ -164,7 +164,7 @@ void MempoolStats::drawChart()
     gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
     //let view touch boths sides//we will place an over lay of boxes 
-    qreal maxwidth = m_gfx_view->scene()->sceneRect().width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);
+    qreal maxwidth = m_gfx_view->scene()->sceneRect().width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_LEFT_ADJUST + GRAPH_PADDING_RIGHT);
     {
         // we are going to access the clientmodel feehistogram directly avoding a copy
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);

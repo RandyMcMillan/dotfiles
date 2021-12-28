@@ -6,8 +6,8 @@
 #include <QMouseEvent>
 #include <qt/guiutil.h>
 #include <qt/clientmodel.h>
-#include <qt/mempooldetail.h>
-#include <qt/mempoolconstants.h>
+#include <qt/mempool_tab/mempooldetail.h>
+#include <qt/mempool_tab/mempoolconstants.h>
 #include <qt/forms/ui_mempooldetail.h>
 
 MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)

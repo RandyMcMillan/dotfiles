@@ -1666,7 +1666,7 @@
   <customwidget>
    <class>MempoolStats</class>
    <extends>QWidget</extends>
-   <header>qt/mempoolstats.h</header>
+   <header>qt/mempool_tab/mempoolstats.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -1,5 +1,5 @@
-#include <qt/mempoolstats.h>
-#include <qt/mempooldetail.h>
+#include <qt/mempool_tab/mempoolstats.h>
+#include <qt/mempool_tab/mempooldetail.h>
 
 static const char    *LABEL_FONT                 = "Arial";
 static int           LABEL_TITLE_SIZE            = 22;
@@ -11,7 +11,7 @@ static float         POINT_SIZE                  = 12;
 
 
 static const int     GRAPH_PADDING_LEFT          = 50+LABEL_LEFT_SIZE;
-static const int     GRAPH_PADDING_RIGHT         = 50+LABEL_RIGHT_SIZE;
+static const int     GRAPH_PADDING_RIGHT         = 20+LABEL_RIGHT_SIZE;
 static const int     GRAPH_PADDING_LEFT_ADJUST   = 35;
 static const int     GRAPH_PADDING_TOP           = 50;
 static const int     GRAPH_PADDING_TOP_LABEL     = 0;

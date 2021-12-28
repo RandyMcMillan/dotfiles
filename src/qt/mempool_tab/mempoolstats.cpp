@@ -6,9 +6,9 @@
 #include <QMouseEvent>
 #include <qt/guiutil.h>
 #include <qt/clientmodel.h>
-#include <qt/mempoolstats.h>
-#include <qt/mempooldetail.h>
-#include <qt/mempoolconstants.h>
+#include <qt/mempool_tab/mempoolstats.h>
+#include <qt/mempool_tab/mempooldetail.h>
+#include <qt/mempool_tab/mempoolconstants.h>
 #include <qt/forms/ui_mempoolstats.h>
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
@@ -122,10 +122,10 @@ void MempoolStats::drawHorzLines(
 
             QGraphicsTextItem *item_tx_count =
                 //m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
-                m_scene->addText(QString::number(grid_tx_count/1).rightJustified(4, ' ')+QString("vB"), LABELFONT);
+                m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
             //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
             //TODO: use text rect width to adjust
-            item_tx_count->setDefaultTextColor(Qt::white);
+            item_tx_count->setDefaultTextColor(colors[16]);
             item_tx_count->setPos(GRAPH_PADDING_LEFT-60, lY-(item_tx_count->boundingRect().height()/2));
 
         }
@@ -465,7 +465,8 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
     QFont gridFont;
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
     QGraphicsTextItem *enterEventX = m_scene->addText(QString("⦿"), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x()-35.9, mouseEvent->pos().y()-19.8);
+    enterEventX->setPos(mouseEvent->pos().x()-GRAPH_PADDING_RIGHT, mouseEvent->pos().y()-20.0);
+    //enterEventX->setPos(mouseEvent->pos().x()-GRAPH_PADDING_LEFT, mouseEvent->pos().y()-GRAPH_PADDING_TOP);
 
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 

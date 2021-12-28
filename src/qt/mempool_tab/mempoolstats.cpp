@@ -198,7 +198,7 @@ void MempoolStats::drawChart()
         }
 
         // hide ranges we don't have txns
-        for(size_t i = 0; i < fee_subtotal_txcount.size(); i++) {
+        for (size_t i = 0; i < fee_subtotal_txcount.size(); i++) {
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("fee_subtotal_txcount.size() = %s\n",fee_subtotal_txcount.size());
             }
@@ -213,9 +213,9 @@ void MempoolStats::drawChart()
         // make a nice y-axis scale
         const int amount_of_h_lines = GRAPH_AMOUNT_OF_H_LINES;
         if (max_txcount > 0) {
-            int val = qFloor(log10(GRAPH_PATH_SCALAR*max_txcount/amount_of_h_lines));
+            int val = qFloor(log10(max_txcount/amount_of_h_lines));
             int stepbase = qPow(10.0f, val);
-            int step = qCeil((GRAPH_PATH_SCALAR*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
+            int step = qCeil((max_txcount/amount_of_h_lines) / stepbase) * stepbase;
             max_txcount_graph = step*amount_of_h_lines;
             if (MEMPOOL_GRAPH_LOGGING){
 
@@ -229,7 +229,9 @@ void MempoolStats::drawChart()
 
         // calculate the x axis step per sample
         // we ignore the time difference of collected samples due to locking issues
-        const qreal x_increment = GRAPH_PATH_SCALAR * (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT) ) / m_clientmodel->m_mempool_max_samples; //samples.size();
+        // TODO: implement x scale pillbox adjust here
+        // Replace GRAPH_X_SCALE_ADJUST with function call connected to pillbox
+        const qreal x_increment = (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_LEFT_ADJUST + GRAPH_PADDING_RIGHT) ) / (m_clientmodel->m_mempool_max_samples/GRAPH_X_SCALE_ADJUST); //samples.size();
         QPointF current_x_bottom = QPointF(current_x,bottom);
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);

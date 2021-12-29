@@ -42,9 +42,10 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_gfx_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-
-    if (m_clientmodel)
+    if (m_clientmodel) {
         drawChart();
+    } else { /* TODO: add something to indicate condition... */ };
+
 }
 
 void MempoolStats::drawDetailView(

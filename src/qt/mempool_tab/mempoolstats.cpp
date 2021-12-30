@@ -104,18 +104,20 @@ void MempoolStats::drawHorzLines(
         qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
         //qreal lY = bottom-i*(_maxheight/(amount_of_h_lines-1));
         //TODO: use text rect width to adjust
-        tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT-0), lY);
+        tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+0), lY);
         tx_count_grid_path.lineTo(GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+maxwidth), lY);
 
 
         size_t grid_tx_count =
             (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
 
-        if (MEMPOOL_GRAPH_LOGGING){
+        if (MEMPOOL_HORZ_LINE_LOGGING){
 
-            LogPrintf("i = %s\n",i);
-            LogPrintf("lY = %s\n",lY);
-            LogPrintf("grid_tx_count = %s\n",grid_tx_count);
+            LogPrintf("\ni = %s",i);
+            LogPrintf("\nGRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+0        = %s",GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+0));
+            LogPrintf("\nGRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+maxwidth = %s",GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+maxwidth));
+            LogPrintf("\nlY                                                  = %s",lY);
+            LogPrintf("\ngrid_tx_count                                       = %s",grid_tx_count);
 
         }
         //Add text ornament

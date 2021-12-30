@@ -225,7 +225,7 @@ KeyInfo InterpretKey(std::string key)
  * @return parsed settings value if it is valid, otherwise nullopt accompanied
  * by a descriptive error string
  */
-static std::optional<util::SettingsValue> InterpretValue(const KeyInfo& key, const std::string& value,
+static std::optional<util::SettingsValue> InterpretValue(const KeyInfo& key, const std::string* value,
                                                          unsigned int flags, std::string& error)
 {
     // Return negated settings as false values.
@@ -234,14 +234,65 @@ static std::optional<util::SettingsValue> InterpretValue(const KeyInfo& key, con
             error = strprintf("Negating of -%s is meaningless and therefore forbidden", key.name);
             return std::nullopt;
         }
-        // Double negatives like -nofoo=0 are supported (but discouraged)
-        if (!InterpretBool(value)) {
-            LogPrintf("Warning: parsed potentially confusing double-negative -%s=%s\n", key.name, value);
-            return true;
+        if (flags & ArgsManager::ALLOW_ANY) {
+            // Double negatives like -nokey=0 are supported (but discouraged)
+            if (value && !InterpretBool(*value)) {
+                LogPrintf("Warning: parsed potentially confusing double-negative -%s=%s\n", key.name, *value);
+                return true;
+            }
+        } else if (value && *value != "1") {
+            error = strprintf("Can not negate -%s at the same time as setting value '%s'.", key.name, *value);
+            return std::nullopt;
         }
         return false;
     }
-    return value;
+    if (value) {
+        int64_t parsed_int;
+        if ((flags & (ArgsManager::ALLOW_STRING | ArgsManager::ALLOW_ANY)) || value->empty()) return *value;
+        if ((flags & ArgsManager::ALLOW_INT) && ParseInt64(*value, &parsed_int)) return parsed_int;
+        if ((flags & ArgsManager::ALLOW_BOOL) && *value == "0") return false;
+        if ((flags & ArgsManager::ALLOW_BOOL) && *value == "1") return true;
+        error = strprintf("Can not set -%s value to '%s'", key.name, *value);
+    } else {
+        if (flags & ArgsManager::ALLOW_ANY) return "";
+        if (flags & ArgsManager::ALLOW_BOOL) return util::SettingsValue{true};
+        error = strprintf("Can not set -%s with no value", key.name);
+    }
+    error = strprintf("%s. %s", error,
+                      (flags & ArgsManager::ALLOW_STRING) ? "It must be set to a string." :
+                      (flags & ArgsManager::ALLOW_INT) ? "It must be set to an integer." :
+                      (flags & ArgsManager::ALLOW_BOOL) ? "It must be set to 0 or 1." :
+                      "It must be left unset.");
+    return std::nullopt;
+}
+
+//! Return bool if setting is a bool or number, otherwise return default_value.
+//! Optionally coerce strings settings as well.
+static inline bool ValueToBool(const util::SettingsValue& value, bool default_value, bool coerce)
+{
+    if (coerce && value.isStr()) return InterpretBool(value.get_str());
+    return value.isBool() ? value.get_bool() : value.isNum() ? value.get_int64() != 0 : default_value;
+}
+
+//! Return int64 if setting is a number or bool, otherwise return default_value.
+//! Optionally coerce string settings as well.
+static inline int64_t ValueToInt64(const util::SettingsValue& value, int64_t default_value, bool coerce)
+{
+    if (coerce && value.isStr()) return LocaleIndependentAtoi<int64_t>(value.get_str());
+    return value.isNum() ? value.get_int64() : value.isFalse() ? 0 : value.isTrue() ? 1 : default_value;
+}
+
+//! Return string if setting is a nonempty string (-setting=abc), "" if setting
+//! is false (-nosetting), otherwise return default_value. Optionally coerce
+//! bool and number settings to strings as well.
+static inline std::string ValueToString(const util::SettingsValue& value,
+    const std::string& default_value,
+    bool coerce)
+{
+    if (coerce && value.isBool()) return value.get_bool() ? "1" : "0";
+    if (coerce && value.isNum()) return value.getValStr();
+    if (coerce && value.isStr()) return value.get_str();
+    return value.isStr() && !value.get_str().empty() ? value.get_str() : value.isFalse() ? "" : default_value;
 }
 
 namespace {
@@ -322,7 +373,7 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
 #endif
 
         if (key == "-") break; //bitcoin-tx using stdin
-        std::string val;
+        std::optional<std::string> val;
         size_t is_index = key.find('=');
         if (is_index != std::string::npos) {
             val = key.substr(is_index + 1);
@@ -368,7 +419,7 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
             return false;
         }
 
-        std::optional<util::SettingsValue> value = InterpretValue(keyinfo, val, *flags, error);
+        std::optional<util::SettingsValue> value = InterpretValue(keyinfo, val ? &*val : nullptr, *flags, error);
         if (!value) return false;
 
         m_settings.command_line_options[keyinfo.name].push_back(*value);
@@ -396,6 +447,29 @@ std::optional<unsigned int> ArgsManager::GetArgFlags(const std::string& name) co
         }
     }
     return std::nullopt;
+}
+
+/**
+ * Check that arg has the right flags for use in a given context. Raises
+ * logic_error if this isn't the case, indicating the argument was registered
+ * with bad AddArg flags.
+ *
+ * Returns true if the arg is registered and has checking enabled. Returns false
+ * if the arg was never registered or checking was disabled with ALLOW_ANY.
+ */
+bool ArgsManager::CheckArgFlags(const std::string& name,
+    unsigned int require,
+    unsigned int forbid,
+    const char* context) const
+{
+    std::optional<unsigned int> flags = GetArgFlags(name);
+    if (!flags || *flags & ArgsManager::ALLOW_ANY) return false;
+    if ((*flags & require) != require || (*flags & forbid) != 0) {
+        throw std::logic_error(
+            strprintf("Bug: Can't call %s on arg %s registered with flags 0x%08x (requires 0x%x, disallows 0x%x)",
+                context, name, *flags, require, forbid));
+    }
+    return true;
 }
 
 const fs::path& ArgsManager::GetBlocksDirPath() const
@@ -486,9 +560,10 @@ std::optional<const ArgsManager::Command> ArgsManager::GetCommand() const
 
 std::vector<std::string> ArgsManager::GetArgs(const std::string& strArg) const
 {
+    bool coerce = !CheckArgFlags(strArg, /*require=*/ ALLOW_STRING | ALLOW_LIST, /*forbid=*/ 0, __func__);
     std::vector<std::string> result;
     for (const util::SettingsValue& value : GetSettingsList(strArg)) {
-        result.push_back(value.isFalse() ? "0" : value.isTrue() ? "1" : value.get_str());
+        result.push_back(ValueToString(value, "", coerce));
     }
     return result;
 }
@@ -589,20 +664,20 @@ bool ArgsManager::IsArgNegated(const std::string& strArg) const
 
 std::string ArgsManager::GetArg(const std::string& strArg, const std::string& strDefault) const
 {
-    const util::SettingsValue value = GetSetting(strArg);
-    return value.isNull() ? strDefault : value.isFalse() ? "0" : value.isTrue() ? "1" : value.get_str();
+    bool coerce = !CheckArgFlags(strArg, /*require=*/ ALLOW_STRING, /*forbid=*/ ALLOW_LIST, __func__);
+    return ValueToString(GetSetting(strArg), strDefault, coerce);
 }
 
 int64_t ArgsManager::GetIntArg(const std::string& strArg, int64_t nDefault) const
 {
-    const util::SettingsValue value = GetSetting(strArg);
-    return value.isNull() ? nDefault : value.isFalse() ? 0 : value.isTrue() ? 1 : value.isNum() ? value.get_int64() : LocaleIndependentAtoi<int64_t>(value.get_str());
+    bool coerce = !CheckArgFlags(strArg, /*require=*/ ALLOW_INT, /*forbid=*/ ALLOW_LIST, __func__);
+    return ValueToInt64(GetSetting(strArg), nDefault, coerce);
 }
 
 bool ArgsManager::GetBoolArg(const std::string& strArg, bool fDefault) const
 {
-    const util::SettingsValue value = GetSetting(strArg);
-    return value.isNull() ? fDefault : value.isBool() ? value.get_bool() : InterpretBool(value.get_str());
+    bool coerce = !CheckArgFlags(strArg, /*require=*/ 0, /*forbid=*/ ALLOW_LIST, __func__);
+    return ValueToBool(GetSetting(strArg), fDefault, coerce);
 }
 
 bool ArgsManager::SoftSetArg(const std::string& strArg, const std::string& strValue)
@@ -615,15 +690,17 @@ bool ArgsManager::SoftSetArg(const std::string& strArg, const std::string& strVa
 
 bool ArgsManager::SoftSetBoolArg(const std::string& strArg, bool fValue)
 {
-    if (fValue)
-        return SoftSetArg(strArg, std::string("1"));
-    else
-        return SoftSetArg(strArg, std::string("0"));
+    LOCK(cs_args);
+    CheckArgFlags(strArg, /*require=*/ ALLOW_BOOL, /*forbid=*/ ALLOW_LIST, __func__);
+    if (IsArgSet(strArg)) return false;
+    m_settings.forced_settings[SettingName(strArg)] = fValue;
+    return true;
 }
 
 void ArgsManager::ForceSetArg(const std::string& strArg, const std::string& strValue)
 {
     LOCK(cs_args);
+    CheckArgFlags(strArg, /*require=*/ ALLOW_STRING, /*forbid=*/ 0, __func__);
     m_settings.forced_settings[SettingName(strArg)] = strValue;
 }
 
@@ -657,6 +734,16 @@ void ArgsManager::AddArg(const std::string& name, const std::string& help, unsig
 
     if (flags & ArgsManager::NETWORK_ONLY) {
         m_network_only_args.emplace(arg_name);
+    }
+
+    if ((flags & ALLOW_ANY) && (flags & (ALLOW_BOOL | ALLOW_INT | ALLOW_STRING))) {
+        throw std::logic_error(strprintf("Bug: bad %s flags. ALLOW_{BOOL|INT|STRING} flags would have no effect with "
+                                         "ALLOW_ANY present (ALLOW_ANY disables validation)", arg_name));
+    }
+
+    if ((flags & ALLOW_INT) && (flags & ALLOW_STRING)) {
+        throw std::logic_error(strprintf("Bug: bad %s flags. ALLOW_INT would have no effect with ALLOW_STRING present "
+                                         "(any valid integer is also a valid string)", arg_name));
     }
 }
 
@@ -877,10 +964,12 @@ bool ArgsManager::ReadConfigStream(std::istream& stream, const std::string& file
         KeyInfo key = InterpretKey(option.first);
         std::optional<unsigned int> flags = GetArgFlags('-' + key.name);
         if (flags) {
-            std::optional<util::SettingsValue> value = InterpretValue(key, option.second, *flags, error);
-            if (!value) {
+            if (!(*flags & (ALLOW_ANY | ALLOW_LIST)) && m_settings.ro_config[key.section].count(key.name)) {
+                error = strprintf("Multiple values specified for -%s in same section of config file.", key.name);
                 return false;
             }
+            std::optional<util::SettingsValue> value = InterpretValue(key, &option.second, *flags, error);
+            if (!value) return false;
             m_settings.ro_config[key.section][key.name].push_back(*value);
         } else {
             if (ignore_invalid_keys) {
@@ -993,7 +1082,7 @@ std::string ArgsManager::GetChainName() const
         util::SettingsValue value = util::GetSetting(m_settings, /* section= */ "", SettingName(arg),
             /* ignore_default_section_config= */ false,
             /* get_chain_name= */ true);
-        return value.isNull() ? false : value.isBool() ? value.get_bool() : InterpretBool(value.get_str());
+        return ValueToBool(value, /* default= */ false, /* coerce= */ true);
     };
 
     const bool fRegTest = get_net("-regtest");

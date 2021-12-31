@@ -11,13 +11,14 @@ static float         POINT_SIZE                  = 12;
 
 
 static const int     GRAPH_PADDING_LEFT          = 50+LABEL_LEFT_SIZE;
-static const int     GRAPH_PADDING_RIGHT         = 20+LABEL_RIGHT_SIZE;
 static const int     GRAPH_PADDING_LEFT_ADJUST   = 35;
+static const int     GRAPH_PADDING_RIGHT         = 20+LABEL_RIGHT_SIZE;
 static const int     GRAPH_PADDING_TOP           = 50;
 static const int     GRAPH_PADDING_TOP_LABEL     = 0;
 static const int     GRAPH_PADDING_BOTTOM        = 50;
 //scalar
 static const double  GRAPH_PATH_SCALAR           = 1.0;
+static const double  GRAPH_MAXHEIGHT_G_SCALAR    = 0.8;
 static const double  GRAPH_HORZ_LINE_SCALAR      = 1.0;
 static const double  GRAPH_X_SCALE_ADJUST        = 1.0;//TODO: this will be dynamic via a gui pill box later x_increment in mempoolstats.cpp
 static const int     GRAPH_AMOUNT_OF_H_LINES     = 7;

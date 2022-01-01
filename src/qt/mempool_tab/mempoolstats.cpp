@@ -150,7 +150,9 @@ void MempoolStats::drawChart()
     qreal current_x = 0 + GRAPH_PADDING_LEFT;
     const qreal bottom = (m_gfx_view->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
     //const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
-    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (m_gfx_view->scene()->sceneRect().height() * 0.2));
+    //const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (m_gfx_view->scene()->sceneRect().height() * 0.2));
+    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() * GRAPH_MAXHEIGHT_G_SCALAR);
+
 
     if (MEMPOOL_GRAPH_LOGGING){
 
@@ -256,11 +258,15 @@ void MempoolStats::drawChart()
                 if (first) {
                     // first sample, initiate the path with first point
                     //                        TODO:dynamic scalar
-                    fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR*current_x, y));//affects scale height draw
+                    //fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR*current_x, y));//affects scale height draw
+                    fee_paths.emplace_back(QPointF(current_x, GRAPH_PATH_SCALAR*y));//scalar affects scale height draw
+
                 }
                 else {
                     //              TODO:dynamic scalar
-                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR*current_x, y);//affects scale height draw
+                    //fee_paths[i].lineTo(GRAPH_PATH_SCALAR*current_x, y);//affects scale height draw
+                    fee_paths[i].lineTo(current_x, GRAPH_PATH_SCALAR*y);//scalar affects scale height draw
+
                 }
                 i++;
             }
@@ -287,18 +293,28 @@ void MempoolStats::drawChart()
 
             feepath.lineTo(fee_paths[i-1].currentPosition());
             feepath.connectPath(fee_paths[i-1].toReversed());
+
             if (MEMPOOL_GRAPH_LOGGING){
                 //LogPrintf("\nfee_paths[i-1].currentPosition().x() = %s",(int)fee_paths[i-1].currentPosition().x());
                 //LogPrintf("\nfee_paths[i-1].currentPosition().y() = %s",(int)fee_paths[i-1].currentPosition().y());
+                //
+                LogPrintf("\ncurrent_x = %s",current_x);
+                LogPrintf("\nbottom = %s",bottom);
                 LogPrintf("\nfee_paths[i-1].toReversed().length() = %s",(double)fee_paths[i-1].toReversed().length());
             }
+
         } else {
 
             feepath.lineTo(current_x, bottom);
+            //feepath.lineTo(current_x, bottom);
             feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
+
             if (MEMPOOL_GRAPH_LOGGING){
                 //LogPrintf("\nfee_paths[i-1].currentPosition().x() = %s",(int)fee_paths[i].currentPosition().x());
                 //LogPrintf("\nfee_paths[i-1].currentPosition().y() = %s",(int)fee_paths[i].currentPosition().y());
+                //
+                LogPrintf("\ncurrent_x = %s",current_x);
+                LogPrintf("\nbottom = %s",bottom);
                 LogPrintf("\nfee_paths[i-1].toReversed().length() = %s",(double)fee_paths[i].toReversed().length());
             }
 

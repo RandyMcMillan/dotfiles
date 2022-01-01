@@ -92,6 +92,9 @@ private:
 
     int m_selected_range = -1;
     QPoint mPoint;
+    QColor pen_color;
+    QColor brush_color;
+
 };
 
 #endif // BITCOIN_QT_MEMPOOLSTATS_H

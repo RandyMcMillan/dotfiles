@@ -151,7 +151,7 @@ void MempoolStats::drawChart()
     const qreal bottom = (m_gfx_view->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
     //const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
     //const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (m_gfx_view->scene()->sceneRect().height() * 0.2));
-    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() * GRAPH_MAXHEIGHT_G_SCALAR);
+    const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() * GRAPH_MAXHEIGHT_G_SCALAR) - GRAPH_PADDING_TOP;
 
 
     if (MEMPOOL_GRAPH_LOGGING){
@@ -320,8 +320,8 @@ void MempoolStats::drawChart()
 
         }
 
-        QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
-        QColor brush_color = pen_color;
+        pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
+        brush_color = pen_color;
         //mempool paths
         pen_color.setAlpha(255);
         brush_color.setAlpha(200);

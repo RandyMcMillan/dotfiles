@@ -40,7 +40,7 @@ if [[ ${USE_MEMORY_SANITIZER} == "true" ]]; then
   # Use BDB compiled using install_db4.sh script to work around linking issue when using BDB
   # from depends. See https://github.com/bitcoin/bitcoin/pull/18288#discussion_r433189350 for
   # details.
-  CI_EXEC "contrib/install_db4.sh \$(pwd) --enable-umrw CC=clang CXX=clang++ CFLAGS='${MSAN_FLAGS}' CXXFLAGS='${MSAN_AND_LIBCXX_FLAGS}'"
+  CI_EXEC "contrib/install_db4.sh \$(pwd) --enable-umrw CC=clang CXX=clang++ CFLAGS='${MSAN_FLAGS}' CXXFLAGS='${MSAN_AND_LIBCXX_FLAGS}' &> /dev/null"
 fi
 
 if [ -z "$NO_DEPENDS" ]; then
@@ -52,7 +52,7 @@ if [ -z "$NO_DEPENDS" ]; then
   else
     SHELL_OPTS="CONFIG_SHELL="
   fi
-  CI_EXEC "$SHELL_OPTS" make "$MAKEJOBS" -C depends HOST="$HOST" "$DEP_OPTS"
+  CI_EXEC "$SHELL_OPTS" make "$MAKEJOBS" -C depends HOST="$HOST" "$DEP_OPTS" LOG=1
 fi
 if [ -n "$PREVIOUS_RELEASES_TO_DOWNLOAD" ]; then
   CI_EXEC test/get_previous_releases.py -b -t "$PREVIOUS_RELEASES_DIR" "${PREVIOUS_RELEASES_TO_DOWNLOAD}"

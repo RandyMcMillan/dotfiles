@@ -19,12 +19,15 @@ static const int     GRAPH_PADDING_BOTTOM        = 50; //qreal bottom
 //scalar
 static const double  GRAPH_MAXHEIGHT_G_SCALAR    = 0.7;
 
-static const double  GRAPH_PATH_DIVISOR          = 1.5;
+static const double  GRAPH_PATH_SCALAR           = 1.5;
 
 static const double  GRAPH_HORZ_LINE_SCALAR      = 1.0;
 
 static const int     GRAPH_AMOUNT_OF_HORZ_LINES  = 5;
+
 static const double  GRAPH_X_SCALE_ADJUST        = 1.0;//TODO: this will be dynamic via a gui pill box later x_increment in mempoolstats.cpp
+
+
 bool const GRAPH_ADD_TOTAL_TEXT                  = true;
 
 static const int     ITEM_TX_COUNT_PADDING_LEFT  = 5;

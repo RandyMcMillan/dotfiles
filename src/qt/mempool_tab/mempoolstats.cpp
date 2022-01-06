@@ -236,7 +236,9 @@ void MempoolStats::drawChart()
         // we ignore the time difference of collected samples due to locking issues
         // TODO: implement x scale pillbox adjust here
         // Replace GRAPH_X_SCALE_ADJUST with function call connected to pillbox
-        const qreal x_increment = (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_LEFT_ADJUST + GRAPH_PADDING_RIGHT) ) / (m_clientmodel->m_mempool_max_samples/GRAPH_X_SCALE_ADJUST); //samples.size();
+        const qreal x_increment = (width() -
+                (GRAPH_PADDING_LEFT + GRAPH_PADDING_LEFT_ADJUST + GRAPH_PADDING_RIGHT) )
+            / (m_clientmodel->m_mempool_max_samples/GRAPH_X_SCALE_ADJUST); //samples.size();
         QPointF current_x_bottom = QPointF(current_x,bottom);
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);

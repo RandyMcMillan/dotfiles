@@ -26,8 +26,8 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 
     if (MEMPOOL_DETAIL_LOGGING){
 
-        LogPrintf("LABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
-        LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
+        LogPrintf("\nLABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
+        LogPrintf("\nLABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
 
     }
 
@@ -98,7 +98,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             if (MEMPOOL_DETAIL_LOGGING){
               //LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
-              //LogPrintf("fee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
+              //LogPrintf("\nfee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
                 LogPrintf("\nc_y = %s",c_y);
                 LogPrintf("\nc_y-5 = %s",c_y-5);
 
@@ -155,7 +155,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_text->setPos(DETAIL_PADDING_LEFT, c_y-C_H+(C_MARGIN/2));
 
                 if (MEMPOOL_DETAIL_LOGGING){
-                    LogPrintf("fee_text->zValue()",fee_text->zValue());
+                    LogPrintf("\nfee_text->zValue()",fee_text->zValue());
                 }
 
                 //QGraphicsTextItem *fee_range_size = m_scene->addText("ABCDEFG",gridFont);
@@ -244,8 +244,8 @@ void MempoolDetail::drawDetail()
         LogPrintf("\n");
         LogPrintf("\n");
         LogPrintf("\n");
-        LogPrintf("bottom = %s\n",bottom);
-        LogPrintf("maxheight_g = %s\n",maxheight_g);
+        LogPrintf("\nbottom = %s\n",bottom);
+        LogPrintf("\nmaxheight_g = %s\n",maxheight_g);
         LogPrintf("\n");
         LogPrintf("\n");
         LogPrintf("\n");

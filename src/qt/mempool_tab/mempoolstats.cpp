@@ -125,7 +125,7 @@ void MempoolStats::drawHorzLines(
 
             QGraphicsTextItem *item_tx_count =
                 //m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
-                m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
+                m_scene->addText(QString::number(grid_tx_count/1).rightJustified(4, ' ')+QString("vB"), LABELFONT);
             //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
             //TODO: use text rect width to adjust
             item_tx_count->setDefaultTextColor(colors[16]);
@@ -216,7 +216,7 @@ void MempoolStats::drawChart()
         }
 
         // make a nice y-axis scale
-        const int amount_of_h_lines = GRAPH_AMOUNT_OF_H_LINES;
+        const int amount_of_h_lines = GRAPH_AMOUNT_OF_HORZ_LINES;
         if (max_txcount > 0) {
             int val = qFloor(log10(max_txcount/amount_of_h_lines));
             int stepbase = qPow(10.0f, val);

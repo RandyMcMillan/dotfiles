@@ -53,6 +53,7 @@ static const double  DETAIL_HEIGHT_SCALAR        = 1.0;
 bool const DETAIL_ADD_TOTAL_TEXT                 = true;
 
 bool const MEMPOOL_GRAPH_LOGGING                 = false;
+bool const MEMPOOL_GRAPH_DOUBLE_CLICK_LOGGING    = true;
 bool const MEMPOOL_HORZ_LINE_LOGGING             = true;
 bool const MEMPOOL_DETAIL_LOGGING                = true;
 bool const DETAIL_VIEW_HIDE_EVENT                = false;

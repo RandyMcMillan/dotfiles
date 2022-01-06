@@ -39,8 +39,10 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     m_gfx_view->setMouseTracking(true);
-    m_gfx_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //m_gfx_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    m_gfx_view->setGeometry(0,0,0,0);
 
     if (m_clientmodel) {
         drawChart();
@@ -540,7 +542,12 @@ void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(
 void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mouseDoubleClickEvent(event);
-    if (MEMPOOL_GRAPH_LOGGING){
+    if (MEMPOOL_GRAPH_DOUBLE_CLICK_LOGGING){
+        LogPrintf("\nmouseDoubleClickEvent\n");
+        LogPrintf("\nmouseDoubleClickEvent\n");
+        LogPrintf("\nmouseDoubleClickEvent\n");
+        LogPrintf("\nmouseDoubleClickEvent\n");
+        LogPrintf("\nmouseDoubleClickEvent\n");
         LogPrintf("\nmouseDoubleClickEvent\n");
         LogPrintf("\nevent->pos().x() %s\n",event->pos().x());
         LogPrintf("\nevent->pos().y() %s\n",event->pos().y());
@@ -554,7 +561,7 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
 
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
 
-    if (MEMPOOL_GRAPH_LOGGING){
+    if (MEMPOOL_GRAPH_DOUBLE_CLICK_LOGGING){
 
         LogPrintf("\nLABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("\nLABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);

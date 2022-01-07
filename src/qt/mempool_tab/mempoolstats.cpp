@@ -192,16 +192,26 @@ void MempoolStats::drawChart()
                 LogPrintf("\ni = %s\n", i);
                 txcount += list_entry.tx_count;
 
-                LogPrintf("\ntxcount = %s\n", txcount);
+                if (MEMPOOL_GRAPH_LOGGING){
+                    LogPrintf("\ntxcount = %s\n", txcount);
+                }
 
                 fee_subtotal_txcount[i] += list_entry.tx_count;
 
-                LogPrintf("\nlist_entry.tx_count = %s\n", list_entry.tx_count );
-                LogPrintf("\nfee_subtotal_txcount[i] = %s\n",fee_subtotal_txcount[i]);
+                if (MEMPOOL_GRAPH_LOGGING){
+                    LogPrintf("\nlist_entry.tx_count = %s\n", list_entry.tx_count );
+                    LogPrintf("\nfee_subtotal_txcount[i] = %s\n",fee_subtotal_txcount[i]);
+                }
+
+
                 i++;
             }
             if (txcount > max_txcount) max_txcount = txcount;
-                LogPrintf("\nmaxcount = %s\n", max_txcount);
+
+                if (MEMPOOL_GRAPH_LOGGING){
+                    LogPrintf("\nmaxcount = %s\n", max_txcount);
+                }
+
         }
 
         // hide ranges we don't have txns
@@ -366,6 +376,19 @@ void MempoolStats::drawChart()
 void MempoolStats::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
+
+    if (MEMPOOL_GRAPH_RESIZE_EVENT_LOGGING){
+        //
+        LogPrintf("\nMEMPOOL_GRAPH_RESIZE_EVENT_LOGGING");
+        LogPrintf("\nMEMPOOL_GRAPH_RESIZE_EVENT_LOGGING");
+        LogPrintf("\nMEMPOOL_GRAPH_RESIZE_EVENT_LOGGING");
+        LogPrintf("\nMEMPOOL_GRAPH_RESIZE_EVENT_LOGGING");
+        LogPrintf("\nMEMPOOL_GRAPH_RESIZE_EVENT_LOGGING");
+        LogPrintf("\nsize().height() = %s",size().height());
+        LogPrintf("\nsize().width()  = %s",size().width());
+
+    }
+
     m_gfx_view->resize(size());
 
     m_gfx_view->scene()->setSceneRect(

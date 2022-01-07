@@ -300,7 +300,14 @@ void MempoolStats::drawChart()
 
     int i = 0;
 
+
+
+
     QString total_text = "test 267";//tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+
+
+
+
     if (MEMPOOL_GRAPH_LOGGING){
             LogPrintf("\nm_clientmodel->m_mempool_max_samples = %s",(int)m_clientmodel->m_mempool_max_samples);
             LogPrintf("\nm_clientmodel->m_mempool_collect_interval = %s",(int)m_clientmodel->m_mempool_collect_intervall);

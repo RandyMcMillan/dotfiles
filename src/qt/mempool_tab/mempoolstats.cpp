@@ -502,29 +502,31 @@ void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMI
 void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mousePressEvent(event);
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
 
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("\nmousePressEvent\n");
         LogPrintf("\nevent->pos().x() %s\n",event->pos().x());
         LogPrintf("\nevent->pos().y() %s\n",event->pos().y());
     }
-        // autoadjust font size
-    QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
-    testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
-    LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
 
-    if (MEMPOOL_GRAPH_LOGGING){
+    if (MEMPOOL_GRAPH_SINGLE_CLICK_LOGGING){
+
+        // autoadjust font size
+        QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
+        testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
+        LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
 
         LogPrintf("\nLABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("\nLABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
 
-    }
+        QFont gridFont;
+        //QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+        QGraphicsTextItem *enterEventX = m_scene->addText(QString("⦿"), gridFont);
+        enterEventX->setPos(mouseEvent->pos().x()-GRAPH_PADDING_RIGHT, mouseEvent->pos().y()-20.0);
+        //enterEventX->setPos(mouseEvent->pos().x()-GRAPH_PADDING_LEFT, mouseEvent->pos().y()-GRAPH_PADDING_TOP);
 
-    QFont gridFont;
-    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-    QGraphicsTextItem *enterEventX = m_scene->addText(QString("⦿"), gridFont);
-    enterEventX->setPos(mouseEvent->pos().x()-GRAPH_PADDING_RIGHT, mouseEvent->pos().y()-20.0);
-    //enterEventX->setPos(mouseEvent->pos().x()-GRAPH_PADDING_LEFT, mouseEvent->pos().y()-GRAPH_PADDING_TOP);
+    }
 
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
@@ -539,6 +541,7 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
 void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mouseReleaseEvent(event);
+
     if (MEMPOOL_GRAPH_LOGGING){
         LogPrintf("\nmouseReleaseEvent\n");
         LogPrintf("\nevent->pos().x() %s\n",event->pos().x());
@@ -565,6 +568,8 @@ void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(
 void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
     QWidget::mouseDoubleClickEvent(event);
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+
     if (MEMPOOL_GRAPH_DOUBLE_CLICK_LOGGING){
         LogPrintf("\nmouseDoubleClickEvent\n");
         LogPrintf("\nmouseDoubleClickEvent\n");
@@ -576,21 +581,20 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
         LogPrintf("\nevent->pos().y() %s\n",event->pos().y());
     }
 
-        // autoadjust font size
-    QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
-    testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
-    LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
-    LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
-
-    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-
     if (MEMPOOL_GRAPH_DOUBLE_CLICK_LOGGING){
+
+        // autoadjust font size
+        QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
+        testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
+        LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
+        LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
 
         LogPrintf("\nLABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("\nLABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
 
         QFont gridFont;
-        QGraphicsTextItem *mouseDoubleClickItem = m_scene->addText("mouseDoubleClickEvent: ("+QString::number(mouseEvent->pos().y())+","+QString::number(mouseEvent->pos().x())+")", gridFont);
+        QGraphicsTextItem *mouseDoubleClickItem =
+            m_scene->addText("mouseDoubleClickEvent: ("+QString::number(mouseEvent->pos().y())+","+QString::number(mouseEvent->pos().x())+")", gridFont);
         mouseDoubleClickItem->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 
     }
@@ -711,13 +715,13 @@ if (event->type() == QEvent::MouseMove)
 
     }
 
-    // autoadjust font size
-    QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
-    testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
-    LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
-    LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
-
     if (MEMPOOL_GRAPH_LOGGING){
+
+        // autoadjust font size
+        QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
+        testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
+        LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
+        LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
 
         LogPrintf("\nLABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("\nLABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);

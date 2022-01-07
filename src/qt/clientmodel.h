@@ -87,7 +87,7 @@ public:
 
     typedef std::pair<int64_t, std::vector<interfaces::mempool_feeinfo>> mempool_feehist_sample; //!< sample plus timestamp
     mutable QMutex m_mempool_locker;
-    const static size_t m_mempool_max_samples{540};
+    const static size_t m_mempool_max_samples{540};//mempool-tab
     const static size_t m_mempool_collect_intervall{20}; // 540*20 = 3h of sample window
     std::vector<mempool_feehist_sample> m_mempool_feehist;
     std::atomic<int64_t> m_mempool_feehist_last_sample_timestamp{0};

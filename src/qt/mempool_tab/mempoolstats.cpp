@@ -91,43 +91,42 @@ void MempoolStats::drawHorzLines(
     qreal _maxheight = std::max((double)(maxheight_g),(double)(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
 
     if (MEMPOOL_GRAPH_LOGGING){
-
         LogPrintf("\nbottom = %s\n",bottom);
         LogPrintf("\nmaxheight_g = %s\n",maxheight_g);
         LogPrintf("\nmaxwidth = %s\n",maxwidth);
         LogPrintf("\n_maxheight = %s\n",_maxheight);
-
     }
 
     QPainterPath tx_count_grid_path(current_x_bottom);
     int bottomTxCount = 0;
     for (int i=0; i < amount_of_h_lines; i++)
     {
-        qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
+        //qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1)*GRAPH_HORZ_LINE_Y_SCALAR);
+        //scaling
+        //qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1)*GRAPH_HORZ_LINE_Y_SCALAR);
+        qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1))*GRAPH_HORZ_LINE_Y_SCALAR;
         //qreal lY = bottom-i*(_maxheight/(amount_of_h_lines-1));
         //TODO: use text rect width to adjust
-        tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+0), lY);
-        tx_count_grid_path.lineTo(GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+maxwidth), lY);
+        tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+0), lY);
+        tx_count_grid_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+maxwidth), lY);
 
 
         size_t grid_tx_count =
             (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
 
         if (MEMPOOL_HORZ_LINE_LOGGING){
-
             LogPrintf("\ni = %s",i);
-            LogPrintf("\nGRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+0        = %s",GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+0));
-            LogPrintf("\nGRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+maxwidth = %s",GRAPH_HORZ_LINE_SCALAR*(GRAPH_PADDING_LEFT+maxwidth));
-            LogPrintf("\nlY                                                  = %s",lY);
-            LogPrintf("\ngrid_tx_count                                       = %s",grid_tx_count);
-
+            LogPrintf("\nGRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+0        = %s",GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+0));
+            LogPrintf("\nGRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+maxwidth = %s",GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+maxwidth));
+            LogPrintf("\nlY                                                    = %s",lY);
+            LogPrintf("\ngrid_tx_count                                         = %s",grid_tx_count);
         }
         //Add text ornament
         if (ADD_TEXT) {
 
             QGraphicsTextItem *item_tx_count =
                 //m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
-                m_scene->addText(QString::number(grid_tx_count/1).rightJustified(4, ' ')+QString("vB"), LABELFONT);
+                m_scene->addText(QString::number(grid_tx_count/2.5).rightJustified(4, ' ')+QString("vB"), LABELFONT);
             //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
             //TODO: use text rect width to adjust
             item_tx_count->setDefaultTextColor(colors[16]);

@@ -189,27 +189,23 @@ void MempoolStats::drawChart()
             uint64_t txcount = 0;
             int i = 0;
             for (const interfaces::mempool_feeinfo& list_entry : sample.second) {
-                LogPrintf("\ni = %s\n", i);
+
                 txcount += list_entry.tx_count;
-
-                if (MEMPOOL_GRAPH_LOGGING){
-                    LogPrintf("\ntxcount = %s\n", txcount);
-                }
-
                 fee_subtotal_txcount[i] += list_entry.tx_count;
 
                 if (MEMPOOL_GRAPH_LOGGING){
-                    LogPrintf("\nlist_entry.tx_count = %s\n", list_entry.tx_count );
+                    LogPrintf("\ni = %s\n", i);
+                    LogPrintf("\ntxcount = %s\n", txcount);
+                    LogPrintf("\nlist_entry.tx_count = %s\n", list_entry.tx_count);
                     LogPrintf("\nfee_subtotal_txcount[i] = %s\n",fee_subtotal_txcount[i]);
                 }
-
 
                 i++;
             }
             if (txcount > max_txcount) max_txcount = txcount;
 
                 if (MEMPOOL_GRAPH_LOGGING){
-                    LogPrintf("\nmaxcount = %s\n", max_txcount);
+                    LogPrintf("\nmax_txcount = %s\n", max_txcount);
                 }
 
         }
@@ -303,12 +299,15 @@ void MempoolStats::drawChart()
 
 
 
-    QString total_text = "test 267";//tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+    //QString total_text = "test 267";//tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+    //QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+    QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 
 
 
 
-    if (MEMPOOL_GRAPH_LOGGING){
+    if (MEMPOOL_CLIENT_MODEL_LOGGING){
+            LogPrintf("\nm_mempool_feehist_last_sample_timestamp = %s",(int)m_clientmodel->m_mempool_feehist_last_sample_timestamp);
             LogPrintf("\nm_clientmodel->m_mempool_max_samples = %s",(int)m_clientmodel->m_mempool_max_samples);
             LogPrintf("\nm_clientmodel->m_mempool_collect_interval = %s",(int)m_clientmodel->m_mempool_collect_intervall);
             LogPrintf("\nm_clientmodel->m_mempool_collect_interval/3600 = %s",(int)m_clientmodel->m_mempool_collect_intervall/3600);

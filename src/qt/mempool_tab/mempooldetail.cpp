@@ -18,13 +18,12 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     }
     setMouseTracking(true);
 
-    // autoadjust font size
-    QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
-    testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
-    LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
-    LABEL_KV_SIZE    *= 27.5/testText.boundingRect().width();
+    if (DETAIL_VIEW_LOGGING){
 
-    if (MEMPOOL_DETAIL_LOGGING){
+        QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
+        testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
+        LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
+        LABEL_KV_SIZE    *= 27.5/testText.boundingRect().width();
 
         LogPrintf("\nLABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
         LogPrintf("\nLABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
@@ -67,15 +66,13 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
     gridFont.setPointSize(12);
     gridFont.setWeight(QFont::Bold);
 
-    if (MEMPOOL_DETAIL_LOGGING){
-
+    if (DETAIL_VIEW_LOGGING){
         LogPrintf("\nbottom = %s",bottom);
         LogPrintf("\nmaxwidth = %s",maxwidth);
         LogPrintf("\nbottom_display_ratio = %s",bottom_display_ratio);
         LogPrintf("\ndisplay_up_to_range = %s",display_up_to_range);
         LogPrintf("\nfee_subtotal_txcount = %s",fee_subtotal_txcount);
         //LogPrintf("\nfee_path_delta = %s",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600);
-
     }
         qreal c_y = bottom;
         c_y-=C_MARGIN;
@@ -96,7 +93,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_rect_detail->setZValue(i*10);
 
 
-            if (MEMPOOL_DETAIL_LOGGING){
+            if (DETAIL_VIEW_LOGGING){
               //LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
               //LogPrintf("\nfee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
                 LogPrintf("\nc_y = %s",c_y);
@@ -131,7 +128,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 //item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
                 //item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
 
-                if (MEMPOOL_DETAIL_LOGGING){
+                if (DETAIL_VIEW_LOGGING){
                     LogPrintf("\nlist_entry.fee_from = %s",list_entry.fee_from);
                     LogPrintf("\nlist_entry.fee_to = %s",list_entry.fee_to);
                     LogPrintf("\ni = %s\n",i);
@@ -154,7 +151,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_text->setZValue(i*FEE_TEXT_Z);
                 fee_text->setPos(DETAIL_PADDING_LEFT, c_y-C_H+(C_MARGIN/2));
 
-                if (MEMPOOL_DETAIL_LOGGING){
+                if (DETAIL_VIEW_LOGGING){
                     LogPrintf("\nfee_text->zValue()",fee_text->zValue());
                 }
 
@@ -202,8 +199,10 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             if (ADD_FEE_RECTS){
 
                 m_scene->addItem(fee_rect_detail);
-                LogPrintf("\n__________________________items().length() = %s\n",(int)m_scene->items().length());
 
+                if (DETAIL_VIEW_LOGGING){
+                    LogPrintf("\n__________________________items().length() = %s\n",(int)m_scene->items().length());
+                }
             }
 
             connect(fee_rect_detail, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {

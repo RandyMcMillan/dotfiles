@@ -135,7 +135,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 }
 
                 //QGraphicsTextItem *fee_text = m_scene->addText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to),gridFont);
-                QGraphicsTextItem *fee_text = m_scene->addText(QString::number((int)list_entry.fee_from)+"-"+QString::number((int)list_entry.fee_to),gridFont);
+                QGraphicsTextItem *fee_text = m_scene->addText(QString::number((int)list_entry.fee_from)+" - "+QString::number((int)list_entry.fee_to),gridFont);
 
                 fee_text->setDefaultTextColor(colors[16]);//REF: empoolconstants.h
                 //fee_text->setBrush(QBrush(brush_color));
@@ -149,6 +149,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
 
                 fee_text->setZValue(i*FEE_TEXT_Z);
+                //fee_text->setPos(DETAIL_PADDING_LEFT, c_y-C_H+(C_MARGIN/2));
                 fee_text->setPos(DETAIL_PADDING_LEFT, c_y-C_H+(C_MARGIN/2));
 
                 if (DETAIL_VIEW_LOGGING){

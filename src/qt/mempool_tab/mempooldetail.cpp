@@ -4,6 +4,8 @@
 
 #include <QtMath>
 #include <QMouseEvent>
+#include <QFontDatabase>
+
 #include <qt/guiutil.h>
 #include <qt/clientmodel.h>
 #include <qt/mempool_tab/mempooldetail.h>
@@ -49,9 +51,14 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 
 void MempoolDetail::drawFeeRanges( qreal bottom ){
 
-    QFont gridFont;
+    //QFont gridFont;
+    QFont gridFont =  QFontDatabase::systemFont(QFontDatabase::FixedFont);
+
+    //gridFont.setFamily('monospace')
+    //gridFont.setStyleHint(QFont::TypeWriter);
+
     gridFont.setPointSize(12);
-    gridFont.setWeight(QFont::Light);
+    gridFont.setWeight(QFont::Bold);
     if (ADD_FEE_RANGES) {
         QGraphicsTextItem *fee_range_title =
         m_scene->addText("Fee ranges\n(sat/b)", gridFont);
@@ -157,14 +164,22 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 }
 
                 //QGraphicsTextItem *fee_range_size = m_scene->addText("ABCDEFG",gridFont);
-                QGraphicsTextItem *fee_range_size = m_scene->addText(QString::number(list_entry.fee_from)+" MvB",gridFont);
-                fee_range_size->setDefaultTextColor(colors[16]);//REF: empoolconstants.h
-                QGraphicsTextItem *fee_range_sum  = m_scene->addText(QString::number(list_entry.fee_from)+" MvB",gridFont);
-                fee_range_sum->setDefaultTextColor(colors[17]);//REF: empoolconstants.h
-                fee_range_size->setZValue(i*10);
+                QString fee_from = QString::number(list_entry.fee_from/1000.0);
+                QString text_item_text = QString("%1").arg(fee_from).leftJustified(6,'0',false);
+                QGraphicsTextItem *fee_range_size =
+                    //m_scene->addText(QString::number(list_entry.fee_from).rightJustified(3,' ')+QString(" MvB").leftJustified(3,' '),gridFont);
+                //m_scene->addText(QString::number(list_entry.fee_from/100.0).rightJustified(C_X,' ',true),gridFont);
+                m_scene->addText(text_item_text,gridFont);
+                //m_scene->addText(QString::number(list_entry.fee_from/1.0),gridFont);
+                fee_range_size->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
+                //QGraphicsTextItem *fee_range_sum  =
+                    //m_scene->addText(QString::number(list_entry.fee_from).rightJustified(3,' ')+QString(" MvB").leftJustified(3,' '),gridFont);
+                  //  m_scene->addText(QString::number(list_entry.fee_from).rightJustified(3,' '),gridFont);
+                //fee_range_sum->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
+                fee_range_size->setZValue(i*FEE_TEXT_Z);
                 fee_range_size->setPos(DETAIL_PADDING_LEFT+C_W-7+100, c_y-C_H+C_MARGIN);
-                fee_range_sum-> setZValue(i*10);
-                fee_range_sum-> setPos(DETAIL_PADDING_LEFT+C_W-7+200, c_y-C_H+C_MARGIN);
+                //fee_range_sum-> setZValue(i*FEE_TEXT_Z);
+                //fee_range_sum-> setPos(DETAIL_PADDING_LEFT+C_W-7+200, c_y-C_H+C_MARGIN);
 
                 //fee_text->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
                 //fee_text->setStyleSheet("color: white;");//REF: mempoolconstants.h

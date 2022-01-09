@@ -324,9 +324,14 @@ void MempoolStats::drawChart()
 
         if (i > 0 && i < 31) {
 
-            QGraphicsTextItem *pathDot = m_scene->addText(QString("⦿"), gridFont);
-            pathDot->setPos(fee_paths[i-1].currentPosition().x()-GRAPH_PADDING_RIGHT, fee_paths[i-1].currentPosition().y()-20.0);
-            pathDot->setZValue(i*10);
+            if (i > 0 && i < 7) {
+                QGraphicsTextItem *pathDot =
+                m_scene->addText(
+                    QString("⦿ (%1,%2)").arg(fee_paths[i-1].currentPosition().x()).arg(fee_paths[i-1].currentPosition().y()-30.0), gridFont);
+                pathDot->setPos(fee_paths[i-1].currentPosition().x(), fee_paths[i-1].currentPosition().y()-30.0);
+                pathDot->setZValue(i*10);
+            }
+
             QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
             timeTicker->setPos(fee_paths[i-1].currentPosition().x()-GRAPH_PADDING_RIGHT, bottom-20.0);
             timeTicker->setZValue(i*10);

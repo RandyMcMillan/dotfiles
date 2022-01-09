@@ -126,7 +126,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             if (ADD_FEE_RANGES){
 
                 QFont gridFont;
-                gridFont.setPointSize(12);
+                gridFont.setPointSize(LABEL_TITLE_SIZE);
                 //gridFont.setWeight(QFont::Light);
 
                 //ClickableTextItem *fee_text = new ClickableTextItem();

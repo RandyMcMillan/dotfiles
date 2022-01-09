@@ -317,11 +317,19 @@ void MempoolStats::drawChart()
     //QString total_text = "";
     for (auto feepath : fee_paths) {
 
+        pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
+        brush_color = pen_color;
+        pen_color.setAlpha(255);
+        brush_color.setAlpha(200);
 
-
-
-        // close paths
         if (i > 0 && i < 31) {
+
+            QGraphicsTextItem *pathDot = m_scene->addText(QString("⦿"), gridFont);
+            pathDot->setPos(fee_paths[i-1].currentPosition().x()-GRAPH_PADDING_RIGHT, fee_paths[i-1].currentPosition().y()-20.0);
+            pathDot->setZValue(i*10);
+            QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
+            timeTicker->setPos(fee_paths[i-1].currentPosition().x()-GRAPH_PADDING_RIGHT, bottom-20.0);
+            timeTicker->setZValue(i*10);
 
             feepath.lineTo(fee_paths[i-1].currentPosition());
             feepath.connectPath(fee_paths[i-1].toReversed());
@@ -336,7 +344,6 @@ void MempoolStats::drawChart()
 
             feepath.lineTo(current_x, bottom);
             feepath.lineTo(current_x, bottom);
-            //feepath.lineTo(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, bottom);
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\ncurrent_x = %s",current_x);
@@ -346,11 +353,6 @@ void MempoolStats::drawChart()
 
         }
 
-        pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
-        brush_color = pen_color;
-        //mempool paths
-        pen_color.setAlpha(255);
-        brush_color.setAlpha(200);
         if (m_selected_range >= 0 && m_selected_range != i) {
             //dimmer
             pen_color.setAlpha(127);
@@ -359,12 +361,12 @@ void MempoolStats::drawChart()
         if (m_selected_range >= 0 && m_selected_range == i) {
             total_text = "transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);
         }
-        QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
+        QPen path_pen(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        m_scene->addPath(feepath, path_pen, QBrush(brush_color));
         i++;
     }
 
-    if(GRAPH_ADD_TOTAL_TEXT){
+    if (GRAPH_ADD_TOTAL_TEXT){
 
         QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
         item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);

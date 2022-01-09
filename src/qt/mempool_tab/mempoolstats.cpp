@@ -301,9 +301,6 @@ void MempoolStats::drawChart()
     //QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
     QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 
-
-
-
     if (MEMPOOL_CLIENT_MODEL_LOGGING){
             LogPrintf("\nm_mempool_feehist_last_sample_timestamp = %s",(int)m_clientmodel->m_mempool_feehist_last_sample_timestamp);
             LogPrintf("\nm_clientmodel->m_mempool_max_samples = %s",(int)m_clientmodel->m_mempool_max_samples);
@@ -324,17 +321,17 @@ void MempoolStats::drawChart()
 
         if (i > 0 && i < 31) {
 
-            if (i > 0 && i < 7) {
+            if (i > 0 && std::abs(fee_paths[i-1].currentPosition().y() - fee_paths[i].currentPosition().y() ) > 20) {
                 QGraphicsTextItem *pathDot =
                 m_scene->addText(
                     QString("⦿ (%1,%2)").arg(fee_paths[i-1].currentPosition().x()).arg(fee_paths[i-1].currentPosition().y()-30.0), gridFont);
                 pathDot->setPos(fee_paths[i-1].currentPosition().x(), fee_paths[i-1].currentPosition().y()-30.0);
                 pathDot->setZValue(i*10);
+            } else { /* Check BlockTime */
+                QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
+                timeTicker->setPos(fee_paths[i-1].currentPosition().x()-GRAPH_PADDING_RIGHT, bottom-20.0);
+                timeTicker->setZValue(i*10);
             }
-
-            QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
-            timeTicker->setPos(fee_paths[i-1].currentPosition().x()-GRAPH_PADDING_RIGHT, bottom-20.0);
-            timeTicker->setZValue(i*10);
 
             feepath.lineTo(fee_paths[i-1].currentPosition());
             feepath.connectPath(fee_paths[i-1].toReversed());
@@ -347,8 +344,11 @@ void MempoolStats::drawChart()
 
         } else {
 
-            feepath.lineTo(current_x, bottom);
-            feepath.lineTo(current_x, bottom);
+            //feepath.lineTo(current_x, bottom-(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
+            feepath.lineTo(current_x, bottom-(0));
+            feepath.lineTo(current_x, bottom-(0));
+            //feepath.lineTo((GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST), bottom-(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
+            //feepath.lineTo((GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST), bottom-(0));
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\ncurrent_x = %s",current_x);

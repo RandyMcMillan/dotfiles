@@ -10,7 +10,7 @@ static const int     LABEL_RIGHT_SIZE            = 0;
 static float         POINT_SIZE                  = 12;
 
 
-static const int     GRAPH_PADDING_LEFT          = 50+LABEL_LEFT_SIZE;
+static const int     GRAPH_PADDING_LEFT          = 60+LABEL_LEFT_SIZE;
 static const int     GRAPH_PADDING_LEFT_ADJUST   = 35;
 static const int     GRAPH_PADDING_RIGHT         = 20+LABEL_RIGHT_SIZE;
 static const int     GRAPH_PADDING_TOP           = 50;

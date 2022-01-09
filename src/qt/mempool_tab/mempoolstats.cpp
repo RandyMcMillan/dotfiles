@@ -123,15 +123,14 @@ void MempoolStats::drawHorzLines(
         }
         //Add text ornament
         if (ADD_TEXT) {
-
+            QString horz_line_range_text = QString::number(grid_tx_count/2.0).rightJustified(4, ' ');
             QGraphicsTextItem *item_tx_count =
                 //m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
-                m_scene->addText(QString::number(grid_tx_count/1.0).rightJustified(4, ' ')+QString(" vB"), LABELFONT);
-            //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
-            //TODO: use text rect width to adjust
-            item_tx_count->setDefaultTextColor(colors[16]);
-            item_tx_count->setPos(GRAPH_PADDING_LEFT-60, lY-(item_tx_count->boundingRect().height()/2));
-
+                m_scene->addText(QString("%1").arg(horz_line_range_text)+QString(" vB"), LABELFONT);
+                //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
+                //TODO: use text rect width to adjust
+                item_tx_count->setDefaultTextColor(colors[16]);
+                item_tx_count->setPos(GRAPH_PADDING_LEFT-40, lY-(item_tx_count->boundingRect().height()/2));
         }
     }
 

@@ -344,11 +344,8 @@ void MempoolStats::drawChart()
 
         } else {
 
-            //feepath.lineTo(current_x, bottom-(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
+            feepath.lineTo(current_x, bottom-(GRAPH_PADDING_TOP));
             feepath.lineTo(current_x, bottom-(0));
-            feepath.lineTo(current_x, bottom-(0));
-            //feepath.lineTo((GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST), bottom-(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
-            //feepath.lineTo((GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST), bottom-(0));
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\ncurrent_x = %s",current_x);

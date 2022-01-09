@@ -107,8 +107,8 @@ void MempoolStats::drawHorzLines(
         qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1))*GRAPH_HORZ_LINE_Y_SCALAR;
         //qreal lY = bottom-i*(_maxheight/(amount_of_h_lines-1));
         //TODO: use text rect width to adjust
-        tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+0), lY);
-        tx_count_grid_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+maxwidth), lY);
+        tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST), lY);
+        tx_count_grid_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+maxwidth), lY);
 
 
         size_t grid_tx_count =
@@ -147,7 +147,7 @@ void MempoolStats::drawChart()
     m_scene->clear();
 
     //
-    qreal current_x = 0 + GRAPH_PADDING_LEFT;
+    qreal current_x = 0 + GRAPH_PADDING_LEFT + GRAPH_PADDING_LEFT_ADJUST;
     const qreal bottom = (m_gfx_view->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
     //const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
     //const qreal maxheight_g = (m_gfx_view->scene()->sceneRect().height() - (m_gfx_view->scene()->sceneRect().height() * 0.2));
@@ -277,7 +277,7 @@ void MempoolStats::drawChart()
                     // first sample, initiate the path with first point
                     //                        TODO:dynamic scalar
                     //fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR*current_x, y));//affects scale height draw
-                    fee_paths.emplace_back(QPointF(current_x, GRAPH_PATH_SCALAR*y));//scalar affects scale height draw
+                    fee_paths.emplace_back(QPointF(current_x-(0), GRAPH_PATH_SCALAR*y));//scalar affects scale height draw
 
                 }
                 else {
@@ -316,6 +316,10 @@ void MempoolStats::drawChart()
     //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
     //QString total_text = "";
     for (auto feepath : fee_paths) {
+
+
+
+
         // close paths
         if (i > 0) {
 
@@ -334,8 +338,8 @@ void MempoolStats::drawChart()
         } else {
 
             feepath.lineTo(current_x, bottom);
-            //feepath.lineTo(current_x, bottom);
-            feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
+            feepath.lineTo(current_x, bottom);
+            //feepath.lineTo(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, bottom);
 
             if (MEMPOOL_GRAPH_LOGGING){
                 //LogPrintf("\nfee_paths[i-1].currentPosition().x() = %s",(int)fee_paths[i].currentPosition().x());

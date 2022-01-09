@@ -321,15 +321,12 @@ void MempoolStats::drawChart()
 
 
         // close paths
-        if (i > 0) {
+        if (i > 0 && i < 31) {
 
             feepath.lineTo(fee_paths[i-1].currentPosition());
             feepath.connectPath(fee_paths[i-1].toReversed());
 
             if (MEMPOOL_GRAPH_LOGGING){
-                //LogPrintf("\nfee_paths[i-1].currentPosition().x() = %s",(int)fee_paths[i-1].currentPosition().x());
-                //LogPrintf("\nfee_paths[i-1].currentPosition().y() = %s",(int)fee_paths[i-1].currentPosition().y());
-                //
                 LogPrintf("\ncurrent_x = %s",current_x);
                 LogPrintf("\nbottom = %s",bottom);
                 LogPrintf("\nfee_paths[i-1].toReversed().length() = %s",(double)fee_paths[i-1].toReversed().length());
@@ -342,9 +339,6 @@ void MempoolStats::drawChart()
             //feepath.lineTo(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, bottom);
 
             if (MEMPOOL_GRAPH_LOGGING){
-                //LogPrintf("\nfee_paths[i-1].currentPosition().x() = %s",(int)fee_paths[i].currentPosition().x());
-                //LogPrintf("\nfee_paths[i-1].currentPosition().y() = %s",(int)fee_paths[i].currentPosition().y());
-                //
                 LogPrintf("\ncurrent_x = %s",current_x);
                 LogPrintf("\nbottom = %s",bottom);
                 LogPrintf("\nfee_paths[i-1].toReversed().length() = %s",(double)fee_paths[i].toReversed().length());

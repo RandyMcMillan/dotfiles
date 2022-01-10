@@ -55,7 +55,7 @@ public Q_SLOTS:
     int detailHeight();
 
     void drawHorzLines(
-    const qreal x_increment,
+    qreal x_increment,
     QPointF current_x_bottom,
     const int amount_of_h_lines,
     qreal maxheight_g,

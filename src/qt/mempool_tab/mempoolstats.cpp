@@ -79,7 +79,7 @@ void MempoolStats::drawDetailView(
 }
 
 void MempoolStats::drawHorzLines(
-        const qreal x_increment,
+        qreal x_increment,
         QPointF current_x_bottom,
         const int amount_of_h_lines,
         qreal maxheight_g,
@@ -98,6 +98,7 @@ void MempoolStats::drawHorzLines(
     }
 
     QPainterPath tx_count_grid_path(current_x_bottom);
+    QPainterPath tick_path(current_x_bottom);
     int bottomTxCount = 0;
     for (int i=0; i < amount_of_h_lines; i++)
     {
@@ -110,6 +111,13 @@ void MempoolStats::drawHorzLines(
         tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST), lY);
         tx_count_grid_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+maxwidth), lY);
 
+        for (int n=0; n < maxwidth; n++){
+                tick_path.moveTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+n), bottom);
+                tick_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+n), bottom+3);
+                QPen gridPen(QColor(57,59,69,200), 0.1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+                m_scene->addPath(tick_path, gridPen);
+                n+=(maxwidth/18);
+        }
 
         size_t grid_tx_count =
             (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
@@ -134,7 +142,7 @@ void MempoolStats::drawHorzLines(
         }
     }
 
-QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+QPen gridPen(QColor(57,59,69,200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 m_scene->addPath(tx_count_grid_path, gridPen);
 
 }

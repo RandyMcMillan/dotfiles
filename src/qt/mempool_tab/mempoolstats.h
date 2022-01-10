@@ -53,6 +53,7 @@ public Q_SLOTS:
     int detailY();
     int detailWidth();
     int detailHeight();
+
     void drawHorzLines(
     const qreal x_increment,
     QPointF current_x_bottom,
@@ -62,7 +63,7 @@ public Q_SLOTS:
     qreal bottom,
     size_t max_txcount_graph,
     QFont LABELFONT
-);
+    );
 
     void mousePressEvent(QMouseEvent        *event) override;
     void mouseReleaseEvent(QMouseEvent      *event) override;

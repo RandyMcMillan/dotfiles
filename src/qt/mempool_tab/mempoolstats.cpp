@@ -277,8 +277,8 @@ void MempoolStats::drawChart()
             if (GRAPH_ADD_DOT_REGISTERS) {
                 QGraphicsTextItem *pathDot =
                 m_scene->addText(
-                    QString("⦿ (%1, %2, %3)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()-30.0).arg(i*10), gridFont);
-                pathDot->setPos(fee_paths[i].currentPosition().x(), fee_paths[i].currentPosition().y()-30.0);
+                    QString("⦿ (%1, %2, %3)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()+60.0).arg(i*10), gridFont);
+                pathDot->setPos(fee_paths[i].currentPosition().x(), fee_paths[i].currentPosition().y()+60.0);
                 pathDot->setZValue(i*10);
             }
             feepath.lineTo(current_x, bottom);

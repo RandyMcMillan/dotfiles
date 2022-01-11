@@ -327,7 +327,8 @@ void MempoolStats::drawChart()
         pen_color.setAlpha(255);
         brush_color.setAlpha(200);
 
-        if (i > 0 && i < 31) {
+        //if (i > 0 && i < 31) {
+        if (i > 0) {
 
             if (i > 0 && std::abs(fee_paths[i-1].currentPosition().y() - fee_paths[i].currentPosition().y() ) > 20) {
                 QGraphicsTextItem *pathDot =

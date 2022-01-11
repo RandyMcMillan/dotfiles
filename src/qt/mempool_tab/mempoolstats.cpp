@@ -103,7 +103,7 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
             QString horz_line_range_text = QString::number(grid_tx_count/2.0).rightJustified(4, ' ');
             QGraphicsTextItem *item_tx_count =
                 m_scene->addText(QString("%1").arg(horz_line_range_text)+QString(" vB"), LABELFONT);
-                item_tx_count->setDefaultTextColor(colors[16]);
+                item_tx_count->setDefaultTextColor(colors[17]);
                 item_tx_count->setPos(GRAPH_PADDING_LEFT-40, lY-(item_tx_count->boundingRect().height()/2));
         }
     }
@@ -252,7 +252,7 @@ void MempoolStats::drawChart()
                 if (i > 0 && std::abs(fee_paths[i-1].currentPosition().y() - fee_paths[i].currentPosition().y() ) > POINT_SIZE) {
                     QGraphicsTextItem *pathDot =
                     m_scene->addText(
-                        QString("⦿ (%1,%2)").arg(fee_paths[i-1].currentPosition().x()).arg(fee_paths[i-1].currentPosition().y()-30.0), gridFont);
+                        QString("⦿ (%1, %2, %3)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()-30.0).arg(i*10), gridFont);
                     pathDot->setPos(fee_paths[i-1].currentPosition().x(), fee_paths[i-1].currentPosition().y()-30.0);
                     pathDot->setZValue(i*10);
                 } else { /* Check BlockTime */
@@ -277,7 +277,7 @@ void MempoolStats::drawChart()
             if (GRAPH_ADD_DOT_REGISTERS) {
                 QGraphicsTextItem *pathDot =
                 m_scene->addText(
-                    QString("⦿ (%1,%2)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()-30.0), gridFont);
+                    QString("⦿ (%1, %2, %3)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()-30.0).arg(i*10), gridFont);
                 pathDot->setPos(fee_paths[i].currentPosition().x(), fee_paths[i].currentPosition().y()-30.0);
                 pathDot->setZValue(i*10);
             }
@@ -303,10 +303,9 @@ void MempoolStats::drawChart()
     }
 
     if (GRAPH_ADD_TOTAL_TEXT){
-
         QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
-        item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);
-
+        item_tx_count->setDefaultTextColor(colors[17]);
+        item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom+30);
     }
 
 }//end drawChart()

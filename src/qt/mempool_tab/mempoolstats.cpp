@@ -248,16 +248,18 @@ void MempoolStats::drawChart()
         //if (i > 0 && i < 31) {
         if (i > 0) {
 
-            if (i > 0 && std::abs(fee_paths[i-1].currentPosition().y() - fee_paths[i].currentPosition().y() ) > POINT_SIZE) {
-                QGraphicsTextItem *pathDot =
-                m_scene->addText(
-                    QString("⦿ (%1,%2)").arg(fee_paths[i-1].currentPosition().x()).arg(fee_paths[i-1].currentPosition().y()-30.0), gridFont);
-                pathDot->setPos(fee_paths[i-1].currentPosition().x(), fee_paths[i-1].currentPosition().y()-30.0);
-                pathDot->setZValue(i*10);
-            } else { /* Check BlockTime */
-                QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
-                timeTicker->setPos(fee_paths[i-1].currentPosition().x(), bottom+POINT_SIZE);
-                timeTicker->setZValue(i*10);
+            if (GRAPH_ADD_DOT_REGISTERS) {
+                if (i > 0 && std::abs(fee_paths[i-1].currentPosition().y() - fee_paths[i].currentPosition().y() ) > POINT_SIZE) {
+                    QGraphicsTextItem *pathDot =
+                    m_scene->addText(
+                        QString("⦿ (%1,%2)").arg(fee_paths[i-1].currentPosition().x()).arg(fee_paths[i-1].currentPosition().y()-30.0), gridFont);
+                    pathDot->setPos(fee_paths[i-1].currentPosition().x(), fee_paths[i-1].currentPosition().y()-30.0);
+                    pathDot->setZValue(i*10);
+                } else { /* Check BlockTime */
+                    QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
+                    timeTicker->setPos(fee_paths[i-1].currentPosition().x(), bottom+POINT_SIZE);
+                    timeTicker->setZValue(i*10);
+                }
             }
 
             feepath.lineTo(fee_paths[i-1].currentPosition());
@@ -269,18 +271,22 @@ void MempoolStats::drawChart()
                 LogPrintf("\nfee_paths[i-1].toReversed().length() = %s",(double)fee_paths[i-1].toReversed().length());
             }
 
-        } else {
+        } else { /* i = 0 condition */
 
-            //i = 0 condition
-            feepath.lineTo(current_x, bottom-(GRAPH_PADDING_TOP));
-            feepath.lineTo(current_x, bottom-(0));
+
+            if (GRAPH_ADD_DOT_REGISTERS) {
+                QGraphicsTextItem *pathDot =
+                m_scene->addText(
+                    QString("⦿ (%1,%2)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()-30.0), gridFont);
+                pathDot->setPos(fee_paths[i].currentPosition().x(), fee_paths[i].currentPosition().y()-30.0);
+                pathDot->setZValue(i*10);
+            }
+            feepath.lineTo(current_x, bottom);
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\ncurrent_x = %s",current_x);
                 LogPrintf("\nbottom = %s",bottom);
-                LogPrintf("\nfee_paths[i-1].toReversed().length() = %s",(double)fee_paths[i].toReversed().length());
             }
-
         }
 
         if (m_selected_range >= 0 && m_selected_range != i) {

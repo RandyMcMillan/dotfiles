@@ -29,6 +29,7 @@ static const double  GRAPH_X_SCALE_ADJUST        = 1.0;//TODO: this will be dyna
 
 
 bool const GRAPH_ADD_TOTAL_TEXT                  = true;
+bool const GRAPH_ADD_DOT_REGISTERS               = true;
 
 static const int     ITEM_TX_COUNT_PADDING_LEFT  = 5;
 static const int     ITEM_TX_COUNT_PADDING_RIGHT = 5;

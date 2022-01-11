@@ -218,12 +218,10 @@ void MempoolStats::drawChart()
 
         // hide ranges we don't have txns
         for (size_t i = 0; i < fee_subtotal_txcount.size(); i++) {
-            if (MEMPOOL_GRAPH_LOGGING){
-                LogPrintf("\nfee_subtotal_txcount.size() = %s\n",fee_subtotal_txcount.size());
-            }
             if (fee_subtotal_txcount[i] > 0) {
                 display_up_to_range = i;
                 if (MEMPOOL_GRAPH_LOGGING){
+                    LogPrintf("\nfee_subtotal_txcount.size() = %s\n",fee_subtotal_txcount.size());
                     LogPrintf("\nfee_subtotal_txcount[i] = %s\n",fee_subtotal_txcount[i]);
                 }
             }
@@ -237,12 +235,10 @@ void MempoolStats::drawChart()
             int step = qCeil((max_txcount/amount_of_h_lines) / stepbase) * stepbase;
             max_txcount_graph = step*amount_of_h_lines;
             if (MEMPOOL_GRAPH_LOGGING){
-
                 LogPrintf("\nval = %s\n", val);
                 LogPrintf("\nstepbase = %s\n", stepbase);
                 LogPrintf("\nstep = %s\n", step);
                 LogPrintf("\nmax_txcount_graph = %s\n", max_txcount_graph);
-
             }
         }
 

@@ -216,7 +216,7 @@ void MempoolStats::drawChart()
                 }
                 y -= (maxheight_g / max_txcount_graph * list_entry.tx_count);
                 if (first) {
-                    fee_paths.emplace_back(QPointF(current_x-(0), GRAPH_PATH_SCALAR*y));//scalar affects scale height draw
+                    fee_paths.emplace_back(QPointF(current_x, GRAPH_PATH_SCALAR*y));//scalar affects scale height draw
                 }
                 else {
                     fee_paths[i].lineTo(current_x, GRAPH_PATH_SCALAR*y);//scalar affects scale height draw

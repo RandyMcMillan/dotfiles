@@ -173,7 +173,7 @@ void MempoolStats::drawChart()
     std::vector<size_t> fee_subtotal_txcount;
     size_t max_txcount=0;
     QFont gridFont;
-    gridFont.setPointSize(12);
+    gridFont.setPointSize(POINT_SIZE);
     gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
     //let view touch boths sides//we will place an over lay of boxes 
@@ -330,7 +330,7 @@ void MempoolStats::drawChart()
         //if (i > 0 && i < 31) {
         if (i > 0) {
 
-            if (i > 0 && std::abs(fee_paths[i-1].currentPosition().y() - fee_paths[i].currentPosition().y() ) > 20) {
+            if (i > 0 && std::abs(fee_paths[i-1].currentPosition().y() - fee_paths[i].currentPosition().y() ) > POINT_SIZE) {
                 QGraphicsTextItem *pathDot =
                 m_scene->addText(
                     QString("⦿ (%1,%2)").arg(fee_paths[i-1].currentPosition().x()).arg(fee_paths[i-1].currentPosition().y()-30.0), gridFont);
@@ -338,7 +338,7 @@ void MempoolStats::drawChart()
                 pathDot->setZValue(i*10);
             } else { /* Check BlockTime */
                 QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
-                timeTicker->setPos(fee_paths[i-1].currentPosition().x()-GRAPH_PADDING_RIGHT, bottom-20.0);
+                timeTicker->setPos(fee_paths[i-1].currentPosition().x(), bottom+POINT_SIZE);
                 timeTicker->setZValue(i*10);
             }
 
@@ -353,6 +353,7 @@ void MempoolStats::drawChart()
 
         } else {
 
+            //i = 0 condition
             feepath.lineTo(current_x, bottom-(GRAPH_PADDING_TOP));
             feepath.lineTo(current_x, bottom-(0));
 
@@ -478,9 +479,9 @@ int MempoolStats::detailX(){
 int MempoolStats::detailY(){
 
     if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("\nm_gfx_view()->height()*0.12 =  %s\n",m_gfx_view->height()*0.12);
+        LogPrintf("\nm_gfx_view()->height()*(POINT_SIZE/100) =  %s\n",m_gfx_view->height()*(POINT_SIZE/100));
     }
-    return (m_gfx_view->height()*0.12);
+    return (m_gfx_view->height()*(POINT_SIZE/100));
 
 }
 int MempoolStats::detailWidth(){

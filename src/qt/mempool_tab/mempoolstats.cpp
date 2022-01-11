@@ -245,15 +245,14 @@ void MempoolStats::drawChart()
         pen_color.setAlpha(255);
         brush_color.setAlpha(200);
 
-        //if (i > 0 && i < 31) {
         if (i > 0) {
 
             if (GRAPH_ADD_DOT_REGISTERS) {
                 if (i > 0 && std::abs(fee_paths[i-1].currentPosition().y() - fee_paths[i].currentPosition().y() ) > POINT_SIZE) {
                     QGraphicsTextItem *pathDot =
                     m_scene->addText(
-                        QString("⦿ (%1, %2, %3)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()-30.0).arg(i*10), gridFont);
-                    pathDot->setPos(fee_paths[i-1].currentPosition().x(), fee_paths[i-1].currentPosition().y()-30.0);
+                        QString("⦿ (%1, %2, %3, %4)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()-(2*POINT_SIZE)).arg(i*10).arg(i), gridFont);
+                    pathDot->setPos(fee_paths[i-1].currentPosition().x(), fee_paths[i-1].currentPosition().y()-(2*POINT_SIZE));
                     pathDot->setZValue(i*10);
                 } else { /* Check BlockTime */
                     QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
@@ -273,19 +272,21 @@ void MempoolStats::drawChart()
 
         } else { /* i = 0 condition */
 
-
             if (GRAPH_ADD_DOT_REGISTERS) {
                 QGraphicsTextItem *pathDot =
                 m_scene->addText(
-                    QString("⦿ (%1, %2, %3)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()+60.0).arg(i*10), gridFont);
-                pathDot->setPos(fee_paths[i].currentPosition().x(), fee_paths[i].currentPosition().y()+60.0);
+                    QString("⦿ (%1, %2, %3, %4)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()+(2*POINT_SIZE)).arg(i*10).arg(i), gridFont);
+                pathDot->setPos(fee_paths[i].currentPosition().x(), fee_paths[i].currentPosition().y()+(2*POINT_SIZE));
                 pathDot->setZValue(i*10);
             }
+
             feepath.lineTo(current_x, bottom);
+            feepath.lineTo(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST, bottom);
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\ncurrent_x = %s",current_x);
                 LogPrintf("\nbottom = %s",bottom);
+                LogPrintf("\nGRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST = %s",GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST);
             }
         }
 

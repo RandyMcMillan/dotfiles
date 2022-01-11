@@ -95,6 +95,7 @@ private:
     QPoint mPoint;
     QColor pen_color;
     QColor brush_color;
+    QFont gridFont;
 
 };
 

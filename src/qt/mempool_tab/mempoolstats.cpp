@@ -322,6 +322,21 @@ void MempoolStats::drawChart()
         if (m_selected_range >= 0 && m_selected_range == i) {
             total_text = "transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);
         }
+
+        if (MEMPOOL_GRAPH_FEEPATH_LOGGING){
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+           LogPrintf("\nfeepath.elementCount() = %s",feepath.elementCount());
+        }
+
+
+
         QPen path_pen(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         m_scene->addPath(feepath, path_pen, QBrush(brush_color));
         i++;

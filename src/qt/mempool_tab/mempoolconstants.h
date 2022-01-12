@@ -63,7 +63,7 @@ bool const MEMPOOL_GRAPH_DOUBLE_CLICK_LOGGING    = true;
 bool const MEMPOOL_GRAPH_RESIZE_EVENT_LOGGING    = true;
 bool const MEMPOOL_HORZ_LINE_LOGGING             = true;
 bool const MEMPOOL_DETAIL_LOGGING                = false;
-bool const DETAIL_VIEW_HIDE_EVENT                = false;
+bool const DETAIL_VIEW_HIDE_EVENT                = true;
 
 bool const ADD_TEXT                              = true;
 bool const ADD_FEE_RANGES                        = true;

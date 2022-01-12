@@ -110,6 +110,26 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
 
     }
 
+        if (MEMPOOL_GRAPH_CROSS_PATH_LOGGING){
+
+            QPen crossPen(colors[0], 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+            QPainterPath leftTopBottomRight(QPoint(0,0));
+            leftTopBottomRight.moveTo(0,0);
+            leftTopBottomRight.lineTo(m_gfx_view->width(),m_gfx_view->height());
+            m_scene->addPath(leftTopBottomRight, crossPen);
+            //
+            QPainterPath rightTopBottomLeft(QPoint(m_gfx_view->width(),0));
+            rightTopBottomLeft.moveTo(m_gfx_view->width(),0);
+            rightTopBottomLeft.lineTo(0,m_gfx_view->height());
+            m_scene->addPath(rightTopBottomLeft, crossPen);
+
+            LogPrintf("\nleftTopBottomRight.length() = %s", leftTopBottomRight.length());
+            LogPrintf("\nrightTopBottomLeft.length() = %s", rightTopBottomLeft.length());
+
+            LogPrintf("\nleftTopBottomRight.intersects(rightTopBottomLeft) = %s", leftTopBottomRight.intersects(rightTopBottomLeft));
+
+        }
+
         QPen gridPen(colors[17], 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         m_scene->addPath(tx_count_grid_path, gridPen);
 }

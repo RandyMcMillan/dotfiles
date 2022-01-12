@@ -57,6 +57,7 @@ bool const           DETAIL_ADD_TOTAL_TEXT       = true;
 bool const           DETAIL_VIEW_LOGGING         = true;
 
 bool const MEMPOOL_GRAPH_LOGGING                 = false;
+bool const MEMPOOL_GRAPH_CROSS_PATH_LOGGING      = true;
 bool const MEMPOOL_CLIENT_MODEL_LOGGING          = true;
 bool const MEMPOOL_GRAPH_SINGLE_CLICK_LOGGING    = true;
 bool const MEMPOOL_GRAPH_DOUBLE_CLICK_LOGGING    = true;

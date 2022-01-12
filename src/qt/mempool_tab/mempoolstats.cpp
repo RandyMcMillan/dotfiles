@@ -82,8 +82,9 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
 
         for (int n=0; n < maxwidth; n++){
                 tick_path.moveTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+n), bottom);
-                tick_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+n), bottom+3);
-                QPen gridPen(QColor(57,59,69,200), 0.1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+                tick_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+n), bottom+7);
+                //QPen gridPen(QColor(57,59,69,200), 0.1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+                QPen gridPen(colors[17], 0.1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
                 m_scene->addPath(tick_path, gridPen);
                 n+=(maxwidth/18);
         }
@@ -106,11 +107,11 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
                 item_tx_count->setDefaultTextColor(colors[17]);
                 item_tx_count->setPos(GRAPH_PADDING_LEFT-40, lY-(item_tx_count->boundingRect().height()/2));
         }
+
     }
 
-QPen gridPen(QColor(57,59,69,200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-m_scene->addPath(tx_count_grid_path, gridPen);
-
+        QPen gridPen(colors[17], 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        m_scene->addPath(tx_count_grid_path, gridPen);
 }
 
 void MempoolStats::drawChart()
@@ -253,9 +254,11 @@ void MempoolStats::drawChart()
                     m_scene->addText(
                         QString("⦿ (%1, %2, %3, %4)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()-(2*POINT_SIZE)).arg(i*10).arg(i), gridFont);
                     pathDot->setPos(fee_paths[i-1].currentPosition().x(), fee_paths[i-1].currentPosition().y()-(2*POINT_SIZE));
+                    pathDot->setDefaultTextColor(colors[17]);
                     pathDot->setZValue(i*10);
                 } else { /* Check BlockTime */
                     QGraphicsTextItem *timeTicker = m_scene->addText(QString("⦿"), gridFont);
+                    timeTicker->setDefaultTextColor(colors[17]);
                     timeTicker->setPos(fee_paths[i-1].currentPosition().x(), bottom+POINT_SIZE);
                     timeTicker->setZValue(i*10);
                 }
@@ -276,6 +279,7 @@ void MempoolStats::drawChart()
                 QGraphicsTextItem *pathDot =
                 m_scene->addText(
                     QString("⦿ (%1, %2, %3, %4)").arg(fee_paths[i].currentPosition().x()).arg(fee_paths[i].currentPosition().y()+(2*POINT_SIZE)).arg(i*10).arg(i), gridFont);
+                pathDot->setDefaultTextColor(colors[17]);
                 pathDot->setPos(fee_paths[i].currentPosition().x(), fee_paths[i].currentPosition().y()+(2*POINT_SIZE));
                 pathDot->setZValue(i*10);
             }
@@ -340,17 +344,21 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
     drawDetailView(detailX(), detailY());
 
     QFont gridFont;
-    QGraphicsTextItem *enterEvent = m_scene->addText(QString::number(rect().left())+","+QString::number(rect().top()), gridFont);
-    enterEvent->setPos(rect().left()/2, rect().top()/2);
+    QGraphicsTextItem *resizeEvent = m_scene->addText(QString("(")+QString::number(rect().left())+","+QString::number(rect().top())+")", gridFont);
+    resizeEvent->setDefaultTextColor(colors[17]);
+    resizeEvent->setPos(rect().left()/2, rect().top()/2);
 
-    QGraphicsTextItem *centerEvent = m_scene->addText(QString::number(m_gfx_view->width()/2)+","+QString::number(m_gfx_view->height()/2)+"", gridFont);
+    QGraphicsTextItem *centerEvent = m_scene->addText(QString("(")+QString::number(m_gfx_view->width()/2)+","+QString::number(m_gfx_view->height()/2)+")", gridFont);
+    centerEvent->setDefaultTextColor(colors[17]);
     centerEvent->setPos(m_gfx_view->width()/2, m_gfx_view->height()/2);
 
-    QGraphicsTextItem *centerEvent_3 = m_scene->addText(QString::number(m_gfx_view->width()/3)+","+QString::number(m_gfx_view->height()/3)+"", gridFont);
+    QGraphicsTextItem *centerEvent_3 = m_scene->addText(QString("(")+QString::number(m_gfx_view->width()/3)+","+QString::number(m_gfx_view->height()/3)+")", gridFont);
+    centerEvent_3->setDefaultTextColor(colors[17]);
     centerEvent_3->setPos(m_gfx_view->width()/3, m_gfx_view->height()/3);
 
-    QGraphicsTextItem *centerEvent_66 = m_scene->addText(QString::number(m_gfx_view->width()*0.66)+","+QString::number(m_gfx_view->height()*0.66)+"", gridFont);
-    centerEvent_66->setPos(m_gfx_view->width()*0.66, m_gfx_view->height()*0.66);
+    QGraphicsTextItem *centerEvent_66 = m_scene->addText(QString("(")+QString::number(2*m_gfx_view->width()/3)+","+QString::number(2*m_gfx_view->height()/3)+")", gridFont);
+    centerEvent_66->setDefaultTextColor(colors[17]);
+    centerEvent_66->setPos(2*m_gfx_view->width()/3, 2*m_gfx_view->height()/3);
 
 }
 
@@ -365,6 +373,7 @@ void MempoolStats::showEvent(QShowEvent *event)
     //enterEvent->setPos(rect().left()/2, rect().top()/2);
 
     QGraphicsTextItem *centerEvent = m_scene->addText(QString::number(m_gfx_view->width()/2)+","+QString::number(m_gfx_view->height()/2)+"", gridFont);
+    centerEvent->setDefaultTextColor(colors[17]);
     centerEvent->setPos(m_gfx_view->width()/2, m_gfx_view->height()/2);
 
     //QGraphicsTextItem *centerEvent_3 = m_scene->addText(QString::number(m_gfx_view->width()/3)+","+QString::number(m_gfx_view->height()/3)+"", gridFont);
@@ -457,8 +466,9 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
 
         QFont gridFont;
         //QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-        QGraphicsTextItem *enterEventX = m_scene->addText(QString("⦿"), gridFont);
-        enterEventX->setPos(mouseEvent->pos().x()-GRAPH_PADDING_RIGHT, mouseEvent->pos().y()-20.0);
+        QGraphicsTextItem *mousePressEvent = m_scene->addText(QString("⦿"), gridFont);
+        mousePressEvent->setPos(mouseEvent->pos().x()-GRAPH_PADDING_RIGHT, mouseEvent->pos().y()-20.0);
+        mousePressEvent->setDefaultTextColor(colors[17]);
         //enterEventX->setPos(mouseEvent->pos().x()-GRAPH_PADDING_LEFT, mouseEvent->pos().y()-GRAPH_PADDING_TOP);
 
     }
@@ -498,6 +508,7 @@ void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(
     QFont gridFont;
     QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
     QGraphicsTextItem *mouseReleaseItem = m_scene->addText("mouseReleaseEvent: ("+QString::number(mouseEvent->pos().y())+","+QString::number(mouseEvent->pos().x())+")", gridFont);
+    mouseReleaseItem->setDefaultTextColor(colors[17]);
     mouseReleaseItem->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 }
 void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
@@ -530,6 +541,7 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
         QFont gridFont;
         QGraphicsTextItem *mouseDoubleClickItem =
             m_scene->addText("mouseDoubleClickEvent: ("+QString::number(mouseEvent->pos().y())+","+QString::number(mouseEvent->pos().x())+")", gridFont);
+        mouseDoubleClickItem->setDefaultTextColor(colors[17]);
         mouseDoubleClickItem->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
 
     }
@@ -553,8 +565,9 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *mouseEvent) { Q_EMIT objectClicke
         LogPrintf("\nmouseEvent->pos().x() %s\n",mouseEvent->pos().x());
         LogPrintf("\nmouseevent->pos().y() %s\n",mouseEvent->pos().y());
         QFont gridFont;
-        QGraphicsTextItem *enterEventX = m_scene->addText("mouseMoveEvent: ("+QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y())+")", gridFont);
-        enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
+        QGraphicsTextItem *mouseMoveEvent = m_scene->addText("mouseMoveEvent: ("+QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y())+")", gridFont);
+        mouseMoveEvent->setDefaultTextColor(colors[17]);
+        mouseMoveEvent->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
     }
     if (mouseEvent->pos().x() <= m_gfx_view->width()/2 ){
 
@@ -581,6 +594,7 @@ void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
     if (MEMPOOL_GRAPH_LOGGING){
         QFont gridFont;
         QGraphicsTextItem *enterEventX = m_scene->addText("enterEvent: ("+QString::number(mouseEvent->pos().y())+","+QString::number(mouseEvent->pos().x())+")", gridFont);
+        enterEventX->setDefaultTextColor(colors[17]);
         enterEventX->setPos(mouseEvent->pos().y(), mouseEvent->pos().x()-20);//NOTE: cartesian coords is reversed
         LogPrintf("\nenterEvent\n");
         LogPrintf("\nmPoint.rx()\n",(int){mPoint.rx()});
@@ -663,6 +677,7 @@ if (event->type() == QEvent::MouseMove)
 
         QFont gridFont;
         QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
+        enterEventX->setDefaultTextColor(colors[17]);
         enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
         //hideFeeRanges(this_event);
         //hideFeeRects(this_event);

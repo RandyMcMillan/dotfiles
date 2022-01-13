@@ -235,12 +235,12 @@ void MempoolStats::drawChart()
                     // skip ranges without txns
                     continue;
                 }
-                y -= (maxheight_g / max_txcount_graph * list_entry.tx_count);
+                y -= (maxheight_g / max_txcount_graph * list_entry.tx_count)*GRAPH_PATH_SCALAR;
                 if (first) {
-                    fee_paths.emplace_back(QPointF(current_x, GRAPH_PATH_SCALAR*y));//scalar affects scale height draw
+                    fee_paths.emplace_back(QPointF(current_x, y));
                 }
                 else {
-                    fee_paths[i].lineTo(current_x, GRAPH_PATH_SCALAR*y);//scalar affects scale height draw
+                    fee_paths[i].lineTo(current_x, y);
                 }
                 i++;
             }

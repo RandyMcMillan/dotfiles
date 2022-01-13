@@ -15,10 +15,10 @@ static const int     GRAPH_PADDING_LEFT_ADJUST   = 35;
 static const int     GRAPH_PADDING_RIGHT         = 20+LABEL_RIGHT_SIZE;
 static const int     GRAPH_PADDING_TOP           = 50;
 static const int     GRAPH_PADDING_TOP_LABEL     = 0;
-static const int     GRAPH_PADDING_BOTTOM        = 50; //qreal bottom
+static const int     GRAPH_PADDING_BOTTOM        = 50;//qreal bottom
 //scalar
-static const double  GRAPH_MAXHEIGHT_G_SCALAR    = 0.5;//0.6 with 0.5 scales well
-static const double  GRAPH_PATH_SCALAR           = 1.0;//0.6 with 0.5 scales well
+static const double  GRAPH_MAXHEIGHT_G_SCALAR    = 0.5;
+static const double  GRAPH_PATH_SCALAR           = 1.24;
 
 static const double  GRAPH_HORZ_LINE_X_SCALAR    = 1.0;
 static const double  GRAPH_HORZ_LINE_Y_SCALAR    = 1.75;

@@ -138,8 +138,14 @@ FUZZ_TARGET_INIT(wallet_notifications, initialize_setup)
                     block.vtx.emplace_back(MakeTransactionRef(tx));
                 }
                 // Mine block
-                a.wallet->blockConnected(block, chain.size());
-                b.wallet->blockConnected(block, chain.size());
+                const uint256& hash = block.GetHash();
+                const uint256& prev_hash = std::get<1>(chain.back()).GetHash();
+                interfaces::BlockInfo info{hash};
+                info.prev_hash = &prev_hash;
+                info.height = chain.size();
+                info.data = &block;
+                a.wallet->blockConnected(info);
+                b.wallet->blockConnected(info);
                 // Store the coins for the next block
                 Coins coins_new;
                 for (const auto& tx : block.vtx) {
@@ -155,8 +161,14 @@ FUZZ_TARGET_INIT(wallet_notifications, initialize_setup)
                 auto& [coins, block]{chain.back()};
                 if (block.vtx.empty()) return; // Can only disconnect if the block was submitted first
                 // Disconnect block
-                a.wallet->blockDisconnected(block, chain.size() - 1);
-                b.wallet->blockDisconnected(block, chain.size() - 1);
+                const uint256& hash = block.GetHash();
+                const uint256& prev_hash = chain.size() >= 2 ? std::get<1>(chain[chain.size() - 2]).GetHash() : uint256();
+                interfaces::BlockInfo info{hash};
+                info.prev_hash = &prev_hash;
+                info.height = chain.size() - 1;
+                info.data = &block;
+                a.wallet->blockDisconnected(info);
+                b.wallet->blockDisconnected(info);
                 chain.pop_back();
             });
         auto& [coins, first_block]{chain.front()};

@@ -174,6 +174,11 @@ public:
         memcpy(dst, m_data.data(), n);
         m_data = m_data.subspan(n);
     }
+
+    void ignore(size_t n)
+    {
+        m_data = m_data.subspan(n);
+    }
 };
 
 /** Double ended buffer combining vector and stream-like interfaces.

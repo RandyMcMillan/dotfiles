@@ -1258,6 +1258,7 @@ class TaprootTest(BitcoinTestFramework):
         self.setup_clean_chain = True
         # Node 0 has Taproot inactive, Node 1 active.
         self.extra_args = [["-par=1"], ["-par=1"]]
+        self.rpc_timeout = 120
         if self.options.previous_release:
             self.wallet_names = [None, self.default_wallet_name]
         else:

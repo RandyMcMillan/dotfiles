@@ -720,6 +720,7 @@ public:
             notifications.transactionAddedToMempool(entry.GetSharedTx(), 0 /* mempool_sequence */);
         }
     }
+    NodeContext* context() override { return &m_node; }
     NodeContext& m_node;
 };
 } // namespace

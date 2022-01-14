@@ -101,7 +101,7 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
         }
         //Add text ornament
         if (ADD_TEXT) {
-            QString horz_line_range_text = QString::number(grid_tx_count/2.0).rightJustified(4, ' ');
+            QString horz_line_range_text = QString::number(grid_tx_count/1.0).rightJustified(4, ' ');
             QGraphicsTextItem *item_tx_count =
                 m_scene->addText(QString("%1").arg(horz_line_range_text)+QString(" vB"), LABELFONT);
                 item_tx_count->setDefaultTextColor(colors[17]);

@@ -18,7 +18,7 @@ static const int     GRAPH_PADDING_TOP_LABEL     = 0;
 static const int     GRAPH_PADDING_BOTTOM        = 50;//qreal bottom
 //scalar
 static const double  GRAPH_MAXHEIGHT_G_SCALAR    = 0.5;
-static const double  GRAPH_PATH_SCALAR           = 1.15;//path scalar
+static const double  GRAPH_PATH_SCALAR           = 0.575;//path scalar
 
 static const double  GRAPH_HORZ_LINE_X_SCALAR    = 1.0;
 static const double  GRAPH_HORZ_LINE_Y_SCALAR    = 1.75;

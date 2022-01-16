@@ -62,12 +62,11 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
         const int amount_of_h_lines, qreal maxheight_g, qreal maxwidth, qreal bottom, size_t max_txcount_graph, QFont LABELFONT)
 {
 
-    qreal _maxheight = std::max((double)(maxheight_g),(double)(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
-
-    if (MEMPOOL_GRAPH_LOGGING){
+    if (MEMPOOL_GRAPH_HORZLINES_LOGGING){
         LogPrintf("\nbottom = %s\n",bottom);
         LogPrintf("\nmaxheight_g = %s\n",maxheight_g);
         LogPrintf("\nmaxwidth = %s\n",maxwidth);
+        qreal _maxheight = std::max((double)(maxheight_g),(double)(GRAPH_PADDING_TOP+GRAPH_PADDING_BOTTOM));
         LogPrintf("\n_maxheight = %s\n",_maxheight);
     }
 
@@ -102,10 +101,18 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
         //Add text ornament
         if (ADD_TEXT) {
             QString horz_line_range_text = QString::number(qCeil(grid_tx_count/0.75));
-            QGraphicsTextItem *item_tx_count =
-                m_scene->addText(QString("%1 ").arg(horz_line_range_text).rightJustified(5, ' ')+QString("vB").leftJustified(2, ' '), LABELFONT);
-                item_tx_count->setDefaultTextColor(colors[17]);
-                item_tx_count->setPos(GRAPH_PADDING_LEFT-40, lY-(item_tx_count->boundingRect().height()/2));
+            if (horz_line_range_text == "0"){
+                QGraphicsTextItem *item_tx_count =
+                    m_scene->addText(QString("000 ").rightJustified(5, ' ')+QString("vB").leftJustified(2, ' '), LABELFONT);
+                    item_tx_count->setDefaultTextColor(colors[17]);
+                    item_tx_count->setPos(GRAPH_PADDING_LEFT-40, lY-(item_tx_count->boundingRect().height()/2));
+
+            } else {
+                QGraphicsTextItem *item_tx_count =
+                    m_scene->addText(QString("%1 ").arg(horz_line_range_text).rightJustified(5, ' ')+QString("vB").leftJustified(2, ' '), LABELFONT);
+                    item_tx_count->setDefaultTextColor(colors[17]);
+                    item_tx_count->setPos(GRAPH_PADDING_LEFT-40, lY-(item_tx_count->boundingRect().height()/2));
+            }
         }
 
     }
@@ -208,7 +215,7 @@ void MempoolStats::drawChart()
             int stepbase = qPow(10.0f, val);
             int step = qCeil((max_txcount/amount_of_h_lines) / stepbase) * stepbase;
             max_txcount_graph = step*amount_of_h_lines;
-            if (MEMPOOL_GRAPH_LOGGING){
+            if (MEMPOOL_GRAPH_STEPBASE_LOGGING){
                 LogPrintf("\nval = %s\n", val);
                 LogPrintf("\nstepbase = %s\n", stepbase);
                 LogPrintf("\nstep = %s\n", step);

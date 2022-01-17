@@ -79,7 +79,7 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
         tx_count_grid_path.moveTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST), lY);
         tx_count_grid_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+maxwidth), lY);
 
-        for (int n=0; n < maxwidth; n++){
+        for (int n=0; n < (maxwidth-GRAPH_PADDING_RIGHT); n++){
                 tick_path.moveTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+n), bottom);
                 tick_path.lineTo(GRAPH_HORZ_LINE_X_SCALAR*(GRAPH_PADDING_LEFT+GRAPH_PADDING_LEFT_ADJUST+n), bottom+7);
                 //QPen gridPen(QColor(57,59,69,200), 0.1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);

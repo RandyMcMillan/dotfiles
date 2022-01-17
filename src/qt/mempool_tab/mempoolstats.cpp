@@ -153,7 +153,7 @@ void MempoolStats::drawChart()
     std::vector<QPainterPath> fee_paths;
     std::vector<size_t> fee_subtotal_txcount;
     size_t max_txcount=0;
-    QFont gridFont;
+    //QFont gridFont;
     gridFont.setPointSize(POINT_SIZE);
     gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
@@ -185,8 +185,9 @@ void MempoolStats::drawChart()
                 i++;
             }
             if (txcount > max_txcount) max_txcount = txcount;
-            if (MEMPOOL_GRAPH_LOGGING){
+            if (MEMPOOL_GRAPH_TXCOUNT_LOGGING){
                 LogPrintf("\nmax_txcount = %s\n", max_txcount);
+                LogPrintf("\ntxcount = %s\n", txcount);
             }
         }
         // hide ranges we don't have txns
@@ -672,7 +673,7 @@ void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
     drawChart();
 QEvent *this_event = event;
-if (MEMPOOL_GRAPH_LOGGING){
+if (MEMPOOL_GRAPH_MOUSE_EVENT_LOGGING){
     LogPrintf("\nleaveEvent\n");
     LogPrintf("\nthis_event->type() %s\n",this_event->type());
 }
@@ -680,44 +681,34 @@ if (MEMPOOL_GRAPH_LOGGING){
 QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
 if (event->type() == QEvent::MouseMove)
   {
-    if (MEMPOOL_GRAPH_LOGGING){
+    if (MEMPOOL_GRAPH_MOUSE_EVENT_LOGGING){
         LogPrintf("\nevent->pos().x() %s\n",mouseEvent->pos().x());
         LogPrintf("\nevent->pos().y() %s\n",mouseEvent->pos().y());
     }
   }
     if (mouseEvent->pos().y() <= m_gfx_view->width()/2 ){
 
-        LogPrintf("\nevent->pos().x() %s\n",mouseEvent->pos().x());
-        LogPrintf("\nevent->pos().y() %s\n",mouseEvent->pos().y());
-        LogPrintf("\nm_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
-
+        if (MEMPOOL_GRAPH_MOUSE_EVENT_LOGGING){
+            LogPrintf("\nevent->pos().x() %s\n",mouseEvent->pos().x());
+            LogPrintf("\nevent->pos().y() %s\n",mouseEvent->pos().y());
+            LogPrintf("\nm_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
+        }
     } else {
 
-        LogPrintf("\nevent->pos().x() %s\n",mouseEvent->pos().x());
-        LogPrintf("\nevent->pos().y() %s\n",mouseEvent->pos().y());
-        LogPrintf("\nm_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
-
+        if (MEMPOOL_GRAPH_MOUSE_EVENT_LOGGING){
+            LogPrintf("\nevent->pos().x() %s\n",mouseEvent->pos().x());
+            LogPrintf("\nevent->pos().y() %s\n",mouseEvent->pos().y());
+            LogPrintf("\nm_gfx_view->width()/2 %s\n",m_gfx_view->width()/2);
+        }
     }
 
     if (MEMPOOL_GRAPH_LOGGING){
-
-        // autoadjust font size
-        QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
-        testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
-        LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
-        LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
-
-        LogPrintf("\nLABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
-        LogPrintf("\nLABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
-
         QFont gridFont;
         QGraphicsTextItem *enterEventX = m_scene->addText(QString::number(mouseEvent->pos().x())+","+QString::number(mouseEvent->pos().y()), gridFont);
         enterEventX->setDefaultTextColor(colors[17]);
         enterEventX->setPos(mouseEvent->pos().x(), mouseEvent->pos().y());
-        //hideFeeRanges(this_event);
-        //hideFeeRects(this_event);
     }
-    if (DETAIL_VIEW_HIDE_EVENT) {
+    if (MEMPOOL_DETAIL_VIEW_HIDE_EVENT) {
         m_detail_view->hide();
     }
 

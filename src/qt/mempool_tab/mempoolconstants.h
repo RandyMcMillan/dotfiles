@@ -23,7 +23,7 @@ static const double  GRAPH_PATH_SCALAR           = 0.575;//path scalar
 static const double  GRAPH_HORZ_LINE_X_SCALAR    = 1.0;
 static const double  GRAPH_HORZ_LINE_Y_SCALAR    = 1.75;
 
-static const int     GRAPH_AMOUNT_OF_HORZ_LINES  = 7;
+static const int     GRAPH_AMOUNT_OF_HORZ_LINES  = 6;
 
 static const double  GRAPH_X_SCALE_ADJUST        = 1.0;//TODO: this will be dynamic via a gui pill box later x_increment in mempoolstats.cpp
 
@@ -57,15 +57,18 @@ bool const           DETAIL_ADD_TOTAL_TEXT       = true;
 bool const           DETAIL_VIEW_LOGGING         = true;
 
 bool const MEMPOOL_GRAPH_LOGGING                 = false;
+bool const MEMPOOL_GRAPH_TXCOUNT_LOGGING         = true;
 bool const MEMPOOL_GRAPH_CROSS_PATH_LOGGING      = true;
-bool const MEMPOOL_GRAPH_FEEPATH_LOGGING         = true;
-bool const MEMPOOL_CLIENT_MODEL_LOGGING          = true;
+bool const MEMPOOL_GRAPH_FEEPATH_LOGGING         = false;
 bool const MEMPOOL_GRAPH_SINGLE_CLICK_LOGGING    = true;
 bool const MEMPOOL_GRAPH_DOUBLE_CLICK_LOGGING    = true;
 bool const MEMPOOL_GRAPH_RESIZE_EVENT_LOGGING    = true;
+bool const MEMPOOL_GRAPH_MOUSE_EVENT_LOGGING     = true;
+
 bool const MEMPOOL_HORZ_LINE_LOGGING             = true;
+bool const MEMPOOL_CLIENT_MODEL_LOGGING          = true;
 bool const MEMPOOL_DETAIL_LOGGING                = false;
-bool const DETAIL_VIEW_HIDE_EVENT                = true;
+bool const MEMPOOL_DETAIL_VIEW_HIDE_EVENT        = true;
 
 bool const ADD_TEXT                              = true;
 bool const ADD_FEE_RANGES                        = true;

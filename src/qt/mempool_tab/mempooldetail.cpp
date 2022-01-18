@@ -51,14 +51,11 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 
 void MempoolDetail::drawFeeRanges( qreal bottom ){
 
-    //QFont gridFont;
-    QFont gridFont =  QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    gridFont =  QFontDatabase::systemFont(QFontDatabase::FixedFont);
 
-    //gridFont.setFamily('monospace')
-    //gridFont.setStyleHint(QFont::TypeWriter);
+    //gridFont.setPointSize(12);
+    //gridFont.setWeight(QFont::Bold);
 
-    gridFont.setPointSize(12);
-    gridFont.setWeight(QFont::Bold);
     if (ADD_FEE_RANGES) {
         QGraphicsTextItem *fee_range_title =
         m_scene->addText("Fee ranges\n(sat/b)", gridFont);
@@ -69,7 +66,7 @@ void MempoolDetail::drawFeeRanges( qreal bottom ){
 void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_txcount){
 
     double bottom_display_ratio = (bottom/display_up_to_range);
-    QFont gridFont;
+
     gridFont.setPointSize(12);
     gridFont.setWeight(QFont::Bold);
 
@@ -125,7 +122,6 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             if (ADD_FEE_RANGES){
 
-                QFont gridFont;
                 gridFont.setPointSize(LABEL_TITLE_SIZE);
                 //gridFont.setWeight(QFont::Light);
 
@@ -198,7 +194,6 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             if (DETAIL_ADD_TOTAL_TEXT){
 
-                QFont gridFont;
                 gridFont.setPointSize(12);
                 //gridFont.setWeight(QFont::Bold);
 
@@ -273,9 +268,10 @@ void MempoolDetail::drawDetail()
     std::vector<QPainterPath> fee_paths;
     std::vector<size_t> fee_subtotal_txcount;
     size_t max_txcount=0;
-    QFont gridFont;
+
     gridFont.setPointSize(12);
 	gridFont.setWeight(QFont::Bold);
+
     int display_up_to_range = 0;
     //let view touch boths sides//we will place an over lay of boxes 
     qreal maxwidth = m_gfx_detail->scene()->sceneRect().width();// - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);

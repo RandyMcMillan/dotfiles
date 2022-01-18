@@ -35,7 +35,6 @@ Q_SIGNALS:
     void objectClicked(QGraphicsItem*);
 };
 
-
 class MempoolDetail : public QWidget
 {
     Q_OBJECT
@@ -76,7 +75,8 @@ private:
     virtual void hideEvent(QHideEvent        *event) override;
 
     int m_selected_range = -1;
-	qreal bottom = 0;
+    qreal bottom = 0;
+    QFont gridFont;
 };
 
 #endif // BITCOIN_QT_MEMPOOLDETAIL_H

@@ -18,6 +18,7 @@
 
 class ArgsManager;
 class CBlock;
+class CBlockIndex;
 class CBlockUndo;
 class CFeeRate;
 class CRPCCommand;
@@ -263,6 +264,9 @@ public:
         virtual void updatedBlockTip() {}
         virtual void chainStateFlushed(const CBlockLocator& locator) {}
     };
+
+    //! Check if all blocks needed to sync from locator are present.
+    virtual bool checkBlocks(const CBlockIndex* locator_block) = 0;
 
     //! Register handler for notifications.
     virtual std::unique_ptr<Handler> handleNotifications(std::shared_ptr<Notifications> notifications) = 0;

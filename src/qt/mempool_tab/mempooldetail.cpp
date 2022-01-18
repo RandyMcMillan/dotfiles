@@ -132,9 +132,9 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 //item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
 
                 if (DETAIL_VIEW_LOGGING){
-                    LogPrintf("\n%s list_entry.fee_from = %s",list_entry.fee_from, __func__);
-                    LogPrintf("\n%s list_entry.fee_to = %s",list_entry.fee_to, __func__);
-                    LogPrintf("\n%s i = %s\n",i, __func__);
+                    LogPrintf("\n%s list_entry.fee_from = %s",__func__ ,list_entry.fee_from);
+                    LogPrintf("\n%s list_entry.fee_to = %s",__func__, list_entry.fee_to);
+                    LogPrintf("\n%s i = %s\n", __func__, i);
                 }
 
                 //QGraphicsTextItem *fee_text = m_scene->addText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to),gridFont);
@@ -156,7 +156,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_text->setPos(DETAIL_PADDING_LEFT, c_y-C_H+(C_MARGIN/2));
 
                 if (DETAIL_VIEW_LOGGING){
-                    LogPrintf("\n%s i = %s\n",i, __func__);
+                    LogPrintf("\n%s i = %s\n", __func__, i);
                     LogPrintf("\n%s fee_text->zValue() = %s",__func__, fee_text->zValue());
                 }
 

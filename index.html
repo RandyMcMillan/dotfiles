@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>github.io.randymcmillan.net</title>
+  <title>README</title>
   <style>
     html {
       line-height: 1.5;
@@ -21,7 +21,7 @@
       padding-top: 50px;
       padding-bottom: 50px;
       hyphens: auto;
-      word-wrap: break-word;
+      overflow-wrap: break-word;
       text-rendering: optimizeLegibility;
       font-kerning: normal;
     }
@@ -92,6 +92,7 @@
     pre code {
       padding: 0;
       overflow: visible;
+      overflow-wrap: normal;
     }
     .sourceCode {
      background-color: transparent;
@@ -142,69 +143,6 @@
     div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      {   }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #7d9029; } /* Attribute */
-    code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #4070a0; } /* Char */
-    code span.cn { color: #880000; } /* Constant */
-    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-    code span.dt { color: #902000; } /* DataType */
-    code span.dv { color: #40a070; } /* DecVal */
-    code span.er { color: #ff0000; font-weight: bold; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #40a070; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-    code span.op { color: #666666; } /* Operator */
-    code span.ot { color: #007020; } /* Other */
-    code span.pp { color: #bc7a00; } /* Preprocessor */
-    code span.sc { color: #4070a0; } /* SpecialChar */
-    code span.ss { color: #bb6688; } /* SpecialString */
-    code span.st { color: #4070a0; } /* String */
-    code span.va { color: #19177c; } /* Variable */
-    code span.vs { color: #4070a0; } /* VerbatimString */
-    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
   <!--[if lt IE 9]>
@@ -212,79 +150,32 @@
   <![endif]-->
 </head>
 <body>
-<header id="title-block-header">
-<h1 class="title">github.io.randymcmillan.net</h1>
-</header>
-<h1 id="mathiass-dotfiles">Mathias’s dotfiles</h1>
-<figure>
-<img src="https://i.imgur.com/EkEtphC.png" alt="Screenshot of my shell prompt" /><figcaption aria-hidden="true">Screenshot of my shell prompt</figcaption>
-</figure>
-<h2 id="installation">Installation</h2>
-<p><strong>Warning:</strong> If you want to give these dotfiles a try, you should first fork this repository, review the code, and remove things you don’t want or need. Don’t blindly use my settings unless you know what that entails. Use at your own risk!</p>
-<h3 id="using-git-and-the-bootstrap-script">Using Git and the bootstrap script</h3>
-<p>You can clone the repository wherever you want. (I like to keep it in <code>~/Projects/dotfiles</code>, with <code>~/dotfiles</code> as a symlink.) The bootstrapper script will pull in the latest version and copy the files to your home folder.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/mathiasbynens/dotfiles.git <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> dotfiles <span class="kw">&amp;&amp;</span> <span class="bu">source</span> bootstrap.sh</span></code></pre></div>
-<p>To update, <code>cd</code> into your local <code>dotfiles</code> repository and then:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> bootstrap.sh</span></code></pre></div>
-<p>Alternatively, to update while avoiding the confirmation prompt:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">--</span> <span class="at">-f</span><span class="kw">;</span> <span class="bu">source</span> bootstrap.sh</span></code></pre></div>
-<h3 id="git-free-install">Git-free install</h3>
-<p>To install these dotfiles without Git:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span><span class="kw">;</span> <span class="ex">curl</span> <span class="at">-#L</span> https://github.com/mathiasbynens/dotfiles/tarball/master <span class="kw">|</span> <span class="fu">tar</span> <span class="at">-xzv</span> <span class="at">--strip-components</span> 1 <span class="at">--exclude</span><span class="op">=</span><span class="dt">{README.md</span><span class="op">,</span><span class="dt">bootstrap.sh</span><span class="op">,</span><span class="dt">.osx</span><span class="op">,</span><span class="dt">LICENSE-MIT.txt}</span></span></code></pre></div>
-<p>To update later on, just run that command again.</p>
-<h3 id="specify-the-path">Specify the <code>$PATH</code></h3>
-<p>If <code>~/.path</code> exists, it will be sourced along with the other files, before any feature testing (such as <a href="https://github.com/mathiasbynens/dotfiles/blob/aff769fd75225d8f2e481185a71d5e05b76002dc/.aliases#L21-26">detecting which version of <code>ls</code> is being used</a>) takes place.</p>
-<p>Here’s an example <code>~/.path</code> file that adds <code>/usr/local/bin</code> to the <code>$PATH</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">&quot;/usr/local/bin:</span><span class="va">$PATH</span><span class="st">&quot;</span></span></code></pre></div>
-<h3 id="add-custom-commands-without-creating-a-new-fork">Add custom commands without creating a new fork</h3>
-<p>If <code>~/.extra</code> exists, it will be sourced along with the other files. You can use this to add a few custom commands without the need to fork this entire repository, or to add commands you don’t want to commit to a public repository.</p>
-<p>My <code>~/.extra</code> looks something like this:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Git credentials</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Not in the repository, to prevent people from accidentally committing under my name</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">GIT_AUTHOR_NAME</span><span class="op">=</span><span class="st">&quot;Mathias Bynens&quot;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="va">GIT_COMMITTER_NAME</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$GIT_AUTHOR_NAME</span><span class="st">&quot;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">&quot;</span><span class="va">$GIT_AUTHOR_NAME</span><span class="st">&quot;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="va">GIT_AUTHOR_EMAIL</span><span class="op">=</span><span class="st">&quot;mathias@mailinator.com&quot;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="va">GIT_COMMITTER_EMAIL</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$GIT_AUTHOR_EMAIL</span><span class="st">&quot;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">&quot;</span><span class="va">$GIT_AUTHOR_EMAIL</span><span class="st">&quot;</span></span></code></pre></div>
-<p>You could also use <code>~/.extra</code> to override settings, functions and aliases from my dotfiles repository. It’s probably better to <a href="https://github.com/mathiasbynens/dotfiles/fork">fork this repository</a> instead, though.</p>
-<h3 id="sensible-macos-defaults">Sensible macOS defaults</h3>
-<p>When setting up a new Mac, you may want to set some sensible macOS defaults:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./.macos</span></span></code></pre></div>
-<h3 id="install-homebrew-formulae">Install Homebrew formulae</h3>
-<p>When setting up a new Mac, you may want to install some common <a href="https://brew.sh/">Homebrew</a> formulae (after installing Homebrew, of course):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./brew.sh</span></span></code></pre></div>
-<p>Some of the functionality of these dotfiles depends on formulae installed by <code>brew.sh</code>. If you don’t plan to run <code>brew.sh</code>, you should look carefully through the script and manually install any particularly important ones. A good example is Bash/Git completion: the dotfiles use a special version from Homebrew.</p>
-<h2 id="feedback">Feedback</h2>
-<p>Suggestions/improvements <a href="https://github.com/mathiasbynens/dotfiles/issues">welcome</a>!</p>
-<h2 id="author">Author</h2>
-<table>
-<thead>
-<tr class="header">
-<th><a href="http://twitter.com/mathias" title="Follow @mathias on Twitter"><img src="http://gravatar.com/avatar/24e08a9ea84deb17ae121074d0f17125?s=70" alt="twitter/mathias" /></a></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://mathiasbynens.be/">Mathias Bynens</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="thanks-to">Thanks to…</h2>
-<ul>
-<li><span class="citation" data-cites="ptb">@ptb</span> and <a href="https://github.com/ptb/mac-setup">his <em>macOS Setup</em> repository</a></li>
-<li><a href="http://benalman.com/">Ben Alman</a> and his <a href="https://github.com/cowboy/dotfiles">dotfiles repository</a></li>
-<li><a href="https://github.com/alrra">Cătălin Mariș</a> and his <a href="https://github.com/alrra/dotfiles">dotfiles repository</a></li>
-<li><a href="https://butt.zone/">Gianni Chiappetta</a> for sharing his <a href="https://github.com/gf3/dotfiles">amazing collection of dotfiles</a></li>
-<li><a href="http://jan.moesen.nu/">Jan Moesen</a> and his <a href="https://gist.github.com/1156154">ancient <code>.bash_profile</code></a> + <a href="https://github.com/janmoesen/tilde">shiny <em>tilde</em> repository</a></li>
-<li><a href="http://lri.me/">Lauri ‘Lri’ Ranta</a> for sharing <a href="http://osxnotes.net/defaults.html">loads of hidden preferences</a></li>
-<li><a href="https://matijs.brinkhu.is/">Matijs Brinkhuis</a> and his <a href="https://github.com/matijs/dotfiles">dotfiles repository</a></li>
-<li><a href="http://nicolasgallagher.com/">Nicolas Gallagher</a> and his <a href="https://github.com/necolas/dotfiles">dotfiles repository</a></li>
-<li><a href="https://sindresorhus.com/">Sindre Sorhus</a></li>
-<li><a href="https://sanctum.geek.nz/">Tom Ryder</a> and his <a href="https://sanctum.geek.nz/cgit/dotfiles.git/about">dotfiles repository</a></li>
-<li><a href="http://kevinsuttle.com/">Kevin Suttle</a> and his <a href="https://github.com/kevinSuttle/dotfiles">dotfiles repository</a> and <a href="https://github.com/kevinSuttle/macOS-Defaults">macOS-Defaults project</a>, which aims to provide better documentation for <a href="https://mths.be/macos"><code>~/.macos</code></a></li>
-<li><a href="https://hkdobrev.com/">Haralan Dobrev</a></li>
-<li>Anyone who <a href="https://github.com/mathiasbynens/dotfiles/contributors">contributed a patch</a> or <a href="https://github.com/mathiasbynens/dotfiles/issues">made a helpful suggestion</a></li>
-</ul>
+<pre><code>[ARGUMENTS] 
+  args: 
+    - TIME=1633380935   
+    - PROJECT_NAME=dotfiles 
+    - GIT_USER_NAME=randymcmillan   
+    - GIT_USER_EMAIL=randy.lee.mcmillan@gmail.com   
+    - GIT_SERVER=https://github.com 
+    - GIT_PROFILE=randymcmillan 
+    - GIT_BRANCH=master 
+    - GIT_HASH=dfaa71a  
+    - GIT_PREVIOUS_HASH=8129ce3 
+    - GIT_REPO_ORIGIN=git@github.com:RandyMcMillan/dotfiles.git 
+    - GIT_REPO_NAME=dotfiles    
+    - GIT_REPO_PATH=/Users/git/dotfiles 
+
+make all    
+make bootstrap  
+make executable 
+make alpine-shell   
+make shell  
+make vim    
+make config-git 
+make config-github  
+make push   
+make readme 
+
+make all force=true </code></pre>
 </body>
 </html>

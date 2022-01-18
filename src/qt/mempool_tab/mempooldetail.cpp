@@ -136,9 +136,9 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 //item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
 
                 if (DETAIL_VIEW_LOGGING){
-                    LogPrintf("\nlist_entry.fee_from = %s",list_entry.fee_from);
-                    LogPrintf("\nlist_entry.fee_to = %s",list_entry.fee_to);
-                    LogPrintf("\ni = %s\n",i);
+                    LogPrintf("\n%s list_entry.fee_from = %s",list_entry.fee_from, __func__);
+                    LogPrintf("\n%s list_entry.fee_to = %s",list_entry.fee_to, __func__);
+                    LogPrintf("\n%s i = %s\n",i, __func__);
                 }
 
                 //QGraphicsTextItem *fee_text = m_scene->addText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to),gridFont);
@@ -151,7 +151,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                     m_scene->addText(QString::number(list_entry.fee_from)+"+");
                 }
                 fee_text->setFont(gridFont);
-                m_scene->addItem(fee_text);
+                //m_scene->addItem(fee_text);
                 //connect(fee_text, &QGraphicsClickableTextItem::objectClicked, [&fee_text](QGraphicsClickableTextItem*item) { fee_text->objectClicked(item); });
 
 
@@ -160,7 +160,8 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_text->setPos(DETAIL_PADDING_LEFT, c_y-C_H+(C_MARGIN/2));
 
                 if (DETAIL_VIEW_LOGGING){
-                    LogPrintf("\nfee_text->zValue()",fee_text->zValue());
+                    LogPrintf("\n%s i = %s\n",i, __func__);
+                    LogPrintf("\n%s fee_text->zValue() = %s",__func__, fee_text->zValue());
                 }
 
                 //QGraphicsTextItem *fee_range_size = m_scene->addText("ABCDEFG",gridFont);
@@ -294,10 +295,6 @@ void MempoolDetail::drawDetail()
         for (const ClientModel::mempool_feehist_sample& sample : m_clientmodel->m_mempool_feehist) {
             uint64_t txcount = 0;
             int i = 0;
-        if (DETAIL_VIEW_LOGGING){
-            LogPrintf("\ni = %s", i);
-            LogPrintf("\nm_clientmodel->m_mempool_feehist[i].second.size() = %s\n", m_clientmodel->m_mempool_feehist[i].second.size());
-        }
             for (const interfaces::mempool_feeinfo& list_entry : sample.second) {
 
                 txcount += list_entry.tx_count;
@@ -306,11 +303,19 @@ void MempoolDetail::drawDetail()
                 if (txcount > max_txcount) max_txcount = txcount;
 
                 if (DETAIL_VIEW_LOGGING){
+                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
+                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
+                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
+                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
+                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
+                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
+                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
+                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
                     LogPrintf("\ntxcount = %s", txcount);
-                    LogPrintf("\nlist_entry.tx_count = %s", list_entry.tx_count );
-                    LogPrintf("\ni = %s", i);
-                    LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
                     LogPrintf("\nmaxcount = %s", max_txcount);
+                    LogPrintf("\nlist_entry.tx_count = %s", list_entry.tx_count );
+                    LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
+                    LogPrintf("\nm_clientmodel->m_mempool_feehist[i].second.size() = %s\n", m_clientmodel->m_mempool_feehist[i].second.size());
                 }
                 i++;
             }

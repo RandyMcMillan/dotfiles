@@ -700,6 +700,9 @@ public:
         const CBlockIndex* locator_block = locator.IsNull() ? nullptr : active.FindForkInGlobalIndex(locator);
         interfaces::BlockInfo block_info = node::MakeBlockInfo(locator_block);
         block_info.chain_tip = locator_block == active.m_chain.Tip();
+        // Need to register the ValidationInterface and call blockConnected
+        // both while holding cs_main, so that callbacks are not missed if
+        // blockConnected sets m_synced to true.
         notifications->blockConnected(block_info);
         if (!block_info.chain_tip && !checkBlocks(locator_block)) return nullptr;
         auto handler = std::make_unique<NotificationsHandlerImpl>(notifications);

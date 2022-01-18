@@ -134,6 +134,7 @@ all: executable
 	#./install-valgrind-macos.sh
 	./install-umbrel-dev.sh
 	./install-vim.sh
+	./install-inkscape.sh
 
 .PHONY: shell
 shell:

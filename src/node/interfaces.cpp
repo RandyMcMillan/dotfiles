@@ -723,8 +723,7 @@ public:
     {
         ::uiInterface.ShowProgress(title, progress, resume_possible);
     }
-    bool hasDataFromTipDown(const CBlockIndex* start_block) override {
-        LOCK(::cs_main);
+    bool hasDataFromTipDown(const CBlockIndex* start_block) EXCLUSIVE_LOCKS_REQUIRED(::cs_main) {
         const CChain& active_chain = Assert(m_node.chainman)->ActiveChain();
         bool prune_violation = false;
         if (!start_block) {
@@ -755,6 +754,18 @@ public:
             }
         }
         return !prune_violation;
+    }
+    std::unique_ptr<Handler> attachChain(std::shared_ptr<Notifications> notifications, const CBlockLocator& locator, const NotifyOptions& options) override
+    {
+        LOCK(cs_main);
+        const Chainstate& active = Assert(m_node.chainman)->ActiveChainstate();
+        const CBlockIndex* start_block = locator.IsNull() ? nullptr : active.FindForkInGlobalIndex(locator);
+        interfaces::BlockInfo block_info = kernel::MakeBlockInfo(start_block);
+        block_info.chain_tip = start_block == active.m_chain.Tip();
+        notifications->blockConnected(block_info);
+        if (!block_info.chain_tip && !hasDataFromTipDown(start_block)) return nullptr;
+        auto handler = std::make_unique<NotificationsHandlerImpl>(notifications);
+        return handler;
     }
     std::unique_ptr<Handler> handleNotifications(std::shared_ptr<Notifications> notifications) override
     {

@@ -27,8 +27,8 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
         LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
         LABEL_KV_SIZE    *= 27.5/testText.boundingRect().width();
 
-        LogPrintf("\nLABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
-        LogPrintf("\nLABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
+        LogPrintf("\nLABEL_TITLE_SIZE = %s,%s\n",LABEL_TITLE_SIZE,__func__);
+        LogPrintf("\nLABEL_KV_SIZE = %s,%s\n",LABEL_KV_SIZE,__func__);
 
     }
 
@@ -71,7 +71,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
     gridFont.setWeight(QFont::Bold);
 
     if (DETAIL_VIEW_LOGGING){
-        LogPrintf("\nbottom = %s",bottom);
+        LogPrintf("\nbottom = %s,%s",bottom,__func__);
         LogPrintf("\nmaxwidth = %s",maxwidth);
         LogPrintf("\nbottom_display_ratio = %s",bottom_display_ratio);
         LogPrintf("\ndisplay_up_to_range = %s",display_up_to_range);
@@ -100,8 +100,8 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             if (DETAIL_VIEW_LOGGING){
               //LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
               //LogPrintf("\nfee_path_delta = %s\n", QString::number(m_clientmodel->m_mempool_feehist[0].second));
-                LogPrintf("\nc_y = %s",c_y);
-                LogPrintf("\nc_y-5 = %s",c_y-5);
+                LogPrintf("\nc_y = %s,%s",c_y,__func__);
+                LogPrintf("\nc_y-5 = %s,%s",c_y-5,__func__);
 
             }
 
@@ -189,11 +189,11 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 			std::vector<size_t> fee_subtotal_txcount;
 
 			fee_subtotal_txcount.resize(m_clientmodel->m_mempool_feehist[0].second.size());
-            //LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
 			QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
 
             if (DETAIL_ADD_TOTAL_TEXT){
 
+                LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
                 gridFont.setPointSize(12);
                 //gridFont.setWeight(QFont::Bold);
 
@@ -213,7 +213,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 m_scene->addItem(fee_rect_detail);
 
                 if (DETAIL_VIEW_LOGGING){
-                    //LogPrintf("\nitems().length() = %s\n",(int)m_scene->items().length());
+                    LogPrintf("\nitems().length() = %s,%s\n",(int)m_scene->items().length(),__func__);
                 }
             }
 
@@ -229,8 +229,8 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             c_y-=C_H+C_MARGIN;
             if (DETAIL_VIEW_LOGGING){
-                LogPrintf("\nc_y = %s",c_y);
-                LogPrintf("\ni = %s\n",i);
+                LogPrintf("\nc_y = %s,%s",c_y,__func__);
+                LogPrintf("\ni = %s,%s\n",i,__func__);
             }
             i++;
         }
@@ -251,17 +251,10 @@ void MempoolDetail::drawDetail()
     const qreal maxheight_g = (m_gfx_detail->scene()->sceneRect().height() - (DETAIL_PADDING_TOP + DETAIL_PADDING_BOTTOM) );
     if (DETAIL_VIEW_LOGGING){
 
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
+        //LogPrintf("\n");
         LogPrintf("\nbottom = %s\n",bottom);
         LogPrintf("\nmaxheight_g = %s\n",maxheight_g);
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
+        //LogPrintf("\n");
 
     }
 
@@ -300,17 +293,10 @@ void MempoolDetail::drawDetail()
 
                 if (DETAIL_VIEW_LOGGING){
                     LogPrintf("\n%s ------------------ i = %s", __func__, i);
-                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
-                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
-                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
-                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
-                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
-                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
-                    LogPrintf("\n%s ------------------ i = %s", __func__, i);
                     LogPrintf("\ntxcount = %s", txcount);
                     LogPrintf("\nmaxcount = %s", max_txcount);
                     LogPrintf("\nlist_entry.tx_count = %s", list_entry.tx_count );
-                    LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
+                    LogPrintf("\nfee_subtotal_txcount[i] = %s, %s",fee_subtotal_txcount[i],i);
                     LogPrintf("\nm_clientmodel->m_mempool_feehist[i].second.size() = %s\n", m_clientmodel->m_mempool_feehist[i].second.size());
                 }
                 i++;
@@ -332,13 +318,9 @@ void MempoolDetail::drawDetail()
             int step = qCeil((1.0*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
             max_txcount_graph = step*amount_of_h_lines;
             if (DETAIL_VIEW_LOGGING){
-                LogPrintf("\n");
-                LogPrintf("\n");
-                LogPrintf("\n");
-                LogPrintf("\nmax_txcount_graph = %s",max_txcount_graph);
-                LogPrintf("\n");
-                LogPrintf("\n");
-                LogPrintf("\n");
+                //LogPrintf("\n");
+                LogPrintf("\n%s max_txcount_graph = %s", __func__, max_txcount_graph);
+                //LogPrintf("\n");
             }
         }
 
@@ -392,9 +374,9 @@ void MempoolDetail::drawDetail()
     int i = 0;
     QString total_text = "test 311";//tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
     if (DETAIL_VIEW_LOGGING){
-            LogPrintf("\nm_clientmodel->m_mempool_max_samples = %s",(int)m_clientmodel->m_mempool_max_samples);
-            LogPrintf("\nm_clientmodel->m_mempool_collect_interval = %s",(int)m_clientmodel->m_mempool_collect_intervall);
-            LogPrintf("\nm_clientmodel->m_mempool_collect_interval/3600 = %s",(int)m_clientmodel->m_mempool_collect_intervall/3600);
+            LogPrintf("\n%s m_clientmodel->m_mempool_max_samples = %s",__func__,(int)m_clientmodel->m_mempool_max_samples);
+            LogPrintf("\n%s m_clientmodel->m_mempool_collect_interval = %s",__func__,(int)m_clientmodel->m_mempool_collect_intervall);
+            LogPrintf("\n%s m_clientmodel->m_mempool_collect_interval/3600 = %s",__func__,(int)m_clientmodel->m_mempool_collect_intervall/3600);
     }
     //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall));//10800 units
     for (auto feepath : fee_paths) {
@@ -420,17 +402,14 @@ void MempoolDetail::drawDetail()
         }
         if (m_selected_range >= 0 && m_selected_range == i) {
             total_text = "TXs in this range: "+QString::number(fee_subtotal_txcount[i]);
-            LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
-            if (DETAIL_ADD_TOTAL_TEXT){
-                QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
-                //item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
-                item_tx_count->setDefaultTextColor(pen_color);//REF: mempoolconstants.h
-                item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
-            }
         }
-
         if (DETAIL_VIEW_LOGGING){
-            LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
+            LogPrintf("\nfee_subtotal_txcount[i] = %s, %s",fee_subtotal_txcount[i],i);
+            LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
+            QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
+            //item_tx_count->setDefaultTextColor(colors[16]);//REF: mempoolconstants.h
+            item_tx_count->setDefaultTextColor(pen_color);//REF: mempoolconstants.h
+            item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
         }
 
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
@@ -439,12 +418,6 @@ void MempoolDetail::drawDetail()
         drawFeeRects(bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i]);
         i++;
     }
-
-
-
-
-
-
 
 }//end drawDetail()
 

@@ -115,10 +115,6 @@ void MempoolStats::drawHorzLines(qreal x_increment, QPointF current_x_bottom,
                     item_tx_count->setPos(GRAPH_PADDING_LEFT-40, lY-(item_tx_count->boundingRect().height()/2));
             }
 
-            QGraphicsTextItem *item_tx_count =
-                m_scene->addText(QString("%1 ").arg(horz_line_range_text).rightJustified(5, ' ')+QString("vB").leftJustified(2, ' '), LABELFONT);
-                item_tx_count->setDefaultTextColor(colors[17]);
-                item_tx_count->setPos(GRAPH_PADDING_LEFT-40, lY-(item_tx_count->boundingRect().height()/2));
         }
 
     }

@@ -181,7 +181,7 @@ config-github: executable
 .PHONY: push
 .ONESHELL:
 push: touch-time
-	bash -c "git add -f *.sh *.md sources .gitignore .bash* .vimrc .github && \
+	bash -c "git add -f *.sh *.md sources .gitignore .bash* .vimrc .github index.html TIME *makefile && \
 		git commit -m 'update from $(GIT_USER_NAME) on $(TIME)'"
 	git push -f origin	+master:master
 

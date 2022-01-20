@@ -926,6 +926,7 @@ make                        config-github
 	make                        help
 	make                        report
 	make                        all
+	make                        all force=true	
 	make                        bootstrap
 	make                        executable
 	make                        shell #alpine-shell
@@ -943,6 +944,4 @@ make                        config-github
 	make                        readme
 
 ---
-
-	make                        all force=true	
 

@@ -14,6 +14,7 @@
 	make                        config-git
 	make                        config-github
 
+--
 
 make                        push
 make                        readme

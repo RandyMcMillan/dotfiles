@@ -91,7 +91,9 @@ report:
 	@echo '        - GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
 	@echo '        - GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}	'
-
+.PHONY: whatami
+whatami:
+	./whatami.sh
 #.PHONY:readme
 #readme:
 #	make help > source/COMMANDS.md

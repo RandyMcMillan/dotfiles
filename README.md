@@ -16,8 +16,10 @@
 
 ---
 
-make                        push
-make                        readme
+	make                        push
+	make                        readme
 
-make                        all force=true	
+---
+
+	make                        all force=true	
 

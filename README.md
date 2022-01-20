@@ -906,6 +906,7 @@ More bash goodness:
 make                        default -: function
 =======
 	make                        default -: function
+<<<<<<< HEAD
 >>>>>>> 629be2a8 (make readme)
 make                        init
 make                        help
@@ -920,6 +921,21 @@ make                        debian-shell
 make                        vim
 make                        config-git
 make                        config-github
+=======
+	make                        init
+	make                        help
+	make                        report
+	make                        all
+	make                        bootstrap
+	make                        executable
+	make                        shell #alpine-shell
+	make                        alpine-shell
+	make                        d-shell #debian-shell
+	make                        debian-shell
+	make                        vim
+	make                        config-git
+	make                        config-github
+>>>>>>> 2d3abfb9 (make readme)
 
 
 make                        push

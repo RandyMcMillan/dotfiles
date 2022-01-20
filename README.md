@@ -1,5 +1,5 @@
 	
-make                        default -: function
+	make                        default -: function
 make                        init
 make                        help
 make                        report

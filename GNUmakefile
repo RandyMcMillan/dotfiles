@@ -56,8 +56,10 @@ help:
 	@echo "	make all	"
 	@echo "	make bootstrap	"
 	@echo "	make executable	"
-	@echo "	make alpine-shell	"
-	@echo "	make shell	"
+	@echo "	make shell #alpine-shell"
+	@echo "	make alpine-shell"
+	@echo "	make d-shell #debian-shell"
+	@echo "	make debian-shell"
 	@echo "	make vim	"
 	@echo "	make config-git	"
 	@echo "	make config-github	"
@@ -136,15 +138,13 @@ all: executable
 	./install-vim.sh
 	./install-inkscape.sh
 
-.PHONY: shell
-shell:
-	bash -c "make alpine-shell"
-
-.PHONY:
+.PHONY: shell alpine-shell debian-shell d-shell
+shell: alpine-shell
 alpine-shell:
-	./install-alpine-shell.sh
-	cd ~ && make -f ~/GNUmakefile alpine-build &&  make -f ~/GNUmakefile shell
-
+	./install-shell.sh alpine
+d-shell: debian-shell
+debian-shell:
+	./install-shell.sh debian
 .PHONY: vim
 vim: executable
 	./install-vim.sh $(FORCE)

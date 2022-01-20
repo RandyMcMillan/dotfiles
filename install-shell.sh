@@ -9,9 +9,6 @@ export OS_VERSION
 export UNAME_M
 export ARCH
 
-test ~/docker.shell &&  pushd ~/docker.shell || git clone http://github.com/RandyMcMillan/docker.shell.git ~/docker.shell \
-    && pushd ~/docker.shell && make alpine user=root
-
 report() {
 echo OS:
 echo "$OS" | awk '{print tolower($0)}'
@@ -103,4 +100,7 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     echo TODO add support for $OSTYPE
 fi
+
+test $HOME/docker.shell && pushd $HOME/docker.shell || git clone http://github.com/RandyMcMillan/docker.shell.git $HOME/docker.shell \
+    && pushd $HOME/docker.shell && make $1 user=root
 

@@ -27,16 +27,6 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  github-workspace:
-    name: github-workspace
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Print github workspace
-        run: |
-          printenv
-          if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-                                        sudo apt install -y make &&      make whatami;   else echo; fi
-
   host-matrix:
     name: host-matrix
     runs-on: ${{ matrix.os }}
@@ -51,6 +41,8 @@ jobs:
       - name: printenv
         run: |
           printenv
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then \
+                                        sudo apt install -y make &&      make whatami;   else echo; fi
       - name: install-bash-bash-completion-codespell-asciidoctor
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then sudo apt install bash bash-completion asciidoctor; else echo; fi

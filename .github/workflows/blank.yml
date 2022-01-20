@@ -75,14 +75,21 @@ jobs:
       - name: make bootstrap
         run: |
           echo y | make bootstrap
-      - name: make all shell debian
+
+      - name: make all
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
                                         sudo apt install -y make &&      make all;   else echo; fi
+      - name: make shell
+        run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
                                         sudo apt install -y make && sudo make shell;  else echo; fi
+      - name: make debian
+        run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
                                         sudo apt install -y make && sudo make debian; else echo; fi
+      - name: make
+        run: |
           if [[ "$OSTYPE" == "darwin"* ]]; then \
                                      make all; else echo; fi
       - name: git-grep-terms-debug

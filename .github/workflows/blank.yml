@@ -72,7 +72,7 @@ jobs:
       - name: codespell-html
         run: |
           codespell --config .codespellrc --ignore-words .codespell-ignore ./docs/docs/*.html
-      - name: make bootsgtrap
+      - name: make bootstrap
         run: |
           echo y | make bootstrap
       - name: make all shell debian

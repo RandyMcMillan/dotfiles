@@ -105,3 +105,4 @@ ssh-add
 ssh-add ~/.ssh/*.github_rsa
 ./config-git.sh
 #git config --global -l
+./install-github-utility.sh

@@ -897,12 +897,16 @@ More bash goodness:
 	make push	
 	make readme	
 	
+<<<<<<< HEAD
 	make all force=true	
 =======
 =======
 	
 >>>>>>> 61dc9fa7 (make readme)
 make                        default -: function
+=======
+	make                        default -: function
+>>>>>>> 629be2a8 (make readme)
 make                        init
 make                        help
 make                        report

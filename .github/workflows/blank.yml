@@ -72,9 +72,9 @@ jobs:
       - name: codespell-html
         run: |
           codespell --config .codespellrc --ignore-words .codespell-ignore ./docs/docs/*.html
-      - name: boot-strap=sh
+      - name: make bootsgtrap
         run: |
-          echo y | ./boot-strap.sh
+          echo y | make bootstrap
       - name: make all shell debian
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \

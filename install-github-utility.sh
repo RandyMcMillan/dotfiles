@@ -90,7 +90,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         AWK=gawk
         export AWK
         if hash apt 2>/dev/null; then
-            $PACKAGE_MANAGER $INSTALL $AWK
+            $PACKAGE_MANAGER $INSTALL $AWK hub
         fi
     fi
     if [[ "$OSTYPE" == "linux-musl" ]]; then

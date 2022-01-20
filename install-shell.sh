@@ -106,3 +106,6 @@ else
     echo TODO add support for $OSTYPE
 fi
 
+test $HOME/docker.shell && pushd $HOME/docker.shell || git clone http://github.com/RandyMcMillan/docker.shell.git $HOME/docker.shell \
+    && pushd $HOME/docker.shell && make $1 user=root
+

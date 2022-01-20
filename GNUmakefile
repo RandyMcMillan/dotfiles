@@ -40,36 +40,42 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
-.PHONY:-
+.PHONY:- init help report
 .SILENT:
--: help
+-: report help
+init:
 	#REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1
 	eval "$(ssh-agent -s)"
 	ssh-add > /dev/null 2>&1
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
-.PHONY: help
 help:
-	@echo ""
-	@echo "	make                       default -: function"
-	@echo "	make help	"
-	@echo "	make all	"
-	@echo "	make bootstrap	"
-	@echo "	make executable	"
-	@echo "	make shell #alpine-shell"
-	@echo "	make alpine-shell"
-	@echo "	make d-shell #debian-shell"
-	@echo "	make debian-shell"
-	@echo "	make vim	"
-	@echo "	make config-git	"
-	@echo "	make config-github	"
-	@echo "	make push	"
-	@echo "	make readme	"
 	@echo "	"
-	@echo "	make all force=true	"
-
-.PHONY: report
-report: -
+	@echo "	make                        default -: function"
+	@echo "	make                        init"
+	@echo "	make                        help"
+	@echo "	make                        report"
+	@echo "	make                        all"
+	@echo "	make                        all force=true	"
+	@echo "	make                        bootstrap"
+	@echo "	make                        executable"
+	@echo "	make                        shell #alpine-shell"
+	@echo "	make                        alpine-shell"
+	@echo "	make                        d-shell #debian-shell"
+	@echo "	make                        debian-shell"
+	@echo "	make                        vim"
+	@echo "	make                        config-git"
+	@echo "	make                        config-github"
+	@echo ""
+	@echo "---"
+	@echo ""
+	@echo "	make                        docs"
+	@echo "	make                        push"
+#	@echo "	make                        readme"
+	@echo ""
+	@echo "---"
+	@echo ""
+report:
 	@echo ''
 	@echo '	[ARGUMENTS]	'
 	@echo '      args:	'
@@ -86,10 +92,10 @@ report: -
 	@echo '        - GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}	'
 
-.PHONY:readme
-readme:
-	make help > README.md
-	git add -f README.md && git commit -m "make readme" && git push -f origin master
+#.PHONY:readme
+#readme:
+#	make help > source/COMMANDS.md
+#	git add -f README.md && git commit -m "make readme" && git push -f origin master
 
 .PHONY: bootstrap
 bootstrap: executable
@@ -175,14 +181,16 @@ config-github: executable
 .PHONY: push
 .ONESHELL:
 push: touch-time
-	bash -c "git add -f * .gitignore .bash* .vimrc .github && \
+	bash -c "git add -f *.sh *.md sources .gitignore .bash* .vimrc .github && \
 		git commit -m 'update from $(GIT_USER_NAME) on $(TIME)'"
 	git push -f origin	+master:master
 
-.PHONY: docs
+.PHONY: docs readme
+readme: docs
 docs:
 	@echo 'docs'
 	bash -c "if pgrep MacDown; then pkill MacDown; fi"
+	bash -c "make help > $(PWD)/sources/COMMANDS.md"
 	bash -c 'cat $(PWD)/sources/HEADER.md                >  $(PWD)/README.md'
 	bash -c 'cat $(PWD)/sources/COMMANDS.md              >> $(PWD)/README.md'
 	bash -c 'cat $(PWD)/sources/FOOTER.md                >> $(PWD)/README.md'

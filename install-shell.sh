@@ -67,7 +67,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     #CHECK APT
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         if hash apt 2>/dev/null; then
-            apt install awk
+            apt install gawk
             #report
             echo 'Using apt...'
         fi

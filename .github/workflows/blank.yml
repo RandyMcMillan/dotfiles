@@ -78,7 +78,7 @@ jobs:
       - name: make all shell debian
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-                                        sudo apt install -y make && sudo make all;   else echo; fi
+                                        sudo apt install -y make &&      make all;   else echo; fi
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
                                         sudo apt install -y make && sudo make shell;  else echo; fi
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \

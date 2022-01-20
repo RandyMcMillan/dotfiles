@@ -87,7 +87,7 @@ jobs:
       - name: make debian
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-                                        sudo apt install -y make && sudo make debian; else echo; fi
+                                        sudo apt install -y make && sudo make debian-shell; else echo; fi
       - name: make
         run: |
           if [[ "$OSTYPE" == "darwin"* ]]; then \

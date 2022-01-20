@@ -144,12 +144,14 @@ all: executable
 	./install-vim.sh
 	./install-inkscape.sh
 
-.PHONY: shell alpine-shell debian-shell d-shell
+.PHONY: shell alpine alpine-shell debian debian-shell d-shell
 shell: alpine-shell
-alpine-shell:
+alpine-shell: alpine
+alpine:
 	./install-shell.sh alpine
 d-shell: debian-shell
-debian-shell:
+debian-shell: debian
+debian:
 	./install-shell.sh debian
 .PHONY: vim
 vim: executable

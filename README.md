@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 	[ARGUMENTS]	
       args:	
@@ -898,6 +899,9 @@ More bash goodness:
 	
 	make all force=true	
 =======
+=======
+	
+>>>>>>> 61dc9fa7 (make readme)
 make                        default -: function
 make                        init
 make                        help

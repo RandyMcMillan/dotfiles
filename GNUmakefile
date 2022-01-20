@@ -163,6 +163,10 @@ qt: executable
 	./install-qt.sh
 	./install-qt5-creator.sh
 
+.PHONY: hub
+hub: executable
+	./install-github-utility.sh
+
 .PHONY: config-github
 config-github: executable
 	cat config-git.sh

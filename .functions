@@ -104,7 +104,7 @@ function bitcoin-dl-install-depends(){
 }
 
 function git-fetch-branches(){
-	git branch -q -r | grep -v '\->' | while read remote; do git branch "${remote#origin/}" "$remote"; done
+	git branch -q -r | grep -v '\->' | while read remote; do git branch -q "${remote#origin/}" "$remote"; done
 	git fetch --all
 	git pull --all
 }

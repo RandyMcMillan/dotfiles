@@ -100,7 +100,7 @@ void BaseIndexNotifications::chainStateFlushed(const CBlockLocator& locator)
     // No need to handle errors in Commit. If it fails, the error will be already be logged. The
     // best way to recover is to continue, as index cannot be corrupted by a missed commit to disk
     // for an advanced index state.
-    m_index.Commit();
+    m_index.Commit(locator);
 }
 
 BaseIndex::DB::DB(const fs::path& path, size_t n_cache_size, bool f_memory, bool f_wipe, bool f_obfuscate) :
@@ -165,7 +165,7 @@ void BaseIndex::ThreadSync()
                 // No need to handle errors in Commit. If it fails, the error will be already be
                 // logged. The best way to recover is to continue, as index cannot be corrupted by
                 // a missed commit to disk for an advanced index state.
-                Commit();
+                Commit(GetLocator(*m_chain, pindex->GetBlockHash()));
                 return;
             }
 
@@ -176,7 +176,7 @@ void BaseIndex::ThreadSync()
                     SetBestBlockIndex(pindex);
                     m_synced = true;
                     // No need to handle errors in Commit. See rationale above.
-                    Commit();
+                    Commit(GetLocator(*m_chain, pindex->GetBlockHash()));
                     break;
                 }
                 if (pindex_next->pprev != pindex && !Rewind(pindex, pindex_next->pprev)) {
@@ -198,7 +198,7 @@ void BaseIndex::ThreadSync()
                 SetBestBlockIndex(pindex);
                 last_locator_write_time = current_time;
                 // No need to handle errors in Commit. See rationale above.
-                Commit();
+                Commit(GetLocator(*m_chain, pindex->GetBlockHash()));
             }
 
             CBlock block;
@@ -226,17 +226,17 @@ void BaseIndex::ThreadSync()
     }
 }
 
-bool BaseIndex::Commit()
+bool BaseIndex::Commit(const CBlockLocator& locator)
 {
     // Don't commit anything if we haven't indexed any block yet
     // (this could happen if init is interrupted).
-    if (m_best_block_index == nullptr) {
+    if (locator.IsNull()) {
         return false;
     }
     CDBBatch batch(GetDB());
     bool success = CustomCommit(batch);
     if (success) {
-        GetDB().WriteBestBlock(batch, GetLocator(*m_chain, m_best_block_index.load()->GetBlockHash()));
+        GetDB().WriteBestBlock(batch, locator);
     }
     if (!success || !GetDB().WriteBatch(batch)) {
         return error("%s: Failed to commit latest %s state", __func__, GetName());
@@ -259,7 +259,7 @@ bool BaseIndex::Rewind(const CBlockIndex* current_tip, const CBlockIndex* new_ti
     // In case we reorg beyond the pruned depth, ReadBlockFromDisk would
     // throw and lead to a graceful shutdown
     SetBestBlockIndex(new_tip);
-    if (!Commit()) {
+    if (!Commit(GetLocator(*m_chain, new_tip->GetBlockHash()))) {
         // If commit fails, revert the best block index to avoid corruption.
         SetBestBlockIndex(current_tip);
         return false;

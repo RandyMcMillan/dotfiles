@@ -104,10 +104,11 @@ function bitcoin-dl-install-depends(){
 }
 
 function git-fetch-branches(){
-    git stash || echo "no stash"
+    git stash && export STASH=true || echo "no stash"
     git branch -q -r || grep -v '\->' || while read remote; do git branch -q "${remote#origin/}" "$remote" || echo skip $remote; done
     git fetch --all  || echo skip && git pull --all || echo skip
-    git stash pop || echo "no pop"
+    echo $STASH
+    #git stash pop || echo "no pop"
 }
 function git-add-remote-bitcoin-devs(){
 

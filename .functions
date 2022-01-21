@@ -108,6 +108,7 @@ function git-fetch-branches(){
     git branch -q -r || grep -v '\->' || while read remote; do git branch -q "${remote#origin/}" "$remote" || echo skip $remote; done
     git fetch --all  || echo skip && git pull --all || echo skip
     echo $STASH
+    if [[ $STASH == "true" ]];then echo $STASH; fi || echo nogo
     #git stash pop || echo "no pop"
 }
 function git-add-remote-bitcoin-devs(){

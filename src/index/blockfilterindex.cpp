@@ -10,8 +10,6 @@
 #include <util/system.h>
 #include <validation.h>
 
-using node::UndoReadFromDisk;
-
 /* The index database stores three items for each block: the disk location of the encoded filter,
  * its dSHA256 hash, and the header. Those belonging to blocks on the active chain are indexed by
  * height, and those belonging to blocks that have been reorganized out of the active chain are
@@ -107,6 +105,13 @@ BlockFilterIndex::BlockFilterIndex(std::unique_ptr<interfaces::Chain> chain, Blo
     m_name = filter_name + " block filter index";
     m_db = std::make_unique<BaseIndex::DB>(path / "db", n_cache_size, f_memory, f_wipe);
     m_filter_fileseq = std::make_unique<FlatFileSeq>(std::move(path), "fltr", FLTR_FILE_CHUNK_SIZE);
+}
+
+interfaces::Chain::NotifyOptions BlockFilterIndex::CustomOptions()
+{
+    interfaces::Chain::NotifyOptions options;
+    options.connect_undo_data = true;
+    return options;
 }
 
 bool BlockFilterIndex::CustomInit(const std::optional<interfaces::BlockKey>& block)
@@ -212,17 +217,9 @@ size_t BlockFilterIndex::WriteFilterToDisk(FlatFilePos& pos, const BlockFilter& 
 
 bool BlockFilterIndex::CustomAppend(const interfaces::BlockInfo& block)
 {
-    CBlockUndo block_undo;
     uint256 prev_header;
 
     if (block.height > 0) {
-        // pindex variable gives indexing code access to node internals. It
-        // will be removed in upcoming commit
-        const CBlockIndex* pindex = WITH_LOCK(cs_main, return m_chainstate->m_blockman.LookupBlockIndex(block.hash));
-        if (!UndoReadFromDisk(block_undo, pindex)) {
-            return false;
-        }
-
         std::pair<uint256, DBVal> read_out;
         if (!m_db->Read(DBHeightKey(block.height - 1), read_out)) {
             return false;
@@ -237,7 +234,7 @@ bool BlockFilterIndex::CustomAppend(const interfaces::BlockInfo& block)
         prev_header = read_out.second.header;
     }
 
-    BlockFilter filter(m_filter_type, *block.data, block_undo);
+    BlockFilter filter(m_filter_type, *block.data, block.undo_data ? *block.undo_data : CBlockUndo());
 
     size_t bytes_written = WriteFilterToDisk(m_next_filter_pos, filter);
     if (bytes_written == 0) return false;

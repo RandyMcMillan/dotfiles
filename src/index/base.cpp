@@ -54,6 +54,7 @@ public:
     void chainStateFlushed(const CBlockLocator& locator) override;
 
     BaseIndex& m_index;
+    interfaces::Chain::NotifyOptions m_options = m_index.CustomOptions();
 };
 
 void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
@@ -81,11 +82,26 @@ void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
         return;
     }
 
-    if (!m_index.CustomAppend(block)) {
+    interfaces::BlockInfo block_info = node::MakeBlockInfo(pindex, block.data);
+    CBlockUndo block_undo;
+    if (m_options.connect_undo_data && pindex->nHeight > 0) {
+        if (!node::UndoReadFromDisk(block_undo, pindex)) {
+            FatalError("%s: Failed to read block %s undo data from disk",
+                       __func__, pindex->GetBlockHash().ToString());
+            return m_index.Interrupt();
+        }
+        block_info.undo_data = &block_undo;
+    }
+    if (!m_index.CustomAppend(block_info)) {
         FatalError("%s: Failed to write block %s to index",
                    __func__, pindex->GetBlockHash().ToString());
-        return;
-    } else {
+        return m_index.Interrupt();
+    }
+    // Only update m_best_block_index between flushes if synced. Unclear why
+    // best block is not updated here before sync, but this has been
+    // longstanding behavior since syncing was introduced in #13033 so care
+    // should be taken if changing m_best_block_index semantics.
+    if (m_index.m_synced) {
         m_index.SetBestBlockIndex(pindex);
     }
 }
@@ -157,6 +173,7 @@ void BaseIndex::ThreadSync()
     const CBlockIndex* pindex = m_best_block_index.load();
     if (!m_synced) {
         auto& consensus_params = Params().GetConsensus();
+        auto notifications = WITH_LOCK(m_mutex, return m_notifications);
 
         std::chrono::steady_clock::time_point last_log_time{0s};
         std::chrono::steady_clock::time_point last_locator_write_time{0s};
@@ -212,11 +229,7 @@ void BaseIndex::ThreadSync()
             } else {
                 block_info.data = &block;
             }
-            if (!CustomAppend(block_info)) {
-                FatalError("%s: Failed to write block %s to index database",
-                           __func__, pindex->GetBlockHash().ToString());
-                return;
-            }
+            notifications->blockConnected(block_info);
         }
     }
 
@@ -293,7 +306,7 @@ bool BaseIndex::IgnoreBlockConnected(const interfaces::BlockInfo& block)
 {
     // During initial sync, ignore validation interface notifications, only
     // process notifications from sync thread.
-    if (!m_synced) return true;
+    if (!m_synced) return block.chain_tip;
 
     const CBlockIndex* pindex = WITH_LOCK(cs_main, return m_chainstate->m_blockman.LookupBlockIndex(block.hash));
     const CBlockIndex* best_block_index = m_best_block_index.load();

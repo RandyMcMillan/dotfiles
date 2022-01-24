@@ -79,7 +79,7 @@ private:
     /// interrupted with m_interrupt. Once the index gets in sync, the m_synced
     /// flag is set and the BlockConnected ValidationInterface callback takes
     /// over and the sync thread exits.
-    void ThreadSync();
+    void ThreadSync() EXCLUSIVE_LOCKS_REQUIRED(!m_mutex);
 
     /// Write the current index state (eg. chain block locator and subclass-specific items) to disk.
     ///

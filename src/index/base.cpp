@@ -57,6 +57,13 @@ public:
     interfaces::Chain::NotifyOptions m_options = m_index.CustomOptions();
     std::chrono::steady_clock::time_point m_last_log_time{0s};
     std::chrono::steady_clock::time_point m_last_locator_write_time{0s};
+    //! As blocks are disconnected, index is updated but not committed to until
+    //! the next flush or block connection. start/end variables record the first
+    //! and last disconnected blocks as an inclusive range. If start is set and
+    //! end is null it means an error has occurred, and the index will stop
+    //! trying to rewind and handle the error on the next new block or flush.
+    const CBlockIndex* m_rewind_start = nullptr;
+    const CBlockIndex* m_rewind_end = nullptr;
 };
 
 void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
@@ -79,11 +86,18 @@ void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
 
     if (!block.data || m_index.IgnoreBlockConnected(block)) return;
 
-    const CBlockIndex* best_block_index = m_index.m_best_block_index.load();
-    if (block.chain_tip && best_block_index != pindex->pprev && !m_index.Rewind(best_block_index, pindex->pprev)) {
+    bool success = !m_rewind_start || m_rewind_end;
+    if (m_rewind_start && success) {
+        const CBlockIndex* best_block_index = m_index.m_best_block_index.load();
+        assert(!best_block_index || best_block_index->GetAncestor(pindex->nHeight - 1) == pindex->pprev);
+        m_index.m_best_block_index = pindex->pprev;
+        chainStateFlushed(GetLocator(*m_index.m_chain, pindex->pprev->GetBlockHash()));
+        success = m_index.m_best_block_index == pindex->pprev;
+    }
+    if (!success) {
         FatalError("%s: Failed to rewind index %s to a previous chain tip",
                    __func__, m_index.GetName());
-        return;
+        return m_index.Interrupt();
     }
 
     interfaces::BlockInfo block_info = node::MakeBlockInfo(pindex, block.data);
@@ -130,6 +144,25 @@ void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
 
 void BaseIndexNotifications::blockDisconnected(const interfaces::BlockInfo& block)
 {
+    // During initial sync, ignore validation interface notifications, only
+    // process notifications from sync thread.
+    if (!m_index.m_synced && block.chain_tip) return;
+
+    const CBlockIndex* pindex = WITH_LOCK(cs_main, return m_index.m_chainstate->m_blockman.LookupBlockIndex(block.hash));
+    if (!m_rewind_start || m_rewind_end) m_rewind_end = pindex;
+    if (!m_rewind_start) m_rewind_start = pindex;
+
+    CBlockUndo block_undo;
+    interfaces::BlockInfo block_info = node::MakeBlockInfo(pindex, block.data);
+    if (m_options.disconnect_undo_data && block.height > 0) {
+        if (!node::UndoReadFromDisk(block_undo, pindex)) {
+            m_rewind_end = nullptr;
+        }
+        block_info.undo_data = &block_undo;
+    }
+    if (m_rewind_end && !m_index.CustomRemove(block_info)) {
+        m_rewind_end = nullptr;
+    }
 }
 
 void BaseIndexNotifications::chainStateFlushed(const CBlockLocator& locator)
@@ -139,7 +172,16 @@ void BaseIndexNotifications::chainStateFlushed(const CBlockLocator& locator)
     // No need to handle errors in Commit. If it fails, the error will be already be logged. The
     // best way to recover is to continue, as index cannot be corrupted by a missed commit to disk
     // for an advanced index state.
-    m_index.Commit(locator);
+    // In the case of a reorg, ensure persisted block locator is not stale.
+    // Pruning has a minimum of 288 blocks-to-keep and getting the index
+    // out of sync may be possible but a users fault.
+    // In case we reorg beyond the pruned depth, ReadBlockFromDisk would
+    // throw and lead to a graceful shutdown
+    if (!m_index.Commit(locator) && m_rewind_start) {
+        // If commit fails, revert the best block index to avoid corruption.
+        m_index.m_best_block_index = m_rewind_start;
+    }
+    m_rewind_start = nullptr;
 }
 
 BaseIndex::DB::DB(const fs::path& path, size_t n_cache_size, bool f_memory, bool f_wipe, bool f_obfuscate) :
@@ -208,14 +250,25 @@ void BaseIndex::ThreadSync()
                 if (!pindex_next) {
                     assert(pindex);
                     notifications->blockConnected(node::MakeBlockInfo(pindex));
-                    assert(m_synced);
                     notifications->chainStateFlushed(GetLocator(*m_chain, pindex->GetBlockHash()));
                     break;
                 }
-                if (pindex_next->pprev != pindex && !Rewind(pindex, pindex_next->pprev)) {
-                    FatalError("%s: Failed to rewind index %s to a previous chain tip",
-                               __func__, GetName());
-                    return;
+                if (pindex_next->pprev != pindex) {
+                    const CBlockIndex* current_tip = pindex;
+                    const CBlockIndex* new_tip = pindex_next->pprev;
+                    for (const CBlockIndex* iter_tip = current_tip; iter_tip != new_tip; iter_tip = iter_tip->pprev) {
+                        CBlock block;
+                        interfaces::BlockInfo block_info = node::MakeBlockInfo(iter_tip);
+                        block_info.chain_tip = false;
+                        if (!ReadBlockFromDisk(block, iter_tip, consensus_params)) {
+                            FatalError("%s: Failed to read block %s from disk",
+                                       __func__, iter_tip->GetBlockHash().ToString());
+                            return;
+                        } else {
+                            block_info.data = &block;
+                        }
+                        notifications->blockDisconnected(block_info);
+                    }
                 }
                 pindex = pindex_next;
             }
@@ -259,50 +312,6 @@ bool BaseIndex::Commit(const CBlockLocator& locator)
     return true;
 }
 
-bool BaseIndex::Rewind(const CBlockIndex* current_tip, const CBlockIndex* new_tip)
-{
-    assert(current_tip == m_best_block_index);
-    assert(current_tip->GetAncestor(new_tip->nHeight) == new_tip);
-
-    const Consensus::Params& consensus_params = Params().GetConsensus();
-    CBlock block;
-    CBlockUndo block_undo;
-
-    for (const CBlockIndex* iter_tip = current_tip; iter_tip != new_tip; iter_tip = iter_tip->pprev) {
-        interfaces::BlockInfo block_info = node::MakeBlockInfo(iter_tip);
-        if (CustomOptions().disconnect_data) {
-            if (!ReadBlockFromDisk(block, iter_tip, consensus_params)) {
-                return error("%s: Failed to read block %s from disk",
-                             __func__, iter_tip->GetBlockHash().ToString());
-            }
-            block_info.data = &block;
-	}
-        if (CustomOptions().disconnect_undo_data && iter_tip->nHeight > 0) {
-            if (!node::UndoReadFromDisk(block_undo, iter_tip)) {
-                return false;
-            }
-            block_info.undo_data = &block_undo;
-        }
-        if (!CustomRemove(block_info)) {
-            return false;
-        }
-    }
-
-    // In the case of a reorg, ensure persisted block locator is not stale.
-    // Pruning has a minimum of 288 blocks-to-keep and getting the index
-    // out of sync may be possible but a users fault.
-    // In case we reorg beyond the pruned depth, ReadBlockFromDisk would
-    // throw and lead to a graceful shutdown
-    SetBestBlockIndex(new_tip);
-    if (!Commit(GetLocator(*m_chain, new_tip->GetBlockHash()))) {
-        // If commit fails, revert the best block index to avoid corruption.
-        SetBestBlockIndex(current_tip);
-        return false;
-    }
-
-    return true;
-}
-
 bool BaseIndex::IgnoreBlockConnected(const interfaces::BlockInfo& block)
 {
     // During initial sync, ignore validation interface notifications, only
@@ -336,10 +345,6 @@ bool BaseIndex::IgnoreBlockConnected(const interfaces::BlockInfo& block)
 
 bool BaseIndex::IgnoreChainStateFlushed(const CBlockLocator& locator)
 {
-    if (!m_synced) {
-        return true;
-    }
-
     assert(!locator.IsNull());
     const uint256& locator_tip_hash = locator.vHave.front();
     const CBlockIndex* locator_tip_index;
@@ -361,10 +366,12 @@ bool BaseIndex::IgnoreChainStateFlushed(const CBlockLocator& locator)
     // event, log a warning and let the queue clear.
     const CBlockIndex* best_block_index = m_best_block_index.load();
     if (best_block_index->GetAncestor(locator_tip_index->nHeight) != locator_tip_index) {
-        LogPrintf("%s: WARNING: Locator contains block (hash=%s) not on known best " /* Continued */
-                  "chain (tip=%s); not writing index locator\n",
-                  __func__, locator_tip_hash.ToString(),
-                  best_block_index->GetBlockHash().ToString());
+        if (m_synced) {
+            LogPrintf("%s: WARNING: Locator contains block (hash=%s) not on known best " /* Continued */
+                      "chain (tip=%s); not writing index locator\n",
+                      __func__, locator_tip_hash.ToString(),
+                      best_block_index->GetBlockHash().ToString());
+        }
         return true;
     }
     return false;

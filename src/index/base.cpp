@@ -67,8 +67,10 @@ void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
         // without any block data, indicating the starting block (based on the
         // index locator) where the index was last synced. If the index is
         // already synced at this point, block.chain_tip will be true, and
-        // m_synced can latch to true.
-        assert(!m_index.m_best_block_index);
+        // m_synced can latch to true. Otherwise, more blockConnected events
+        // will be sent with block data, followed by a final blockConnected
+        // event without block data, to finish the sync and update
+        // m_best_block_index and m_synced.
         m_index.SetBestBlockIndex(pindex);
         if (block.chain_tip) {
             m_index.m_synced = true;
@@ -204,10 +206,10 @@ void BaseIndex::ThreadSync()
                 LOCK(cs_main);
                 const CBlockIndex* pindex_next = NextSyncBlock(pindex, m_chainstate->m_chain);
                 if (!pindex_next) {
-                    SetBestBlockIndex(pindex);
-                    m_synced = true;
-                    // No need to handle errors in Commit. See rationale above.
-                    Commit(GetLocator(*m_chain, pindex->GetBlockHash()));
+                    assert(pindex);
+                    notifications->blockConnected(node::MakeBlockInfo(pindex));
+                    assert(m_synced);
+                    notifications->chainStateFlushed(GetLocator(*m_chain, pindex->GetBlockHash()));
                     break;
                 }
                 if (pindex_next->pprev != pindex && !Rewind(pindex, pindex_next->pprev)) {

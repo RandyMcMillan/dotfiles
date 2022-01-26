@@ -60,6 +60,8 @@ public:
 
     BaseIndex& m_index;
     interfaces::Chain::NotifyOptions m_options = m_index.CustomOptions();
+    std::chrono::steady_clock::time_point m_last_log_time{0s};
+    std::chrono::steady_clock::time_point m_last_locator_write_time{0s};
 };
 
 void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
@@ -96,6 +98,16 @@ void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
         }
         block_info.undo_data = &block_undo;
     }
+    std::chrono::steady_clock::time_point current_time{0s};
+    bool synced = m_index.m_synced;
+    if (!synced) {
+        current_time = std::chrono::steady_clock::now();
+        if (m_last_log_time + SYNC_LOG_INTERVAL < current_time) {
+            LogPrintf("Syncing %s with block chain from height %d\n",
+                      m_index.GetName(), pindex->nHeight);
+            m_last_log_time = current_time;
+        }
+    }
     if (!m_index.CustomAppend(block_info)) {
         FatalError("%s: Failed to write block %s to index",
                    __func__, pindex->GetBlockHash().ToString());
@@ -105,12 +117,21 @@ void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
     // best block is not updated here before sync, but this has been
     // longstanding behavior since syncing was introduced in #13033 so care
     // should be taken if changing m_best_block_index semantics.
-    if (m_index.m_synced) {
+    assert(synced == m_index.m_synced);
+    if (synced) {
         // Setting the best block index is intentionally the last step of this
         // function, so BlockUntilSyncedToCurrentChain callers waiting for the
         // best block index to be updated can rely on the block being fully
         // processed, and the index object being safe to delete.
         m_index.SetBestBlockIndex(pindex);
+    } else if (m_last_locator_write_time + SYNC_LOCATOR_WRITE_INTERVAL < current_time || m_index.m_interrupt) {
+        auto locator = GetLocator(*m_index.m_chain, pindex->GetBlockHash());
+        m_index.SetBestBlockIndex(pindex);
+        m_last_locator_write_time = current_time;
+        // No need to handle errors in Commit. If it fails, the error will be already be
+        // logged. The best way to recover is to continue, as index cannot be corrupted by
+        // a missed commit to disk for an advanced index state.
+        m_index.Commit(locator);
     }
 }
 
@@ -189,15 +210,8 @@ void BaseIndex::ThreadSync()
         auto& consensus_params = Params().GetConsensus();
         auto notifications = WITH_LOCK(m_mutex, return m_notifications);
 
-        std::chrono::steady_clock::time_point last_log_time{0s};
-        std::chrono::steady_clock::time_point last_locator_write_time{0s};
         while (true) {
             if (m_interrupt) {
-                SetBestBlockIndex(pindex);
-                // No need to handle errors in Commit. If it fails, the error will be already be
-                // logged. The best way to recover is to continue, as index cannot be corrupted by
-                // a missed commit to disk for an advanced index state.
-                Commit(GetLocator(*m_chain, pindex->GetBlockHash()));
                 return;
             }
 
@@ -217,20 +231,6 @@ void BaseIndex::ThreadSync()
                     return;
                 }
                 pindex = pindex_next;
-            }
-
-            auto current_time{std::chrono::steady_clock::now()};
-            if (last_log_time + SYNC_LOG_INTERVAL < current_time) {
-                LogPrintf("Syncing %s with block chain from height %d\n",
-                          GetName(), pindex->nHeight);
-                last_log_time = current_time;
-            }
-
-            if (last_locator_write_time + SYNC_LOCATOR_WRITE_INTERVAL < current_time) {
-                SetBestBlockIndex(pindex->pprev);
-                last_locator_write_time = current_time;
-                // No need to handle errors in Commit. See rationale above.
-                Commit(GetLocator(*m_chain, pindex->GetBlockHash()));
             }
 
             CBlock block;

@@ -5,7 +5,7 @@ adduser-git() {
 adduser git
 usermod -aG sudo git
 
-su - git
+#su - git
 
 }
 #adduser-git

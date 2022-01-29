@@ -40,6 +40,9 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
+HOMEBREW_NO_ENV_HINTS                   :=false
+export HOMEBREW_NO_ENV_HINTS
+
 .PHONY:- init help report
 .SILENT:
 -: report help
@@ -66,6 +69,7 @@ help:
 	@echo "	make                        vim"
 	@echo "	make                        config-git"
 	@echo "	make                        config-github"
+	@echo "	make                        adduser-git"
 	@echo ""
 	@echo "---"
 	@echo ""
@@ -91,6 +95,7 @@ report:
 	@echo '        - GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
 	@echo '        - GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}	'
+	@echo '        - HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
 .PHONY: whatami
 whatami:
 	./whatami.sh
@@ -98,7 +103,9 @@ whatami:
 #readme:
 #	make help > source/COMMANDS.md
 #	git add -f README.md && git commit -m "make readme" && git push -f origin master
-
+.PHONY:adduser-git
+adduser-git:
+	./adduser-git.sh
 .PHONY: bootstrap
 bootstrap: executable
 	./boot-strap.sh

@@ -3,6 +3,10 @@ if [ ! -z $remote_user ] || [ ! -z $remote_server ];then
 ssh $remote_user@$remote_server "$( cat <<'EOT'
 echo "These commands will be run on: $( uname -a )"
 echo "They are executed by: $( whoami )"
+DEBIAN_FRONTEND=noninteractive apt -q -y install git make && \
+DEBIAN_FRONTEND=noninteractive [ ! -d "$HOME/dotfiles" ] && git clone https://github.com/RandyMcMillan/dotfiles.git || echo "$HOME/dotfiles exists!" && \
+cd $HOME/dotfiles && make && make adduser-git || whoami && \
+echo; exit;
 EOT
 )"
 else

@@ -81,6 +81,9 @@ checkraspi(){
 }
 if [[ "$OSTYPE" == "linux"* ]]; then
     #CHECK APT
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/git/.profile
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    source ~/.profile
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         PACKAGE_MANAGER=apt
         export PACKAGE_MANAGER

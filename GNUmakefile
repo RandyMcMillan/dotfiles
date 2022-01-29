@@ -70,7 +70,8 @@ help:
 	@echo "	make                        config-git"
 	@echo "	make                        config-github"
 	@echo "	make                        adduser-git"
-	@echo ""
+	@echo "	make                        install-dotfiles-on-remote"
+	@echo "	remote_user=<user> remote_server=<domain/ip> make install-dotfiles-on-remote"
 	@echo "---"
 	@echo ""
 	@echo "	make                        docs"
@@ -123,35 +124,34 @@ brew: executable
 
 .PHONY: all
 all: executable
-	#./install-Bash+Utils.bash
-	./checkbrew.sh
-	#./install-firefox.sh $(FORCE)
-	./install-Docker.sh
-	./install-FastLane.sh
-	./install-OSXFuse.sh
-	./install-Onyx.sh
-	./install-SassC.sh
-	./install-discord.sh
-	#./install-eq-mac.sh
-	./install-gpg-suite.sh
-	./install-iterm2.sh
-	./install-keeping-you-awake.sh
-	./install-little-snitch.sh
-	y | ./install-openssl.sh
-	./install-python3.X.sh
-	./install-protonvpn.sh
-	./install-ql-plugins.sh
-	./install-qt5.sh
-	./install-sha256sum.sh
-	#./install-specter-desktop.sh
-	./install-vmware-fusion11.sh #Mojave
-	./install-vypr-vpn.sh
-	./install-youtube-dl.sh
-	./install-ytop.sh
-	#./install-valgrind-macos.sh
-	./install-umbrel-dev.sh
-	./install-vim.sh
-	./install-inkscape.sh
+	bash -c " echo && \
+	y | ./checkbrew.sh && \
+	y | ./install-Docker.sh && \
+	y | ./install-FastLane.sh && \
+	y | ./install-OSXFuse.sh && \
+	y | ./install-Onyx.sh && \
+	y | ./install-SassC.sh && \
+	y | ./install-discord.sh && \
+	y | ./install-gpg-suite.sh && \
+	y | ./install-iterm2.sh && \
+	y | ./install-keeping-you-awake.sh && \
+	y | ./install-little-snitch.sh && \
+	y | ./install-openssl.sh && \
+	y | ./install-python3.X.sh && \
+	y | ./install-protonvpn.sh && \
+	y | ./install-ql-plugins.sh && \
+	y | ./install-qt5.sh && \
+	y | ./install-qt5-creator.sh && \
+	y | ./install-sha256sum.sh && \
+	y | ./install-vmware-fusion11.sh #Mojave && \
+	y | ./install-vypr-vpn.sh && \
+	y | ./install-youtube-dl.sh && \
+	y | ./install-ytop.sh && \
+	y | ./install-umbrel-dev.sh && \
+	y | ./install-vim.sh && \
+	y | ./install-inkscape.sh && \
+	y | ./install-dotfiles-on-remote.sh && \
+	echo; exit;"
 
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
 shell: alpine-shell
@@ -235,4 +235,9 @@ export BITCOIN_VERSION
 .PHONY: bitcoin-test-battery
 bitcoin-test-battery:
 	bash -c "./bitcoin-test-battery.sh $(BITCOIN_VERSION) "
+.PHONY: install-dotfiles-on-remote
+install-dotfiles-on-remote:
+	./install-dotfiles-on-remote.sh
+
+
 

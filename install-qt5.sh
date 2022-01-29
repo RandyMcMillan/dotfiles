@@ -25,7 +25,7 @@ echo "$OSTYPE" | awk '{print tolower($0)}'
 checkbrew() {
 
     if hash brew 2>/dev/null; then
-        brew install awk git qt
+        brew install awk git qt@5
         export PKG_CONFIG_PATH="/usr/local/opt/qt/lib/pkgconfig"
         #./install-Vim.sh
         #brew update

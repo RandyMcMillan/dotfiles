@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+ HOMEBREW_NO_INSTALL_CLEANUP=fale
+ export  HOMEBREW_NO_INSTALL_CLEANUP
 
 #[[ -f report.sh ]] && . report.sh || VARIABLE="No report.sh file" && echo $VARIABLE
 #[[ -f whatami.sh ]] && . whatami.sh || VARIABLE="No whatami.sh file" && echo $VARIABLE
@@ -81,9 +83,9 @@ checkraspi(){
 }
 if [[ "$OSTYPE" == "linux"* ]]; then
     #CHECK APT
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/git/.profile
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/git/.bash_profile
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    source ~/.profile
+    source ~/.bash_profile
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         PACKAGE_MANAGER=apt
         export PACKAGE_MANAGER

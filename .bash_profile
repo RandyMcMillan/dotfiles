@@ -8,6 +8,10 @@ export PATH="$HOME/bin:$PATH";
 # Add `~/init` to the `$PATH`
 export PATH="$HOME/init:$PATH";
 
+if which brew &> /dev/null; then
+     echo 'export PATH="/usr/local/sbin:$PATH"' >> /Users/git/.bash_profile
+fi
+
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
@@ -75,16 +79,8 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 export GPG_TTY=$(tty)
-export PATH="/usr/local/opt/qt/bin:$PATH"
 export PATH="/usr/local/opt/ruby@2.5.8/bin:$PATH"
 export PATH="/usr/local/opt/ruby@2.5/bin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"

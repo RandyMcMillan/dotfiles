@@ -6,25 +6,26 @@ addPath() {
 }
 export -f addPath
 
-install-bash-infinity() {
-mkdir -p /usr/local/bin
-
-if [ ! -d "${BASH_SOURCE[0]%/*}"/bin/bash-oo-framework ]; then \
-    git clone https://github.com/niieani/bash-oo-framework.git bin/bash-oo-framework
-fi
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
-
-#!/usr/bin/env bash
-import util/log
-import util/exception
-import util/tryCatch
-import util/namedParameters
-import util/variable
-import util/type
-import util/class
-
-
-}
+#install-bash-infinity() {
+#mkdir -p /usr/local/bin
+#echo ${BASH_SOURCE[0]%/*}
+#
+##if [ ! -d "${BASH_SOURCE[0]%/*}"/bin/bash-oo-framework ]; then \
+##    git clone https://github.com/niieani/bash-oo-framework.git bin/bash-oo-framework
+##fi
+##source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/bash-oo-framework/lib/oo-bootstrap.sh"
+#
+##!/usr/bin/env bash
+#import util/log
+#import util/exception
+#import util/tryCatch
+#import util/namedParameters
+#import util/variable
+#import util/type
+#import util/class
+#
+#
+#}
 
 install-bash() {
 
@@ -38,5 +39,5 @@ install-bash() {
     fi
 }
 install-bash
-install-bash-infinity
+#install-bash-infinity
 

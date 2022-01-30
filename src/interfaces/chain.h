@@ -280,6 +280,8 @@ public:
         bool disconnect_data = false;
         //! Include undo data with block disconnected notifications.
         bool disconnect_undo_data = false;
+        //! Name to use for attachChain sync thread.
+        const char* thread_name = nullptr;
     };
 
     //! Register handler for notifications if all blocks needed to sync from

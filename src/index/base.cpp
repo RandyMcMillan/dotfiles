@@ -126,8 +126,12 @@ BaseIndex::BaseIndex(std::unique_ptr<interfaces::Chain> chain)
 
 BaseIndex::~BaseIndex()
 {
-    Interrupt();
-    Stop();
+    //! Assert Stop() was called before this base destructor. Notification
+    //! handlers call pure virtual methods like GetName(), so if they are still
+    //! being called at this point, they would segfault.
+    LOCK(m_mutex);
+    assert(!m_notifications);
+    assert(!m_handler);
 }
 
 static const CBlockIndex* NextSyncBlock(const CBlockIndex* pindex_prev, CChain& chain) EXCLUSIVE_LOCKS_REQUIRED(cs_main)

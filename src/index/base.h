@@ -132,7 +132,6 @@ protected:
 
 public:
     BaseIndex(std::unique_ptr<interfaces::Chain> chain);
-    /// Destructor interrupts sync thread if running and blocks until it exits.
     virtual ~BaseIndex();
 
     /// Blocks the current thread until the index is caught up to the current

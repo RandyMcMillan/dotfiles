@@ -508,6 +508,12 @@ public:
         CBlockIndex* block = active[height];
         return block && ((block->nStatus & BLOCK_HAVE_DATA) != 0) && block->nTx > 0;
     }
+    bool getTip(const FoundBlock& block) override
+    {
+        WAIT_LOCK(cs_main, lock);
+        const CChain& active = Assert(m_node.chainman)->ActiveChain();
+        return FillBlock(active.Tip(), block, lock, active);
+    }
     CBlockLocator getTipLocator() override
     {
         LOCK(cs_main);
@@ -783,6 +789,10 @@ public:
     std::unique_ptr<Handler> handleNotifications(std::shared_ptr<Notifications> notifications) override
     {
         return std::make_unique<NotificationsHandlerImpl>(std::move(notifications));
+    }
+    void waitForPendingNotifications() override
+    {
+        SyncWithValidationInterfaceQueue();
     }
     void waitForNotificationsIfTipChanged(const uint256& old_tip) override
     {

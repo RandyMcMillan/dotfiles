@@ -106,7 +106,8 @@ function bitcoin-dl-install-depends(){
 function git-fetch-branches(){
     git stash && export STASH=true || echo "no stash"
     git branch -q -r || grep -v '\->' || while read remote; do git branch -q "${remote#origin/}" "$remote" || echo skip $remote; done
-    git fetch --all  || echo skip && git pull --all || echo skip
+    #git fetch --all  || echo skip && git pull --all || echo skip
+    git fetch $1 $2 $3 || echo skip #&& git pull $1 $2 $3 || echo skip
     echo $STASH
     #if [[ $STASH == "true" ]];then echo $STASH; fi || echo nogo
     if [[ $STASH == "true" ]];then git stash list; fi || echo nogo

@@ -89,12 +89,6 @@ protected:
     std::unique_ptr<interfaces::Chain> m_chain;
     CChainState* m_chainstate{nullptr};
 
-    /// Return whether to ignore stale, out-of-sync block connected event
-    bool IgnoreBlockConnected(const interfaces::BlockInfo& block);
-
-    /// Return whether to ignore stale, out-of-sync chain flushed event
-    bool IgnoreChainStateFlushed(const CBlockLocator& locator);
-
     /// Return custom notification options for index.
     [[nodiscard]] virtual interfaces::Chain::NotifyOptions CustomOptions() { return {}; }
 

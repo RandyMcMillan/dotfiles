@@ -413,22 +413,6 @@ bool FillBlock(const CBlockIndex* index, const FoundBlock& block, UniqueLock<Rec
     return true;
 }
 
-static const CBlockIndex* NextSyncBlock(const CBlockIndex* pindex_prev, const CChain& chain) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
-{
-    AssertLockHeld(cs_main);
-
-    if (!pindex_prev) {
-        return chain.Genesis();
-    }
-
-    const CBlockIndex* pindex = chain.Next(pindex_prev);
-    if (pindex) {
-        return pindex;
-    }
-
-    return chain.Next(chain.FindFork(pindex_prev));
-}
-
 class NotificationsProxy : public CValidationInterface
 {
 public:
@@ -456,7 +440,35 @@ public:
         m_notifications->updatedBlockTip();
     }
     void ChainStateFlushed(const CBlockLocator& locator) override { m_notifications->chainStateFlushed(locator); }
+    static void connect(std::shared_ptr<NotificationsProxy> self) EXCLUSIVE_LOCKS_REQUIRED(!self->m_mutex)
+    {
+        LOCK(self->m_mutex);
+        if (self->m_state == INIT) {
+            RegisterSharedValidationInterface(self);
+            self->m_state = CONNECTED;
+        }
+    }
+    static void disconnect(std::shared_ptr<NotificationsProxy> self) EXCLUSIVE_LOCKS_REQUIRED(!self->m_mutex)
+    {
+        LOCK(self->m_mutex);
+        if (self->m_state == CONNECTED) {
+            UnregisterSharedValidationInterface(self);
+        }
+        self->m_state = DISCONNECTED;
+    }
     std::shared_ptr<Chain::Notifications> m_notifications;
+    Mutex m_mutex;
+    //! State reflecting whether proxy is registered to receive notifcations
+    //! from validationinterface, and whether the handler is connected to
+    //! receive notifications from the proxy. The implementation needs to avoid
+    //! registering the proxy if the handler is disconnected first, and avoid
+    //! unregistering the proxy if it wasn't registered first. State needs to be
+    //! guarded by mutex because connect() is called from a
+    //! CallFunctionInValidationInterfaceQueue callback in validationinterface
+    //! thread, and disconnect() is called from the application thread which
+    //! owns the handler, and the two calls could happen at any time in any
+    //! order.
+    enum State { INIT, CONNECTED, DISCONNECTED } m_state GUARDED_BY(m_mutex) = INIT;
 };
 
 class NotificationsHandlerImpl : public Handler
@@ -465,7 +477,6 @@ public:
     explicit NotificationsHandlerImpl(std::shared_ptr<Chain::Notifications> notifications)
         : m_proxy(std::make_shared<NotificationsProxy>(std::move(notifications)))
     {
-        RegisterSharedValidationInterface(m_proxy);
     }
     ~NotificationsHandlerImpl() override { disconnect(); }
     void interrupt() override { m_interrupt(); }
@@ -473,7 +484,7 @@ public:
     {
         m_interrupt();
         if (m_proxy) {
-            UnregisterSharedValidationInterface(m_proxy);
+            NotificationsProxy::disconnect(m_proxy);
             m_proxy.reset();
         }
         if (m_thread_sync.joinable()) {
@@ -788,6 +799,22 @@ public:
     }
     std::unique_ptr<Handler> attachChain(std::shared_ptr<Notifications> notifications, const CBlockLocator& locator, const NotifyOptions& options) override
     {
+        // Lock cs_main while finding forks and determining which blocks to
+        // rescan. Release cs_main while processing blocks and while calling
+        // RegisterSharedValidationInterface in the notifications thread.
+        //
+        // To prevent older, stale notifications currently in the validation
+        // queue from being received, it is important to not to register for
+        // notifications immediately, but to delay registration with
+        // CallFunctionInValidationInterfaceQueue, registering the notification
+        // proxy inside the queue, so older notifications in the queue before it
+        // get processed before the proxy is registered.
+        //
+        // To prevent new notifications that may be happening in the background
+        // from being lost, it is important to keep cs_main locked while calling
+        // CallFunctionInValidationInterfaceQueue, so the new notifications will
+        // be added to the queue after the queue entry which connects the proxy.
+        AssertLockNotHeld(::cs_main);
         LOCK(cs_main);
         const Chainstate& active = Assert(m_node.chainman)->ActiveChainstate();
         const CBlockIndex* start_block = locator.IsNull() ? nullptr : active.FindForkInGlobalIndex(locator);
@@ -797,57 +824,23 @@ public:
         if (!block_info.chain_tip && !hasDataFromTipDown(start_block)) return nullptr;
         auto handler = std::make_unique<NotificationsHandlerImpl>(notifications);
         assert(!handler->m_thread_sync.joinable());
-        if (!block_info.chain_tip) handler->m_thread_sync = std::thread(&util::TraceThread, options.thread_name, [&active, start_block, notifications, handler = handler.get()] {
-            SetSyscallSandboxPolicy(SyscallSandboxPolicy::TX_INDEX);
-            const CBlockIndex* pindex = start_block;
-            auto& consensus_params = Params().GetConsensus();
-            while (!handler->m_interrupt) {
-                {
-                    LOCK(cs_main);
-                    const CBlockIndex* pindex_next = NextSyncBlock(pindex, active.m_chain);
-                    if (!pindex_next) {
-                        assert(pindex);
-                        notifications->blockConnected(kernel::MakeBlockInfo(pindex));
-                        notifications->chainStateFlushed(::GetLocator(pindex));
-                        break;
-                    }
-                    if (pindex_next->pprev != pindex) {
-                        const CBlockIndex* current_tip = pindex;
-                        const CBlockIndex* new_tip = pindex_next->pprev;
-                        for (const CBlockIndex* iter_tip = current_tip; iter_tip != new_tip; iter_tip = iter_tip->pprev) {
-                            CBlock block;
-                            interfaces::BlockInfo block_info = kernel::MakeBlockInfo(iter_tip);
-                            block_info.chain_tip = false;
-                            if (!ReadBlockFromDisk(block, iter_tip, consensus_params)) {
-                                block_info.error = strprintf("%s: Failed to read block %s from disk",
-                                        __func__, iter_tip->GetBlockHash().ToString());
-                            } else {
-                                block_info.data = &block;
-                            }
-                            notifications->blockDisconnected(block_info);
-                            if (handler->m_interrupt) break;
-                        }
-                    }
-                    pindex = pindex_next;
-                }
-
-                CBlock block;
-                interfaces::BlockInfo block_info = kernel::MakeBlockInfo(pindex);
-                block_info.chain_tip = false;
-                if (!ReadBlockFromDisk(block, pindex, consensus_params)) {
-                    block_info.error = strprintf("%s: Failed to read block %s from disk",
-                            __func__, pindex->GetBlockHash().ToString());
-                } else {
-                    block_info.data = &block;
-                }
-                notifications->blockConnected(block_info);
-            }
-        });
+        if (block_info.chain_tip) {
+            CallFunctionInValidationInterfaceQueue([proxy = handler->m_proxy] { NotificationsProxy::connect(proxy); });
+        } else {
+            handler->m_thread_sync = std::thread(&util::TraceThread, options.thread_name,
+                [&active, start_block, notifications, &interrupt = handler->m_interrupt, proxy = handler->m_proxy] {
+                SetSyscallSandboxPolicy(SyscallSandboxPolicy::TX_INDEX);
+                kernel::SyncChain(active.m_chain, start_block, notifications, interrupt,
+                                  /*on_sync=*/[proxy] { CallFunctionInValidationInterfaceQueue([proxy] { NotificationsProxy::connect(proxy); }); });
+            });
+        }
         return handler;
     }
     std::unique_ptr<Handler> handleNotifications(std::shared_ptr<Notifications> notifications) override
     {
-        return std::make_unique<NotificationsHandlerImpl>(std::move(notifications));
+        auto handler = std::make_unique<NotificationsHandlerImpl>(std::move(notifications));
+        NotificationsProxy::connect(handler->m_proxy);
+        return handler;
     }
     void waitForPendingNotifications() override
     {

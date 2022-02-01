@@ -59,7 +59,6 @@ public:
     void chainStateFlushed(const CBlockLocator& locator) override;
 
     BaseIndex& m_index;
-    interfaces::Chain::NotifyOptions m_options = m_index.CustomOptions();
     std::optional<bool> m_init_result;
     std::chrono::steady_clock::time_point m_last_log_time{0s};
     std::chrono::steady_clock::time_point m_last_locator_write_time{0s};
@@ -114,16 +113,6 @@ void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
         return m_index.Interrupt();
     }
 
-    interfaces::BlockInfo block_info = kernel::MakeBlockInfo(pindex, block.data);
-    CBlockUndo block_undo;
-    if (m_options.connect_undo_data && pindex->nHeight > 0) {
-        if (!node::UndoReadFromDisk(block_undo, pindex)) {
-            FatalError("%s: Failed to read block %s undo data from disk",
-                       __func__, pindex->GetBlockHash().ToString());
-            return m_index.Interrupt();
-        }
-        block_info.undo_data = &block_undo;
-    }
     std::chrono::steady_clock::time_point current_time{0s};
     bool synced = m_index.m_synced;
     if (!synced) {
@@ -134,7 +123,7 @@ void BaseIndexNotifications::blockConnected(const interfaces::BlockInfo& block)
             m_last_log_time = current_time;
         }
     }
-    if (!m_index.CustomAppend(block_info)) {
+    if (!m_index.CustomAppend(block)) {
         FatalError("%s: Failed to write block %s to index",
                    __func__, pindex->GetBlockHash().ToString());
         return m_index.Interrupt();
@@ -170,17 +159,7 @@ void BaseIndexNotifications::blockDisconnected(const interfaces::BlockInfo& bloc
 
     const CBlockIndex* pindex = WITH_LOCK(cs_main, return m_index.m_chainstate->m_blockman.LookupBlockIndex(block.hash));
     if (!m_rewind_start) m_rewind_start = pindex;
-    if (m_rewind_error) return;
-
-    CBlockUndo block_undo;
-    interfaces::BlockInfo block_info = kernel::MakeBlockInfo(pindex, block.data);
-    if (m_options.disconnect_undo_data && block.height > 0) {
-        if (!node::UndoReadFromDisk(block_undo, pindex)) {
-            m_rewind_error = true;
-        }
-        block_info.undo_data = &block_undo;
-    }
-    m_rewind_error = m_rewind_error || !m_index.CustomRemove(block_info);
+    if (!m_rewind_error) m_rewind_error = !m_index.CustomRemove(block);
 }
 
 void BaseIndexNotifications::chainStateFlushed(const CBlockLocator& locator)

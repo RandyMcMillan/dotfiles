@@ -8,12 +8,14 @@
 #include <kernel/chain.h>
 #include <sync.h>
 #include <uint256.h>
+#include <undo.h>
 #include <util/threadinterrupt.h>
 #include <validation.h>
 
 class CBlock;
 
 using node::ReadBlockFromDisk;
+using node::UndoReadFromDisk;
 
 namespace kernel {
 interfaces::BlockInfo MakeBlockInfo(const CBlockIndex* index, const CBlock* data)
@@ -30,9 +32,30 @@ interfaces::BlockInfo MakeBlockInfo(const CBlockIndex* index, const CBlock* data
     return info;
 }
 
+bool ReadBlockData(const CBlockIndex* block, CBlock* data, CBlockUndo* undo_data, interfaces::BlockInfo& info)
+{
+    if (data) {
+        auto& consensus_params = Params().GetConsensus();
+        if (ReadBlockFromDisk(*data, block, consensus_params)) {
+            info.data = data;
+        } else {
+            info.error = strprintf("%s: Failed to read block %s from disk", __func__, block->GetBlockHash().ToString());
+            return false;
+        }
+    }
+    if (undo_data && block->nHeight > 0) {
+        if (UndoReadFromDisk(*undo_data, block)) {
+            info.undo_data = undo_data;
+        } else {
+            info.error = strprintf("%s: Failed to read block %s undo data from disk", __func__, block->GetBlockHash().ToString());
+            return false;
+        }
+    }
+    return true;
+}
+
 bool SyncChain(const CChain& chain, const CBlockIndex* block, std::shared_ptr<interfaces::Chain::Notifications> notifications, const CThreadInterrupt& interrupt, std::function<void()> on_sync)
 {
-    auto& consensus_params = Params().GetConsensus();
     while (true) {
         AssertLockNotHeld(::cs_main);
         WAIT_LOCK(::cs_main, main_lock);
@@ -52,12 +75,8 @@ bool SyncChain(const CChain& chain, const CBlockIndex* block, std::shared_ptr<in
             interfaces::BlockInfo block_info = MakeBlockInfo(block);
             block_info.chain_tip = false;
             CBlock data;
-            if (!ReadBlockFromDisk(data, block, consensus_params)) {
-                block_info.error = strprintf("%s: Failed to read block %s from disk",
-                                             __func__, block->GetBlockHash().ToString());
-            } else {
-                block_info.data = &data;
-            }
+            CBlockUndo undo_data;
+            ReadBlockData(block, &data, &undo_data, block_info);
             if (rewind) {
                 notifications->blockDisconnected(block_info);
                 block = Assert(block->pprev);

@@ -15,7 +15,6 @@
 
 class BaseIndexNotifications;
 class CBlock;
-class CBlockIndex;
 class Chainstate;
 namespace interfaces {
 class Chain;
@@ -66,7 +65,7 @@ private:
     std::atomic<bool> m_synced{false};
 
     /// The last block in the chain that the index is in sync with.
-    std::atomic<const CBlockIndex*> m_best_block_index{nullptr};
+    std::optional<interfaces::BlockKey> m_best_block GUARDED_BY(m_mutex);
 
     /// Read best block locator and check that data needed to sync has not been pruned.
     bool Init();
@@ -82,11 +81,11 @@ private:
     bool Commit(const CBlockLocator& locator);
 
     /// Loop over disconnected blocks and call CustomRemove.
-    bool Rewind(const CBlockIndex* current_tip, const CBlockIndex* new_tip);
+    bool Rewind(const interfaces::BlockKey& current_tip, const interfaces::BlockKey& new_tip);
 
     virtual bool AllowPrune() const = 0;
 
-    Mutex m_mutex;
+    mutable Mutex m_mutex;
     friend class BaseIndexNotifications;
     std::shared_ptr<BaseIndexNotifications> m_notifications GUARDED_BY(m_mutex);
     std::unique_ptr<interfaces::Handler> m_handler GUARDED_BY(m_mutex);
@@ -118,7 +117,7 @@ protected:
     const std::string& GetName() const LIFETIMEBOUND { return m_name; }
 
     /// Update the internal best block index as well as the prune lock.
-    void SetBestBlockIndex(const CBlockIndex* block);
+    void SetBestBlock(const interfaces::BlockKey& block) EXCLUSIVE_LOCKS_REQUIRED(!m_mutex);
 
 public:
     BaseIndex(std::unique_ptr<interfaces::Chain> chain, std::string name);

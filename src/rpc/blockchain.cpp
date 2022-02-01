@@ -847,10 +847,10 @@ static std::optional<kernel::CCoinsStats> GetUTXOStats(CCoinsView* view, node::B
     // Use CoinStatsIndex if it is requested and available and a hash_type of Muhash or None was requested
     if ((hash_type == kernel::CoinStatsHashType::MUHASH || hash_type == kernel::CoinStatsHashType::NONE) && g_coin_stats_index && index_requested) {
         if (pindex) {
-            return g_coin_stats_index->LookUpStats(*pindex);
+            return g_coin_stats_index->LookUpStats({pindex->GetBlockHash(), pindex->nHeight});
         } else {
             CBlockIndex& block_index = *CHECK_NONFATAL(WITH_LOCK(::cs_main, return blockman.LookupBlockIndex(view->GetBestBlock())));
-            return g_coin_stats_index->LookUpStats(block_index);
+            return g_coin_stats_index->LookUpStats({block_index.GetBlockHash(), block_index.nHeight});
         }
     }
 
@@ -2441,7 +2441,7 @@ static RPCHelpMan scanblocks()
             }
             if (start_index->nHeight + amount_per_chunk == block->nHeight || next == nullptr) {
                 LogPrint(BCLog::RPC, "Fetching blockfilters from height %d to height %d.\n", start_index->nHeight, block->nHeight);
-                if (index->LookupFilterRange(start_index->nHeight, block, filters)) {
+                if (index->LookupFilterRange(start_index->nHeight, {block->GetBlockHash(), block->nHeight}, filters)) {
                     for (const BlockFilter& filter : filters) {
                         // compare the elements-set with each filter
                         if (filter.GetFilter().MatchAny(needle_set)) {
@@ -2536,8 +2536,8 @@ static RPCHelpMan getblockfilter()
 
     BlockFilter filter;
     uint256 filter_header;
-    if (!index->LookupFilter(block_index, filter) ||
-        !index->LookupFilterHeader(block_index, filter_header)) {
+    if (!index->LookupFilter({block_index->GetBlockHash(), block_index->nHeight}, filter) ||
+        !index->LookupFilterHeader({block_index->GetBlockHash(), block_index->nHeight}, filter_header)) {
         int err_code;
         std::string errmsg = "Filter not found.";
 

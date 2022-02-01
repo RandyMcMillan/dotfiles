@@ -293,10 +293,10 @@ static bool LookUpOne(const CDBWrapper& db, const interfaces::BlockKey& block, D
     return db.Read(DBHashKey(block.hash), result);
 }
 
-bool CoinStatsIndex::LookUpStats(const CBlockIndex* block_index, CCoinsStats& coins_stats) const
+bool CoinStatsIndex::LookUpStats(const interfaces::BlockKey& block, CCoinsStats& coins_stats) const
 {
     DBVal entry;
-    if (!LookUpOne(*m_db, {block_index->GetBlockHash(), block_index->nHeight}, entry)) {
+    if (!LookUpOne(*m_db, block, entry)) {
         return false;
     }
 

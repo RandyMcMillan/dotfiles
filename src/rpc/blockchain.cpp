@@ -2210,8 +2210,8 @@ static RPCHelpMan getblockfilter()
 
     BlockFilter filter;
     uint256 filter_header;
-    if (!index->LookupFilter(block_index, filter) ||
-        !index->LookupFilterHeader(block_index, filter_header)) {
+    if (!index->LookupFilter({block_index->GetBlockHash(), block_index->nHeight}, filter) ||
+        !index->LookupFilterHeader({block_index->GetBlockHash(), block_index->nHeight}, filter_header)) {
         int err_code;
         std::string errmsg = "Filter not found.";
 

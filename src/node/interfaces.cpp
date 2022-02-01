@@ -56,6 +56,7 @@
 #endif
 
 #include <any>
+#include <future>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -799,6 +800,14 @@ public:
     }
     std::unique_ptr<Handler> attachChain(std::shared_ptr<Notifications> notifications, const CBlockLocator& locator, const NotifyOptions& options) override
     {
+        std::unique_ptr<NotificationsHandlerImpl> handler;
+        std::optional<interfaces::BlockInfo> block_info;
+        // std::promise to wait for the first blockConnected notification, so
+        // caller is notified about the starting block before this returns.
+        // It might be good in the future to return without waiting for this,
+        // and allow more initialization code to run in parallel.
+        std::promise<void> promise;
+        {
         // Lock cs_main while finding forks and determining which blocks to
         // rescan. Release cs_main while processing blocks and while calling
         // RegisterSharedValidationInterface in the notifications thread.
@@ -818,22 +827,24 @@ public:
         LOCK(cs_main);
         const Chainstate& active = Assert(m_node.chainman)->ActiveChainstate();
         const CBlockIndex* start_block = locator.IsNull() ? nullptr : active.FindForkInGlobalIndex(locator);
-        interfaces::BlockInfo block_info = kernel::MakeBlockInfo(start_block);
-        block_info.chain_tip = start_block == active.m_chain.Tip();
-        notifications->blockConnected(block_info);
-        if (!block_info.chain_tip && !hasDataFromTipDown(start_block)) return nullptr;
-        auto handler = std::make_unique<NotificationsHandlerImpl>(notifications);
+        block_info.emplace(kernel::MakeBlockInfo(start_block));
+        block_info->chain_tip = start_block == active.m_chain.Tip();
+        if (!block_info->chain_tip && !hasDataFromTipDown(start_block)) return nullptr;
+        handler = std::make_unique<NotificationsHandlerImpl>(notifications);
         assert(!handler->m_thread_sync.joinable());
-        if (block_info.chain_tip) {
-            CallFunctionInValidationInterfaceQueue([proxy = handler->m_proxy] { NotificationsProxy::connect(proxy); });
-        } else {
-            handler->m_thread_sync = std::thread(&util::TraceThread, options.thread_name,
-                [&active, start_block, notifications, &interrupt = handler->m_interrupt, proxy = handler->m_proxy] {
-                SetSyscallSandboxPolicy(SyscallSandboxPolicy::TX_INDEX);
-                kernel::SyncChain(active.m_chain, start_block, notifications, interrupt,
-                                  /*on_sync=*/[proxy] { CallFunctionInValidationInterfaceQueue([proxy] { NotificationsProxy::connect(proxy); }); });
-            });
+        handler->m_thread_sync = std::thread(&util::TraceThread, options.thread_name,
+            [&block_info, &promise, &active, start_block, notifications, &interrupt = handler->m_interrupt, proxy = handler->m_proxy] {
+            SetSyscallSandboxPolicy(SyscallSandboxPolicy::TX_INDEX);
+            notifications->blockConnected(*block_info);
+            promise.set_value();
+            kernel::SyncChain(active.m_chain, start_block, notifications, interrupt,
+                              /*on_sync=*/[proxy] { CallFunctionInValidationInterfaceQueue([proxy] { NotificationsProxy::connect(proxy); }); });
+        });
         }
+        // Wait for blockConnected() call in sync thread so attachChain()
+        // caller knows the last block synced and sync status before this
+        // returns.
+        promise.get_future().wait();
         return handler;
     }
     std::unique_ptr<Handler> handleNotifications(std::shared_ptr<Notifications> notifications) override

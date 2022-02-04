@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -x
+set -e
+
+export TSAN_OPTIONS=suppressions=$PWD/test/sanitizer_suppressions/tsan:abort_on_error=1
+export ASAN_OPTIONS=detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1,abort_on_error=1
+export LSAN_OPTIONS=suppressions=$PWD/test/sanitizer_suppressions/lsan
+export UBSAN_OPTIONS=suppressions=$PWD/test/sanitizer_suppressions/ubsan:abort_on_error=1:report_error_type=1
+#./configure CXX=clang++ --enable-debug --enable-werror --enable-external-signer --with-boost-libdir=$BOOST_LIBDIR --with-qt-bindir=$QTBASE_BIN:$QTTOOLS_BIN --with-sanitizers=address,undefined
+#./configure CXX=clang++ --enable-debug --enable-werror --enable-external-signer --with-boost-libdir=$BOOST_LIBDIR --with-qt-bindir=$QTBASE_BIN:$QTTOOLS_BIN --with-sanitizers=thread
+#./configure CXX=clang++ --enable-debug --enable-werror --enable-external-signer --with-boost-libdir=$BOOST_LIBDIR --with-qt-bindir=$QTBASE_BIN:$QTTOOLS_BIN
+make -j12 -C src test/test_bitcoin && src/test/test_bitcoin -l test_suite -t txindex_tests -t coinstatsindex_tests -t blockfilter_index_tests
+make -j12 -C src bitcoind
+test/functional/feature_index_prune.py
+test/functional/feature_coinstatsindex.py
+test/functional/interface_rest.py
+test/functional/p2p_blockfilters.py
+test/functional/rpc_getblockfilter.py
+test/functional/rpc_rawtransaction.py
+test/functional/rpc_txoutproof.py
+# git apply -R < ~/work/meta/gdb-screen.diff
+# make -j12 -C src test/test_bitcoin && gdb -ex run --args src/test/test_bitcoin -l test_suite -t txindex_tests -t coinstatsindex_tests -t blockfilter_index_tests

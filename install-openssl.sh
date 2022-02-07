@@ -23,13 +23,17 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 
 #   Warning: Refusing to link macOS provided/shadowed software: openssl@3
 #   If you need to have openssl@3 first in your PATH, run:
+    echo 'export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"' >> /Users/git/.bash_profile
     echo 'export PATH="/usr/local/opt/openssl@3/bin:$PATH"' >> /Users/git/.bash_profile
 
 #   For compilers to find openssl@3 you may need to set:
+    export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
     export LDFLAGS="-L/usr/local/opt/openssl@3/lib"
+    export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
     export CPPFLAGS="-I/usr/local/opt/openssl@3/include"
 
 #   For pkg-config to find openssl@3 you may need to set:
+    export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig"
     export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
 
 #
@@ -63,6 +67,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     sudo ln -s /usr/local/Cellar/openssl/$OPENSSL_VERSION/include/openssl    /usr/local/bin/openssl
     sudo rm -f /usr/local/lib/libssl.*.*.dylib
     sudo rm -f /usr/local/lib/libcrypto.*.*.dylib
+    sudo rm -f /usr/local/lib/libcrypto.a
     sudo rm -f /usr/local/lib/libcrypto.*.*.a
     ln -s /usr/local/opt/openssl/lib/libssl.1.1.dylib                   /usr/local/lib/libssl.1.1.dylib
     ln -s /usr/local/opt/openssl/lib/libcrypto.1.1.dylib                /usr/local/lib/libcrypto.1.1.dylib

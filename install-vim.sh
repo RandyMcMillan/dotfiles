@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 if [ hash git 2>/dev/null ]; then
     git config --global core.editor vim
-    git config --global pull.rebase true
 else
     if [ hash brew 2>/dev/null ]; then
         brew install git bash

@@ -70,8 +70,8 @@ set cursorline
 " Make tabs as wide as two spaces
 set tabstop=2
 " Show “invisible” characters
-" set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-" set list
+set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set list
 " Highlight searches
 set hlsearch
 " Ignore case of searches
@@ -83,7 +83,7 @@ set laststatus=2
 " Enable mouse in all modes
 set mouse=a
 " Disable error bells
-set noerrorbells
+" set noerrorbells
 " Don’t reset cursor to start of line when moving around.
 set nostartofline
 " Show the cursor position
@@ -102,17 +102,13 @@ set showcmd
 set number
 
 " Use hybrid line numbers
-if exists("&relativenumber")
-	set number relativenumber
-	au BufReadPost * set relativenumber
-endif
-
-
+" if exists("&relativenumber")
+" 	set number relativenumber
+" 	au BufReadPost * set relativenumber
+" endif
 
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
-
-
 
 "" Strip trailing whitespace (,ss)
 "function! StripWhitespace()
@@ -125,7 +121,7 @@ set scrolloff=3
 "noremap <leader>ss :call StripWhitespace()<CR>
 
 " Save a file as root (,W)
-noremap <leader>W :w !sudo tee % > /dev/null<CR>
+noremap <leader>WW :w !sudo tee % > /dev/null<CR>
 
 " Automatic commands
 if has("autocmd")
@@ -136,41 +132,54 @@ if has("autocmd")
 	" Treat .md files as Markdown
 	autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
 
-" configure expanding of tabs for various file types
-au BufRead,BufNewFile *.py set expandtab
-au BufRead,BufNewFile *.py set list
-au BufRead,BufNewFile *.h set noexpandtab
-au BufRead,BufNewFile *.c set noexpandtab
-au BufRead,BufNewFile *.h set list
-au BufRead,BufNewFile *.c set list
-au BufRead,BufNewFile *akefile* set noexpandtab
-au BufRead,BufNewFile *akefile* set list
-
-au BufRead,BufNewFile *ockerfile* set noexpandtab
-au BufRead,BufNewFile *ockerfile* set list
-
 " --------------------------------------------------------------------------------
 " configure editor with tabs and nice stuff...
 " --------------------------------------------------------------------------------
-set expandtab           " enter spaces when tab is pressed
-set textwidth=120       " break lines when line length increases
+" set expandtab           " enter spaces when tab is pressed
+set textwidth=160       " break lines when line length increases
 set tabstop=4           " use 4 spaces to represent tab
 set softtabstop=4
 set shiftwidth=4        " number of spaces to use for auto indent
 set autoindent          " copy indent from current line when starting a new line
 set smartindent
 set smarttab
-set expandtab
 set number
+
+set noexpandtab " default dont mess with tabs!!!
+set list       " default show stuff!!! "
+
+" configure expanding of tabs for various file types
+au BufRead,BufNewFile *.py set expandtab
+au BufRead,BufNewFile *.py set list
+au BufRead,BufNewFile *.h set noexpandtab
+au BufRead,BufNewFile *.c set noexpandtab
+au BufRead,BufNewFile *.cpp set noexpandtab
+au BufRead,BufNewFile *.h set list
+au BufRead,BufNewFile *.c set list
+au BufRead,BufNewFile *.cpp set list
+au BufRead,BufNewFile *akefile* set noexpandtab
+au BufRead,BufNewFile *akefile* set list
+
+au BufRead,BufNewFile *.sh* set list
+au BufRead,BufNewFile *.vimrc* set list
+
+au BufRead,BufNewFile *ockerfile* set noexpandtab
+au BufRead,BufNewFile *ockerfile* set list
+
+au BufRead,BufNewFile *.md* set noexpandtab
+au BufRead,BufNewFile *.md* set list
 
 " make backspaces more powerfull
 set backspace=indent,eol,start
 
-set ruler                           " show line and column number
+set ruler               " show line and column number
 syntax on               " syntax highlighting
 set showcmd             " show (partial) command in status line
 
-
+" path to directory where library can be found
+let g:clang_library_path='/usr/lib/llvm-3.8/lib'
+" or path directly to the library file
+let g:clang_library_path='/usr/lib64/libclang.so.3.8'
 
 
 

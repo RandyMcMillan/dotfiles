@@ -103,8 +103,8 @@ set number
 
 " Use hybrid line numbers
 " if exists("&relativenumber")
-" 	set number relativenumber
-" 	au BufReadPost * set relativenumber
+"		set number relativenumber
+"		au BufReadPost * set relativenumber
 " endif
 
 " Start scrolling three lines before the horizontal window border
@@ -135,19 +135,31 @@ if has("autocmd")
 " --------------------------------------------------------------------------------
 " configure editor with tabs and nice stuff...
 " --------------------------------------------------------------------------------
+set nocompatible
 " set expandtab           " enter spaces when tab is pressed
 set textwidth=160       " break lines when line length increases
-set tabstop=4           " use 4 spaces to represent tab
-set softtabstop=4
+" set tabstop=4           " use 4 spaces to represent tab
+" set softtabstop=4
 set shiftwidth=4        " number of spaces to use for auto indent
 set autoindent          " copy indent from current line when starting a new line
 set smartindent
-set smarttab
+set smarttab!
 set number
 
-set noexpandtab " default dont mess with tabs!!!
-set list       " default show stuff!!! "
 
+
+
+
+
+
+
+
+
+set noexpandtab " default dont mess with tabs!!!
+" set expandtab!
+set list       " default show stuff!!! "
+:inoremap <cr> <space><bs><cr>
+:inoremap <cr> <tab><bs><cr>
 " configure expanding of tabs for various file types
 au BufRead,BufNewFile *.py set expandtab
 au BufRead,BufNewFile *.py set list
@@ -162,12 +174,14 @@ au BufRead,BufNewFile *akefile* set list
 
 au BufRead,BufNewFile *.sh* set list
 au BufRead,BufNewFile *.vimrc* set list
+au BufRead,BufNewFile *.vimrc* set noexpandtab
 
 au BufRead,BufNewFile *ockerfile* set noexpandtab
 au BufRead,BufNewFile *ockerfile* set list
 
-au BufRead,BufNewFile *.md* set noexpandtab
-au BufRead,BufNewFile *.md* set list
+au BufRead,BufNewFile *.md set noexpandtab
+" au BufRead,BufNewFile *.md set expandtab!
+au BufRead,BufNewFile *.md set list
 
 " make backspaces more powerfull
 set backspace=indent,eol,start

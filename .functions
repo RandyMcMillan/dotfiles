@@ -46,7 +46,13 @@ DEVICE=en1
 function bitcoin-autogen (){
     ./autogen.sh
 }
+function bitcoin-configure-disable-tests-bench-fuzz(){
+    ./configure --disable-tests --disable-bench --disable-fuzz
+}
 
+function bitcoin-configure-disable-wallet-tests-bench-fuzz(){
+    ./configure --disable-wallet --disable-tests --disable-bench --disable-fuzz
+}
 function bitcoin-configure-disable-wallet-tests-bench(){
     ./configure --disable-wallet --disable-tests --disable-bench
 }

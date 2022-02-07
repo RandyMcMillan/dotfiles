@@ -30,6 +30,7 @@ echo $VIMRC_DESTINATION
     if [ -d "$VIMRC_DESTINATION" ]; then
       cd ~/.vim_runtime
       git pull -f origin master
+      python3 update_plugins.py
       sh ~/.vim_runtime/install_awesome_vimrc.sh
       #we exclude from ~/ because we link to here
       ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim

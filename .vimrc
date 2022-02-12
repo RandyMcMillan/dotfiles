@@ -135,25 +135,31 @@ if has("autocmd")
 " --------------------------------------------------------------------------------
 " configure editor with tabs and nice stuff...
 " --------------------------------------------------------------------------------
+" NOTE: effects git message editing
 set nocompatible
-" set expandtab           " enter spaces when tab is pressed
+set expandtab           " enter spaces when tab is pressed
 set textwidth=160       " break lines when line length increases
-" set tabstop=4           " use 4 spaces to represent tab
-" set softtabstop=4
+set tabstop=4           " use 4 spaces to represent tab
+set softtabstop=4
 set shiftwidth=4        " number of spaces to use for auto indent
 set autoindent          " copy indent from current line when starting a new line
 set smartindent
 set smarttab!
 set number
 
+let g:clang_format#style_options = {
+            \ "AccessModifierOffset" : -4,
+            \ "AllowShortIfStatementsOnASingleLine" : "true",
+            \ "AlwaysBreakTemplateDeclarations" : "true",
+            \ "Standard" : "C++11"}
 
-
-
-
-
-
-
-
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+" if you install vim-operator-user
+autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+" Toggle auto formatting:
+nmap <Leader>C :ClangFormatAutoToggle<CR>
 
 set noexpandtab " default dont mess with tabs!!!
 " set expandtab!
@@ -190,11 +196,14 @@ set ruler               " show line and column number
 syntax on               " syntax highlighting
 set showcmd             " show (partial) command in status line
 
-" path to directory where library can be found
-let g:clang_library_path='/usr/lib/llvm-3.8/lib'
-" or path directly to the library file
-let g:clang_library_path='/usr/lib64/libclang.so.3.8'
 
+" clang format and code completion support
+" path to directory where library can be found
+let g:clang_library_path='/Library/Developer/CommandLineTools/usr/lib/'
+" or path directly to the library file
+" let g:clang_library_path='/usr/lib64/libclang.so.3.8'
+
+autocmd FileType c ClangFormatAutoEnable
 
 
 

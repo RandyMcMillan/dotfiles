@@ -39,7 +39,8 @@ done;
 # Add tab completion for many Bash commands
 if which brew &> /dev/null && [ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]; then
 	# Ensure existing Homebrew v1 completions continue to work
-	export BASH_COMPLETION_COMPAT_DIR="$(brew --prefix)/etc/bash_completion.d";
+	set BASH_COMPLETION_COMPAT_DIR="$(brew --prefix)/etc/bash_completion.d";
+	export BASH_COMPLETION_COMPAT_DIR
 	source "$(brew --prefix)/etc/profile.d/bash_completion.sh";
 elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
@@ -77,6 +78,23 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 #eval "$(rbenv init -)"
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+if [ -f $(PWD)/Makefile ]; then
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+fi
+
+if [ -f $(PWD)/GNUMakefile ]; then
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+fi
+
+if [ -f $(PWD)/funcs.mk ]; then
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+fi
+
+# for OUTPUT in $(ls -f *.mk)
+# do
+# complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+# done
 
 export GPG_TTY=$(tty)
 export PATH="/usr/local/opt/ruby@2.5.8/bin:$PATH"

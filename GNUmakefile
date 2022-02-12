@@ -139,13 +139,11 @@ bootstrap: executable
 executable:
 	chmod +x *.sh
 .PHONY: exec
-##	:exec		make shell scripts executable
 ##	:executable	make shell scripts executable
 exec: executable
 
 .PHONY: checkbrew template brew
 .ONESHELL:
-##	:brew		source and run checkbrew command
 brew: checkbrew
 ##	:template		base script for creating installer scripts
 template: checkbrew

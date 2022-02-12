@@ -1,21 +1,23 @@
 #!/usr/bin/env bash
-if [ hash git 2>/dev/null ]; then
+if [ hash ssh-add 2>/dev/null ]; then
+    ssh-add
+fi
+if [ hash brew 2>/dev/null ]; then
+    brew install git bash llvm
+fi
+if [ hash git  2>/dev/null ]; then
     git config --global core.editor vim
-else
-    if [ hash brew 2>/dev/null ]; then
-        brew install git bash
-    fi
-    if [ hash apt 2>/dev/null ]; then
-        apt install git bash
-    fi
-    if [ hash apk 2>/dev/null ]; then
-        apk add git bash
-    fi
+fi
+if [ hash apt  2>/dev/null ]; then
+    apt install git bash
+fi
+if [ hash apk  2>/dev/null ]; then
+    apk add git bash
 fi
 
-VIM=$(find /usr/local/Cellar/macvim -name vim)
-export VIM
-echo   $VIM
+# VIM=$(find /usr/local/Cellar/macvim -name vim)
+# export VIM
+# echo   $VIM
 
 install-vim() {
 #WE install this regaurdless of OSTYPE

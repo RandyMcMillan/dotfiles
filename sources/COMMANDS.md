@@ -1,5 +1,6 @@
-	
-	make                        default -: function
+
+	make                        
+	make                        -
 	make                        init
 	make                        help
 	make                        report
@@ -14,7 +15,9 @@
 	make                        vim
 	make                        config-git
 	make                        config-github
-
+	make                        adduser-git
+	make                        install-dotfiles-on-remote
+	remote_user=<user> remote_server=<domain/ip> make install-dotfiles-on-remote
 ---
 
 	make                        docs

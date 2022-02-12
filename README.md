@@ -26,9 +26,23 @@
 	
 	---
 	
- -
- init
-     example  prints this help message
+ 	make   command		description
+ 	       -		default
+ 	       init
+ 	       help
+ 	       report		environment args
+ 	       whatami		report system info
+ 	       adduser-git	add a user nameed git
+ 	       bootstrap	run bootstrap.sh - dotfile installer
+ 	       exec		make shell scripts executable
+ 	       executable	make shell scripts executable
+ 	       brew		source and run checkbrew command
+ 	       template		base script for creating installer scripts
+ 	       checkbrew	source and run checkbrew command
+ 	       all		execute installer scripts
+ 	       shell		run install-shell.sh script
+ 	       alpine-shell	run install-shell.sh script
+ 	       alpine		run install-shell.sh script
 
 <details>
 <summary>👀</summary>

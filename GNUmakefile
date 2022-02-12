@@ -43,11 +43,17 @@ export GIT_REPO_PATH
 HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
 
-.PHONY:- init help report
+
+##	make :command		description
+# ##make :ARGS # remove first space
+.PHONY:-
+.PHONY:	init
+.PHONY:	help
+.PHONY:	report
 .SILENT:
-##:-
+##	 :-		default
 -: report help
-##:init
+##	:init
 init:
 #	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
@@ -55,6 +61,7 @@ init:
 	test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
 	ssh-add > /dev/null 2>&1
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
+##	:help
 help:
 	@echo ""
 	@echo "	make                        "
@@ -84,10 +91,11 @@ help:
 	@echo "	"
 	@echo "	---"
 	@echo "	"
-	@sed -n 's/^## ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	#@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	#@sed -n 's/^.ONESHELL//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-
+##	:report		environment args
 report:
 	@echo ''
 	@echo '[ARGUMENTS]	'
@@ -106,7 +114,12 @@ report:
 	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}	'
 	@echo '        - HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
 
+#.PHONY:
+#phony:
+#	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+
 .PHONY: whatami
+##	:whatami		report system info
 whatami:
 	./whatami.sh
 #.PHONY:readme
@@ -114,26 +127,34 @@ whatami:
 #	make help > source/COMMANDS.md
 #	git add -f README.md && git commit -m "make readme" && git push -f origin master
 .PHONY:adduser-git
+##	:adduser-git	add a user nameed git
 adduser-git:
 	./adduser-git.sh
 .PHONY: bootstrap
+##	:bootstrap	run bootstrap.sh - dotfile installer
 bootstrap: executable
 	./boot-strap.sh
 
 .PHONY: executable
 executable:
 	chmod +x *.sh
-
 .PHONY: exec
+##	:exec		make shell scripts executable
+##	:executable	make shell scripts executable
 exec: executable
 
-.PHONY: checkbrew template
+.PHONY: checkbrew template brew
 .ONESHELL:
+##	:brew		source and run checkbrew command
+brew: checkbrew
+##	:template		base script for creating installer scripts
 template: checkbrew
+##	:checkbrew	source and run checkbrew command
 checkbrew: executable
 	bash -c "source $(PWD)/checkbrew.sh && checkbrew $(FORCE)"
 
 .PHONY: all
+##	:all		execute installer scripts
 all: executable
 	bash -c "./checkbrew.sh && \
 	./install-Docker.sh && \
@@ -164,8 +185,11 @@ all: executable
 	echo; exit;"
 
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
+##	:shell		run install-shell.sh script
 shell: alpine-shell
+##	:alpine-shell	run install-shell.sh script
 alpine-shell: alpine
+##	:alpine		run install-shell.sh script
 alpine:
 	./install-shell.sh alpine
 d-shell: debian-shell

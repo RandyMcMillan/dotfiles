@@ -35,10 +35,9 @@
  	       adduser-git	add a user nameed git
  	       bootstrap	run bootstrap.sh - dotfile installer
  	       executable	make shell scripts executable
- 	       brew		source and run checkbrew command
  	       template		base script for creating installer scripts
  	       checkbrew	source and run checkbrew command
- 	       all		execute installer scripts
+ 	       all	        execute installer scripts
  	       shell		run install-shell.sh script
  	       alpine-shell	run install-shell.sh script
  	       alpine		run install-shell.sh script

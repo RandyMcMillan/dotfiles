@@ -56,6 +56,7 @@ init:
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
 help:
 	@echo ""
+	@echo "	make                        "
 	@echo "	make                        -"
 	@echo "	make                        init"
 	@echo "	make                        help"

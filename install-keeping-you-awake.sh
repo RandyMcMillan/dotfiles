@@ -101,9 +101,9 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         export INSTALL
         AWK=awk
         export AWK
-        rm -rf /Applications/KeepingYouAwake.app
-        brew install --cask keepingyouawake
         checkbrew
+        rm -rf /Applications/KeepingYouAwake.app
+        brew install --cask --force keepingyouawake
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
 elif [[ "$OSTYPE" == "msys" ]]; then

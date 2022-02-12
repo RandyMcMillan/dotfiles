@@ -4,6 +4,8 @@ brew-install-utils(){
 if hash brew 2>/dev/null; then
     if ! hash tccutil 2>/dev/null; then
         brew install tccutil
+    else
+        brew reinstall --force tccutil
     fi
     if ! hash dockutil 2>/dev/null; then
         curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil

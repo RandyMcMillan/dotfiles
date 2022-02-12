@@ -48,12 +48,12 @@ echo $VIMRC_DESTINATION
 #fi
 }
 
-MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
-export MACVIM
-echo   $MACVIM
-MVIM=$(find /usr/local/Cellar/macvim -name mvim)
-export MVIM
-echo   $MVIM
+# MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
+# export MACVIM
+# echo   $MACVIM
+# MVIM=$(find /usr/local/Cellar/macvim -name mvim)
+# export MVIM
+# echo   $MVIM
 
 install-macvim(){
 if [[ "$OSTYPE" == "darwin"* ]]; then

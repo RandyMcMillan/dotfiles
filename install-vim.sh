@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-if [ hash ssh-add 2>/dev/null ]; then
+
+if [ $(which ssh-add) 2>/dev/null ]; then
     ssh-add
+else
+    echo "if fail try make config-github"
+    echo "if fail try make config-git"
 fi
 if [ hash brew 2>/dev/null ]; then
     brew install git bash llvm

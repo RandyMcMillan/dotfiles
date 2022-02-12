@@ -152,7 +152,7 @@ checkbrew: executable
 	bash -c "source $(PWD)/checkbrew.sh && checkbrew $(FORCE)"
 
 .PHONY: all
-##	:all		execute installer scripts
+##	:all	        execute installer scripts
 all: executable
 	bash -c "./checkbrew.sh && \
 	./install-Docker.sh && \

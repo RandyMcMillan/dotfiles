@@ -53,8 +53,9 @@ init:
 	ssh-add > /dev/null 2>&1
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
 help:
-	@echo "	"
-	@echo "	make                        default -: function"
+	@echo ""
+	@echo "	make                        "
+	@echo "	make                        -"
 	@echo "	make                        init"
 	@echo "	make                        help"
 	@echo "	make                        report"

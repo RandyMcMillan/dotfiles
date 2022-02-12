@@ -7,9 +7,6 @@
   <title>README</title>
   <style>
     html {
-      line-height: 1.5;
-      font-family: Georgia, serif;
-      font-size: 20px;
       color: #1a1a1a;
       background-color: #fdfdfd;
     }
@@ -28,10 +25,16 @@
     @media (max-width: 600px) {
       body {
         font-size: 0.9em;
-        padding: 1em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
       }
     }
     @media print {
+      html {
+        background-color: white;
+      }
       body {
         background-color: transparent;
         color: black;
@@ -81,9 +84,10 @@
       color: #606060;
     }
     code {
-      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
+      hyphens: manual;
     }
     pre {
       margin: 1em 0;
@@ -134,15 +138,26 @@
     #TOC li {
       list-style: none;
     }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
     #TOC a:not(:hover) {
       text-decoration: none;
     }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
   <!--[if lt IE 9]>
@@ -156,7 +171,8 @@ href="https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.
 href="https://twitter.com/RandyMcMillan">Twitter</a> <a
 href="https://randymcmillan.keybase.pub">Keybase</a> <a
 href="https://clubhouse.com/@randymcmillan">Clubhouse</a></h2>
-<pre><code>make                        default -: function
+<pre><code>make                        
+make                        -
 make                        init
 make                        help
 make                        report
@@ -170,7 +186,10 @@ make                        d-shell #debian-shell
 make                        debian-shell
 make                        vim
 make                        config-git
-make                        config-github</code></pre>
+make                        config-github
+make                        adduser-git
+make                        install-dotfiles-on-remote
+remote_user=&lt;user&gt; remote_server=&lt;domain/ip&gt; make install-dotfiles-on-remote</code></pre>
 <hr />
 <pre><code>make                        docs
 make                        push</code></pre>

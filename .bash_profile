@@ -1,3 +1,7 @@
+if [[ "$SHELL" == "/bin/zsh" ]]; then
+zsh --emulate sh
+fi
+
 #PYCOIN_CACHE_DIR=~/.pycoin_cache
 #PYCOIN_BTC_PROVIDERS="blockchain.info blockexplorer.com chain.so"
 #export PYCOIN_CACHE_DIR PYCOIN_BTC_PROVIDERS

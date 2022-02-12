@@ -33,7 +33,6 @@
  	       whatami		report system info
  	       adduser-git	add a user nameed git
  	       bootstrap	run bootstrap.sh - dotfile installer
- 	       exec		make shell scripts executable
  	       executable	make shell scripts executable
  	       brew		source and run checkbrew command
  	       template		base script for creating installer scripts

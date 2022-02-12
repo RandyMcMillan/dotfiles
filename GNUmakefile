@@ -49,6 +49,7 @@ export HOMEBREW_NO_ENV_HINTS
 -: report help
 ##:init
 init:
+	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 	test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
@@ -84,6 +85,7 @@ help:
 	@echo "	---"
 	@echo "	"
 	@sed -n 's/^## ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
 report:
@@ -125,39 +127,40 @@ executable:
 .PHONY: exec
 exec: executable
 
-.PHONY: brew
-brew: executable
-	./checkbrew.sh $(FORCE)
+.PHONY: checkbrew template
+.ONESHELL:
+template: checkbrew
+checkbrew: executable
+	bash -c "source $(PWD)/checkbrew.sh && checkbrew $(FORCE)"
 
 .PHONY: all
 all: executable
-	bash -c " echo && \
-	y | ./checkbrew.sh && \
-	y | ./install-Docker.sh && \
-	y | ./install-FastLane.sh && \
-	y | ./install-OSXFuse.sh && \
-	y | ./install-Onyx.sh && \
-	y | ./install-SassC.sh && \
-	y | ./install-discord.sh && \
-	y | ./install-gpg-suite.sh && \
-	y | ./install-iterm2.sh && \
-	y | ./install-keeping-you-awake.sh && \
-	y | ./install-little-snitch.sh && \
-	y | ./install-openssl.sh && \
-	y | ./install-python3.X.sh && \
-	y | ./install-protonvpn.sh && \
-	y | ./install-ql-plugins.sh && \
-	y | ./install-qt5.sh && \
-	y | ./install-qt5-creator.sh && \
-	y | ./install-sha256sum.sh && \
-	y | ./install-vmware-fusion11.sh #Mojave && \
-	y | ./install-vypr-vpn.sh && \
-	y | ./install-youtube-dl.sh && \
-	y | ./install-ytop.sh && \
-	y | ./install-umbrel-dev.sh && \
-	y | ./install-vim.sh && \
-	y | ./install-inkscape.sh && \
-	y | ./install-dotfiles-on-remote.sh && \
+	bash -c "./checkbrew.sh && \
+	./install-Docker.sh && \
+	./install-FastLane.sh && \
+	./install-OSXFuse.sh && \
+	./install-Onyx.sh && \
+	./install-SassC.sh && \
+	./install-discord.sh && \
+	./install-gpg-suite.sh && \
+	./install-iterm2.sh && \
+	./install-keeping-you-awake.sh && \
+	./install-little-snitch.sh && \
+	./install-openssl.sh && \
+	./install-python3.X.sh && \
+	./install-protonvpn.sh && \
+	./install-ql-plugins.sh && \
+	./install-qt5.sh && \
+	./install-qt5-creator.sh && \
+	./install-sha256sum.sh && \
+	./install-vmware-fusion11.sh #Mojave && \
+	./install-vypr-vpn.sh && \
+	./install-youtube-dl.sh && \
+	./install-ytop.sh && \
+	./install-umbrel-dev.sh && \
+	./install-vim.sh && \
+	./install-inkscape.sh && \
+	./install-dotfiles-on-remote.sh && \
 	echo; exit;"
 
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell

@@ -45,7 +45,9 @@ export HOMEBREW_NO_ENV_HINTS
 
 .PHONY:- init help report
 .SILENT:
+##:-
 -: report help
+##:init
 init:
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
@@ -53,13 +55,13 @@ init:
 	ssh-add > /dev/null 2>&1
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
 help:
-	@echo "	"
-	@echo "	make                        default -: function"
+	@echo ""
+	@echo "	make                        -"
 	@echo "	make                        init"
 	@echo "	make                        help"
 	@echo "	make                        report"
 	@echo "	make                        all"
-	@echo "	make                        all force=true	"
+	@echo "	make                        all force=true"
 	@echo "	make                        bootstrap"
 	@echo "	make                        executable"
 	@echo "	make                        shell #alpine-shell"
@@ -72,17 +74,20 @@ help:
 	@echo "	make                        adduser-git"
 	@echo "	make                        install-dotfiles-on-remote"
 	@echo "	remote_user=<user> remote_server=<domain/ip> make install-dotfiles-on-remote"
-	@echo "---"
-	@echo ""
+	@echo "	---"
+	@echo "	"
 	@echo "	make                        docs"
 	@echo "	make                        push"
 #	@echo "	make                        readme"
-	@echo ""
-	@echo "---"
-	@echo ""
+	@echo "	"
+	@echo "	---"
+	@echo "	"
+	@sed -n 's/^## ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+
 report:
 	@echo ''
-	@echo '	[ARGUMENTS]	'
+	@echo '[ARGUMENTS]	'
 	@echo '      args:	'
 	@echo '        - TIME=${TIME}	'
 	@echo '        - PROJECT_NAME=${PROJECT_NAME}	'
@@ -97,6 +102,7 @@ report:
 	@echo '        - GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}	'
 	@echo '        - HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
+
 .PHONY: whatami
 whatami:
 	./whatami.sh
@@ -196,7 +202,8 @@ push: touch-time
 		git commit -m 'update from $(GIT_USER_NAME) on $(TIME)'"
 	git push -f origin	+master:master
 
-.PHONY: docs readme
+.PHONY: docs readme index
+index: docs
 readme: docs
 docs:
 	@echo 'docs'
@@ -213,7 +220,7 @@ docs:
 	#bash -c "if hash open 2>/dev/null; then open README.md; fi || echo failed to open README.md"
 	git add --ignore-errors sources/*.md
 	git add --ignore-errors *.md
-	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git 
+	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git
 
 
 .PHONY: touch-time
@@ -239,5 +246,11 @@ bitcoin-test-battery:
 install-dotfiles-on-remote:
 	./install-dotfiles-on-remote.sh
 
+.PHONY: funcs
+funcs:
+	make -f funcs.mk
+	cat funcs.mk
 
-
+-include funcs.mk
+# vim: set noexpandtab:
+# vim: set setfiletype make

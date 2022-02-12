@@ -156,12 +156,12 @@ href="https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.
 href="https://twitter.com/RandyMcMillan">Twitter</a> <a
 href="https://randymcmillan.keybase.pub">Keybase</a> <a
 href="https://clubhouse.com/@randymcmillan">Clubhouse</a></h2>
-<pre><code>make                        default -: function
+<pre><code>make                        -
 make                        init
 make                        help
 make                        report
 make                        all
-make                        all force=true  
+make                        all force=true
 make                        bootstrap
 make                        executable
 make                        shell #alpine-shell
@@ -170,11 +170,19 @@ make                        d-shell #debian-shell
 make                        debian-shell
 make                        vim
 make                        config-git
-make                        config-github</code></pre>
-<hr />
-<pre><code>make                        docs
-make                        push</code></pre>
-<hr />
+make                        config-github
+make                        adduser-git
+make                        install-dotfiles-on-remote
+remote_user=&lt;user&gt; remote_server=&lt;domain/ip&gt; make install-dotfiles-on-remote
+---
+
+make                        docs
+make                        push
+
+---</code></pre>
+<ul>
+<li>init example prints this help message</li>
+</ul>
 <details>
 <summary>
 👀

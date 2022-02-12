@@ -1,11 +1,11 @@
 ## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub) [Clubhouse](https://clubhouse.com/@randymcmillan)
-	
-	make                        default -: function
+
+	make                        -
 	make                        init
 	make                        help
 	make                        report
 	make                        all
-	make                        all force=true	
+	make                        all force=true
 	make                        bootstrap
 	make                        executable
 	make                        shell #alpine-shell
@@ -15,14 +15,19 @@
 	make                        vim
 	make                        config-git
 	make                        config-github
-
----
-
+	make                        adduser-git
+	make                        install-dotfiles-on-remote
+	remote_user=<user> remote_server=<domain/ip> make install-dotfiles-on-remote
+	---
+	
 	make                        docs
 	make                        push
-
----
-
+	
+	---
+	
+ -
+ init
+     example  prints this help message
 
 <details>
 <summary>👀</summary>

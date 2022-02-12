@@ -93,7 +93,7 @@ fi
 
 # for OUTPUT in $(ls -f *.mk)
 # do
-# complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+# complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make -f $OUTPUT
 # done
 
 export GPG_TTY=$(tty)

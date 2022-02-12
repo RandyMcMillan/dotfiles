@@ -35,6 +35,7 @@ alias p="cd ~/projects"
 #git
 alias g="git "
 alias LOG="git log --pretty=oneline --abbrev-commit "
+alias REFLOG="git reflog --pretty=oneline --abbrev-commit "
 alias GITS="git status "
 alias STAT="git status "
 alias STATT="git status --porcelain "

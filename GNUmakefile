@@ -150,6 +150,9 @@ template: checkbrew
 ##	:checkbrew	source and run checkbrew command
 checkbrew: executable
 	bash -c "source $(PWD)/checkbrew.sh && checkbrew $(FORCE)"
+##	:cirrus		source and run install-cirrus command
+cirrus: executable
+	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"
 ##	:config-dock	source and run config-dock-prefs
 config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"

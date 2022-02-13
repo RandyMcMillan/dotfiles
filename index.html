@@ -30,6 +30,9 @@
         font-size: 0.9em;
         padding: 1em;
       }
+      h1 {
+        font-size: 1.8em;
+      }
     }
     @media print {
       body {
@@ -134,6 +137,12 @@
     #TOC li {
       list-style: none;
     }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
     #TOC a:not(:hover) {
       text-decoration: none;
     }
@@ -193,10 +202,12 @@ make   command      description
        executable   make shell scripts executable
        template     base script for creating installer scripts
        checkbrew    source and run checkbrew command
+       config-dock  source and run config-dock-prefs
        all          execute installer scripts
        shell        run install-shell.sh script
        alpine-shell run install-shell.sh script
-       alpine       run install-shell.sh script</code></pre>
+       alpine       run install-shell.sh script
+       bitcoin-libs install bitcoin-libs</code></pre>
 <details>
 <summary>
 👀

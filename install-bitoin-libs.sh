@@ -17,10 +17,11 @@ if hash brew 2>/dev/null; then
     #install brew libs
     brew install wget
     brew install curl
-    brew install autoconf automake berkeley-db@4 libtool boost miniupnpc pkg-config python qt@5 libevent qrencode
+    brew install autoconf automake berkeley-db@4 libtool boost miniupnpc pkg-config python@3 qt@5 libevent qrencode
     brew install librsvg
     brew install afl-fuzz codespell shellcheck
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bitcoin/bitcoin/contrib/contrib/install_db4.sh)" .
+    brew install --cask qt-creator
+    # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bitcoin/bitcoin/contrib/contrib/install_db4.sh)" .
 else
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     checkbrew

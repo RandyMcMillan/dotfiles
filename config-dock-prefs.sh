@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-brew-install-utils(){
+brew-install-dockutils(){
 if hash brew 2>/dev/null; then
     if ! hash tccutil 2>/dev/null; then
         brew install tccutil
@@ -17,7 +17,7 @@ fi
 config-dock-prefs(){
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
-    sudo dockutil --remove 'Siri' --allhomes
+    #sudo dockutil --remove 'Siri' --allhomes
 
     sudo dockutil --remove spacer-tiles
 
@@ -49,9 +49,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sudo dockutil --add '~/gui'       --view grid --display folder --allhomes
     sudo dockutil --add '~/dotfiles'  --view grid --display folder --allhomes
 
-    sudo dockutil --remove 'Siri' --allhomes
+    #sudo dockutil --remove 'Siri' --allhomes
 
 fi
 }
-brew-install-utils
-config-dock-prefs

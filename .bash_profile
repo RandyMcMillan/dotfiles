@@ -13,7 +13,9 @@ export PATH="$HOME/bin:$PATH";
 export PATH="$HOME/init:$PATH";
 
 if which brew &> /dev/null; then
-     echo 'export PATH="/usr/local/sbin:$PATH"' >> /Users/git/.bash_profile
+     echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
+     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.bash_profile
+     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # Load the shell dotfiles, and then some:

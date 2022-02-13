@@ -23,6 +23,8 @@ if hash brew 2>/dev/null; then
     brew install afl-fuzz
     brew install --build-from-source afl-fuzz
     brew install --cask qt-creator
+    brew uninstall --cask --force suspicious-package
+    brew install --cask --force suspicious-package
     # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bitcoin/bitcoin/contrib/contrib/install_db4.sh)" .
 else
     #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"

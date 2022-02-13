@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-HOMEBREW_NO_INSTALL_CLEANUP=fale
-export  HOMEBREW_NO_INSTALL_CLEANUP
+source $PWD/checkbrew.sh
 
 function install-cirrus() {
     if hash brew 2>/dev/null; then

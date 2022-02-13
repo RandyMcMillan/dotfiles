@@ -221,6 +221,13 @@ config-github: executable
 	cat config-git.sh
 	./config-github.sh
 
+.PHONY: install-bitcoin-libs
+.ONESHELL:
+##	:install-bitcoin-libs	source install-bitcoin-libs then run install-bitcoin-libs
+install-bitcoin-libs: exec
+	bash -c "source $(PWD)/install-bitoin-libs.sh && install-bitcoin-libs"
+
+
 .PHONY: push
 .ONESHELL:
 push: touch-time

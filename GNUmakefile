@@ -223,9 +223,9 @@ config-github: executable
 
 .PHONY: install-bitcoin-libs
 .ONESHELL:
-##	:install-bitcoin-libs	source install-bitcoin-libs then run install-bitcoin-libs
-install-bitcoin-libs: exec
-	bash -c "source $(PWD)/install-bitoin-libs.sh && install-bitcoin-libs"
+##	:bitcoin-libs	install bitcoin-libs
+bitcoin-libs: exec
+	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
 
 
 .PHONY: push

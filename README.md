@@ -1,4 +1,5 @@
 ## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub) [Clubhouse](https://clubhouse.com/@randymcmillan)
+make[1]: Entering directory '/home/git/dotfiles'
 
 	make                        
 	make                        -
@@ -28,19 +29,22 @@
 	
  	make   command		description
  	       -		default
- 	       init
- 	       help
- 	       report		environment args
- 	       whatami		report system info
- 	       adduser-git	add a user nameed git
- 	       bootstrap	run bootstrap.sh - dotfile installer
- 	       executable	make shell scripts executable
- 	       template		base script for creating installer scripts
- 	       checkbrew	source and run checkbrew command
- 	       all	        execute installer scripts
- 	       shell		run install-shell.sh script
- 	       alpine-shell	run install-shell.sh script
- 	       alpine		run install-shell.sh script
+        init
+        help
+        report		environment args
+        whatami		report system info
+        adduser-git	add a user nameed git
+        bootstrap	run bootstrap.sh - dotfile installer
+        executable	make shell scripts executable
+        template		base script for creating installer scripts
+        checkbrew	source and run checkbrew command
+        config-dock	source and run config-dock-prefs
+        all	        execute installer scripts
+        shell		run install-shell.sh script
+        alpine-shell	run install-shell.sh script
+        alpine		run install-shell.sh script
+        bitcoin-libs	install bitcoin-libs
+make[1]: Leaving directory '/home/git/dotfiles'
 
 <details>
 <summary>👀</summary>

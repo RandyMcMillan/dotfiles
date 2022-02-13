@@ -18,7 +18,7 @@ if hash brew 2>/dev/null; then
     brew install wget
     brew install curl
     brew install autoconf automake berkeley-db@4 libtool boost miniupnpc pkg-config python@3 qt@5 libevent qrencode
-    brew install librsvg
+    brew install librsvg bison
     brew install codespell shellcheck
     brew install afl-fuzz
     brew install --build-from-source afl-fuzz

@@ -157,7 +157,6 @@ all: executable
 	bash -c "./checkbrew.sh && \
 	./install-Docker.sh && \
 	./install-FastLane.sh && \
-	./install-OSXFuse.sh && \
 	./install-Onyx.sh && \
 	./install-SassC.sh && \
 	./install-discord.sh && \

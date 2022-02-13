@@ -19,7 +19,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     #sudo dockutil --remove 'Siri' --allhomes
 
-    sudo dockutil --remove spacer-tiles
+    #sudo dockutil --remove spacer-tiles
 
     DOCKER=$(find /Applications -name Docker.app)
     export DOCKER
@@ -29,9 +29,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export FIREFOX
     sudo dockutil --add $FIREFOX --after Safari --no-restart '/System/Library/User Template/English.lproj'
 
-    ACTIVITY_MONITOR=$(find /Applications/Other -name Activity\ Monitor.app)
-    export ACTIVITY_MONITOR
-    sudo dockutil --add $ACTIVITY_MONITOR --replacing 'Activity Monitor'
+    # ACTIVITY_MONITOR=$(find /Applications/Other -name Activity\ Monitor.app)
+    # export ACTIVITY_MONITOR
+    # sudo dockutil --add $ACTIVITY_MONITOR --replacing 'Activity Monitor'
 
     sudo dockutil --move 'System Preferences'      --position 1 --allhomes
     sudo dockutil --add /Applications/Utilities/Terminal.app            'Terminal'

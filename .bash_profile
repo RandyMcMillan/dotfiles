@@ -13,11 +13,15 @@ export PATH="$HOME/bin:$PATH";
 export PATH="$HOME/init:$PATH";
 
 if which brew &> /dev/null; then
-     echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
-     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.bash_profile
-     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
+       if [[ "$OSTYPE" == "linux"* ]]; then
+               #CHECK APT
+               if [[ "$OSTYPE" == "linux-gnu" ]]; then
+                       echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.bash_profile
+                       eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+               fi
+       fi
 fi
-
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
@@ -108,3 +112,7 @@ export PATH="/usr/local/opt/ruby@2.5/bin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+export PATH="/usr/local/sbin:$PATH"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

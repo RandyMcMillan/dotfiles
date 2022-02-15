@@ -129,7 +129,7 @@ whatami:
 .PHONY:adduser-git
 ##	:adduser-git	add a user nameed git
 adduser-git:
-	./adduser-git.sh
+	source $(PWD)/adduser-git.sh && adduser-git
 .PHONY: bootstrap
 ##	:bootstrap	run bootstrap.sh - dotfile installer
 bootstrap: executable

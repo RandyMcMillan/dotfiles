@@ -23,6 +23,9 @@ else
     echo "home brew prevents being installed from root!!!\nTry\nmake adduser-git"
 fi
 if [[ "$OSTYPE" == "linux"* ]]; then
+if [ "$EUID" -ne "0" ]; then
+    SUDO=sudo
+fi
     #CHECK APT
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         PACKAGE_MANAGER=apt
@@ -32,7 +35,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         AWK=gawk
         export AWK
         if hash apt 2>/dev/null; then
-            $PACKAGE_MANAGER $INSTALL $AWK clang-tools
+            $SUDO $PACKAGE_MANAGER $INSTALL $AWK clang-tools
         fi
     fi
     echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/git/.bash_profile

@@ -17,13 +17,14 @@ if hash brew 2>/dev/null; then
     #install brew libs
     brew install wget
     brew install curl
+    brew uninstall qt
     brew install autoconf automake berkeley-db@4 libtool boost miniupnpc pkg-config python@3 qt@5 libevent qrencode
     brew install librsvg bison
     brew install codespell shellcheck
     brew install afl-fuzz
     brew install --build-from-source afl-fuzz
     brew install --cask qt-creator
-    brew uninstall --cask --force suspicious-package
+    # brew uninstall --cask --force suspicious-package
     brew install --cask --force suspicious-package
     # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bitcoin/bitcoin/contrib/contrib/install_db4.sh)" .
 else
@@ -39,7 +40,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Try install-bitcoin-libs-macos"
 fi
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    sudo apt install linuxbrew-wrapper
     sudo apt-get install autoconf
     sudo apt-get install libdb4.8++-dev
     sudo apt-get -y install libboost libevent miniupnpc libdb4.8 qt libqrencode univalue libzmq3

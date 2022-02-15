@@ -68,7 +68,7 @@ let python_highlight_all = 1
 
 set cursorline
 " Make tabs as wide as two spaces
-set tabstop=2
+set tabstop=4
 " Show “invisible” characters
 set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
 set list
@@ -88,24 +88,34 @@ set mouse=a
 set nostartofline
 " Show the cursor position
 set ruler
-" Don’t show the intro message when starting Vim
+" Don’t nnoremapshow the intro message when starting Vim
 set shortmess=atI
 " Show the current mode
 set showmode
 " Show the filename in the window titlebar
 set title
+auto BufEnter * let &titlestring = hostname() . "/" . expand("%:p")
+
+" add useful stuff to title bar (file name, flags, cwd)
+" based on @factorylabs
+if has('title') && (has('gui_running') || &title)
+"  set titlestring=
+    set titlestring+=%f
+    set titlestring+=%h%m%r%w
+    set titlestring+=\ -\ %{v:progname}
+    set titlestring+=\ -\ %{substitute(getcwd(),\ $HOME,\ '~',\ '')}
+endif
+
+
 " Show the (partial) command as it’s being typed
 set showcmd
-
-
 " Enable line numbers
 set number
-
 " Use hybrid line numbers
-" if exists("&relativenumber")
-"		set number relativenumber
-"		au BufReadPost * set relativenumber
-" endif
+ if exists("&relativenumber")
+		set number relativenumber
+		au BufReadPost * set relativenumber
+ endif
 
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3

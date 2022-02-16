@@ -187,9 +187,9 @@ au BufRead,BufNewFile *.c set list
 au BufRead,BufNewFile *.cpp set list
 " GNUmakefile Makefile *.mk
 autocmd FileType make setlocal noexpandtab softtabstop=0
-au BufRead,BufNewFile *akefile  set noexpandtab
-au BufRead,BufNewFile *akefile  set softtabstop=0
-au BufRead,BufNewFile *akefile  set list
+" au BufRead,BufNewFile *akefile  set noexpandtab
+" au BufRead,BufNewFile *akefile  set softtabstop=0
+" au BufRead,BufNewFile *akefile  set list
 
 au BufRead,BufNewFile *.sh* set list
 au BufRead,BufNewFile *.vimrc* set list

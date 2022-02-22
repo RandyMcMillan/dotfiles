@@ -25,6 +25,7 @@
 	
 	---
 	
+
  	make   command		description
  	       -		default
  	       init
@@ -36,9 +37,9 @@
  	       executable	make shell scripts executable
  	       template		base script for creating installer scripts
  	       checkbrew	source and run checkbrew command
+ 	       cirrus		source and run install-cirrus command
  	       config-dock	source and run config-dock-prefs
  	       all	        execute installer scripts
- 	       shell		run install-shell.sh script
- 	       alpine-shell	run install-shell.sh script
- 	       alpine		run install-shell.sh script
+ 	       alpine-shell	run install-shell.sh alpine
+ 	       debian-shell	run install-shell.sh debian user=root
  	       bitcoin-libs	install bitcoin-libs

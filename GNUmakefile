@@ -190,7 +190,7 @@ all: executable
 
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
 shell: alpine-shell
-##	:alpine-shell	run install-shell.sh alpine
+##	:alpine-shell	run install-shell.sh alpine user=root
 alpine-shell: alpine
 alpine:
 	./install-shell.sh alpine

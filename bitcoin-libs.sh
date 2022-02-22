@@ -17,8 +17,8 @@ if hash brew 2>/dev/null; then
     #install brew libs
     brew install wget
     brew install curl
-    brew uninstall qt
-    brew install autoconf automake berkeley-db@4 libtool boost miniupnpc pkg-config python@3 qt@5 libevent qrencode
+    brew uninstall --ignore-dependencies qt
+    brew install m4 perl autoconf automake berkeley-db@4 libtool boost miniupnpc pkg-config python@3 qt@5 libevent qrencode
     brew install librsvg bison
     brew install codespell shellcheck
     brew install afl-fuzz

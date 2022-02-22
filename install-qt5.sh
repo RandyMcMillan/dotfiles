@@ -55,7 +55,8 @@ checkbrew() {
             brew install git
         fi
         brew reinstall $FORCE bash
-        brew install qt@5
+        brew uninstall --ignore-dependencies qt
+        brew install $FORCE qt@5
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         checkbrew

@@ -13,6 +13,6 @@
  	       cirrus		source and run install-cirrus command
  	       config-dock	source and run config-dock-prefs
  	       all	        execute installer scripts
- 	       alpine-shell	run install-shell.sh alpine
+ 	       alpine-shell	run install-shell.sh alpine user=root
  	       debian-shell	run install-shell.sh debian user=root
  	       bitcoin-libs	install bitcoin-libs

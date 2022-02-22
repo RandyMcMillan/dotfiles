@@ -1,8 +1,8 @@
-SHELL                                   := /bin/bash
+SHELL									:= /bin/bash
 
-PWD 									?= pwd_unknown
+PWD										?= pwd_unknown
 
-TIME 									:= $(shell date +%s)
+TIME									:= $(shell date +%s)
 export TIME
 
 # PROJECT_NAME defaults to name of the current directory.
@@ -14,7 +14,7 @@ endif
 export PROJECT_NAME
 
 ifeq ($(force),true)
-FORCE                                   := --force
+FORCE									:= --force
 endif
 export FORCE
 
@@ -63,34 +63,7 @@ init:
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
 ##	:help
 help:
-	@echo ""
-	@echo "	make                        "
-	@echo "	make                        -"
-	@echo "	make                        init"
-	@echo "	make                        help"
-	@echo "	make                        report"
-	@echo "	make                        all"
-	@echo "	make                        all force=true"
-	@echo "	make                        bootstrap"
-	@echo "	make                        executable"
-	@echo "	make                        shell #alpine-shell"
-	@echo "	make                        alpine-shell"
-	@echo "	make                        d-shell #debian-shell"
-	@echo "	make                        debian-shell"
-	@echo "	make                        vim"
-	@echo "	make                        config-git"
-	@echo "	make                        config-github"
-	@echo "	make                        adduser-git"
-	@echo "	make                        install-dotfiles-on-remote"
-	@echo "	remote_user=<user> remote_server=<domain/ip> make install-dotfiles-on-remote"
-	@echo "	---"
-	@echo "	"
-	@echo "	make                        docs"
-	@echo "	make                        push"
-#	@echo "	make                        readme"
-	@echo "	"
-	@echo "	---"
-	@echo "	"
+	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	#@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	#@sed -n 's/^.ONESHELL//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'

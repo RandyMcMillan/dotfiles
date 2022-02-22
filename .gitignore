@@ -57,5 +57,10 @@ etc-pihole
 1.1.1i
 docker.shell
 
-
 bitcoin-test-battery
+autom4te.cache/
+config.log
+config.status
+configure
+install-sh
+patch.diff

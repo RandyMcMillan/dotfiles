@@ -1,8 +1,8 @@
-SHELL                                   := /bin/bash
+SHELL									:= /bin/bash
 
-PWD 									?= pwd_unknown
+PWD										?= pwd_unknown
 
-TIME 									:= $(shell date +%s)
+TIME									:= $(shell date +%s)
 export TIME
 
 # PROJECT_NAME defaults to name of the current directory.
@@ -14,7 +14,7 @@ endif
 export PROJECT_NAME
 
 ifeq ($(force),true)
-FORCE                                   := --force
+FORCE									:= --force
 endif
 export FORCE
 
@@ -91,6 +91,7 @@ help:
 	@echo "	"
 	@echo "	---"
 	@echo "	"
+	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	#@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	#@sed -n 's/^.ONESHELL//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -284,4 +285,6 @@ install-dotfiles-on-remote:
 	./install-dotfiles-on-remote.sh
 
 
-
+-include funcs.mk
+# vim: set noexpandtab:
+# vim: set setfiletype make

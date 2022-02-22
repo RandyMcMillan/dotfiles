@@ -165,33 +165,7 @@ href="https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.
 href="https://twitter.com/RandyMcMillan">Twitter</a> <a
 href="https://randymcmillan.keybase.pub">Keybase</a> <a
 href="https://clubhouse.com/@randymcmillan">Clubhouse</a></h2>
-<pre><code>make                        
-make                        -
-make                        init
-make                        help
-make                        report
-make                        all
-make                        all force=true
-make                        bootstrap
-make                        executable
-make                        shell #alpine-shell
-make                        alpine-shell
-make                        d-shell #debian-shell
-make                        debian-shell
-make                        vim
-make                        config-git
-make                        config-github
-make                        adduser-git
-make                        install-dotfiles-on-remote
-remote_user=&lt;user&gt; remote_server=&lt;domain/ip&gt; make install-dotfiles-on-remote
----
-
-make                        docs
-make                        push
-
----
-
-make   command      description
+<pre><code>make   command      description
        -        default
        init
        help
@@ -202,11 +176,11 @@ make   command      description
        executable   make shell scripts executable
        template     base script for creating installer scripts
        checkbrew    source and run checkbrew command
+       cirrus       source and run install-cirrus command
        config-dock  source and run config-dock-prefs
        all          execute installer scripts
-       shell        run install-shell.sh script
-       alpine-shell run install-shell.sh script
-       alpine       run install-shell.sh script
+       alpine-shell run install-shell.sh alpine
+       debian-shell run install-shell.sh debian user=root
        bitcoin-libs install bitcoin-libs</code></pre>
 <details>
 <summary>

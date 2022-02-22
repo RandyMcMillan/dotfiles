@@ -161,14 +161,13 @@ all: executable
 	echo; exit;"
 
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
-##	:shell		run install-shell.sh script
 shell: alpine-shell
-##	:alpine-shell	run install-shell.sh script
+##	:alpine-shell	run install-shell.sh alpine
 alpine-shell: alpine
-##	:alpine		run install-shell.sh script
 alpine:
 	./install-shell.sh alpine
 d-shell: debian-shell
+##	:debian-shell	run install-shell.sh debian user=root
 debian-shell: debian
 debian:
 	./install-shell.sh debian

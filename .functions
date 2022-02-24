@@ -158,11 +158,11 @@ function git-checkout-b (){
 
 if [ -z "$1" ]
     then
-
-    git checkout -b $(date +%s)
+        git checkout -b $(date +%s)-$(git rev-parse --abbrev-ref HEAD)
 
 else
-    git checkout -b $(date +%s)-$1
+    git checkout -b $(date +%s)-$(git rev-parse --abbrev-ref HEAD)-$1
+    # git checkout -b $(date +%s)-$1
 fi
 
 }
@@ -178,7 +178,7 @@ fi
 #
 #}
 
-# Bitcoin IRC 
+# Bitcoin IRC
 function irc-bitcoin-core-dev(){
 open https://webchat.freenode.net/\#bitcoin-core-dev
 }

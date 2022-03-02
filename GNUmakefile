@@ -51,7 +51,8 @@ export HOMEBREW_NO_ENV_HINTS
 .PHONY:	help
 .PHONY:	report
 .SILENT:
-##	 :-			default
+##	:
+
 -: report help
 ##	:init
 init:
@@ -172,6 +173,7 @@ debian-shell: debian
 debian:
 	./install-shell.sh debian
 .PHONY: vim
+##	:vim		install vim and macvim on macos
 vim: executable
 	./install-vim.sh $(FORCE)
 
@@ -184,9 +186,10 @@ config-git: executable
 	cat config-git.sh
 	./config-git.sh
 
-.PHONY: qt
+.PHONY: qt5
+##	:qt5		install qt@5
 qt5: executable
-	./install-qt.sh
+	./install-qt5.sh
 	./install-qt5-creator.sh
 
 .PHONY: hub

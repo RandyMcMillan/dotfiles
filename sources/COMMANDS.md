@@ -1,6 +1,6 @@
 
  	make   command		description
- 	       -			default
+ 	
  	       init
  	       help
  	       report		environment args
@@ -15,5 +15,7 @@
  	       all	        execute installer scripts
  	       alpine-shell	run install-shell.sh alpine user=root
  	       debian-shell	run install-shell.sh debian user=root
+ 	       vim		install vim and macvim on macos
+ 	       qt5		install qt@5
  	       gnupg		install gnupg and accessories
  	       bitcoin-libs	install bitcoin-libs

@@ -1,6 +1,6 @@
 ## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub)
  	make   command		description
- 	       -			default
+ 	
  	       init
  	       help
  	       report		environment args
@@ -15,6 +15,8 @@
  	       all	        execute installer scripts
  	       alpine-shell	run install-shell.sh alpine user=root
  	       debian-shell	run install-shell.sh debian user=root
+ 	       vim		install vim and macvim on macos
+ 	       qt5		install qt@5
  	       gnupg		install gnupg and accessories
  	       bitcoin-libs	install bitcoin-libs
 

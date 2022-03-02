@@ -1,7 +1,6 @@
-## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub) [Clubhouse](https://clubhouse.com/@randymcmillan)
-
+## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub)
  	make   command		description
- 	       -		default
+ 	       -			default
  	       init
  	       help
  	       report		environment args
@@ -16,6 +15,7 @@
  	       all	        execute installer scripts
  	       alpine-shell	run install-shell.sh alpine user=root
  	       debian-shell	run install-shell.sh debian user=root
+ 	       gnupg		install gnupg and accessories
  	       bitcoin-libs	install bitcoin-libs
 
 <details>

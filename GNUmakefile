@@ -51,7 +51,7 @@ export HOMEBREW_NO_ENV_HINTS
 .PHONY:	help
 .PHONY:	report
 .SILENT:
-##	 :-		default
+##	 :-			default
 -: report help
 ##	:init
 init:
@@ -139,7 +139,7 @@ all: executable
 	./install-Onyx.sh && \
 	./install-SassC.sh && \
 	./install-discord.sh && \
-	./install-gpg-suite.sh && \
+	./install-gnupg+suite.sh && \
 	./install-iterm2.sh && \
 	./install-keeping-you-awake.sh && \
 	./install-little-snitch.sh && \
@@ -185,13 +185,18 @@ config-git: executable
 	./config-git.sh
 
 .PHONY: qt
-qt: executable
+qt5: executable
 	./install-qt.sh
 	./install-qt5-creator.sh
 
 .PHONY: hub
 hub: executable
 	./install-github-utility.sh
+
+.PHONY: gnupg
+##	:gnupg		install gnupg and accessories
+gnupg: executable
+	./install-gnupg+suite.sh
 
 .PHONY: config-github
 config-github: executable

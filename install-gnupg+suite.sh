@@ -63,7 +63,8 @@ if [[ "$OSTYPE" == "linux"* ]]; then
         AWK=gawk
         export AWK
         if hash apt 2>/dev/null; then
-            $PACKAGE_MANAGER $INSTALL $AWK
+            # REF: https://www.wikihow.com/Set-Up-and-Use-GPG-for-Ubuntu
+            $PACKAGE_MANAGER $INSTALL $AWK gnupg kpgp gpgme gputils libpopt-dev
             #report
         fi
     fi
@@ -102,6 +103,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         AWK=awk
         export AWK
         brew install --cask gpg-suite
+        brew install gnupg gpgme gputils popt
         checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE

@@ -27,7 +27,7 @@
 	
 
  	make   command		description
- 	       -		default
+ 	       -			default
  	       init
  	       help
  	       report		environment args
@@ -42,4 +42,5 @@
  	       all	        execute installer scripts
  	       alpine-shell	run install-shell.sh alpine user=root
  	       debian-shell	run install-shell.sh debian user=root
+ 	       gnupg		install gnupg and accessories
  	       bitcoin-libs	install bitcoin-libs

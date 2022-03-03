@@ -19,7 +19,6 @@ else
             if hash apt 2>/dev/null; then
             if hash adduser 2>/dev/null; then
                 $PACKAGE_MANAGER $INSTALL $AWK
-                adduser-git
             else
                 apt adduser
             fi

@@ -1,4 +1,18 @@
 #!/usr/bin/env bash
+
+
+function sudoless () {
+
+    PREFIX=$(brew --prefix)
+    export PREFIX
+
+    # take ownership
+    # this will also let homebrew work without using sudo
+    # please don't do this if you don't know what it does!
+    sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node}
+    sudo chown -R $USER $PREFIX/{share/man,bin,sbin,lib/node,include/node}
+
+}
 HOMEBREW_NO_INSTALL_CLEANUP=fale
 export  HOMEBREW_NO_INSTALL_CLEANUP
 
@@ -70,6 +84,11 @@ if [[ ${!i} = info ]]; then
     exit
 fi
 
+if [[ ${!i} = sudoless ]]; then
+    ((i++))
+    sudoless
+    echo "brew in now sudoless!!!"
+fi
 
 if [[ ${!i} = install ]]; then
     ((i++))

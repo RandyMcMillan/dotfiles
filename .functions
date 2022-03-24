@@ -156,19 +156,11 @@ fi
 }
 function git-checkout-b (){
 
-if [ -z "$1" ]
+    git checkout -b $(date +%s)/$(git rev-parse HEAD)/$(git rev-parse --short HEAD)
+    if [ ! -z "$1" ]
     then
-        if [  $(git rev-parse --abbrev-ref HEAD) == "main" ]; then
-            git checkout -b $(date +%s)/$(git rev-parse --abbrev-ref HEAD)/$(git rev-parse --short HEAD)
-        fi
-        if [  $(git rev-parse --abbrev-ref HEAD) == "master" ]; then
-            git checkout -b $(date +%s)/$(git rev-parse --abbrev-ref HEAD)/$(git rev-parse --short HEAD)
-        fi
-else
-    # git checkout -b $(date +%s)/$(git rev-parse --abbrev-ref HEAD)/$(git rev-parse --short HEAD)/$1
-    git checkout -b $(date +%s)/$(git rev-parse --abbrev-ref HEAD)/$1
-    # git checkout -b $(date +%s)-$1
-fi
+        git checkout -b $(git rev-parse --abbrev-ref HEAD)-$1
+    fi
 
 }
 

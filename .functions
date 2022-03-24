@@ -165,7 +165,8 @@ if [ -z "$1" ]
             git checkout -b $(date +%s)/$(git rev-parse --abbrev-ref HEAD)/$(git rev-parse --short HEAD)
         fi
 else
-    git checkout -b $(date +%s)/$(git rev-parse --abbrev-ref HEAD)/$(git rev-parse --short HEAD)/$1
+    # git checkout -b $(date +%s)/$(git rev-parse --abbrev-ref HEAD)/$(git rev-parse --short HEAD)/$1
+    git checkout -b $(date +%s)/$(git rev-parse --abbrev-ref HEAD)/$1
     # git checkout -b $(date +%s)-$1
 fi
 

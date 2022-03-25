@@ -150,7 +150,7 @@ if [ -z "$1" ]
     #git branch -D $(git branch --list "$1")
 
 else
-    git branch -D $(git branch --list "$1")
+    git branch -D $(git branch --list "*$1*")
 fi
 
 }

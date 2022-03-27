@@ -113,8 +113,14 @@ export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/usr/local/opt/openssl@3/bin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+
+if [ "$OSTYPE" == "Linux"* ]; then
+    if ! hash brew 2>/dev/null; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
+fi
+export PATH="/usr/local/sbin:$PATH"

@@ -124,3 +124,4 @@ if [ "$OSTYPE" == "Linux"* ]; then
     fi
 fi
 export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/qt@5/bin:$PATH"

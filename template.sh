@@ -93,6 +93,25 @@ fi
 for ((i=1;i<=$#;i++));
 do
 
+# positional args first
+#--sudo
+if [[ ${!i} == "-s" ]] || [[ ${!i} == "--sudo" ]]; then
+    SUDO="sudo -s"
+    export SUDO
+    echo $SUDO
+    shift
+    # checkbrew-info
+fi
+#--force
+if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
+    FORCE=--force
+    export FORCE
+    echo $FORCE
+    shift
+    # checkbrew-info
+fi
+
+
 if [[ ${!i} == *"info" ]] || \
     [[ ${!i} == *"i" ]] || \
     [[ ${!i} == *"help" ]] || \
@@ -103,17 +122,13 @@ if [[ ${!i} == *"info" ]] || \
         echo "item = $item"
         #process item
     done
+    checkbrew-help
 fi
 
 done
 }
 
-# if [[ ${!i} == "sudo" ]]; then
-#     SUDO="sudo -s"
-#     export SUDO
-#     shift
-#     checkbrew-info
-# fi
+
 # if [[ ${!i} == "-f" ]]; then
 #     FORCE=--force
 #     export FORCE
@@ -175,11 +190,18 @@ done
 # }
 function checkbrew-help(){
 
-echo "checkbrew command"
-echo "checkbrew sudoless"
-echo "checkbrew info"
-echo "checkbrew update"
-echo "checkbrew upgrade"
-echo "checkbrew cleanup"
+echo ""
+echo "checkbrew -a --arg    -c    --command <item>"
+echo ""
+echo "checkbrew -s --sudo"
+echo "checkbrew -f --force"
+echo "checkbrew             -i    --info"
+echo "checkbrew             -h    --help"
+echo "checkbrew             -s    --sudo"
+echo "checkbrew             -sl   --sudoless"
+echo "checkbrew             -u    --update & upgrade"
+echo "checkbrew             -ud   --update"
+echo "checkbrew             -ug   --upgrade"
+echo "checkbrew             -cu   --cleanup"
 
 }

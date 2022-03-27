@@ -1,49 +1,76 @@
 #!/usr/bin/env bash
+HOMEBREW_NO_INSTALL_CLEANUP=false
+export  HOMEBREW_NO_INSTALL_CLEANUP
 
-
-function sudoless () {
-
+function brew-sudoless () {
     PREFIX=$(brew --prefix)
     export PREFIX
 
     # take ownership
-    # this will also let homebrew work without using sudo
-    # please don't do this if you don't know what it does!
     sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node}
     sudo chown -R $USER $PREFIX/{share/man,bin,sbin,lib/node,include/node}
 
 }
-HOMEBREW_NO_INSTALL_CLEANUP=fale
-export  HOMEBREW_NO_INSTALL_CLEANUP
 
-
-function checkbrew() {
+function brew-update() {
+u
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then
-        printf "brew installed!!"
-        printf "\ntry\ninstall <lib name>"
-        export AWK=gawk
-        if ! hash $AWK 2>/dev/null; then
-        if hash awk 2>/dev/null; then
-            brew unlink awk
-        fi
-            brew install $AWK
-            brew link $AWK
-        fi
-        if ! hash git 2>/dev/null; then
-            brew install git
-        fi
-    else
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-        checkbrew
+        brew update
     fi
-else
+fi
+}
+function brew-upgrade() {
+if [ "$EUID" -ne "0" ]; then
+    if hash brew 2>/dev/null; then
+        brew upgrade
+    fi
+fi
+}
+function brew-cleanup() {
+if [ "$EUID" -ne "0" ]; then
+    if hash brew 2>/dev/null; then
+        brew bundle --force cleanup
+    fi
+fi
+}
+function brew-uninstall(){
+
+    brew remove --force $(brew list --formula)
+    brew remove --cask --force $(brew list)
+
+}
+function brew-bundle() {
+if [ "$EUID" -ne "0" ]; then
+    if hash brew 2>/dev/null; then
+        brew bundle --force dump
+    fi
+fi
+}
+function checkbrew() {
+if [ "$EUID" == "0" ]; then
     printf "home brew prevents being installed from root!!!\nTry\nmake adduser-git"
 fi
-if [[ "$OSTYPE" == "linux"* ]]; then
-if [ "$EUID" -ne "0" ]; then
-    SUDO=sudo
+if hash brew 2>/dev/null; then
+    export AWK=gawk
+    if ! hash $AWK 2>/dev/null; then
+        if hash gawk 2>/dev/null; then
+            brew unlink gawk
+        fi
+        brew install $AWK
+        brew link $AWK
+    fi
+    if ! hash git 2>/dev/null; then
+        brew install git
+    fi
+else
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    checkbrew
 fi
+if [[ "$OSTYPE" == "linux"* ]]; then
+    if [ "$EUID" -ne "0" ]; then
+        SUDO="sudo -s"
+    fi
     #CHECK APT
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         PACKAGE_MANAGER=apt
@@ -61,13 +88,17 @@ fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo
 fi
-}
 
 for ((i=1;i<=$#;i++));
 do
 
-
-if [[ ${!i} = info ]]; then
+if [[ ${!i} = sudo ]]; then
+    ((i++))
+    if [ "$EUID" -ne "0" ]; then
+        SUDO=sudo
+    fi
+fi
+if [[ ${!i} = info* ]]; then
     ((i++))
     echo
     echo "ARGS:"
@@ -81,26 +112,55 @@ if [[ ${!i} = info ]]; then
     echo "5 = ${5}"
     echo "6 = ${6}"
     echo "7 = ${7}"
-    exit
 fi
-
-if [[ ${!i} = sudoless ]]; then
+if [[ ${!i} = sudoless* ]]; then
     ((i++))
-    sudoless
+    brew-sudoless
     echo "brew in now sudoless!!!"
 fi
-
-if [[ ${!i} = install ]]; then
+if [[ ${!i} = install* ]]; then
     ((i++))
     brew install "${2}"
 fi
-if [[ ${!i} = reinstall ]]; then
+if [[ ${!i} = reinstall* ]]; then
     ((i++))
     brew reinstall "${2}"
+fi
+if [[ ${!i} = uninstall ]]; then
+    ((i++))
+    brew-uninstall
 fi
 if [[ ${!i} = check* ]]; then
     ((i++))
     checkbrew
 fi
-
+if [[ ${!i} = update* ]]; then
+    ((i++))
+    brew-update
+fi
+if [[ ${!i} = upgrade* ]]; then
+    ((i++))
+    brew-upgrade
+fi
+if [[ ${!i} = cleanup* ]]; then
+    ((i++))
+    brew-cleanup
+fi
+if [[ ${!i} = bundle* ]]; then
+    ((i++))
+    brew bundle --force dump
+else
+checkbrew-help
+fi
 done
+}
+function checkbrew-help(){
+
+echo "checkbrew command"
+echo "checkbrew sudoless"
+echo "checkbrew info"
+echo "checkbrew update"
+echo "checkbrew upgrade"
+echo "checkbrew cleanup"
+
+}

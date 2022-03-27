@@ -122,9 +122,25 @@ fi
 #--commands
 #--bundle
 if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
-    echo "bundle"
+    echo "--bundle"
     brew bundle ${FORCE} dump
     shift
+fi
+#--install
+if [[ ${!i} == "--install" ]]; then
+    # echo "--install ${FORCE} ${!i}"
+    # ((i++))
+    shift
+    # echo "--install ${FORCE} ${!i}"
+    # brew install ${FORCE} ${!i}
+    # libs=( "${@}"  )
+    for item in "$@"; do
+    # for item in "$libs"; do
+        brew install ${FORCE} ${item}
+        shift
+    done
+
+
 fi
 #--info
 if [[ ${!i} == "-i" ]] || [[ ${!i} == "--info" ]] || \

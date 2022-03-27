@@ -87,95 +87,92 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo
-    checkbrew-help
 fi
+# echo "$OSTYPE"
 
 for ((i=1;i<=$#;i++));
 do
 
-if [[ ${!i} == "sudo" ]]; then
-    SUDO="sudo -s"
-    export SUDO
-    shift
-    checkbrew-info
-fi
-if [[ ${!i} == "-f" ]]; then
-    FORCE=--force
-    export FORCE
-    shift
-    checkbrew-info
-fi
-if [[ ${!i} == "info" ]]; then
-    echo
-    echo "!i = ${!i}"
-    echo "0 = ${0}" #/usr/local/bin/play
-    echo "1 = ${1}"
-    echo "2 = ${2}"
-    echo "3 = ${3}"
-    echo "4 = ${4}"
-    echo "5 = ${5}"
-    echo "6 = ${6}"
-    echo "7 = ${7}"
+if [[ ${!i} == *"info" ]] || \
+    [[ ${!i} == *"i" ]] || \
+    [[ ${!i} == *"help" ]] || \
+    [[ ${!i} == *"h" ]]; then
     firstitem=$1
     shift;
     for item in "${@}" ; do
-        echo "item = $item" #${7}"
+        echo "item = $item"
         #process item
     done
 fi
-if [[ ${!i} == "sudoless"* ]]; then
-    brew-sudoless
-    echo "brew in now sudoless!!!"
-fi
-if [[ ${!i} == "install" ]]; then
-    ((i++))
-    if [[ ${!i} = cask ]]; then
-        ((i++))
-        for item in "${@:2}"
-        do
-            echo "installing $item..."
-            brew install ${FORCE} "${!item}"
-        done
-    fi
-    for item in "${@:2}"
-    do
-        brew install ${FORCE} "${!i}"
-    done
-    brew install ${FORCE} "${!i}"
-    brew install ${FORCE} "${!i}"
-fi
-if [[ ${!i} == "reinstall" ]]; then
-    ((i++))
-    brew reinstall ${FORCE} "${2}"
-fi
-if [[ ${!i} = uninstall ]]; then
-    ((i++))
-    brew-uninstall
-fi
-if [[ ${!i} = check* ]]; then
-    ((i++))
-    checkbrew
-fi
-if [[ ${!i} = "update"* ]]; then
-    ((i++))
-    brew-update
-fi
-if [[ ${!i} = "upgrade"* ]]; then
-    ((i++))
-    brew-upgrade
-fi
-if [[ ${!i} = "cleanup"* ]]; then
-    ((i++))
-    brew-cleanup
-fi
-if [[ ${!i} = "bundle"* ]]; then
-    ((i++))
-    brew bundle ${FORCE} dump
-else
-echo "try:\ncheckbrew-help"
-fi
+
 done
 }
+
+# if [[ ${!i} == "sudo" ]]; then
+#     SUDO="sudo -s"
+#     export SUDO
+#     shift
+#     checkbrew-info
+# fi
+# if [[ ${!i} == "-f" ]]; then
+#     FORCE=--force
+#     export FORCE
+#     shift
+#     checkbrew-info
+# fi
+# if [[ ${!i} == "sudoless"* ]]; then
+#     brew-sudoless
+#     echo "brew in now sudoless!!!"
+# fi
+# if [[ ${!i} == "install" ]]; then
+#     ((i++))
+#     if [[ ${!i} = cask ]]; then
+#         ((i++))
+#         for item in "${@:2}"
+#         do
+#             echo "installing $item..."
+#             brew install ${FORCE} "${!item}"
+#         done
+#     fi
+#     for item in "${@:2}"
+#     do
+#         brew install ${FORCE} "${!i}"
+#     done
+#     brew install ${FORCE} "${!i}"
+#     brew install ${FORCE} "${!i}"
+# fi
+# if [[ ${!i} == "reinstall" ]]; then
+#     ((i++))
+#     brew reinstall ${FORCE} "${2}"
+# fi
+# if [[ ${!i} = uninstall ]]; then
+#     ((i++))
+#     brew-uninstall
+# fi
+# if [[ ${!i} = check* ]]; then
+#     ((i++))
+#     checkbrew
+# fi
+# if [[ ${!i} = "update"* ]]; then
+#     ((i++))
+#     brew-update
+# fi
+# if [[ ${!i} = "upgrade"* ]]; then
+#     ((i++))
+#     brew-upgrade
+# fi
+# if [[ ${!i} = "cleanup"* ]]; then
+#     ((i++))
+#     brew-cleanup
+# fi
+# if [[ ${!i} = "bundle"* ]]; then
+#     ((i++))
+#     brew bundle ${FORCE} dump
+# else
+# echo "try:\ncheckbrew-help"
+# fi
+# done
+# }
 function checkbrew-help(){
 
 echo "checkbrew command"

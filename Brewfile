@@ -16,6 +16,8 @@ brew "fastlane"
 brew "gawk"
 brew "git"
 brew "gnupg"
+brew "python@3.9"
 brew "macvim"
 brew "qt@5"
+brew "vim", link: false
 cask "onyx"

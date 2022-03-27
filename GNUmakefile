@@ -66,6 +66,7 @@ init:
 	test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
 	ssh-add > /dev/null 2>&1
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
+	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
 ##	:help
 help:
 	@echo ''

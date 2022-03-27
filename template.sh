@@ -30,7 +30,7 @@ fi
 function brew-cleanup() {
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then
-        brew bundle --force cleanup
+        brew bundle ${FORCE} cleanup
     fi
 fi
 }
@@ -43,7 +43,7 @@ function brew-uninstall(){
 function brew-bundle() {
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then
-        brew bundle --force dump
+        brew bundle ${FORCE} dump
     fi
 fi
 }
@@ -87,21 +87,25 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo
+    checkbrew-help
 fi
 
 for ((i=1;i<=$#;i++));
 do
 
-if [[ ${!i} = sudo ]]; then
-    ((i++))
-    if [ "$EUID" -ne "0" ]; then
-        SUDO=sudo
-    fi
+if [[ ${!i} == "sudo" ]]; then
+    SUDO="sudo -s"
+    export SUDO
+    shift
+    checkbrew-info
 fi
-if [[ ${!i} = info* ]]; then
-    ((i++))
-    echo
-    echo "ARGS:"
+if [[ ${!i} == "-f" ]]; then
+    FORCE=--force
+    export FORCE
+    shift
+    checkbrew-info
+fi
+if [[ ${!i} == "info" ]]; then
     echo
     echo "!i = ${!i}"
     echo "0 = ${0}" #/usr/local/bin/play
@@ -112,19 +116,37 @@ if [[ ${!i} = info* ]]; then
     echo "5 = ${5}"
     echo "6 = ${6}"
     echo "7 = ${7}"
+    firstitem=$1
+    shift;
+    for item in "${@}" ; do
+        echo "item = $item" #${7}"
+        #process item
+    done
 fi
-if [[ ${!i} = sudoless* ]]; then
-    ((i++))
+if [[ ${!i} == "sudoless"* ]]; then
     brew-sudoless
     echo "brew in now sudoless!!!"
 fi
-if [[ ${!i} = install* ]]; then
+if [[ ${!i} == "install" ]]; then
     ((i++))
-    brew install "${2}"
+    if [[ ${!i} = cask ]]; then
+        ((i++))
+        for item in "${@:2}"
+        do
+            echo "installing $item..."
+            brew install ${FORCE} "${!item}"
+        done
+    fi
+    for item in "${@:2}"
+    do
+        brew install ${FORCE} "${!i}"
+    done
+    brew install ${FORCE} "${!i}"
+    brew install ${FORCE} "${!i}"
 fi
-if [[ ${!i} = reinstall* ]]; then
+if [[ ${!i} == "reinstall" ]]; then
     ((i++))
-    brew reinstall "${2}"
+    brew reinstall ${FORCE} "${2}"
 fi
 if [[ ${!i} = uninstall ]]; then
     ((i++))
@@ -134,23 +156,23 @@ if [[ ${!i} = check* ]]; then
     ((i++))
     checkbrew
 fi
-if [[ ${!i} = update* ]]; then
+if [[ ${!i} = "update"* ]]; then
     ((i++))
     brew-update
 fi
-if [[ ${!i} = upgrade* ]]; then
+if [[ ${!i} = "upgrade"* ]]; then
     ((i++))
     brew-upgrade
 fi
-if [[ ${!i} = cleanup* ]]; then
+if [[ ${!i} = "cleanup"* ]]; then
     ((i++))
     brew-cleanup
 fi
-if [[ ${!i} = bundle* ]]; then
+if [[ ${!i} = "bundle"* ]]; then
     ((i++))
-    brew bundle --force dump
+    brew bundle ${FORCE} dump
 else
-checkbrew-help
+echo "try:\ncheckbrew-help"
 fi
 done
 }

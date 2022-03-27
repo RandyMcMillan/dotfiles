@@ -100,7 +100,6 @@ if [[ ${!i} == "-s" ]] || [[ ${!i} == "--sudo" ]]; then
     export SUDO
     echo $SUDO
     shift
-    # checkbrew-info
 fi
 #--force
 if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
@@ -108,21 +107,25 @@ if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
     export FORCE
     echo $FORCE
     shift
-    # checkbrew-info
 fi
-
-
-if [[ ${!i} == *"info" ]] || \
-    [[ ${!i} == *"i" ]] || \
-    [[ ${!i} == *"help" ]] || \
-    [[ ${!i} == *"h" ]]; then
+#--bundle
+if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
+    echo "bundle"
+    brew bundle ${FORCE} dump
+    shift
+fi
+#--info
+if [[ ${!i} == "-i" ]] || [[ ${!i} == "--info" ]] || \
+    [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]]; then
     firstitem=$1
     shift;
-    for item in "${@}" ; do
+    for item in "${@}"; do
         echo "item = $item"
         #process item
     done
     checkbrew-help
+else
+((i++))
 fi
 
 done

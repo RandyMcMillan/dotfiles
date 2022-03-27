@@ -40,12 +40,16 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
+BREW                                    := $(shell which brew)
+BREW_PREFIX                             := $(shell brew --prefix)
+BREW_CELLAR                             := $(shell brew --cellar)
 HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
 
 
 ##	make :command		description
 # ##make :ARGS # remove first space
+.ONESHELL:
 .PHONY:-
 .PHONY:	init
 .PHONY:	help
@@ -86,6 +90,9 @@ report:
 	@echo '        - GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
 	@echo '        - GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}	'
+	@echo '        - BREW=${BREW}	'
+	@echo '        - BREW_PREFIX=${BREW_PREFIX}	'
+	@echo '        - BREW_CELLAR=${BREW_CELLAR}	'
 	@echo '        - HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
 
 #.PHONY:
@@ -101,7 +108,7 @@ whatami:
 #	make help > source/COMMANDS.md
 #	git add -f README.md && git commit -m "make readme" && git push -f origin master
 .PHONY:adduser-git
-##	:adduser-git	add a user nameed git
+##	:adduser-git	add a user named git
 adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 .PHONY: bootstrap
@@ -134,6 +141,7 @@ config-dock: executable
 .PHONY: all
 ##	:all	        execute installer scripts
 all: executable
+	bash -c "source template.sh"
 	bash -c "./checkbrew.sh && \
 	./install-Docker.sh && \
 	./install-FastLane.sh && \

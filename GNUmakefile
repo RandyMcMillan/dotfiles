@@ -47,7 +47,7 @@ HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
 
 
-##	make :command		description
+##	make :command			description
 # ##make :ARGS # remove first space
 .ONESHELL:
 .PHONY:-
@@ -74,7 +74,7 @@ help:
 	#@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	#@sed -n 's/^.ONESHELL//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-##	:report		environment args
+##	:report			environment args
 report:
 	@echo ''
 	@echo '[ARGUMENTS]	'
@@ -101,7 +101,7 @@ report:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
 .PHONY: whatami
-##	:whatami		report system info
+##	:whatami			report system info
 whatami:
 	./whatami.sh
 #.PHONY:readme
@@ -109,11 +109,11 @@ whatami:
 #	make help > source/COMMANDS.md
 #	git add -f README.md && git commit -m "make readme" && git push -f origin master
 .PHONY:adduser-git
-##	:adduser-git	add a user named git
+##	:adduser-git		add a user named git
 adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 .PHONY: bootstrap
-##	:bootstrap	run bootstrap.sh - dotfile installer
+##	:bootstrap		run bootstrap.sh - dotfile installer
 bootstrap: executable
 	./boot-strap.sh
 
@@ -121,26 +121,28 @@ bootstrap: executable
 executable:
 	chmod +x *.sh
 .PHONY: exec
-##	:executable	make shell scripts executable
+##	:executable		make shell scripts executable
 exec: executable
 
 .PHONY: checkbrew template brew
 .ONESHELL:
-brew: checkbrew
-##	:template		base script for creating installer scripts
-template: checkbrew
-##	:checkbrew	source and run checkbrew command
-checkbrew: executable
-	bash -c "source $(PWD)/checkbrew.sh && checkbrew $(FORCE)"
-##	:cirrus		source and run install-cirrus command
+##	:checkbrew-install	install template.sh
+checkbrew-install:
+	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
+##	:template			base script for creating installer scripts
+template-update: checkbrew-update
+##	:checkbrew		source and run checkbrew command
+checkbrew-update: executable
+	bash -c "source $(PWD)/checkbrew.sh && checkbrew $(FORCE) --update"
+##	:cirrus			source and run install-cirrus command
 cirrus: executable
 	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"
-##	:config-dock	source and run config-dock-prefs
+##	:config-dock		source and run config-dock-prefs
 config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
 .PHONY: all
-##	:all	        execute installer scripts
+##	:all			execute installer scripts
 all: executable
 	bash -c "source template.sh"
 	bash -c "./checkbrew.sh && \
@@ -172,17 +174,17 @@ all: executable
 
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
 shell: alpine-shell
-##	:alpine-shell	run install-shell.sh alpine user=root
+##	:alpine-shell		run install-shell.sh alpine user=root
 alpine-shell: alpine
 alpine:
 	./install-shell.sh alpine
 d-shell: debian-shell
-##	:debian-shell	run install-shell.sh debian user=root
+##	:debian-shell		run install-shell.sh debian user=root
 debian-shell: debian
 debian:
 	./install-shell.sh debian
 .PHONY: vim
-##	:vim		install vim and macvim on macos
+##	:vim			install vim and macvim on macos
 vim: executable
 	./install-vim.sh $(FORCE)
 
@@ -196,7 +198,7 @@ config-git: executable
 	./config-git.sh
 
 .PHONY: qt5
-##	:qt5		install qt@5
+##	:qt5			install qt@5
 qt5: executable
 	./install-qt5.sh
 	./install-qt5-creator.sh
@@ -206,7 +208,7 @@ hub: executable
 	./install-github-utility.sh
 
 .PHONY: gnupg
-##	:gnupg		install gnupg and accessories
+##	:gnupg			install gnupg and accessories
 gnupg: executable
 	./install-gnupg+suite.sh
 
@@ -217,7 +219,7 @@ config-github: executable
 
 .PHONY: install-bitcoin-libs
 .ONESHELL:
-##	:bitcoin-libs	install bitcoin-libs
+##	:bitcoin-libs		install bitcoin-libs
 bitcoin-libs: exec
 	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
 

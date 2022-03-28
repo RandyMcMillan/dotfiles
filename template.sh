@@ -142,6 +142,17 @@ if [[ ${!i} == "--install" ]]; then
 
 
 fi
+
+#--update
+if [[ ${!i} == "-ud" ]] || [[ ${!i} == "--update" ]]; then
+    brew update
+
+fi
+#--update
+if [[ ${!i} == "-ug" ]] || [[ ${!i} == "--upgrade" ]]; then
+    brew upgrade
+
+fi
 #--info
 if [[ ${!i} == "-i" ]] || [[ ${!i} == "--info" ]] || \
     [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]]; then

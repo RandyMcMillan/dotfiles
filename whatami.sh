@@ -39,12 +39,20 @@ HOSTID=`hostid 2>&-` && echo "          HOST ID:  "$HOSTID
 #
 # MEMORY
 #
+if [[ "$OSTYPE" == "linux"* ]]; then
+
 cat /proc/meminfo | awk '/MemTotal:/{sub(/MemTotal:   /,""); print "     TOTAL MEMORY: ",$0}'
 cat /proc/meminfo | awk '/MemFree:/{sub(/MemFree:    /,""); print "      FREE MEMORY: ",$0}'
 cat /proc/meminfo | awk '/SwapTotal:/{sub(/SwapTotal:  /,""); print "       TOTAL SWAP: ",$0}'
 cat /proc/meminfo | awk '/SwapFree:/{sub(/SwapFree:   /,""); print "        FREE SWAP: ",$0}'
 swapon -s | awk 'NR>1{print "      SWAP DEVICE: ",$2 "=" $1 ", " int($3/1024+0.5) "MiB"}'
-
+fi
+if [[ "$(uname)" == "Darwin"* ]]; then
+    if hash vm_stat 2>/dev/null; then
+    vm_stat
+    ls -l /var/vm
+    fi
+fi
 #
 # DRIVES
 #

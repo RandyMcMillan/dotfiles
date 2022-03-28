@@ -12,6 +12,16 @@ PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:/sbin:/usr/sbin:/usr/local/sbin
 
 DMESG=dmesg
 
+
+function macos_device(){
+
+    if [[ "$(uname)" == "Darwin"* ]]; then
+    # ioreg -l | grep -v PCI
+    ioreg -l | grep com.apple.$KIT
+    # ioreg -l | grep -v IOKitDiagnostics
+    fi
+}
+
 if [ -f /var/log/dmesg ] ; then
         DMESG="cat /var/log/dmesg"
 elif [ -f /var/log/boot.msg ] ; then
@@ -56,15 +66,16 @@ fi
 #
 # DRIVES
 #
-for drive in `echo /dev/hd[a-z]|sed 's/\/dev\///g'`; do
-	[ "$DMESG" ] &&
-	$DMESG | grep ^$drive | awk 'NR==1{print "       IDE DEVICE: ",$0}NR==2{print "  DEVICE GEOMETRY: ",$0}'
-done
+if [[ "$OSTYPE" == "linux"* ]]; then
+    for drive in `echo /dev/hd[a-z]|sed 's/\/dev\///g'`; do
+        [ "$DMESG" ] &&
+        $DMESG | grep ^$drive | awk 'NR==1{print "       IDE DEVICE: ",$0}NR==2{print "  DEVICE GEOMETRY: ",$0}'
+    done
 
-SCSI=`$DMESG | awk '/^scsi[0-9]/{print $1}'`
-for f in $SCSI; do
-	$DMESG | awk '/^'$f'/{print "      SCSI DEVICE: ",$0}'
-done
+    SCSI=`$DMESG | awk '/^scsi[0-9]/{print $1}'`
+    for f in $SCSI; do
+        $DMESG | awk '/^'$f'/{print "      SCSI DEVICE: ",$0}'
+    done
 
 #
 # NETWORK CARD
@@ -73,6 +84,12 @@ done
 if [ "$DMESG" ]; then
     $DMESG | awk '/^[[:blank:]]*arc[0-9]|^[[:blank:]]*eth[0-9]/{	\
 	if ($0~/IRQ/){print "     NETWORK CARD: ", $0}}'
+fi
+fi
+
+if [[ "$(uname)" == "Darwin"* ]]; then
+#REF: https://eclecticlight.co/2016/10/01/using-the-logs-in-sierra-some-practical-tips/
+echo
 fi
 
 ################### NETWORK ##################################
@@ -140,15 +157,18 @@ done
 Drive=` mount | grep ^/dev | awk '{sub(/\/dev\//,"",$1);gsub(/[[:digit:]]/,"",$1); print $1}' | sort | uniq `
 
 
+if [[ "$OSTYPE" == "linux"* ]]; then
 # Partition=` mount | grep ^/dev | awk '{print $1}' `
 Partition=` mount | grep ^/dev | awk '{print $3}' `
 
 for drive in $Drive; do
+    echo "$drive"
 	for partition in $Partition; do
-		df $partition |
-	awk '/'${drive/\//\\/}'/{print "        PARTITION: ",$1,"mounted on",$6,"(" int($2/1024) "MiB, " $5 " full)"}'
+        df $partition |
+            awk '/'${drive/\//\\/}'/{print "        PARTITION: ",$1,"mounted on",$6,"(" int($2/1024) "MiB, " $5 " full)"}'
 	done
 done
+fi
 
 #
 # REMOTE MOUNTS
@@ -185,7 +205,17 @@ smbclient -N -L $HOSTNAME < /dev/null 2> /dev/null |
 
 # only interested in the video graphics card right now. Probably want to
 # print out all the pci device information, which obtained by lspci
+if [[ "$OSTYPE" == "linux"* ]]; then
 lspci | grep -i "display\|vga"| sed 's/^[0-9a-f]\{2\}:[0-9a-f]\{2\}.[0-9]/          DISPLAY: /'
+fi
+
+if [[ "$(uname)" == "Darwin"* ]]; then
+# ioreg -l | grep -v PCI
+# ioreg -l | grep com.apple.iokit
+$KIT = iokit
+macos_device
+# ioreg -l | grep -v IOKitDiagnostics
+fi
 
 ############ OPERATING SYSTEM ###############################
 echo "###  SOFTWARE  ###"

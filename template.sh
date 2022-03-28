@@ -127,7 +127,7 @@ if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
     shift
 fi
 #--install
-if [[ ${!i} == "--install" ]]; then
+if [[ ${!i} == "--install" ]] || [[ ${!i} == "install" ]]; then
     # echo "--install ${FORCE} ${!i}"
     # ((i++))
     shift
@@ -148,7 +148,7 @@ if [[ ${!i} == "-ud" ]] || [[ ${!i} == "--update" ]]; then
     brew update
 
 fi
-#--update
+#--upgrade
 if [[ ${!i} == "-ug" ]] || [[ ${!i} == "--upgrade" ]]; then
     brew upgrade
 

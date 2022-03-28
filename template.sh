@@ -103,7 +103,7 @@ if [[ ${!i} == "-s" ]] || [[ ${!i} == "--sudo" ]]; then
     if [[ ${1} == "-s" ]] || [[ ${1} == "--sudo" ]]; then
         SUDO="sudo -s"
         export SUDO
-        echo $SUDO
+        # echo $SUDO
         shift
     else
         checkbrew-help
@@ -115,14 +115,14 @@ if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
         [[ ${2} == "-f" ]] || [[ ${2} == "--force" ]]; then
         FORCE=--force
         export FORCE
-        echo $FORCE
+        # echo $FORCE
         shift
     fi
 fi
 #--commands
 #--bundle
 if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
-    echo "--bundle"
+    # echo "--bundle"
     brew bundle ${FORCE} dump
     shift
 fi

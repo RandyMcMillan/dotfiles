@@ -150,7 +150,22 @@ if [ -z "$1" ]
     #git branch -D $(git branch --list "$1")
 
 else
-    git branch -D $(git branch --list "*$1*")
+    git branch -D $(git branch --list "$1*")
+fi
+
+}
+function git-branch-D-r (){
+
+if [ -z "$1" ]
+    then
+
+    git branch -r
+    echo "try:"
+    echo "git-branch-D *string*"
+    #git branch -D -r $(git branch --list "$1")
+
+else
+    git branch -D -r  $(git branch --list -r "$1*")
 fi
 
 }

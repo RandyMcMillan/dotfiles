@@ -2,7 +2,7 @@
 HOMEBREW_NO_INSTALL_CLEANUP=false
 export  HOMEBREW_NO_INSTALL_CLEANUP
 
-function brew-sudoless () {
+function checkbrew-sudoless () {
     PREFIX=$(brew --prefix)
     export PREFIX
 
@@ -12,35 +12,32 @@ function brew-sudoless () {
 
 }
 
-function brew-update() {
-u
+function checkbrew-upgrade() {
 if [ "$EUID" -ne "0" ]; then
+    #shift
     if hash brew 2>/dev/null; then
-        brew update
+    for item in "${@}"; do
+        echo ${item}
+        brew upgrade ${FORCE} ${item}
+        shift
+    done
     fi
 fi
 }
-function brew-upgrade() {
-if [ "$EUID" -ne "0" ]; then
-    if hash brew 2>/dev/null; then
-        brew upgrade
-    fi
-fi
-}
-function brew-cleanup() {
+function checkbrew-cleanup() {
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then
         brew bundle ${FORCE} cleanup
     fi
 fi
 }
-function brew-uninstall(){
+function checkbrew-uninstall(){
 
     brew remove --force $(brew list --formula)
     brew remove --cask --force $(brew list)
 
 }
-function brew-bundle() {
+function checkbrew-bundle() {
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then
         brew bundle ${FORCE} dump
@@ -93,7 +90,7 @@ fi
 for ((i=1;i<=$#;i++));
 do
 
-if [[ -z ${1} ]]; then
+if [[ -z $2 ]]; then
     checkbrew-help
 fi
 
@@ -142,30 +139,28 @@ if [[ ${!i} == "--install" ]] || [[ ${!i} == "install" ]] || [[ ${!i} == "-i" ]]
 
 
 fi
-
 #--update
-if [[ ${!i} == "-ud" ]] || [[ ${!i} == "--update" ]]; then
+if [[ ${!i} == "update" ]]; then
     brew update
-
 fi
 #--upgrade
-if [[ ${!i} == "-ug" ]] || [[ ${!i} == "--upgrade" ]]; then
-    brew upgrade
-
+if [[ ${!i} == "-ug" ]] || [[ ${!i} == *"upgrade" ]]; then
+    brew-upgrade
 fi
 #--info
-if [[ ${!i} == "info" ]] || [[ ${!i} == "--info" ]] || \
-    [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]]; then
+if [[ ${!i} == "info" ]] || [[ ${!i} == "--info" ]]; then
     firstitem=$1
     shift;
     for item in "${@}"; do
         echo "item = $item"
         brew info $item
     done
+fi
+#--help
+if [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]]; then
     checkbrew-help
 else
-# last if/then needs to increment
-((i++))
+    ((i++))
 fi
 
 done
@@ -234,18 +229,22 @@ done
 function checkbrew-help(){
 
 echo ""
-echo "checkbrew -a --arg    -c    --command <item>"
+echo "checkbrew -a --arg    -c    command <item>"
+echo ""
+echo "checkbrew             -h    help"
 echo ""
 echo "checkbrew -s --sudo"
 echo "checkbrew -f --force"
-echo "checkbrew                   --info <brew lib>"
-echo "checkbrew             -h    --help"
-echo "checkbrew             -u    --update & upgrade"
 echo ""
-echo "checkbrew             -ud   --update"
-echo "checkbrew             -ug   --upgrade"
-echo "checkbrew             -cu   --cleanup"
+echo "checkbrew             -i    install <brew lib>"
+echo "checkbrew                   info <brew lib>"
 echo ""
-echo "checkbrew             -sl   --sudoless"
+echo "checkbrew             -u    update & upgrade"
+echo ""
+echo "checkbrew                   update"
+echo "checkbrew                   upgrade"
+echo "checkbrew                   cleanup"
+echo ""
+echo "checkbrew                   sudoless"
 
 }

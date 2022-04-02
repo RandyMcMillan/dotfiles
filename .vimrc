@@ -186,17 +186,21 @@ au BufRead,BufNewFile *.h set list
 au BufRead,BufNewFile *.c set list
 au BufRead,BufNewFile *.cpp set list
 " GNUmakefile Makefile *.mk
-autocmd FileType make setlocal noexpandtab softtabstop=0
-au BufRead,BufNewFile *akefile  set noexpandtab
-au BufRead,BufNewFile *akefile  set softtabstop=0
-au BufRead,BufNewFile *akefile  set list
+autocmd FileType make              set noexpandtab
+autocmd FileType make              set softtabstop=0
+autocmd FileType make              set list
+au BufRead,BufNewFile Makefile     set noexpandtab
+au BufRead,BufNewFile Makefile     set softtabstop=0
+au BufRead,BufNewFile Makefile     set list
+au BufRead,BufNewFile GNUmakefile  set noexpandtab
+au BufRead,BufNewFile GNUmakefile  set softtabstop=0
+au BufRead,BufNewFile GNUmakefile  set list
 
 au BufRead,BufNewFile *.sh* set list
 au BufRead,BufNewFile *.vimrc* set list
 au BufRead,BufNewFile *.vimrc* set noexpandtab
 
-au BufRead,BufNewFile *ockerfile* set noexpandtab
-au BufRead,BufNewFile *ockerfile* set list
+au BufRead,BufNewFile *ockerfile* set noexpandtab list
 
 au BufRead,BufNewFile *.md set noexpandtab
 " au BufRead,BufNewFile *.md set expandtab!

@@ -127,7 +127,7 @@ if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
     shift
 fi
 #--install
-if [[ ${!i} == "--install" ]] || [[ ${!i} == "install" ]]; then
+if [[ ${!i} == "--install" ]] || [[ ${!i} == "install" ]] || [[ ${!i} == "-i" ]]; then
     # echo "--install ${FORCE} ${!i}"
     # ((i++))
     shift
@@ -154,13 +154,13 @@ if [[ ${!i} == "-ug" ]] || [[ ${!i} == "--upgrade" ]]; then
 
 fi
 #--info
-if [[ ${!i} == "-i" ]] || [[ ${!i} == "--info" ]] || \
+if [[ ${!i} == "info" ]] || [[ ${!i} == "--info" ]] || \
     [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]]; then
     firstitem=$1
     shift;
     for item in "${@}"; do
         echo "item = $item"
-        #process item
+        brew info $item
     done
     checkbrew-help
 else
@@ -238,7 +238,7 @@ echo "checkbrew -a --arg    -c    --command <item>"
 echo ""
 echo "checkbrew -s --sudo"
 echo "checkbrew -f --force"
-echo "checkbrew             -i    --info"
+echo "checkbrew                   --info <brew lib>"
 echo "checkbrew             -h    --help"
 echo "checkbrew             -u    --update & upgrade"
 echo ""

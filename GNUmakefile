@@ -41,14 +41,16 @@ GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
 BREW                                    := $(shell which brew)
+export BREW
 BREW_PREFIX                             := $(shell brew --prefix)
+export BREW_PREFIX
 BREW_CELLAR                             := $(shell brew --cellar)
+export BREW_CELLAR
 HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
 
 
-##	make :command			description
-# ##make :ARGS # remove first space
+##make	:	command			description
 .ONESHELL:
 .PHONY:-
 .PHONY:	init
@@ -58,7 +60,7 @@ export HOMEBREW_NO_ENV_HINTS
 ##	:
 
 -: report help
-##	:init
+##	:	init
 init:
 #	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
@@ -67,53 +69,53 @@ init:
 	ssh-add > /dev/null 2>&1
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
 	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
-##	:help
+	[[ -z "$(BREW)" ]] && echo "$(BREW)" || echo "$(BREW)" && \
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+##	:	help
 help:
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	#@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	#@sed -n 's/^.ONESHELL//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-##	:report			environment args
+##	:	report			environment args
 report:
 	@echo ''
-	@echo '[ARGUMENTS]	'
-	@echo '      args:	'
-	@echo '        - TIME=${TIME}	'
-	@echo '        - PROJECT_NAME=${PROJECT_NAME}	'
-	@echo '        - GIT_USER_NAME=${GIT_USER_NAME}	'
-	@echo '        - GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
-	@echo '        - GIT_SERVER=${GIT_SERVER}	'
-	@echo '        - GIT_PROFILE=${GIT_PROFILE}	'
-	@echo '        - GIT_BRANCH=${GIT_BRANCH}	'
-	@echo '        - GIT_HASH=${GIT_HASH}	'
-	@echo '        - GIT_PREVIOUS_HASH=${GIT_PREVIOUS_HASH}	'
-	@echo '        - GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
-	@echo '        - GIT_REPO_NAME=${GIT_REPO_NAME}	'
-	@echo '        - GIT_REPO_PATH=${GIT_REPO_PATH}	'
-	@echo '        - BREW=${BREW}	'
-	@echo '        - BREW_PREFIX=${BREW_PREFIX}	'
-	@echo '        - BREW_CELLAR=${BREW_CELLAR}	'
-	@echo '        - HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
+	@echo ' TIME=${TIME}	'
+	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
+	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
+	@echo ' GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
+	@echo ' GIT_SERVER=${GIT_SERVER}	'
+	@echo ' GIT_PROFILE=${GIT_PROFILE}	'
+	@echo ' GIT_BRANCH=${GIT_BRANCH}	'
+	@echo ' GIT_HASH=${GIT_HASH}	'
+	@echo ' GIT_PREVIOUS_HASH=${GIT_PREVIOUS_HASH}	'
+	@echo ' GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
+	@echo ' GIT_REPO_NAME=${GIT_REPO_NAME}	'
+	@echo ' GIT_REPO_PATH=${GIT_REPO_PATH}	'
+	@echo ' BREW=${BREW}	'
+	@echo ' BREW_PREFIX=${BREW_PREFIX}	'
+	@echo ' BREW_CELLAR=${BREW_CELLAR}	'
+	@echo ' HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
 
 #.PHONY:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
 .PHONY: whatami
-##	:whatami			report system info
+##	:	whatami			report system info
 whatami:
 	./whatami.sh
 #.PHONY:readme
 #readme:
 #	make help > source/COMMANDS.md
 #	git add -f README.md && git commit -m "make readme" && git push -f origin master
-.PHONY:adduser-git
-##	:adduser-git		add a user named git
+.PHONY: adduser-git
+##	:	adduser-git		add a user named git
 adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 .PHONY: bootstrap
-##	:bootstrap		run bootstrap.sh - dotfile installer
+##	:	bootstrap		run bootstrap.sh - dotfile installer
 bootstrap: executable
 	./boot-strap.sh
 
@@ -121,28 +123,27 @@ bootstrap: executable
 executable:
 	chmod +x *.sh
 .PHONY: exec
-##	:executable		make shell scripts executable
+##	:	executable		make shell scripts executable
 exec: executable
 
 .PHONY: checkbrew template brew
 .ONESHELL:
-##	:checkbrew-install	install template.sh
+template: template-update
+template-update: checkbrew-install
+##	:	checkbrew		source and run checkbrew command
+##	:	checkbrew-install	install template.sh
+checkbrew: checkbrew-install
 checkbrew-install:
 	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
-##	:template			base script for creating installer scripts
-template-update: checkbrew-update
-##	:checkbrew		source and run checkbrew command
-checkbrew-update: executable
-	bash -c "source $(PWD)/checkbrew.sh && checkbrew $(FORCE) --update"
-##	:cirrus			source and run install-cirrus command
+##	:	cirrus			source and run install-cirrus command
 cirrus: executable
 	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"
-##	:config-dock		source and run config-dock-prefs
+##	:	config-dock		source and run config-dock-prefs
 config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
 .PHONY: all
-##	:all			execute installer scripts
+##	:	all			execute installer scripts
 all: executable
 	bash -c "source template.sh"
 	bash -c "./checkbrew.sh && \
@@ -174,17 +175,17 @@ all: executable
 
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
 shell: alpine-shell
-##	:alpine-shell		run install-shell.sh alpine user=root
+##	:	alpine-shell		run install-shell.sh alpine user=root
 alpine-shell: alpine
 alpine:
 	./install-shell.sh alpine
 d-shell: debian-shell
-##	:debian-shell		run install-shell.sh debian user=root
+##	:	debian-shell		run install-shell.sh debian user=root
 debian-shell: debian
 debian:
 	./install-shell.sh debian
 .PHONY: vim
-##	:vim			install vim and macvim on macos
+##	:	vim			install vim and macvim on macos
 vim: executable
 	./install-vim.sh $(FORCE)
 
@@ -198,7 +199,7 @@ config-git: executable
 	./config-git.sh
 
 .PHONY: qt5
-##	:qt5			install qt@5
+##	:	qt5			install qt@5
 qt5: executable
 	./install-qt5.sh
 	./install-qt5-creator.sh
@@ -208,7 +209,7 @@ hub: executable
 	./install-github-utility.sh
 
 .PHONY: gnupg
-##	:gnupg			install gnupg and accessories
+##	:	gnupg			install gnupg and accessories
 gnupg: executable
 	./install-gnupg+suite.sh
 
@@ -219,7 +220,7 @@ config-github: executable
 
 .PHONY: install-bitcoin-libs
 .ONESHELL:
-##	:bitcoin-libs		install bitcoin-libs
+##	:	bitcoin-libs		install bitcoin-libs
 bitcoin-libs: exec
 	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
 

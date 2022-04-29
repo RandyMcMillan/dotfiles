@@ -111,6 +111,9 @@ public:
     //! Get locator for the current chain tip.
     virtual CBlockLocator getTipLocator() = 0;
 
+    //! Get locator for given block hash.
+    virtual std::optional<CBlockLocator> getLocator(const uint256& block_hash) = 0;
+
     //! Return height of the highest block on chain in common with the locator,
     //! which will either be the original block used to create the locator,
     //! or one of its ancestors.

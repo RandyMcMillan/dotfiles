@@ -33,6 +33,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(CheckCXXSourceCompiles)
 include(CheckCXXSymbolExists)
+include(ExternalProject)
+include(FindPkgConfig)
 include(TestBigEndian)
 
 # Global checks.
@@ -41,6 +43,8 @@ check_cxx_symbol_exists(fdatasync "unistd.h" HAVE_FDATASYNC)
 if(NOT HAVE_FDATASYNC)
   set(HAVE_FDATASYNC 0)
 endif()
+
+# set_property(GLOBAL PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 option(USE_CCACHE "Use ccache for building" ON)
 if(USE_CCACHE)
@@ -54,3 +58,5 @@ include(cmake/subtree-crc32c.cmake)
 include(cmake/subtree-leveldb.cmake)
 include(cmake/subtree-minisketch.cmake)
 include(cmake/subtree-univalue.cmake)
+
+add_subdirectory(src)

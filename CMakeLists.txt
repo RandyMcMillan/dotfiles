@@ -37,6 +37,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+include(CheckCXXSourceCompiles)
 include(TestBigEndian)
 
 # Global checks.
@@ -49,3 +50,5 @@ if(USE_CCACHE)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
   endif()
 endif()
+
+include(cmake/subtree-crc32c.cmake)

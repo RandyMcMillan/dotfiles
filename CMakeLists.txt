@@ -54,6 +54,8 @@ if(USE_CCACHE)
   endif()
 endif()
 
+option(BUILD_LIBS "Build libraries" ON)
+
 include(cmake/subtree-crc32c.cmake)
 include(cmake/subtree-leveldb.cmake)
 include(cmake/subtree-minisketch.cmake)

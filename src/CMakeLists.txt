@@ -217,6 +217,19 @@ set_target_properties(bitcoin_consensus PROPERTIES
   POSITION_INDEPENDENT_CODE ON
 )
 
+if(BUILD_LIBS)
+  add_library(bitcoinconsensus SHARED)
+  target_sources(bitcoinconsensus
+    PRIVATE
+      support/cleanse.cpp
+  )
+  target_link_libraries(bitcoinconsensus
+    PRIVATE
+      bitcoin_crypto
+      bitcoin_consensus
+  )
+endif()
+
 
 # Bitcoin Core RPC client
 add_library(bitcoin_cli STATIC)

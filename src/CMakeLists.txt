@@ -77,6 +77,7 @@ target_sources(bitcoin_util
 target_include_directories(bitcoin_util
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_PREFIX_PATH}/include>
 )
 
 check_cxx_source_compiles("
@@ -125,7 +126,7 @@ ExternalProject_Add(libsecp256k1
   PREFIX secp256k1
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/secp256k1
   BINARY_DIR secp256k1
-  CONFIGURE_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/secp256k1 && ./autogen.sh && cd - && ${CMAKE_CURRENT_SOURCE_DIR}/secp256k1/configure --prefix=${CMAKE_CURRENT_BINARY_DIR}/secp256k1 --disable-shared --with-pic --enable-benchmark=no --enable-module-recovery --enable-module-schnorrsig
+  CONFIGURE_COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/secp256k1 && ./autogen.sh && cd - && ${CMAKE_CURRENT_SOURCE_DIR}/secp256k1/configure --host=${HOST_FROM_DEPENDS} --prefix=${CMAKE_CURRENT_BINARY_DIR}/secp256k1 --disable-shared --with-pic --enable-benchmark=no --enable-module-recovery --enable-module-schnorrsig
   BUILD_ALWAYS TRUE
 )
 
@@ -282,6 +283,7 @@ add_library(bitcoin_node STATIC)
 target_include_directories(bitcoin_node
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_PREFIX_PATH}/include>
 )
 
 target_sources(bitcoin_node

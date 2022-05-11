@@ -8,7 +8,6 @@
 #include <interfaces/handler.h>
 #include <kernel/chain.h>
 #include <node/blockstorage.h>
-#include <node/context.h>
 #include <node/database_args.h>
 #include <node/interface_ui.h>
 #include <shutdown.h>
@@ -290,9 +289,6 @@ void BaseIndex::Interrupt()
 
 bool BaseIndex::Start()
 {
-    // m_chainstate member gives indexing code access to node internals. It is
-    // removed in followup https://github.com/bitcoin/bitcoin/pull/24230
-    m_chainstate = &m_chain->context()->chainman->ActiveChainstate();
     CBlockLocator locator;
     if (!GetDB().ReadBestBlock(locator)) {
         locator.SetNull();
@@ -336,12 +332,12 @@ IndexSummary BaseIndex::GetSummary() const
 
 void BaseIndex::SetBestBlock(const interfaces::BlockKey& block)
 {
-    assert(!m_chainstate->m_blockman.IsPruneMode() || AllowPrune());
+    assert(!m_chain->pruningEnabled() || AllowPrune());
 
     if (AllowPrune()) {
         node::PruneLockInfo prune_lock;
         prune_lock.height_first = block.height;
-        WITH_LOCK(::cs_main, m_chainstate->m_blockman.UpdatePruneLock(GetName(), prune_lock));
+        m_chain->updatePruneLock(GetName(), prune_lock);
     }
 
     // Intentionally set m_best_block as the last step in this function,

@@ -86,7 +86,6 @@ private:
 
 protected:
     std::unique_ptr<interfaces::Chain> m_chain;
-    CChainState* m_chainstate{nullptr};
 
     /// Return custom notification options for index.
     [[nodiscard]] virtual interfaces::Chain::NotifyOptions CustomOptions() { return {}; }

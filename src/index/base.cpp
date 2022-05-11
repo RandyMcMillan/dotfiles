@@ -8,7 +8,6 @@
 #include <interfaces/handler.h>
 #include <node/blockstorage.h>
 #include <node/chain.h>
-#include <node/context.h>
 #include <node/ui_interface.h>
 #include <shutdown.h>
 #include <tinyformat.h>
@@ -281,9 +280,6 @@ void BaseIndex::Interrupt()
 
 bool BaseIndex::Start()
 {
-    // m_chainstate member gives indexing code access to node internals. It
-    // will be removed in upcoming commit
-    m_chainstate = &m_chain->context()->chainman->ActiveChainstate();
     CBlockLocator locator;
     if (!GetDB().ReadBestBlock(locator)) {
         locator.SetNull();
@@ -332,6 +328,6 @@ void BaseIndex::SetBestBlock(const interfaces::BlockKey& block) {
     if (AllowPrune()) {
         node::PruneLockInfo prune_lock;
         prune_lock.height_first = block.height;
-        WITH_LOCK(::cs_main, m_chainstate->m_blockman.UpdatePruneLock(GetName(), prune_lock));
+        m_chain->updatePruneLock(GetName(), prune_lock);
     }
 }

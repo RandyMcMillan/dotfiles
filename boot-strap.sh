@@ -18,8 +18,10 @@ tasksDone=0
 # usage getpid [varname]
 getpid(){
 
+    # echo "getpid"
+
     pid=$(exec sh -c 'echo "$PPID"')
-    #test "$1" && eval "$1=\$pid"
+    test "$1" && eval "$1=\$pid"
 
 }
 
@@ -75,7 +77,7 @@ linkAndSource() {
     echo
 
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo 'linkAndSource'
+        # echo 'linkAndSource'
         ## Collect task count
         taskCount=12
         tasksDone=0
@@ -131,126 +133,126 @@ linkAndSource
 
 function doIt() {
 
-    ## Collect task count
-    taskCount=1
-    tasksDone=0
+## Collect task count
+taskCount=1
+tasksDone=0
 
-    getpid
-
-    while [ $tasksDone -le $taskCount ]; do
-
-    echo 'rsync' && echo
-
-    rsync --exclude ".git/" \
-          --exclude ".atom" \
-          --exclude ".DS_Store" \
-          --exclude ".vimrc" \
-          --exclude "*.sh" \
-          --exclude "README.md" \
-          --exclude "LICENSE-MIT.txt" \
-          --exclude "hosts/" \
-          --exclude "hosts/*" \
-          --exclude "iterm2.json" \
-          --exclude "LICENSE-MIT.txt" \
-          --exclude ".macos" \
-          --exclude ".osx" \
-          -avh --no-perms . ~;
-    increment;
-    done
-    echo
-
-    ## Collect task count
-    taskCount=11
-    tasksDone=0
-    getpid
+getpid
 
 while [ $tasksDone -le $taskCount ]; do
 
-echo 'line 164'
+# echo 'rsync' && echo
+
+rsync --exclude ".git/" \
+      --exclude ".atom" \
+      --exclude ".DS_Store" \
+      --exclude ".vimrc" \
+      --exclude "*.sh" \
+      --exclude "README.md" \
+      --exclude "LICENSE-MIT.txt" \
+      --exclude "hosts/" \
+      --exclude "hosts/*" \
+      --exclude "iterm2.json" \
+      --exclude "LICENSE-MIT.txt" \
+      --exclude ".macos" \
+      --exclude ".osx" \
+      -avh --no-perms . ~;
+increment;
+done
+echo
+
+## Collect task count
+taskCount=11
+tasksDone=0
+getpid
+
+while [ $tasksDone -le $taskCount ]; do
+
+# echo 'line 169'
 
 if  csrutil status | grep 'disabled' &> /dev/null; then
-        printf "System Integrity Protection status: \033[1;31mdisabled\033[0m\n";
-        increment;
-        sudo pmset -a hibernatemode 0
-        increment;
-        #yes | sudo chflags uchg /private/var/vm/sleepimage
-        increment;
-        #yes | sudo rm /private/var/vm/sleepimage
-        increment;
-        #yes | sudo touch /private/var/vm/sleepimage
-        increment;
-        #ls -la /private/var/vm
-        increment;
-        #sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
-        increment;
-        defaults write com.apple.spotlight orderedItems -array \
-        '{"enabled" = 1;"name" = "APPLICATIONS";}' \
-        '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
-        '{"enabled" = 1;"name" = "DIRECTORIES";}' \
-        '{"enabled" = 1;"name" = "PDF";}' \
-        '{"enabled" = 1;"name" = "FONTS";}' \
-        '{"enabled" = 0;"name" = "DOCUMENTS";}' \
-        '{"enabled" = 0;"name" = "MESSAGES";}' \
-        '{"enabled" = 0;"name" = "CONTACT";}' \
-        '{"enabled" = 0;"name" = "EVENT_TODO";}' \
-        '{"enabled" = 0;"name" = "IMAGES";}' \
-        '{"enabled" = 0;"name" = "BOOKMARKS";}' \
-        '{"enabled" = 0;"name" = "MUSIC";}' \
-        '{"enabled" = 0;"name" = "MOVIES";}' \
-        '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
-        '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
-        '{"enabled" = 0;"name" = "SOURCE";}' \
-        '{"enabled" = 0;"name" = "MENU_DEFINITION";}' \
-        '{"enabled" = 0;"name" = "MENU_OTHER";}' \
-        '{"enabled" = 0;"name" = "MENU_CONVERSION";}' \
-        '{"enabled" = 0;"name" = "MENU_EXPRESSION";}' \
-        '{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
-        '{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
-        increment;
-        # Load new settings before rebuilding the index
-        killall mds > /dev/null 2>&1
-        increment;
-        # Make sure indexing is enabled for the main volume
-        sudo mdutil -i on / > /dev/null
-        increment;
-        # Rebuild the index from scratch
-        sudo mdutil -E / > /dev/null
-        increment;
-        defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-        increment;
-        hash tmutil &> /dev/null && sudo tmutil disable
-        increment;
-        defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault -bool false
-        increment;
-        defaults write com.apple.dt.Xcode DVTTextShowInvisibleCharacters 1
-        defaults write com.apple.AppleMultitouchTrackpad Dragging -bool true
-        defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true
-        defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad DragLock -bool true
-        defaults write com.apple.finder AppleShowAllFiles -bool true
-        defaults write com.apple.dock DragLock -bool true
-        defaults write com.apple.dock wvous-bl-corner -int 11
-        defaults write com.apple.dock wvous-br-corner -int 4
-        defaults write com.apple.dock wvous-tl-corner -int 7
-        defaults write com.apple.dock wvous-tr-corner -int 2
-        killall Dock
+    printf "System Integrity Protection status: \033[1;31mdisabled\033[0m\n";
+    increment;
+    sudo pmset -a hibernatemode 0
+    increment;
+    #yes | sudo chflags uchg /private/var/vm/sleepimage
+    increment;
+    #yes | sudo rm /private/var/vm/sleepimage
+    increment;
+    #yes | sudo touch /private/var/vm/sleepimage
+    increment;
+    #ls -la /private/var/vm
+    increment;
+    #sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
+    increment;
+    defaults write com.apple.spotlight orderedItems -array \
+    '{"enabled" = 1;"name" = "APPLICATIONS";}' \
+    '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
+    '{"enabled" = 1;"name" = "DIRECTORIES";}' \
+    '{"enabled" = 1;"name" = "PDF";}' \
+    '{"enabled" = 1;"name" = "FONTS";}' \
+    '{"enabled" = 0;"name" = "DOCUMENTS";}' \
+    '{"enabled" = 0;"name" = "MESSAGES";}' \
+    '{"enabled" = 0;"name" = "CONTACT";}' \
+    '{"enabled" = 0;"name" = "EVENT_TODO";}' \
+    '{"enabled" = 0;"name" = "IMAGES";}' \
+    '{"enabled" = 0;"name" = "BOOKMARKS";}' \
+    '{"enabled" = 0;"name" = "MUSIC";}' \
+    '{"enabled" = 0;"name" = "MOVIES";}' \
+    '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
+    '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
+    '{"enabled" = 0;"name" = "SOURCE";}' \
+    '{"enabled" = 0;"name" = "MENU_DEFINITION";}' \
+    '{"enabled" = 0;"name" = "MENU_OTHER";}' \
+    '{"enabled" = 0;"name" = "MENU_CONVERSION";}' \
+    '{"enabled" = 0;"name" = "MENU_EXPRESSION";}' \
+    '{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
+    '{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
+    increment;
+    # Load new settings before rebuilding the index
+    killall mds > /dev/null 2>&1
+    increment;
+    # Make sure indexing is enabled for the main volume
+    sudo mdutil -i on / > /dev/null
+    increment;
+    # Rebuild the index from scratch
+    sudo mdutil -E / > /dev/null
+    increment;
+    defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+    increment;
+    hash tmutil &> /dev/null && sudo tmutil disable
+    increment;
+    defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault -bool false
+    increment;
+    defaults write com.apple.dt.Xcode DVTTextShowInvisibleCharacters 1
+    defaults write com.apple.AppleMultitouchTrackpad Dragging -bool true
+    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true
+    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad DragLock -bool true
+    defaults write com.apple.finder AppleShowAllFiles -bool true
+    defaults write com.apple.dock DragLock -bool true
+    defaults write com.apple.dock wvous-bl-corner -int 11
+    defaults write com.apple.dock wvous-br-corner -int 4
+    defaults write com.apple.dock wvous-tl-corner -int 7
+    defaults write com.apple.dock wvous-tr-corner -int 2
+    killall Dock
 
 
     echo
 
-    else
+else
 
-        getpid
+    getpid
 
-        printf "System Integrity Protection status: \033[1;32menabled\033[0m\n";
-        increment;
-        printf "Some settings in  ~/.macos need this to be disabled!\n"
-        increment;
-        printf "To boot into recovery mode, restart your Mac and hold Command+R as it boots. You’ll enter the recovery environment.\n Click the “Utilities” menu and select “Terminal” to open a terminal window.\n"
-        increment;
-        printf "$ csrutil disable\n"
-        increment;
+    printf "System Integrity Protection status: \033[1;32menabled\033[0m\n";
+    increment;
+    printf "Some settings in  ~/.macos need this to be disabled!\n"
+    increment;
+    printf "To boot into recovery mode, restart your Mac and hold Command+R as it boots. You’ll enter the recovery environment.\n Click the “Utilities” menu and select “Terminal” to open a terminal window.\n"
+    increment;
+    printf "$ csrutil disable\n"
+    increment;
 
-    fi
+fi
 echo
 done
 }
@@ -264,7 +266,7 @@ if [ "$1" == "--force" -o "$1" == "-f" ]; then
 
 else
 
-		echo
+    echo
     read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo 'getpid'

@@ -145,32 +145,32 @@ config-dock: executable
 .PHONY: all
 ##	:	all			execute installer scripts
 all: executable
-	bash -c "source template.sh"
-	bash -c "./checkbrew.sh && \
-	./install-Docker.sh && \
-	./install-FastLane.sh && \
-	./install-Onyx.sh && \
-	./install-SassC.sh && \
-	./install-discord.sh && \
-	./install-gnupg+suite.sh && \
-	./install-iterm2.sh && \
-	./install-keeping-you-awake.sh && \
-	./install-little-snitch.sh && \
-	./install-openssl.sh && \
-	./install-python3.X.sh && \
-	./install-protonvpn.sh && \
-	./install-ql-plugins.sh && \
-	./install-qt5.sh && \
-	./install-qt5-creator.sh && \
-	./install-sha256sum.sh && \
-	./install-vmware-fusion11.sh #Mojave && \
-	./install-vypr-vpn.sh && \
-	./install-youtube-dl.sh && \
-	./install-ytop.sh && \
-	./install-umbrel-dev.sh && \
-	./install-vim.sh && \
-	./install-inkscape.sh && \
-	./install-dotfiles-on-remote.sh && \
+	test docker-compose && brew unlink docker-completion || echo
+	bash -c "source template.sh && checkbrew install homebrew/cask/docker"
+# 	./install-Docker.sh && \
+# 	./install-FastLane.sh && \
+# 	./install-Onyx.sh && \
+# 	./install-SassC.sh && \
+# 	./install-discord.sh && \
+# 	./install-gnupg+suite.sh && \
+# 	./install-iterm2.sh && \
+# 	./install-keeping-you-awake.sh && \
+# 	./install-little-snitch.sh && \
+# 	./install-openssl.sh && \
+# 	./install-python3.X.sh && \
+# 	./install-protonvpn.sh && \
+# 	./install-ql-plugins.sh && \
+# 	./install-qt5.sh && \
+# 	./install-qt5-creator.sh && \
+# 	./install-sha256sum.sh && \
+# 	./install-vmware-fusion11.sh #Mojave && \
+# 	./install-vypr-vpn.sh && \
+# 	./install-youtube-dl.sh && \
+# 	./install-ytop.sh && \
+# 	./install-umbrel-dev.sh && \
+# 	./install-vim.sh && \
+# 	./install-inkscape.sh && \
+# 	./install-dotfiles-on-remote.sh && \
 	echo; exit;"
 
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell

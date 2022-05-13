@@ -24,6 +24,7 @@ fi
 # echo   $VIM
 
 install-vim() {
+# brew uninstall  --ignore-dependencies --force ruby perl vim && brew install vim && brew link vim
 #WE install this regaurdless of OSTYPE
 VIMRC_REPO="https://github.com/randymcmillan/vimrc.git"
 export VIMRC_REPO
@@ -63,6 +64,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
             read -t 5 -p "Install MacVim? (y/n) " -n 1;
             echo "";
             if [[ $REPLY =~ ^[Yy]$ ]]; then
+                rm -f /usr/local/bin/*vi*
                 if [ ! hash mvim 2>/dev/null ]; then
                     brew link --overwrite macvim
                     brew install --cask -f macvim
@@ -89,6 +91,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     fi
 fi
+which vim
 }
 install-macvim
 install-vim

@@ -14,7 +14,6 @@ function checkbrew-sudoless () {
 
 function checkbrew-upgrade() {
 if [ "$EUID" -ne "0" ]; then
-    #shift
     if hash brew 2>/dev/null; then
     for item in "${@}"; do
         echo ${item}
@@ -125,27 +124,41 @@ if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
 fi
 #--install
 if [[ ${!i} == "--install" ]] || [[ ${!i} == "install" ]] || [[ ${!i} == "-i" ]]; then
+    echo ${item}
     # echo "--install ${FORCE} ${!i}"
     # ((i++))
     shift
+    echo ${item}
     # echo "--install ${FORCE} ${!i}"
     # brew install ${FORCE} ${!i}
     # libs=( "${@}"  )
     for item in "$@"; do
+    echo ${item}
     # for item in "$libs"; do
-        brew install ${FORCE} ${item}
+    if [[ ${item} == *"cask"* ]]; then
         shift
+        brew install ${FORCE} homebrew/cask/${item}
+    else
+        shift
+        brew install ${FORCE} ${item}
+    fi
+    echo ${item}
     done
-
+fi
+#-uu
+if [[ ${!i} == "-uu" ]];then
+    brew update
+    checkbrew-upgrade
 
 fi
-#--update
-if [[ ${!i} == "update" ]]; then
+#update
+if [[ ${!i} == "-ud" ]] || [[ ${!i} == "update" ]]; then
+    shift;
     brew update
 fi
-#--upgrade
-if [[ ${!i} == "-ug" ]] || [[ ${!i} == *"upgrade" ]]; then
-    brew-upgrade
+if [[ ${!i} == "-ug" ]] || [[ ${!i} == "upgrade" ]]; then
+    # shift;
+    checkbrew-upgrade
 fi
 #--info
 if [[ ${!i} == "info" ]] || [[ ${!i} == "--info" ]]; then
@@ -166,80 +179,23 @@ fi
 done
 }
 
-
-# if [[ ${!i} == "-f" ]]; then
-#     FORCE=--force
-#     export FORCE
-#     shift
-#     checkbrew-info
-# fi
-# if [[ ${!i} == "sudoless"* ]]; then
-#     brew-sudoless
-#     echo "brew in now sudoless!!!"
-# fi
-# if [[ ${!i} == "install" ]]; then
-#     ((i++))
-#     if [[ ${!i} = cask ]]; then
-#         ((i++))
-#         for item in "${@:2}"
-#         do
-#             echo "installing $item..."
-#             brew install ${FORCE} "${!item}"
-#         done
-#     fi
-#     for item in "${@:2}"
-#     do
-#         brew install ${FORCE} "${!i}"
-#     done
-#     brew install ${FORCE} "${!i}"
-#     brew install ${FORCE} "${!i}"
-# fi
-# if [[ ${!i} == "reinstall" ]]; then
-#     ((i++))
-#     brew reinstall ${FORCE} "${2}"
-# fi
-# if [[ ${!i} = uninstall ]]; then
-#     ((i++))
-#     brew-uninstall
-# fi
-# if [[ ${!i} = check* ]]; then
-#     ((i++))
-#     checkbrew
-# fi
-# if [[ ${!i} = "update"* ]]; then
-#     ((i++))
-#     brew-update
-# fi
-# if [[ ${!i} = "upgrade"* ]]; then
-#     ((i++))
-#     brew-upgrade
-# fi
-# if [[ ${!i} = "cleanup"* ]]; then
-#     ((i++))
-#     brew-cleanup
-# fi
-# if [[ ${!i} = "bundle"* ]]; then
-#     ((i++))
-#     brew bundle ${FORCE} dump
-# else
-# echo "try:\ncheckbrew-help"
-# fi
-# done
-# }
 function checkbrew-help(){
 
 echo ""
 echo "checkbrew -a --arg    -c    command <item>"
 echo ""
-echo "checkbrew             -h    help"
-echo ""
 echo "checkbrew -s --sudo"
 echo "checkbrew -f --force"
 echo ""
+echo "checkbrew             -h    help"
+echo ""
 echo "checkbrew             -i    install <brew lib>"
+echo ""
 echo "checkbrew                   info <brew lib>"
 echo ""
-echo "checkbrew             -u    update & upgrade"
+echo "checkbrew             -ud   brew update"
+echo "checkbrew             -ug   brew upgrade lib"
+echo "checkbrew             -uu   brew update & upgrade lib"
 echo ""
 echo "checkbrew                   update"
 echo "checkbrew                   upgrade"

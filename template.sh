@@ -86,8 +86,36 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 # echo "$OSTYPE"
 
-for ((i=1;i<=$#;i++));
-do
+# Detect Flags and set ENV
+for item in "$@"; do
+    echo ${item}
+    if [[ ${item} == "-v" ]] || [[ ${item} == "--verbose" ]]; then
+        VERBOSE="--verbose"
+    else
+        VERBOSE=
+    fi
+    if [[ ${item} == "-f" ]] || [[ ${item} == "--force" ]]; then
+        FORCE="--force"
+    else
+        FORCE=""
+    fi
+    if [[ ${item} == "-s" ]] || [[ ${item} == "--sudo" ]]; then
+        SUDO="sudo -s"
+    else
+        SUDO=""
+    fi
+    if [[ ${item} == "-h" ]] || [[ ${item} == "--help" ]]; then
+        HELP=true
+    else
+        SUDO=""
+    fi
+
+
+done
+# End Detect Flags
+
+#Begin loop
+for ((i=1;i<=$#;i++)); do
 
 if [[ -z $2 ]]; then
     checkbrew-help
@@ -109,7 +137,7 @@ fi
 if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
     if [[ ${1} == "-f" ]] || [[ ${1} == "--force" ]] || \
         [[ ${2} == "-f" ]] || [[ ${2} == "--force" ]]; then
-        FORCE=--force
+        set FORCE=--force
         export FORCE
         # echo $FORCE
         shift
@@ -119,31 +147,30 @@ fi
 #--bundle
 if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
     # echo "--bundle"
+    # TODO: --force detect
     brew bundle ${FORCE} dump
     shift
 fi
 #--install
 if [[ ${!i} == "--install" ]] || [[ ${!i} == "install" ]] || [[ ${!i} == "-i" ]]; then
-    echo ${item}
-    # echo "--install ${FORCE} ${!i}"
-    # ((i++))
-    shift
-    echo ${item}
-    # echo "--install ${FORCE} ${!i}"
-    # brew install ${FORCE} ${!i}
-    # libs=( "${@}"  )
-    for item in "$@"; do
-    echo ${item}
-    # for item in "$libs"; do
-    if [[ ${item} == *"cask"* ]]; then
-        shift
-        brew install ${FORCE} homebrew/cask/${item}
-    else
-        shift
-        brew install ${FORCE} ${item}
+    echo ${!i}
+    #--force
+    ((i++))
+    if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
+        FORCE=--force
+        export FORCE
+        echo ${FORCE}
+        ((i++))
     fi
-    echo ${item}
-    done
+    echo ${!i}
+    if [[ ${!i} == "--cask" ]]; then
+        ((i++))
+        brew info --cask ${!i}
+        brew install ${FORCE} homebrew/cask/${!i}
+    else
+        brew info ${!i}
+        brew install ${FORCE} ${!i}
+    fi
 fi
 #-uu
 if [[ ${!i} == "-uu" ]];then
@@ -171,12 +198,17 @@ if [[ ${!i} == "info" ]] || [[ ${!i} == "--info" ]]; then
 fi
 #--help
 if [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]]; then
+    HELP=TRUE
+    export HELP
     checkbrew-help
 else
+    HELP=FALSE
+    export HELP
     ((i++))
 fi
 
 done
+# End loop
 }
 
 function checkbrew-help(){

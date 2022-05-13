@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-source ./checkbrew.sh
-source ./checkraspi.sh
-checkbrew
-checkraspi
+# source ./checkbrew.sh
+# source ./checkraspi.sh
+# checkbrew
+# checkraspi
 install-docker() {
     if hash brew 2>/dev/null; then
-        #brew install docker                      || brew install --cask docker             || brew upgrade --cask docker
-        #brew install docker-compose              || brew install docker-compose            || brew upgrade docker-compose
-        #brew install docker-edge                 || brew install --cask docker-edge || brew upgrade --cask docker-edge
+        brew uninstall docker                    || brew install --cask homebrew/cask/docker             || brew upgrade --cask homebrew/cask/docker
+        brew install docker-compose              || brew install docker-compose            || brew upgrade docker-compose
+        #brew install docker-edge                || brew install --cask docker-edge || brew upgrade --cask docker-edge
         brew install docker-clean                || brew reinstall docker-clean              || brew upgrade docker-clean
         brew install docker-completion           || brew reinstall docker-completion         || brew upgrade docker-completion
         brew install docker-compose-completion   || brew reinstall docker-compose-completion || brew upgrade docker-compose-completion
@@ -78,3 +78,4 @@ if [[ "$OSTYPE" == "linux-arm"* ]]; then
     checkbrew
 fi
 }
+install-docker

@@ -50,12 +50,12 @@ echo $VIMRC_DESTINATION
 #fi
 }
 
-# MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
-# export MACVIM
-# echo   $MACVIM
-# MVIM=$(find /usr/local/Cellar/macvim -name mvim)
-# export MVIM
-# echo   $MVIM
+MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
+export MACVIM
+echo   $MACVIM
+MVIM=$(find /usr/local/Cellar/macvim -name mvim)
+export MVIM
+echo   $MVIM
 
 install-macvim(){
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -66,9 +66,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 rm -f /usr/local/bin/*vi*
                 if [ ! hash mvim 2>/dev/null ]; then
-                    brew link --overwrite macvim
+                    # brew link --overwrite macvim
                     brew install --cask -f macvim
-                    brew link --overwrite macvim
+                    # brew link --overwrite macvim
                 else
                     echo MacVim already installed.
                     echo

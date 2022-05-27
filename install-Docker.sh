@@ -3,11 +3,12 @@
 # source ./checkraspi.sh
 # checkbrew
 # checkraspi
-install-docker() {
+function install-docker() {
     if hash brew 2>/dev/null; then
         rm -rf /Applications/Docker.app || pass
-        brew reinstall --cask docker             || brew install --cask homebrew/cask/docker   || brew upgrade --cask homebrew/cask/docker
-        brew install docker-compose              || brew install docker-compose                || brew upgrade docker-compose
+        rm -f /usr/local/share/fish/vendor_completions.d/docker-compose.*
+        brew   install --cask docker             || brew install --cask homebrew/cask/docker   || brew upgrade --cask homebrew/cask/docker
+        # brew install docker-compose              || brew install docker-compose                || brew upgrade docker-compose
         brew install docker-clean                || brew reinstall docker-clean                || brew upgrade docker-clean
         brew install docker-completion           || brew reinstall docker-completion           || brew upgrade docker-completion
         brew install docker-compose-completion   || brew reinstall docker-compose-completion   || brew upgrade docker-compose-completion

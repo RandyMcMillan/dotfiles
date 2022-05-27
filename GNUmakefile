@@ -31,7 +31,7 @@ GIT_BRANCH								:= $(shell git rev-parse --abbrev-ref HEAD)
 export GIT_BRANCH
 GIT_HASH								:= $(shell git rev-parse --short HEAD)
 export GIT_HASH
-GIT_PREVIOUS_HASH						:= $(shell git rev-parse --short master@{1})
+GIT_PREVIOUS_HASH						:= $(shell git rev-parse --short HEAD^1)
 export GIT_PREVIOUS_HASH
 GIT_REPO_ORIGIN							:= $(shell git remote get-url origin)
 export GIT_REPO_ORIGIN
@@ -147,6 +147,7 @@ config-dock: executable
 all: executable
 	bash -c "test docker-compose && brew unlink docker-completion || echo"
 	bash -c "source template.sh && checkbrew install --cask docker"
+	bash -c "source template.sh && checkbrew install --cask joplin && checkout install joplin-cli"
 # 	./install-Docker.sh && \
 # 	./install-FastLane.sh && \
 # 	./install-Onyx.sh && \

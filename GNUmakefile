@@ -147,7 +147,7 @@ config-dock: executable
 all: executable
 	bash -c "test docker-compose && brew unlink docker-completion || echo"
 	bash -c "source template.sh && checkbrew install --cask docker"
-	bash -c "source template.sh && checkbrew install --cask joplin && checkout install joplin-cli"
+	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli"
 # 	./install-Docker.sh && \
 # 	./install-FastLane.sh && \
 # 	./install-Onyx.sh && \

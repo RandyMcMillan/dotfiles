@@ -141,6 +141,7 @@ if has("autocmd")
 	autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
 	" Treat .md files as Markdown
 	autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+endif
 
 " --------------------------------------------------------------------------------
 " configure editor with tabs and nice stuff...
@@ -163,11 +164,14 @@ let g:clang_format#style_options = {
             \ "AlwaysBreakTemplateDeclarations" : "true",
             \ "Standard" : "C++11"}
 
-" map to <Leader>cf in C++ code
-autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-" if you install vim-operator-user
-autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+if has("autocmd")
+    " map to <Leader>cf in C++ code
+    autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+    autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+    " if you install vim-operator-user
+    autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+endif
+
 " Toggle auto formatting:
 nmap <Leader>C :ClangFormatAutoToggle<CR>
 
@@ -176,35 +180,46 @@ set noexpandtab " default dont mess with tabs!!!
 set list       " default show stuff!!! "
 :inoremap <cr> <space><bs><cr>
 :inoremap <cr> <tab><bs><cr>
-" configure expanding of tabs for various file types
-au BufRead,BufNewFile *.py set expandtab
-au BufRead,BufNewFile *.py set list
-au BufRead,BufNewFile *.h set noexpandtab
-au BufRead,BufNewFile *.c set noexpandtab
-au BufRead,BufNewFile *.cpp set noexpandtab
-au BufRead,BufNewFile *.h set list
-au BufRead,BufNewFile *.c set list
-au BufRead,BufNewFile *.cpp set list
+
+if has("autocmd")
+    " configure expanding of tabs for various file types
+    au BufRead,BufNewFile *.py set expandtab
+    au BufRead,BufNewFile *.py set list
+    au BufRead,BufNewFile *.h set noexpandtab
+    au BufRead,BufNewFile *.c set noexpandtab
+    au BufRead,BufNewFile *.cpp set noexpandtab
+    au BufRead,BufNewFile *.h set list
+    au BufRead,BufNewFile *.c set list
+    au BufRead,BufNewFile *.cpp set list
+endif
+
 " GNUmakefile Makefile *.mk
-autocmd FileType make              set noexpandtab
-autocmd FileType make              set softtabstop=0
-autocmd FileType make              set list
-au BufRead,BufNewFile Makefile     set noexpandtab
-au BufRead,BufNewFile Makefile     set softtabstop=0
-au BufRead,BufNewFile Makefile     set list
-au BufRead,BufNewFile GNUmakefile  set noexpandtab
-au BufRead,BufNewFile GNUmakefile  set softtabstop=0
-au BufRead,BufNewFile GNUmakefile  set list
+if has("autocmd")
+    autocmd FileType make              set noexpandtab
+    autocmd FileType make              set softtabstop=4
+    autocmd FileType make              set list
 
-au BufRead,BufNewFile *.sh* set list
-au BufRead,BufNewFile *.vimrc* set list
-au BufRead,BufNewFile *.vimrc* set noexpandtab
+    au BufRead,BufNewFile Makefile     set noexpandtab
+    au BufRead,BufNewFile Makefile     set softtabstop=4
+    au BufRead,BufNewFile Makefile     set list
 
-au BufRead,BufNewFile *ockerfile* set noexpandtab list
+    au BufRead,BufNewFile GNUmakefile  set noexpandtab
+    au BufRead,BufNewFile GNUmakefile  set softtabstop=4
+    au BufRead,BufNewFile GNUmakefile  set list
 
-au BufRead,BufNewFile *.md set noexpandtab
-" au BufRead,BufNewFile *.md set expandtab!
-au BufRead,BufNewFile *.md set list
+    au BufRead,BufNewFile *.sh* set list
+    au BufRead,BufNewFile *.vimrc* set list
+    au BufRead,BufNewFile *.vimrc* set noexpandtab
+
+    au BufRead,BufNewFile *ockerfile* set noexpandtab list
+    au BufRead,BufNewFile *.yml  set noexpandtab softtabstop=2 list
+    au BufRead,BufNewFile *.yaml set noexpandtab softtabstop=2 list
+
+    au BufRead,BufNewFile *.md set noexpandtab
+    au BufRead,BufNewFile *.md set softtabstop=4
+    " au BufRead,BufNewFile *.md set expandtab!
+    au BufRead,BufNewFile *.md set list
+endif
 
 " make backspaces more powerfull
 set backspace=indent,eol,start
@@ -221,7 +236,3 @@ let g:clang_library_path='/Library/Developer/CommandLineTools/usr/lib/'
 " let g:clang_library_path='/usr/lib64/libclang.so.3.8'
 
 autocmd FileType c ClangFormatAutoEnable
-
-
-
-endif

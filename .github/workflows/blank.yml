@@ -1,21 +1,21 @@
+---
 name: blank.yml
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   pull_request:
-    branches:       #[ master ]
+    branches:       # [ master ]
       - '*'         # matches every branch that doesn't contain a '/'
       - '*/*'       # matches every branch containing a single '/'
       - '**'        # matches every branch
       - 'master'    # includes master
       - 'main'      # includes main
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    #paths:
+    # paths:
     #  - '.github/workflows/automate.yml'
-    #schedule:
+    # schedule:
     #  - cron: "*/5 * * * *"
-    branches:       #[ master ]
+    branches:       # [ master ]
       - '*'         # matches every branch that doesn't contain a '/'
       - '*/*'       # matches every branch containing a single '/'
       - '**'        # matches every branch
@@ -25,14 +25,13 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   host-matrix:
     name: host-matrix
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]#, macos-10.15, macos-latest]
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]  # , macos-10.15, macos-latest]
     steps:
       - uses: styfle/cancel-workflow-action@0.8.0
         with:
@@ -42,30 +41,52 @@ jobs:
         run: |
           printenv
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-                                        sudo apt install -y make &&      make whatami;   else echo; fi
+                                        sudo apt install -y make && \
+                                        make whatami;   else echo; fi
       - name: install-bash-bash-completion-codespell-asciidoctor
         run: |
-          if [[ "$OSTYPE" == "linux-gnu" ]]; then sudo apt install bash bash-completion asciidoctor; else echo; fi
-          if [[ "$OSTYPE" == "darwin"* ]]; then brew install bash bash-completion asciidoctor; else echo; fi
-          #if [[ "$OSTYPE" == "darwin"* ]]; then chsh -s /bin/bash; else echo; fi
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then \
+                                        sudo apt install bash bash-completion \
+                                        asciidoctor; else echo; fi
+          if [[ "$OSTYPE" == "darwin"* ]]; then \
+                                     brew install bash bash-completion \
+                                     asciidoctor; else echo; fi
+          #if [[ "$OSTYPE" == "darwin"* ]]; then \
+          #chsh -s /bin/bash; else echo; fi
       - name: pip3-install--U-codespell
         run: |
           pip3 install -U codespell
       - name: markdown-syntax
         run: |
-          git grep -n --color $'\r' -- "*.md" && echo "^ Possible Windows style line ending detected. Please use Unix style line endings (\n)." && exit 0 || true
-          git grep -n --color ' $' -- "*.md" && echo "^ Trailing space detected at end of line. Please remove." && exit 0 || true
-          git grep  -n --color  $'\t' -- "*.md" && echo "^ Use of tabs detected. Please use space for indentation." && exit 0 || true
-          git grep -iE  -n --color '(^| )(\w+) \2(\.|,|:|;| |$)' -- "*.md" && echo "^ Detected lexical illusion in the form of a duplicated word. Please correct." && exit 0 || true
-          for FILE in $(git ls-files -- "*.md"); do if [[ $(tail -c1 $FILE) != "" ]]; then echo "File ${FILE} does not end with a newline character (\n)."; exit 0; fi; done
-          git grep "" -- "*.md" | uniq -c | grep -1 "^      [2-9] " | cut -b9- | sed 's/:$/:[more-than-one-blank-line-here-please-remove]/' \ 
-          | grep ":" && echo "^ Multiple blank lines detected. Please use only one blank line between paragraphs." && exit 0 || true
+          git grep -n --color $'\r' -- "*.md" && \
+          echo "^ Possible Windows style line ending detected. Please use Unix style line endings (\n)." && \
+                exit 0 || true
+          git grep -n --color ' $' -- "*.md" && \
+          echo "^ Trailing space detected at end of line. Please remove." && \
+            exit 0 || true
+          git grep  -n --color  $'\t' -- "*.md" && \
+            echo "^ Use of tabs detected. Please use space for indentation." && \
+            exit 0 || true
+          git grep -iE  -n --color '(^| )(\w+) \2(\.|,|:|;| |$)' -- "*.md" && \
+            echo "^ Detected lexical illusion in the form of a duplicated word. Please correct." && \
+            exit 0 || true
+          for FILE in $(git ls-files -- "*.md"); \
+            do if [[ $(tail -c1 $FILE) != "" ]]; then \
+            echo "File ${FILE} does not end with a newline character (\n)."; \
+            exit 0; fi; done
+          git grep "" -- "*.md" | uniq -c | grep -1 "^      [2-9] " | \
+            cut -b9- | sed 's/:$/:[more-than-one-blank-line-here-please-remove]/' | \
+            grep ":" && \
+            echo "^ Multiple blank lines detected. Please use only one blank line between paragraphs." && \
+            exit 0 || true
       - name: codespell-py-md
         run: |
-          codespell --config .codespellrc --ignore-words .codespell-ignore $(git ls-files -- "*.py" "*.md")
+          codespell --config .codespellrc \
+          --ignore-words .codespell-ignore $(git ls-files -- "*.py" "*.md")
       - name: codespell-html
         run: |
-          codespell --config .codespellrc --ignore-words .codespell-ignore ./docs/docs/*.html
+          codespell --config .codespellrc \
+          --ignore-words .codespell-ignore ./docs/docs/*.html
       - name: make bootstrap
         run: |
           echo y | make bootstrap
@@ -73,15 +94,18 @@ jobs:
       - name: make all
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-                                        sudo apt install -y make &&      make all;   else echo; fi
+                                        sudo apt install -y make && \
+                                        make all;   else echo; fi
       - name: make shell
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-                                        sudo apt install -y make && sudo make shell;  else echo; fi
+                                        sudo apt install -y make && \
+                                        sudo make shell;  else echo; fi
       - name: make debian
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-                                        sudo apt install -y make && sudo make debian-shell; else echo; fi
+                                        sudo apt install -y make && \
+                                        sudo make debian-shell; else echo; fi
       - name: make
         run: |
           if [[ "$OSTYPE" == "darwin"* ]]; then \
@@ -89,27 +113,3 @@ jobs:
       - name: git-grep-terms-debug
         run: |
           echo "change when needed for PRs"
-
-  bitcoin-test-matrix:
-    name: bitcoin-test-battery
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]#, macos-10.15, macos-latest]
-    steps:
-      - uses: styfle/cancel-workflow-action@0.8.0
-        with:
-          access_token: ${{ github.token }}
-      - uses: actions/checkout@v2
-      - name: printenv
-        run: |
-          printenv
-      - name: bitcoin-test-battery
-        run: |
-          ls
-          #if [[ "$OSTYPE" == "linux-gnu" ]]; then \
-          #                              make bitcoin-test-battery; else echo; fi
-          #if [[ "$OSTYPE" == "darwin"* ]]; then \
-          #                           make bitcoin-test-battery; else echo; fi
-          #make bitcoin-test-battery
-

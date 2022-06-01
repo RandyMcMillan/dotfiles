@@ -13,7 +13,7 @@ PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:/sbin:/usr/sbin:/usr/local/sbin
 DMESG=dmesg
 
 
-function macos_device(){
+function macos_device (){
 
     if [[ "$(uname)" == "Darwin"* ]]; then
     # ioreg -l | grep -v PCI

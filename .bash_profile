@@ -89,22 +89,24 @@ export PATH="$HOME/.fastlane/bin:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
-if [ -f $(PWD)/Makefile ]; then
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-fi
 
-if [ -f $(PWD)/GNUMakefile ]; then
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-fi
-
-if [ -f $(PWD)/funcs.mk ]; then
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-fi
-
-# for OUTPUT in $(ls -f *.mk)
-# do
-# complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make -f $OUTPUT
-# done
+# NOTE: trying the config in .bashrc for now...
+#if [ -f $(PWD)/Makefile ]; then
+#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+#fi
+#
+#if [ -f $(PWD)/GNUMakefile ]; then
+#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+#fi
+#
+#if [ -f $(PWD)/funcs.mk ]; then
+#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' funks.mk | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+#fi
+#
+## for OUTPUT in $(ls -f *.mk)
+## do
+## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make -f $OUTPUT
+## done
 
 export GPG_TTY=$(tty)
 export PATH="/usr/local/opt/ruby@2.5.8/bin:$PATH"
@@ -125,3 +127,4 @@ if [ "$OSTYPE" == "Linux"* ]; then
 fi
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"

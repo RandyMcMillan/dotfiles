@@ -38,6 +38,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(CheckCXXSourceCompiles)
 include(CheckCXXSymbolExists)
+include(FindPkgConfig)
 include(TestBigEndian)
 
 # Global checks.
@@ -96,8 +97,20 @@ if(NOT HAVE_GMTIME_R)
   endif()
 endif()
 
-if(NOT CMAKE_CROSSCOMPILING)
+option(BUILD_DAEMON "Build bitcoind" ON)
+
+if(NOT CMAKE_CROSSCOMPILING AND BUILD_DAEMON)
   find_package(Boost 1.64.0 REQUIRED COMPONENTS headers)
+endif()
+
+if(BUILD_DAEMON)
+  pkg_check_modules(libevent REQUIRED libevent>=2.1.8 IMPORTED_TARGET)
+  if(WIN32)
+    target_link_libraries(PkgConfig::libevent INTERFACE iphlpapi ws2_32)
+  endif()
+endif()
+if(NOT WIN32 AND BUILD_DAEMON)
+  pkg_check_modules(libevent_pthreads REQUIRED libevent_pthreads>=2.1.8 IMPORTED_TARGET)
 endif()
 
 add_subdirectory(src)

@@ -33,6 +33,7 @@ add_definitions(-DHAVE_CONFIG_H)
 
 add_subdirectory(crypto)
 add_subdirectory(univalue)
+add_subdirectory(util)
 
 # Home for common functionality shared by different executables and libraries.
 # Similar to `bitcoin_util` library, but higher-level.

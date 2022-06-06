@@ -98,12 +98,13 @@ if(NOT HAVE_GMTIME_R)
 endif()
 
 option(BUILD_DAEMON "Build bitcoind" ON)
+option(BUILD_CLI "Build bitcoin-cli" ON)
 
-if(NOT CMAKE_CROSSCOMPILING AND BUILD_DAEMON)
+if(NOT CMAKE_CROSSCOMPILING AND (BUILD_DAEMON OR BUILD_CLI))
   find_package(Boost 1.64.0 REQUIRED COMPONENTS headers)
 endif()
 
-if(BUILD_DAEMON)
+if(BUILD_DAEMON OR BUILD_CLI)
   pkg_check_modules(libevent REQUIRED libevent>=2.1.8 IMPORTED_TARGET)
   if(WIN32)
     target_link_libraries(PkgConfig::libevent INTERFACE iphlpapi ws2_32)

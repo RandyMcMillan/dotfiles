@@ -165,4 +165,16 @@
 /* Define if the visibility attribute is supported. */
 #define HAVE_DEFAULT_VISIBILITY_ATTRIBUTE
 
+
+// Features.
+
+/* Define to 1 to enable wallet functions. */
+#cmakedefine ENABLE_WALLET 1
+
+/* Define if SQLite support should be compiled in. */
+#cmakedefine USE_SQLITE
+
+/* Define if Berkeley DB (BDB) support should be compiled in. */
+#cmakedefine USE_BDB
+
 #endif // BITCOIN_CONFIG_H

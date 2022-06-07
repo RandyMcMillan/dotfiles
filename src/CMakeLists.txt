@@ -270,3 +270,9 @@ if(BUILD_CLI)
     )
   endif()
 endif()
+
+
+# Shared library build of static libbitcoin_consensus library.
+if(BUILD_BITCOINCONSENSUS_LIB)
+  add_subdirectory(script)
+endif()

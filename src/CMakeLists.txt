@@ -34,6 +34,9 @@ add_definitions(-DHAVE_CONFIG_H)
 add_subdirectory(crypto)
 add_subdirectory(univalue)
 add_subdirectory(util)
+if(ENABLE_WALLET)
+  add_subdirectory(wallet)
+endif()
 
 # Home for common functionality shared by different executables and libraries.
 # Similar to `bitcoin_util` library, but higher-level.
@@ -179,9 +182,15 @@ add_library(bitcoin_node STATIC EXCLUDE_FROM_ALL
   validation.cpp
   validationinterface.cpp
   versionbits.cpp
-
-  dummywallet.cpp
 )
+if(ENABLE_WALLET)
+  target_sources(bitcoin_node PRIVATE wallet/init.cpp)
+  if(TARGET BerkeleyDB::BerkeleyDB)
+    target_link_libraries(bitcoin_node PRIVATE BerkeleyDB::BerkeleyDB)
+  endif()
+else()
+  target_sources(bitcoin_node PRIVATE dummywallet.cpp)
+endif()
 target_include_directories(bitcoin_node
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -204,6 +213,9 @@ if(BUILD_DAEMON)
     bitcoind.cpp
     init/bitcoind.cpp
   )
+  if(ENABLE_WALLET)
+    target_link_libraries(bitcoind PRIVATE bitcoin_wallet)
+  endif()
   target_link_libraries(bitcoind
     PRIVATE
       bitcoin_node

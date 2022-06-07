@@ -24,6 +24,8 @@ project("Bitcoin Core"
   LANGUAGES CXX C ASM
 )
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+
 set(PACKAGE_NAME ${PROJECT_NAME})
 set(PACKAGE_VERSION ${PROJECT_VERSION})
 set(CLIENT_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -42,6 +44,7 @@ option(BUILD_DAEMON "Build bitcoind" ON)
 option(BUILD_CLI "Build bitcoin-cli" ON)
 option(BUILD_BITCOINCONSENSUS_LIB "Build bitcoinconsensus shared library" ON)
 option(BUILD_BITCOINKERNEL_LIB "Build experimental bitcoinkernel shared library" ON)
+option(ENABLE_WALLET "Enable wallet" ON)
 option(REDUCE_EXPORTS "Attempt to reduce exported symbols in the resulting executables" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -124,4 +127,9 @@ message("Preprocessor defined macros: ${definitions}")
 message("CXX: ${CMAKE_CXX_COMPILER_LAUNCHER} ${CMAKE_CXX_COMPILER}")
 get_directory_property(compile_options COMPILE_OPTIONS)
 message("Compile options: ${compile_options}")
+message("Wallet functionality ............... ${WITH_WALLET}")
+if(ENABLE_WALLET)
+  message("  SQLite, descriptor wallets ....... ${WITH_SQLITE}")
+  message("  Berkeley DB, legacy wallets ...... ${WITH_BDB}")
+endif()
 message("\n")

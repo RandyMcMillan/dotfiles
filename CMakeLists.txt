@@ -37,6 +37,9 @@ set(COPYRIGHT_HOLDERS "The %s developers")
 set(COPYRIGHT_HOLDERS_SUBSTITUTION ${PROJECT_NAME})
 set(COPYRIGHT_HOLDERS_FINAL "The Bitcoin Core developers")
 
+# Configurable options.
+option(BUILD_DAEMON "Build bitcoind" ON)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -79,18 +82,20 @@ include(cmake/subtree-secp256k1.cmake)
 
 include(FindPkgConfig)
 
-# Find Boost headers only.
-find_package(Boost 1.64.0 REQUIRED)
+if(BUILD_DAEMON)
+  # Find Boost headers only.
+  find_package(Boost 1.64.0 REQUIRED)
 
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads REQUIRED)
 
-pkg_check_modules(libevent REQUIRED libevent>=2.1.8 IMPORTED_TARGET)
-if(WIN32)
-  target_link_libraries(PkgConfig::libevent INTERFACE iphlpapi ws2_32)
+  pkg_check_modules(libevent REQUIRED libevent>=2.1.8 IMPORTED_TARGET)
+  if(WIN32)
+    target_link_libraries(PkgConfig::libevent INTERFACE iphlpapi ws2_32)
+  endif()
 endif()
 
-if(NOT CMAKE_SYSTEM_NAME STREQUAL Windows)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL Windows AND BUILD_DAEMON)
   pkg_check_modules(libevent_pthreads REQUIRED libevent_pthreads>=2.1.8 IMPORTED_TARGET)
 endif()
 

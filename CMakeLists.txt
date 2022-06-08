@@ -56,4 +56,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL Darwin)
   link_libraries(-Wl,-headerpad_max_install_names)
 endif()
 
+include(cmake/introspection.cmake)
+
 add_subdirectory(src)

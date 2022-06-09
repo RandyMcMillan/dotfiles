@@ -231,7 +231,7 @@ if(BUILD_DAEMON)
 endif()
 
 
-if(BUILD_CLI)
+if(BUILD_CLI OR NOT BUILD_GUI STREQUAL OFF)
   add_library(rpc_client STATIC EXCLUDE_FROM_ALL rpc/client.cpp)
   target_include_directories(rpc_client
     PUBLIC
@@ -268,4 +268,9 @@ endif()
 
 if(BUILD_BITCOINKERNEL_LIB)
   add_subdirectory(kernel)
+endif()
+
+
+if(NOT BUILD_GUI STREQUAL OFF)
+  add_subdirectory(qt)
 endif()

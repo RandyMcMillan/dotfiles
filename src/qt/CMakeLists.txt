@@ -11,7 +11,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/forms")
 
-find_package(Qt5 5.11.3 REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(Qt5 5.11.3 REQUIRED COMPONENTS Widgets Network LinguistTools)
 message(STATUS "Found Qt 5, version ${Qt5Core_VERSION_STRING}")
 
 file(GLOB TS_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "locale/*.ts")
@@ -79,6 +79,56 @@ target_link_libraries(bitcoinqt
     rpc_client
     leveldb
 )
+
+if(ENABLE_WALLET)
+  target_sources(bitcoinqt
+    PRIVATE
+      addressbookpage.cpp
+      addresstablemodel.cpp
+      askpassphrasedialog.cpp
+      coincontroldialog.cpp
+      coincontroltreewidget.cpp
+      createwalletdialog.cpp
+      editaddressdialog.cpp
+      openuridialog.cpp
+      overviewpage.cpp
+      paymentserver.cpp
+      psbtoperationsdialog.cpp
+      qrimagewidget.cpp
+      receivecoinsdialog.cpp
+      receiverequestdialog.cpp
+      recentrequeststablemodel.cpp
+      sendcoinsdialog.cpp
+      sendcoinsentry.cpp
+      signverifymessagedialog.cpp
+      transactiondesc.cpp
+      transactiondescdialog.cpp
+      transactionfilterproxy.cpp
+      transactionrecord.cpp
+      transactiontablemodel.cpp
+      transactionview.cpp
+      walletcontroller.cpp
+      walletframe.cpp
+      walletmodel.cpp
+      walletmodeltransaction.cpp
+      walletview.cpp
+  )
+  set_property(
+    SOURCE
+      paymentserver.cpp
+      # sendcoinsdialog.cpp
+      transactionview.cpp
+      walletframe.cpp
+      walletmodel.cpp
+      walletview.cpp
+      node/ui_interface.h
+      ../node/ui_interface.h
+    PROPERTY
+      SKIP_AUTOUIC ON
+  )
+  target_link_libraries(bitcoinqt PUBLIC Qt5::Network)
+endif()
+
 if(CMAKE_CROSSCOMPILING)
   target_compile_definitions(bitcoinqt PRIVATE QT_STATICPLUGIN)
   target_link_libraries(Qt5::Core

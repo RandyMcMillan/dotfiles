@@ -236,3 +236,22 @@ let g:clang_library_path='/Library/Developer/CommandLineTools/usr/lib/'
 " let g:clang_library_path='/usr/lib64/libclang.so.3.8'
 
 autocmd FileType c ClangFormatAutoEnable
+
+
+if has("autocmd")
+function! s:expand_commit_template() abort
+  let context = {
+        \ 'MY_BRANCH': matchstr(system('git rev-parse --abbrev-ref HEAD'), '\p\+'),
+        \ 'AUTHOR': 'Tommy A',
+        \ }
+
+  let lnum = nextnonblank(1)
+  while lnum && lnum < line('$')
+    call setline(lnum, substitute(getline(lnum), '\${\(\w\+\)}',
+          \ '\=get(context, submatch(1), submatch(0))', 'g'))
+    let lnum = nextnonblank(lnum + 1)
+  endwhile
+endfunction
+endif
+
+autocmd BufRead */.git/COMMIT_EDITMSG call s:expand_commit_template()

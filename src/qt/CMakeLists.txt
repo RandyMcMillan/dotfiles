@@ -102,6 +102,9 @@ target_link_libraries(bitcoinqt
     Boost::boost
     $<$<PLATFORM_ID:Darwin>:"-framework AppKit">
 )
+if(TARGET NATPMP::NATPMP)
+  target_link_libraries(bitcoinqt PRIVATE NATPMP::NATPMP)
+endif()
 
 if(ENABLE_WALLET)
   target_sources(bitcoinqt

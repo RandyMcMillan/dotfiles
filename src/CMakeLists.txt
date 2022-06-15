@@ -202,6 +202,9 @@ target_link_libraries(bitcoin_node
     univalue
     Boost::boost
 )
+if(TARGET NATPMP::NATPMP)
+  target_link_libraries(bitcoin_node PRIVATE NATPMP::NATPMP)
+endif()
 if(NOT CMAKE_SYSTEM_NAME STREQUAL Windows)
   target_link_libraries(bitcoin_node PRIVATE PkgConfig::libevent_pthreads)
 endif()

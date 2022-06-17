@@ -16,8 +16,10 @@ option(ENABLE_NATPMP_DEFAULT "If NAT-PMP is enabled, turn it on at startup" OFF)
 set(WITH_MINIUPNPC "auto" CACHE STRING "Enable UPNP ([auto], yes, no). \"auto\" means \"yes\" if libminiupnpc is found")
 option(ENABLE_UPNP_DEFAULT "If UPNP is enabled, turn it on at startup" OFF)
 
+set(WITH_ZMQ "auto" CACHE STRING "Enable ZMQ notifications ([auto], yes, no). \"auto\" means \"yes\" if libzmq is found")
+
 set(OPTION_VALUES auto yes no)
-foreach(option USE_CCACHE WITH_SQLITE WITH_BDB WITH_NATPMP WITH_MINIUPNPC)
+foreach(option USE_CCACHE WITH_SQLITE WITH_BDB WITH_NATPMP WITH_MINIUPNPC WITH_ZMQ)
   if(NOT ${option} IN_LIST OPTION_VALUES)
     message(FATAL_ERROR "${option} value is \"${${option}}\", but must be one of \"auto\", \"yes\" or \"no\".")
   endif()
@@ -100,6 +102,24 @@ if(NOT WITH_MINIUPNPC STREQUAL no)
     else()
       message(WARNING "libminiupnpc not found, disabling.\n"
                       "To skip libminiupnpc check, use \"-DWITH_MINIUPNPC=no\".\n")
+    endif()
+  endif()
+endif()
+
+if(NOT WITH_ZMQ STREQUAL no)
+  pkg_check_modules(libzmq libzmq>=4 IMPORTED_TARGET)
+  if(libzmq_FOUND)
+    set(WITH_ZMQ yes)
+    set_property(TARGET PkgConfig::libzmq APPEND PROPERTY
+      INTERFACE_COMPILE_DEFINITIONS $<$<PLATFORM_ID:Windows>:ZMQ_STATIC>
+    )
+  else()
+    set(WITH_ZMQ no)
+    if(WITH_ZMQ STREQUAL yes)
+      message(FATAL_ERROR "libzmq requested, but not found.")
+    else()
+      message(WARNING "libzmq not found, disabling.\n"
+                      "To skip libzmq check, use \"-DWITH_ZMQ=no\".\n")
     endif()
   endif()
 endif()

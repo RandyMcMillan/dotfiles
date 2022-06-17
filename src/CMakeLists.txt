@@ -37,6 +37,7 @@ add_subdirectory(util)
 if(ENABLE_WALLET)
   add_subdirectory(wallet)
 endif()
+add_subdirectory(zmq)
 
 # Home for common functionality shared by different executables and libraries.
 # Similar to `bitcoin_util` library, but higher-level.
@@ -207,6 +208,9 @@ if(TARGET NATPMP::NATPMP)
 endif()
 if(TARGET MiniUPnPc::MiniUPnPc)
   target_link_libraries(bitcoin_node PRIVATE MiniUPnPc::MiniUPnPc)
+endif()
+if(TARGET bitcoin_zmq)
+  target_link_libraries(bitcoin_node PRIVATE bitcoin_zmq)
 endif()
 if(NOT CMAKE_SYSTEM_NAME STREQUAL Windows)
   target_link_libraries(bitcoin_node PRIVATE PkgConfig::libevent_pthreads)

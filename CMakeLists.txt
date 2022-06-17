@@ -44,6 +44,7 @@ set(COPYRIGHT_HOLDERS_FINAL "The Bitcoin Core developers")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+include(cmake/check_filesystem.cmake)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 

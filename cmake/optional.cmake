@@ -22,8 +22,10 @@ set(WITH_USDT "auto" CACHE STRING "Enable tracepoints for Userspace, Statically 
 
 set(WITH_QRENCODE "auto" CACHE STRING "Enable QR code support ([auto], yes, no). \"auto\" means \"yes\" if libqrencode is found")
 
+set(WITH_SECCOMP "auto" CACHE STRING "Enable experimental syscall sandbox feature (-sandbox) ([auto], yes, no). \"auto\" means \"yes\" if seccomp-bpf is found under Linux x86_64")
+
 set(OPTION_VALUES auto yes no)
-foreach(option USE_CCACHE WITH_SQLITE WITH_BDB WITH_NATPMP WITH_MINIUPNPC WITH_ZMQ WITH_USDT WITH_QRENCODE)
+foreach(option USE_CCACHE WITH_SQLITE WITH_BDB WITH_NATPMP WITH_MINIUPNPC WITH_ZMQ WITH_USDT WITH_QRENCODE WITH_SECCOMP)
   if(NOT ${option} IN_LIST OPTION_VALUES)
     message(FATAL_ERROR "${option} value is \"${${option}}\", but must be one of \"auto\", \"yes\" or \"no\".")
   endif()
@@ -160,6 +162,25 @@ if(NOT BUILD_GUI STREQUAL OFF AND NOT WITH_QRENCODE STREQUAL no)
     set(WITH_QRENCODE no)
     if(WITH_QRENCODE STREQUAL yes)
       message(FATAL_ERROR "libqrencode requested, but not found.")
+    endif()
+  endif()
+endif()
+
+if(NOT WITH_SECCOMP STREQUAL no)
+  check_cxx_source_compiles("
+  #include <linux/seccomp.h>
+  #if !defined(__x86_64__)
+  #  error Syscall sandbox is an experimental feature currently available only under Linux x86-64.
+  #endif
+  int main(){}
+  " HAVE_SECCOMP_H)
+  if(HAVE_SECCOMP_H)
+    set(WITH_SECCOMP yes)
+    set(USE_SYSCALL_SANDBOX TRUE)
+  else()
+    set(WITH_SECCOMP no)
+    if(WITH_SECCOMP STREQUAL yes)
+      message(FATAL_ERROR "linux/seccomp.h requested, but not found.")
     endif()
   endif()
 endif()

@@ -78,7 +78,28 @@ public:
 class CBlockTreeDB : public CDBWrapper
 {
 public:
-    explicit CBlockTreeDB(size_t nCacheSize, bool fMemory = false, bool fWipe = false);
+    struct Options
+    {
+        fs::path db_path;
+        size_t cache_size;
+        bool in_memory = false;
+        bool wipe_existing = false;
+        bool do_compact = false;
+
+        CDBWrapper::Options ToDBWrapperOptions() const
+        {
+            return CDBWrapper::Options{
+                .db_path = db_path,
+                .cache_size = cache_size,
+                .in_memory = in_memory,
+                .wipe_existing = wipe_existing,
+                .obfuscate_data = false,
+                .do_compact = do_compact,
+            };
+        }
+    };
+
+    explicit CBlockTreeDB(const Options& opts);
 
     bool WriteBatchSync(const std::vector<std::pair<int, const CBlockFileInfo*> >& fileInfo, int nLastFile, const std::vector<const CBlockIndex*>& blockinfo);
     bool ReadBlockFileInfo(int nFile, CBlockFileInfo &info);

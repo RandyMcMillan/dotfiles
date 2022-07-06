@@ -1445,22 +1445,26 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     for (bool fLoaded = false; !fLoaded && !ShutdownRequested();) {
         node.mempool = std::make_unique<CTxMemPool>(mempool_opts);
 
+        const bool fReset = fReindex;
+
         const ChainstateManager::Options chainman_opts{
             .chainparams = chainparams,
             .adjusted_time_callback = GetAdjustedTime,
+            .block_tree_db_opts = {
+                .db_path = args.GetDataDirNet() / "blocks" / "index",
+                .cache_size = static_cast<size_t>(cache_sizes.block_tree_db),
+                .wipe_existing = fReset,
+                .do_compact = args.GetBoolArg("-forcecompactdb", false),
+            },
         };
-        node.chainman = std::make_unique<ChainstateManager>(chainman_opts);
-        ChainstateManager& chainman = *node.chainman;
-
-        const bool fReset = fReindex;
-        bilingual_str strLoadError;
 
         uiInterface.InitMessage(_("Loading block index…").translated);
         const int64_t load_block_index_start_time = GetTimeMillis();
         std::optional<ChainstateLoadingError> maybe_load_error;
         try {
+            node.chainman = std::make_unique<ChainstateManager>(chainman_opts);
             maybe_load_error = LoadChainstate(fReset,
-                                              chainman,
+                                              *Assert(node.chainman),
                                               Assert(node.mempool.get()),
                                               fPruneMode,
                                               fReindexChainState,
@@ -1479,6 +1483,9 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
             LogPrintf("%s\n", e.what());
             maybe_load_error = ChainstateLoadingError::ERROR_GENERIC_BLOCKDB_OPEN_FAILED;
         }
+
+        bilingual_str strLoadError;
+
         if (maybe_load_error.has_value()) {
             switch (maybe_load_error.value()) {
             case ChainstateLoadingError::ERROR_LOADING_BLOCK_DB:
@@ -1509,12 +1516,13 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
                 break;
             case ChainstateLoadingError::ERROR_BLOCKS_WITNESS_INSUFFICIENTLY_VALIDATED:
                 strLoadError = strprintf(_("Witness data for blocks after height %d requires validation. Please restart with -reindex."),
-                                         chainman.GetConsensus().SegwitHeight);
+                                         chainman_opts.chainparams.GetConsensus().SegwitHeight);
                 break;
             case ChainstateLoadingError::SHUTDOWN_PROBED:
                 break;
             }
         } else {
+            ChainstateManager& chainman = *Assert(node.chainman);
             std::optional<ChainstateLoadVerifyError> maybe_verify_error;
             try {
                 uiInterface.InitMessage(_("Verifying blocks…").translated);

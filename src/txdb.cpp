@@ -193,15 +193,8 @@ size_t CCoinsViewDB::EstimateSize() const
     return m_db->EstimateSize(DB_COIN, uint8_t(DB_COIN + 1));
 }
 
-CBlockTreeDB::CBlockTreeDB(size_t nCacheSize, bool fMemory, bool fWipe)
-    : CDBWrapper{{
-          .db_path = gArgs.GetDataDirNet() / "blocks" / "index",
-          .cache_size = nCacheSize,
-          .in_memory = fMemory,
-          .wipe_existing = fWipe,
-          .obfuscate_data = false,
-          .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
-      }} {}
+CBlockTreeDB::CBlockTreeDB(const Options& opts)
+    : CDBWrapper{opts.ToDBWrapperOptions()} {}
 
 bool CBlockTreeDB::ReadBlockFileInfo(int nFile, CBlockFileInfo &info) {
     return Read(std::make_pair(DB_BLOCK_FILES, nFile), info);

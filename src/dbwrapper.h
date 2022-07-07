@@ -230,15 +230,6 @@ public:
         bool do_compact = false;
     };
 
-    CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory = false, bool fWipe = false, bool obfuscate = false)
-        : CDBWrapper{{
-                .db_path = path,
-                .cache_size = nCacheSize,
-                .in_memory = fMemory,
-                .wipe_existing = fWipe,
-                .obfuscate_data = obfuscate,
-                .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
-            }} {}
     CDBWrapper(const Options& opts);
     ~CDBWrapper();
 

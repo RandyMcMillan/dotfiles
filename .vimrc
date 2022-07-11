@@ -166,14 +166,14 @@ let g:clang_format#style_options = {
 
 if has("autocmd")
     " map to <Leader>cf in C++ code
-    autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-    autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+    " autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+    " autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
     " if you install vim-operator-user
-    autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+    " autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 endif
 
 " Toggle auto formatting:
-nmap <Leader>C :ClangFormatAutoToggle<CR>
+" nmap <Leader>C :ClangFormatAutoToggle<CR>
 
 set noexpandtab " default dont mess with tabs!!!
 " set expandtab!
@@ -235,7 +235,7 @@ let g:clang_library_path='/Library/Developer/CommandLineTools/usr/lib/'
 " or path directly to the library file
 " let g:clang_library_path='/usr/lib64/libclang.so.3.8'
 
-autocmd FileType c ClangFormatAutoEnable
+"m autocmd FileType c ClangFormatAutoEnable
 
 
 if has("autocmd")

@@ -113,8 +113,6 @@ export PATH="/usr/local/opt/ruby@2.5.8/bin:$PATH"
 export PATH="/usr/local/opt/ruby@2.5/bin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/usr/local/opt/openssl@3/bin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
@@ -125,6 +123,4 @@ if [ "$OSTYPE" == "Linux"* ]; then
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     fi
 fi
-export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"

@@ -6,6 +6,7 @@
 #include <txdb.h>
 
 #include <chain.h>
+#include <dbwrapper.h>
 #include <pow.h>
 #include <random.h>
 #include <shutdown.h>
@@ -70,10 +71,17 @@ struct CoinEntry {
 
 } // namespace
 
-CCoinsViewDB::CCoinsViewDB(fs::path ldb_path, size_t nCacheSize, bool fMemory, bool fWipe) :
-    m_db(std::make_unique<CDBWrapper>(ldb_path, nCacheSize, fMemory, fWipe, true)),
-    m_ldb_path(ldb_path),
-    m_is_memory(fMemory) { }
+CCoinsViewDB::CCoinsViewDB(fs::path ldb_path, size_t nCacheSize, bool fMemory, bool fWipe)
+    : m_db{new CDBWrapper{{
+          .db_path = ldb_path,
+          .cache_size = nCacheSize,
+          .in_memory = fMemory,
+          .wipe_existing = fWipe,
+          .obfuscate_data = true,
+          .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
+      }}},
+      m_ldb_path{ldb_path},
+      m_is_memory{fMemory} {}
 
 void CCoinsViewDB::ResizeCache(size_t new_cache_size)
 {
@@ -84,7 +92,15 @@ void CCoinsViewDB::ResizeCache(size_t new_cache_size)
         // filesystem lock.
         m_db.reset();
         m_db = std::make_unique<CDBWrapper>(
-            m_ldb_path, new_cache_size, m_is_memory, /*fWipe=*/false, /*obfuscate=*/true);
+            CDBWrapper::Options{
+                .db_path = m_ldb_path,
+                .cache_size = new_cache_size,
+                .in_memory = m_is_memory,
+                .wipe_existing = false,
+                .obfuscate_data = true,
+                .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
+            }
+        );
     }
 }
 
@@ -177,8 +193,15 @@ size_t CCoinsViewDB::EstimateSize() const
     return m_db->EstimateSize(DB_COIN, uint8_t(DB_COIN + 1));
 }
 
-CBlockTreeDB::CBlockTreeDB(size_t nCacheSize, bool fMemory, bool fWipe) : CDBWrapper(gArgs.GetDataDirNet() / "blocks" / "index", nCacheSize, fMemory, fWipe) {
-}
+CBlockTreeDB::CBlockTreeDB(size_t nCacheSize, bool fMemory, bool fWipe)
+    : CDBWrapper{{
+          .db_path = gArgs.GetDataDirNet() / "blocks" / "index",
+          .cache_size = nCacheSize,
+          .in_memory = fMemory,
+          .wipe_existing = fWipe,
+          .obfuscate_data = false,
+          .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
+      }} {}
 
 bool CBlockTreeDB::ReadBlockFileInfo(int nFile, CBlockFileInfo &info) {
     return Read(std::make_pair(DB_BLOCK_FILES, nFile), info);

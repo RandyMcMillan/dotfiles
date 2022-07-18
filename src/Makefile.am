@@ -703,6 +703,7 @@ libbitcoin_util_a_SOURCES = \
   util/moneystr.cpp \
   util/rbf.cpp \
   util/readwritefile.cpp \
+  util/result.cpp \
   util/settings.cpp \
   util/thread.cpp \
   util/threadinterrupt.cpp \
@@ -948,6 +949,7 @@ libbitcoinkernel_la_SOURCES = \
   util/hasher.cpp \
   util/moneystr.cpp \
   util/rbf.cpp \
+  util/result.cpp \
   util/serfloat.cpp \
   util/settings.cpp \
   util/strencodings.cpp \

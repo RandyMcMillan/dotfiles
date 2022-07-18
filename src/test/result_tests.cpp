@@ -33,6 +33,35 @@ std::ostream& operator<<(std::ostream& os, const NoCopy& o)
     return os << "NoCopy(" << *o.m_n << ")";
 }
 
+struct NoCopyNoMove
+{
+    NoCopyNoMove(int n) : m_n{n} {}
+    NoCopyNoMove(const NoCopyNoMove&) = delete;
+    NoCopyNoMove(NoCopyNoMove&&) = delete;
+    int m_n;
+};
+
+bool operator==(const NoCopyNoMove& a, const NoCopyNoMove& b)
+{
+    return a.m_n == b.m_n;
+}
+
+std::ostream& operator<<(std::ostream& os, const NoCopyNoMove& o)
+{
+    os << "NoCopyNoMove(" << o.m_n << ")";
+    return os;
+}
+
+util::Result<void> VoidSuccessFn()
+{
+    return {};
+}
+
+util::Result<void> VoidFailFn()
+{
+    return util::Error{Untranslated("void fail.")};
+}
+
 util::Result<int> IntFn(int i, bool success)
 {
     if (success) return i;
@@ -51,15 +80,40 @@ util::Result<NoCopy> NoCopyFn(int i, bool success)
     return util::Error{Untranslated(strprintf("nocopy %i error.", i))};
 }
 
-template <typename T>
-void ExpectResult(const util::Result<T>& result, bool success, const bilingual_str& str)
+util::Result<NoCopyNoMove> NoCopyNoMoveFn(int i, bool success)
+{
+    if (success) return {i};
+    return util::Error{Untranslated(strprintf("nocopynomove %i error.", i))};
+}
+
+enum FnError { ERR1, ERR2 };
+
+util::Result<int, FnError> IntFailFn(int i, bool success)
+{
+    if (success) return i;
+    return {util::Error{Untranslated(strprintf("int %i error.", i))}, i % 2 ? ERR1 : ERR2};
+}
+
+util::Result<NoCopyNoMove, FnError> EnumFailFn(FnError ret)
+{
+    return {util::Error{Untranslated("enum fail.")}, ret};
+}
+
+util::Result<int, int> TruthyFalsyFn(int i, bool success)
+{
+    if (success) return i;
+    return {util::Error{Untranslated(strprintf("failure value %i.", i))}, i};
+}
+
+template<typename T, typename F>
+void ExpectResult(const util::Result<T, F>& result, bool success, const bilingual_str& str)
 {
     BOOST_CHECK_EQUAL(bool(result), success);
     BOOST_CHECK_EQUAL(util::ErrorString(result), str);
 }
 
-template <typename T, typename... Args>
-void ExpectSuccess(const util::Result<T>& result, const bilingual_str& str, Args&&... args)
+template<typename T, typename F, typename... Args>
+void ExpectSuccess(const util::Result<T, F>& result, const bilingual_str& str, Args&&... args)
 {
     ExpectResult(result, true, str);
     BOOST_CHECK_EQUAL(result.has_value(), true);
@@ -67,20 +121,41 @@ void ExpectSuccess(const util::Result<T>& result, const bilingual_str& str, Args
     BOOST_CHECK_EQUAL(&result.value(), &*result);
 }
 
-template <typename T, typename... Args>
-void ExpectFail(const util::Result<T>& result, const bilingual_str& str)
+template<typename T, typename F, typename... Args>
+void ExpectFail(const util::Result<T, F>& result, bilingual_str str, Args&&... args)
 {
     ExpectResult(result, false, str);
+    BOOST_CHECK_EQUAL(result.GetFailure(), F{std::forward<Args>(args)...});
 }
 
 BOOST_AUTO_TEST_CASE(check_returned)
 {
+    ExpectResult(VoidSuccessFn(), true, {});
+    ExpectResult(VoidFailFn(), false, Untranslated("void fail."));
     ExpectSuccess(IntFn(5, true), {}, 5);
-    ExpectFail(IntFn(5, false), Untranslated("int 5 error."));
+    ExpectResult(IntFn(5, false), false, Untranslated("int 5 error."));
     ExpectSuccess(NoCopyFn(5, true), {}, 5);
-    ExpectFail(NoCopyFn(5, false), Untranslated("nocopy 5 error."));
+    ExpectResult(NoCopyFn(5, false), false, Untranslated("nocopy 5 error."));
+    ExpectSuccess(NoCopyNoMoveFn(5, true), {}, 5);
+    ExpectResult(NoCopyNoMoveFn(5, false), false, Untranslated("nocopynomove 5 error."));
     ExpectSuccess(StrFn(Untranslated("S"), true), {}, Untranslated("S"));
-    ExpectFail(StrFn(Untranslated("S"), false), Untranslated("str S error."));
+    ExpectResult(StrFn(Untranslated("S"), false), false, Untranslated("str S error."));
+    ExpectFail(EnumFailFn(ERR2), Untranslated("enum fail."), ERR2);
+    ExpectSuccess(TruthyFalsyFn(0, true), {}, 0);
+    ExpectFail(TruthyFalsyFn(0, false), Untranslated("failure value 0."), 0);
+    ExpectSuccess(TruthyFalsyFn(1, true), {}, 1);
+    ExpectFail(TruthyFalsyFn(1, false), Untranslated("failure value 1."), 1);
+}
+
+BOOST_AUTO_TEST_CASE(check_dereference_operators)
+{
+    util::Result<std::pair<int, std::string>> mutable_result;
+    const auto& const_result{mutable_result};
+    mutable_result.value() = {1, "23"};
+    BOOST_CHECK_EQUAL(mutable_result->first, 1);
+    BOOST_CHECK_EQUAL(const_result->second, "23");
+    (*mutable_result).first = 5;
+    BOOST_CHECK_EQUAL((*const_result).first, 5);
 }
 
 BOOST_AUTO_TEST_CASE(check_value_or)

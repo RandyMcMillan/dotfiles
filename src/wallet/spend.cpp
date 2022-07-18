@@ -678,11 +678,11 @@ util::Result<SelectionResult> AutomaticCoinSelection(const CWallet& wallet, Coin
                 // If any specific error message appears here, then something particularly wrong might have happened.
                 // Save the error and continue the selection process. So if no solutions gets found, we can return
                 // the detailed error to the upper layers.
-                if (HasErrorMsg(res)) res_detailed_errors.emplace_back(res);
+                if (HasErrorMsg(res)) res_detailed_errors.emplace_back(std::move(res));
             }
         }
         // Coin Selection failed.
-        return res_detailed_errors.empty() ? util::Result<SelectionResult>(util::Error()) : res_detailed_errors.front();
+        return res_detailed_errors.empty() ? util::Result<SelectionResult>(util::Error()) : std::move(res_detailed_errors.front());
     }();
 
     return res;

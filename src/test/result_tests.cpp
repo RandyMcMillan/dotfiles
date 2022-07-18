@@ -99,6 +99,36 @@ util::Result<NoCopyNoMove, FnError> EnumFailFn(FnError ret)
     return {util::Error{Untranslated("enum fail.")}, ret};
 }
 
+util::Result<void> WarnFn()
+{
+    return {util::Warning{Untranslated("warn.")}};
+}
+
+util::Result<int> MultiWarnFn(int ret)
+{
+    util::Result<void> result;
+    for (int i = 0; i < ret; ++i) {
+        result.AddWarning(strprintf(Untranslated("warn %i."), i));
+    }
+    return {std::move(result), ret};
+}
+
+util::Result<void, int> ChainedFailFn(FnError arg, int ret)
+{
+    return {util::Error{Untranslated("chained fail.")}, EnumFailFn(arg), WarnFn(), ret};
+}
+
+util::Result<int, FnError> AccumulateFn(bool success)
+{
+    util::Result<int, FnError> result;
+    util::Result<int> x = result << MultiWarnFn(1);
+    BOOST_REQUIRE(x);
+    util::Result<int> y = result << MultiWarnFn(2);
+    BOOST_REQUIRE(y);
+    result = IntFailFn(*x + *y, success);
+    return result;
+}
+
 util::Result<int, int> TruthyFalsyFn(int i, bool success)
 {
     if (success) return i;
@@ -141,6 +171,10 @@ BOOST_AUTO_TEST_CASE(check_returned)
     ExpectSuccess(StrFn(Untranslated("S"), true), {}, Untranslated("S"));
     ExpectResult(StrFn(Untranslated("S"), false), false, Untranslated("str S error."));
     ExpectFail(EnumFailFn(ERR2), Untranslated("enum fail."), ERR2);
+    ExpectFail(ChainedFailFn(ERR1, 5), Untranslated("chained fail. enum fail. warn."), 5);
+    ExpectSuccess(MultiWarnFn(3), Untranslated("warn 0. warn 1. warn 2."), 3);
+    ExpectSuccess(AccumulateFn(true), Untranslated("warn 0. warn 0. warn 1."), 3);
+    ExpectFail(AccumulateFn(false), Untranslated("int 3 error. warn 0. warn 0. warn 1."), ERR1);
     ExpectSuccess(TruthyFalsyFn(0, true), {}, 0);
     ExpectFail(TruthyFalsyFn(0, false), Untranslated("failure value 0."), 0);
     ExpectSuccess(TruthyFalsyFn(1, true), {}, 1);

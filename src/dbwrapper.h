@@ -180,6 +180,11 @@ public:
     }
 };
 
+//! Optional settings to use loading the database.
+struct DBWrapperOptions {
+    bool do_compact = false;
+};
+
 class CDBWrapper
 {
     friend const std::vector<unsigned char>& dbwrapper_private::GetObfuscateKey(const CDBWrapper &w);
@@ -221,16 +226,17 @@ private:
 
 public:
 
-    struct Options {
+    //! Required parameters to use loading the database.
+    struct Params {
         fs::path db_path;
         size_t cache_size;
         bool in_memory = false;
         bool wipe_existing = false;
         bool obfuscate_data = false;
-        bool do_compact = false;
+        DBWrapperOptions options;
     };
 
-    CDBWrapper(const Options& opts);
+    CDBWrapper(const Params& params);
     ~CDBWrapper();
 
     CDBWrapper(const CDBWrapper&) = delete;

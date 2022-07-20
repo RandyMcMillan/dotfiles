@@ -20,6 +20,7 @@
 
 using node::BlockAssembler;
 using node::CBlockTemplate;
+using node::NodeContext;
 
 BOOST_AUTO_TEST_SUITE(blockfilter_index_tests)
 
@@ -109,9 +110,19 @@ bool BuildChainTestingSetup::BuildChain(const CBlockIndex* pindex,
     return true;
 }
 
+static IndexParams MakeIndexParams(NodeContext& node)
+{
+    return {
+        .chain = interfaces::MakeChain(node),
+        .base_path = node.args->GetDataDirNet() / "indexes",
+        .cache_size = 1 << 20,
+        .in_memory = true,
+    };
+}
+
 BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
 {
-    BlockFilterIndex filter_index(interfaces::MakeChain(m_node), BlockFilterType::BASIC, 1 << 20, true);
+    BlockFilterIndex filter_index(MakeIndexParams(m_node), BlockFilterType::BASIC);
 
     uint256 last_header;
 
@@ -280,14 +291,14 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_init_destroy, BasicTestingSetup)
     filter_index = GetBlockFilterIndex(BlockFilterType::BASIC);
     BOOST_CHECK(filter_index == nullptr);
 
-    BOOST_CHECK(InitBlockFilterIndex([&]{ return interfaces::MakeChain(m_node); }, BlockFilterType::BASIC, 1 << 20, true, false));
+    BOOST_CHECK(InitBlockFilterIndex(MakeIndexParams(m_node), BlockFilterType::BASIC));
 
     filter_index = GetBlockFilterIndex(BlockFilterType::BASIC);
     BOOST_CHECK(filter_index != nullptr);
     BOOST_CHECK(filter_index->GetFilterType() == BlockFilterType::BASIC);
 
     // Initialize returns false if index already exists.
-    BOOST_CHECK(!InitBlockFilterIndex([&]{ return interfaces::MakeChain(m_node); }, BlockFilterType::BASIC, 1 << 20, true, false));
+    BOOST_CHECK(!InitBlockFilterIndex(MakeIndexParams(m_node), BlockFilterType::BASIC));
 
     int iter_count = 0;
     ForEachBlockFilterIndex([&iter_count](BlockFilterIndex& _index) { iter_count++; });
@@ -302,7 +313,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_init_destroy, BasicTestingSetup)
     BOOST_CHECK(filter_index == nullptr);
 
     // Reinitialize index.
-    BOOST_CHECK(InitBlockFilterIndex([&]{ return interfaces::MakeChain(m_node); }, BlockFilterType::BASIC, 1 << 20, true, false));
+    BOOST_CHECK(InitBlockFilterIndex(MakeIndexParams(m_node), BlockFilterType::BASIC));
 
     DestroyAllBlockFilterIndexes();
 

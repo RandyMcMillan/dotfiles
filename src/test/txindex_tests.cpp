@@ -16,7 +16,12 @@ BOOST_AUTO_TEST_SUITE(txindex_tests)
 
 BOOST_FIXTURE_TEST_CASE(txindex_initial_sync, TestChain100Setup)
 {
-    TxIndex txindex(interfaces::MakeChain(m_node), 1 << 20, true);
+    TxIndex txindex({
+        .chain = interfaces::MakeChain(m_node),
+        .base_path = m_node.args->GetDataDirNet() / "indexes",
+        .cache_size = 1 << 20,
+        .in_memory = true,
+    });
 
     CTransactionRef tx_disk;
     uint256 block_hash;

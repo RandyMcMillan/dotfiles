@@ -200,6 +200,7 @@ BITCOIN_CORE_H = \
   node/chainstate.h \
   node/coin.h \
   node/context.h \
+  node/db_args.h \
   node/mempool_persist_args.h \
   node/miner.h \
   node/minisketchwrapper.h \
@@ -382,6 +383,7 @@ libbitcoin_node_a_SOURCES = \
   node/coin.cpp \
   node/connection_types.cpp \
   node/context.cpp \
+  node/db_args.cpp \
   node/eviction.cpp \
   node/interfaces.cpp \
   node/mempool_persist_args.cpp \

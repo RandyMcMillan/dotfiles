@@ -80,8 +80,9 @@ int main(int argc, char* argv[])
     const ChainstateManager::Options chainman_opts{
         .chainparams = chainparams,
         .adjusted_time_callback = static_cast<int64_t (*)()>(GetTime),
-        .block_tree_db_opts = {
-            .db_path = gArgs.GetDataDirNet() / "blocks" / "index",
+        .datadir = abs_datadir,
+        .block_tree_db_params = {
+            .db_path = abs_datadir / "blocks" / "index",
             .cache_size = 2 << 20,
         },
     };

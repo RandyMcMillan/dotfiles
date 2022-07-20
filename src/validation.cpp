@@ -1481,13 +1481,9 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     return nSubsidy;
 }
 
-CoinsViews::CoinsViews(
-    fs::path ldb_name,
-    size_t cache_size_bytes,
-    bool in_memory,
-    bool should_wipe) : m_dbview(
-                            gArgs.GetDataDirNet() / ldb_name, cache_size_bytes, in_memory, should_wipe),
-                        m_catcherview(&m_dbview) {}
+CoinsViews::CoinsViews(const CDBWrapper::Params& db_params)
+    : m_dbview(db_params),
+      m_catcherview(&m_dbview) {}
 
 void CoinsViews::InitCache()
 {
@@ -1516,8 +1512,14 @@ void CChainState::InitCoinsDB(
         leveldb_name += "_" + m_from_snapshot_blockhash->ToString();
     }
 
-    m_coins_views = std::make_unique<CoinsViews>(
-        leveldb_name, cache_size_bytes, in_memory, should_wipe);
+    m_coins_views = std::make_unique<CoinsViews>(CDBWrapper::Params{
+       .db_path = m_chainman.GetDataDir(),
+       .cache_size = cache_size_bytes,
+       .in_memory = in_memory,
+       .wipe_existing = should_wipe,
+       .obfuscate_data = true,
+       .options = m_chainman.GetCoinsDBOptions(),
+    });
 }
 
 void CChainState::InitCoinsCache(size_t cache_size_bytes)

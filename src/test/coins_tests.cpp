@@ -268,7 +268,11 @@ BOOST_AUTO_TEST_CASE(coins_cache_simulation_test)
     CCoinsViewTest base;
     SimulationTest(&base, false);
 
-    CCoinsViewDB db_base{"test", /*nCacheSize=*/1 << 23, /*fMemory=*/true, /*fWipe=*/false};
+    CCoinsViewDB db_base{{
+        .db_path = "test",
+        .cache_size = 1 << 23,
+        .in_memory = true,
+    }};
     SimulationTest(&db_base, true);
 }
 

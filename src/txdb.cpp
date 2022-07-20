@@ -71,36 +71,20 @@ struct CoinEntry {
 
 } // namespace
 
-CCoinsViewDB::CCoinsViewDB(fs::path ldb_path, size_t nCacheSize, bool fMemory, bool fWipe)
-    : m_db{new CDBWrapper{{
-          .db_path = ldb_path,
-          .cache_size = nCacheSize,
-          .in_memory = fMemory,
-          .wipe_existing = fWipe,
-          .obfuscate_data = true,
-          .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
-      }}},
-      m_ldb_path{ldb_path},
-      m_is_memory{fMemory} {}
+CCoinsViewDB::CCoinsViewDB(CDBWrapper::Params params)
+    : m_db_params{std::move(params)},
+      m_db{std::make_unique<CDBWrapper>(m_db_params)} {}
 
 void CCoinsViewDB::ResizeCache(size_t new_cache_size)
 {
     // We can't do this operation with an in-memory DB since we'll lose all the coins upon
     // reset.
-    if (!m_is_memory) {
+    if (!m_db_params.in_memory) {
         // Have to do a reset first to get the original `m_db` state to release its
         // filesystem lock.
         m_db.reset();
-        m_db = std::make_unique<CDBWrapper>(
-            CDBWrapper::Options{
-                .db_path = m_ldb_path,
-                .cache_size = new_cache_size,
-                .in_memory = m_is_memory,
-                .wipe_existing = false,
-                .obfuscate_data = true,
-                .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
-            }
-        );
+        m_db_params.cache_size = new_cache_size;
+        m_db = std::make_unique<CDBWrapper>(m_db_params);
     }
 }
 
@@ -192,9 +176,6 @@ size_t CCoinsViewDB::EstimateSize() const
 {
     return m_db->EstimateSize(DB_COIN, uint8_t(DB_COIN + 1));
 }
-
-CBlockTreeDB::CBlockTreeDB(const Options& opts)
-    : CDBWrapper{opts.ToDBWrapperOptions()} {}
 
 bool CBlockTreeDB::ReadBlockFileInfo(int nFile, CBlockFileInfo &info) {
     return Read(std::make_pair(DB_BLOCK_FILES, nFile), info);

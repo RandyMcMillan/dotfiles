@@ -50,14 +50,10 @@ extern RecursiveMutex cs_main;
 class CCoinsViewDB final : public CCoinsView
 {
 protected:
+    CDBWrapper::Params m_db_params;
     std::unique_ptr<CDBWrapper> m_db;
-    fs::path m_ldb_path;
-    bool m_is_memory;
 public:
-    /**
-     * @param[in] ldb_path    Location in the filesystem where leveldb data will be stored.
-     */
-    explicit CCoinsViewDB(fs::path ldb_path, size_t nCacheSize, bool fMemory, bool fWipe);
+    explicit CCoinsViewDB(CDBWrapper::Params params);
 
     bool GetCoin(const COutPoint &outpoint, Coin &coin) const override;
     bool HaveCoin(const COutPoint &outpoint) const override;
@@ -78,28 +74,7 @@ public:
 class CBlockTreeDB : public CDBWrapper
 {
 public:
-    struct Options
-    {
-        fs::path db_path;
-        size_t cache_size;
-        bool in_memory = false;
-        bool wipe_existing = false;
-        bool do_compact = false;
-
-        CDBWrapper::Options ToDBWrapperOptions() const
-        {
-            return CDBWrapper::Options{
-                .db_path = db_path,
-                .cache_size = cache_size,
-                .in_memory = in_memory,
-                .wipe_existing = wipe_existing,
-                .obfuscate_data = false,
-                .do_compact = do_compact,
-            };
-        }
-    };
-
-    explicit CBlockTreeDB(const Options& opts);
+    using CDBWrapper::CDBWrapper;
 
     bool WriteBatchSync(const std::vector<std::pair<int, const CBlockFileInfo*> >& fileInfo, int nLastFile, const std::vector<const CBlockIndex*>& blockinfo);
     bool ReadBlockFileInfo(int nFile, CBlockFileInfo &info);

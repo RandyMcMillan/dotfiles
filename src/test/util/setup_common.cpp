@@ -185,11 +185,14 @@ ChainTestingSetup::ChainTestingSetup(const std::string& chainName, const std::ve
     const ChainstateManager::Options chainman_opts{
         .chainparams = chainparams,
         .adjusted_time_callback = GetAdjustedTime,
-        .block_tree_db_opts = {
-            .db_path = gArgs.GetDataDirNet() / "blocks" / "index",
+        .datadir = m_node.args->GetDataDirNet(),
+        .block_tree_db_params = {
+            .db_path = m_node.args->GetDataDirNet() / "blocks" / "index",
             .cache_size = static_cast<size_t>(m_cache_sizes.block_tree_db),
             .in_memory = true,
-            .do_compact = gArgs.GetBoolArg("-forcecompactdb", false),
+            .options{
+                .do_compact = m_node.args->GetBoolArg("-forcecompactdb", false),
+            }
         },
     };
     m_node.chainman = std::make_unique<ChainstateManager>(chainman_opts);

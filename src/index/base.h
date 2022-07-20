@@ -17,6 +17,16 @@ namespace interfaces {
 class Chain;
 } // namespace interfaces
 
+//! Parameters to use loading the database.
+struct IndexParams {
+    std::unique_ptr<interfaces::Chain> chain;
+    fs::path base_path;
+    size_t cache_size = 0;
+    bool in_memory = false;
+    bool wipe_existing = false;
+    DBWrapperOptions db_options;
+};
+
 struct IndexSummary {
     std::string name;
     bool synced{false};
@@ -41,8 +51,7 @@ protected:
     class DB : public CDBWrapper
     {
     public:
-        DB(const fs::path& path, size_t n_cache_size,
-           bool f_memory = false, bool f_wipe = false, bool f_obfuscate = false);
+        using CDBWrapper::CDBWrapper;
 
         /// Read block locator of the chain that the index is in sync with.
         bool ReadBestBlock(CBlockLocator& locator) const;
@@ -50,6 +59,17 @@ protected:
         /// Write block locator of the chain that the index is in sync with.
         void WriteBestBlock(CDBBatch& batch, const CBlockLocator& locator);
     };
+
+    CDBWrapper::Params DBParams(const IndexParams& params, fs::path path)
+    {
+        return {
+            .db_path = std::move(path),
+            .cache_size = params.cache_size,
+            .in_memory = params.in_memory,
+            .wipe_existing = params.wipe_existing,
+            .options = params.db_options,
+        };
+    }
 
 private:
     /// Whether the index is in sync with the main chain. The flag is flipped

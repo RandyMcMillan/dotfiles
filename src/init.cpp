@@ -41,6 +41,7 @@
 #include <node/caches.h>
 #include <node/chainstate.h>
 #include <node/context.h>
+#include <node/db_args.h>
 #include <node/interface_ui.h>
 #include <node/mempool_persist_args.h>
 #include <node/miner.h>
@@ -1442,19 +1443,24 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
     LogPrintf("* Using %.1f MiB for in-memory UTXO set (plus up to %.1f MiB of unused mempool space)\n", cache_sizes.coins * (1.0 / 1024 / 1024), mempool_opts.max_size_bytes * (1.0 / 1024 / 1024));
 
+    DBWrapperOptions db_options;
+    node::ReadDatabaseArgs(args, db_options);
+
     for (bool fLoaded = false; !fLoaded && !ShutdownRequested();) {
         node.mempool = std::make_unique<CTxMemPool>(mempool_opts);
 
         const bool fReset = fReindex;
 
-        const ChainstateManager::Options chainman_opts{
+        ChainstateManager::Options chainman_opts{
             .chainparams = chainparams,
             .adjusted_time_callback = GetAdjustedTime,
-            .block_tree_db_opts = {
+            .datadir = args.GetDataDirNet(),
+            .coinsdb_options = db_options,
+            .block_tree_db_params = {
                 .db_path = args.GetDataDirNet() / "blocks" / "index",
                 .cache_size = static_cast<size_t>(cache_sizes.block_tree_db),
                 .wipe_existing = fReset,
-                .do_compact = args.GetBoolArg("-forcecompactdb", false),
+                .options = db_options,
             },
         };
 
@@ -1596,26 +1602,36 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     RegisterValidationInterface(node.peerman.get());
 
     // ********************************************************* Step 8: start indexers
+    auto index_params = [&](size_t cache_size) {
+        return IndexParams{
+            .chain = interfaces::MakeChain(node),
+            .base_path = gArgs.GetDataDirNet() / "indexes",
+            .cache_size = cache_size,
+            .wipe_existing = fReindex,
+            .db_options = db_options,
+        };
+    };
+
     if (args.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
         if (const auto error{WITH_LOCK(cs_main, return CheckLegacyTxindex(*Assert(chainman.m_blockman.m_block_tree_db)))}) {
             return InitError(*error);
         }
 
-        g_txindex = std::make_unique<TxIndex>(interfaces::MakeChain(node), cache_sizes.tx_index, false, fReindex);
+        g_txindex = std::make_unique<TxIndex>(index_params(cache_sizes.tx_index));
         if (!g_txindex->Start()) {
             return false;
         }
     }
 
     for (const auto& filter_type : g_enabled_filter_types) {
-        InitBlockFilterIndex([&]{ return interfaces::MakeChain(node); }, filter_type, cache_sizes.filter_index, false, fReindex);
+        InitBlockFilterIndex(index_params(cache_sizes.filter_index), filter_type);
         if (!GetBlockFilterIndex(filter_type)->Start()) {
             return false;
         }
     }
 
     if (args.GetBoolArg("-coinstatsindex", DEFAULT_COINSTATSINDEX)) {
-        g_coin_stats_index = std::make_unique<CoinStatsIndex>(interfaces::MakeChain(node), /* cache size */ 0, false, fReindex);
+        g_coin_stats_index = std::make_unique<CoinStatsIndex>(index_params(/*cache_size=*/0));
         if (!g_coin_stats_index->Start()) {
             return false;
         }

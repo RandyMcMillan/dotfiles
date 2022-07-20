@@ -398,9 +398,7 @@ public:
     //! *does not* create a CCoinsViewCache instance by default. This is done separately because the
     //! presence of the cache has implications on whether or not we're allowed to flush the cache's
     //! state to disk, which should not be done until the health of the database is verified.
-    //!
-    //! All arguments forwarded onto CCoinsViewDB.
-    CoinsViews(fs::path ldb_name, size_t cache_size_bytes, bool in_memory, bool should_wipe);
+    CoinsViews(const CDBWrapper::Params& db_params);
 
     //! Initialize the CCoinsViewCache member.
     void InitCache() EXCLUSIVE_LOCKS_REQUIRED(::cs_main);
@@ -815,6 +813,12 @@ private:
 
     const std::function<int64_t()> m_adjusted_time_callback;
 
+    //! Path to data directory (value returned by ArgsManager::GetDataDirNet() in bitcoind)
+    const fs::path m_datadir;
+
+    //! Database options to use for coinsdb.
+    DBWrapperOptions m_coinsdb_options;
+
     //! Internal helper for ActivateSnapshot().
     [[nodiscard]] bool PopulateAndValidateSnapshot(
         CChainState& snapshot_chainstate,
@@ -837,10 +841,14 @@ public:
     explicit ChainstateManager(const Options& opts)
         : m_chainparams{opts.chainparams},
           m_adjusted_time_callback{Assert(opts.adjusted_time_callback)},
-          m_blockman{opts.block_tree_db_opts} {};
+          m_datadir{opts.datadir},
+          m_coinsdb_options{opts.coinsdb_options},
+          m_blockman{opts.block_tree_db_params} {};
 
     const CChainParams& GetParams() const { return m_chainparams; }
     const Consensus::Params& GetConsensus() const { return m_chainparams.GetConsensus(); }
+    const fs::path& GetDataDir() const { return m_datadir; }
+    const DBWrapperOptions& GetCoinsDBOptions() const { return m_coinsdb_options; }
 
     std::thread m_load_block;
     //! A single BlockManager instance is shared across each constructed

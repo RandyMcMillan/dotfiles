@@ -140,7 +140,7 @@ private:
     std::unordered_map<std::string, PruneLockInfo> m_prune_locks GUARDED_BY(::cs_main);
 
 public:
-    explicit BlockManager(const CBlockTreeDB::Options& block_tree_db_opts);
+    explicit BlockManager(const CBlockTreeDB::Params& block_tree_db_params);
 
     BlockMap m_block_index GUARDED_BY(cs_main);
 

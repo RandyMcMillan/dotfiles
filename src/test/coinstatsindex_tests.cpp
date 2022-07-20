@@ -14,6 +14,8 @@
 
 #include <chrono>
 
+using node::NodeContext;
+
 BOOST_AUTO_TEST_SUITE(coinstatsindex_tests)
 
 static void IndexWaitSynced(BaseIndex& index)
@@ -27,9 +29,19 @@ static void IndexWaitSynced(BaseIndex& index)
     }
 }
 
+static IndexParams MakeIndexParams(NodeContext& node, bool in_memory=false)
+{
+    return {
+        .chain = interfaces::MakeChain(node),
+        .base_path = node.args->GetDataDirNet() / "indexes",
+        .cache_size = 1 << 20,
+        .in_memory = in_memory,
+    };
+}
+
 BOOST_FIXTURE_TEST_CASE(coinstatsindex_initial_sync, TestChain100Setup)
 {
-    CoinStatsIndex coin_stats_index{interfaces::MakeChain(m_node), 1 << 20, true};
+    CoinStatsIndex coin_stats_index{MakeIndexParams(m_node, /*in_memory=*/true)};
 
     const CBlockIndex* block_index;
     {
@@ -88,7 +100,7 @@ BOOST_FIXTURE_TEST_CASE(coinstatsindex_unclean_shutdown, TestChain100Setup)
     CChainState& chainstate = Assert(m_node.chainman)->ActiveChainstate();
     const CChainParams& params = Params();
     {
-        CoinStatsIndex index{interfaces::MakeChain(m_node), 1 << 20};
+        CoinStatsIndex index{MakeIndexParams(m_node)};
         BOOST_REQUIRE(index.Start());
         IndexWaitSynced(index);
         std::shared_ptr<const CBlock> new_block;
@@ -114,7 +126,7 @@ BOOST_FIXTURE_TEST_CASE(coinstatsindex_unclean_shutdown, TestChain100Setup)
     }
 
     {
-        CoinStatsIndex index{interfaces::MakeChain(m_node), 1 << 20};
+        CoinStatsIndex index{MakeIndexParams(m_node)};
         // Make sure the index can be loaded.
         BOOST_REQUIRE(index.Start());
         index.Stop();

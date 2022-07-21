@@ -218,11 +218,11 @@ void TestingSetup::LoadVerifyActivateChainstate()
     options.prune = chainman.m_blockman.IsPruneMode();
     options.check_blocks = m_args.GetIntArg("-checkblocks", DEFAULT_CHECKBLOCKS);
     options.check_level = m_args.GetIntArg("-checklevel", DEFAULT_CHECKLEVEL);
-    auto [status, error] = LoadChainstate(chainman, m_cache_sizes, options);
-    assert(status == node::ChainstateLoadStatus::SUCCESS);
+    auto result = LoadChainstate(chainman, m_cache_sizes, options);
+    assert(result);
 
-    std::tie(status, error) = VerifyLoadedChainstate(chainman, options);
-    assert(status == node::ChainstateLoadStatus::SUCCESS);
+    result = VerifyLoadedChainstate(chainman, options);
+    assert(result);
 
     BlockValidationState state;
     if (!chainman.ActiveChainstate().ActivateBestChain(state)) {

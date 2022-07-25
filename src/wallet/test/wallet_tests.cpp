@@ -47,13 +47,10 @@ static std::shared_ptr<CWallet> TestLoadWallet(WalletContext& context)
 {
     DatabaseOptions options;
     options.create_flags = WALLET_FLAG_DESCRIPTORS;
-    DatabaseStatus status;
-    bilingual_str error;
-    std::vector<bilingual_str> warnings;
-    auto database = MakeWalletDatabase("", options, status, error);
-    auto wallet = CWallet::Create(context, "", std::move(database), options.create_flags, error, warnings);
-    NotifyWalletLoaded(context, wallet);
-    return wallet;
+    auto database = MakeWalletDatabase("", options);
+    auto wallet = CWallet::Create(context, "", std::move(*database), options.create_flags);
+    NotifyWalletLoaded(context, *wallet);
+    return *wallet;
 }
 
 static void TestUnloadWallet(std::shared_ptr<CWallet>&& wallet)

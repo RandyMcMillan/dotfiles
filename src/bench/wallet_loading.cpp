@@ -28,12 +28,12 @@ static std::shared_ptr<CWallet> BenchLoadWallet(std::unique_ptr<WalletDatabase> 
 {
     bilingual_str error;
     std::vector<bilingual_str> warnings;
-    auto wallet = CWallet::Create(context, "", std::move(database), options.create_flags, error, warnings);
-    NotifyWalletLoaded(context, wallet);
+    auto wallet = CWallet::Create(context, "", std::move(database), options.create_flags);
+    NotifyWalletLoaded(context, *wallet);
     if (context.chain) {
-        wallet->postInitProcess();
+        (*wallet)->postInitProcess();
     }
-    return wallet;
+    return *wallet;
 }
 
 static void BenchUnloadWallet(std::shared_ptr<CWallet>&& wallet)

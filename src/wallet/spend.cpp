@@ -741,7 +741,6 @@ util::Result<SelectionResult> AutomaticCoinSelection(const CWallet& wallet, Coin
         // Return right away if we have a detailed error
         if (!res_detailed_errors.empty()) return std::move(res_detailed_errors.front());
 
-
         // General "Insufficient Funds"
         return util::Result<SelectionResult>(util::Error());
     }

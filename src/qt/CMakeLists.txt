@@ -5,6 +5,7 @@
 # See:
 #  - https://cmake.org/cmake/help/latest/manual/cmake-qt.7.html
 #  - https://doc.qt.io/qt-5/cmake-manual.html
+#  - https://doc.qt.io/qt-6/cmake-manual.html
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -16,14 +17,18 @@ set(qt_package ${WITH_GUI})
 # The PATH_SUFFIXES option is required on OpenBSD systems.
 find_package(${qt_package} 5.11.3 REQUIRED
   COMPONENTS Widgets Network LinguistTools
-  HINTS ${qt5_brew_prefix}
+  HINTS ${qt_brew_prefix} ${qt5_brew_prefix}
   PATH_SUFFIXES Qt5
 )
 message(STATUS "Found Qt, version ${${qt_package}_VERSION}")
 
 file(GLOB ts_files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} locale/*.ts)
 set_source_files_properties(${ts_files} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/locale)
-qt5_add_translation(qm_files ${ts_files})
+if(${${qt_package}_VERSION_MAJOR} EQUAL 5)
+  qt5_add_translation(qm_files ${ts_files})
+else()
+  qt6_add_translation(qm_files ${ts_files})
+endif()
 
 add_library(bitcoinqt STATIC EXCLUDE_FROM_ALL "")
 target_sources(bitcoinqt

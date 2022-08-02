@@ -25,7 +25,7 @@ fi
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,exports,aliases,functions,extra,~/dotfiles/*.sh}; do
+for file in ~/.{path,bash_prompt,bash_profile,exports,aliases,functions,extra,~/dotfiles/*.sh}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -55,12 +55,6 @@ if which brew &> /dev/null && [ -r "$(brew --prefix)/etc/profile.d/bash_completi
 elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
-
-## add docker bash completion
-#
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-. $(brew --prefix)/etc/bash_completion
-fi
 
 ## Enable tab completion for `g` by marking it as an alias for `git`
 if type _git &> /dev/null; then
@@ -118,9 +112,10 @@ export PATH="/usr/local/opt/openssl@3/bin:$PATH"
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 
-if [ "$OSTYPE" == "Linux"* ]; then
+#if [ "$OSTYPE" == "Linux"* ]; then
     if ! hash brew 2>/dev/null; then
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/git/.bash_profile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
-fi
+#fi
 export PATH="/usr/local/opt/qt@5/bin:$PATH"

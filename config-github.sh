@@ -104,6 +104,6 @@ config-github
 ssh-add
 ssh-add ~/.ssh/*.github_rsa
 ./config-git.sh
-git config --global -l
+# git config --global -l
 ssh -v git@github.com
 #./install-github-utility.sh

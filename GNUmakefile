@@ -90,8 +90,8 @@ init:-
 
 ##	:	brew - install Homebrew locally
 brew:-
-	$(shell git clone  --depth 10 https://github.com/Homebrew/brew.git)
-	$(shell git clone  --depth 10 https://github.com/Homebrew/homebrew-core.git)
+	$(shell git clone https://github.com/Homebrew/brew.git)
+	$(shell git clone https://github.com/Homebrew/homebrew-core.git)
 	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
 	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
 	$(shell curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > install-brew.sh && chmod +x install-brew.sh)

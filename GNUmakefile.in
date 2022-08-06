@@ -77,7 +77,7 @@ export HOMEBREW_NO_ENV_HINTS
 	bash -c "cat GNUmakefile.in > GNUmakefile"
 ##	:	init
 init:-
-#	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
+	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	# test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 	# test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
@@ -93,6 +93,8 @@ brew:
 	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
 	$(shell curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > install-brew.sh && chmod +x install-brew.sh)
 	bash -c "$(PWD)/install-brew.sh"
+	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
+	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
 ##	:	help
 help:
 	@echo ''

@@ -1,6 +1,14 @@
 SHELL									:= /bin/bash
 
 PWD										?= pwd_unknown
+#space:=
+#space+=
+
+# CURRENT_PATH := $(subst $(lastword $(notdir $(MAKEFILE_LIST))),,$(subst $(space),\$(space),$(shell realpath '$(strip $(MAKEFILE_LIST))')))
+# export CURRENT_PATH
+
+THIS_DIR=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+export THIS_DIR
 
 TIME									:= $(shell date +%s)
 export TIME
@@ -40,11 +48,17 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
+HOMEBREW_BREW_GIT_REMOTE=$(strip $(THIS_DIR))brew# put your Git mirror of Homebrew/brew here
+export HOMEBREW_BREW_GIT_REMOTE
+
+HOMEBREW_CORE_GIT_REMOTE=$(strip $(THIS_DIR))homebrew-core# put your Git mirror of Homebrew/homebrew-core here
+export HOMEBREW_CORE_GIT_REMOTE
+
 BREW                                    := $(shell which brew)
 export BREW
-BREW_PREFIX                             := $(shell brew --prefix)
+# BREW_PREFIX                             := $(shell brew --prefix)
 export BREW_PREFIX
-BREW_CELLAR                             := $(shell brew --cellar)
+# BREW_CELLAR                             := $(shell brew --cellar)
 export BREW_CELLAR
 HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
@@ -60,18 +74,25 @@ export HOMEBREW_NO_ENV_HINTS
 ##	:
 
 -: report help
+	cat GNUmakefile.in > GNUmakefile
 ##	:	init
 init:
 #	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
-	test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
-	test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
-	ssh-add > /dev/null 2>&1
-	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
-	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
-	[[ -z "$(BREW)" ]] && echo "$(BREW)" || echo "$(BREW)" && \
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	# test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
+	# test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
+	# ssh-add > /dev/null 2>&1
+	# ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
+	# install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
+# 	[[ -z "$(BREW)" ]] && echo "$(BREW)" || echo "$(BREW)" && \
+# 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+##	:	brew - install Homebrew locally
+brew:
+	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
+	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
+	$(shell curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > install-brew.sh && chmod +x install-brew.sh)
+	bash -c "$(PWD)/install-brew.sh"
 ##	:	help
 help:
 	@echo ''
@@ -82,6 +103,8 @@ help:
 report:
 	@echo ''
 	@echo ' TIME=${TIME}	'
+	@echo ' CURRENT_PATH=${CURRENT_PATH}	'
+	@echo ' THIS_DIR=${THIS_DIR}	'
 	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
 	@echo ' GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
@@ -94,6 +117,8 @@ report:
 	@echo ' GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo ' GIT_REPO_PATH=${GIT_REPO_PATH}	'
 	@echo ' BREW=${BREW}	'
+	@echo ' HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
+	@echo ' HOMEBREW_CORE_REMOTE=${HOMEBREW_CORE_GIT_REMOTE}	'
 	@echo ' BREW_PREFIX=${BREW_PREFIX}	'
 	@echo ' BREW_CELLAR=${BREW_CELLAR}	'
 	@echo ' HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
@@ -144,10 +169,12 @@ config-dock: executable
 
 .PHONY: all
 ##	:	all			execute installer scripts
-all: executable
+all: executable brew
 	bash -c "test docker-compose && brew unlink docker-completion || echo"
 	bash -c "source template.sh && checkbrew install --cask docker"
+	bash -c "source template.sh && checkbrew install node yarn"
 	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli"
+
 # 	./install-Docker.sh && \
 # 	./install-FastLane.sh && \
 # 	./install-Onyx.sh && \

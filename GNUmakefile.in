@@ -70,6 +70,7 @@ export HOMEBREW_NO_ENV_HINTS
 .PHONY:	init
 .PHONY:	help
 .PHONY:	report
+.PHONY:	brew
 .SILENT:
 ##	:
 
@@ -88,7 +89,9 @@ init:-
 # 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 ##	:	brew - install Homebrew locally
-brew:
+brew:-
+	$(shell git clone  --depth 1 https://github.com/Homebrew/brew.git)
+	$(shell git clone --depth 1 https://github.com/Homebrew/homebrew-core.git)
 	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
 	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
 	$(shell curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > install-brew.sh && chmod +x install-brew.sh)
@@ -171,9 +174,13 @@ config-dock: executable
 
 .PHONY: all
 ##	:	all			execute installer scripts
-all: executable brew
+all:- executable brew gnupg
+	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 	bash -c "source template.sh && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
 	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli"
+
+gnupg:- executable
+	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 
 # bash -c "test docker-compose && brew unlink docker-completion || echo"
 # bash -c "source template.sh && checkbrew install --cask docker"
@@ -238,11 +245,6 @@ qt5: executable
 .PHONY: hub
 hub: executable
 	./install-github-utility.sh
-
-.PHONY: gnupg
-##	:	gnupg			install gnupg and accessories
-gnupg: executable
-	./install-gnupg+suite.sh
 
 .PHONY: config-github
 config-github: executable

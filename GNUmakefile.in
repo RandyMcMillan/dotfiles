@@ -74,9 +74,9 @@ export HOMEBREW_NO_ENV_HINTS
 ##	:
 
 -: report help
-	cat GNUmakefile.in > GNUmakefile
+	bash -c "cat GNUmakefile.in > GNUmakefile"
 ##	:	init
-init:
+init:-
 #	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	# test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
@@ -170,10 +170,11 @@ config-dock: executable
 .PHONY: all
 ##	:	all			execute installer scripts
 all: executable brew
-	bash -c "test docker-compose && brew unlink docker-completion || echo"
-	bash -c "source template.sh && checkbrew install --cask docker"
-	bash -c "source template.sh && checkbrew install node yarn"
+	bash -c "source template.sh && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
 	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli"
+
+# bash -c "test docker-compose && brew unlink docker-completion || echo"
+# bash -c "source template.sh && checkbrew install --cask docker"
 
 # 	./install-Docker.sh && \
 # 	./install-FastLane.sh && \

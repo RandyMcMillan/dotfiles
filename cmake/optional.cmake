@@ -24,6 +24,8 @@ set(WITH_QRENCODE "auto" CACHE STRING "Enable QR code support ([auto], yes, no).
 
 set(WITH_SECCOMP "auto" CACHE STRING "Enable experimental syscall sandbox feature (-sandbox) ([auto], yes, no). \"auto\" means \"yes\" if seccomp-bpf is found under Linux x86_64")
 
+set(WITH_EXTERNAL_SIGNER "auto" CACHE STRING "Enable external signer support ([auto], yes, no). \"auto\" means \"yes\" if Boost.Process is found")
+
 set(OPTION_VALUES auto yes no)
 foreach(option USE_CCACHE WITH_SQLITE WITH_BDB WITH_NATPMP WITH_MINIUPNPC WITH_ZMQ WITH_USDT WITH_QRENCODE WITH_SECCOMP)
   if(NOT ${option} IN_LIST OPTION_VALUES)
@@ -182,4 +184,38 @@ if(NOT WITH_SECCOMP STREQUAL no)
     endif()
     set(WITH_SECCOMP no)
   endif()
+endif()
+
+if(NOT WITH_EXTERNAL_SIGNER STREQUAL no)
+  if(CMAKE_SYSTEM_NAME STREQUAL Windows)
+    if(WITH_EXTERNAL_SIGNER STREQUAL yes)
+      message(FATAL_ERROR "External signer is not supported on Windows.")
+    endif()
+    set(WITH_EXTERNAL_SIGNER no)
+  endif()
+
+  set(TEMP_CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES})
+  set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${Boost_INCLUDE_DIRS})
+
+  # Boost 1.78 and 1.79 require the following workaround.
+  # See: https://github.com/boostorg/process/issues/235
+  set(TEMP_CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
+  set(CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS} -Wno-error=narrowing)
+
+  check_cxx_source_compiles("
+  #include <boost/process.hpp>
+  int main(){}
+  " HAVE_BOOST_PROCESS_H)
+  if(HAVE_BOOST_PROCESS_H)
+    set(ENABLE_EXTERNAL_SIGNER TRUE)
+    set(WITH_EXTERNAL_SIGNER yes)
+  else()
+    if(WITH_EXTERNAL_SIGNER STREQUAL yes)
+      message(FATAL_ERROR "External signer support requested, but is not supported by this Boost.Process version.")
+    endif()
+    set(WITH_EXTERNAL_SIGNER no)
+  endif()
+
+  set(CMAKE_REQUIRED_FLAGS ${TEMP_CMAKE_REQUIRED_FLAGS})
+  set(CMAKE_REQUIRED_INCLUDES ${TEMP_CMAKE_REQUIRED_INCLUDES})
 endif()

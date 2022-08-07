@@ -53,6 +53,7 @@ option(BUILD_DAEMON "Build bitcoind" ON)
 option(BUILD_CLI "Build bitcoin-cli" ON)
 option(BUILD_TX "Build bitcoin-tx" ON)
 option(BUILD_UTIL "Build bitcoin-util" ON)
+option(BUILD_BITCOINCONSENSUS_LIB "Build bitcoinconsensus shared library" ON)
 option(REDUCE_EXPORTS "Attempt to reduce exported symbols in the resulting executables" OFF)
 
 include(cmake/try_append_cxxflag.cmake)

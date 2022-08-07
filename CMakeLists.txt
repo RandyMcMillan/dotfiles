@@ -58,6 +58,7 @@ option(BUILD_UTIL "Build bitcoin-util" ON)
 option(BUILD_BITCOINCONSENSUS_LIB "Build bitcoinconsensus shared library" ON)
 option(BUILD_BITCOINKERNEL_LIB "Build experimental bitcoinkernel shared library" ON)
 option(ENABLE_WALLET "Enable wallet" ON)
+option(BUILD_WALLET_TOOL "Build bitcoin-wallet tool" ${ENABLE_WALLET})
 option(REDUCE_EXPORTS "Attempt to reduce exported symbols in the resulting executables" OFF)
 
 include(cmake/try_append_cxxflag.cmake)
@@ -161,7 +162,7 @@ include(cmake/optional.cmake)
 
 include(FindPkgConfig)
 
-if(BUILD_DAEMON OR BUILD_CLI OR BUILD_TX OR BUILD_BITCOINKERNEL_LIB)
+if(BUILD_DAEMON OR BUILD_CLI OR BUILD_TX OR BUILD_BITCOINKERNEL_LIB OR BUILD_WALLET_TOOL)
   # Find Boost headers only.
   find_package(Boost 1.64.0 REQUIRED)
 
@@ -202,5 +203,6 @@ message("Wallet functionality ............... ${WITH_WALLET}")
 if(ENABLE_WALLET)
   message("  SQLite, descriptor wallets ....... ${WITH_SQLITE}")
   message("  Berkeley DB, legacy wallets ...... ${WITH_BDB}")
+  message("  wallet tool ...................... ${BUILD_WALLET_TOOL}")
 endif()
 message("\n")

@@ -20,8 +20,10 @@ set(WITH_ZMQ "auto" CACHE STRING "Enable ZMQ notifications ([auto], yes, no). \"
 
 set(WITH_USDT "auto" CACHE STRING "Enable tracepoints for Userspace, Statically Defined Tracing ([auto], yes, no). \"auto\" means \"yes\" if sys/sdt.h is found")
 
+set(WITH_QRENCODE "auto" CACHE STRING "Enable QR code support ([auto], yes, no). \"auto\" means \"yes\" if libqrencode is found")
+
 set(OPTION_VALUES auto yes no)
-foreach(option USE_CCACHE WITH_SQLITE WITH_BDB WITH_NATPMP WITH_MINIUPNPC WITH_ZMQ WITH_USDT)
+foreach(option USE_CCACHE WITH_SQLITE WITH_BDB WITH_NATPMP WITH_MINIUPNPC WITH_ZMQ WITH_USDT WITH_QRENCODE)
   if(NOT ${option} IN_LIST OPTION_VALUES)
     message(FATAL_ERROR "${option} value is \"${${option}}\", but must be one of \"auto\", \"yes\" or \"no\".")
   endif()
@@ -143,5 +145,20 @@ if(NOT WITH_USDT STREQUAL no)
       message(FATAL_ERROR "sys/sdt.h requested, but not found.")
     endif()
     set(WITH_USDT no)
+  endif()
+endif()
+
+if(NOT WITH_GUI STREQUAL no AND NOT WITH_QRENCODE STREQUAL no)
+  pkg_check_modules(libqrencode libqrencode IMPORTED_TARGET)
+  if(libqrencode_FOUND)
+    set_target_properties(PkgConfig::libqrencode PROPERTIES
+      INTERFACE_COMPILE_DEFINITIONS USE_QRCODE
+    )
+    set(WITH_QRENCODE yes)
+  else()
+    if(WITH_QRENCODE STREQUAL yes)
+      message(FATAL_ERROR "libqrencode requested, but not found.")
+    endif()
+    set(WITH_QRENCODE no)
   endif()
 endif()

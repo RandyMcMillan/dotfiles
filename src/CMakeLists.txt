@@ -233,3 +233,30 @@ target_link_libraries(bitcoin_node
     Boost::boost
     $<$<NOT:$<PLATFORM_ID:Windows>>:PkgConfig::libevent_pthreads>
 )
+
+
+# Bitcoin Core bitcoind
+if(BUILD_DAEMON)
+  add_executable(bitcoind "")
+  target_sources(bitcoind
+    PRIVATE
+      bitcoind.cpp
+      init/bitcoind.cpp
+  )
+  target_link_libraries(bitcoind
+    PRIVATE
+      bitcoin_node
+      bitcoin_common
+      bitcoin_consensus
+      bitcoin_util
+      bitcoin_crypto
+      PkgConfig::libevent
+  )
+  if(CMAKE_SYSTEM_NAME STREQUAL Windows)
+    set_property(
+      TARGET bitcoind
+      APPEND
+      PROPERTY LINK_FLAGS -static
+    )
+  endif()
+endif()

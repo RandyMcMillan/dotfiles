@@ -178,6 +178,7 @@ all:- executable brew gnupg
 	bash -c "source template.sh && checkbrew install vim"
 	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 	bash -c "source template.sh && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
+	bash -c "rm -rf /Applications/Joplin.app"
 	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli"
 
 gnupg:- executable

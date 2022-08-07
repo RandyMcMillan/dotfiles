@@ -324,3 +324,29 @@ if(BUILD_TX)
     )
   endif()
 endif()
+
+
+if(BUILD_UTIL)
+  add_executable(bitcoin-util "")
+  target_sources(bitcoin-util
+    PRIVATE
+      bitcoin-util.cpp
+  )
+  target_include_directories(bitcoin-util
+    PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  )
+  target_link_libraries(bitcoin-util
+    PRIVATE
+      bitcoin_common
+      bitcoin_consensus
+      bitcoin_util
+  )
+  if(CMAKE_SYSTEM_NAME STREQUAL Windows)
+    set_property(
+      TARGET bitcoin-util
+      APPEND
+      PROPERTY LINK_FLAGS -static
+    )
+  endif()
+endif()

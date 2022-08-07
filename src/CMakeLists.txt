@@ -58,7 +58,7 @@ add_definitions(-DHAVE_CONFIG_H)
 add_subdirectory(crypto)
 add_subdirectory(univalue)
 add_subdirectory(util)
-
+add_subdirectory(zmq)
 
 # Home for common functionality shared by different executables and libraries.
 # Similar to `bitcoin_util` library, but higher-level.
@@ -278,6 +278,9 @@ if(TARGET NATPMP::NATPMP)
 endif()
 if(TARGET MiniUPnPc::MiniUPnPc)
   target_link_libraries(bitcoin_node PRIVATE MiniUPnPc::MiniUPnPc)
+endif()
+if(TARGET bitcoin_zmq)
+  target_link_libraries(bitcoin_node PRIVATE bitcoin_zmq)
 endif()
 
 

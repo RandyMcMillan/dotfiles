@@ -54,3 +54,5 @@ set_target_properties(leveldbutil PROPERTIES
 configure_file(../cmake/bitcoin-config.h.in config/bitcoin-config.h @ONLY)
 include_directories(${CMAKE_BINARY_DIR}/src)
 add_definitions(-DHAVE_CONFIG_H)
+
+add_subdirectory(univalue)

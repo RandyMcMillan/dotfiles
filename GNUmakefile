@@ -1,3 +1,4 @@
+# PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 SHELL									:= /bin/bash
 
 PWD										?= pwd_unknown
@@ -132,6 +133,13 @@ help:
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	@echo ""
+	@echo ""
+	@echo ""
+	@echo "Useful Commands:"
+	@echo ""
+	@echo "gpg --output public.pgp --armor --export FINGERPRINT"
+
 ##	:	report			environment args
 report:
 	@echo ''
@@ -203,7 +211,7 @@ config-dock: executable
 .PHONY: all
 ##	:	all			execute installer scripts
 all:- executable brew gnupg
-	bash -c "source template.sh && checkbrew install vim"
+	bash -c "source template.sh && checkbrew install vim macdown"
 	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 	bash -c "source template.sh && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
 	bash -c "rm -rf /Applications/Joplin.app"

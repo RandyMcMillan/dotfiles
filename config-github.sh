@@ -68,26 +68,14 @@ config-github() {
     cat $GITHUB_RSA.pub
     echo
     echo
-    ls -lT $DOCKER_RSA.pub
-    echo  "$DOCKER_RSA.pub"
-    echo
-    cat $DOCKER_RSA.pub
-    echo
-    echo
-    ls -lT $DO_RSA.pub
-    echo  "$DO_RSA.pub"
-    echo
-    cat $DO_RSA.pub
-    echo
-    echo
     fi
     gpg --list-secret-keys --keyid-format LONG
     read -p "Config gpg signing key? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
     read -p 'ENTER your GPG Signing Key: ' GPG_SIGNING_KEY
-    #git config --global user.signingkey $GPG_SIGNING_KEY
-    git config --global user.signingkey 97966C06BB06757B
+    git config --global user.signingkey $GPG_SIGNING_KEY
+    # git config --global user.signingkey 97966C06BB06757B
     echo && echo
     echo Your GPG Siging Key has been added...
     echo && echo
@@ -103,7 +91,7 @@ eval "$(ssh-agent -s)"
 config-github
 ssh-add
 ssh-add ~/.ssh/*.github_rsa
-./config-git.sh
+# ./config-git.sh
 # git config --global -l
 ssh -v git@github.com
 #./install-github-utility.sh

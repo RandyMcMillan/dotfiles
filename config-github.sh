@@ -41,8 +41,6 @@ config-github() {
 
     sudo chmod 600 $GITHUB_RSA
     sudo chmod 644 $GITHUB_RSA.pub
-    sudo chmod 600 $DOCKER_RSA
-    sudo chmod 644 $DOCKER_RSA.pub
     sudo chmod 600 $DO_RSA
     sudo chmod 644 $DO_RSA.pub
 
@@ -50,9 +48,9 @@ config-github() {
     ssh-add ~/.ssh/github_rsa
     ssh-add ~/.ssh/docker_rsa
     ssh-add ~/.ssh/do_rsa
-    ssh-add $GITHUB_RSA
-    ssh-add $DOCKER_RSA
-    ssh-add $DO_RSA
+    # ssh-add $GITHUB_RSA
+    # ssh-add $DOCKER_RSA
+    # ssh-add $DO_RSA
 
     echo
     cat ~/.ssh/config
@@ -81,16 +79,18 @@ config-github() {
     echo && echo
     export GPG_TTY=$(tty)
     touch ~/.bash_profile
-    if [ -r ~/.bash_profile ]; then echo 'export GPG_TTY=$(tty)' >> ~/.bash_profile; \
-    else echo 'export GPG_TTY=$(tty)' >> ~/.profile; fi
+    # if [ -r ~/.bash_profile ]; then echo 'export GPG_TTY=$(tty)' >> ~/.bash_profile; \
+    #else echo 'export GPG_TTY=$(tty)' >> ~/.profile; fi
     #if [ -r ~/.zshrc ]; then echo 'export GPG_TTY=$(tty)' >> ~/.zshrc; \
     #else echo 'export GPG_TTY=$(tty)' >> ~/.zprofile; fi
     fi
 }
+rm  /Users/git/.ssh/known_hosts
 eval "$(ssh-agent -s)"
+ssh-add
 config-github
 ssh-add
-ssh-add ~/.ssh/*.github_rsa
+# ssh-add ~/.ssh/*.github_rsa
 # ./config-git.sh
 # git config --global -l
 ssh -v git@github.com

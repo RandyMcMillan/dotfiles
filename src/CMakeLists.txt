@@ -139,6 +139,11 @@ target_link_libraries(bitcoin_consensus
 )
 
 
+if(ENABLE_WALLET)
+  add_subdirectory(wallet)
+endif()
+
+
 # P2P and RPC server functionality used by `bitcoind` and `bitcoin-qt` executables.
 add_library(bitcoin_node STATIC EXCLUDE_FROM_ALL "")
 target_sources(bitcoin_node
@@ -218,9 +223,15 @@ target_sources(bitcoin_node
     validation.cpp
     validationinterface.cpp
     versionbits.cpp
-
-    dummywallet.cpp
 )
+if(ENABLE_WALLET)
+  target_sources(bitcoin_node PRIVATE wallet/init.cpp)
+  if(USE_BDB)
+    target_link_libraries(bitcoin_node PRIVATE BerkeleyDB::BerkeleyDB)
+  endif()
+else()
+  target_sources(bitcoin_node PRIVATE dummywallet.cpp)
+endif()
 target_include_directories(bitcoin_node
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -243,6 +254,9 @@ if(BUILD_DAEMON)
       bitcoind.cpp
       init/bitcoind.cpp
   )
+  if(ENABLE_WALLET)
+    target_link_libraries(bitcoind PRIVATE bitcoin_wallet)
+  endif()
   target_link_libraries(bitcoind
     PRIVATE
       bitcoin_node

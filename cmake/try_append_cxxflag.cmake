@@ -1,0 +1,10 @@
+include(CheckCXXCompilerFlag)
+
+function(try_append_cxxflag flags_var flag)
+  set(result "HAS_CXX_${flag}_FLAG")
+  check_cxx_compiler_flag(${flag} ${result})
+  if(${result})
+    string(STRIP "${${flags_var}} ${flag}" ${flags_var})
+    set(${flags_var} ${${flags_var}} PARENT_SCOPE)
+  endif()
+endfunction()

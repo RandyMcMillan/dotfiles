@@ -34,6 +34,34 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include(cmake/try_append_cxxflag.cmake)
+# Define custom "RelWithAsserts" build type
+set(release_cxx_flags "")
+try_append_cxxflag(release_cxx_flags "-pipe")
+try_append_cxxflag(release_cxx_flags "-O2")
+try_append_cxxflag(release_cxx_flags "-g")
+if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+  # All versions of gcc that we commonly use for building are subject to bug
+  # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90348. To work around that, set
+  # -fstack-reuse=none for all gcc builds.
+  try_append_cxxflag(release_cxx_flags "-fstack-reuse=none")
+endif()
+set(CMAKE_CXX_FLAGS_RELWITHASSERTS "${release_cxx_flags}" CACHE STRING
+  "Flags used by the C++ compiler during \"RelWithAsserts\" builds."
+  FORCE
+)
+mark_as_advanced(
+  CMAKE_CXX_FLAGS_RELWITHASSERTS
+)
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
+  STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "RelWithAsserts"
+)
+set(default_build_type "RelWithAsserts")
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to \"${default_build_type}\" as none was specified")
+  set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
+endif()
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(CMAKE_SYSTEM_NAME STREQUAL Linux)
@@ -50,6 +78,7 @@ endif()
 message("\n")
 message("Configure summary")
 message("=================")
+message("Build type ......................... ${CMAKE_BUILD_TYPE}")
 get_directory_property(definitions COMPILE_DEFINITIONS)
 message("Preprocessor defined macros ........ ${definitions}")
 message("C++ compiler ....................... ${CMAKE_CXX_COMPILER_LAUNCHER} ${CMAKE_CXX_COMPILER}")

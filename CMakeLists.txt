@@ -74,6 +74,11 @@ tristate_option(WITH_USDT
   "if sys/sdt.h is found."
   AUTO
 )
+tristate_option(WITH_SECCOMP
+  "Enable experimental syscall sandbox feature (-sandbox)."
+  "if seccomp-bpf is found under Linux x86_64."
+  AUTO
+)
 
 if(CXX20)
   set(CMAKE_CXX_STANDARD 20)
@@ -347,6 +352,7 @@ message("  NAT-PMP ............................. ${WITH_NATPMP}")
 message("  UPnP ................................ ${WITH_MINIUPNPC}")
 message("  ZeroMQ .............................. ${WITH_ZMQ}")
 message("  USDT tracing ........................ ${WITH_USDT}")
+message("  experimental syscall sandbox ........ ${WITH_SECCOMP}")
 message("")
 if(CMAKE_CROSSCOMPILING)
   set(cross_status "TRUE, for ${CMAKE_SYSTEM_NAME}, ${CMAKE_SYSTEM_PROCESSOR}")

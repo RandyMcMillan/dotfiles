@@ -104,6 +104,11 @@ tristate_option(CCACHE "Use ccache for compiling." "if ccache is found." AUTO)
 tristate_option(WITH_NATPMP "Enable NAT-PMP." "if libnatpmp is found." AUTO)
 tristate_option(WITH_MINIUPNPC "Enable UPnP." "if libminiupnpc is found." AUTO)
 tristate_option(WITH_ZMQ "Enable ZMQ notifications." "if libzmq is found." AUTO)
+tristate_option(WITH_USDT
+  "Enable tracepoints for Userspace, Statically Defined Tracing."
+  "if sys/sdt.h is found."
+  AUTO
+)
 
 if(CXX20 OR MSVC)
   set(CMAKE_CXX_STANDARD 20)
@@ -358,6 +363,7 @@ message("  GUI ................................. ${WITH_GUI}")
 message("  NAT-PMP ............................. ${WITH_NATPMP}")
 message("  UPnP ................................ ${WITH_MINIUPNPC}")
 message("  ZeroMQ .............................. ${WITH_ZMQ}")
+message("  USDT tracing ........................ ${WITH_USDT}")
 message("")
 get_directory_property(definitions COMPILE_DEFINITIONS)
 string(REPLACE ";" " " definitions "${definitions}")

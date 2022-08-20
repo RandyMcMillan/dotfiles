@@ -8,12 +8,15 @@ fi
 #export PYCOIN_XTN_PROVIDERS="blockchain.info"  # For Bitcoin testnet
 
 # Add `~/bin` to the `$PATH`
-export PATH="$HOME/bin:$PATH";
+export PATH="$PATH:$HOME/bin:$PWD";
 # Add `~/init` to the `$PATH`
-export PATH="$HOME/init:$PATH";
+export PATH="$PATH:$HOME/init:$PWD";
+export PATH="/usr/local/sbin:$PATH" >> $HOME/.bash_profile
+
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/git/.bash_profile
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 if which brew &> /dev/null; then
-        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
        if [[ "$OSTYPE" == "linux"* ]]; then
                #CHECK APT
                if [[ "$OSTYPE" == "linux-gnu" ]]; then
@@ -124,3 +127,5 @@ if [ "$OSTYPE" == "Linux"* ]; then
     fi
 fi
 export PATH="/usr/local/opt/qt@5/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export GPG_TTY=$(tty)

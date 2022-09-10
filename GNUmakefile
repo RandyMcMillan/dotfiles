@@ -98,6 +98,14 @@ brew:-
 	bash -c "$(PWD)/install-brew.sh"
 	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
 	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
+
+# ==> Next steps:
+# - Run these commands in your terminal to add the non-default Git remotes for Homebrew/brew and Homebrew/homebrew-core:
+	echo 'export HOMEBREW_BREW_GIT_REMOTE="/Users/git/dotfiles/brew"' >> /Users/git/.bash_profile
+	echo 'export HOMEBREW_CORE_GIT_REMOTE="/Users/git/dotfiles/homebrew-core"' >> /Users/git/.bash_profile
+	export HOMEBREW_BREW_GIT_REMOTE="/Users/git/dotfiles/brew"
+	export HOMEBREW_CORE_GIT_REMOTE="/Users/git/dotfiles/homebrew-core"
+
 ##	:	help
 help:
 	@echo ''

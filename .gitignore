@@ -1,3 +1,5 @@
+brew
+homebrew-core
 *.tmp
 init/init
 *.dmg

@@ -12,19 +12,29 @@ PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:/sbin:/usr/sbin:/usr/local/sbin
 
 DMESG=dmesg
 
-
-function macos_device (){
+function macos_kit (){
 
     if [[ "$(uname)" == "Darwin"* ]]; then
     # ioreg -l | grep -v PCI
     ioreg -l | grep com.apple.$KIT
     # ioreg -l | grep -v IOKitDiagnostics
     fi
+
 }
 
-if [ -f /var/log/dmesg ] ; then
+function macos_device (){
+
+    if [[ "$(uname)" == "Darwin"* ]]; then
+    # ioreg -l | grep -v PCI
+    # ioreg -l | grep com.apple.$KIT
+    # ioreg -l | grep -v IOKitDiagnostics
+    system_profiler SPHardwareDataType
+    fi
+}
+
+if [ -f /var/log/dmesg ]; then
         DMESG="cat /var/log/dmesg"
-elif [ -f /var/log/boot.msg ] ; then
+elif [ -f /var/log/boot.msg ]; then
         DMESG="cat /var/log/boot.msg"
 fi
 
@@ -37,6 +47,8 @@ echo "             USER: " `whoami`
 ########### HARDWARE ########################################
 echo "###  HARDWARE  ###"
 echo "ARCHITECTURE TYPE: " `arch`
+
+if [ -f /proc/cpuinfo ]; then
 cat /proc/cpuinfo | tac |
 	awk '
 	/^processor/{print "        PROCESSOR: ",$3,"=",vend,mod,spd,"MHz"}
@@ -44,6 +56,8 @@ cat /proc/cpuinfo | tac |
 	/^vendor_id/{vend=gensub(/^[[:alpha:][:blank:]_]*:/,"",1)}
 	/^cpu MHz/{spd=gensub(/^[[:alpha:][:blank:]]*:/,"",1)}
 	' | tac
+fi
+
 HOSTID=`hostid 2>&-` && echo "          HOST ID:  "$HOSTID
 
 #
@@ -212,8 +226,9 @@ fi
 if [[ "$(uname)" == "Darwin"* ]]; then
 # ioreg -l | grep -v PCI
 # ioreg -l | grep com.apple.iokit
-$KIT = iokit
+KIT=iokit
 macos_device
+#macos_kit
 # ioreg -l | grep -v IOKitDiagnostics
 fi
 

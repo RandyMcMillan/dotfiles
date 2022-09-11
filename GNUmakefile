@@ -49,6 +49,9 @@ export BREW_CELLAR
 HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
 
+AWK                                     := $(shell which awk)
+GAWK                                    := $(shell which gawk)
+COLUMN                                  := $(shell which column)
 
 ##make	:	command			description
 .ONESHELL:
@@ -57,16 +60,17 @@ export HOMEBREW_NO_ENV_HINTS
 .PHONY:	help
 .PHONY:	report
 .SILENT:
-##	:
-
--: report help
+##-	:				autogen.sh configure
+-: help
+	./autogen.sh
+	./configure
 ##	:	init
 init:
 #	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
-	test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
-	test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
-	ssh-add > /dev/null 2>&1
+	test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo "hidutil not installed?"
+	test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo "ssh-agent not installed?"
+	test ssh-agent && ssh-add > /dev/null 2>&1 || echo "ssh-add not installed?"
 	ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
 	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
 	[[ -z "$(BREW)" ]] && echo "$(BREW)" || echo "$(BREW)" && \
@@ -74,6 +78,11 @@ init:
 
 ##	:	help
 help:
+ifeq ($(COLUMN),)
+	# macos should already have column
+	test brew && brew install util-linux || echo "brew not installed!"
+	test apk && apk add util-linux || echo "install util-linux"
+endif
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -97,10 +106,18 @@ report:
 	@echo ' BREW_PREFIX=${BREW_PREFIX}	'
 	@echo ' BREW_CELLAR=${BREW_CELLAR}	'
 	@echo ' HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
+	@echo ' AWK=${AWK}	'
+	@echo ' GAWK=${GAWK}	'
+	@echo ' COLUMN=${COLUMN}	'
 
 #.PHONY:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+
+.PHONY: update
+##	:	update	run softwareupdate --all --install --force
+update:
+	softwareupdate --all --install --force
 
 .PHONY: whatami
 ##	:	whatami			report system info
@@ -142,12 +159,16 @@ cirrus: executable
 config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
+.PHONY: docker
+##	:	docker			brew install docker
+docker: executable
+	bash -c "test docker-compose &&      brew unlink docker-completion || true"
+	bash -c "source template.sh  && checkbrew install --cask docker    || true"
+
 .PHONY: all
 ##	:	all			execute installer scripts
 all: executable
-	bash -c "test docker-compose && brew unlink docker-completion || echo"
-	bash -c "source template.sh && checkbrew install --cask docker"
-	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli"
+	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli || true"
 # 	./install-Docker.sh && \
 # 	./install-FastLane.sh && \
 # 	./install-Onyx.sh && \
@@ -225,7 +246,6 @@ config-github: executable
 bitcoin-libs: exec
 	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
 
-
 .PHONY: push
 .ONESHELL:
 push: touch-time
@@ -254,7 +274,7 @@ docs:
 	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git
 
 .PHONY: submodule submodules
-submodule: submodules## 	recursively initialize submodules
+submodule: submodules
 submodules:
 	git submodule update --init --recursive
 	git submodule foreach 'git fetch origin; git checkout $$(git rev-parse --abbrev-ref HEAD); git reset --hard origin/$$(git rev-parse --abbrev-ref HEAD); git submodule update --recursive; git clean -dfx'

@@ -43,8 +43,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 #    echo brew list --versions
 #    brew list --versions
 #    echo
-    OPENSSL_VERSION_v1=$(brew list --versions | grep -i -E  "openssl" | sed 's%openssl@1.1% %')
-    OPENSSL_VERSION_v3=$(brew list --versions | grep -i -E  "openssl" | sed 's%openssl@3% %')
+    OPENSSL_VERSION_v1=$(brew list --versions | grep -i -E  "openssl@1.1" | sed 's%openssl@1.1% %')
+    OPENSSL_VERSION_v3=$(brew list --versions | grep -i -E  "openssl@3" | sed 's%openssl@3% %')
     export OPENSSL_VERSION_v1
     echo $OPENSSL_VERSION_v1
     export OPENSSL_VERSION_v3

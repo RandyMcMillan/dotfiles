@@ -156,6 +156,9 @@ adduser-git:
 ##	:	bootstrap		run bootstrap.sh - dotfile installer
 bootstrap: executable
 	./boot-strap.sh
+# REF: https://int3ractive.com/blog/2018/make-the-best-of-macbook-touchpad-on-ubuntu/
+mtrack:
+       sudo apt install xserver-xorg-input-mtrack
 
 .PHONY: executable
 executable:

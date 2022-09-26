@@ -115,7 +115,7 @@ public:
         std::string* purpose) = 0;
 
     //! Get wallet address list.
-    virtual std::vector<WalletAddress> getAddresses() const = 0;
+    virtual std::vector<WalletAddress> getAddresses() = 0;
 
     //! Get receive requests.
     virtual std::vector<std::string> getAddressReceiveRequests() = 0;
@@ -354,6 +354,8 @@ struct WalletAddress
     wallet::isminetype is_mine;
     std::string name;
     std::string purpose;
+
+    WalletAddress() = default;
 
     WalletAddress(CTxDestination dest, wallet::isminetype is_mine, std::string name, std::string purpose)
         : dest(std::move(dest)), is_mine(is_mine), name(std::move(name)), purpose(std::move(purpose))

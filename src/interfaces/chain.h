@@ -335,7 +335,8 @@ public:
     //! Load saved state.
     virtual bool load() = 0;
 
-    //! Start client execution and provide a scheduler.
+    //! Start client execution and provide a scheduler. (Scheduler is
+    //! ignored if client is out-of-process).
     virtual void start(CScheduler& scheduler) = 0;
 
     //! Save state to disk.
@@ -346,6 +347,9 @@ public:
 
     //! Set mock time.
     virtual void setMockTime(int64_t time) = 0;
+
+    //! Mock the scheduler to fast forward in time.
+    virtual void schedulerMockForward(std::chrono::seconds delta_seconds) = 0;
 };
 
 //! Return implementation of Chain interface.

@@ -11,6 +11,8 @@
 #include <init.h>
 #include <interfaces/chain.h>
 #include <interfaces/handler.h>
+#include <interfaces/init.h>
+#include <interfaces/ipc.h>
 #include <interfaces/node.h>
 #include <interfaces/wallet.h>
 #include <mapport.h>
@@ -83,7 +85,11 @@ class NodeImpl : public Node
 {
 public:
     explicit NodeImpl(NodeContext& context) { setContext(&context); }
-    void initLogging() override { InitLogging(*Assert(m_context->args)); }
+    void initLogging() override
+    {
+        interfaces::Ipc* ipc = m_context->init->ipc();
+        InitLogging(*Assert(m_context->args), ipc ? ipc->logSuffix() : nullptr);
+    }
     void initParameterInteraction() override { InitParameterInteraction(*Assert(m_context->args)); }
     bilingual_str getWarnings() override { return GetWarnings(true); }
     uint32_t getLogCategories() override { return LogInstance().GetCategoryMask(); }
@@ -318,10 +324,12 @@ public:
     std::vector<std::string> listRpcCommands() override { return ::tableRPC.listCommands(); }
     void rpcSetTimerInterfaceIfUnset(RPCTimerInterface* iface) override { RPCSetTimerInterfaceIfUnset(iface); }
     void rpcUnsetTimerInterface(RPCTimerInterface* iface) override { RPCUnsetTimerInterface(iface); }
-    bool getUnspentOutput(const COutPoint& output, Coin& coin) override
+    std::optional<Coin> getUnspentOutput(const COutPoint& output) override
     {
         LOCK(::cs_main);
-        return chainman().ActiveChainstate().CoinsTip().GetCoin(output, coin);
+        Coin coin;
+        if (chainman().ActiveChainstate().CoinsTip().GetCoin(output, coin)) return coin;
+        return {};
     }
     TransactionError broadcastTransaction(CTransactionRef tx, CAmount max_tx_fee, std::string& err_string) override
     {

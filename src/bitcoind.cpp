@@ -13,6 +13,7 @@
 #include <init.h>
 #include <interfaces/chain.h>
 #include <interfaces/init.h>
+#include <interfaces/ipc.h>
 #include <node/context.h>
 #include <node/interface_ui.h>
 #include <noui.h>
@@ -178,7 +179,8 @@ static bool AppInit(NodeContext& node, int argc, char* argv[])
         // -server defaults to true for bitcoind but not for the GUI so do this here
         args.SoftSetBoolArg("-server", true);
         // Set this early so that parameter interactions go to console
-        InitLogging(args);
+        interfaces::Ipc* ipc = node.init->ipc();
+        InitLogging(args, ipc ? ipc->logSuffix() : nullptr);
         InitParameterInteraction(args);
         if (!AppInitBasicSetup(args)) {
             // InitError will have been called with detailed error, which ends up on console

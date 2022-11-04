@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -7,13 +6,77 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
+alias P3="python3"
+
+alias nproc="sysctl -n hw.logicalcpu"
+
+#run docker images https://docs.docker.com/engine/reference/commandline/run/
+alias PYTHON="docker run -t -i --rm python bash"
+#alias PYTHONRUNNER="docker run -t -i --rm codewars/python-runner bash"
+alias UBUNTU="docker run -t -i --rm ubuntu bash"
+
+# Kill all running containers.
+alias dockerkillall='docker kill $(docker ps -q)'
+
+# Delete all stopped containers.
+alias dockercleanc='printf "\n>>> Deleting stopped containers\n\n" && docker rm $(docker ps -a -q)'
+
+# Delete all untagged images.
+alias dockercleani='printf "\n>>> Deleting untagged images\n\n" && docker rmi $(docker images -q -f dangling=true)'
+
+# Delete all stopped containers and untagged images.
+alias dockerclean='dockercleanc || true && dockercleani'
 
 # Shortcuts
 alias d="cd ~/Documents/Dropbox"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias p="cd ~/projects"
-alias g="git"
+#git
+alias g="git "
+alias LOG="git log --pretty=oneline --abbrev-commit "
+alias REFLOG="git reflog --pretty=oneline --abbrev-commit "
+alias GITS="git status "
+alias STAT="git status "
+alias STATT="git status --porcelain "
+alias TT=STAT
+alias tt=STAT
+alias TTT=STATT
+alias ttt=STATT
+alias CO="git  checkout "
+alias GPF="git push -f origin HEAD"
+alias GPFU="git push -f upstream HEAD"
+alias GCA="git commit --amend "
+alias GCB="git branch | grep -ve ' master$' | xargs git branch -D"
+#alias DATE="date +%Y/%j/"$(git rev-parse --short HEAD)
+#codespell
+alias CODESPELL="codespell"
+alias SKIP="--skip='.git*,depends*,db*,dist*,autom4te*,build-aux*,qa-assets*,src*,test*,doc*,libtool*,config*,contrib*,.DS_Store,aclocal*,ci*,share*,Makefile*,*.dmg,*.tiff,*.png,*.app'"
+
+#bitcoin/./configure QUICK
+alias AUTO="./autogen.sh"
+alias CONF="./configure"
+alias NOGUI="--with-gui=no"
+alias NOCACHE="--disable-ccache=yes"
+alias NOMAN="--disable-man=yes"
+alias DEBUG="--enable-debug=yes"
+alias UTILS="--with-utils=yes"
+alias DAEMON="--with-daemon=yes"
+alias WERROR="--enable-werror=yes"
+alias REDUCE_EXPS="--enable-reduce-exports=yes"
+alias MINIUPNPC="--with-miniupnpc"
+alias NO_TESTS="--disable-tests"
+alias NO_BENCH="--disable-bench=yes"
+alias NO_WALLET="--enable-util-wallet=no"
+alias NO_TX="--enable-util-tx=no"
+alias CLI="--enable-util-cli=yes"
+alias QUICK=$NOGUI $NOCACHE $NOMAN $DEBUG $DAEMON $RECUCE_EXPS $NO_BENCH $NO_WALLET $NO_TX $CLI $WERROR
+alias RUN-BITCOIN="rm -f src/bitcoind && rm -rf Bitcoin-Qt.app && rm -rf ~/Library/Saved\ Application\
+    State/org.bitcoinfoundation.Bitcoin-Qt.savedState && rm -rf ~/Library/Preferences/org.bitcoin.Bitcoin-Qt.plist &&
+    make appbundle && wait && ./Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -resetguisettings"
+
+
+alias REFRESH_GPG="gpg --keyserver hkp://keyserver.ubuntu.com --refresh-keys"
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
@@ -28,7 +91,7 @@ fi
 alias l="ls -lF ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
-alias la="ls -lAF ${colorflag}"
+alias la="ls -laF ${colorflag}"
 
 # List only directories
 alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
@@ -50,6 +113,7 @@ alias week='date +%V'
 
 # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
+alias BREWDEPS="brew deps --tree --installed"
 
 # Google Chrome
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
@@ -87,7 +151,10 @@ unset jscbin;
 alias c="tr -d '\n' | pbcopy"
 
 # Recursively delete `.DS_Store` files
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+alias clean-ds-store="find . -type f -name '*.DS_Store' -ls -delete &"
+alias clean-spotlight="find . -type f -name '*.Spotlight-*' -ls -delete &"
+alias clean-trashes="find . -type f -name '*.Trashes' -ls -delete &"
+alias clean-fseventsd="find . -type f -name '*.fseventsd' -ls -delete &"
 
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.

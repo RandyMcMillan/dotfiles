@@ -27,6 +27,11 @@ project("Bitcoin Core"
   LANGUAGES CXX ASM
 )
 
+set(PACKAGE_NAME ${PROJECT_NAME})
+set(PACKAGE_VERSION ${PROJECT_VERSION})
+set(CLIENT_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(CLIENT_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(CLIENT_VERSION_BUILD ${PROJECT_VERSION_PATCH})
 set(CLIENT_VERSION_IS_RELEASE "false")
 set(COPYRIGHT_YEAR "2023")
 set(COPYRIGHT_HOLDERS "The %s developers")
@@ -433,6 +438,37 @@ add_custom_target(test-security-check
   COMMAND env CC=${c_compiler_command} CFLAGS=${CMAKE_C_FLAGS} LDFLAGS=${CMAKE_EXE_LINKER_FLAGS} ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/contrib/devtools/test-symbol-check.py TestSymbolChecks.test_${exe_format}
   VERBATIM
 )
+
+if(MINGW AND TARGET bitcoin-qt)
+  set(BITCOIN_GUI_NAME "bitcoin-qt")
+  set(BITCOIN_DAEMON_NAME "bitcoind")
+  set(BITCOIN_CLI_NAME "bitcoin-cli")
+  set(BITCOIN_TX_NAME "bitcoin-tx")
+  set(BITCOIN_WALLET_TOOL_NAME "bitcoin-wallet")
+  set(BITCOIN_TEST_NAME "test_bitcoin")
+  set(PACKAGE_TARNAME "bitcoin")
+  configure_file(share/setup.nsi.in share/setup.nsi @ONLY)
+
+  # TODO: After dropping Autotools-based build system, replace
+  #       this code with the CPack NSIS Generator.
+  # See https://cmake.org/cmake/help/latest/cpack_gen/nsis.html
+  add_custom_target(deploy
+    COMMAND "${CMAKE_COMMAND}" --install "${CMAKE_BINARY_DIR}" --config "$<CONFIG>" --prefix "${CMAKE_BINARY_DIR}/release" --strip
+    COMMAND "${CMAKE_COMMAND}" -E rename "${CMAKE_BINARY_DIR}/release/bin/$<TARGET_FILE_NAME:bitcoind>" "${CMAKE_BINARY_DIR}/release/$<TARGET_FILE_NAME:bitcoind>"
+    COMMAND "${CMAKE_COMMAND}" -E rename "${CMAKE_BINARY_DIR}/release/bin/$<TARGET_FILE_NAME:bitcoin-qt>" "${CMAKE_BINARY_DIR}/release/$<TARGET_FILE_NAME:bitcoin-qt>"
+    COMMAND "${CMAKE_COMMAND}" -E rename "${CMAKE_BINARY_DIR}/release/bin/$<TARGET_FILE_NAME:test_bitcoin>" "${CMAKE_BINARY_DIR}/release/$<TARGET_FILE_NAME:test_bitcoin>"
+    COMMAND "${CMAKE_COMMAND}" -E rename "${CMAKE_BINARY_DIR}/release/bin/$<TARGET_FILE_NAME:bitcoin-cli>" "${CMAKE_BINARY_DIR}/release/$<TARGET_FILE_NAME:bitcoin-cli>"
+    COMMAND "${CMAKE_COMMAND}" -E rename "${CMAKE_BINARY_DIR}/release/bin/$<TARGET_FILE_NAME:bitcoin-tx>" "${CMAKE_BINARY_DIR}/release/$<TARGET_FILE_NAME:bitcoin-tx>"
+    COMMAND "${CMAKE_COMMAND}" -E rename "${CMAKE_BINARY_DIR}/release/bin/$<TARGET_FILE_NAME:bitcoin-wallet>" "${CMAKE_BINARY_DIR}/release/$<TARGET_FILE_NAME:bitcoin-wallet>"
+    COMMAND "${CMAKE_COMMAND}" -E rename "${CMAKE_BINARY_DIR}/release/bin/$<TARGET_FILE_NAME:bitcoin-util>" "${CMAKE_BINARY_DIR}/release/$<TARGET_FILE_NAME:bitcoin-util>"
+    COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_BINARY_DIR}/release/bin"
+    COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_BINARY_DIR}/release/lib"
+    COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_BINARY_DIR}/release/include"
+    COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_BINARY_DIR}/release/share"
+    COMMAND makensis -V2 "${CMAKE_BINARY_DIR}/share/setup.nsi"
+    VERBATIM
+  )
+endif()
 
 get_directory_property(definitions COMPILE_DEFINITIONS)
 include(SeparateConfigs)

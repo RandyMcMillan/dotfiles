@@ -10,11 +10,8 @@ fi
 # Add `~/bin` to the `$PATH`
 export PATH="$PATH:$HOME/bin:$PWD";
 # Add `~/init` to the `$PATH`
-export PATH="$PATH:$HOME/init:$PWD";
-export PATH="/usr/local/sbin:$PATH" >> $HOME/.bash_profile
-
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/git/.bash_profile
-eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="$HOME/init:$PATH";
+export PATH="$PWD:$PATH";
 
 if which brew &> /dev/null; then
        if [[ "$OSTYPE" == "linux"* ]]; then

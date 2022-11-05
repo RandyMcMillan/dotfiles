@@ -151,11 +151,16 @@ whatami:
 ##	:	adduser-git		add a user named git
 adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
-.PHONY: bootstrap
-##	:	install		 	install sequence
+
+
+
+.PHONY: install
 ##	:	install		 	install sequence
 install: executable
 	@echo "install sequence here..."
+
+
+
 
 .PHONY: executable
 executable:
@@ -173,6 +178,15 @@ template-update: checkbrew-install
 checkbrew: checkbrew-install
 checkbrew-install:
 	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
+
+.PHONY: nvm
+##	:	nvm		 	install node version manager
+nvm: executable
+	@echo "install sequence here..."
+	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+#	@export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$(HOME)/.nvm" || printf %s "$(XDG_CONFIG_HOME)/nvm")"
+#	@[ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" # This loads nvm
+
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
 	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"

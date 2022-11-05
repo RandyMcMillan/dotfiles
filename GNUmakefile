@@ -160,6 +160,12 @@ install: executable
 	@echo "install sequence here..."
 
 
+.PHONY: github
+##	:	github		 	config-github.sh
+github: executable
+	@./config-github.sh
+
+
 
 
 .PHONY: executable

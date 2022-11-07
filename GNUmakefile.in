@@ -76,6 +76,7 @@ export HOMEBREW_NO_ENV_HINTS
 ##	:
 
 -: report help
+	@./configure
 ##	:	init
 init:-
 	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh

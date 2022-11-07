@@ -3,8 +3,8 @@ config-github() {
 
     DATE=$(date +%s)
 
-    read -p "Config github? (y/n) " -n 1;
-    echo "";
+    #read -p "Config github? (y/n) " -n 1;
+    #echo "";
     #if [[ $REPLY =~ ^[Yy]$ ]]; then
     #read -p 'ENTER your Github.com username: ' GITHUB_USER_NAME
     #read -sp 'Password: ' GITHUB_USER_PASSWORD

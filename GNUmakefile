@@ -152,6 +152,10 @@ whatami:
 adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 
+.PHONY: bootstrap
+##	:	bootstrap		source bootstrap.sh
+bootstrap:
+	bash -c "$(PWD)/./bootstrap.sh"
 
 
 .PHONY: install

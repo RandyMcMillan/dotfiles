@@ -10,5 +10,5 @@ git config --global alias.prune-branches       '!git remote prune origin && git 
 pushd $(pwd) && cat .gitignore > ~/.gitignore && popd
 git config --global core.excludesfile ~/.gitignore
 
-git config --global user.email "randy.lee.mcmillan@gmail.co"
+git config --global user.email "randy.lee.mcmillan@gmail.com"
 git config --global user.name "@RandyMcMillan"

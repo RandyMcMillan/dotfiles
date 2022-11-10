@@ -76,6 +76,7 @@ export HOMEBREW_NO_ENV_HINTS
 ##	:
 
 -: report help
+	@./configure
 ##	:	init
 init:-
 	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
@@ -206,7 +207,7 @@ config-dock: executable
 
 .PHONY: all
 ##	:	all			execute installer scripts
-all:- executable brew gnupg
+all:- executable gnupg
 	bash -c "source template.sh && checkbrew install vim macdown"
 	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 	bash -c "source template.sh && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"

@@ -1,6 +1,7 @@
 source config-github.sh
 source config-git.sh
 # Add `~/bin` to the `$PATH`
+export PATH="$(yarn global bin):$PATH"
 export PATH="$HOME/bin:$PATH";
 
 # Load the shell dotfiles, and then some:

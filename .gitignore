@@ -12,3 +12,10 @@ Thumbs.db
 # Files that might appear on external disks
 .Spotlight-V100
 .Trashes
+autom4te.cache/
+brew/
+config.log
+config.status
+configure
+homebrew-core/
+install-sh

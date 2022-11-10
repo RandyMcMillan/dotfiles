@@ -14,8 +14,7 @@ Thumbs.db
 .Trashes
 autom4te.cache/
 brew/
+homebrew-core/
 config.log
 config.status
-configure
-homebrew-core/
-install-sh
+bitcoin

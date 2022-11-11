@@ -296,10 +296,12 @@ bitcoin-libs: exec
 .PHONY: bitcoin-depends
 .ONESHELL:
 ##	:	bitcoin-depends		make depends from bitcoin repo
-bitcoin-depends: exec
+bitcoin-depends: exec bitcoin-libs
+	@test brew && brew install autoconf automake libtool pkg-config || echo "make brew && make bitcoin-depends"
+	@brew install autoconf || echo "make brew && brew install autoconf"
 	@rm -rf ./bitcoin
 	@git clone --filter=blob:none https://github.com/bitcoin/bitcoin.git && \
-		pushd ./bitcoin && ./autogen.sh && ./configure && $(MAKE) -C depends
+		cd ./bitcoin && ./autogen.sh && ./configure && $(MAKE) -C depends
 
 
 .PHONY: push

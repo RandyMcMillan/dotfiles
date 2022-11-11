@@ -49,11 +49,11 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
-HOMEBREW_BREW_GIT_REMOTE=$(strip $(THIS_DIR))brew# put your Git mirror of Homebrew/brew here
-export HOMEBREW_BREW_GIT_REMOTE
+#HOMEBREW_BREW_GIT_REMOTE=$(strip $(THIS_DIR))brew# put your Git mirror of Homebrew/brew here
+#export HOMEBREW_BREW_GIT_REMOTE
 
-HOMEBREW_CORE_GIT_REMOTE=$(strip $(THIS_DIR))homebrew-core# put your Git mirror of Homebrew/homebrew-core here
-export HOMEBREW_CORE_GIT_REMOTE
+#HOMEBREW_CORE_GIT_REMOTE=$(strip $(THIS_DIR))homebrew-core# put your Git mirror of Homebrew/homebrew-core here
+#export HOMEBREW_CORE_GIT_REMOTE
 
 BREW                                    := $(shell which brew)
 export BREW
@@ -91,9 +91,8 @@ init:-
 # 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 ##	:	brew - install Homebrew locally
-brew:-
-
-	@./install-brew.sh
+install-brew:-
+	@bash ./install-brew.sh
 #	$(shell git clone https://github.com/Homebrew/brew.git)
 #	$(shell git clone https://github.com/Homebrew/homebrew-core.git)
 #	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)

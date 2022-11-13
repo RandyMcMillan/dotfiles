@@ -70,6 +70,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/module)
 
 # Configurable options.
 # When adding a new option, end the <help_text> with a full stop for consistency.
+option(ASM "Use assembly routines." ON)
 option(CXX20 "Enable compilation in C++20 mode." OFF)
 option(HARDENING "Attempt to harden the resulting executables." ON)
 option(REDUCE_EXPORTS "Attempt to reduce exported symbols in the resulting executables." OFF)
@@ -305,6 +306,7 @@ else()
   message(" - LDFLAGS for executables ............ ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
   message(" - LDFLAGS for shared libraries ....... ${CMAKE_SHARED_LINKER_FLAGS_RELEASE}")
 endif()
+message("Use assembly routines ................. ${ASM}")
 message("Treat compiler warnings as errors ..... ${WERROR}")
 message("Use ccache for compiling .............. ${CCACHE}")
 message("\n")

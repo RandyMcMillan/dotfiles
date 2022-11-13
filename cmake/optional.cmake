@@ -97,3 +97,28 @@ if(WITH_MINIUPNPC)
     message(FATAL_ERROR "libminiupnpc requested, but not found.")
   endif()
 endif()
+
+if(WITH_ZMQ)
+  if(MSVC)
+    find_package(ZeroMQ CONFIG)
+  else()
+    cross_pkg_check_modules(libzmq libzmq>=4 IMPORTED_TARGET)
+    if(libzmq_FOUND)
+      set_property(TARGET PkgConfig::libzmq APPEND PROPERTY
+        INTERFACE_COMPILE_DEFINITIONS $<$<PLATFORM_ID:Windows>:ZMQ_STATIC>
+      )
+      set_property(TARGET PkgConfig::libzmq APPEND PROPERTY
+        INTERFACE_LINK_LIBRARIES $<$<PLATFORM_ID:Windows>:iphlpapi;ws2_32>
+      )
+    endif()
+  endif()
+  if(TARGET libzmq OR TARGET PkgConfig::libzmq)
+    set(WITH_ZMQ ON)
+  elseif(WITH_ZMQ STREQUAL "AUTO")
+    message(WARNING "libzmq not found, disabling.\n"
+                    "To skip libzmq check, use \"-DWITH_ZMQ=OFF\".\n")
+    set(WITH_ZMQ OFF)
+  else()
+    message(FATAL_ERROR "libzmq requested, but not found.")
+  endif()
+endif()

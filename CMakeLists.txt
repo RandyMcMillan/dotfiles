@@ -81,6 +81,7 @@ tristate_option(WITH_SECCOMP
 )
 
 option(BUILD_TESTS "Build test_bitcoin executable." ON)
+option(BUILD_BENCH "Build bench_bitcoin executable." ON)
 
 if(CXX20)
   set(CMAKE_CXX_STANDARD 20)
@@ -413,6 +414,7 @@ message("  USDT tracing ........................ ${WITH_USDT}")
 message("  experimental syscall sandbox ........ ${WITH_SECCOMP}")
 message("Tests:")
 message("  test_bitcoin ........................ ${BUILD_TESTS}")
+message("  bench_bitcoin ....................... ${BUILD_BENCH}")
 message("")
 if(CMAKE_CROSSCOMPILING)
   set(cross_status "TRUE, for ${CMAKE_SYSTEM_NAME}, ${CMAKE_SYSTEM_PROCESSOR}")

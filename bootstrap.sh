@@ -2,6 +2,8 @@
 
 cd "$(dirname "${BASH_SOURCE}")";
 
+touch ~/session.log
+
 #git pull origin master;
 #git pull origin main;
 

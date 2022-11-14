@@ -36,6 +36,8 @@
 	<true/>
 	<key>HapticFeedbackForEsc</key>
 	<false/>
+	<key>HideScrollbar</key>
+	<true/>
 	<key>Hotkey</key>
 	<true/>
 	<key>HotkeyChar</key>
@@ -843,12 +845,16 @@
 						<dict>
 							<key>knobs</key>
 							<dict>
+								<key>abbreviate-localhost</key>
+								<string></string>
 								<key>base: compression resistance</key>
 								<integer>1</integer>
 								<key>base: priority</key>
 								<real>5</real>
-								<key>path</key>
-								<string>hostname</string>
+								<key>maxwidth</key>
+								<real>+infinity</real>
+								<key>minwidth</key>
+								<string>0</string>
 								<key>shared text color</key>
 								<dict>
 									<key>Alpha Component</key>
@@ -908,7 +914,9 @@
 								<key>algorithm</key>
 								<integer>0</integer>
 								<key>auto-rainbow style</key>
-								<integer>0</integer>
+								<integer>3</integer>
+								<key>font</key>
+								<string>.AppleSystemUIFont 12</string>
 								<key>remove empty components</key>
 								<false/>
 							</dict>
@@ -950,7 +958,9 @@
 								<key>algorithm</key>
 								<integer>0</integer>
 								<key>auto-rainbow style</key>
-								<integer>0</integer>
+								<integer>3</integer>
+								<key>font</key>
+								<string>.AppleSystemUIFont 12</string>
 								<key>remove empty components</key>
 								<false/>
 							</dict>
@@ -990,7 +1000,9 @@
 								<key>algorithm</key>
 								<integer>0</integer>
 								<key>auto-rainbow style</key>
-								<integer>0</integer>
+								<integer>3</integer>
+								<key>font</key>
+								<string>.AppleSystemUIFont 12</string>
 								<key>remove empty components</key>
 								<false/>
 							</dict>
@@ -1106,7 +1118,9 @@
 								<key>algorithm</key>
 								<integer>0</integer>
 								<key>auto-rainbow style</key>
-								<integer>0</integer>
+								<integer>3</integer>
+								<key>font</key>
+								<string>.AppleSystemUIFont 12</string>
 								<key>remove empty components</key>
 								<false/>
 							</dict>
@@ -1142,7 +1156,9 @@
 								<key>algorithm</key>
 								<integer>0</integer>
 								<key>auto-rainbow style</key>
-								<integer>0</integer>
+								<integer>3</integer>
+								<key>font</key>
+								<string>.AppleSystemUIFont 12</string>
 								<key>remove empty components</key>
 								<false/>
 							</dict>
@@ -1484,7 +1500,7 @@
 				<real>0.51372549019607838</real>
 			</dict>
 			<key>Guid</key>
-			<string>7E38AC8D-3091-4007-BFFE-891049096420</string>
+			<string>7F5D578D-BBD8-4088-B7BB-7DC63453C636</string>
 			<key>Horizontal Spacing</key>
 			<real>1</real>
 			<key>Icon</key>
@@ -1874,7 +1890,7 @@
 				<real>0.0</real>
 			</dict>
 			<key>Log Directory</key>
-			<string>~/dotfiles/seesion.log</string>
+			<string>/Users/git</string>
 			<key>Mouse Reporting</key>
 			<true/>
 			<key>Name</key>
@@ -1888,7 +1904,7 @@
 			<key>Only The Default BG Color Uses Transparency</key>
 			<true/>
 			<key>Open Password Manager Automatically</key>
-			<true/>
+			<false/>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Plain Text Logging</key>
@@ -2374,6 +2390,8 @@
 	<real>0.10087582236842105</real>
 	<key>StartDebugLoggingAutomatically</key>
 	<true/>
+	<key>StatusBarPosition</key>
+	<integer>1</integer>
 	<key>SwitchWindowModifier</key>
 	<integer>5</integer>
 	<key>TabStyleWithAutomaticOption</key>

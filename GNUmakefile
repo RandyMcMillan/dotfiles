@@ -2,11 +2,11 @@
 SHELL									:= /bin/bash
 
 PWD										?= pwd_unknown
-#space:=
-#space+=
+space:=
+space+=
 
-# CURRENT_PATH := $(subst $(lastword $(notdir $(MAKEFILE_LIST))),,$(subst $(space),\$(space),$(shell realpath '$(strip $(MAKEFILE_LIST))')))
-# export CURRENT_PATH
+DOTFILES_PATH := $(subst $(lastword $(notdir $(MAKEFILE_LIST))),,$(subst $(space),\$(space),$(shell realpath '$(strip $(MAKEFILE_LIST))')))
+export DOTFILES_PATH
 
 THIS_DIR=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export THIS_DIR
@@ -79,7 +79,7 @@ export HOMEBREW_NO_ENV_HINTS
 	@./configure --quiet
 	$(MAKE) help
 ##	:	help
-##	:
+##	:	
 ##	:	all			execute installer scripts
 ##	:	init
 ##	:	brew
@@ -130,7 +130,7 @@ help:
 report:
 	@echo ''
 	@echo ' TIME=${TIME}	'
-	@echo ' CURRENT_PATH=${CURRENT_PATH}	'
+	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
 	@echo ' THIS_DIR=${THIS_DIR}	'
 	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
@@ -198,11 +198,11 @@ exec: executable
 .ONESHELL:
 template: template-update
 template-update: checkbrew-install
-##	:	checkbrew		source and run checkbrew command
-##	:	checkbrew-install	install template.sh
+##	:	checkbrew		install checkbrew command
 checkbrew: checkbrew-install
 checkbrew-install:
 	@install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
+	@bash -c "source /usr/local/bin/checkbrew"
 
 .PHONY: nvm
 ##	:	nvm		 	install node version manager

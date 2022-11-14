@@ -75,23 +75,33 @@ export HOMEBREW_NO_ENV_HINTS
 .SILENT:
 ##	:
 
--: report help
-	@./configure
+-:
+	@./configure --quiet
+	$(MAKE) help
+##	:	help
+##	:
+##	:	all			execute installer scripts
 ##	:	init
+##	:	brew
+##	:	keymap
+
+
+
 init:-
 #	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	@cat GNUmakefile.in > GNUmakefile
+keymap:
+	@mkdir -p ~/Library/LaunchAgents/
+	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
-	# test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
+	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 	# test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
 	# ssh-add > /dev/null 2>&1
 	# ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
 	# install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
 # 	[[ -z "$(BREW)" ]] && echo "$(BREW)" || echo "$(BREW)" && \
 # 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-##	:	brew - install Homebrew locally
-install-brew:-
+brew:-
 	@bash ./install-brew.sh
 #	$(shell git clone https://github.com/Homebrew/brew.git)
 #	$(shell git clone https://github.com/Homebrew/homebrew-core.git)
@@ -101,7 +111,6 @@ install-brew:-
 #	bash -c "$(PWD)/install-brew.sh"
 #	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
 #	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
-##	:	help
 help:
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -113,6 +122,9 @@ help:
 	@echo "Useful Commands:"
 	@echo ""
 	@echo "gpg --output public.pgp --armor --export FINGERPRINT"
+	@echo ""
+	@echo ""
+	@echo ""
 
 ##	:	report			environment args
 report:
@@ -190,7 +202,7 @@ template-update: checkbrew-install
 ##	:	checkbrew-install	install template.sh
 checkbrew: checkbrew-install
 checkbrew-install:
-	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
+	@install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
 
 .PHONY: nvm
 ##	:	nvm		 	install node version manager
@@ -208,7 +220,7 @@ config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
 .PHONY: all
-##	:	all			execute installer scripts
+##	:	all			execute checkbrew install scripts
 all:- executable gnupg
 	bash -c "source template.sh && checkbrew install vim macdown"
 	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
@@ -290,6 +302,7 @@ config-github: executable
 
 .PHONY: install-bitcoin-libs
 .ONESHELL:
+##	:
 ##	:	bitcoin-libs		install bitcoin-libs
 bitcoin-libs: exec
 	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
@@ -362,9 +375,10 @@ install-dotfiles-on-remote:
 	./install-dotfiles-on-remote.sh
 
 .PHONY: funcs
+##	:
+##	:	funcs			additional make functions
 funcs:
 	make -f funcs.mk
-	cat funcs.mk
 
 -include funcs.mk
 # vim: set noexpandtab:

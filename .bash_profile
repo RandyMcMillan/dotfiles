@@ -57,4 +57,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Set PATH, MANPATH, etc., for Homebrew.
-test eval && eval "$(/opt/homebrew/bin/brew shellenv)" || echo
+#eval "$(/opt/homebrew/bin/brew shellenv)" || echo

@@ -64,5 +64,5 @@ fi
 #     echo TODO add support for $OSTYPE
 # fi
 
-
+python3 -m pip install ds_store
 

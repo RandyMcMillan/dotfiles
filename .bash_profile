@@ -1,5 +1,5 @@
-source config-github.sh
-source config-git.sh
+source ./config-github
+source ./config-git
 # Add `~/bin` to the `$PATH`
 #export PATH="$(yarn global bin):$PATH"
 export PATH="$HOME/bin:$PATH";

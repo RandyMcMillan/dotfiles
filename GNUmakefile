@@ -180,9 +180,9 @@ install: executable
 
 
 .PHONY: github
-##	:	github		 	config-github.sh
+##	:	github		 	config-github
 github: executable
-	@./config-github.sh
+	@./config-github
 
 
 
@@ -252,8 +252,7 @@ protonvpn: executable
 
 .PHONY: config-git
 config-git: executable
-	cat config-git.sh
-	./config-git.sh
+	$(DOTFILES_PATH)/./config-git
 
 .PHONY: qt5
 ##	:	qt5			install qt@5
@@ -267,8 +266,7 @@ hub: executable
 
 .PHONY: config-github
 config-github: executable
-	cat config-git.sh
-	./config-github.sh
+	$(DOTFILES_PATH)/./config-github
 
 .PHONY: install-bitcoin-libs
 .ONESHELL:

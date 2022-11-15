@@ -157,7 +157,7 @@ report:
 .PHONY: whatami
 ##	:	whatami			report system info
 whatami:
-	./whatami.sh
+	@bash ./whatami.sh
 #.PHONY:readme
 #readme:
 #	make help > source/COMMANDS.md
@@ -191,7 +191,6 @@ github: executable
 executable:
 	chmod +x *.sh
 .PHONY: exec
-##	:	executable		make shell scripts executable
 exec: executable
 
 .PHONY: checkbrew template brew
@@ -231,46 +230,17 @@ all:- executable gnupg
 gnupg:- executable
 	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 
-# bash -c "test docker-compose && brew unlink docker-completion || echo"
-# bash -c "source template.sh && checkbrew install --cask docker"
-
-# 	./install-Docker.sh && \
-# 	./install-FastLane.sh && \
-# 	./install-Onyx.sh && \
-# 	./install-SassC.sh && \
-# 	./install-discord.sh && \
-# 	./install-gnupg+suite.sh && \
-# 	./install-iterm2.sh && \
-# 	./install-keeping-you-awake.sh && \
-# 	./install-little-snitch.sh && \
-# 	./install-openssl.sh && \
-# 	./install-python3.X.sh && \
-# 	./install-protonvpn.sh && \
-# 	./install-ql-plugins.sh && \
-# 	./install-qt5.sh && \
-# 	./install-qt5-creator.sh && \
-# 	./install-sha256sum.sh && \
-# 	./install-vmware-fusion11.sh #Mojave && \
-# 	./install-vypr-vpn.sh && \
-# 	./install-youtube-dl.sh && \
-# 	./install-ytop.sh && \
-# 	./install-umbrel-dev.sh && \
-# 	./install-vim.sh && \
-# 	./install-inkscape.sh && \
-# 	./install-dotfiles-on-remote.sh && \
-	echo; exit;"
-
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
 shell: alpine-shell
 ##	:	alpine-shell		run install-shell.sh alpine user=root
 alpine-shell: alpine
 alpine:
-	./install-shell.sh alpine
+	test docker && ./install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
 d-shell: debian-shell
 ##	:	debian-shell		run install-shell.sh debian user=root
 debian-shell: debian
 debian:
-	./install-shell.sh debian
+	test docker && ./install-shell.sh debian || echo "make docker OR checkbrew -i docker"
 .PHONY: vim
 ##	:	vim			install vim and macvim on macos
 vim: executable

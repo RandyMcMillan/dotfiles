@@ -206,7 +206,7 @@ smbclient -N -L $HOSTNAME < /dev/null 2> /dev/null |
 # only interested in the video graphics card right now. Probably want to
 # print out all the pci device information, which obtained by lspci
 if [[ "$OSTYPE" == "linux"* ]]; then
-lspci | grep -i "display\|vga"| sed 's/^[0-9a-f]\{2\}:[0-9a-f]\{2\}.[0-9]/          DISPLAY: /'
+test lspci && lspci | grep -i "display\|vga"| sed 's/^[0-9a-f]\{2\}:[0-9a-f]\{2\}.[0-9]/          DISPLAY: /' || echo
 fi
 
 if [[ "$(uname)" == "Darwin"* ]]; then
@@ -255,44 +255,12 @@ PYTHON_EXEC=`which python`
 [ -x "$PYTHON_EXEC" ] &&
 echo "   PYTHON VERSION: " `python --version 2>&1 | sed 's/[Pp]ython//' `
 
+PYTHON3_EXEC=`which python3`
+[ -x "$PYTHON3_EXEC" ] &&
+echo "  PYTHON3 VERSION: " `python3 --version 2>&1 | sed 's/[Pp]ython//' `
 
-
-#     SunOS 5.x:
-#                    DATE: Sun Jul  5 11:05:30 PDT 1992
-#                    USER: root
-#                HOSTNAME: le0 = anywhere
-#              IP ADDRESS: le0 = 129.150.30.23
-#                   MODEL: SUNW,Sun 4/75
-#         FRAME BUFFER(S): cgthree
-#           SunOS RELEASE: 5.0.1
-#                    TYPE: homeless
-#         HOME FILESERVER: mirrors
-#                  MEMORY: 32MB
-#                    SWAP: 53.4MB total, 25.6MB used, 27.8MB available
-#            LOAD AVERAGE: 1.01, 0.58, 0.58
-#          DNS DOMAINNAME: EBay.Sun.COM
-#          NIS DOMAINNAME: mlpirws.EBay.Sun.COM
-#      SOFTWARE SERVER(S): speedo1
-#         DEFAULT PRINTER: pug
-#        ETHERNET ADDRESS: 8:0:20:e:47:6d
-#                  HOSTID: 5540a99d
-#                    DISK: c0t3d0 "SUN0207" (208MB unformatted)
-#               PARTITION: c0t3d0s0 mounted on / (11MB, 87% full)
-#               PARTITION: c0t3d0s6 mounted on /usr (127MB, 100% full)
-#          SWAP PARTITION: c0t3d0s1 (32MB)
-#          DNS DOMAINNAME: EBay.Sun.COM
-#          NIS DOMAINNAME: mlpirws.EBay.Sun.COM
-#      SOFTWARE SERVER(S): speedo1
-#         DEFAULT PRINTER: pug
-#        ETHERNET ADDRESS: 8:0:20:e:47:6d
-#                  HOSTID: 5540a99d
-#                    DISK: c0t3d0 "SUN0207" (208MB unformatted)
-#               PARTITION: c0t3d0s0 mounted on / (11MB, 87% full)
-#               PARTITION: c0t3d0s6 mounted on /usr (127MB, 100% full)
-#          SWAP PARTITION: c0t3d0s1 (32MB)
-#                   CDROM: c0t6d0
-#                  FLOPPY: fd0 (3.5-inch floppy)
-#                    TAPE: rst4 - Archive QIC-150 tape drive (150MB)
+BREW_EXEC=`which brew`
+[ -x "$BREW_EXEC" ] &&
+echo "     BREW VERSION: " `brew --version 2>&1 | sed 's/[Bb]rew//' `
 
 # vim: se nowrap tw=0 :
-

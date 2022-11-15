@@ -17,7 +17,7 @@ function macos_device (){
 
     if [[ "$(uname)" == "Darwin"* ]]; then
     # ioreg -l | grep -v PCI
-    ioreg -l | grep com.apple.$KIT
+    ioreg -l | grep com.apple.$KIT > iokit.log
     # ioreg -l | grep -v IOKitDiagnostics
     fi
 }

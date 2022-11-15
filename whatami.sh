@@ -247,6 +247,10 @@ fi
 ( gcc -dumpversion >/dev/null 2>/dev/null ) &&
 echo "      GCC VERSION: " `gcc -dumpversion`
 
+VIM_EXEC=`which vim`
+[ -x "$VIM_EXEC" ] &&
+echo "      VIM VERSION: " `vim --version | head -1 2>&1 | sed 's/VIM - Vi IMproved//' `
+
 MATLAB_EXEC=`which matlab 2> /dev/null`
 [ -x "$MATLAB_EXEC" ] &&
 echo "   MATLAB VERSION: " `matlab -help | grep Revision`
@@ -261,6 +265,6 @@ echo "  PYTHON3 VERSION: " `python3 --version 2>&1 | sed 's/[Pp]ython//' `
 
 BREW_EXEC=`which brew`
 [ -x "$BREW_EXEC" ] &&
-echo "     BREW VERSION: " `brew --version 2>&1 | sed 's/[Bb]rew//' `
+echo "     BREW VERSION: " `brew --version | head -1 2>&1 | sed 's/[Hh]ome//' | sed 's/macOS *//' `
 
 # vim: se nowrap tw=0 :

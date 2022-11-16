@@ -11,12 +11,12 @@ function doIt() {
 	rsync --exclude ".git/" \
 		--exclude ".DS_Store" \
 		--exclude ".osx" \
-		--exclude "bootstrap.sh" \
+		--exclude "bootstrap" \
 		--exclude "README.md" \
 		--exclude "LICENSE-MIT.txt" \
 		--exclude "*.sh" \
 		-avh --no-perms . ~;
-	source ~/.bashrc;
+	source $PWD/.bashrc;
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then

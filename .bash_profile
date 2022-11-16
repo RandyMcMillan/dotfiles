@@ -1,25 +1,24 @@
 source ~/config-github
 source ~/config-git
 # Add `~/bin` to the `$PATH`
-#export PATH="$(yarn global bin):$PATH"
 export PATH="$HOME/bin:$PATH";
 # Add `~/init` to the `$PATH`
-export PATH="$HOME/init:$PATH";
+#export PATH="$HOME/init:$PATH";
 
-if which brew &> /dev/null; then
-        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
-       if [[ "$OSTYPE" == "linux"* ]]; then
-               #CHECK APT
-               if [[ "$OSTYPE" == "linux-gnu" ]]; then
-                       echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.bash_profile
-                       eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-               fi
-       fi
-fi
-# Load the shell dotfiles, and then some:
+#if which brew &> /dev/null; then
+#        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
+#       if [[ "$OSTYPE" == "linux"* ]]; then
+#               #CHECK APT
+#               if [[ "$OSTYPE" == "linux-gnu" ]]; then
+#                       echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.bash_profile
+#                       eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+#               fi
+#       fi
+#fi
+## Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,bash_profile,exports,aliases,functions,extra,~/dotfiles/*.sh}; do
+for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -63,38 +62,32 @@ fi;
 complete -W "NSGlobalDomain" defaults;
 
 # Add `killall` tab completion for common apps
-complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Dock Finder Mail Safari iTunes* SystemUIServer Terminal iTerm* Twitter bitcoind" killall;
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Set PATH, MANPATH, etc., for Homebrew.
-#eval "$(/opt/homebrew/bin/brew shellenv)" || echo
-complete -o "nospace" -W "Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Dock Finder Mail Safari iTunes* SystemUIServer Terminal iTerm* Twitter bitcoind" killall;
-
 # Added by install_latest_perl_osx.pl
 #[ -r /Users/git/.bashrc ] && source /Users/git/.bashrc
 
 # REF: dotfiles/install-fastlane.sh
-export PATH="$HOME/.fastlane/bin:$PATH"
+# export PATH="$HOME/.fastlane/bin:$PATH"
 
 #USeing rbenv for stuff ruby 2.2.2 doent compile on macos
 
 #eval "$(rbenv init -)"
 
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
 
 # NOTE: trying the config in .bashrc for now...
-if [ -f $(PWD)/Makefile ]; then
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-fi
-#
-if [ -f $(PWD)/GNUMakefile ]; then
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-fi
-#
+#if [ -f $(PWD)/Makefile ]; then
+#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+#fi
+##
+#if [ -f $(PWD)/GNUMakefile ]; then
+#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+#fi
+##
 #if [ -f $(PWD)/funcs.mk ]; then
 #complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' funks.mk | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 #fi
@@ -104,20 +97,4 @@ fi
 ## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make -f $OUTPUT
 ## done
 
-export GPG_TTY=$(tty)
-export PATH="/usr/local/opt/ruby@2.5.8/bin:$PATH"
-export PATH="/usr/local/opt/ruby@2.5/bin:$PATH"
-export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
-export PATH="/usr/local/opt/openssl@3/bin:$PATH"
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-
-#if [ "$OSTYPE" == "Linux"* ]; then
-    if ! hash brew 2>/dev/null; then
-        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/git/.bash_profile
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    fi
-#fi
-export PATH="/usr/local/opt/qt@5/bin:$PATH"
+#export GPG_TTY=$(tty)

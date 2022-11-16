@@ -226,14 +226,14 @@ config-dock: executable
 .PHONY: all
 ##	:	all			execute checkbrew install scripts
 all:- executable gnupg
-	bash -c "source template.sh && checkbrew install vim macdown"
-	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
-	bash -c "source template.sh && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
-	bash -c "rm -rf /Applications/Joplin.app"
-	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli"
+	bash -c "source $(PWD)/template && checkbrew install vim macdown"
+	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
+	bash -c "source $(PWD)/template && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
+	bash -c "rm -rf /Applicans/Joplin.app"
+	bash -c "source $(PWD)/template && checkbrew install --cask joplin && checkbrew install joplin-cli"
 
 gnupg:- executable
-	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
+	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 
 # bash -c "test docker-compose && brew unlink docker-completion || echo"
 # bash -c "source template.sh && checkbrew install --cask docker"

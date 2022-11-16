@@ -47,8 +47,8 @@ config-github() {
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_rsa
     ssh-add ~/.ssh/github_rsa
-    ssh-add ~/.ssh/docker_rsa
-    ssh-add ~/.ssh/do_rsa
+    #ssh-add ~/.ssh/docker_rsa
+    #ssh-add ~/.ssh/do_rsa
     # ssh-add $GITHUB_RSA
     # ssh-add $DOCKER_RSA
     # ssh-add $DO_RSA
@@ -79,17 +79,16 @@ config-github() {
     echo Your GPG Siging Key has been added...
     echo && echo
     export GPG_TTY=$(tty)
-    touch ~/.bash_profile
+    #touch ~/.bash_profile
     # if [ -r ~/.bash_profile ]; then echo 'export GPG_TTY=$(tty)' >> ~/.bash_profile; \
     #else echo 'export GPG_TTY=$(tty)' >> ~/.profile; fi
     #if [ -r ~/.zshrc ]; then echo 'export GPG_TTY=$(tty)' >> ~/.zshrc; \
     #else echo 'export GPG_TTY=$(tty)' >> ~/.zprofile; fi
     #fi
-		#fi
+	#fi
 }
 rm  /Users/git/.ssh/known_hosts
 eval "$(ssh-agent -s)"
-ssh-add
 config-github
 ssh-add
 # ssh-add ~/.ssh/*.github_rsa

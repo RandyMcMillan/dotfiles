@@ -175,8 +175,9 @@ adduser-git:
 
 .PHONY: bootstrap
 ##	:	bootstrap		source bootstrap.sh
-bootstrap:
-	bash -c "$(PWD)/./bootstrap.sh"
+.PHONY: bootstrap
+bootstrap: exec
+	bash -c "$(PWD)/./bootstrap"
 
 
 .PHONY: install
@@ -192,10 +193,6 @@ github: executable
 
 
 
-.PHONY: bootstrap
-##	:	bootstrap		run bootstrap.sh - dotfile installer
-bootstrap: executable
-	./boot-strap.sh
 
 .PHONY: executable
 executable:

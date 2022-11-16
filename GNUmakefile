@@ -122,8 +122,11 @@ help:
 	@echo "Useful Commands:"
 	@echo ""
 	@echo "gpg --output public.pgp --armor --export FINGERPRINT"
+	@echo "gpg-<TAB>"
 	@echo ""
+	@echo "git-<TAB>"
 	@echo ""
+	@echo "bitcoin-<TAB>"
 	@echo ""
 
 ##	:	report			environment args

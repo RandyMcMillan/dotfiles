@@ -2,8 +2,9 @@
 SHELL									:= /bin/bash
 
 PWD										?= pwd_unknown
-space:=
-space+=
+
+#space=  
+#space+=	
 
 DOTFILES_PATH := $(subst $(lastword $(notdir $(MAKEFILE_LIST))),,$(subst $(space),\$(space),$(shell realpath '$(strip $(MAKEFILE_LIST))')))
 export DOTFILES_PATH
@@ -95,12 +96,13 @@ keymap:
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
-	# test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
-	# ssh-add > /dev/null 2>&1
-	# ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
-	# install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
-# 	[[ -z "$(BREW)" ]] && echo "$(BREW)" || echo "$(BREW)" && \
-# 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+-: report help
+	bash -c "cat GNUmakefile.in > GNUmakefile"
+##	:	init
+init:-
+	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
+#REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
+	# test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 brew:-
 	@bash ./install-brew.sh
 #	$(shell git clone https://github.com/Homebrew/brew.git)
@@ -134,6 +136,7 @@ report:
 	@echo ''
 	@echo ' TIME=${TIME}	'
 	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
+	@echo ' CURRENT_PATH=${CURRENT_PATH}	'
 	@echo ' THIS_DIR=${THIS_DIR}	'
 	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
@@ -189,11 +192,16 @@ github: executable
 
 
 
+.PHONY: bootstrap
+##	:	bootstrap		run bootstrap.sh - dotfile installer
+bootstrap: executable
+	./boot-strap.sh
 
 .PHONY: executable
 executable:
 	chmod +x *.sh
 .PHONY: exec
+##	:	executable		make shell scripts executable
 exec: executable
 
 .PHONY: checkbrew template brew
@@ -214,6 +222,11 @@ nvm: executable
 #	@export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$(HOME)/.nvm" || printf %s "$(XDG_CONFIG_HOME)/nvm")"
 #	@[ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" # This loads nvm
 
+##	:	checkbrew		source and run checkbrew command
+##	:	checkbrew-install	install template.sh
+checkbrew: checkbrew-install
+checkbrew-install:
+	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
 	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"
@@ -233,6 +246,35 @@ all:- executable gnupg
 gnupg:- executable
 	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 
+# bash -c "test docker-compose && brew unlink docker-completion || echo"
+# bash -c "source template.sh && checkbrew install --cask docker"
+
+# 	./install-Docker.sh && \
+# 	./install-FastLane.sh && \
+# 	./install-Onyx.sh && \
+# 	./install-SassC.sh && \
+# 	./install-discord.sh && \
+# 	./install-gnupg+suite.sh && \
+# 	./install-iterm2.sh && \
+# 	./install-keeping-you-awake.sh && \
+# 	./install-little-snitch.sh && \
+# 	./install-openssl.sh && \
+# 	./install-python3.X.sh && \
+# 	./install-protonvpn.sh && \
+# 	./install-ql-plugins.sh && \
+# 	./install-qt5.sh && \
+# 	./install-qt5-creator.sh && \
+# 	./install-sha256sum.sh && \
+# 	./install-vmware-fusion11.sh #Mojave && \
+# 	./install-vypr-vpn.sh && \
+# 	./install-youtube-dl.sh && \
+# 	./install-ytop.sh && \
+# 	./install-umbrel-dev.sh && \
+# 	./install-vim.sh && \
+# 	./install-inkscape.sh && \
+# 	./install-dotfiles-on-remote.sh && \
+	echo; exit;"
+
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
 shell: alpine-shell
 ##	:	alpine-shell		run install-shell.sh alpine user=root
@@ -244,6 +286,7 @@ d-shell: debian-shell
 debian-shell: debian
 debian:
 	test docker && ./install-shell.sh debian || echo "make docker OR checkbrew -i docker"
+	./install-shell.sh debian
 .PHONY: vim
 ##	:	vim			install vim and macvim on macos
 vim: executable
@@ -260,12 +303,12 @@ config-git: executable
 .PHONY: qt5
 ##	:	qt5			install qt@5
 qt5: executable
-	./install-qt5.sh
-	./install-qt5-creator.sh
+	$(DOTFILES_PATH)/./install-qt5.sh
+	$(DOTFILES_PATH)/./install-qt5-creator.sh
 
 .PHONY: hub
 hub: executable
-	./install-github-utility.sh
+	$(DOTFILES_PATH)/./install-github-utility.sh
 
 .PHONY: config-github
 config-github: executable
@@ -287,6 +330,11 @@ bitcoin-depends: exec bitcoin-libs
 	@git clone --filter=blob:none https://github.com/bitcoin/bitcoin.git && \
 		cd ./bitcoin && ./autogen.sh && ./configure && $(MAKE) -C depends
 
+.PHONY: install-bitcoin-libs
+.ONESHELL:
+##	:	bitcoin-libs		install bitcoin-libs
+bitcoin-libs: exec
+	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
 
 .PHONY: push
 .ONESHELL:

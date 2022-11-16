@@ -212,7 +212,7 @@ fi
 if [[ "$(uname)" == "Darwin"* ]]; then
 # ioreg -l | grep -v PCI
 # ioreg -l | grep com.apple.iokit
-$KIT = iokit
+KIT=iokit
 macos_device
 # ioreg -l | grep -v IOKitDiagnostics
 fi

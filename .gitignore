@@ -1,9 +1,18 @@
+*.tmp
+init/init
+*.dmg
+1.1.1*
+infinity
+infinity/*
+
 # Compiled Python files
 *.pyc
 
 # Folder view configuration files
+./config/.DS_Store
 .DS_Store
 Desktop.ini
+.config/.DS_Store
 
 # Thumbnail cache files
 ._*
@@ -19,3 +28,47 @@ config.log
 config.status
 bitcoin
 iokit.log
+=======
+
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## User settings
+xcuserdata/
+
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+*.xcscmblueprint
+*.xccheckout
+
+## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
+build/
+DerivedData/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+## Gcc Patch
+/*.gcno
+
+hosts
+etc-dnsmasq.d
+etc-pihole
+.DS_Store
+.config/QtProject
+1.1.1i
+docker.shell
+
+bitcoin-test-battery
+autom4te.cache/
+config.log
+config.status
+configure
+install-sh
+patch.diff

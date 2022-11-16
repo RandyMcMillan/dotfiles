@@ -1,37 +1,54 @@
-# Mathias’s dotfiles
+## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub)
+ 	make   command			description
+ 	
+ 	       init
+ 	       help
+ 	       report			environment args
+ 	       whatami			report system info
+ 	       adduser-git		add a user named git
+ 	       bootstrap		run bootstrap.sh - dotfile installer
+ 	       executable		make shell scripts executable
+ 	       checkbrew-install	install template.sh
+ 	       template			base script for creating installer scripts
+ 	       checkbrew		source and run checkbrew command
+ 	       cirrus			source and run install-cirrus command
+ 	       config-dock		source and run config-dock-prefs
+ 	       all			execute installer scripts
+ 	       alpine-shell		run install-shell.sh alpine user=root
+ 	       debian-shell		run install-shell.sh debian user=root
+ 	       vim			install vim and macvim on macos
+ 	       qt5			install qt@5
+ 	       gnupg			install gnupg and accessories
+ 	       bitcoin-libs		install bitcoin-libs
 
-![Screenshot of my shell prompt](https://i.imgur.com/EkEtphC.png)
+<details>
+<summary>👀</summary>
+<p>
 
-## Installation
-
-**Warning:** If you want to give these dotfiles a try, you should first fork this repository, review the code, and remove things you don’t want or need. Don’t blindly use my settings unless you know what that entails. Use at your own risk!
-
-### Using Git and the bootstrap script
-
-You can clone the repository wherever you want. (I like to keep it in `~/Projects/dotfiles`, with `~/dotfiles` as a symlink.) The bootstrapper script will pull in the latest version and copy the files to your home folder.
-
-```bash
-git clone https://github.com/mathiasbynens/dotfiles.git && cd dotfiles && source bootstrap.sh
+```shell
+seq 0 947 | (while read -r n; do bitcoin-cli gettxout \
+54e48e5f5c656b26c3bca14a8c95aa583d07ebe84dde3b7dd4a78f4e4186e713 $n \
+| jq -r '.scriptPubKey.asm' | awk '{ print $2 $3 $4 }'; done) | \
+tr -d '\n' | cut -c 17-368600 | xxd -r -p > bitcoin.pdf
 ```
 
-To update, `cd` into your local `dotfiles` repository and then:
+</p>
+</details>
 
-```bash
-source bootstrap.sh
-```
+<details>
+<summary>👀</summary>
+<p>
 
-Alternatively, to update while avoiding the confirmation prompt:
+#### Referral Links:
 
-```bash
-set -- -f; source bootstrap.sh
-```
+[![DigitalOcean Referral Badge](https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%202.svg)](https://www.digitalocean.com/?refcode=ae5c7d05da91&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
 
 ### Git-free install
 
 To install these dotfiles without Git:
 
 ```bash
-cd; curl -#L https://github.com/mathiasbynens/dotfiles/tarball/main | tar -xzv --strip-components 1 --exclude={README.md,bootstrap.sh,.osx,LICENSE-MIT.txt}
+cd; curl -#L https://github.com/randymcmillan/dotfiles/tarball/main | tar -xzv --strip-components 1 --exclude={README.md,bootstrap.sh,.osx,LICENSE-MIT.txt}
 ```
 
 To update later on, just run that command again.
@@ -109,3 +126,5 @@ Suggestions/improvements
 * [Kevin Suttle](http://kevinsuttle.com/) and his [dotfiles repository](https://github.com/kevinSuttle/dotfiles) and [macOS-Defaults project](https://github.com/kevinSuttle/macOS-Defaults), which aims to provide better documentation for [`~/.macos`](https://mths.be/macos)
 * [Haralan Dobrev](https://hkdobrev.com/)
 * Anyone who [contributed a patch](https://github.com/mathiasbynens/dotfiles/contributors) or [made a helpful suggestion](https://github.com/mathiasbynens/dotfiles/issues)
+</p>
+</details>

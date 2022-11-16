@@ -65,44 +65,41 @@ export BREW_CELLAR
 HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
 
+.ONESHELL:
+#.PHONY:-
+.SILENT:
 
 ##make	:	command			description
-.ONESHELL:
-.PHONY:-
-.PHONY:	init
-.PHONY:	help
-.PHONY:	report
-.PHONY:	brew
-.SILENT:
 ##	:
-
 -:
+	@bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	@./configure --quiet
 	$(MAKE) help
+
+
+##	:	-
 ##	:	help
-##	:	
+##	:	report			environment args
+##	:
 ##	:	all			execute installer scripts
 ##	:	init
 ##	:	brew
 ##	:	keymap
 
+##	:
+##	:	whatami			report system info
+##	:
+##	:	adduser-git		add a user named git
 
-
-init:-
-#	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
-	@cat GNUmakefile.in > GNUmakefile
 keymap:
 	@mkdir -p ~/Library/LaunchAgents/
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
--: report help
-	bash -c "cat GNUmakefile.in > GNUmakefile"
-##	:	init
+
 init:-
-	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
-#REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
-	# test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
+	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
+	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 brew:-
 	@bash ./install-brew.sh
 #	$(shell git clone https://github.com/Homebrew/brew.git)
@@ -113,6 +110,9 @@ brew:-
 #	bash -c "$(PWD)/install-brew.sh"
 #	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
 #	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
+iterm:
+	test brew && brew install iterm && \
+		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 help:
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -131,7 +131,6 @@ help:
 	@echo "bitcoin-<TAB>"
 	@echo ""
 
-##	:	report			environment args
 report:
 	@echo ''
 	@echo ' TIME=${TIME}	'
@@ -160,8 +159,6 @@ report:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
-.PHONY: whatami
-##	:	whatami			report system info
 whatami:
 	@bash ./whatami.sh
 #.PHONY:readme
@@ -173,10 +170,11 @@ whatami:
 adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 
-.PHONY: bootstrap
+
 ##	:	bootstrap		source bootstrap.sh
-bootstrap:
-	bash -c "$(PWD)/./bootstrap.sh"
+.PHONY: bootstrap
+bootstrap: exec
+	bash -c "$(PWD)/./bootstrap"
 
 
 .PHONY: install
@@ -192,10 +190,6 @@ github: executable
 
 
 
-.PHONY: bootstrap
-##	:	bootstrap		run bootstrap.sh - dotfile installer
-bootstrap: executable
-	./boot-strap.sh
 
 .PHONY: executable
 executable:
@@ -211,7 +205,7 @@ template-update: checkbrew-install
 ##	:	checkbrew		install checkbrew command
 checkbrew: checkbrew-install
 checkbrew-install:
-	@install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
+	@install -bC $(PWD)/template /usr/local/bin/checkbrew
 	@bash -c "source /usr/local/bin/checkbrew"
 
 .PHONY: nvm
@@ -222,11 +216,6 @@ nvm: executable
 #	@export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$(HOME)/.nvm" || printf %s "$(XDG_CONFIG_HOME)/nvm")"
 #	@[ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" # This loads nvm
 
-##	:	checkbrew		source and run checkbrew command
-##	:	checkbrew-install	install template.sh
-checkbrew: checkbrew-install
-checkbrew-install:
-	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
 	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"

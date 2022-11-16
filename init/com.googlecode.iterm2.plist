@@ -1229,6 +1229,10 @@
 	<integer>3</integer>
 	<key>TmuxUnpauseAutomatically</key>
 	<true/>
+	<key>ToolbeltTools</key>
+	<array>
+		<string>Profiles</string>
+	</array>
 	<key>UseBorder</key>
 	<true/>
 	<key>UseExperimentalFontMetrics</key>

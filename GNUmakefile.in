@@ -303,12 +303,12 @@ hub: executable
 config-github: executable
 	$(DOTFILES_PATH)/./config-github
 
-.PHONY: install-bitcoin-libs
+.PHONY: bitcoin-libs
 .ONESHELL:
 ##	:
 ##	:	bitcoin-libs		install bitcoin-libs
 bitcoin-libs: exec
-	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
+	bash -c "source $(PWD)/bitcoin-libs && install-bitcoin-libs"
 .PHONY: bitcoin-depends
 .ONESHELL:
 ##	:	bitcoin-depends		make depends from bitcoin repo
@@ -318,12 +318,6 @@ bitcoin-depends: exec bitcoin-libs
 	@rm -rf ./bitcoin
 	@git clone --filter=blob:none https://github.com/bitcoin/bitcoin.git && \
 		cd ./bitcoin && ./autogen.sh && ./configure && $(MAKE) -C depends
-
-.PHONY: install-bitcoin-libs
-.ONESHELL:
-##	:	bitcoin-libs		install bitcoin-libs
-bitcoin-libs: exec
-	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
 
 .PHONY: push
 .ONESHELL:

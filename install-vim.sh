@@ -37,6 +37,7 @@ echo $VIMRC_DESTINATION
     if [ -d "$VIMRC_DESTINATION" ]; then
       cd ~/.vim_runtime
       git pull -f origin master
+      git checkout -f 4d0835973e9b3668d2ee7352ff7d9e601398480b
       python3 -m pip install requests
       python3 update_plugins.py
       sh ~/.vim_runtime/install_awesome_vimrc.sh

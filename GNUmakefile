@@ -111,7 +111,8 @@ brew:-
 #	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
 #	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
 iterm:
-	test brew && brew install iterm && \
+	@rm -rf /Applications/iTerm.app
+	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 help:
 	@echo ''

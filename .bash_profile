@@ -39,6 +39,7 @@ for option in autocd globstar; do
 	shopt -s "$option" 2> /dev/null;
 done;
 #
+
 # Add tab completion for many Bash commands
 if which brew &> /dev/null && [ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]; then
 	# Ensure existing Homebrew v1 completions continue to work
@@ -98,3 +99,5 @@ export NVM_DIR="$HOME/.nvm"
 ## done
 
 #export GPG_TTY=$(tty)
+# Set PATH, MANPATH, etc., for Homebrew.
+eval "$(/opt/homebrew/bin/brew shellenv)"

@@ -74,6 +74,7 @@ export HOMEBREW_NO_ENV_HINTS
 -:
 	@bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	@./configure --quiet
+	@test brew && brew install --force --quiet coreutils || echo "make brew"
 	$(MAKE) help
 
 
@@ -199,13 +200,11 @@ executable:
 ##	:	executable		make shell scripts executable
 exec: executable
 
-.PHONY: checkbrew template brew
+.PHONY: template
 .ONESHELL:
-template: template-update
-template-update: checkbrew-install
-##	:	checkbrew		install checkbrew command
-checkbrew: checkbrew-install
-checkbrew-install:
+template:
+##	:	template		install checkbrew command
+	rm -f /usr/local/bin/checkbrew
 	@install -bC $(PWD)/template /usr/local/bin/checkbrew
 	@bash -c "source /usr/local/bin/checkbrew"
 
@@ -227,6 +226,7 @@ config-dock: executable
 .PHONY: all
 ##	:	all			execute checkbrew install scripts
 all:- executable gnupg
+	bash -c "source $(PWD)/template && checkbrew install vim coreutils"
 	bash -c "source $(PWD)/template && checkbrew install vim macdown"
 	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 	bash -c "source $(PWD)/template && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"

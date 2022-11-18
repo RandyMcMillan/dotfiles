@@ -45,7 +45,7 @@ echo $VIMRC_DESTINATION
     else
       git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
       sh ~/.vim_runtime/install_awesome_vimrc.sh
-      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+      ln -sf $PWD/dotfiles/.vimrc $PWD/.vim_runtime/my_configs.vim
     fi
 #fi
 }

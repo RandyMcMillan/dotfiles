@@ -2,14 +2,12 @@
 SHELL									:= /bin/bash
 
 PWD										?= pwd_unknown
-#space:=
+
+#space=
 #space+=
 
-# CURRENT_PATH := $(subst $(lastword $(notdir $(MAKEFILE_LIST))),,$(subst $(space),\$(space),$(shell realpath '$(strip $(MAKEFILE_LIST))')))
-# export CURRENT_PATH
-
-THIS_DIR=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-export THIS_DIR
+DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+export DOTFILES_PATH
 
 TIME									:= $(shell date +%s)
 export TIME
@@ -49,57 +47,71 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
-HOMEBREW_BREW_GIT_REMOTE=$(strip $(THIS_DIR))brew# put your Git mirror of Homebrew/brew here
-export HOMEBREW_BREW_GIT_REMOTE
+#HOMEBREW_BREW_GIT_REMOTE=$(strip $(THIS_DIR))brew# put your Git mirror of Homebrew/brew here
+#export HOMEBREW_BREW_GIT_REMOTE
 
-HOMEBREW_CORE_GIT_REMOTE=$(strip $(THIS_DIR))homebrew-core# put your Git mirror of Homebrew/homebrew-core here
-export HOMEBREW_CORE_GIT_REMOTE
+#HOMEBREW_CORE_GIT_REMOTE=$(strip $(THIS_DIR))homebrew-core# put your Git mirror of Homebrew/homebrew-core here
+#export HOMEBREW_CORE_GIT_REMOTE
 
 BREW                                    := $(shell which brew)
 export BREW
-# BREW_PREFIX                             := $(shell brew --prefix)
+BREW_PREFIX                             := $(shell brew --prefix)
 export BREW_PREFIX
-# BREW_CELLAR                             := $(shell brew --cellar)
+BREW_CELLAR                             := $(shell brew --cellar)
 export BREW_CELLAR
 HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
 
+.ONESHELL:
+#.PHONY:-
+.SILENT:
 
 ##make	:	command			description
-.ONESHELL:
-.PHONY:-
-.PHONY:	init
-.PHONY:	help
-.PHONY:	report
-.PHONY:	brew
-.SILENT:
 ##	:
+-:
+	@bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+	@./configure --quiet
+	@test brew && brew install --force --quiet coreutils || echo "make brew"
+	$(MAKE) help
 
--: report help
-	bash -c "cat GNUmakefile.in > GNUmakefile"
-##	:	init
-init:-
-	["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
-#REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
-	# test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
-	# test ssh-agent && echo $(ssh-agent -s > /dev/null 2>&1 ) || echo wuh2
-	# ssh-add > /dev/null 2>&1
-	# ssh-add ~/.ssh/*_rsa > /dev/null 2>&1
-	# install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
-# 	[[ -z "$(BREW)" ]] && echo "$(BREW)" || echo "$(BREW)" && \
-# 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-##	:	brew - install Homebrew locally
-brew:-
-	$(shell git clone https://github.com/Homebrew/brew.git)
-	$(shell git clone https://github.com/Homebrew/homebrew-core.git)
-	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
-	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
-	$(shell curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > install-brew.sh && chmod +x install-brew.sh)
-	bash -c "$(PWD)/install-brew.sh"
-	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
-	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
+##	:	-
 ##	:	help
+##	:	report			environment args
+##	:
+##	:	all			execute installer scripts
+##	:	init
+##	:	brew
+##	:	keymap
+
+##	:
+##	:	whatami			report system info
+##	:
+##	:	adduser-git		add a user named git
+
+keymap:
+	@mkdir -p ~/Library/LaunchAgents/
+	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
+#REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
+	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
+
+init:-
+	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
+	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
+brew:-
+	@bash ./install-brew.sh
+#	$(shell git clone https://github.com/Homebrew/brew.git)
+#	$(shell git clone https://github.com/Homebrew/homebrew-core.git)
+#	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
+#	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
+#	$(shell curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > install-brew.sh && chmod +x install-brew.sh)
+#	bash -c "$(PWD)/install-brew.sh"
+#	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
+#	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
+iterm:
+	@rm -rf /Applications/iTerm.app
+	test brew && brew install -f --cask iterm2 && \
+		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 help:
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -116,12 +128,10 @@ help:
 	@echo ""
 	@echo ""
 
-##	:	report			environment args
 report:
 	@echo ''
 	@echo ' TIME=${TIME}	'
-	@echo ' CURRENT_PATH=${CURRENT_PATH}	'
-	@echo ' THIS_DIR=${THIS_DIR}	'
+	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
 	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
 	@echo ' GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
@@ -144,10 +154,8 @@ report:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
-.PHONY: whatami
-##	:	whatami			report system info
 whatami:
-	./whatami.sh
+	@bash ./whatami.sh
 #.PHONY:readme
 #readme:
 #	make help > source/COMMANDS.md
@@ -156,10 +164,27 @@ whatami:
 ##	:	adduser-git		add a user named git
 adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
+
+
+##	:	bootstrap		source bootstrap.sh
 .PHONY: bootstrap
-##	:	bootstrap		run bootstrap.sh - dotfile installer
-bootstrap: executable
-	./boot-strap.sh
+bootstrap: exec
+	bash -c "$(PWD)/./bootstrap.sh"
+
+
+.PHONY: install
+##	:	install		 	install sequence
+install: executable
+	@echo "install sequence here..."
+
+
+.PHONY: github
+##	:	github		 	config-github
+github: executable
+	@./config-github
+
+
+
 
 .PHONY: executable
 executable:
@@ -168,15 +193,22 @@ executable:
 ##	:	executable		make shell scripts executable
 exec: executable
 
-.PHONY: checkbrew template brew
+.PHONY: template
 .ONESHELL:
-template: template-update
-template-update: checkbrew-install
-##	:	checkbrew		source and run checkbrew command
-##	:	checkbrew-install	install template.sh
-checkbrew: checkbrew-install
-checkbrew-install:
-	install -bC $(PWD)/template.sh /usr/local/bin/checkbrew
+template:
+##	:	template		install checkbrew command
+	rm -f /usr/local/bin/checkbrew
+	@install -bC $(PWD)/template /usr/local/bin/checkbrew
+	bash -c "source /usr/local/bin/checkbrew"
+
+.PHONY: nvm
+##	:	nvm		 	install node version manager
+nvm: executable
+	@echo "install sequence here..."
+	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+#	@export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$(HOME)/.nvm" || printf %s "$(XDG_CONFIG_HOME)/nvm")"
+#	@[ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" # This loads nvm
+
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
 	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"
@@ -185,16 +217,15 @@ config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
 .PHONY: all
-##	:	all			execute installer scripts
-all:- executable brew gnupg
-	bash -c "source template.sh && checkbrew install vim macdown"
-	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
-	bash -c "source template.sh && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
-	bash -c "rm -rf /Applications/Joplin.app"
-	bash -c "source template.sh && checkbrew install --cask joplin && checkbrew install joplin-cli"
+##	:	all			execute checkbrew install scripts
+all: executable gnupg
+	bash -c "source $(PWD)/template && checkbrew install vim coreutils"
+	bash -c "source $(PWD)/template && checkbrew install vim macdown"
+	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
+	bash -c "source $(PWD)/template && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
 
 gnupg:- executable
-	bash -c "source template.sh && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
+	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 
 # bash -c "test docker-compose && brew unlink docker-completion || echo"
 # bash -c "source template.sh && checkbrew install --cask docker"
@@ -230,11 +261,12 @@ shell: alpine-shell
 ##	:	alpine-shell		run install-shell.sh alpine user=root
 alpine-shell: alpine
 alpine:
-	./install-shell.sh alpine
+	test docker && ./install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
 d-shell: debian-shell
 ##	:	debian-shell		run install-shell.sh debian user=root
 debian-shell: debian
 debian:
+	test docker && ./install-shell.sh debian || echo "make docker OR checkbrew -i docker"
 	./install-shell.sh debian
 .PHONY: vim
 ##	:	vim			install vim and macvim on macos
@@ -247,30 +279,37 @@ protonvpn: executable
 
 .PHONY: config-git
 config-git: executable
-	cat config-git.sh
-	./config-git.sh
+	$(DOTFILES_PATH)/./config-git
 
 .PHONY: qt5
 ##	:	qt5			install qt@5
 qt5: executable
-	./install-qt5.sh
-	./install-qt5-creator.sh
+	$(DOTFILES_PATH)/./install-qt5.sh
+	$(DOTFILES_PATH)/./install-qt5-creator.sh
 
 .PHONY: hub
 hub: executable
-	./install-github-utility.sh
+	$(DOTFILES_PATH)/./install-github-utility.sh
 
 .PHONY: config-github
 config-github: executable
-	cat config-git.sh
-	./config-github.sh
+	$(DOTFILES_PATH)/./config-github
 
-.PHONY: install-bitcoin-libs
+.PHONY: bitcoin-libs
 .ONESHELL:
+##	:
 ##	:	bitcoin-libs		install bitcoin-libs
 bitcoin-libs: exec
-	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
-
+	bash -c "source $(PWD)/bitcoin-libs && install-bitcoin-libs"
+.PHONY: bitcoin-depends
+.ONESHELL:
+##	:	bitcoin-depends		make depends from bitcoin repo
+bitcoin-depends: exec bitcoin-libs
+	@test brew && brew install autoconf automake libtool pkg-config || echo "make brew && make bitcoin-depends"
+	@brew install autoconf || echo "make brew && brew install autoconf"
+	@rm -rf ./bitcoin
+	@git clone --filter=blob:none https://github.com/bitcoin/bitcoin.git && \
+		cd ./bitcoin && ./autogen.sh && ./configure && $(MAKE) -C depends
 
 .PHONY: push
 .ONESHELL:
@@ -330,9 +369,10 @@ install-dotfiles-on-remote:
 	./install-dotfiles-on-remote.sh
 
 .PHONY: funcs
+##	:
+##	:	funcs			additional make functions
 funcs:
 	make -f funcs.mk
-	cat funcs.mk
 
 -include funcs.mk
 # vim: set noexpandtab:

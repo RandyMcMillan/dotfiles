@@ -39,10 +39,11 @@
 
 Useful Commands:
 
-gpg-<TAB>
+git-\<TAB>
 
-git-<TAB>
+gpg-\<TAB>
 
-bitcoin-<TAB>
+bitcoin-\<TAB>
+
 
 

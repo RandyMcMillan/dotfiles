@@ -17,6 +17,7 @@ jobs:
     - name: autogen.sh
       run: |
           sudo apt-get install autotools-dev autoconf automake libtool m4
+          sudo apt-get install build-essential
           ./autogen.sh
 
     - name: configure
@@ -27,11 +28,15 @@ jobs:
       run: |
           make
 
-    - name: make brew
+    - name: make brew vim
       run: |
-          make brew
+          make brew vim
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install gcc
 
-    - name: make vim
+    - name: make template
       run: |
-          make vim
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && make template && checkbrew -h
+
+
 

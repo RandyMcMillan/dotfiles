@@ -28,9 +28,10 @@ jobs:
       run: |
           ./configure
 
-    - name: make
+    - name: make bootstrap
       run: |
           make
+          make bootstrap
 
     - name: make brew vim
       run: |

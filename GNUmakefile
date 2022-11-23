@@ -122,9 +122,9 @@ help:
 	@echo ""
 	@echo "Useful Commands:"
 	@echo ""
-	@echo "gpg-<TAB>"
-	@echo "git-<TAB>"
-	@echo "bitcoin-<TAB>"
+	@echo "gpg-<TAB>";echo
+	@echo "git-<TAB>";echo
+	@echo "bitcoin-<TAB>";echo
 	@echo ""
 
 report:

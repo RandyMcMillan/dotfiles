@@ -20,13 +20,18 @@ jobs:
           ./autogen.sh
 
     - name: configure
-      run: ./configure
+      run: |
+          ./configure
 
     - name: make
-      run: make
+      run: |
+          make
 
-    - name: make all
-      run: make all
+    - name: make brew
+      run: |
+          make brew
 
-    - name: Run distcheck
-      run: make distcheck
+    - name: make vim
+      run: |
+          make vim
+

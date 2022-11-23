@@ -217,7 +217,7 @@ config-dock: executable
 
 .PHONY: all
 ##	:	all			execute checkbrew install scripts
-all:- executable gnupg
+all: executable gnupg
 	bash -c "source $(PWD)/template && checkbrew install vim coreutils"
 	bash -c "source $(PWD)/template && checkbrew install vim macdown"
 	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"

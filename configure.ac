@@ -5,15 +5,6 @@ AC_INIT([example],
 	[example],
 	[https://lse.epita.fr/])
 
-AC_CONFIG_SRCDIR([src/example.c])
-AC_CONFIG_AUX_DIR([build-aux])
-AM_INIT_AUTOMAKE([
-		  foreign
-		  -Wall
-		  silent-rules
-		  subdir-objects
-])
-
 AC_PROG_CC
 AC_USE_SYSTEM_EXTENSIONS
 

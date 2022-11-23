@@ -25,8 +25,5 @@ jobs:
     - name: make
       run: make
 
-    - name: make all
-      run: make all
-
-    - name: Run distcheck
-      run: make distcheck
+    - name: make brew
+      run: make brew

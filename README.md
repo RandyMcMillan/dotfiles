@@ -1,34 +1,8 @@
 ## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub)
-	make                        
-	make                        -
-	make                        init
-	make                        help
-	make                        report
-	make                        all
-	make                        all force=true	
-	make                        bootstrap
-	make                        executable
-	make                        shell #alpine-shell
-	make                        alpine-shell
-	make                        d-shell #debian-shell
-	make                        debian-shell
-	make                        vim
-	make                        config-git
-	make                        config-github
-	make                        adduser-git
-	make                        install-dotfiles-on-remote
-	remote_user=<user> remote_server=<domain/ip> make install-dotfiles-on-remote
----
-
-	make                        docs
-	make                        push
-	
-	---
-	
-
  make	  	command			description
  	
  	      	init
+ 	      	brew - install Homebrew locally
  	      	help
  	      	report			environment args
  	      	whatami			report system info
@@ -44,8 +18,20 @@
  	      	debian-shell		run install-shell.sh debian user=root
  	      	vim			install vim and macvim on macos
  	      	qt5			install qt@5
- 	      	gnupg			install gnupg and accessories
  	      	bitcoin-libs		install bitcoin-libs
+
+
+
+Useful Commands:
+
+git-\<TAB>
+
+gpg-\<TAB>
+
+bitcoin-\<TAB>
+
+
+
 
 <details>
 <summary>👀</summary>

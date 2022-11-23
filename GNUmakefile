@@ -52,6 +52,8 @@ export GIT_REPO_PATH
 
 #HOMEBREW_CORE_GIT_REMOTE=$(strip $(THIS_DIR))homebrew-core# put your Git mirror of Homebrew/homebrew-core here
 #export HOMEBREW_CORE_GIT_REMOTE
+export HOMEBREW_INSTALL_FROM_API=1
+
 
 BREW                                    := $(shell which brew)
 export BREW
@@ -99,6 +101,7 @@ init:-
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 brew:-
+	@export HOMEBREW_INSTALL_FROM_API=1
 	@bash ./install-brew.sh
 iterm:
 	@rm -rf /Applications/iTerm.app
@@ -138,6 +141,7 @@ report:
 	@echo ' BREW=${BREW}	'
 	@echo ' HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
 	@echo ' HOMEBREW_CORE_REMOTE=${HOMEBREW_CORE_GIT_REMOTE}	'
+	@echo ' HOMEBREW_INSTALL_FROM_API=${HOMEBREW_INSTALL_FROM_API}	'
 	@echo ' BREW_PREFIX=${BREW_PREFIX}	'
 	@echo ' BREW_CELLAR=${BREW_CELLAR}	'
 	@echo ' HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'

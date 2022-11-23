@@ -34,3 +34,6 @@ export MANPAGER='less -X';
 # https://stackoverflow.com/a/42265848/96656
 GPG_TTY=$(tty);
 export GPG_TTY
+
+# Hide the “default interactive shell is now zsh” warning on macOS.
+export BASH_SILENCE_DEPRECATION_WARNING=1;

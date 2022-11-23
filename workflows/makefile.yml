@@ -46,5 +46,10 @@ jobs:
           make nvm && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
                                             nvm install 10
 
+    - name: .functions
+      run: |
+          sudo apt-get gnupg
+          source .functions && gpg-recv-keys-bitcoin-devs
+
 
 

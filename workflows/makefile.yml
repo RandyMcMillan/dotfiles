@@ -31,6 +31,7 @@ jobs:
 
     - name: make brew
       run: |
+          export HOMEBREW_INSTALL_FROM_API=1
           make brew
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install gcc

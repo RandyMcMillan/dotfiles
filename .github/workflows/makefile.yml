@@ -16,17 +16,17 @@ jobs:
 
     - name: autogen.sh
       run: |
-          apt-get install autoconf
+          sudo apt-get install autotools-dev autoconf automake libtool m4
           ./autogen.sh
 
     - name: configure
       run: ./configure
 
-    - name: Install dependencies
+    - name: make
       run: make
 
-    - name: Run check
-      run: make check
+    - name: make all
+      run: make all
 
     - name: Run distcheck
       run: make distcheck

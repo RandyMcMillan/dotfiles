@@ -199,7 +199,7 @@ template:
 ##	:	template		install checkbrew command
 	rm -f /usr/local/bin/checkbrew
 	@install -bC $(PWD)/template /usr/local/bin/checkbrew
-	@bash -c "source /usr/local/bin/checkbrew"
+	bash -c "source /usr/local/bin/checkbrew"
 
 .PHONY: nvm
 ##	:	nvm		 	install node version manager

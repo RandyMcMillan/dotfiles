@@ -1,5 +1,6 @@
 source ~/config-github
 source ~/config-git
+source /usr/local/bin.checkbrew
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 # Add `~/init` to the `$PATH`

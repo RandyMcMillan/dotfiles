@@ -43,5 +43,9 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && make template && checkbrew -h
           make all
 
+    - name: make nvm
+      run: |
+          make nvm && nvm use 10
+
 
 

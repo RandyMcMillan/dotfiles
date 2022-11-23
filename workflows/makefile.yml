@@ -18,15 +18,11 @@ jobs:
       run: |
           git fetch
 
-    - name: autogen.sh
+    - name: autogen.sh && configure
       run: |
           sudo apt-get install autotools-dev autoconf automake libtool m4
           sudo apt-get install build-essential
-          ./autogen.sh
-
-    - name: configure
-      run: |
-          ./configure
+          ./autogen.sh && ./configure 
 
     - name: make bootstrap
       run: |

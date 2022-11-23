@@ -2,9 +2,9 @@ name: Makefile CI
 
 on:
   push:
-    branches: [ "master", "main" , "*" ]
+    branches: [ "master", "main" , "**", "**/**" ]
   pull_request:
-    branches: [ "master", "main" , "*" ]
+    branches: [ "master", "main" , "**", "**/**" ]
 
 jobs:
   build:
@@ -14,19 +14,40 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: git fetch
+      run: |
+          git fetch
+
     - name: autogen.sh
       run: |
-          apt-get install autoconf
+          sudo apt-get install autotools-dev autoconf automake libtool m4
+          sudo apt-get install build-essential
           ./autogen.sh
 
     - name: configure
-      run: ./configure
+      run: |
+          ./configure
 
-    - name: Install dependencies
-      run: make
+    - name: make bootstrap
+      run: |
+          make
+          make bootstrap
 
-    - name: Run check
-      run: make check
+    - name: make brew
+      run: |
+          make brew
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install gcc
 
-    - name: Run distcheck
-      run: make distcheck
+    - name: make template
+      run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && make template && checkbrew -h
+          make all
+
+    - name: make nvm
+      run: |
+          make nvm && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+                                            nvm install 10
+
+
+

@@ -27,11 +27,15 @@ jobs:
       run: |
           make
 
-    - name: make brew
+    - name: make brew vim
       run: |
-          make brew
+          make brew vim
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-    - name: make vim
+    - name: make template
       run: |
-          make vim
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          make brew template
+
+
 

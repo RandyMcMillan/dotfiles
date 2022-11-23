@@ -39,13 +39,13 @@ echo $VIMRC_DESTINATION
       git pull -f origin master
       python3 -m pip install requests
       python3 update_plugins.py
-      sh ~/.vim_runtime/install_awesome_vimrc.sh
+      sh $HOME/.vim_runtime/install_awesome_vimrc.sh
       #we exclude from ~/ because we link to here
-      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+      ln -sf $(PWD)/.vimrc $HOME/.vim_runtime/my_configs.vim
     else
-      git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
+      git clone --depth=1 https://github.com/randymcmillan/vimrc.git $HOME/.vim_runtime
       sh ~/.vim_runtime/install_awesome_vimrc.sh
-      ln -sf $PWD/dotfiles/.vimrc $PWD/.vim_runtime/my_configs.vim
+      ln -sf $PWD/dotfiles/.vimrc $HOME/.vim_runtime/my_configs.vim
     fi
 #fi
 }

@@ -169,7 +169,7 @@ adduser-git:
 ##	:	bootstrap		source bootstrap.sh
 .PHONY: bootstrap
 bootstrap: exec
-	bash -c "$(PWD)/./bootstrap"
+	bash -c "$(PWD)/./bootstrap.sh"
 
 
 .PHONY: install

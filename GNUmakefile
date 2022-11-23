@@ -6,11 +6,8 @@ PWD										?= pwd_unknown
 #space=  
 #space+=	
 
-DOTFILES_PATH := $(subst $(lastword $(notdir $(MAKEFILE_LIST))),,$(subst $(space),\$(space),$(shell realpath '$(strip $(MAKEFILE_LIST))')))
+DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
-
-THIS_DIR=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-export THIS_DIR
 
 TIME									:= $(shell date +%s)
 export TIME
@@ -58,9 +55,9 @@ export GIT_REPO_PATH
 
 BREW                                    := $(shell which brew)
 export BREW
-# BREW_PREFIX                             := $(shell brew --prefix)
+BREW_PREFIX                             := $(shell brew --prefix)
 export BREW_PREFIX
-# BREW_CELLAR                             := $(shell brew --cellar)
+BREW_CELLAR                             := $(shell brew --cellar)
 export BREW_CELLAR
 HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
@@ -125,11 +122,8 @@ help:
 	@echo ""
 	@echo "Useful Commands:"
 	@echo ""
-	@echo "gpg --output public.pgp --armor --export FINGERPRINT"
 	@echo "gpg-<TAB>"
-	@echo ""
 	@echo "git-<TAB>"
-	@echo ""
 	@echo "bitcoin-<TAB>"
 	@echo ""
 
@@ -137,8 +131,6 @@ report:
 	@echo ''
 	@echo ' TIME=${TIME}	'
 	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
-	@echo ' CURRENT_PATH=${CURRENT_PATH}	'
-	@echo ' THIS_DIR=${THIS_DIR}	'
 	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
 	@echo ' GIT_USER_EMAIL=${GIT_USER_EMAIL}	'

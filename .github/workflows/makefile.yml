@@ -27,11 +27,6 @@ jobs:
       run: |
           make
 
-    - name: make brew
+    - name: make brew vim
       run: |
-          make brew
-
-    - name: make vim
-      run: |
-          make vim
-
+          make brew vim

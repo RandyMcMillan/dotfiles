@@ -100,14 +100,6 @@ init:-
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 brew:-
 	@bash ./install-brew.sh
-#	$(shell git clone https://github.com/Homebrew/brew.git)
-#	$(shell git clone https://github.com/Homebrew/homebrew-core.git)
-#	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
-#	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
-#	$(shell curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > install-brew.sh && chmod +x install-brew.sh)
-#	bash -c "$(PWD)/install-brew.sh"
-#	git config --global --add safe.directory $(HOMEBREW_BREW_GIT_REMOTE)
-#	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
 iterm:
 	@rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \

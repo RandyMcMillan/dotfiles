@@ -3,8 +3,8 @@ SHELL									:= /bin/bash
 
 PWD										?= pwd_unknown
 
-#space=  
-#space+=	
+#space=
+#space+=
 
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
@@ -222,8 +222,6 @@ all: executable gnupg
 	bash -c "source $(PWD)/template && checkbrew install vim macdown"
 	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 	bash -c "source $(PWD)/template && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
-	bash -c "rm -rf /Applicans/Joplin.app"
-	bash -c "source $(PWD)/template && checkbrew install --cask joplin && checkbrew install joplin-cli"
 
 gnupg:- executable
 	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"

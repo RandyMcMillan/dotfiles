@@ -110,7 +110,11 @@ help:
 	@echo ""
 	@echo "Useful Commands:"
 	@echo ""
-	@echo "gpg --output public.pgp --armor --export FINGERPRINT"
+	@echo "git-\<TAB>";echo
+	@echo "gpg-\<TAB>";echo
+	@echo "bitcoin-\<TAB>";echo
+	@echo ""
+	@echo ""
 
 ##	:	report			environment args
 report:
@@ -278,7 +282,7 @@ push: touch-time
 .PHONY: docs readme index
 index: docs
 readme: docs
-docs:
+docs:-
 	@echo 'docs'
 	bash -c "if pgrep MacDown; then pkill MacDown; fi"
 	bash -c "make help > $(PWD)/sources/COMMANDS.md"

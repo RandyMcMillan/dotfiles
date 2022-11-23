@@ -101,34 +101,6 @@ brew:-
 	git config --global --add safe.directory $(HOMEBREW_CORE_GIT_REMOTE)
 ##	:	help
 help:
-	@echo ""
-	@echo "	make                        "
-	@echo "	make                        -"
-	@echo "	make                        init"
-	@echo "	make                        help"
-	@echo "	make                        report"
-	@echo "	make                        all"
-	@echo "	make                        all force=true	"
-	@echo "	make                        bootstrap"
-	@echo "	make                        executable"
-	@echo "	make                        shell #alpine-shell"
-	@echo "	make                        alpine-shell"
-	@echo "	make                        d-shell #debian-shell"
-	@echo "	make                        debian-shell"
-	@echo "	make                        vim"
-	@echo "	make                        config-git"
-	@echo "	make                        config-github"
-	@echo "	make                        adduser-git"
-	@echo "	make                        install-dotfiles-on-remote"
-	@echo "	remote_user=<user> remote_server=<domain/ip> make install-dotfiles-on-remote"
-	@echo "---"
-	@echo ""
-	@echo "	make                        docs"
-	@echo "	make                        push"
-#	@echo "	make                        readme"
-	@echo "	"
-	@echo "	---"
-	@echo "	"
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -138,7 +110,11 @@ help:
 	@echo ""
 	@echo "Useful Commands:"
 	@echo ""
-	@echo "gpg --output public.pgp --armor --export FINGERPRINT"
+	@echo "git-\<TAB>";echo
+	@echo "gpg-\<TAB>";echo
+	@echo "bitcoin-\<TAB>";echo
+	@echo ""
+	@echo ""
 
 ##	:	report			environment args
 report:
@@ -303,9 +279,10 @@ push: touch-time
 		git commit -m 'update from $(GIT_USER_NAME) on $(TIME)'"
 	git push -f origin	+master:master
 
-.PHONY: docs readme
+.PHONY: docs readme index
+index: docs
 readme: docs
-docs:
+docs:-
 	@echo 'docs'
 	bash -c "if pgrep MacDown; then pkill MacDown; fi"
 	bash -c "make help > $(PWD)/sources/COMMANDS.md"
@@ -320,7 +297,7 @@ docs:
 	#bash -c "if hash open 2>/dev/null; then open README.md; fi || echo failed to open README.md"
 	git add --ignore-errors sources/*.md
 	git add --ignore-errors *.md
-	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git 
+	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git
 
 .PHONY: submodule submodules
 submodule: submodules
@@ -352,6 +329,10 @@ bitcoin-test-battery:
 install-dotfiles-on-remote:
 	./install-dotfiles-on-remote.sh
 
+.PHONY: funcs
+funcs:
+	make -f funcs.mk
+	cat funcs.mk
 
 -include funcs.mk
 # vim: set noexpandtab:

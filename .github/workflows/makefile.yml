@@ -51,5 +51,9 @@ jobs:
           # source .functions && gpg-recv-keys-bitcoin-devs
           # source .functions && bitcoin-dl-install-depends
 
+    - name: make alpine-build
+      run: |
+          make alpine-build
+
 
 

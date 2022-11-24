@@ -258,6 +258,9 @@ shell: alpine-shell
 alpine-shell: alpine
 alpine:
 	test docker && ./install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
+##	:	alpine-build		run install-shell.sh alpine-build user=root
+alpine-build:
+	test docker && ./install-shell.sh alpine-build || echo "make docker OR checkbrew -i docker"
 d-shell: debian-shell
 ##	:	debian-shell		run install-shell.sh debian user=root
 debian-shell: debian

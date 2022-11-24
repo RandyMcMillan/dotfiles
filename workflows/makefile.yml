@@ -49,7 +49,6 @@ jobs:
       run: |
           sudo apt-get install gnupg
           . .functions && gpg-recv-keys-bitcoin-devs
-          . .functions && bitcoin-dl-install-depends
 
     - name: make alpine-build
       run: |

@@ -48,8 +48,8 @@ jobs:
     - name: .functions
       run: |
           sudo apt-get install gnupg
-          # source .functions && gpg-recv-keys-bitcoin-devs
-          # source .functions && bitcoin-dl-install-depends
+          . .functions && gpg-recv-keys-bitcoin-devs
+          . .functions && bitcoin-dl-install-depends
 
     - name: make alpine-build
       run: |

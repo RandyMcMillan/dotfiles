@@ -216,7 +216,7 @@ config-dock: executable
 ##	:	all			execute checkbrew install scripts
 all: executable gnupg
 	bash -c "source $(PWD)/template && checkbrew install vim coreutils"
-	bash -c "source $(PWD)/template && checkbrew install vim macdown"
+	bash -c "source $(PWD)/template && checkbrew install vim macdown glow"
 	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 	bash -c "source $(PWD)/template && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
 
@@ -309,7 +309,12 @@ bitcoin-depends: exec bitcoin-libs
 	@rm -rf ./bitcoin
 	@git clone --filter=blob:none https://github.com/bitcoin/bitcoin.git && \
 		cd ./bitcoin && ./autogen.sh && ./configure && $(MAKE) -C depends
-
+bitcoin-guix-sigs:
+	@if [[ ! -d "guix.sigs" ]]; then git clone git@github.com:randymcmillan/guix.sigs.git; fi
+	@pushd guix.sigs && git reset --hard && git remote -v | grep -w upstream && \
+	git remote set-url upstream https://github.com/bitcoin-core/guix.sigs.git || \
+	git remote add     upstream https://github.com/bitcoin-core/guix.sigs.git && \
+	git push -f origin main:main && popd
 .PHONY: push
 .ONESHELL:
 push: touch-time

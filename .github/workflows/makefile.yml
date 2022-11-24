@@ -45,11 +45,6 @@ jobs:
           make nvm && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
                                             nvm install 10
 
-    - name: .functions
-      run: |
-          sudo apt-get install gnupg
-          . .functions && gpg-recv-keys-bitcoin-devs
-
     - name: make alpine-build
       run: |
           make alpine-build

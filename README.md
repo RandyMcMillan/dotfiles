@@ -24,6 +24,7 @@
  	      	config-dock		source and run config-dock-prefs
  	      	all			execute checkbrew install scripts
  	      	alpine-shell		run install-shell.sh alpine user=root
+ 	      	alpine-build		run install-shell.sh alpine-build user=root
  	      	debian-shell		run install-shell.sh debian user=root
  	      	vim			install vim and macvim on macos
  	      	qt5			install qt@5

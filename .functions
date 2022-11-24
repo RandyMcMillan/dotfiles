@@ -161,11 +161,41 @@ function git-add-remote-bitcoin-gui-devs(){
     git remote add hebasto-gui https://github.com/hebasto/gui.git
 
 }
+function gpg-sync-keys-bitcoin-devs(){
+
+##laanwj list
+while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:41}; done < keys.txt
+while read line; do gpg  --keyserver keys.openpgp.org      --send-key ${line:0:41}; done < keys.txt
+while read line; do gpg  --keyserver pgp.mit.edu           --send-key ${line:0:41}; done < keys.txt
+
+while read line; do gpg  --keyserver keys.openpgp.org      --recv-key ${line:0:41}; done < keys.txt
+while read line; do gpg  --keyserver keyserver.ubuntu.com  --send-key ${line:0:41}; done < keys.txt
+while read line; do gpg  --keyserver pgp.mit.edu           --send-key ${line:0:41}; done < keys.txt
+
+#bitcoin-builder-list
+while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:41}; done < builder-keys.txt
+while read line; do gpg  --keyserver keys.openpgp.org      --send-key ${line:0:41}; done < builder-keys.txt
+while read line; do gpg  --keyserver pgp.mit.edu           --send-key ${line:0:41}; done < builder-keys.txt
+
+while read line; do gpg  --keyserver keys.openpgp.org      --recv-key ${line:0:41}; done < builder-keys.txt
+while read line; do gpg  --keyserver keyserver.ubuntu.com  --send-key ${line:0:41}; done < builder-keys.txt
+while read line; do gpg  --keyserver pgp.mit.edu           --send-key ${line:0:41}; done < builder-keys.txt
+
+	}
 function gpg-recv-keys-bitcoin-devs(){
 
-curl  -fsSL https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt  -o  keys.txt && shasum -a 256 keys.txt > keys.shasum.txt
+curl  -fsSL \
+https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt  \
+-o  keys.txt && \
+shasum -a 256 keys.txt > keys.shasum.txt
 
-while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:41}; done < keys.txt
+
+curl  -fsSL  \
+https://raw.githubusercontent.com/bitcoin/bitcoin/master/contrib/builder-keys/keys.txt \
+-o  builder-keys.txt && \
+shasum -a 256 builder-keys.txt > builder.keys.shasum.txt
+
+gpg-sync-keys-bitcoin-devs
 
 }
 

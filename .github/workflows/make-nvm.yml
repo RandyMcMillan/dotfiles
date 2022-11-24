@@ -18,12 +18,6 @@ jobs:
       run: |
           git fetch
 
-    - name: autogen.sh && configure
-      run: |
-          sudo apt-get install autotools-dev autoconf automake libtool m4
-          sudo apt-get install build-essential
-          ./autogen.sh && ./configure 
-
     - name: make bootstrap
       run: |
           make
@@ -35,14 +29,7 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install gcc
 
-    - name: make template
+    - name: make nvm
       run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && make template && checkbrew -h
-          make all
-
-    - name: make alpine-build
-      run: |
-          make alpine-build
-
-
-
+          make nvm && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+                                            nvm install 10

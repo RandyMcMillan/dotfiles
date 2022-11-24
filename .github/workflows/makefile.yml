@@ -49,7 +49,7 @@ jobs:
       run: |
           sudo apt-get install gnupg
           # source .functions && gpg-recv-keys-bitcoin-devs
-          source .functions && bitcoin-dl-install-depends
+          # source .functions && bitcoin-dl-install-depends
 
 
 

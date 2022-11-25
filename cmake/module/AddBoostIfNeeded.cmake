@@ -31,7 +31,7 @@ function(add_boost_if_needed)
   find_package(Boost 1.64.0 REQUIRED)
   set_target_properties(Boost::boost PROPERTIES IMPORTED_GLOBAL TRUE)
   target_compile_definitions(Boost::boost INTERFACE
-    $<$<CONFIG:Debug>:BOOST_MULTI_INDEX_ENABLE_SAFE_MODE>
+    $<$<OR:$<BOOL:${FUZZ}>,$<CONFIG:Debug>>:BOOST_MULTI_INDEX_ENABLE_SAFE_MODE>
   )
 
   mark_as_advanced(Boost_INCLUDE_DIR)

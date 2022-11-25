@@ -1,12 +1,10 @@
-name: gpg-recv-keys-bitcoin-devs
+name: make-bitcoin-guix-sigs
 
 on:
   push:
     branches: [ "master", "main" , "**", "**/**" ]
   pull_request:
     branches: [ "master", "main" , "**", "**/**" ]
-  schedule:
-    - cron: '1 0 */1 * *'
 
 jobs:
   build:
@@ -15,7 +13,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: .functions
+
+    - name: git fetch
       run: |
-          sudo apt-get install gnupg
-          . .functions && gpg-recv-keys-bitcoin-devs
+          git fetch
+
+    - name: make-bitcoin-guix-sigs
+      run: |
+          make bitcoin-guix-sigs
+
+
+

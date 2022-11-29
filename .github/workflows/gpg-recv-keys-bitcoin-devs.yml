@@ -9,7 +9,7 @@ on:
     - cron: '1 0 */1 * *'
 
 jobs:
-  build:
+  os-matrix:
 
     runs-on: [ ubuntu-latest, macos-latest ]
 

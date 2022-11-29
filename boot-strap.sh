@@ -114,7 +114,7 @@ linkAndSource() {
 
             source ~/.aliases
             increment
-            # source ~/.bash_profile
+            source ~/.bash_profile
             increment
             source ~/.bash_prompt
             increment

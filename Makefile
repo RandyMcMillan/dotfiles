@@ -1,2 +1,4 @@
 check:
 	@ls
+distcheck:
+	@ls

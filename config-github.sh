@@ -41,6 +41,8 @@ config-github() {
 
     sudo chmod 600 $GITHUB_RSA
     sudo chmod 644 $GITHUB_RSA.pub
+    sudo chmod 600 $DOCKER_RSA
+    sudo chmod 644 $DOCKER_RSA.pub
     sudo chmod 600 $DO_RSA
     sudo chmod 644 $DO_RSA.pub
 
@@ -48,9 +50,9 @@ config-github() {
     ssh-add ~/.ssh/github_rsa
     ssh-add ~/.ssh/docker_rsa
     ssh-add ~/.ssh/do_rsa
-    # ssh-add $GITHUB_RSA
-    # ssh-add $DOCKER_RSA
-    # ssh-add $DO_RSA
+    ssh-add $GITHUB_RSA
+    ssh-add $DOCKER_RSA
+    ssh-add $DO_RSA
 
     echo
     cat ~/.ssh/config
@@ -66,32 +68,42 @@ config-github() {
     cat $GITHUB_RSA.pub
     echo
     echo
+    ls -lT $DOCKER_RSA.pub
+    echo  "$DOCKER_RSA.pub"
+    echo
+    cat $DOCKER_RSA.pub
+    echo
+    echo
+    ls -lT $DO_RSA.pub
+    echo  "$DO_RSA.pub"
+    echo
+    cat $DO_RSA.pub
+    echo
+    echo
     fi
     gpg --list-secret-keys --keyid-format LONG
     read -p "Config gpg signing key? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
     read -p 'ENTER your GPG Signing Key: ' GPG_SIGNING_KEY
-    git config --global user.signingkey $GPG_SIGNING_KEY
-    # git config --global user.signingkey 97966C06BB06757B
+    #git config --global user.signingkey $GPG_SIGNING_KEY
+    git config --global user.signingkey 97966C06BB06757B
     echo && echo
     echo Your GPG Siging Key has been added...
     echo && echo
     export GPG_TTY=$(tty)
     touch ~/.bash_profile
-    # if [ -r ~/.bash_profile ]; then echo 'export GPG_TTY=$(tty)' >> ~/.bash_profile; \
-    #else echo 'export GPG_TTY=$(tty)' >> ~/.profile; fi
+    if [ -r ~/.bash_profile ]; then echo 'export GPG_TTY=$(tty)' >> ~/.bash_profile; \
+    else echo 'export GPG_TTY=$(tty)' >> ~/.profile; fi
     #if [ -r ~/.zshrc ]; then echo 'export GPG_TTY=$(tty)' >> ~/.zshrc; \
     #else echo 'export GPG_TTY=$(tty)' >> ~/.zprofile; fi
     fi
 }
-rm  /Users/git/.ssh/known_hosts
 eval "$(ssh-agent -s)"
-ssh-add
 config-github
 ssh-add
-# ssh-add ~/.ssh/*.github_rsa
-# ./config-git.sh
-# git config --global -l
+ssh-add ~/.ssh/*.github_rsa
+./config-git.sh
+git config --global -l
 ssh -v git@github.com
 #./install-github-utility.sh

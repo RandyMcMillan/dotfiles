@@ -67,8 +67,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
                 rm -f /usr/local/bin/*vi*
                 if [ ! hash mvim 2>/dev/null ]; then
                     # brew link --overwrite macvim
-                    brew install -f homebrew/cask/macvim
-                    brew link --overwrite macvim
+                    brew install --cask -f macvim
+                    # brew link --overwrite macvim
                 else
                     echo MacVim already installed.
                     echo

@@ -16,7 +16,7 @@ jobs:
 
     - name: autogen.sh
       run: |
-          apt-get install autoconf
+          sudo apt-get install autoconf
           ./autogen.sh
 
     - name: configure

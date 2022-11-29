@@ -33,12 +33,6 @@ then
   abort 'Both `$INTERACTIVE` and `$NONINTERACTIVE` are set. Please unset at least one variable and try again.'
 fi
 
-# Check if script is run in POSIX mode
-if [[ -n "${POSIXLY_CORRECT+1}" ]]
-then
-  abort 'Bash must not run in POSIX mode. Please unset POSIXLY_CORRECT and try again.'
-fi
-
 # string formatters
 if [[ -t 1 ]]
 then
@@ -112,17 +106,15 @@ OS="$(uname)"
 if [[ "${OS}" == "Linux" ]]
 then
   HOMEBREW_ON_LINUX=1
-elif [[ "${OS}" == "Darwin" ]]
+elif [[ "${OS}" != "Darwin" ]]
 then
-  HOMEBREW_ON_MACOS=1
-else
   abort "Homebrew is only supported on macOS and Linux."
 fi
 
 # Required installation paths. To install elsewhere (which is unsupported)
 # you can untar https://github.com/Homebrew/brew/tarball/master
 # anywhere you like.
-if [[ -n "${HOMEBREW_ON_MACOS-}" ]]
+if [[ -z "${HOMEBREW_ON_LINUX-}" ]]
 then
   UNAME_MACHINE="$(/usr/bin/uname -m)"
 
@@ -148,9 +140,9 @@ then
 else
   UNAME_MACHINE="$(uname -m)"
 
-  # On Linux, this script installs to /home/linuxbrew/.linuxbrew only
-  HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
-  HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
+  # On Linux, it installs to /home/linuxbrew/.linuxbrew if you have sudo access
+  # and ~/.linuxbrew (which is unsupported) if run interactively.
+  HOMEBREW_PREFIX_DEFAULT="/home/linuxbrew/.linuxbrew"
   HOMEBREW_CACHE="${HOME}/.cache/Homebrew"
 
   STAT_PRINTF=("stat" "--printf")
@@ -181,9 +173,9 @@ fi
 export HOMEBREW_{BREW,CORE}_GIT_REMOTE
 
 # TODO: bump version when new macOS is released or announced
-MACOS_NEWEST_UNSUPPORTED="14.0"
+MACOS_NEWEST_UNSUPPORTED="13.0"
 # TODO: bump version when new macOS is released
-MACOS_OLDEST_SUPPORTED="11.0"
+MACOS_OLDEST_SUPPORTED="10.15"
 
 # For Homebrew on Linux
 REQUIRED_RUBY_VERSION=2.6    # https://github.com/Homebrew/brew/pull/6556
@@ -223,7 +215,7 @@ have_sudo_access() {
     HAVE_SUDO_ACCESS="$?"
   fi
 
-  if [[ -n "${HOMEBREW_ON_MACOS-}" ]] && [[ "${HAVE_SUDO_ACCESS}" -ne 0 ]]
+  if [[ -z "${HOMEBREW_ON_LINUX-}" ]] && [[ "${HAVE_SUDO_ACCESS}" -ne 0 ]]
   then
     abort "Need sudo access on macOS (e.g. the user ${USER} needs to be an Administrator)!"
   fi
@@ -297,16 +289,6 @@ version_ge() {
 }
 version_lt() {
   [[ "${1%.*}" -lt "${2%.*}" ]] || [[ "${1%.*}" -eq "${2%.*}" && "${1#*.}" -lt "${2#*.}" ]]
-}
-
-check_run_command_as_root() {
-  [[ "${EUID:-${UID}}" == "0" ]] || return
-
-  # Allow Azure Pipelines/GitHub Actions/Docker/Concourse/Kubernetes to do everything as root (as it's normal there)
-  [[ -f /.dockerenv ]] && return
-  [[ -f /proc/1/cgroup ]] && grep -E "azpl_job|actions_job|docker|garden|kubepods" -q /proc/1/cgroup && return
-
-  abort "Don't run this as root!"
 }
 
 should_install_command_line_tools() {
@@ -509,29 +491,53 @@ fi
 # shellcheck disable=SC2016
 ohai 'Checking for `sudo` access (which may request your password)...'
 
-if [[ -n "${HOMEBREW_ON_MACOS-}" ]]
+if [[ -z "${HOMEBREW_ON_LINUX-}" ]]
 then
   have_sudo_access
-elif ! [[ -w "${HOMEBREW_PREFIX}" ]] &&
-     ! [[ -w "/home/linuxbrew" ]] &&
-     ! [[ -w "/home" ]] &&
-     ! have_sudo_access
-then
-  abort "$(
-    cat <<EOABORT
-Insufficient permissions to install Homebrew to \"${HOMEBREW_PREFIX}\" (the default prefix).
-
-Alternative (unsupported) installation methods are available at:
-https://docs.brew.sh/Installation#alternative-installs
-
-Please note this will require most formula to build from source, a buggy, slow and energy-inefficient experience.
-We will close any issues without response for these unsupported configurations.
-EOABORT
-  )"
+else
+  if [[ -w "${HOMEBREW_PREFIX_DEFAULT}" ]] ||
+     [[ -w "/home/linuxbrew" ]] ||
+     [[ -w "/home" ]]
+  then
+    HOMEBREW_PREFIX="${HOMEBREW_PREFIX_DEFAULT}"
+  elif [[ -n "${NONINTERACTIVE-}" ]]
+  then
+    if have_sudo_access
+    then
+      HOMEBREW_PREFIX="${HOMEBREW_PREFIX_DEFAULT}"
+    else
+      abort "Insufficient permissions to install Homebrew to \"${HOMEBREW_PREFIX_DEFAULT}\"."
+    fi
+  else
+    trap exit SIGINT
+    if ! /usr/bin/sudo -n -v &>/dev/null
+    then
+      ohai "Select a Homebrew installation directory:"
+      echo "- ${tty_bold}Enter your password${tty_reset} to install to ${tty_underline}${HOMEBREW_PREFIX_DEFAULT}${tty_reset} (${tty_bold}recommended${tty_reset})"
+      echo "- ${tty_bold}Press Control-D${tty_reset} to install to ${tty_underline}${HOME}/.linuxbrew${tty_reset}"
+      echo "- ${tty_bold}Press Control-C${tty_reset} to cancel installation"
+    fi
+    if have_sudo_access
+    then
+      HOMEBREW_PREFIX="${HOMEBREW_PREFIX_DEFAULT}"
+    else
+      HOMEBREW_PREFIX="${HOME}/.linuxbrew"
+    fi
+    trap - SIGINT
+  fi
+  HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
 fi
 HOMEBREW_CORE="${HOMEBREW_REPOSITORY}/Library/Taps/homebrew/homebrew-core"
 
-check_run_command_as_root
+if [[ "${EUID:-${UID}}" == "0" ]]
+then
+  # Allow Azure Pipelines/GitHub Actions/Docker/Concourse/Kubernetes to do everything as root (as it's normal there)
+  if ! [[ -f /proc/1/cgroup ]] ||
+     ! grep -E "azpl_job|actions_job|docker|garden|kubepods" -q /proc/1/cgroup
+  then
+    abort "Don't run this as root!"
+  fi
+fi
 
 if [[ -d "${HOMEBREW_PREFIX}" && ! -x "${HOMEBREW_PREFIX}" ]]
 then
@@ -545,7 +551,7 @@ EOABORT
   )"
 fi
 
-if [[ -n "${HOMEBREW_ON_MACOS-}" ]]
+if [[ -z "${HOMEBREW_ON_LINUX-}" ]]
 then
   # On macOS, support 64-bit Intel and ARM
   if [[ "${UNAME_MACHINE}" != "arm64" ]] && [[ "${UNAME_MACHINE}" != "x86_64" ]]
@@ -559,7 +565,8 @@ else
     abort "$(
       cat <<EOABORT
 Homebrew on Linux is not supported on ARM processors.
-  ${tty_underline}https://docs.brew.sh/Homebrew-on-Linux#arm-unsupported${tty_reset}
+You can try an alternate installation method instead:
+  ${tty_underline}https://docs.brew.sh/Homebrew-on-Linux#arm${tty_reset}
 EOABORT
     )"
   elif [[ "${UNAME_MACHINE}" != "x86_64" ]]
@@ -568,7 +575,7 @@ EOABORT
   fi
 fi
 
-if [[ -n "${HOMEBREW_ON_MACOS-}" ]]
+if [[ -z "${HOMEBREW_ON_LINUX-}" ]]
 then
   macos_version="$(major_minor "$(/usr/bin/sw_vers -productVersion)")"
   if version_lt "${macos_version}" "10.7"
@@ -812,7 +819,7 @@ execute_sudo "${CHOWN[@]}" "-R" "${USER}:${GROUP}" "${HOMEBREW_REPOSITORY}"
 
 if ! [[ -d "${HOMEBREW_CACHE}" ]]
 then
-  if [[ -n "${HOMEBREW_ON_MACOS-}" ]]
+  if [[ -z "${HOMEBREW_ON_LINUX-}" ]]
   then
     execute_sudo "${MKDIR[@]}" "${HOMEBREW_CACHE}"
   else
@@ -870,7 +877,7 @@ then
   execute_sudo "/usr/bin/xcode-select" "--switch" "/Library/Developer/CommandLineTools"
 fi
 
-if [[ -n "${HOMEBREW_ON_MACOS-}" ]] && ! output="$(/usr/bin/xcrun clang 2>&1)" && [[ "${output}" == *"license"* ]]
+if [[ -z "${HOMEBREW_ON_LINUX-}" ]] && ! output="$(/usr/bin/xcrun clang 2>&1)" && [[ "${output}" == *"license"* ]]
 then
   abort "$(
     cat <<EOABORT
@@ -894,10 +901,7 @@ ohai "Downloading and installing Homebrew..."
   execute "git" "config" "remote.origin.fetch" "+refs/heads/*:refs/remotes/origin/*"
 
   # ensure we don't munge line endings on checkout
-  execute "git" "config" "--bool" "core.autocrlf" "false"
-
-  # make sure symlinks are saved as-is
-  execute "git" "config" "--bool" "core.symlinks" "true"
+  execute "git" "config" "core.autocrlf" "false"
 
   execute "git" "fetch" "--force" "origin"
   execute "git" "fetch" "--force" "--tags" "origin"
@@ -933,8 +937,7 @@ ohai "Downloading and installing Homebrew..."
       execute "git" "init" "-q"
       execute "git" "config" "remote.origin.url" "${HOMEBREW_CORE_GIT_REMOTE}"
       execute "git" "config" "remote.origin.fetch" "+refs/heads/*:refs/remotes/origin/*"
-      execute "git" "config" "--bool" "core.autocrlf" "false"
-      execute "git" "config" "--bool" "core.symlinks" "true"
+      execute "git" "config" "core.autocrlf" "false"
       execute "git" "fetch" "--force" "origin" "refs/heads/master:refs/remotes/origin/master"
       execute "git" "remote" "set-head" "origin" "--auto" >/dev/null
       execute "git" "reset" "--hard" "origin/master"
@@ -1006,8 +1009,7 @@ esac
 if [[ "$(which brew)" != "${HOMEBREW_PREFIX}/bin/brew" ]]
 then
   cat <<EOS
-- Run these three commands in your terminal to add Homebrew to your ${tty_bold}PATH${tty_reset}:
-    echo '# Set PATH, MANPATH, etc., for Homebrew.' >> ${shell_profile}
+- Run these two commands in your terminal to add Homebrew to your ${tty_bold}PATH${tty_reset}:
     echo 'eval "\$(${HOMEBREW_PREFIX}/bin/brew shellenv)"' >> ${shell_profile}
     eval "\$(${HOMEBREW_PREFIX}/bin/brew shellenv)"
 EOS
@@ -1019,9 +1021,8 @@ then
   then
     plural="s"
   fi
-  printf "- Run these commands in your terminal to add the non-default Git remote%s for %s:" "${plural}" "${non_default_repos}"
-  printf "    echo '# Set PATH, MANPATH, etc., for Homebrew.' >> %s" "${shell_profile}"
-  printf "    echo '%s' >> %s\n" "${additional_shellenv_commands[@]}" "${shell_profile}"
+  echo "- Run these commands in your terminal to add the non-default Git remote${plural} for ${non_default_repos}:"
+  printf "    echo '%s' >> ${shell_profile}\n" "${additional_shellenv_commands[@]}"
   printf "    %s\n" "${additional_shellenv_commands[@]}"
 fi
 

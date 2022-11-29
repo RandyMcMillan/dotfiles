@@ -40,7 +40,7 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
-BREW                                    := $(shell which brew)
+BREW                                    := $(shell which brew || echo "install brew - brew.sh")
 export BREW
 BREW_PREFIX                             := $(shell brew --prefix)
 export BREW_PREFIX

@@ -14,35 +14,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: git fetch
+    - name: autogen.sh
       run: |
-          git fetch
+          apt-get install autoconf
+          ./autogen.sh
 
-    - name: autogen.sh && configure
-      run: |
-          sudo apt-get install autotools-dev autoconf automake libtool m4
-          sudo apt-get install build-essential
-          ./autogen.sh && ./configure 
+    - name: configure
+      run: ./configure
 
-    - name: make bootstrap
-      run: |
-          make
-          make bootstrap
+    - name: Install dependencies
+      run: make
 
-    - name: make brew
-      run: |
-          make brew
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install gcc
+    - name: Run check
+      run: make check
 
-    - name: make template
-      run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && make template && checkbrew -h
-          make all
-
-    - name: make alpine-build
-      run: |
-          make alpine-build
-
-
-
+    - name: Run distcheck
+      run: make distcheck

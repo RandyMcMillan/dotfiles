@@ -219,11 +219,11 @@ config-github: executable
 	cat config-git.sh
 	./config-github.sh
 
-.PHONY: install-bitcoin-libs
+.PHONY: depends
 .ONESHELL:
 ##	:	bitcoin-libs		install bitcoin-libs
-bitcoin-libs: exec
-	bash -c "source $(PWD)/bitcoin-libs.sh && install-bitcoin-libs"
+depends: exec
+	bash -c "source $(PWD)/bitcoin-depends.sh && install-bitcoin-libs"
 
 
 .PHONY: push
@@ -254,7 +254,7 @@ docs:
 	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git
 
 .PHONY: submodule submodules
-submodule: submodules## 	recursively initialize submodules
+submodule: submodules
 submodules:
 	git submodule update --init --recursive
 	git submodule foreach 'git fetch origin; git checkout $$(git rev-parse --abbrev-ref HEAD); git reset --hard origin/$$(git rev-parse --abbrev-ref HEAD); git submodule update --recursive; git clean -dfx'

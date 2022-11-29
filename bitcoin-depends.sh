@@ -19,7 +19,7 @@ if hash brew 2>/dev/null; then
     brew install curl
     brew uninstall --ignore-dependencies qt
     brew install m4 perl autoconf automake berkeley-db@4 libtool boost miniupnpc pkg-config python@3 qt@5 libevent qrencode
-    brew install librsvg bison
+    brew install librsvg bison llvm
     brew install codespell shellcheck
     brew install afl-fuzz
     brew install --build-from-source afl-fuzz

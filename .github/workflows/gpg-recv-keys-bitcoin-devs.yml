@@ -19,4 +19,4 @@ jobs:
       run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew install gnupg
-          . .functions && gpg-recv-keys-bitcoin-devs
+          sudo -s . .functions && gpg-recv-keys-bitcoin-devs

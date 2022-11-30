@@ -20,3 +20,4 @@ jobs:
           sudo apt-get install gnupg
           . .functions && gpg-recv-keys-bitcoin-devs
           cat builder-keys.txt | openssl dgst -sha256 > builder-keys.sha256.txt && git diff
+          gpg --sign builder-keys.txt

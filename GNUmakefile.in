@@ -223,6 +223,8 @@ all: executable gnupg
 gnupg:- executable
 	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
 
+gpg-recv-keys-bitcoin-devs:
+	@. .functions &&  gpg-recv-keys-bitcoin-devs
 # bash -c "test docker-compose && brew unlink docker-completion || echo"
 # bash -c "source template.sh && checkbrew install --cask docker"
 

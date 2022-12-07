@@ -61,7 +61,7 @@ BREW_PREFIX                             := $(shell brew --prefix)
 export BREW_PREFIX
 BREW_CELLAR                             := $(shell brew --cellar)
 export BREW_CELLAR
-HOMEBREW_NO_ENV_HINTS                   :=false
+HOMEBREW_NO_ENV_HINTS                   := false
 export HOMEBREW_NO_ENV_HINTS
 
 .ONESHELL:
@@ -126,6 +126,7 @@ help:
 report:
 	@echo ''
 	@echo ' TIME=${TIME}	'
+	@echo ' SHELL=${SHELL}	'
 	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
 	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'

@@ -71,9 +71,11 @@ export HOMEBREW_NO_ENV_HINTS
 ##make	:	command			description
 ##	:
 -:
-	@bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+ifeq ($(BREW),)
+	$(MAKE) brew
+endif
 	@./configure --quiet
-	@test brew && brew install --force --quiet coreutils || echo "make brew"
 	$(MAKE) help
 
 

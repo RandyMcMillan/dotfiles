@@ -141,24 +141,25 @@ function git-fetch-branches(){
 }
 function git-add-remote-bitcoin-devs(){
 
-    git remote add upstream https://github.com/bitcoin/bitcoin.git
+    git remote add upstream https://github.com/bitcoin/bitcoin.git || true
 
-    git remote add marco-falke https://github.com/MarcoFalke/bitcoin.git
-    git remote add jonatack https://github.com/jonatack/bitcoin.git
-    git remote add jonas https://github.com/jonasschnelli/bitcoin.git
-    git remote add hebasto https://github.com/hebasto/bitcoin.git
-    git remote add fanquake https://github.com/fanquake/bitcoin.git
-    git remote add laanwj https://github.com/laanwj/bitcoin.git
+    git remote add marco-falke https://github.com/MarcoFalke/bitcoin.git || true
+    git remote add jonatack https://github.com/jonatack/bitcoin.git || true
+    git remote add jonas https://github.com/jonasschnelli/bitcoin.git || true
+    git remote add hebasto https://github.com/hebasto/bitcoin.git || true
+    git remote add fanquake https://github.com/fanquake/bitcoin.git || true
+    git remote add laanwj https://github.com/laanwj/bitcoin.git || true
 
 }
 function git-add-remote-bitcoin-gui-devs(){
 
-    git remote add upstream-gui https://github.com/bitcoin-core/gui.git
+    git remote add upstream-gui https://github.com/bitcoin-core/gui.git || true
 
-    git remote add marco-falke-gui https://github.com/MarcoFalke/bitcoin-core-gui.git
-    git remote add jonatack-gui https://github.com/jonatack/gui.git
-    git remote add jonas-gui https://github.com/jonasschnelli/gui.git
-    git remote add hebasto-gui https://github.com/hebasto/gui.git
+    git remote add marco-falke-gui https://github.com/MarcoFalke/bitcoin-core-gui.git || true
+    git remote add jonatack-gui https://github.com/jonatack/gui.git || true
+    git remote add jonas-gui https://github.com/jonasschnelli/gui.git || true
+    git remote add hebasto-gui https://github.com/hebasto/gui.git || true
+    git remote add luke-jr https://github.com/luke-jr/bitcoin-core-gui.git || true
 
 }
 function gpg-sync-keys-bitcoin-devs(){

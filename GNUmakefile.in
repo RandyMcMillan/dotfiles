@@ -64,6 +64,10 @@ export BREW_CELLAR
 HOMEBREW_NO_ENV_HINTS                   := false
 export HOMEBREW_NO_ENV_HINTS
 
+#PORTER_VERSION                         :=v1.0.1
+PORTER_VERSION                          :=latest
+export PORTER_VERSION
+
 .ONESHELL:
 #.PHONY:-
 .SILENT:
@@ -148,6 +152,8 @@ report:
 	@echo ' BREW_PREFIX=${BREW_PREFIX}	'
 	@echo ' BREW_CELLAR=${BREW_CELLAR}	'
 	@echo ' HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
+	@echo ''
+	@echo ' PORT_VERSION=${PORTER_VERSION}	'
 
 #.PHONY:
 #phony:
@@ -272,6 +278,13 @@ debian-shell: debian
 debian:
 	test docker && ./install-shell.sh debian || echo "make docker OR checkbrew -i docker"
 	./install-shell.sh debian
+
+##	:	porter
+porter:
+	@curl -L https://cdn.porter.sh/$(PORTER_VERSION)/install-mac.sh > install-porter.sh \
+	&& chmod +x install-porter.sh && ./install-porter.sh \
+	&& export PATH=$(PATH):~/.porter
+
 .PHONY: vim
 ##	:	vim			install vim and macvim on macos
 vim: executable

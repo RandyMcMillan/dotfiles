@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
+ARCH=$(uname -m);
+export ARCH
+echo ARCH=$ARCH
+X86_64HASH=afd92fa75d7b6a103a5d44719e2fbcf4077f1bb4
+export X86_64HASH
 
-if [ $(which ssh-add) 2>/dev/null ]; then
-    ssh-add
+echo X86_64HASH=$X86_64HASH
+
+if [ hash ssh-agent 2>/dev/null ]; then
+    ssh-agent ssh-add
 else
     echo "if fail try make config-github"
     echo "if fail try make config-git"
@@ -35,15 +42,21 @@ echo $VIMRC_DESTINATION
 #read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
 #if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [ -d "$VIMRC_DESTINATION" ]; then
-      cd ~/.vim_runtime
+      pushd ~/.vim_runtime
       git pull -f origin master
       python3 -m pip install requests
+      if [ ! "$ARCH" = "x86_64" ]; then
       python3 update_plugins.py
+      else
+      pushd ~/.vim_runtime && git checkout $X86_64HASH
+      fi
       sh ~/.vim_runtime/install_awesome_vimrc.sh
       #we exclude from ~/ because we link to here
       ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+      popd
     else
-      git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
+      git clone --depth 3 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
+      pushd ~/.vim_runtime && git checkout $X86_64HASH
       sh ~/.vim_runtime/install_awesome_vimrc.sh
       ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
     fi

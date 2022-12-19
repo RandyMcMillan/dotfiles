@@ -1,19 +1,16 @@
 # PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 SHELL									:= /bin/bash
-
 PWD										?= pwd_unknown
-
-#space=
-#space+=
+GLIBTOOL								:=$(shell which glibtool)
+export GLIBTOOL
+GLIBTOOLIZE								:=$(shell which glibtoolize)
+export GLIBTOOLIZE
 AUTOCONF								:=$(shell which autoconf)
 export AUTOCONF
-
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
-
 TIME									:= $(shell date +%s)
 export TIME
-
 # PROJECT_NAME defaults to name of the current directory.
 ifeq ($(project),)
 PROJECT_NAME							:= $(notdir $(PWD))
@@ -132,6 +129,8 @@ help:
 
 report:
 	@echo ''
+	@echo ' GLIBTOOL=${GLIBTOOL}	'
+	@echo ' GLIBTOOLIZE=${GLIBTOOLIZE}	'
 	@echo ' AUTOCONF=${AUTOCONF}	'
 	@echo ''
 	@echo ' TIME=${TIME}	'

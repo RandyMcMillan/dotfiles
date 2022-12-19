@@ -119,14 +119,11 @@ help:
 	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	@echo ""
-	@echo ""
-	@echo ""
 	@echo "Useful Commands:"
 	@echo ""
-	@echo "git-\<TAB>";echo
-	@echo "gpg-\<TAB>";echo
-	@echo "bitcoin-\<TAB>";echo
-	@echo ""
+	@echo "git-\<TAB>";
+	@echo "gpg-\<TAB>";
+	@echo "bitcoin-\<TAB>";
 	@echo ""
 
 report:
@@ -386,9 +383,6 @@ export BITCOIN_VERSION
 .PHONY: bitcoin-test-battery
 bitcoin-test-battery:
 	bash -c "./bitcoin-test-battery.sh $(BITCOIN_VERSION) "
-.PHONY: install-dotfiles-on-remote
-install-dotfiles-on-remote:
-	./install-dotfiles-on-remote.sh
 
 .PHONY: funcs
 ##	:

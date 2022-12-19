@@ -5,6 +5,8 @@ PWD										?= pwd_unknown
 
 #space=
 #space+=
+AUTOCONF								:=$(shell which autoconf)
+export AUTOCONF
 
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
@@ -76,6 +78,8 @@ export PORTER_VERSION
 ##	:
 -:
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+	@$(SHELL) ./autogen.sh
+	@$(SHELL) ./configure
 ifeq ($(BREW),)
 	$(MAKE) brew
 endif
@@ -127,6 +131,8 @@ help:
 	@echo ""
 
 report:
+	@echo ''
+	@echo ' AUTOCONF=${AUTOCONF}	'
 	@echo ''
 	@echo ' TIME=${TIME}	'
 	@echo ' SHELL=${SHELL}	'
@@ -356,13 +362,6 @@ docs:-
 	git add --ignore-errors sources/*.md
 	git add --ignore-errors *.md
 	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git
-
-.PHONY: submodule submodules
-submodule: submodules
-submodules:
-	git submodule update --init --recursive
-	git submodule foreach 'git fetch origin; git checkout $$(git rev-parse --abbrev-ref HEAD); git reset --hard origin/$$(git rev-parse --abbrev-ref HEAD); git submodule update --recursive; git clean -dfx'
-
 
 .PHONY: touch-time
 .ONESHELL:

@@ -52,7 +52,7 @@ export GIT_REPO_PATH
 
 #HOMEBREW_CORE_GIT_REMOTE=$(strip $(THIS_DIR))homebrew-core# put your Git mirror of Homebrew/homebrew-core here
 #export HOMEBREW_CORE_GIT_REMOTE
-export HOMEBREW_INSTALL_FROM_API=1
+#export HOMEBREW_INSTALL_FROM_API=1
 
 
 BREW                                    := $(shell which brew)

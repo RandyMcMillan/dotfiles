@@ -254,7 +254,7 @@ all: executable gnupg
 	bash -c "source $(PWD)/template && checkbrew install vim"
 	bash -c "source $(PWD)/template && checkbrew install     powershell"
 	bash -c "source $(PWD)/template && checkbrew install                meson"
-	bash -c "source $(PWD)/template && checkbrew install ffmpeg@2.8"
+	bash -c "source $(PWD)/template && checkbrew install texi2html ffmpeg@2.8"
 
 gnupg:- executable
 	bash -c "source $(PWD)/template && \

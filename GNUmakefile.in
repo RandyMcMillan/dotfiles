@@ -228,13 +228,39 @@ config-dock: executable
 .PHONY: all
 ##	:	all			execute checkbrew install scripts
 all: executable gnupg
-	bash -c "source $(PWD)/template && checkbrew install vim coreutils"
-	bash -c "source $(PWD)/template && checkbrew install vim macdown glow"
-	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
-	bash -c "source $(PWD)/template && checkbrew install gdbm mpdecimal openssl@1.1 readline sqlite xz python@3.10 node yarn"
+	bash -c "source $(PWD)/template && checkbrew install vim"
+	bash -c "source $(PWD)/template && checkbrew install     macdown"
+	bash -c "source $(PWD)/template && checkbrew install             glow"
+	bash -c "source $(PWD)/template && checkbrew install coreutils"
+	bash -c "source $(PWD)/template && checkbrew install           gettext"
+	bash -c "source $(PWD)/template && checkbrew install gnutls"
+	bash -c "source $(PWD)/template && checkbrew install        libassuan"
+	bash -c "source $(PWD)/template && checkbrew install libgcrypt"
+	bash -c "source $(PWD)/template && checkbrew install           libgpg-error"
+	bash -c "source $(PWD)/template && checkbrew install libksba"
+	bash -c "source $(PWD)/template && checkbrew install         libusb"
+	bash -c "source $(PWD)/template && checkbrew install                npth"
+	bash -c "source $(PWD)/template && checkbrew install pinentry"
+	bash -c "source $(PWD)/template && checkbrew install          gnupg"
+	bash -c "source $(PWD)/template && checkbrew install                gdbm"
+	bash -c "source $(PWD)/template && checkbrew install mpdecimal"
+	bash -c "source $(PWD)/template && checkbrew install           openssl@1.1"
+	bash -c "source $(PWD)/template && checkbrew install readline"
+	bash -c "source $(PWD)/template && checkbrew install          sqlite"
+	bash -c "source $(PWD)/template && checkbrew install xz"
+	bash -c "source $(PWD)/template && checkbrew install    python@3.10"
+	bash -c "source $(PWD)/template && checkbrew install node"
+	bash -c "source $(PWD)/template && checkbrew install      yarn"
+	bash -c "source $(PWD)/template && checkbrew install vim"
+	bash -c "source $(PWD)/template && checkbrew install     powershell"
+	bash -c "source $(PWD)/template && checkbrew install                meson"
+	bash -c "source $(PWD)/template && checkbrew install ffmpeg@2.8"
 
 gnupg:- executable
-	bash -c "source $(PWD)/template && checkbrew install gettext gnutls libassuan libgcrypt libgpg-error libksba libusb npth pinentry gnupg"
+	bash -c "source $(PWD)/template && \
+		checkbrew install gettext gnutls \
+		libassuan libgcrypt libgpg-error \
+		libksba libusb npth pinentry gnupg"
 
 gpg-recv-keys-bitcoin-devs:
 	@. .functions &&  gpg-recv-keys-bitcoin-devs

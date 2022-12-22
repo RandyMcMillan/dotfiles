@@ -164,7 +164,10 @@ function git-add-remote-bitcoin-gui-devs(){
 }
 function gpg-sync-keys-bitcoin-devs(){
 
-PGP_SERVERS="pgpkeys.eu keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
+#PGP_SERVERS="pgp.mit.edu"
+PGP_SERVERS="keys.openpgp.org"
+#PGP_SERVERS="keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
+#PGP_SERVERS="pgpkeys.eu keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
 for server in $PGP_SERVERS; do
 
 #laanwj list

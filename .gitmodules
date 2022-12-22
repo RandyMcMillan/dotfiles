@@ -1,3 +1,7 @@
 [submodule "rsync-time-backup"]
 	path = rsync-time-backup
 	url = https://github.com/laurent22/rsync-time-backup.git
+[submodule "legit"]
+	path = legit
+	url = git@github.com:randymcmillan/legit
+	branch = master

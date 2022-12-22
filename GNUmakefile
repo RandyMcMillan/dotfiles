@@ -417,5 +417,6 @@ funcs:
 	make -f funcs.mk
 
 -include funcs.mk
+-include legit.mk
 # vim: set noexpandtab:
 # vim: set setfiletype make

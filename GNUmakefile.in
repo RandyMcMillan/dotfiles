@@ -1,5 +1,6 @@
 # PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 SHELL									:= /bin/bash
+POWERSHELL								:= $(shell which pwsh)
 PWD										?= pwd_unknown
 GLIBTOOL								:=$(shell which glibtool)
 export GLIBTOOL
@@ -135,6 +136,7 @@ report:
 	@echo ''
 	@echo ' TIME=${TIME}	'
 	@echo ' SHELL=${SHELL}	'
+	@echo ' POWERSHELL=${POWERSHELL}	'
 	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
 	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'

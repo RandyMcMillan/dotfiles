@@ -13,23 +13,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: git fetch
-      run: |
-          git fetch
-
-    - name: make bootstrap
-      run: |
-          make
-          make bootstrap
-
-    - name: make brew
-      run: |
-          make brew
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install gcc
-
     - name: make nvm
       run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+          wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
           make nvm && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
-                                            nvm install 10
+                                            nvm install 10 && \
+                                            nvm install 11 && \
+                                            nvm install 12 && \
+                                            nvm install 13 && \
+                                            nvm install 14 && \
+                                            nvm install 15 && \
+                                            nvm install 16 && \
+                                            nvm install 17 && \
+                                            nvm install 18

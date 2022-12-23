@@ -26,21 +26,21 @@ endif
 export FORCE
 
 #GIT CONFIG
-GIT_USER_NAME							:= $(shell git config user.name)
+GIT_USER_NAME							:= $(shell git config user.name || echo)
 export GIT_USER_NAME
-GIT_USER_EMAIL							:= $(shell git config user.email)
+GIT_USER_EMAIL							:= $(shell git config user.email || echo)
 export GIT_USER_EMAIL
 GIT_SERVER								:= https://github.com
 export GIT_SERVER
-GIT_PROFILE								:= $(shell git config user.name)
+GIT_PROFILE								:= $(shell git config user.name || echo)
 export GIT_PROFILE
-GIT_BRANCH								:= $(shell git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH								:= $(shell git rev-parse --abbrev-ref HEAD || echo)
 export GIT_BRANCH
-GIT_HASH								:= $(shell git rev-parse --short HEAD)
+GIT_HASH								:= $(shell git rev-parse --short HEAD || echo)
 export GIT_HASH
-GIT_PREVIOUS_HASH						:= $(shell git rev-parse --short HEAD^1)
+GIT_PREVIOUS_HASH						:= $(shell git rev-parse --short HEAD^1 || echo)
 export GIT_PREVIOUS_HASH
-GIT_REPO_ORIGIN							:= $(shell git remote get-url origin)
+GIT_REPO_ORIGIN							:= $(shell git remote get-url origin || echo)
 export GIT_REPO_ORIGIN
 GIT_REPO_NAME							:= $(PROJECT_NAME)
 export GIT_REPO_NAME

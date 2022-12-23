@@ -110,6 +110,7 @@ keymap:
 init:-
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
+	./scripts/initialize
 brew:-
 	@export HOMEBREW_INSTALL_FROM_API=1
 	@bash ./install-brew.sh

@@ -20,7 +20,17 @@ jobs:
 
     - name: autogen.sh && configure
       run: |
-          sudo apt-get install autotools-dev autoconf automake libtool m4
-          sudo apt-get install build-essential
-          ./autogen.sh && ./configure 
-
+          sudo apt-get install autotools-dev \
+          autoconf automake libtool m4 \
+          build-essential \
+          libssl-dev libcrypto++-dev
+          ./autogen.sh && ./configure
+    - name: make
+      run: |
+          make
+    - name: make legit
+      run: |
+          make legit
+    - name: make nostril
+      run: |
+          make nostril

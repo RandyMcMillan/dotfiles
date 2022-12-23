@@ -24,13 +24,13 @@ jobs:
           autoconf automake libtool m4 \
           build-essential \
           libssl-dev libcrypto++-dev
-          ./autogen.sh && ./configure
+    #      ./autogen.sh && ./configure
     - name: make
       run: |
-          make
-    - name: make legit
-      run: |
-          make legit
+          sudo make
+    #- name: make legit
+    #  run: |
+    #      sudo make legit
     - name: make nostril
       run: |
-          make nostril
+          sudo make nostril

@@ -20,27 +20,37 @@ PROJECT_NAME							:= $(project)
 endif
 export PROJECT_NAME
 
+NODE_VERSION							:=v12.22.9
+export NODE_VERSION
+NODE_ALIAS								:=v14
+export NODE_ALIAS
+PACKAGE_MANAGER							:=yarn
+export PACKAGE_MANAGER
+PACKAGE_INSTALL							:=add
+export PACKAGE_INSTALL
+
+
 ifeq ($(force),true)
 FORCE									:= --force
 endif
 export FORCE
 
 #GIT CONFIG
-GIT_USER_NAME							:= $(shell git config user.name)
+GIT_USER_NAME							:= $(shell git config user.name || echo)
 export GIT_USER_NAME
-GIT_USER_EMAIL							:= $(shell git config user.email)
+GIT_USER_EMAIL							:= $(shell git config user.email || echo)
 export GIT_USER_EMAIL
 GIT_SERVER								:= https://github.com
 export GIT_SERVER
-GIT_PROFILE								:= $(shell git config user.name)
+GIT_PROFILE								:= $(shell git config user.name || echo)
 export GIT_PROFILE
-GIT_BRANCH								:= $(shell git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH								:= $(shell git rev-parse --abbrev-ref HEAD || echo)
 export GIT_BRANCH
-GIT_HASH								:= $(shell git rev-parse --short HEAD)
+GIT_HASH								:= $(shell git rev-parse --short HEAD || echo)
 export GIT_HASH
-GIT_PREVIOUS_HASH						:= $(shell git rev-parse --short HEAD^1)
+GIT_PREVIOUS_HASH						:= $(shell git rev-parse --short HEAD^1 || echo)
 export GIT_PREVIOUS_HASH
-GIT_REPO_ORIGIN							:= $(shell git remote get-url origin)
+GIT_REPO_ORIGIN							:= $(shell git remote get-url origin || echo)
 export GIT_REPO_ORIGIN
 GIT_REPO_NAME							:= $(PROJECT_NAME)
 export GIT_REPO_NAME
@@ -74,8 +84,10 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--:
+-: submodules
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+	$(MAKE) help
+autoconf:
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
 ifeq ($(BREW),)
@@ -108,6 +120,7 @@ keymap:
 init:-
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
+	./scripts/initialize
 brew:-
 	@export HOMEBREW_INSTALL_FROM_API=1
 	@bash ./install-brew.sh
@@ -139,6 +152,10 @@ report:
 	@echo ' POWERSHELL=${POWERSHELL}	'
 	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
 	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
+	@echo ''
+	@echo ' NODE_VERSION=${NODE_VERSION}	'
+	@echo ' NODE_ALIAS=${NODE_ALIAS}	'
+	@echo ''
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
 	@echo ' GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
 	@echo ' GIT_SERVER=${GIT_SERVER}	'
@@ -149,6 +166,7 @@ report:
 	@echo ' GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
 	@echo ' GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo ' GIT_REPO_PATH=${GIT_REPO_PATH}	'
+	@echo ''
 	@echo ' BREW=${BREW}	'
 	@echo ' HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
 	@echo ' HOMEBREW_CORE_REMOTE=${HOMEBREW_CORE_GIT_REMOTE}	'
@@ -211,12 +229,10 @@ template:
 	bash -c "source /usr/local/bin/checkbrew"
 
 .PHONY: nvm
-##	:	nvm		 	install node version manager
-nvm: executable
-	@echo "install sequence here..."
-	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-#	@export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$(HOME)/.nvm" || printf %s "$(XDG_CONFIG_HOME)/nvm")"
-#	@[ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" # This loads nvm
+.ONESHELL:
+nvm: executable ## nvm
+	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull -C $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
+	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
 
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
@@ -416,6 +432,11 @@ bitcoin-test-battery:
 funcs:
 	make -f funcs.mk
 
+clean-nvm: ## clean-nvm
+	@rm -rf ~/.nvm
+
 -include funcs.mk
+-include legit.mk
+-include nostril.mk
 # vim: set noexpandtab:
 # vim: set setfiletype make

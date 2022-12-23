@@ -65,11 +65,11 @@ export GIT_REPO_PATH
 #export HOMEBREW_INSTALL_FROM_API=1
 
 
-BREW                                    := $(shell which brew)
+BREW                                    := $(shell which brew || echo)
 export BREW
-BREW_PREFIX                             := $(shell brew --prefix)
+BREW_PREFIX                             := $(shell brew --prefix || echo)
 export BREW_PREFIX
-BREW_CELLAR                             := $(shell brew --cellar)
+BREW_CELLAR                             := $(shell brew --cellar || echo)
 export BREW_CELLAR
 HOMEBREW_NO_ENV_HINTS                   := false
 export HOMEBREW_NO_ENV_HINTS

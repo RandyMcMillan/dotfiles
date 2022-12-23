@@ -1,6 +1,6 @@
 .PHONY:legit
 legit: submodule
-	$(MAKE) legit -C legit
+	@pushd legit && $(MAKE) legit && popd
 
 # vim: set noexpandtab:
 # vim: set setfiletype make

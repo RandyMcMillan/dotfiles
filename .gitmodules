@@ -3,5 +3,9 @@
 	url = https://github.com/laurent22/rsync-time-backup.git
 [submodule "legit"]
 	path = legit
-	url = git@github.com:randymcmillan/legit
+	url = https://github.com/randymcmillan/legit
+	branch = master
+[submodule "nostril"]
+	path = nostril
+	url = https://github.com/randymcmillan/nostril
 	branch = master

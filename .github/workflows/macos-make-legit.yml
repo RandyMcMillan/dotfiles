@@ -33,8 +33,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: printenv
         run: |
-          brew install libtool autoconf automake cargo rustc
-          printenv
+            brew install libtool autoconf automake cargo rustc
+            make
+            printenv
       - name: make
         run: |
-          make legit
+            make legit

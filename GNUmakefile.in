@@ -74,8 +74,10 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--:
+-: submodules
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+	$(MAKE) help
+autoconf:
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
 ifeq ($(BREW),)
@@ -418,5 +420,6 @@ funcs:
 
 -include funcs.mk
 -include legit.mk
+-include nostril.mk
 # vim: set noexpandtab:
 # vim: set setfiletype make

@@ -5,3 +5,7 @@
 	path = legit
 	url = https://github.com/randymcmillan/legit
 	branch = master
+[submodule "nostril"]
+	path = nostril
+	url = git@github.com:randymcmillan/nostril
+	branch = master

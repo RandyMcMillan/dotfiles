@@ -1047,6 +1047,7 @@ then
   For more information, see:
     ${tty_underline}https://docs.brew.sh/Homebrew-on-Linux${tty_reset}
 - We recommend that you install GCC:
+    brew install libmpc
     brew install gcc
 EOS
 fi

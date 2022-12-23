@@ -24,25 +24,3 @@ jobs:
           sudo apt-get install build-essential
           ./autogen.sh && ./configure 
 
-    - name: make bootstrap
-      run: |
-          make
-          make bootstrap
-
-    - name: make brew
-      run: |
-          make brew
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install gcc
-
-    - name: make template
-      run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && make template && checkbrew -h
-          make all
-
-    - name: make alpine-build
-      run: |
-          make alpine-build
-
-
-

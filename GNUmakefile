@@ -242,35 +242,69 @@ config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
 .PHONY: all
-##	:	all			execute checkbrew install scripts
-all: executable gnupg
-	bash -c "source $(PWD)/template && checkbrew install vim"
-	bash -c "source $(PWD)/template && checkbrew install     macdown"
-	bash -c "source $(PWD)/template && checkbrew install             glow"
-	bash -c "source $(PWD)/template && checkbrew install coreutils"
-	bash -c "source $(PWD)/template && checkbrew install           gettext"
-	bash -c "source $(PWD)/template && checkbrew install gnutls"
-	bash -c "source $(PWD)/template && checkbrew install        libassuan"
-	bash -c "source $(PWD)/template && checkbrew install libgcrypt"
-	bash -c "source $(PWD)/template && checkbrew install           libgpg-error"
-	bash -c "source $(PWD)/template && checkbrew install libksba"
-	bash -c "source $(PWD)/template && checkbrew install         libusb"
+##	:	all			exec gnupg brew-libs
+all: executable gnupg brew-libs
+vim:
+	bash -c "source $(PWD)/template && checkbrew install	vim"
+macdown:
+	bash -c "source $(PWD)/template && checkbrew install	macdown"
+glow:
+	bash -c "source $(PWD)/template && checkbrew install	glow"
+coreutils:
+	bash -c "source $(PWD)/template && checkbrew install	coreutils"
+gettext:
+	bash -c "source $(PWD)/template && checkbrew install	gettext"
+texinfo:
+	bash -c "source $(PWD)/template && checkbrew install	texinfo"
+help2man:
+	bash -c "source $(PWD)/template && checkbrew install	help2man"
+gnutls:
+	bash -c "source $(PWD)/template && checkbrew install	gnutls"
+
+brew-libs: libassuan libgcrypt libgpg-error libksba libusb
+libassuan:
+	bash -c "source $(PWD)/template && checkbrew install	libassuan"
+libgcrypt:
+	bash -c "source $(PWD)/template && checkbrew install	libgcrypt"
+libgpg-error:
+	bash -c "source $(PWD)/template && checkbrew install	libgpg-error"
+libksba:
+	bash -c "source $(PWD)/template && checkbrew install	libksba"
+libusb:
+	bash -c "source $(PWD)/template && checkbrew install	libusb"
+
+npth:
 	bash -c "source $(PWD)/template && checkbrew install                npth"
+pinentry:
 	bash -c "source $(PWD)/template && checkbrew install pinentry"
-	bash -c "source $(PWD)/template && checkbrew install          gnupg"
+gdbm:
 	bash -c "source $(PWD)/template && checkbrew install                gdbm"
+mpdecimal:
 	bash -c "source $(PWD)/template && checkbrew install mpdecimal"
+openssl@1.1:
 	bash -c "source $(PWD)/template && checkbrew install           openssl@1.1"
+readline:
 	bash -c "source $(PWD)/template && checkbrew install readline"
+sqlite:
 	bash -c "source $(PWD)/template && checkbrew install          sqlite"
+xz:
 	bash -c "source $(PWD)/template && checkbrew install xz"
+python@3.10:
 	bash -c "source $(PWD)/template && checkbrew install    python@3.10"
+node:
 	bash -c "source $(PWD)/template && checkbrew install node"
+node@18:
+	bash -c "source $(PWD)/template && checkbrew install node@18"
+yarn:
 	bash -c "source $(PWD)/template && checkbrew install      yarn"
-	bash -c "source $(PWD)/template && checkbrew install vim"
+powershell:
 	bash -c "source $(PWD)/template && checkbrew install     powershell"
+meson:
 	bash -c "source $(PWD)/template && checkbrew install                meson"
-	bash -c "source $(PWD)/template && checkbrew install texi2html ffmpeg@2.8"
+texi2html:
+	bash -c "source $(PWD)/template && checkbrew install texi2html"
+ffmpeg@2.8:
+	bash -c "source $(PWD)/template && checkbrew install ffmpeg@2.8"
 
 gnupg:- executable
 	bash -c "source $(PWD)/template && \
@@ -332,8 +366,8 @@ porter:
 	&& export PATH=$(PATH):~/.porter
 
 .PHONY: vim
-##	:	vim			install vim and macvim on macos
-vim: executable
+##	:	install-vim			install vim and macvim on macos
+install-vim: executable
 	./install-vim.sh $(FORCE)
 
 .PHONY: protonvpn

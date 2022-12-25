@@ -10,6 +10,7 @@ AC_CONFIG_FILES([GNUmakefile])
 #AM_MISSING_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(HELP2MAN, help2man, false // No help2man //)
 AC_PATH_PROG(BREW, brew, false // No brew //)
+AC_PATH_PROG(LEGIT, legit, false // No legit //)
 AC_PATH_PROG(NOSTRIL, nostril, false // No nostril //)
 # Checks for programs.
 AC_PROG_AWK

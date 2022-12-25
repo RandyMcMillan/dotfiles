@@ -24,7 +24,8 @@ jobs:
       - name: "build pre-release"
         run: |
           make
-          shasum -a 256 GNUmakefile > GNUmakefile.sha256.txt
+          make nostril
+          shasum -a 256 nostril/nostril > nostril.sha256.txt
       - name: Save state
         run: echo "{name}={value}" >> $GITHUB_STATE
       - name: Set output
@@ -36,5 +37,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            GNUmakefile
-            GNUmakefile.sha256.txt
+            nostril/nostril
+            nostril.sha256.txt

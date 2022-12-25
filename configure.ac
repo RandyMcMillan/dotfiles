@@ -9,6 +9,7 @@ AC_CONFIG_SRCDIR([src/foo.c])
 AC_CONFIG_FILES([GNUmakefile])
 #AM_MISSING_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(HELP2MAN, help2man, false // No help2man //)
+AC_PATH_PROG(BREW, brew, false // No help2man //)
 # Checks for programs.
 AC_PROG_AWK
 AC_PROG_YACC

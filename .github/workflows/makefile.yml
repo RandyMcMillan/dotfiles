@@ -22,7 +22,7 @@ jobs:
       run: |
           sudo apt-get install autotools-dev \
           autoconf automake libtool m4 \
-          build-essential \
+          build-essential gettext-base gettext \
           libssl-dev libcrypto++-dev
     #      ./autogen.sh && ./configure
     - name: make

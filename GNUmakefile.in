@@ -168,6 +168,8 @@ export PORTER_VERSION
 ##	:
 -: submodules
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+	#NOTE: 2 hashes are detected as 1st column output with color
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 autoconf:
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
@@ -209,11 +211,6 @@ iterm:
 	@rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
-help:
-.PHONY: - all
--:
-	#NOTE: 2 hashes are detected as 1st column output with color
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .PHONY: help
 help:## 	print verbose help

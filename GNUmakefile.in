@@ -10,6 +10,8 @@ AUTOCONF								:=$(shell which autoconf)
 export AUTOCONF
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
+THIS_FILE								:= $(lastword $(MAKEFILE_LIST))
+export THIS_FILE
 TIME									:= $(shell date +%s)
 export TIME
 

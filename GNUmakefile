@@ -10,15 +10,21 @@ AUTOCONF								:=$(shell which autoconf)
 export AUTOCONF
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
+THIS_FILE								:= $(lastword $(MAKEFILE_LIST))
+export THIS_FILE
 TIME									:= $(shell date +%s)
 export TIME
-# PROJECT_NAME defaults to name of the current directory.
-ifeq ($(project),)
-PROJECT_NAME							:= $(notdir $(PWD))
-else
-PROJECT_NAME							:= $(project)
+
+ARCH                                    :=$(shell uname -m)
+export ARCH
+ifeq ($(ARCH),x86_64)
+TRIPLET                                 :=x86_64-linux-gnu
+export TRIPLET
 endif
-export PROJECT_NAME
+ifeq ($(ARCH),arm64)
+TRIPLET                                 :=aarch64-linux-gnu
+export TRIPLET
+endif
 
 NODE_VERSION							:=v12.22.9
 export NODE_VERSION
@@ -29,11 +35,64 @@ export PACKAGE_MANAGER
 PACKAGE_INSTALL							:=add
 export PACKAGE_INSTALL
 
-
-ifeq ($(force),true)
-FORCE									:= --force
+ifeq ($(docker),)
+DOCKER							        := $(shell which docker)
+else
+DOCKER   							    := $(docker)
 endif
-export FORCE
+export DOCKER
+
+ifeq ($(compose),)
+DOCKER_COMPOSE						    := $(shell which docker-compose)
+else
+DOCKER_COMPOSE							:= $(compose)
+endif
+export DOCKER_COMPOSE
+ifeq ($(reset),true)
+RESET:=true
+else
+RESET:=false
+endif
+export RESET
+
+PYTHON                                  := $(shell which python)
+export PYTHON
+PYTHON2                                 := $(shell which python2)
+export PYTHON2
+PYTHON3                                 := $(shell which python3)
+export PYTHON3
+
+PIP                                     := $(shell which pip)
+export PIP
+PIP2                                    := $(shell which pip2)
+export PIP2
+PIP3                                    := $(shell which pip3)
+export PIP3
+
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
+python_version_major := $(word 1,${python_version_full})
+python_version_minor := $(word 2,${python_version_full})
+python_version_patch := $(word 3,${python_version_full})
+
+my_cmd.python.3 := $(PYTHON3) some_script.py3
+my_cmd := ${my_cmd.python.${python_version_major}}
+
+PYTHON_VERSION                         := ${python_version_major}.${python_version_minor}.${python_version_patch}
+PYTHON_VERSION_MAJOR                   := ${python_version_major}
+PYTHON_VERSION_MINOR                   := ${python_version_minor}
+
+export python_version_major
+export python_version_minor
+export python_version_patch
+export PYTHON_VERSION
+
+#PROJECT_NAME defaults to name of the current directory.
+ifeq ($(project),)
+PROJECT_NAME							:= $(notdir $(PWD))
+else
+PROJECT_NAME							:= $(project)
+endif
+export PROJECT_NAME
 
 #GIT CONFIG
 GIT_USER_NAME							:= $(shell git config user.name || echo)
@@ -57,13 +116,36 @@ export GIT_REPO_NAME
 GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
-#HOMEBREW_BREW_GIT_REMOTE=$(strip $(THIS_DIR))brew# put your Git mirror of Homebrew/brew here
-#export HOMEBREW_BREW_GIT_REMOTE
+ifneq ($(bitcoin-datadir),)
+BITCOIN_DATA_DIR						:= $(bitcoin-datadir)
+else
+BITCOIN_DATA_DIR						:= $(HOME)/.bitcoin
+endif
+export BITCOIN_DATA_DIR
 
-#HOMEBREW_CORE_GIT_REMOTE=$(strip $(THIS_DIR))homebrew-core# put your Git mirror of Homebrew/homebrew-core here
-#export HOMEBREW_CORE_GIT_REMOTE
-#export HOMEBREW_INSTALL_FROM_API=1
+ifeq ($(nocache),true)
+NOCACHE					     			:= --no-cache
+#Force parallel build when --no-cache to speed up build
+PARALLEL                                := --parallel
+else
+NOCACHE						    		:=
+PARALLEL                                :=
+endif
+ifeq ($(parallel),true)
+PARALLEL                                := --parallel
+endif
+ifeq ($(para),true)
+PARALLEL                                := --parallel
+endif
+export NOCACHE
+export PARALLEL
 
+ifeq ($(verbose),true)
+VERBOSE									:= --verbose
+else
+VERBOSE									:=
+endif
+export VERBOSE
 
 BREW                                    := $(shell which brew || echo)
 export BREW
@@ -84,17 +166,18 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--: submodules
+-: submodules## - default
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
-	$(MAKE) help
-autoconf:
+	#NOTE: 2 hashes are detected as 1st column output with color
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+autoconf:## ./autogen.sh && ./configure
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
 ifeq ($(BREW),)
 	$(MAKE) brew
 endif
 	@./configure --quiet
-	$(MAKE) help
+	$(MAKE) -
 
 
 ##	:	-
@@ -111,24 +194,27 @@ endif
 ##	:
 ##	:	adduser-git		add a user named git
 
-keymap:
+keymap:## install ./init/com.local.KeyRemapping.plist
 	@mkdir -p ~/Library/LaunchAgents/
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:-
+init:-## chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	./scripts/initialize
-brew:-
+brew:-## bash ./install-brew.sh
 	@export HOMEBREW_INSTALL_FROM_API=1
 	@bash ./install-brew.sh
-iterm:
+iterm:## brew install --cask iterm2
 	@rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
-help:
+
+.PHONY: help
+help:## print verbose help
+	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -146,6 +232,7 @@ report:
 	@echo ' GLIBTOOL=${GLIBTOOL}	'
 	@echo ' GLIBTOOLIZE=${GLIBTOOLIZE}	'
 	@echo ' AUTOCONF=${AUTOCONF}	'
+	@echo '	[DEV ENVIRONMENT]:	'
 	@echo ''
 	@echo ' TIME=${TIME}	'
 	@echo ' SHELL=${SHELL}	'

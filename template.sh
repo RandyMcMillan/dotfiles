@@ -3,12 +3,16 @@ HOMEBREW_NO_INSTALL_CLEANUP=false
 export  HOMEBREW_NO_INSTALL_CLEANUP
 
 function checkbrew-sudoless () {
-    PREFIX=$(brew --prefix)
-    export PREFIX
 
+if hash brew 2>/dev/null; then
+
+	PREFIX=$(brew --prefix)
+	export PREFIX
     # take ownership
-    sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node}
-    sudo chown -R $USER $PREFIX/{share/man,bin,sbin,lib/node,include/node}
+	sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node}
+	sudo chown -R $USER $PREFIX/{share/man,bin,sbin,lib/node,include/node}
+
+fi
 
 }
 

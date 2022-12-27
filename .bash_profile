@@ -1,12 +1,17 @@
 source ~/config-github
 source ~/config-git
-source /usr/local/bin/checkbrew
+
+if hash brew 2>/dev/null; then
+	if [ -f /usr/local/bin/checkbrew ]; then
+	source /usr/local/bin/checkbrew
+	fi
+fi
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 # Add `~/init` to the `$PATH`
 #export PATH="$HOME/init:$PATH";
 
-#if which brew &> /dev/null; then
+#if hash brew &> /dev/null; then
 #        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
 #       if [[ "$OSTYPE" == "linux"* ]]; then
 #               #CHECK APT
@@ -42,11 +47,13 @@ done;
 #
 
 # Add tab completion for many Bash commands
-if which brew &> /dev/null && [ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]; then
-	# Ensure existing Homebrew v1 completions continue to work
-	set BASH_COMPLETION_COMPAT_DIR="$(brew --prefix)/etc/bash_completion.d";
-	export BASH_COMPLETION_COMPAT_DIR
-	source "$(brew --prefix)/etc/profile.d/bash_completion.sh";
+if hash brew 2>/dev/null ; then
+	if [ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]; then
+		# Ensure existing Homebrew v1 completions continue to work
+		set BASH_COMPLETION_COMPAT_DIR="$(brew --prefix)/etc/bash_completion.d";
+		export BASH_COMPLETION_COMPAT_DIR
+		source "$(brew --prefix)/etc/profile.d/bash_completion.sh";
+	fi
 elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
@@ -101,4 +108,6 @@ export NVM_DIR="$HOME/.nvm"
 
 #export GPG_TTY=$(tty)
 # Set PATH, MANPATH, etc., for Homebrew.
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if hash brew 2>/dev/null; then
+	eval "$(/usr/local/bin/brew shellenv)"
+fi

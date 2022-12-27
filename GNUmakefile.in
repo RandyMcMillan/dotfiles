@@ -23,10 +23,6 @@ ifeq ($(ARCH),arm64)
 TRIPLET                                 :=aarch64-linux-gnu
 export TRIPLET
 endif
-else
-PROJECT_NAME							:= $(project)
-endif
-export PROJECT_NAME
 
 NODE_VERSION							:=v12.22.9
 export NODE_VERSION

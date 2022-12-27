@@ -168,7 +168,6 @@ export PORTER_VERSION
 ##	:
 -: submodules
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
-	$(MAKE) help
 autoconf:
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure

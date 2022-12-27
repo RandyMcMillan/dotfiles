@@ -166,18 +166,18 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--: submodules
+-: submodules## - default
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-autoconf:
+autoconf:## ./autogen.sh && ./configure
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
 ifeq ($(BREW),)
 	$(MAKE) brew
 endif
 	@./configure --quiet
-	$(MAKE) help
+	$(MAKE) -
 
 
 ##	:	-
@@ -194,26 +194,26 @@ endif
 ##	:
 ##	:	adduser-git		add a user named git
 
-keymap:
+keymap:## install ./init/com.local.KeyRemapping.plist
 	@mkdir -p ~/Library/LaunchAgents/
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:-
+init:-## chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	./scripts/initialize
-brew:-
+brew:-## bash ./install-brew.sh
 	@export HOMEBREW_INSTALL_FROM_API=1
 	@bash ./install-brew.sh
-iterm:
+iterm:## brew install --cask iterm2
 	@rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
 .PHONY: help
-help:## 	print verbose help
+help:## print verbose help
 	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'

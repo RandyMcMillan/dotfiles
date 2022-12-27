@@ -156,6 +156,7 @@ rsync --exclude ".git/" \
       --exclude "LICENSE-MIT.txt" \
       --exclude ".macos" \
       --exclude ".osx" \
+      --exclude "logs" \
       -avh --no-perms . ~;
 increment;
 done

@@ -23,6 +23,8 @@ echo "$OSTYPE" | awk '{print tolower($0)}'
 function checkbrew() {
 	echo "checkbrew"
     if hash brew 2>/dev/null; then
+        brew install gettext
+        brew link -f gettext
         if ! hash "$AWK" 2>/dev/null; then
 			echo "! hash"
             brew install "$AWK"
@@ -153,57 +155,20 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     echo TODO add support for "$OSTYPE"
 fi
-source ~/.bashrc
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+#source ~/.bashrc
+#export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 
 function app_install(){
 
 	echo "app_install"
 
-#npm uninstall sqlite3@4
-# yarn add fs-xattr@0.1.17
-# yarn add fs-xattr@0.2.0
-# yarn add fs-xattr@0.2.1
-yarn add fs-xattr@0.3.0
-# yarn add liftoff@0.6.2
-# yarn add sqlite3@0
-# yarn add sqlite3@1
-# yarn add sqlite3@2.0.0
-# yarn add sqlite3@3.0.0
-# yarn add sqlite3@4
-# yarn add sqlite3@4.1.1
-# yarn add lodash@4.17.10
-# yarn add @azure/abort-controller@1.0.0
-# yarn add encoding@0.1
-# yarn add electron@10
-# yarn add iconv@3
-# yarn add run-series@1.1.9
-# yarn add hyperspace@0
-# yarn add hyperspace@1
-# yarn add hyperspace@2
-# yarn add hyperspace@3
-
-
 converter_install
 }
 
 function converter_install(){
-
 	echo "converter_install"
-
-pushd bg/dat/converter
-echo 
-# yarn add is-arrayish@0.2.1
-# yarn add ecdsa-sig-formatter@1.0.11
-# yarn add buffer-equal-constant-time@1.0.1
-# yarn add spdx-license-ids@3.0.0
-# yarn add math-random@1.0.1
-# yarn add is-arrayish@0.2.1
-# yarn add tslib@2.2.0
-
-popd
 }
 
 function yarn-installs(){
@@ -223,20 +188,6 @@ else
 	checknvm
 fi
 
-# yarn add @mapbox/node-pre-gyp
-# yarn add node-pre-gyp
-# yarn add node-gyp
-# yarn add gulp
-# 
-# yarn add mysql@2.18.1 
-# yarn add mssql@6.1.0
-# yarn add mysql2@2.1.0
-# 
-# yarn add pg@7.18.2
-# 
-# yarn add sqlite3@4.1.1
-# yarn add knex@0.20.0
-
 
 if [[ "$OSTYPE" == *"arwin"* ]]; then
 echo
@@ -245,20 +196,16 @@ if [[ "$OSTYPE" == *"inux"* ]]; then
 echo
 fi
 
-
-
-pushd ../app && app_install && popd
-
 }
-source ~/.bashrc
+#source ~/.bashrc
 if hash nvm 2>/dev/null; then
 
 	echo "hash nvm"
-	echo "NODE_VERSION="$NODE_VERSION
-	echo "NODE_ALIAS="$NODE_ALIAS
+	echo "NODE_VERSION=""$NODE_VERSION"
+	echo "NODE_ALIAS=""$NODE_ALIAS"
 
-	nvm install $NODE_VERSION && nvm use $NODE_VERSION
-	nvm alias $NODE_ALIAS $NODE_VERSION
+	nvm install "$NODE_VERSION" && nvm use "$NODE_VERSION"
+	nvm alias "$NODE_ALIAS $NODE_VERSION"
 else
 	checknvm
 fi

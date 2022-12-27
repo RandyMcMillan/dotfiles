@@ -1,5 +1,5 @@
 .PHONY:nostril
-nostril:
+nostril:## pushd nostril && $(MAKE) nostril && popd
 	@pushd nostril && $(MAKE) nostril && popd
 	@pushd nostril && $(MAKE) nostril install && popd
 # vim: set noexpandtab:

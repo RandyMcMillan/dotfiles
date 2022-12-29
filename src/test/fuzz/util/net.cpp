@@ -21,6 +21,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <thread>
+#include <unordered_map>
 #include <vector>
 
 class CNode;

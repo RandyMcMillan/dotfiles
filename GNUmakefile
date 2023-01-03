@@ -2,6 +2,8 @@
 SHELL									:= /bin/bash
 POWERSHELL								:= $(shell which pwsh)
 PWD										?= pwd_unknown
+CMAKE									:=$(shell which cmake)
+export CMAKE
 GLIBTOOL								:=$(shell which glibtool)
 export GLIBTOOL
 GLIBTOOLIZE								:=$(shell which glibtoolize)
@@ -229,6 +231,7 @@ help:## print verbose help
 
 report:
 	@echo ''
+	@echo ' CMAKE=${CMAKE}	'
 	@echo ' GLIBTOOL=${GLIBTOOL}	'
 	@echo ' GLIBTOOLIZE=${GLIBTOOLIZE}	'
 	@echo ' AUTOCONF=${AUTOCONF}	'

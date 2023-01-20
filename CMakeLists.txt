@@ -403,6 +403,16 @@ add_custom_target(check-symbols
   VERBATIM
 )
 
+if(HARDENING)
+  add_custom_target(check-security
+    COMMAND echo "Checking binary security..."
+    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/contrib/devtools/security-check.py ${executables}
+    VERBATIM
+  )
+else()
+  add_custom_target(check-security)
+endif()
+
 get_directory_property(definitions COMPILE_DEFINITIONS)
 include(SeparateConfigs)
 separate_configs(definitions)

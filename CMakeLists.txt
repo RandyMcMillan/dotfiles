@@ -326,6 +326,9 @@ if(BUILD_BITCOINCONSENSUS_LIB)
   set(HAVE_CONSENSUS_LIB ON)
 endif()
 
+find_package(Python3 3.7 REQUIRED COMPONENTS Interpreter)
+set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
+
 add_subdirectory(src)
 
 set(abs_top_srcdir ${CMAKE_SOURCE_DIR})

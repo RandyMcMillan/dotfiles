@@ -12,6 +12,9 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(crypto)
 add_subdirectory(univalue)
 add_subdirectory(util)
+if(MULTIPROCESS)
+  add_subdirectory(ipc)
+endif()
 
 
 # Stable, backwards-compatible consensus functionality
@@ -239,6 +242,17 @@ if(BUILD_DAEMON)
   )
   copy_target_for_tests(bitcoind)
   list(APPEND installable_targets bitcoind)
+endif()
+if(MULTIPROCESS)
+  add_executable(bitcoin-node
+    bitcoind.cpp
+    init/bitcoin-node.cpp
+  )
+  target_link_libraries(bitcoin-node
+    bitcoin_node
+    bitcoin_ipc
+  )
+  list(APPEND installable_targets bitcoin-node)
 endif()
 
 

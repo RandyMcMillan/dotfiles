@@ -112,6 +112,10 @@ target_sources(fuzz
     validation_load_mempool.cpp
     versionbits.cpp
 )
+set_property(SOURCE float.cpp APPEND PROPERTY
+  # Older GCC could fail.
+  COMPILE_OPTIONS $<$<CXX_COMPILER_ID:GNU>:-Wno-maybe-uninitialized>
+)
 target_link_libraries(fuzz
   PRIVATE
     test_fuzz

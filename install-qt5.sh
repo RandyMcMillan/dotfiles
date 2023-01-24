@@ -54,8 +54,8 @@ checkbrew() {
         if !hash git 2>/dev/null; then
             brew install git
         fi
-        brew reinstall $FORCE bash
-        brew uninstall --ignore-dependencies qt
+        # brew reinstall $FORCE bash || brew info bash
+        # brew uninstall --ignore-dependencies qt || brew info qt
         brew install $FORCE qt@5
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"

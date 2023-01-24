@@ -245,7 +245,8 @@ config-dock: executable
 ##	:	all			exec gnupg brew-libs
 all: executable gnupg brew-libs
 vim:
-	bash -c "source $(PWD)/template && checkbrew install	vim"
+#	bash -c "source $(PWD)/template && checkbrew install	vim"
+	@. install-vim.sh
 macdown:
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
 glow:

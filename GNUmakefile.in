@@ -28,9 +28,9 @@ TRIPLET                                 :=aarch64-linux-gnu
 export TRIPLET
 endif
 
-NODE_VERSION							:=v12.22.9
+NODE_VERSION							:=v18.13.0
 export NODE_VERSION
-NODE_ALIAS								:=v14
+NODE_ALIAS								:=v18.13.0
 export NODE_ALIAS
 PACKAGE_MANAGER							:=yarn
 export PACKAGE_MANAGER
@@ -163,15 +163,69 @@ PORTER_VERSION                          :=latest
 export PORTER_VERSION
 
 .ONESHELL:
-#.PHONY:-
+#.PHONY:default
 .SILENT:
 
 ##make	:	command			description
 ##	:
--: submodules## - default
+default:## help (terse)
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
+	#terse help formatter
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+.PHONY: help
+help:## print verbose help
+	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
+	@echo ''
+	#@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	#@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	#@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':	' |  sed -e 's/^/ /' ## verbose help ideas
+	@sed -n 's/^## //p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	@echo ""
+	@echo "Useful Commands:"
+	@echo ""
+	@echo "git-\<TAB>";
+	@echo "gpg-\<TAB>";
+	@echo "bitcoin-\<TAB>";
+	@echo ""
+
+report:## ENV ARGS
+	@echo 'TIME=${TIME}	'
+	@echo '[DOTFILES]:	'
+	@echo '	PROJECT_NAME=${PROJECT_NAME}	'
+	@echo '	DOTFILES_PATH=${DOTFILES_PATH}	'
+	@echo '[DEV ENVIRONMENT]:	'
+	@echo '	SHELL=${SHELL}	'
+	@echo '	POWERSHELL=${POWERSHELL}	'
+	@echo '	AUTOCONF=${AUTOCONF}	'
+	@echo '	CMAKE=${CMAKE}	'
+	@echo '	GLIBTOOL=${GLIBTOOL}	'
+	@echo '	GLIBTOOLIZE=${GLIBTOOLIZE}	'
+	@echo '[NODE JS]:	'
+	@echo '	NODE_VERSION=${NODE_VERSION}	'
+	@echo '	NODE_ALIAS=${NODE_ALIAS}	'
+	@echo '[GIT CONFIG]:	'
+	@echo '	GIT_USER_NAME=${GIT_USER_NAME}	'
+	@echo '	GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
+	@echo '	GIT_SERVER=${GIT_SERVER}	'
+	@echo '	GIT_PROFILE=${GIT_PROFILE}	'
+	@echo '	GIT_BRANCH=${GIT_BRANCH}	'
+	@echo '	GIT_HASH=${GIT_HASH}	'
+	@echo '	GIT_PREVIOUS_HASH=${GIT_PREVIOUS_HASH}	'
+	@echo '	GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
+	@echo '	GIT_REPO_NAME=${GIT_REPO_NAME}	'
+	@echo '	GIT_REPO_PATH=${GIT_REPO_PATH}	'
+	@echo '[HOMEBREW]:	'
+	@echo '	BREW=${BREW}	'
+	@echo '	HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
+	@echo '	HOMEBREW_CORE_REMOTE=${HOMEBREW_CORE_GIT_REMOTE}	'
+	@echo '	HOMEBREW_INSTALL_FROM_API=${HOMEBREW_INSTALL_FROM_API}	'
+	@echo '	BREW_PREFIX=${BREW_PREFIX}	'
+	@echo '	BREW_CELLAR=${BREW_CELLAR}	'
+	@echo '	HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
+	@echo '[ADDITIONAL]:	'
+	@echo '	PORT_VERSION=${PORTER_VERSION}	'
+
 autoconf:## ./autogen.sh && ./configure
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
@@ -214,59 +268,6 @@ iterm:## brew install --cask iterm2
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
-.PHONY: help
-help:## print verbose help
-	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
-	@echo ''
-	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	@echo ""
-	@echo "Useful Commands:"
-	@echo ""
-	@echo "git-\<TAB>";
-	@echo "gpg-\<TAB>";
-	@echo "bitcoin-\<TAB>";
-	@echo ""
-
-report:
-	@echo ''
-	@echo ' CMAKE=${CMAKE}	'
-	@echo ' GLIBTOOL=${GLIBTOOL}	'
-	@echo ' GLIBTOOLIZE=${GLIBTOOLIZE}	'
-	@echo ' AUTOCONF=${AUTOCONF}	'
-	@echo '	[DEV ENVIRONMENT]:	'
-	@echo ''
-	@echo ' TIME=${TIME}	'
-	@echo ' SHELL=${SHELL}	'
-	@echo ' POWERSHELL=${POWERSHELL}	'
-	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
-	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
-	@echo ''
-	@echo ' NODE_VERSION=${NODE_VERSION}	'
-	@echo ' NODE_ALIAS=${NODE_ALIAS}	'
-	@echo ''
-	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
-	@echo ' GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
-	@echo ' GIT_SERVER=${GIT_SERVER}	'
-	@echo ' GIT_PROFILE=${GIT_PROFILE}	'
-	@echo ' GIT_BRANCH=${GIT_BRANCH}	'
-	@echo ' GIT_HASH=${GIT_HASH}	'
-	@echo ' GIT_PREVIOUS_HASH=${GIT_PREVIOUS_HASH}	'
-	@echo ' GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
-	@echo ' GIT_REPO_NAME=${GIT_REPO_NAME}	'
-	@echo ' GIT_REPO_PATH=${GIT_REPO_PATH}	'
-	@echo ''
-	@echo ' BREW=${BREW}	'
-	@echo ' HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
-	@echo ' HOMEBREW_CORE_REMOTE=${HOMEBREW_CORE_GIT_REMOTE}	'
-	@echo ' HOMEBREW_INSTALL_FROM_API=${HOMEBREW_INSTALL_FROM_API}	'
-	@echo ' BREW_PREFIX=${BREW_PREFIX}	'
-	@echo ' BREW_CELLAR=${BREW_CELLAR}	'
-	@echo ' HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
-	@echo ''
-	@echo ' PORT_VERSION=${PORTER_VERSION}	'
-
 #.PHONY:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -300,32 +301,30 @@ install: executable
 github: executable
 	@./config-github
 
-
-
-
 .PHONY: executable
 executable:
 	chmod +x *.sh
 .PHONY: exec
-##	:	executable		make shell scripts executable
+## executable	make shell scripts executable
 exec: executable
 
 .PHONY: template
 .ONESHELL:
-template:
-##	:	template		install checkbrew command
-	rm -f /usr/local/bin/checkbrew
+## template	verbose help
+template:## 	install checkbrew command
+	@rm -f /usr/local/bin/checkbrew
+	@bash -c "source $(PWD)/template"
 	@install -bC $(PWD)/template /usr/local/bin/checkbrew
-	bash -c "source /usr/local/bin/checkbrew"
+	@$(shell command -v checkbrew) -h
 
 .PHONY: nvm
 .ONESHELL:
-nvm: executable ## nvm
+## nvm	verbose help
+nvm: executable ## install node virtual machine
 	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull -C $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
 	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
 
-##	:	cirrus			source and run install-cirrus command
-cirrus: executable
+cirrus: executable ## cirrus
 	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"
 ##	:	config-dock		source and run config-dock-prefs
 config-dock: executable
@@ -333,36 +332,40 @@ config-dock: executable
 
 .PHONY: all
 ##	:	all			exec gnupg brew-libs
-all: executable gnupg brew-libs
-vim:## vim - install-vim.sh
-	bash -c "source $(PWD)/template && checkbrew install	vim"
+all: executable gnupg brew-libs vim macdown glow
+vim:## ./install-vim.sh
+	#bash -c "source $(PWD)/template && checkbrew install	vim"
 	./install-vim.sh
-macdown:
-	bash -c "source $(PWD)/template && checkbrew install	macdown"
-glow:
-	bash -c "source $(PWD)/template && checkbrew install	glow"
+macdown:## checkbrew install macvim
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
+glow:## 	checkbrew install glow
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 coreutils:
-	bash -c "source $(PWD)/template && checkbrew install	coreutils"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 gettext:
-	bash -c "source $(PWD)/template && checkbrew install	gettext"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 texinfo:
-	bash -c "source $(PWD)/template && checkbrew install	texinfo"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 help2man:
-	bash -c "source $(PWD)/template && checkbrew install	help2man"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 gnutls:
-	bash -c "source $(PWD)/template && checkbrew install	gnutls"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
+alfred:
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
+cpanminus:
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 
-brew-libs: libassuan libgcrypt libgpg-error libksba libusb
+brew-libs: libassuan libgcrypt libgpg-error libksba libusb## 	libassuan libgcrypt libksba libusb
 libassuan:
-	bash -c "source $(PWD)/template && checkbrew install	libassuan"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 libgcrypt:
-	bash -c "source $(PWD)/template && checkbrew install	libgcrypt"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 libgpg-error:
-	bash -c "source $(PWD)/template && checkbrew install	libgpg-error"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 libksba:
-	bash -c "source $(PWD)/template && checkbrew install	libksba"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 libusb:
-	bash -c "source $(PWD)/template && checkbrew install	libusb"
+	bash -c "source $(PWD)/template && test $@ && echo $(shell command -v $@) || checkbrew install $@"
 
 npth:
 	bash -c "source $(PWD)/template && checkbrew install                npth"
@@ -557,7 +560,7 @@ bitcoin-test-battery:
 funcs:
 	make -f funcs.mk
 
-clean-nvm: ## clean-nvm
+clean-nvm:## 	clean-nvm
 	@rm -rf ~/.nvm
 
 -include funcs.mk

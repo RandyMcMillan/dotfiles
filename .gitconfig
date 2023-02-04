@@ -199,3 +199,9 @@
 [alias]
     DATE = !"date +%Y/%j/"$(git rev-parse --short HEAD)
 
+[sendemail]
+       smtpserver = smtp.gmail.com
+       smtpuser = randy.lee.mcmillan@gmail.com
+       smtpencryption = tls
+       smtpserverport = 587
+

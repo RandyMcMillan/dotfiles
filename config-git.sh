@@ -9,3 +9,5 @@ git config --global alias.prune-branches-force '!git remote prune origin && git 
 git config --global alias.prune-branches       '!git remote prune origin && git branch -vv | grep '"'"': gone]'"'"' | awk '"'"'{print $1}'"'"' | xargs git branch -d'
 pushd $(pwd) && cat .gitignore > ~/.gitignore && popd
 git config --global core.excludesfile ~/.gitignore
+
+echo "git config --global sendemail.smtpPass 'your password'"

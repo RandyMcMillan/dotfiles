@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+test-git-email() {
+git clone https://git.sr.ht/~sircmpwn/email-test-drive
+cd email-test-drive
+echo "I'm about to try git send-email" >randymcmillan
+git add randymcmillan
+git commit -m "Demonstrate that I can use git send-email"
+git send-email --force  --to="~sircmpwn/email-test-drive@lists.sr.ht" HEAD^
+
+}
 config-github() {
 
     DATE=$(date +%s)
@@ -14,7 +23,13 @@ config-github() {
     git config --global user.email $GITHUB_USER_EMAIL
     # git config --global user.email randy.lee.mcmillan@gmail.com
     echo Thankyou $GITHUB_USER_NAME for your email.
+    read -p 'ENTER your email password: ' EMAIL_PASSWORD
+    git config --global user.email $GITHUB_USER_EMAIL
+    git config --global sendemail.smtpPass '$EMAIL_PASSWORD'
+    echo Thankyou $GITHUB_USER_NAME! - your git email config should be set!
+    #REF: https://git-send-email.io/#step-2
     #REF:https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
+    test-git-email
 
     mkdir -p ~/.ssh
     chmod 700 ~/.ssh

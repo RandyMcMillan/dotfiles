@@ -58,6 +58,8 @@ else()
 endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+include(cmake/introspection.cmake)
+
 add_subdirectory(src)
 
 message("\n")

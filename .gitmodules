@@ -13,3 +13,8 @@
 	url = https://github.com/randymcmillan/nostril
 	branch = master
 	ignore = dirty
+[submodule "nostril"]
+	path = nostril
+	url = https://github.com/randymcmillan/nostril
+    branch = master
+    ignore = dirty

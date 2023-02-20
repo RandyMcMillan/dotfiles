@@ -57,7 +57,7 @@ using isminefilter = std::underlying_type<isminetype>::type;
  * interfaces and saved for new addresses. It is basically redundant with an
  * address's IsMine() result.
  */
-enum class AddressPurpose : uint8_t {
+enum class AddressPurpose {
     RECEIVE,
     SEND,
     REFUND, //!< Never set in current code may be present in older wallet databases

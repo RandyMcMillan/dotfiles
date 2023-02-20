@@ -273,6 +273,9 @@ libksba:
 	bash -c "source $(PWD)/template && checkbrew install	libksba"
 libusb:
 	bash -c "source $(PWD)/template && checkbrew install	libusb"
+htmlcleaner:
+	bash -c "source $(PWD)/template && checkbrew install	maven"
+	bash -c "source $(PWD)/template && checkbrew install	htmlcleaner"
 
 npth:
 	bash -c "source $(PWD)/template && checkbrew install                npth"

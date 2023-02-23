@@ -63,6 +63,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(CheckSourceCompilesAndLinks)
 include(cmake/introspection.cmake)
 
+include(cmake/crc32c.cmake)
+
 add_subdirectory(src)
 
 message("\n")

@@ -33,6 +33,8 @@ set(COPYRIGHT_HOLDERS "The %s developers")
 set(COPYRIGHT_HOLDERS_FINAL "The ${PROJECT_NAME} developers")
 set(PACKAGE_BUGREPORT "https://github.com/bitcoin/bitcoin/issues")
 
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/module)
+
 # Configurable options.
 # When adding a new option, end the <help_text> with a full stop for consistency.
 include(CMakeDependentOption)
@@ -58,6 +60,7 @@ else()
 endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+include(CheckSourceCompilesAndLinks)
 include(cmake/introspection.cmake)
 
 add_subdirectory(src)

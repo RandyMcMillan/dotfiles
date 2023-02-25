@@ -5,6 +5,8 @@ init/init
 infinity
 infinity/*
 
+Python-2.*
+
 # Compiled Python files
 *.pyc
 

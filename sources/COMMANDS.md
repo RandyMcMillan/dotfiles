@@ -19,14 +19,14 @@
  	      	github		 	config-github
  	      	executable		make shell scripts executable
  	      	template		install checkbrew command
- 	      	nvm		 	install node version manager
  	      	cirrus			source and run install-cirrus command
  	      	config-dock		source and run config-dock-prefs
- 	      	all			execute checkbrew install scripts
+ 	      	all			exec gnupg brew-libs
  	      	alpine-shell		run install-shell.sh alpine user=root
  	      	alpine-build		run install-shell.sh alpine-build user=root
  	      	debian-shell		run install-shell.sh debian user=root
- 	      	vim			install vim and macvim on macos
+ 	      	porter
+ 	      	install-vim			install vim and macvim on macos
  	      	qt5			install qt@5
  	
  	      	bitcoin-libs		install bitcoin-libs
@@ -35,16 +35,12 @@
  	      	funcs			additional make functions
  	
  	      		funcs-1		additional function 1
-
-
+ 	      	submodules		git submodule --init --recursive
+ 	      	submodules-deinit	git submodule deinit --all -f
 
 Useful Commands:
 
 git-\<TAB>
-
 gpg-\<TAB>
-
 bitcoin-\<TAB>
-
-
 

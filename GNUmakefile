@@ -381,6 +381,8 @@ help2man:
 	bash -c "source $(PWD)/template && checkbrew install	help2man"
 gnutls:
 	bash -c "source $(PWD)/template && checkbrew install	gnutls"
+keepingyouawake:## 	keepingyouawake
+	bash -c "source $(PWD)/template && checkbrew install	keepingyouawake"
 
 brew-libs: libassuan libgcrypt libgpg-error libksba libusb
 libassuan:

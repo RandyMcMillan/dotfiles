@@ -105,6 +105,21 @@ PROJECT_NAME                            := $(project)
 endif
 export PROJECT_NAME
 
+NODE_VERSION							:=v16.19.1
+export NODE_VERSION
+NODE_ALIAS								:=v16.0.0
+export NODE_ALIAS
+PACKAGE_MANAGER							:=yarn
+export PACKAGE_MANAGER
+PACKAGE_INSTALL							:=add
+export PACKAGE_INSTALL
+
+
+ifeq ($(force),true)
+FORCE									:= --force
+endif
+export FORCE
+
 #GIT CONFIG
 GIT_USER_NAME                           := $(shell git config user.name || echo)
 export GIT_USER_NAME
@@ -408,6 +423,14 @@ node:
 	bash -c "source $(PWD)/template && checkbrew install node"
 node@18:
 	bash -c "source $(PWD)/template && checkbrew install node@18"
+node@16:
+	bash -c "source $(PWD)/template && checkbrew install node@16"
+node@14:
+	bash -c "source $(PWD)/template && checkbrew install node@14"
+node@12:
+	bash -c "source $(PWD)/template && checkbrew install node@12"
+node@10:
+	bash -c "source $(PWD)/template && checkbrew install node@10"
 yarn:
 	bash -c "source $(PWD)/template && checkbrew install      yarn"
 powershell:

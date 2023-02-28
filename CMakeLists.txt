@@ -101,6 +101,9 @@ include(cmake/introspection.cmake)
 include(cmake/crc32c.cmake)
 include(cmake/leveldb.cmake)
 
+include(CheckStdFilesystem)
+check_std_filesystem()
+
 add_subdirectory(src)
 
 message("\n")

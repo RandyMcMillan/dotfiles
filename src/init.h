@@ -30,7 +30,7 @@ struct NodeContext;
 void Interrupt(node::NodeContext& node);
 void Shutdown(node::NodeContext& node);
 //!Initialize the logging infrastructure
-void InitLogging(const ArgsManager& args);
+void InitLogging(const ArgsManager& args, const char* log_suffix);
 //!Parameter interaction: change current parameters depending on various rules
 void InitParameterInteraction(ArgsManager& args);
 
@@ -71,6 +71,6 @@ bool AppInitMain(node::NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip
 /**
  * Register all arguments with the ArgsManager
  */
-void SetupServerArgs(ArgsManager& argsman);
+void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc=false);
 
 #endif // BITCOIN_INIT_H

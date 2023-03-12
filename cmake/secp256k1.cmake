@@ -6,6 +6,7 @@
 # support has been merged we should switch to using the upstream CMake
 # buildsystem.
 
+enable_language(C)
 set(CMAKE_C_STANDARD 90)
 set(CMAKE_C_EXTENSIONS OFF)
 

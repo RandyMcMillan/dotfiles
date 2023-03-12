@@ -24,7 +24,7 @@ project("Bitcoin Core"
   VERSION 24.99.0
   DESCRIPTION "Bitcoin client software"
   HOMEPAGE_URL "https://bitcoincore.org/"
-  LANGUAGES CXX C ASM
+  LANGUAGES CXX ASM
 )
 
 set(CLIENT_VERSION_IS_RELEASE "false")

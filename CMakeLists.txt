@@ -52,16 +52,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(configure_warnings)
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.14)
-  include(CheckPIESupported)
-  check_pie_supported(OUTPUT_VARIABLE check_pie_output LANGUAGES CXX)
-  if(NOT CMAKE_CXX_LINK_PIE_SUPPORTED)
-    list(APPEND configure_warnings "PIE link options are not supported for executable targets: ${check_pie_output}.")
-  endif()
-else()
-  list(APPEND configure_warnings "No PIE options will be passed to a linker for executable targets.")
-endif()
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(WIN32)
   #[=[
@@ -122,6 +112,19 @@ include(cmake/secp256k1.cmake)
 
 include(CheckStdFilesystem)
 check_std_filesystem()
+
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.14)
+  include(CheckPIESupported)
+  check_pie_supported(OUTPUT_VARIABLE check_pie_output LANGUAGES CXX)
+  if(CMAKE_CXX_LINK_PIE_SUPPORTED)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  endif()
+else()
+  check_cxx_source_links_with_flags(-fPIE "int main(){}" COMPILER_SUPPORTS_PIE)
+  if(COMPILER_SUPPORTS_PIE)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  endif()
+endif()
 
 add_subdirectory(src)
 

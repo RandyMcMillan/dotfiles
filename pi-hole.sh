@@ -1,7 +1,12 @@
 #!/bin/bash
 
-source .aliases
+IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
+#LOCAL_IP="ipconfig getifaddr en0"
+#IPS="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
 PORT=$(python3 ./random_port.py)
+echo "$PORT"
+echo "$IP"
 #REF: https://docs.docker.com/engine/install/linux-postinstall
 while ! docker system info > /dev/null 2>&1; do
     echo "Waiting for docker to start..."
@@ -34,7 +39,7 @@ docker run -d \
     --hostname pi.hole \
     -e VIRTUAL_HOST="pi.hole" \
     -e PROXY_LOCATION="pi.hole" \
-    -e FTLCONF_LOCAL_IPV4="$(echo ip)" \
+    -e FTLCONF_LOCAL_IPV4="$IP" \
     pihole/pihole:latest
 
 printf 'Starting up pihole container '

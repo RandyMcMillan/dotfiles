@@ -11,10 +11,12 @@ function doIt() {
 	rsync --exclude ".git/" \
 		--exclude ".DS_Store" \
 		--exclude ".osx" \
-		--exclude "bootstrap" \
+		--exclude "bootstrap**" \
 		--exclude "README.md" \
 		--exclude "LICENSE-MIT.txt" \
-		--exclude "*.sh" \
+		--exclude "**.sh" \
+		--exclude "*akefile*" \
+		--exclude "*.mk" \
 		-avh --no-perms . ~;
 	source $PWD/.bashrc;
 }

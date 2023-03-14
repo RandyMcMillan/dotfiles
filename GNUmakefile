@@ -564,5 +564,6 @@ clean-nvm: ## clean-nvm
 -include legit.mk
 -include nostril.mk
 -include venv.mk
+-include act.mk
 # vim: set noexpandtab:
 # vim: set setfiletype make

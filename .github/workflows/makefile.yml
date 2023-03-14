@@ -13,24 +13,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: git fetch
-      run: |
-          git fetch
-
-    - name: autogen.sh && configure
-      run: |
-          sudo apt-get install autotools-dev \
-          autoconf automake libtool m4 \
-          build-essential gettext-base gettext \
-          libssl-dev libcrypto++-dev
-    #      ./autogen.sh && ./configure
     - name: make
       run: |
-          sudo make
-    #- name: make legit
-    #  run: |
-    #      sudo make legit
-    - name: make nostril
-      run: |
-          sudo make nostril
+          #make brew || echo "brew linux not supported..."
+          #make
+          make autoconf        
+          #make keymap          
+          #make init            
+          ##make brew            
+          #make iterm           
+          #make help            
+          #make nvm             
+          #make vim             
+          #make clean-nvm       
+          #make legit           
+          #make legit-clean     
+          #make nostril         
+          #make nostril-clean   
+          #make venv            
+          #make venv-test       
+          #make venv-install    

@@ -398,7 +398,8 @@ gnutls:
 	bash -c "source $(PWD)/template && checkbrew install	gnutls"
 keepingyouawake:## 	keepingyouawake
 	bash -c "source $(PWD)/template && checkbrew install	keepingyouawake"
-
+wasm-pack:
+	curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 brew-libs: libassuan libgcrypt libgpg-error libksba libusb
 libassuan:
 	bash -c "source $(PWD)/template && checkbrew install	libassuan"

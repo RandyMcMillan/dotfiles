@@ -5,9 +5,16 @@
 """Test various command line arguments and configuration file parameters."""
 
 import os
+import pathlib
+import re
+import sys
+import tempfile
 import time
 
+from typing import Tuple
+
 from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_node import ErrorMatch
 from test_framework import util
 
 
@@ -74,7 +81,7 @@ class ConfArgsTest(BitcoinTestFramework):
         util.write_config(main_conf_file_path, n=0, chain='', extra_config=f'includeconf={inc_conf_file_path}\n')
         with open(inc_conf_file_path, 'w', encoding='utf-8') as conf:
             conf.write('acceptnonstdtxn=1\n')
-        self.nodes[0].assert_start_raises_init_error(extra_args=[f"-conf={main_conf_file_path}"], expected_msg='Error: acceptnonstdtxn is not currently supported for main chain')
+        self.nodes[0].assert_start_raises_init_error(extra_args=[f"-conf={main_conf_file_path}", "-allowignoredconf"], expected_msg='Error: acceptnonstdtxn is not currently supported for main chain')
 
         with open(inc_conf_file_path, 'w', encoding='utf-8') as conf:
             conf.write('nono\n')
@@ -282,6 +289,55 @@ class ConfArgsTest(BitcoinTestFramework):
                     unexpected_msgs=seednode_ignored):
                 self.restart_node(0, extra_args=[connect_arg, '-seednode=fakeaddress2'])
 
+    def test_ignored_conf(self):
+        self.log.info('Test error is triggered when datadir contains a bitcoin.conf file that would be ignored '
+                      'because a conflicting -conf file argument is passed.')
+        node = self.nodes[0]
+        with tempfile.NamedTemporaryFile(dir=self.options.tmpdir, mode="wt", delete=False) as temp_conf:
+            temp_conf.write(f"datadir={node.datadir}\n")
+        node.assert_start_raises_init_error([f"-conf={temp_conf.name}"], re.escape(
+            f'Error: Data directory "{node.datadir}" contains a "bitcoin.conf" file which is ignored, because a '
+            f'different configuration file "{temp_conf.name}" from command line argument "-conf={temp_conf.name}" '
+            f'is being used instead.') + r"[\s\S]*", match=ErrorMatch.FULL_REGEX)
+
+        # Test that passing a redundant -conf command line argument pointing to
+        # the same bitcoin.conf that would be loaded anyway does not trigger an
+        # error.
+        self.start_node(0, [f'-conf={node.datadir}/bitcoin.conf'])
+        self.stop_node(0)
+
+    def test_ignored_default_conf(self):
+        # Disable this test for windows currently because trying to override
+        # the default datadir through the environment does not seem to work.
+        if sys.platform == "win32":
+            return
+
+        self.log.info('Test error is triggered when bitcoin.conf in the default data directory sets another datadir '
+                      'and it contains a different bitcoin.conf file that would be ignored')
+
+        # Create a temporary directory that will be treated as the default data
+        # directory by bitcoind.
+        env, default_datadir = get_temp_default_datadir(pathlib.Path(self.options.tmpdir, "home"))
+        default_datadir.mkdir(parents=True)
+
+        # Write a bitcoin.conf file in the default data directory containing a
+        # datadir= line pointing at the node datadir. This will trigger a
+        # startup error because the node datadir contains a different
+        # bitcoin.conf that would be ignored.
+        node = self.nodes[0]
+        (default_datadir / "bitcoin.conf").write_text(f"datadir={node.datadir}\n")
+
+        # Drop the node -datadir= argument during this test, because if it is
+        # specified it would take precedence over the datadir setting in the
+        # config file.
+        node_args = node.args
+        node.args = [arg for arg in node.args if not arg.startswith("-datadir=")]
+        node.assert_start_raises_init_error([], re.escape(
+            f'Error: Data directory "{node.datadir}" contains a "bitcoin.conf" file which is ignored, because a '
+            f'different configuration file "{default_datadir}/bitcoin.conf" from data directory "{default_datadir}" '
+            f'is being used instead.') + r"[\s\S]*", env=env, match=ErrorMatch.FULL_REGEX)
+        node.args = node_args
+
     def run_test(self):
         self.test_log_buffer()
         self.test_args_log()
@@ -291,6 +347,8 @@ class ConfArgsTest(BitcoinTestFramework):
 
         self.test_config_file_parser()
         self.test_invalid_command_line_options()
+        self.test_ignored_conf()
+        self.test_ignored_default_conf()
 
         # Remove the -datadir argument so it doesn't override the config file
         self.nodes[0].args = [arg for arg in self.nodes[0].args if not arg.startswith("-datadir")]
@@ -330,6 +388,22 @@ class ConfArgsTest(BitcoinTestFramework):
         self.nodes[0].datadir = new_data_dir_2
         self.start_node(0, [f'-datadir={new_data_dir_2}', f'-conf={conf_file}'])
         assert os.path.exists(os.path.join(new_data_dir_2, self.chain, 'blocks'))
+
+
+def get_temp_default_datadir(temp_dir: pathlib.Path) -> Tuple[dict, pathlib.Path]:
+    """Return os-specific environment variables that can be set to make the
+    GetDefaultDataDir() function return a datadir path under the provided
+    temp_dir, as well as the complete path it would return."""
+    if sys.platform == "win32":
+        env = dict(APPDATA=str(temp_dir))
+        datadir = temp_dir / "Bitcoin"
+    else:
+      env = dict(HOME=str(temp_dir))
+      if sys.platform == "darwin":
+          datadir = temp_dir / "Library/Application Support/Bitcoin"
+      else:
+          datadir = temp_dir / ".bitcoin"
+    return env, datadir
 
 
 if __name__ == '__main__':

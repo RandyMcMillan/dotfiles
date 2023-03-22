@@ -6,7 +6,7 @@
 [submodule "legit"]
 	path = legit
 	url = https://github.com/randymcmillan/legit
-	branch = master
+	branch = 7c11d5488c6821767e4bdb74dc88abf25269a513
 	ignore = dirty
 [submodule "nostril"]
 	path = nostril

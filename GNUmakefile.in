@@ -235,11 +235,12 @@ init:-## chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	./scripts/initialize
-brew:-## bash ./install-brew.sh
-	@export HOMEBREW_INSTALL_FROM_API=1
-	@bash ./install-brew.sh
+brew:-## install or update/upgrade brew
+	export HOMEBREW_INSTALL_FROM_API=1
+	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
+	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 iterm:## brew install --cask iterm2
-	@rm -rf /Applications/iTerm.app
+	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 

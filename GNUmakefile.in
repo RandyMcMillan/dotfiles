@@ -1,20 +1,29 @@
 # PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
-SHELL									:= /bin/bash
-POWERSHELL								:= $(shell which pwsh)
-PWD										?= pwd_unknown
-CMAKE									:=$(shell which cmake)
+
+#build nodegit with node-gyp
+#Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
+ACLOCAL_AMFLAGS=-Im4
+SUBDIRS = po
+bin_PROGRAMS = nodegit
+NODE_GYP=$(PWD)/node_modules/.bin/node-gyp
+NODE_MODULE_DIR=$(PWD)/node_modules/nodegit
+
+SHELL                                   := /bin/bash
+POWERSHELL                              := $(shell which pwsh)
+PWD                                     ?= pwd_unknown
+CMAKE                                   :=$(shell which cmake)
 export CMAKE
-GLIBTOOL								:=$(shell which glibtool)
+GLIBTOOL                                :=$(shell which glibtool)
 export GLIBTOOL
-GLIBTOOLIZE								:=$(shell which glibtoolize)
+GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
-AUTOCONF								:=$(shell which autoconf)
+AUTOCONF                                :=$(shell which autoconf)
 export AUTOCONF
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
-THIS_FILE								:= $(lastword $(MAKEFILE_LIST))
+THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
 export THIS_FILE
-TIME									:= $(shell date +%s)
+TIME                                    := $(shell date +%s)
 export TIME
 
 ARCH                                    :=$(shell uname -m)
@@ -28,26 +37,26 @@ TRIPLET                                 :=aarch64-linux-gnu
 export TRIPLET
 endif
 
-NODE_VERSION							:=v12.22.9
+NODE_VERSION                            := v16.19.1
 export NODE_VERSION
-NODE_ALIAS								:=v14
+NODE_ALIAS                              := v16.19.0
 export NODE_ALIAS
-PACKAGE_MANAGER							:=yarn
+PACKAGE_MANAGER                         :=yarn
 export PACKAGE_MANAGER
-PACKAGE_INSTALL							:=add
+PACKAGE_INSTALL                         :=add
 export PACKAGE_INSTALL
 
 ifeq ($(docker),)
-DOCKER							        := $(shell which docker)
+DOCKER                                  := $(shell which docker)
 else
-DOCKER   							    := $(docker)
+DOCKER                                  := $(docker)
 endif
 export DOCKER
 
 ifeq ($(compose),)
-DOCKER_COMPOSE						    := $(shell which docker-compose)
+DOCKER_COMPOSE                          := $(shell which docker-compose)
 else
-DOCKER_COMPOSE							:= $(compose)
+DOCKER_COMPOSE                          := $(compose)
 endif
 export DOCKER_COMPOSE
 ifeq ($(reset),true)
@@ -90,47 +99,47 @@ export PYTHON_VERSION
 
 #PROJECT_NAME defaults to name of the current directory.
 ifeq ($(project),)
-PROJECT_NAME							:= $(notdir $(PWD))
+PROJECT_NAME                            := $(notdir $(PWD))
 else
-PROJECT_NAME							:= $(project)
+PROJECT_NAME                            := $(project)
 endif
 export PROJECT_NAME
 
 #GIT CONFIG
-GIT_USER_NAME							:= $(shell git config user.name || echo)
+GIT_USER_NAME                           := $(shell git config user.name || echo)
 export GIT_USER_NAME
-GIT_USER_EMAIL							:= $(shell git config user.email || echo)
+GIT_USER_EMAIL                          := $(shell git config user.email || echo)
 export GIT_USER_EMAIL
-GIT_SERVER								:= https://github.com
+GIT_SERVER                              := https://github.com
 export GIT_SERVER
-GIT_PROFILE								:= $(shell git config user.name || echo)
+GIT_PROFILE                             := $(shell git config user.name || echo)
 export GIT_PROFILE
-GIT_BRANCH								:= $(shell git rev-parse --abbrev-ref HEAD || echo)
+GIT_BRANCH                              := $(shell git rev-parse --abbrev-ref HEAD || echo)
 export GIT_BRANCH
-GIT_HASH								:= $(shell git rev-parse --short HEAD || echo)
+GIT_HASH                                := $(shell git rev-parse --short HEAD || echo)
 export GIT_HASH
-GIT_PREVIOUS_HASH						:= $(shell git rev-parse --short HEAD^1 || echo)
+GIT_PREVIOUS_HASH                       := $(shell git rev-parse --short HEAD^1 || echo)
 export GIT_PREVIOUS_HASH
-GIT_REPO_ORIGIN							:= $(shell git remote get-url origin || echo)
+GIT_REPO_ORIGIN                         := $(shell git remote get-url origin || echo)
 export GIT_REPO_ORIGIN
-GIT_REPO_NAME							:= $(PROJECT_NAME)
+GIT_REPO_NAME                           := $(PROJECT_NAME)
 export GIT_REPO_NAME
-GIT_REPO_PATH							:= $(HOME)/$(GIT_REPO_NAME)
+GIT_REPO_PATH                           := $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
 ifneq ($(bitcoin-datadir),)
-BITCOIN_DATA_DIR						:= $(bitcoin-datadir)
+BITCOIN_DATA_DIR                        := $(bitcoin-datadir)
 else
-BITCOIN_DATA_DIR						:= $(HOME)/.bitcoin
+BITCOIN_DATA_DIR                        := $(HOME)/.bitcoin
 endif
 export BITCOIN_DATA_DIR
 
 ifeq ($(nocache),true)
-NOCACHE					     			:= --no-cache
+NOCACHE                                 := --no-cache
 #Force parallel build when --no-cache to speed up build
 PARALLEL                                := --parallel
 else
-NOCACHE						    		:=
+NOCACHE                                 :=
 PARALLEL                                :=
 endif
 ifeq ($(parallel),true)
@@ -143,9 +152,9 @@ export NOCACHE
 export PARALLEL
 
 ifeq ($(verbose),true)
-VERBOSE									:= --verbose
+VERBOSE                                 := --verbose
 else
-VERBOSE									:=
+VERBOSE                                 :=
 endif
 export VERBOSE
 
@@ -179,7 +188,14 @@ ifeq ($(BREW),)
 	$(MAKE) brew
 endif
 	@./configure --quiet
-	$(MAKE) -
+	#$(MAKE) -
+
+nodegit$(EXEEXT):
+	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
+
+
+clean-local:
+	-cd $(NODE_MODULE_DIR) && node-gyp clean
 
 
 ##	:	-

@@ -143,7 +143,6 @@ brew "nmap"
 brew "node@14"
 brew "nvm"
 brew "openssh"
-brew "pandoc", link: false
 brew "pegtl"
 brew "perl", link: false
 brew "php"

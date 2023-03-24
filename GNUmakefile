@@ -34,6 +34,8 @@ GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
 AUTOCONF                                :=$(shell which autoconf)
 export AUTOCONF
+PKGCONF                                :=$(shell which pkg-config)
+export PKGCONF
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
 THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
@@ -212,7 +214,7 @@ export PORTER_VERSION
 ##make	:	command			description
 ##	:
 -:## - default - try 'make submodules'
--: submodules
+-:
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -261,6 +263,8 @@ brew:-## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
+brew-bundle-dump:## create Brewfile
+	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew bundle dump -f
 iterm:## brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
@@ -628,6 +632,7 @@ funcs:
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 
+-include Makefile
 -include funcs.mk
 -include legit.mk
 -include nostril.mk

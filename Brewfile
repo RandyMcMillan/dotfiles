@@ -142,7 +142,6 @@ brew "netpbm"
 brew "nmap"
 brew "node@14"
 brew "nvm"
-brew "openssh"
 brew "pegtl"
 brew "perl", link: false
 brew "php"

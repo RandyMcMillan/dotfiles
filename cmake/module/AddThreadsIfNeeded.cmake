@@ -7,8 +7,17 @@ function(add_threads_if_needed)
   #       require Threads. Therefore, a proper check will be
   #       appropriate here.
 
+  if(CMAKE_C_COMPILER_LOADED)
+    message(FATAL_ERROR [=[
+  To make FindThreads check C++ language features, C language must be
+  disabled. This is essential, at least, when cross-compiling for MinGW-w64
+  because two different threading models are available.
+    ]=] )
+  endif()
+
   set(THREADS_PREFER_PTHREAD_FLAG ON)
   find_package(Threads REQUIRED)
+  set_target_properties(Threads::Threads PROPERTIES IMPORTED_GLOBAL TRUE)
 
   set(thread_local)
   if(MINGW)

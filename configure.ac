@@ -1,35 +1,23 @@
-AC_PREREQ(2.60)
-AC_INIT([example],
-	[1.0],
-	[gabriel@lse.epita.fr],
-	[example],
-	[https://lse.epita.fr/])
-
-AC_PROG_CC
-AC_USE_SYSTEM_EXTENSIONS
-
-#AX_COMPILER_FLAGS
-
-AM_SILENT_RULES([yes])
-
-#AX_PTHREAD(
-#	   [PTHREAD_LIBS="-lpthread"],
-#	   AC_MSG_ERROR([$PACKAGE requires pthreads]))
-
-PKG_CHECK_MODULES([CURL], [libcurl])
-#AX_CHECK_OPENSSL()
-
-AC_CONFIG_HEADERS(config.h)
+AC_PREREQ([2.69])
+AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
+m4_pattern_allow([AM_INIT_AUTOMAKE])
+AC_CONFIG_MACRO_DIRS([m4])
+AC_CONFIG_SRCDIR([src/foo.c])
 AC_CONFIG_FILES([GNUmakefile])
-AC_CONFIG_FILES([Makefile])
-
-AC_OUTPUT
-AC_MSG_RESULT([
-	$PACKAGE $VERSION
-	====================
-
-	prefix:		${prefix}
-	compiler:	${CC}
-	cflags:		${CFLAGS}
-	ldflags:	${LDFLAGS}
+#AM_MISSING_PROG(HELP2MAN, help2man)
+AC_PATH_PROG(HELP2MAN, help2man, false // No help2man //)
+AC_PATH_PROG(BREW, brew, false // No help2man //)
+# Checks for programs.
+AC_PROG_AWK
+AC_PROG_YACC
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_FILES([
+ GNUmakefile
+ src/Makefile
 ])
+AC_OUTPUT

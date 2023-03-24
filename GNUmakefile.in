@@ -348,8 +348,7 @@ install: executable
 
 
 .PHONY: github
-##	:	github		 	config-github
-github: executable
+github: executable## 	config-github
 	@./config-github
 
 
@@ -532,21 +531,19 @@ protonvpn: executable
 	./install-protonvpn.sh $(FORCE)
 
 .PHONY: config-git
-config-git: executable
+config-git: executable## 	config-git
 	$(DOTFILES_PATH)/./config-git
 
-.PHONY: qt5
-##	:	qt5			install qt@5
-qt5: executable
+qt5: executable## 	install qt@5
 	$(DOTFILES_PATH)/./install-qt5.sh
 	$(DOTFILES_PATH)/./install-qt5-creator.sh
 
 .PHONY: hub
-hub: executable
+hub: executable## install github utility
 	$(DOTFILES_PATH)/./install-github-utility.sh
 
 .PHONY: config-github
-config-github: executable
+config-github: executable## 	config-github
 	$(DOTFILES_PATH)/./config-github
 
 .PHONY: bitcoin-libs

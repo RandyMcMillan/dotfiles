@@ -1,5 +1,4 @@
 # PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
-
 #build nodegit with node-gyp
 #Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ACLOCAL_AMFLAGS=-Im4
@@ -14,6 +13,22 @@ PWD                                     ?= pwd_unknown
 CMAKE                                   :=$(shell which cmake)
 export CMAKE
 GLIBTOOL                                :=$(shell which glibtool)
+args = $(foreach a,$($(subst -,_,$1)_args),$(if $(value $a),$a="$($a)"))
+export args
+
+#check_args = files
+#docs_serve_args = host port
+#release_args = version
+#test_args = match
+#
+#TASKS = \
+#    install \
+#    run
+
+SHELL									:= /bin/bash
+POWERSHELL								:= $(shell which pwsh)
+PWD										?= pwd_unknown
+GLIBTOOL								:=$(shell which glibtool)
 export GLIBTOOL
 GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
@@ -203,9 +218,14 @@ export PORTER_VERSION
 #.PHONY:-
 .SILENT:
 
+#.PHONY: $(TASKS)
+#$(TASKS):
+#	@yarn $@ $(call args,$@)
+
 ##make	:	command			description
 ##	:
 -:## - default - try 'make submodules'
+-: submodules
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)

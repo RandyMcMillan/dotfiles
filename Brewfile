@@ -155,7 +155,6 @@ brew "tor", restart_service: true
 brew "tree"
 brew "ucspi-tcp"
 brew "vbindiff"
-brew "vim", link: false
 brew "websocat"
 brew "wget"
 brew "woff2"

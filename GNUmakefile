@@ -629,6 +629,11 @@ bitcoin-guix-sigs:
 	git remote set-url upstream https://github.com/bitcoin-core/guix.sigs.git || \
 	git remote add     upstream https://github.com/bitcoin-core/guix.sigs.git && \
 	git push -f origin main:main && popd
+.PHONY:depends
+depends-download:
+	$(MAKE) download -C depends
+depends:depends-download
+	$(MAKE) -C depends
 .PHONY: push
 .ONESHELL:
 push: touch-time

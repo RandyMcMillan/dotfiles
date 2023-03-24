@@ -186,7 +186,7 @@ brew "sdl2"
 brew "sdl12-compat"
 brew "xmlto"
 brew "socat"
-brew "sqlmap"
+brew "sqlmap", link: false
 brew "ssh-copy-id"
 brew "tccutil"
 brew "tcpflow"

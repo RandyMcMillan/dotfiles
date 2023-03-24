@@ -12,17 +12,17 @@ function install-bitcoin-libs-macos() {
 if hash brew 2>/dev/null; then
     export HOMEBREW_NO_INSTALL_CLEANUP=false
     export  HOMEBREW_NO_ENV_HINTS=false
-    brew update
-    brew upgrade
+    #brew update
+    #brew upgrade
     #install brew libs
     brew install wget
     brew install curl
     brew uninstall --ignore-dependencies qt
     brew install m4 perl autoconf automake berkeley-db@4 libtool boost miniupnpc pkg-config python@3 qt@5 libevent qrencode
     brew install librsvg bison
-    brew install codespell shellcheck
-    brew install afl-fuzz
-    brew install --build-from-source afl-fuzz
+    #brew install codespell shellcheck
+    #brew install afl-fuzz
+    #brew install --build-from-source afl-fuzz
     brew install --cask qt-creator
     # brew uninstall --cask --force suspicious-package
     brew install --cask --force suspicious-package

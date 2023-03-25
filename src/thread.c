@@ -2,6 +2,8 @@
 #include <pthread.h>
 #include <stdio.h>
 
+#include "thread.h"
+
 struct params {
 	int *x;
 	int max;
@@ -23,15 +25,14 @@ int thread_launch(int max)
 {
 	int x = 0;
 	int y = 0;
-
-	printf("x = %d, y = %d\n", x, y);
-
 	pthread_t thread;
 
 	struct params params = {
 		.x = &x,
 		.max = max
 	};
+
+	printf("x = %d, y = %d\n", x, y);
 
 	if (pthread_create(&thread, NULL, inc_x, &params)) {
 		err(1, "Error creating thread");

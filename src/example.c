@@ -3,20 +3,22 @@
 
 #include "thread.h"
 
+extern char *__progname;
+
 static void usage(void)
 {
-	extern char *__progname;
-
-	fprintf(stderr, "usage: %s args\n", __progname);
+	fprintf(stderr, "usage: %s number\n", __progname);
 	exit(1);
 }
 
 int main(int argc, char **argv)
 {
+	int arg;
+
 	if (argc < 2)
 		usage();
 
-	int arg = atoi(argv[1]);
+	arg = atoi(argv[1]);
 
 	if (arg <= 0)
 		return 1;

@@ -1,0 +1,15 @@
+[submodule "rsync-time-backup"]
+	path = rsync-time-backup
+	url = git@github.com:laurent22/rsync-time-backup.git
+	branch = master
+	ignore = dirty
+[submodule "legit"]
+	path = legit
+	url = git@github.com:randymcmillan/legit
+	branch = master
+	ignore = dirty
+[submodule "nostril"]
+	path = nostril
+	url = git@github.com:randymcmillan/nostril
+    branch = master
+	ignore = dirty

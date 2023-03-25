@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-alias RICHLIST="cd ~/pycoin/utilities/mac/ && ./richLists.py"
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -22,6 +21,7 @@ alias p="cd ~/projects"
 #git
 alias g="git "
 alias LOG="git log --pretty=oneline --abbrev-commit "
+alias GITS="git status "
 alias STAT="git status "
 alias CO="git  checkout "
 alias GPF="git push -f origin HEAD"

@@ -20,7 +20,7 @@ PKG_CHECK_MODULES([CURL], [libcurl])
 #AX_CHECK_OPENSSL()
 
 AC_CONFIG_HEADERS(config.h)
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([GNUmakefile], [make submodules])
 
 AC_OUTPUT
 AC_MSG_RESULT([

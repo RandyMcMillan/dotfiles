@@ -178,7 +178,7 @@ dist
 .tern-port
 =======
 
-
+config.h.in~
 configure~
 
 guix.sigs

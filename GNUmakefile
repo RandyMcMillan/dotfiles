@@ -542,6 +542,10 @@ qt5: executable## 	install qt@5
 	$(DOTFILES_PATH)/./install-qt5.sh
 	$(DOTFILES_PATH)/./install-qt5-creator.sh
 
+emscripten-sdk:## 	install emsdk via brew/apt-get
+	type -P brew && brew install emscripten
+	type -P apt-get && apt-get install emscripten
+
 .PHONY: hub
 hub: executable## install github utility
 	$(DOTFILES_PATH)/./install-github-utility.sh

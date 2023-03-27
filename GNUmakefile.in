@@ -543,8 +543,11 @@ qt5: executable## 	install qt@5
 	$(DOTFILES_PATH)/./install-qt5-creator.sh
 
 emscripten-sdk:## 	install emsdk via brew/apt-get
-	type -P brew && brew install emscripten
-	type -P apt-get && apt-get install emscripten
+	type -P yarn && yarn add -G  --force   --ignore-scripts  emscripten-sdk
+	#type -P yarn && yarn install -G emscripten-sdk
+	#|| type -P npm && npm install -g emscripten-sdk
+	#type -P brew && brew install emscripten
+	#type -P apt-get && apt-get install emscripten
 
 .PHONY: hub
 hub: executable## install github utility

@@ -159,7 +159,6 @@ function git-add-remote-bitcoin-devs(){
     git remote add laanwj	https://github.com/laanwj/bitcoin.git || true
     git remote add luke-jr	https://github.com/luke-jr/bitcoin-core-gui.git || true
     git remote add marco-falke	https://github.com/MarcoFalke/bitcoin.git || true
-    git remote add marco-falke-gui	https://github.com/MarcoFalke/bitcoin-core-gui.git || true
     git remote add mempool-tab	git@github.com:RandyMcMillan/mempool-tab.git || true
     git remote add mzumsande	git@github.com:mzumsande/bitcoin.git || true
     git remote add origin	git@github.com:RandyMcMillan/bitcoin.git || true

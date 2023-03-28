@@ -268,6 +268,7 @@ brew:-## install or update/upgrade brew
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 brew-bundle-dump:## create Brewfile
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew bundle dump -f
+	@git -C  /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/ diff > homebrew-core.patch
 iterm:## brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \

@@ -130,7 +130,6 @@ brew "qt@5"
 brew "qthreads"
 brew "rename"
 brew "rlwrap"
-brew "rust", link: false
 brew "rustup-init", link: false
 brew "scdoc"
 brew "screen"
@@ -163,7 +162,7 @@ brew "filosottile/musl-cross/musl-cross"
 brew "jez/formulae/pandoc-sidenote"
 cask "alfred"
 cask "beaker-browser"
-cask "cmake"
+cask "cmake", link: true
 cask "discord"
 cask "docker"
 cask "dotnet"

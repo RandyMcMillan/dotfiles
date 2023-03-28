@@ -13,3 +13,8 @@
 	url = git@github.com:randymcmillan/nostril
     branch = master
 	ignore = dirty
+[submodule "rust"]
+	path = rust
+	url = git@github.com:rust-lang/rust.git
+    branch = master
+	ignore = dirty

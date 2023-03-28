@@ -552,8 +552,8 @@ emscripten-sdk:## 	yarn add -G --force --ignore-scripts ...
 	#type -P brew && brew install emscripten
 	#type -P apt-get && apt-get install emscripten
 emscripten:## 	install emsdk via brew/apt-get
-	type -P brew && brew install emscripten
-	type -P apt-get && apt-get install emscripten
+	bash -c "if hash brew 2>/dev/null; then brew install emscripten; fi || echo 'install emscripten some other way...'"
+	bash -c "if hash apt-get 2>/dev/null; then apt-get install emscripten; fi || echo 'install emscripten some other way...'"
 
 .PHONY: hub
 hub: executable## install github utility

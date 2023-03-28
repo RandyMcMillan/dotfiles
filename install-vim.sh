@@ -64,21 +64,16 @@ echo $VIMRC_DESTINATION
       #we exclude from ~/ because we link to here
       ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
       popd
+      popd
     else
       git clone --depth 3 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
       pushd ~/.vim_runtime && git checkout $X86_64HASH
       sh ~/.vim_runtime/install_awesome_vimrc.sh
       ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+      popd
     fi
 #fi
 }
-
-MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
-export MACVIM
-echo   $MACVIM
-MVIM=$(find /usr/local/Cellar/macvim -name mvim)
-export MVIM
-echo   $MVIM
 
 install-macvim(){
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -90,12 +85,14 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
                 rm -f /usr/local/bin/*vi*
                 if [ ! hash mvim 2>/dev/null ]; then
                     # brew link --overwrite macvim
-                    brew install -f homebrew/cask/macvim
+                    #brew install -f homebrew/cask/macvim
+                    brew install --cask macvim
                     brew link --overwrite macvim
                 else
                     echo MacVim already installed.
                     echo
                     brew upgrade macvim
+                    brew link --overwrite macvim
                 fi
             fi
             if ! hash tccutil 2>/dev/null; then
@@ -104,10 +101,18 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
             if ! hash dockutil 2>/dev/null; then
                 curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
                 chmod a+x /usr/local/bin/dockutil
-                MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
+            fi
+            if [ -x `which brew` ]; then
+              macvim_version=`brew list --versions macvim | sed 's/.* \([0-9\.\-]*\)$/\1/'`
+              echo $macvim_version
+              if [ -n "${macvim_version}" ]; then
+                alias vim=`brew --prefix`/Cellar/macvim/${macvim_version}/MacVim.app/Contents/MacOS/Vim
+                which vim
+                MACVIM=`brew --prefix`/Cellar/macvim/${macvim_version}/MacVim.app
                 echo $MACVIM
                 export MACVIM
                 dockutil --add $MACVIM --replacing 'MacVim'
+              fi
             fi
         fi
     else

@@ -70,7 +70,7 @@ function checknvm() {
         fi
     else
 
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh)"
+        /bin/bash -c "$( curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh)"
 		checknvm
 
     fi

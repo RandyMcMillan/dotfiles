@@ -168,6 +168,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add rebroad-gui git@github.com:rebroad/gui.git || true
     git remote add russeree	git@github.com:russeree/bitcoin || true
     git remote add rsafier-gui git@github.com:rsafier/gui.git || true
+    git remote add ryanofsky  git@github.com:ryanofsky/bitcoin.git || true
     git remote add sjors git@github.com:Sjors/gui.git || true
     git remote add upstream	https://github.com/bitcoin/bitcoin.git || true
     git remote add upstream-gui	git@github.com:bitcoin-core/gui.git || true

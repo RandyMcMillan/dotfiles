@@ -1,4 +1,22 @@
 # PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
+export THIS_FILE
+TIME                                    := $(shell date +%s)
+export TIME
+ARCH                                    :=$(shell uname -m)
+export ARCH
+ifeq ($(ARCH),x86_64)
+TRIPLET                                 :=x86_64-linux-gnu
+export TRIPLET
+endif
+ifeq ($(ARCH),arm64)
+TRIPLET                                 :=aarch64-linux-gnu
+export TRIPLET
+endif
+ifeq ($(ARCH),arm64)
+TRIPLET                                 :=aarch64-linux-gnu
+export TRIPLET
+endif
 #build nodegit with node-gyp
 #Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ACLOCAL_AMFLAGS=-Im4
@@ -13,6 +31,15 @@ PWD                                     ?= pwd_unknown
 CMAKE                                   :=$(shell which cmake)
 export CMAKE
 GLIBTOOL                                :=$(shell which glibtool)
+GLIBTOOLIZE                             :=$(shell which glibtoolize)
+export GLIBTOOLIZE
+AUTOCONF                                :=$(shell which autoconf)
+export AUTOCONF
+PKGCONF                                :=$(shell which pkg-config)
+export PKGCONF
+DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+export DOTFILES_PATH
+
 args = $(foreach a,$($(subst -,_,$1)_args),$(if $(value $a),$a="$($a)"))
 export args
 
@@ -24,35 +51,6 @@ export args
 #TASKS = \
 #    install \
 #    run
-
-SHELL									:= /bin/bash
-POWERSHELL								:= $(shell which pwsh)
-PWD										?= pwd_unknown
-GLIBTOOL								:=$(shell which glibtool)
-export GLIBTOOL
-GLIBTOOLIZE                             :=$(shell which glibtoolize)
-export GLIBTOOLIZE
-AUTOCONF                                :=$(shell which autoconf)
-export AUTOCONF
-PKGCONF                                :=$(shell which pkg-config)
-export PKGCONF
-DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-export DOTFILES_PATH
-THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
-export THIS_FILE
-TIME                                    := $(shell date +%s)
-export TIME
-
-ARCH                                    :=$(shell uname -m)
-export ARCH
-ifeq ($(ARCH),x86_64)
-TRIPLET                                 :=x86_64-linux-gnu
-export TRIPLET
-endif
-ifeq ($(ARCH),arm64)
-TRIPLET                                 :=aarch64-linux-gnu
-export TRIPLET
-endif
 
 NODE_VERSION                            := v16.19.1
 export NODE_VERSION
@@ -257,7 +255,8 @@ keymap:## install ./init/com.local.KeyRemapping.plist
 
 init:-## chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
-	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
+	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
+	@echo $(NODE_VERSION) > .nvmrc
 	./scripts/initialize
 brew:-## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
@@ -390,7 +389,7 @@ config-dock: executable
 ##	:	all			exec gnupg brew-libs
 all: executable gnupg brew-libs
 vim:## vim - install-vim.sh
-	bash -c "source $(PWD)/template && checkbrew install	vim"
+	type -P vim || bash -c "source $(PWD)/template && checkbrew install	vim"
 	./install-vim.sh
 macdown:
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
@@ -634,10 +633,8 @@ bitcoin-test-battery:
 	bash -c "./bitcoin-test-battery.sh $(BITCOIN_VERSION) "
 
 .PHONY: funcs
-##	:
-##	:	funcs			additional make functions
-funcs:
-	make -f funcs.mk
+funcs:##additional commands
+	$(MAKE) -f funcs.mk
 
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm

@@ -642,12 +642,16 @@ bitcoin-test-battery:
 .PHONY: funcs
 funcs:##additional commands
 	$(MAKE) -f funcs.mk
+.PHONY: rust
+rust:##additional make rustcommands
+	$(MAKE) -f rust.mk
 
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 
 -include Makefile
 -include funcs.mk
+-include rust.mk
 -include legit.mk
 -include nostril.mk
 -include venv.mk

@@ -207,6 +207,15 @@ if has("autocmd")
     au BufRead,BufNewFile GNUmakefile  set softtabstop=4
     au BufRead,BufNewFile GNUmakefile  set list
 
+    au BufRead,BufNewFile GNUmakefile.in  set noexpandtab
+    au BufRead,BufNewFile GNUmakefile.in  set softtabstop=4
+    au BufRead,BufNewFile GNUmakefile.in  set list
+
+    au BufRead,BufNewFile *.mk         set noexpandtab
+    au BufRead,BufNewFile *.mk         set softtabstop=4
+    au BufRead,BufNewFile *.mk         set list
+
+
     au BufRead,BufNewFile *.sh* set list
     au BufRead,BufNewFile *.vimrc* set list
     au BufRead,BufNewFile *.vimrc* set noexpandtab

@@ -3,6 +3,10 @@ THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
 export THIS_FILE
 TIME                                    := $(shell date +%s)
 export TIME
+OS                                      :=$(shell uname -s)
+export OS
+OS_VERSION                              :=$(shell uname -r)
+export OS_VERSION
 ARCH                                    :=$(shell uname -m)
 export ARCH
 ifeq ($(ARCH),x86_64)
@@ -586,7 +590,7 @@ depends-download:
 depends:depends-download
 	$(MAKE) -C depends
 tag:
-	@git tag $(ARCH)-$(shell date +%s)
+	@git tag $(OS)-$(OS_VERSION)-$(ARCH)-$(shell date +%s)
 .PHONY: push
 .ONESHELL:
 push: touch-time

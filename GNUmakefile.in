@@ -215,12 +215,12 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--:## - default - try 'make submodules'
+-:## -	default - try 'make submodules'
 -:
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-autoconf:## ./autogen.sh && ./configure
+autoconf:## 	./autogen.sh && ./configure
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
 ifeq ($(BREW),)
@@ -251,31 +251,31 @@ clean-local:
 ##	:
 ##	:	adduser-git		add a user named git
 
-keymap:## install ./init/com.local.KeyRemapping.plist
+keymap:## 	install ./init/com.local.KeyRemapping.plist
 	@mkdir -p ~/Library/LaunchAgents/
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:-## chsh -s /bin/bash && ./scripts/initialize
+init:- 	## chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	@echo $(NODE_VERSION) > .nvmrc
 	./scripts/initialize
-brew:-## install or update/upgrade brew
+brew:-## 	install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
-brew-bundle-dump:## create Brewfile
+brew-bundle-dump:## 	create Brewfile
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew bundle dump -f
 	@git -C  /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/ diff > homebrew-core.patch
-iterm:## brew install --cask iterm2
+iterm:## 	brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
 .PHONY: help
-help:## print verbose help
+help:## 	print verbose help
 	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -289,7 +289,7 @@ help:## print verbose help
 	@echo "bitcoin-\<TAB>";
 	@echo ""
 
-report:
+report:## 	
 	@echo ''
 	@echo ' CMAKE=${CMAKE}	'
 	@echo ' GLIBTOOL=${GLIBTOOL}	'
@@ -331,7 +331,7 @@ report:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
-whatami:
+whatami:## 	
 	@bash ./whatami.sh
 #.PHONY:readme
 #readme:
@@ -339,13 +339,13 @@ whatami:
 #	git add -f README.md && git commit -m "make readme" && git push -f origin master
 .PHONY: adduser-git
 ##	:	adduser-git		add a user named git
-adduser-git:
+adduser-git:## 	
 	source $(PWD)/adduser-git.sh && adduser-git
 
 
 ##	:	bootstrap		source bootstrap.sh
 .PHONY: bootstrap
-bootstrap: exec
+bootstrap: exec## 	
 	@bash -c "$(PWD)/bootstrap.sh force"
 
 
@@ -379,7 +379,7 @@ template:
 
 .PHONY: nvm
 .ONESHELL:
-nvm: executable ## nvm
+nvm: executable ## 	nvm
 	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull -C $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
 	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
 
@@ -640,10 +640,10 @@ bitcoin-test-battery:
 	bash -c "./bitcoin-test-battery.sh $(BITCOIN_VERSION) "
 
 .PHONY: funcs
-funcs:##additional commands
+funcs:## additional commands
 	$(MAKE) -f funcs.mk
 .PHONY: rust
-rust:##additional make rustcommands
+rust:## additional make rustcommands
 	$(MAKE) -f rust.mk
 
 clean-nvm: ## clean-nvm

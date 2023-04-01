@@ -52,15 +52,21 @@ endif()
 option(BUILD_BITCOINCONSENSUS_LIB "Build bitcoinconsensus library." ON)
 option(BUILD_BITCOINKERNEL_LIB "Build experimental bitcoinkernel library." ${BUILD_UTIL_CHAINSTATE})
 option(ASM "Use assembly routines." ON)
+
+option(ENABLE_WALLET "Enable wallet." ON)
+# TODO: These tri-state options will be removed and most features
+#       will become opt-in by default before merging into master.
+include(TristateOption)
+tristate_option(WITH_SQLITE "Enable SQLite wallet support." "if libsqlite3 is found." AUTO)
+tristate_option(WITH_BDB "Enable Berkeley DB (BDB) wallet support." "if libdb_cxx is found." AUTO)
+option(WARN_INCOMPATIBLE_BDB "Warn when using a Berkeley DB (BDB) version other than 4.8." ON)
+
 cmake_dependent_option(CXX20 "Enable compilation in C++20 mode." OFF "NOT MSVC" ON)
 option(THREADLOCAL "Enable features that depend on the C++ thread_local keyword (currently just thread names in debug logs)." ON)
 option(HARDENING "Attempt to harden the resulting executables." ON)
 option(REDUCE_EXPORTS "Attempt to reduce exported symbols in the resulting executables." OFF)
 option(WERROR "Treat compiler warnings as errors." OFF)
 
-# TODO: These tri-state options will be removed and most features
-#       will become opt-in by default before merging into master.
-include(TristateOption)
 tristate_option(CCACHE "Use ccache for compiling." "if ccache is found." AUTO)
 tristate_option(WITH_NATPMP "Enable NAT-PMP." "if libnatpmp is found." AUTO)
 tristate_option(WITH_MINIUPNPC "Enable UPnP." "if libminiupnpc is found." AUTO)
@@ -334,6 +340,9 @@ message("  build shared ........................ ${BUILD_SHARED}")
 message("  build static ........................ ${BUILD_STATIC}")
 message("  libbitcoinconsensus ................. ${BUILD_BITCOINCONSENSUS_LIB}")
 message("  libbitcoinkernel (experimental) ..... ${BUILD_BITCOINKERNEL_LIB}")
+message("Wallet support:")
+message("  SQLite, descriptor wallets .......... ${WITH_SQLITE}")
+message("  Berkeley DB, legacy wallets ......... ${WITH_BDB}")
 message("Optional packages:")
 message("  NAT-PMP ............................. ${WITH_NATPMP}")
 message("  UPnP ................................ ${WITH_MINIUPNPC}")

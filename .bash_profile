@@ -88,8 +88,8 @@ export NVM_DIR="$HOME/.nvm"
 #eval "$(rbenv init -)"
 
 
-if [ -f $(PWD)/GNUMakefile ]; then
-  complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+if [ -f $(PWD)/*akefile ]; then
+  complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' *akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 fi
 
 # if [ -f $(PWD)/funcs.mk ]; then

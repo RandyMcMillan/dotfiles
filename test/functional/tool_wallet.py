@@ -33,7 +33,7 @@ class ToolWalletTest(BitcoinTestFramework):
 
     def bitcoin_wallet_process(self, *args):
         binary = self.config["environment"]["BUILDDIR"] + '/src/bitcoin-wallet' + self.config["environment"]["EXEEXT"]
-        default_args = ['-datadir={}'.format(self.nodes[0].datadir), '-chain=%s' % self.chain]
+        default_args = ['-datadir={}'.format(self.nodes[0].datadir)]
         if not self.options.descriptors and 'create' in args:
             default_args.append('-legacy')
 

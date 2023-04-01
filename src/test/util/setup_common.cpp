@@ -121,12 +121,14 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName, const std::ve
     util::ThreadRename("test");
     fs::create_directories(m_path_root);
     m_args.ForceSetArg("-datadir", fs::PathToString(m_path_root));
+    std::string error;
+    if (!m_args.ReadConfigFiles(error)) throw std::runtime_error(error);
     gArgs.ForceSetArg("-datadir", fs::PathToString(m_path_root));
     gArgs.ClearPathCache();
     {
         SetupServerArgs(*m_node.args);
-        std::string error;
-        if (!m_node.args->ParseParameters(arguments.size(), arguments.data(), error)) {
+        if (!m_node.args->ParseParameters(arguments.size(), arguments.data(), error) ||
+            !m_node.args->ReadConfigFiles(error)) {
             m_node.args->ClearArgs();
             throw std::runtime_error{error};
         }

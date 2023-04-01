@@ -213,14 +213,11 @@ export PORTER_VERSION
 #$(TASKS):
 #	@yarn $@ $(call args,$@)
 
-##make	:	command			description
-##	:
--:## -	default - try 'make submodules'
--:
+-:#### -	default - try 'make submodules'
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-autoconf:## 	./autogen.sh && ./configure
+	@awk 'BEGIN {FS = ":.*?####"} /^[a-zA-Z_-]+:.*?####/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+autoconf:#### 	./autogen.sh && ./configure
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
 ifeq ($(BREW),)
@@ -228,28 +225,27 @@ ifeq ($(BREW),)
 endif
 	@./configure --quiet
 	#$(MAKE) -
-
-nodegit$(EXEEXT):
+submodules:#### 	git submodule update --init --recursive
+	type -P git && git submodule update --init --recursive || echo "install git..."
+nodegit$(EXEEXT):#### 	cd node_modules && node_gyp build
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
-
-
-clean-local:
+clean-local:#### 	cd node_modules && node-gyp clean
 	-cd $(NODE_MODULE_DIR) && node-gyp clean
 
 
-##	:	-
-##	:	help
-##	:	report			environment args
-##	:
-##	:	all			execute installer scripts
-##	:	init
-##	:	brew
-##	:	keymap
+####	:	-
+####	:	help
+####	:	report			environment args
+####	:
+####	:	all			execute installer scripts
+####	:	init
+####	:	brew
+####	:	keymap
 
-##	:
-##	:	whatami			report system info
-##	:
-##	:	adduser-git		add a user named git
+####	:
+####	:	whatami			report system info
+####	:
+####	:	adduser-git		add a user named git
 
 keymap:## 	install ./init/com.local.KeyRemapping.plist
 	@mkdir -p ~/Library/LaunchAgents/
@@ -257,7 +253,7 @@ keymap:## 	install ./init/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:- 	## chsh -s /bin/bash && ./scripts/initialize
+init:- 		## 	chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	@echo $(NODE_VERSION) > .nvmrc
@@ -276,11 +272,10 @@ iterm:## 	brew install --cask iterm2
 
 .PHONY: help
 help:## 	print verbose help
-	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
+	@echo '[COMMAND]		[DESCRIPTION] [EXTRA_ARGUMENTS]	'
+	@echo '         		[EXTRA_ARGUMENTS]	'
 	@echo ''
-	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+	@sed -n 's/^####//p' ${MAKEFILE_LIST} | sed -e 's/://'| sed -e 's/		//'
 	@echo ""
 	@echo "Useful Commands:"
 	@echo ""
@@ -289,7 +284,7 @@ help:## 	print verbose help
 	@echo "bitcoin-\<TAB>";
 	@echo ""
 
-report:## 	
+report:## 	print make variables
 	@echo ''
 	@echo ' CMAKE=${CMAKE}	'
 	@echo ' GLIBTOOL=${GLIBTOOL}	'
@@ -331,7 +326,7 @@ report:##
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
-whatami:## 	
+whatami:## 	bash ./whatami.sh
 	@bash ./whatami.sh
 #.PHONY:readme
 #readme:
@@ -339,14 +334,15 @@ whatami:##
 #	git add -f README.md && git commit -m "make readme" && git push -f origin master
 .PHONY: adduser-git
 ##	:	adduser-git		add a user named git
-adduser-git:## 	
+adduser-git:## 	source adduser-git.sh && adduser-git
 	source $(PWD)/adduser-git.sh && adduser-git
 
 
 ##	:	bootstrap		source bootstrap.sh
 .PHONY: bootstrap
-bootstrap: exec## 	
-	@bash -c "$(PWD)/bootstrap.sh force"
+bootstrap:## 	./bootstrap.sh && make vim
+	@bash -c "$(PWD)/bootstrap.sh" #force"
+	@make vim
 
 
 .PHONY: install
@@ -382,6 +378,8 @@ template:
 nvm: executable ## 	nvm
 	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull -C $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
 	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
+nvm-clean: ## 	nvm-clean
+	@rm -rf ~/.nvm
 
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
@@ -393,7 +391,7 @@ config-dock: executable
 .PHONY: all
 ##	:	all			exec gnupg brew-libs
 all: executable gnupg brew-libs
-vim:## vim - install-vim.sh
+vim:## 	vim - install-vim.sh
 	type -P vim || bash -c "source $(PWD)/template && checkbrew install	vim"
 	./install-vim.sh
 macdown:
@@ -557,7 +555,7 @@ emscripten:## 	install emsdk via brew/apt-get
 	bash -c "if hash apt-get 2>/dev/null; then apt-get install emscripten; fi || echo 'install emscripten some other way...'"
 
 .PHONY: hub
-hub: executable## install github utility
+hub: executable## 	install github utility
 	$(DOTFILES_PATH)/./install-github-utility.sh
 
 .PHONY: config-github
@@ -640,14 +638,11 @@ bitcoin-test-battery:
 	bash -c "./bitcoin-test-battery.sh $(BITCOIN_VERSION) "
 
 .PHONY: funcs
-funcs:## additional commands
+funcs:## 	additional commands
 	$(MAKE) -f funcs.mk
 .PHONY: rust
-rust:## additional make rustcommands
+rust:## 	additional make rustcommands
 	$(MAKE) -f rust.mk
-
-clean-nvm: ## clean-nvm
-	@rm -rf ~/.nvm
 
 -include Makefile
 -include funcs.mk

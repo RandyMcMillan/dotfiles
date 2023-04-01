@@ -213,7 +213,7 @@ export PORTER_VERSION
 #$(TASKS):
 #	@yarn $@ $(call args,$@)
 
--:#### -	default - try 'make submodules'
+-:#### 	default - try 'make submodules'
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?####"} /^[a-zA-Z_-]+:.*?####/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -286,47 +286,47 @@ help:## 	print verbose help
 
 report:## 	print make variables
 	@echo ''
-	@echo ' CMAKE=${CMAKE}	'
-	@echo ' GLIBTOOL=${GLIBTOOL}	'
-	@echo ' GLIBTOOLIZE=${GLIBTOOLIZE}	'
-	@echo ' AUTOCONF=${AUTOCONF}	'
+	@echo 'CMAKE=${CMAKE}	'
+	@echo 'GLIBTOOL=${GLIBTOOL}	'
+	@echo 'GLIBTOOLIZE=${GLIBTOOLIZE}	'
+	@echo 'AUTOCONF=${AUTOCONF}	'
 	@echo '	[DEV ENVIRONMENT]:	'
 	@echo ''
-	@echo ' TIME=${TIME}	'
-	@echo ' SHELL=${SHELL}	'
-	@echo ' POWERSHELL=${POWERSHELL}	'
-	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
-	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
+	@echo 'TIME=${TIME}	'
+	@echo 'SHELL=${SHELL}	'
+	@echo 'POWERSHELL=${POWERSHELL}	'
+	@echo 'DOTFILES_PATH=${DOTFILES_PATH}	'
+	@echo 'PROJECT_NAME=${PROJECT_NAME}	'
 	@echo ''
-	@echo ' NODE_VERSION=${NODE_VERSION}	'
-	@echo ' NODE_ALIAS=${NODE_ALIAS}	'
+	@echo 'NODE_VERSION=${NODE_VERSION}	'
+	@echo 'NODE_ALIAS=${NODE_ALIAS}	'
 	@echo ''
-	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
-	@echo ' GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
-	@echo ' GIT_SERVER=${GIT_SERVER}	'
-	@echo ' GIT_PROFILE=${GIT_PROFILE}	'
-	@echo ' GIT_BRANCH=${GIT_BRANCH}	'
-	@echo ' GIT_HASH=${GIT_HASH}	'
-	@echo ' GIT_PREVIOUS_HASH=${GIT_PREVIOUS_HASH}	'
-	@echo ' GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
-	@echo ' GIT_REPO_NAME=${GIT_REPO_NAME}	'
-	@echo ' GIT_REPO_PATH=${GIT_REPO_PATH}	'
+	@echo 'GIT_USER_NAME=${GIT_USER_NAME}	'
+	@echo 'GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
+	@echo 'GIT_SERVER=${GIT_SERVER}	'
+	@echo 'GIT_PROFILE=${GIT_PROFILE}	'
+	@echo 'GIT_BRANCH=${GIT_BRANCH}	'
+	@echo 'GIT_HASH=${GIT_HASH}	'
+	@echo 'GIT_PREVIOUS_HASH=${GIT_PREVIOUS_HASH}	'
+	@echo 'GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
+	@echo 'GIT_REPO_NAME=${GIT_REPO_NAME}	'
+	@echo 'GIT_REPO_PATH=${GIT_REPO_PATH}	'
 	@echo ''
-	@echo ' BREW=${BREW}	'
-	@echo ' HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
-	@echo ' HOMEBREW_CORE_REMOTE=${HOMEBREW_CORE_GIT_REMOTE}	'
-	@echo ' HOMEBREW_INSTALL_FROM_API=${HOMEBREW_INSTALL_FROM_API}	'
-	@echo ' BREW_PREFIX=${BREW_PREFIX}	'
-	@echo ' BREW_CELLAR=${BREW_CELLAR}	'
-	@echo ' HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
+	@echo 'BREW=${BREW}	'
+	@echo 'HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
+	@echo 'HOMEBREW_CORE_REMOTE=${HOMEBREW_CORE_GIT_REMOTE}	'
+	@echo 'HOMEBREW_INSTALL_FROM_API=${HOMEBREW_INSTALL_FROM_API}	'
+	@echo 'BREW_PREFIX=${BREW_PREFIX}	'
+	@echo 'BREW_CELLAR=${BREW_CELLAR}	'
+	@echo 'HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
 	@echo ''
-	@echo ' PORT_VERSION=${PORTER_VERSION}	'
+	@echo 'PORT_VERSION=${PORTER_VERSION}	'
 
 #.PHONY:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
-whatami:## 	bash ./whatami.sh
+whatami:#### 	bash ./whatami.sh
 	@bash ./whatami.sh
 #.PHONY:readme
 #readme:
@@ -334,13 +334,13 @@ whatami:## 	bash ./whatami.sh
 #	git add -f README.md && git commit -m "make readme" && git push -f origin master
 .PHONY: adduser-git
 ##	:	adduser-git		add a user named git
-adduser-git:## 	source adduser-git.sh && adduser-git
+adduser-git:#### 	source adduser-git.sh && adduser-git
 	source $(PWD)/adduser-git.sh && adduser-git
 
 
 ##	:	bootstrap		source bootstrap.sh
 .PHONY: bootstrap
-bootstrap:## 	./bootstrap.sh && make vim
+bootstrap:#### 	./bootstrap.sh && make vim
 	@bash -c "$(PWD)/bootstrap.sh" #force"
 	@make vim
 
@@ -352,7 +352,7 @@ install: executable
 
 
 .PHONY: github
-github: executable## 	config-github
+github: executable#### 	config-github
 	@./config-github
 
 
@@ -362,45 +362,45 @@ github: executable## 	config-github
 executable:
 	chmod +x *.sh
 .PHONY: exec
-##	:	executable		make shell scripts executable
+####	:	executable		make shell scripts executable
 exec: executable
 
 .PHONY: template
 .ONESHELL:
 template:
-##	:	template		install checkbrew command
+####	:	template		install checkbrew command
 	rm -f /usr/local/bin/checkbrew
 	@install -bC $(PWD)/template /usr/local/bin/checkbrew
 	bash -c "source /usr/local/bin/checkbrew"
 
 .PHONY: nvm
 .ONESHELL:
-nvm: executable ## 	nvm
+nvm: executable #### 	nvm
 	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull -C $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
 	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
 nvm-clean: ## 	nvm-clean
 	@rm -rf ~/.nvm
 
-##	:	cirrus			source and run install-cirrus command
+####	:	cirrus			source and run install-cirrus command
 cirrus: executable
 	bash -c "source $(PWD)/install-cirrus.sh && install-cirrus $(FORCE)"
-##	:	config-dock		source and run config-dock-prefs
+####	:	config-dock		source and run config-dock-prefs
 config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
 .PHONY: all
-##	:	all			exec gnupg brew-libs
+####	:	all			exec gnupg brew-libs
 all: executable gnupg brew-libs
-vim:## 	vim - install-vim.sh
+vim:#### 	vim - install-vim.sh
 	type -P vim || bash -c "source $(PWD)/template && checkbrew install	vim"
 	./install-vim.sh
-macdown:
+macdown:#### 	checkbrew install macdown
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
-glow:
+glow:#### 	checkbrew install glow
 	bash -c "source $(PWD)/template && checkbrew install	glow"
-coreutils:
+coreutils: 	checkbrew install coreutils
 	bash -c "source $(PWD)/template && checkbrew install	coreutils"
-gettext:
+gettext:#### 	checkbrew install gettext
 	bash -c "source $(PWD)/template && checkbrew install	gettext"
 texinfo:
 	bash -c "source $(PWD)/template && checkbrew install	texinfo"

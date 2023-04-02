@@ -16,6 +16,19 @@ fi
 
 }
 
+function checkbrew-check_force(){
+#--force
+if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
+    if [[ ${1} == "-f" ]] || [[ ${1} == "--force" ]] || \
+        [[ ${2} == "-f" ]] || [[ ${2} == "--force" ]]; then
+        set FORCE=--force
+        export FORCE
+        # echo $FORCE
+        shift
+    fi
+fi
+}
+
 function checkbrew-upgrade() {
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then

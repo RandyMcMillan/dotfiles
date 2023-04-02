@@ -64,7 +64,7 @@ echo $VIMRC_DESTINATION
       #we exclude from ~/ because we link to here
       ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
       popd
-      popd
+      #popd || echo $PWD
     else
       git clone --depth 3 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
       pushd ~/.vim_runtime && git checkout $X86_64HASH

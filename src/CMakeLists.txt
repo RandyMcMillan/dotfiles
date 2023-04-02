@@ -33,6 +33,9 @@ add_library(bitcoin_consensus OBJECT EXCLUDE_FROM_ALL
   uint256.cpp
   util/strencodings.cpp
 )
+set_property(SOURCE script/interpreter.cpp APPEND PROPERTY
+  COMPILE_OPTIONS $<$<BOOL:${MINGW}>:-Wno-maybe-uninitialized>
+)
 target_link_libraries(bitcoin_consensus PRIVATE secp256k1)
 
 if(WITH_ZMQ)

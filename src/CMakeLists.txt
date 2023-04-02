@@ -323,6 +323,12 @@ if(BUILD_UTIL_CHAINSTATE)
   list(APPEND installable_targets bitcoin-chainstate)
 endif()
 
+
+if(WITH_GUI)
+  add_subdirectory(qt)
+endif()
+
+
 add_subdirectory(test/util)
 if(BUILD_TESTS)
   add_subdirectory(test)

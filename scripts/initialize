@@ -204,7 +204,8 @@ if hash nvm 2>/dev/null; then
 	echo "NODE_VERSION=""$NODE_VERSION"
 	echo "NODE_ALIAS=""$NODE_ALIAS"
 
-	nvm install "$NODE_VERSION" && nvm use "$NODE_VERSION"
+	nvm install "$NODE_VERSION"
+	nvm use "$NODE_VERSION"
 	nvm alias "$NODE_ALIAS $NODE_VERSION"
 else
 	checknvm

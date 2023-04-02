@@ -652,6 +652,9 @@ legit:#### 	additional make legit
 .PHONY: rust
 rust:#### 	additional make rustcommands
 	$(MAKE) -f rust.mk
+.PHONY: venv
+venv:#### 	additional make venv commands
+	$(MAKE) -f venv.mk
 
 -include Makefile
 -include funcs.mk

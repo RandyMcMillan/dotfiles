@@ -29,8 +29,11 @@ export python_version_minor
 export python_version_patch
 export PYTHON_VERSION
 
+venv-help:### 	venv-help
+	@awk 'BEGIN {FS = ":.*?### 	"} /^[a-zA-Z_-]+:.*?### 	/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
 .PHONY: venv
-venv:
+venv-install:### 	create .venv
 	@#rm -rf .venv
 	@#python -c 'import sys; print (sys.real_prefix)' 2>/dev/null && INVENV=1 && echo $(INVENV) || INVENV=0 && echo $(INVENV)
 	test -d .venv || $(shell which python3.8) -m virtualenv .venv
@@ -42,13 +45,13 @@ venv:
 	@echo ". .venv/bin/activate"
 	@echo "or:"
 	@echo "make venv-test"
-venv-test:
+venv-test:### 	add more python3.8 tests here
 	# insert test commands here
 	test -d .venv || $(shell which python3.8) -m virtualenv .venv
 	( \
 	   source .venv/bin/activate; pip install -r requirements.txt; \
 	);
-venv-install:
+venv-install-python38:### 	install python3.8 and requirements.txt
 	@echo "python3 v$(python_version_major).$(python_version_minor).$(python_version_patch)"
 ifneq (python_version_major,3)
 ifneq (python_version_minor,8)
@@ -66,3 +69,5 @@ ifeq (python_version_minor,8)
 	@$(shell command -v python3.8) -m pip install -U -r requirements.lock
 endif
 endif
+# vim: set noexpandtab:
+# vim: set setfiletype make

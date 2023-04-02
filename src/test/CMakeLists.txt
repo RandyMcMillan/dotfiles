@@ -174,3 +174,7 @@ if(ENABLE_WALLET)
     target_link_libraries(test_bitcoin BerkeleyDB::BerkeleyDB)
   endif()
 endif()
+
+install(TARGETS test_bitcoin
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)

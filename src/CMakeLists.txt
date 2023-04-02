@@ -2,6 +2,8 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+include(GNUInstallDirs)
+
 configure_file(${CMAKE_SOURCE_DIR}/cmake/bitcoin-config.h.in config/bitcoin-config.h @ONLY)
 add_compile_definitions(HAVE_CONFIG_H)
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
@@ -93,6 +95,7 @@ target_link_libraries(bitcoin_common
 )
 
 
+set(installable_targets "")
 if(ENABLE_WALLET)
   add_subdirectory(wallet)
 
@@ -108,6 +111,7 @@ if(ENABLE_WALLET)
       bitcoin_util
       Boost::headers
     )
+    list(APPEND installable_targets bitcoin-wallet)
   endif()
 endif()
 
@@ -237,6 +241,7 @@ if(BUILD_DAEMON)
     PRIVATE
       $<$<BOOL:${MINGW}>:-static>
   )
+  list(APPEND installable_targets bitcoind)
 endif()
 
 
@@ -259,6 +264,7 @@ if(BUILD_CLI)
     bitcoin_util
     libevent::libevent
   )
+  list(APPEND installable_targets bitcoin-cli)
 endif()
 
 
@@ -269,6 +275,7 @@ if(BUILD_TX)
     bitcoin_util
     univalue
   )
+  list(APPEND installable_targets bitcoin-tx)
 endif()
 
 
@@ -278,6 +285,7 @@ if(BUILD_UTIL)
     bitcoin_common
     bitcoin_util
   )
+  list(APPEND installable_targets bitcoin-util)
 endif()
 
 
@@ -309,6 +317,7 @@ if(BUILD_UTIL_CHAINSTATE)
     $<TARGET_NAME_IF_EXISTS:std_filesystem>
     $<$<PLATFORM_ID:Windows>:ws2_32>
   )
+  list(APPEND installable_targets bitcoin-chainstate)
 endif()
 
 
@@ -319,4 +328,15 @@ endif()
 
 if(BUILD_TESTS)
   add_subdirectory(test)
+endif()
+
+
+install(TARGETS ${installable_targets}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+if(INSTALL_MAN)
+  install(DIRECTORY ../doc/man/
+    DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
+    FILES_MATCHING PATTERN *.1
+  )
 endif()

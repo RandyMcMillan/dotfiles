@@ -14,6 +14,9 @@ function doIt() {
 		--exclude "bootstrap" \
 		--exclude "README.md" \
 		--exclude "LICENSE-MIT.txt" \
+		--exclude "nostril" \
+		--exclude "legit" \
+		--exclude "rust" \
 		--exclude "*.sh" \
 		-avh --no-perms . ~;
 	source $PWD/.bashrc;

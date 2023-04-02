@@ -41,7 +41,7 @@ AUTOCONF                                :=$(shell which autoconf)
 export AUTOCONF
 PKGCONF                                :=$(shell which pkg-config)
 export PKGCONF
-DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+DOTFILES_PATH=$(PWD)
 export DOTFILES_PATH
 
 args = $(foreach a,$($(subst -,_,$1)_args),$(if $(value $a),$a="$($a)"))
@@ -214,7 +214,9 @@ export PORTER_VERSION
 #	@yarn $@ $(call args,$@)
 
 -:#### 	default - try 'make submodules'
-	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+	cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile
+	echo $(DOTFILES_PATH)
+	echo 'export PATH="$(DOTFILES_PATH):$(PATH)"' >> $(PWD)/.bash_profile
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?####"} /^[a-zA-Z_-]+:.*?####/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 autoconf:#### 	./autogen.sh && ./configure
@@ -247,31 +249,35 @@ clean-local:#### 	cd node_modules && node-gyp clean
 ####	:
 ####	:	adduser-git		add a user named git
 
-keymap:## 	install ./init/com.local.KeyRemapping.plist
+keymap:#### 	install ./init/com.local.KeyRemapping.plist
 	@mkdir -p ~/Library/LaunchAgents/
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:- 		## 	chsh -s /bin/bash && ./scripts/initialize
+init:#### 	init
+	#@type -P chsh && chsh -s /bin/bash #&& ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
-	@echo $(NODE_VERSION) > .nvmrc
-	./scripts/initialize
-brew:-## 	install or update/upgrade brew
+	#@echo ...$(DOTFILES_PATH)
+	#@[[ " ${PATH//:/ } " =~ "$(DOTFILES_PATH)" ]] && echo Found it || echo Not found
+	echo 'export PATH="$(DOTFILES_PATH):$(PATH)"' >> $(PWD)/.bash_profile
+	echo $(NODE_VERSION) > .nvmrc
+	#@./scripts/initialize
+brew:-#### 	install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
-brew-bundle-dump:## 	create Brewfile
+brew-bundle-dump:#### 	create Brewfile
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew bundle dump -f
 	@git -C  /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/ diff > homebrew-core.patch
-iterm:## 	brew install --cask iterm2
+iterm:#### 	brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
 .PHONY: help
-help:## 	print verbose help
+help:#### 	print verbose help
 	@echo '[COMMAND]		[DESCRIPTION] [EXTRA_ARGUMENTS]	'
 	@echo '         		[EXTRA_ARGUMENTS]	'
 	@echo ''
@@ -284,7 +290,7 @@ help:## 	print verbose help
 	@echo "bitcoin-\<TAB>";
 	@echo ""
 
-report:## 	print make variables
+report:#### 	print make variables
 	@echo ''
 	@echo 'CMAKE=${CMAKE}	'
 	@echo 'GLIBTOOL=${GLIBTOOL}	'
@@ -638,10 +644,13 @@ bitcoin-test-battery:
 	bash -c "./bitcoin-test-battery.sh $(BITCOIN_VERSION) "
 
 .PHONY: funcs
-funcs:## 	additional commands
+funcs:#### 	additional commands
 	$(MAKE) -f funcs.mk
+.PHONY: legit
+legit:#### 	additional make legit
+	$(MAKE) -f legit.mk
 .PHONY: rust
-rust:## 	additional make rustcommands
+rust:#### 	additional make rustcommands
 	$(MAKE) -f rust.mk
 
 -include Makefile

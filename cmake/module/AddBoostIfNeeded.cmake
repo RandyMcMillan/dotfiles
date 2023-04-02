@@ -10,11 +10,12 @@ function(add_boost_if_needed)
   Implementation notes:
   Although only Boost headers are used to build Bitcoin Core,
   we still leverage a standard CMake's approach to handle
-  dependencies, i.e., the Boost::headers "library".
-  A command target_link_libraries(target PRIVATE Boost::headers)
-  will propagate Boost::headers usage requirements to the target.
-  For Boost::headers such usage requirements is an include
+  dependencies, i.e., the Boost::boost "library".
+  A command target_link_libraries(target PRIVATE Boost::boost)
+  will propagate Boost::boost usage requirements to the target.
+  For Boost::boost such usage requirements is an include
   directory and other added INTERFACE properties.
+  In CMake 3.15+ Boost::headers target can be used instead.
   ]=]
 
   if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin" AND BREW_COMMAND)
@@ -32,9 +33,6 @@ function(add_boost_if_needed)
   target_compile_definitions(Boost::boost INTERFACE
     $<$<CONFIG:Debug>:BOOST_MULTI_INDEX_ENABLE_SAFE_MODE>
   )
-  if(CMAKE_VERSION VERSION_LESS 3.15)
-    add_library(Boost::headers ALIAS Boost::boost)
-  endif()
 
   mark_as_advanced(Boost_INCLUDE_DIR)
 endfunction()

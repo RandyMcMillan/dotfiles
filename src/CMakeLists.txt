@@ -83,7 +83,7 @@ target_link_libraries(bitcoin_common
     bitcoin_util
     univalue
     secp256k1
-    Boost::headers
+    Boost::boost
     $<TARGET_NAME_IF_EXISTS:libevent::libevent>
 )
 
@@ -183,7 +183,7 @@ target_link_libraries(bitcoin_node
     leveldb
     minisketch
     univalue
-    Boost::headers
+    Boost::boost
     libevent::libevent
     $<TARGET_NAME_IF_EXISTS:PkgConfig::libevent_pthreads>
 )

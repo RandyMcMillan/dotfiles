@@ -87,6 +87,8 @@ bool TryCreateDirectories(const fs::path& p);
 fs::path GetDefaultDataDir();
 // Return true if -datadir option points to a valid directory or is not specified.
 bool CheckDataDirOption(const ArgsManager& args);
+// Create data directory if it does not exist.
+bool CreateDataDir(const fs::path& datadir, std::string& error);
 #ifdef WIN32
 fs::path GetSpecialFolderPath(int nFolder, bool fCreate = true);
 #endif

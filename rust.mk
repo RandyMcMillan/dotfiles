@@ -22,8 +22,23 @@ rust-x-clean:### 	rust rust-x-clean
 	@pushd rust && ./x clean && popd
 rust-x-dist:### 	rust rust-x-dist
 	@pushd rust && ./x dist && popd
+
 rust-x-install:### 	rust rust-x-install
+
+	@sudo mkdir -p /usr/local/libexec
+	@sudo mkdir -p /etc/bash_completion.d
+	@sudo mkdir -p /usr/local/libexec/cargo-credential-1password
+	@sudo mkdir -p /usr/local/libexec/cargo-credential-1password.old
+	@sudo touch /usr/local/libexec/cargo-credential-1password.old/cargo-credential-1password
+
+	@sudo chown -R $(whoami):admin /usr/local/libexec
+	@sudo chown -R $(whoami):admin /etc/bash_completion.d
+	@sudo chown -R $(whoami):admin /usr/local/libexec/cargo-credential-1password
+	@sudo chown -R $(whoami):admin /usr/local/libexec/cargo-credential-1password.old
+	@sudo chown -R $(whoami):admin /usr/local/libexec/cargo-credential-1password.old/cargo-credential-1password
+
 	@pushd rust && ./x install && popd
+
 rust-x-run:### 	rust rust-x-run
 	@pushd rust && ./x run && popd
 rust-x-setup:### 	rust rust-x-setup

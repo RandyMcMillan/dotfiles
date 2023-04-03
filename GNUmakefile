@@ -213,10 +213,9 @@ export PORTER_VERSION
 #$(TASKS):
 #	@yarn $@ $(call args,$@)
 
--:#### 	default - try 'make submodules'
+-:init#### 	default - try 'make submodules'
 	cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile
 	echo $(DOTFILES_PATH)
-	echo 'export PATH="$(DOTFILES_PATH):$(PATH)"' >> $(PWD)/.bash_profile
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?####"} /^[a-zA-Z_-]+:.*?####/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 autoconf:#### 	./autogen.sh && ./configure
@@ -261,6 +260,7 @@ init:#### 	init
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	#@echo ...$(DOTFILES_PATH)
 	#@[[ " ${PATH//:/ } " =~ "$(DOTFILES_PATH)" ]] && echo Found it || echo Not found
+	cat $(PWD)/.bash_profile.in > $(PWD)/.bash_profile
 	echo 'export PATH="$(DOTFILES_PATH):$(PATH)"' >> $(PWD)/.bash_profile
 	echo $(NODE_VERSION) > .nvmrc
 	#@./scripts/initialize
@@ -609,7 +609,7 @@ readme: docs
 docs:-
 	@echo 'docs'
 	bash -c "if pgrep MacDown; then pkill MacDown; fi"
-	bash -c "make help > $(PWD)/sources/COMMANDS.md"
+	bash -c "make > $(PWD)/sources/COMMANDS.md"
 	bash -c 'cat $(PWD)/sources/HEADER.md                >  $(PWD)/README.md'
 	bash -c 'cat $(PWD)/sources/COMMANDS.md              >> $(PWD)/README.md'
 	bash -c 'cat $(PWD)/sources/FOOTER.md                >> $(PWD)/README.md'

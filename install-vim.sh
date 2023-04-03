@@ -54,7 +54,7 @@ echo $VIMRC_DESTINATION
     if [ -d "$VIMRC_DESTINATION" ]; then
       pushd ~/.vim_runtime
       git pull -f origin master
-      python3 -m pip install --user requests
+      python3 -m pip install -U requests
       if [ ! "$ARCH" = "x86_64" ]; then
       python3 update_plugins.py
       else

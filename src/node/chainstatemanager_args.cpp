@@ -5,7 +5,6 @@
 #include <node/chainstatemanager_args.h>
 
 #include <arith_uint256.h>
-#include <kernel/chainstatemanager_opts.h>
 #include <logging.h>
 #include <node/coins_view_args.h>
 #include <node/database_args.h>

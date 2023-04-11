@@ -598,6 +598,7 @@ depends:depends-download
 	$(MAKE) -C depends
 tag:
 	@git tag $(OS)-$(OS_VERSION)-$(ARCH)-$(shell date +%s)
+	@git push -f --tags
 .PHONY: push
 .ONESHELL:
 push: touch-time

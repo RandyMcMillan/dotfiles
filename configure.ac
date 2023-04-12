@@ -3,14 +3,17 @@ AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
 m4_pattern_allow([AM_INIT_AUTOMAKE])
 AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_SRCDIR([src/foo.c])
-AC_CONFIG_FILES([GNUmakefile])
+AC_CONFIG_FILES([
+ GNUmakefile
+ src/Makefile
+])
 #AM_MISSING_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(HELP2MAN, help2man, false // No help2man //)
 AC_PATH_PROG(BREW, brew, false // No help2man //)
 # Checks for programs.
 AC_PROG_AWK
 AC_PROG_YACC
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+#AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S

@@ -48,7 +48,10 @@ alias GPF="git push -f origin HEAD"
 alias GPFU="git push -f upstream HEAD"
 alias GCA="git commit --amend "
 alias GCB="git branch | grep -ve ' master$' | xargs git branch -D"
-#alias DATE="date +%Y/%j/"$(git rev-parse --short HEAD)
+alias DATE="date +%Y/%j/%s"
+alias DATE_HEAD="date +%Y/%j/%s/"$(git rev-parse --short HEAD)
+alias DATE_HASH=DATE_HEAD
+alias DH=DATE_HEAD
 #codespell
 alias CODESPELL="codespell"
 alias SKIP="--skip='.git*,depends*,db*,dist*,autom4te*,build-aux*,qa-assets*,src*,test*,doc*,libtool*,config*,contrib*,.DS_Store,aclocal*,ci*,share*,Makefile*,*.dmg,*.tiff,*.png,*.app'"

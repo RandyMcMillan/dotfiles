@@ -264,10 +264,11 @@ init:#### 	init
 	echo 'export PATH="$(DOTFILES_PATH):$(PATH)"' >> $(PWD)/.bash_profile
 	echo $(NODE_VERSION) > .nvmrc
 	#@./scripts/initialize
-brew:-#### 	install or update/upgrade brew
+brew:#### 	install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
+	type -P brew && brew commands
 brew-bundle-dump:#### 	create Brewfile
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew bundle dump -f
 	@git -C  /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/ diff > homebrew-core.patch

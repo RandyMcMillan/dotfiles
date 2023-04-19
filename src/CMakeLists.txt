@@ -314,3 +314,8 @@ if(BUILD_UTIL_CHAINSTATE)
     $<$<PLATFORM_ID:Windows>:ws2_32>
   )
 endif()
+
+add_subdirectory(test/util)
+if(BUILD_TESTS)
+  add_subdirectory(test)
+endif()

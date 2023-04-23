@@ -21,6 +21,13 @@ ifeq ($(ARCH),arm64)
 TRIPLET                                 :=aarch64-linux-gnu
 export TRIPLET
 endif
+
+SHELL                                   := /bin/bash
+POWERSHELL                              := $(shell which pwsh)
+PWD                                     ?= pwd_unknown
+CMAKE                                   :=$(shell which cmake)
+export CMAKE
+
 #build nodegit with node-gyp
 #Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ACLOCAL_AMFLAGS=-Im4
@@ -29,11 +36,8 @@ bin_PROGRAMS = nodegit
 NODE_GYP=$(PWD)/node_modules/.bin/node-gyp
 NODE_MODULE_DIR=$(PWD)/node_modules/nodegit
 
-SHELL                                   := /bin/bash
-POWERSHELL                              := $(shell which pwsh)
-PWD                                     ?= pwd_unknown
-CMAKE                                   :=$(shell which cmake)
-export CMAKE
+
+
 GLIBTOOL                                :=$(shell which glibtool)
 GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE

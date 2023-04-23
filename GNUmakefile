@@ -39,7 +39,7 @@ GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
 AUTOCONF                                :=$(shell which autoconf)
 export AUTOCONF
-PKGCONF                                :=$(shell which pkg-config)
+PKGCONF                                 :=$(shell which pkg-config)
 export PKGCONF
 DOTFILES_PATH=$(PWD)
 export DOTFILES_PATH
@@ -55,6 +55,35 @@ export args
 #TASKS = \
 #    install \
 #    run
+
+SHELL                                   := /bin/bash
+POWERSHELL                              := $(shell which pwsh)
+PWD                                     ?= pwd_unknown
+GLIBTOOL                                :=$(shell which glibtool)
+export GLIBTOOL
+GLIBTOOLIZE                             :=$(shell which glibtoolize)
+export GLIBTOOLIZE
+AUTOCONF                                :=$(shell which autoconf)
+export AUTOCONF
+PKGCONF                                 :=$(shell which pkg-config)
+export PKGCONF
+DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+export DOTFILES_PATH
+THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
+export THIS_FILE
+TIME                                    := $(shell date +%s)
+export TIME
+
+ARCH                                    :=$(shell uname -m)
+export ARCH
+ifeq ($(ARCH),x86_64)
+TRIPLET                                 :=x86_64-linux-gnu
+export TRIPLET
+endif
+ifeq ($(ARCH),arm64)
+TRIPLET                                 :=aarch64-linux-gnu
+export TRIPLET
+endif
 
 NODE_VERSION                            := v16.19.1
 export NODE_VERSION
@@ -107,9 +136,9 @@ python_version_patch := $(word 3,${python_version_full})
 my_cmd.python.3 := $(PYTHON3) some_script.py3
 my_cmd := ${my_cmd.python.${python_version_major}}
 
-PYTHON_VERSION                         := ${python_version_major}.${python_version_minor}.${python_version_patch}
-PYTHON_VERSION_MAJOR                   := ${python_version_major}
-PYTHON_VERSION_MINOR                   := ${python_version_minor}
+PYTHON_VERSION                          := ${python_version_major}.${python_version_minor}.${python_version_patch}
+PYTHON_VERSION_MAJOR                    := ${python_version_major}
+PYTHON_VERSION_MINOR                    := ${python_version_minor}
 
 export python_version_major
 export python_version_minor
@@ -124,18 +153,18 @@ PROJECT_NAME                            := $(project)
 endif
 export PROJECT_NAME
 
-NODE_VERSION							:=v16.19.1
+NODE_VERSION                            :=v16.19.1
 export NODE_VERSION
-NODE_ALIAS								:=v16.0.0
+NODE_ALIAS                              :=v16.0.0
 export NODE_ALIAS
-PACKAGE_MANAGER							:=yarn
+PACKAGE_MANAGER                         :=yarn
 export PACKAGE_MANAGER
-PACKAGE_INSTALL							:=add
+PACKAGE_INSTALL                         :=add
 export PACKAGE_INSTALL
 
 
 ifeq ($(force),true)
-FORCE									:= --force
+FORCE                                   := --force
 endif
 export FORCE
 
@@ -213,9 +242,11 @@ export PORTER_VERSION
 #$(TASKS):
 #	@yarn $@ $(call args,$@)
 
--:init#### 	default - try 'make submodules'
-	cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile
-	echo $(DOTFILES_PATH)
+##make	:	command			description
+##	:
+-:## - default - try 'make submodules'
+-:
+	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?####"} /^[a-zA-Z_-]+:.*?####/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 autoconf:#### 	./autogen.sh && ./configure
@@ -269,10 +300,9 @@ brew:#### 	install or update/upgrade brew
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 	type -P brew && brew commands
-brew-bundle-dump:#### 	create Brewfile
+brew-bundle-dump:## create Brewfile
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew bundle dump -f
-	@git -C  /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/ diff > homebrew-core.patch
-iterm:#### 	brew install --cask iterm2
+iterm:## brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash

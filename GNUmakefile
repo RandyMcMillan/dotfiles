@@ -386,10 +386,11 @@ bootstrap:#### 	./bootstrap.sh && make vim
 	@make vim
 
 
-.PHONY: install
-##	:	install		 	install sequence
+##	:	install		 	detect uname -s -m -p
 install: executable
-	@echo "install sequence here..."
+	@[[ '$(shell uname -s)' != 'Darwin'* ]] && echo "not Darwin" || echo "is Darwin";
+	@[[ '$(shell uname -m)' != 'x86_64'* ]] && echo "not x86_64" || echo "is x86_64";
+	@[[ '$(shell uname -p)' != 'i386'* ]] && echo "not i386" || echo "is i386";
 
 
 .PHONY: github

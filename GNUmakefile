@@ -1,4 +1,24 @@
 # PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+
+OS                                      :=$(shell uname -s)
+export OS
+OS_VERSION                              :=$(shell uname -r)
+export OS_VERSION
+ARCH                                    :=$(shell uname -m)
+export ARCH
+ifeq ($(ARCH),x86_64)
+TRIPLET                                 :=x86_64-linux-gnu
+export TRIPLET
+endif
+ifeq ($(ARCH),arm64)
+TRIPLET                                 :=aarch64-linux-gnu
+export TRIPLET
+endif
+ifeq ($(ARCH),arm64)
+TRIPLET                                 :=aarch64-linux-gnu
+export TRIPLET
+endif
+
 #build nodegit with node-gyp
 #Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
 ACLOCAL_AMFLAGS=-Im4
@@ -630,6 +650,9 @@ funcs:
 
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
+tag:
+	@git tag $(OS)-$(OS_VERSION)-$(ARCH)-$(shell date +%s)
+	@git push -f --tags
 
 -include funcs.mk
 -include legit.mk

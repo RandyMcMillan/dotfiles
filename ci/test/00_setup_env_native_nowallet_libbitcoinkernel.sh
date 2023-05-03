@@ -13,4 +13,4 @@ export PACKAGES="python3-zmq clang-8 llvm-8 libc++abi-8-dev libc++-8-dev"
 export DEP_OPTS="NO_WALLET=1 CC=clang-8 CXX='clang++-8 -stdlib=libc++'"
 export GOAL="install"
 export NO_WERROR=1
-export BITCOIN_CONFIG="--enable-reduce-exports CC=clang-8 CXX='clang++-8 -stdlib=libc++' --enable-experimental-util-chainstate --with-experimental-kernel-lib --enable-shared"
+export BITCOIN_CONFIG="-DREDUCE_EXPORTS=ON -DBUILD_UTIL_CHAINSTATE=ON -DBUILD_BITCOINKERNEL_LIB=ON"

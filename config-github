@@ -74,7 +74,7 @@ config-github() {
     #if [[ $REPLY =~ ^[Yy]$ ]]; then
     #read -p 'ENTER your GPG Signing Key: ' GPG_SIGNING_KEY
     #git config --global user.signingkey $GPG_SIGNING_KEY
-    git config --global user.signingkey 97966C06BB06757B
+    git config --global user.signingkey  CDEB5843B86FB03D6F1456C810D45AC461FC5D0F
     echo && echo
     echo Your GPG Siging Key has been added...
     echo && echo

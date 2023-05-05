@@ -232,10 +232,11 @@ export PORTER_VERSION
 ##make	:	command			description
 ##	:
 -:## - default - try 'make submodules'
--: submodules
+-:
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
 autoconf:## ./autogen.sh && ./configure
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
@@ -248,10 +249,8 @@ endif
 nodegit$(EXEEXT):
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
 
-
 clean-local:
 	-cd $(NODE_MODULE_DIR) && node-gyp clean
-
 
 ##	:	-
 ##	:	help

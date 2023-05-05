@@ -19,6 +19,7 @@ jobs:
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
           wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
           make nvm && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+                                            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && \
                                             nvm install 10 && \
                                             nvm install 11 && \
                                             nvm install 12 && \

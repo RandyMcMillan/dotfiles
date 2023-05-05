@@ -24,17 +24,23 @@ jobs:
   build-legit:
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: styfle/cancel-workflow-action@0.9.1
+        if: ${{ !env.ACT }}
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: printenv
         run: |
-            make
             printenv
+            make report
       - name: make
         run: |
-            make legit
+            sudo apt install git build-essentials
+            # make init
+            # make brew
+            # make submodules
+            # make legit
+

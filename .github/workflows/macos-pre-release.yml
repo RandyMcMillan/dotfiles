@@ -18,10 +18,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: styfle/cancel-workflow-action@0.9.1
+        if: ${{ !env.ACT }}
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: "build pre-release"
+        if: ${{ !env.ACT }}
         run: |
           brew install libtool autoconf automake
           printenv
@@ -29,10 +31,13 @@ jobs:
           make nostril
           shasum -a 256 nostril/nostril > nostril.sha256.txt
       - name: Save state
+        if: ${{ !env.ACT }}
         run: echo "{name}={value}" >> $GITHUB_STATE
       - name: Set output
+        if: ${{ !env.ACT }}
         run: echo "{name}={value}" >> $GITHUB_OUTPUT
       - uses: "marvinpinto/action-automatic-releases@latest"
+        if: ${{ !env.ACT }}
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: ${{ matrix.os }}

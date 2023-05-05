@@ -28,6 +28,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: styfle/cancel-workflow-action@0.9.1
+        if: ${{ !env.ACT }}
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v2
@@ -37,3 +38,9 @@ jobs:
       - name: make
         run: |
           make
+          make init
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      - name: make submodules
+        run: |
+          make submodules
+

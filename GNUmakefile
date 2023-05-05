@@ -17,6 +17,19 @@ export THIS_FILE
 TIME									:= $(shell date +%s)
 export TIME
 
+OS                                      :=$(shell uname -s)
+export OS
+ARCH                                    :=$(shell uname -m)
+export ARCH
+ifeq ($(ARCH),x86_64)
+TRIPLET                                 :=x86_64-linux-gnu
+export TRIPLET
+endif
+ifeq ($(ARCH),arm64)
+TRIPLET                                 :=aarch64-linux-gnu
+export TRIPLET
+endif
+
 ARCH                                    :=$(shell uname -m)
 export ARCH
 ifeq ($(ARCH),x86_64)
@@ -168,7 +181,7 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--: submodules## - default
+-:## - default
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -434,21 +447,67 @@ gpg-recv-keys-bitcoin-devs:
 # 	./install-dotfiles-on-remote.sh && \
 	echo; exit;"
 
+#######################
+.ONESHELL:
+docker-start:## 	start docker
+	test -d .venv || $(PYTHON3) -m virtualenv .venv
+	( \
+	   source .venv/bin/activate; pip install -q -r requirements.txt; \
+	   python3 -m pip install -q omegaconf \
+	   pip install -q --upgrade pip; \
+	);
+	( \
+	    while ! docker system info > /dev/null 2>&1; do\
+	    echo 'Waiting for docker to start...';\
+	    if [[ '$(OS)' == 'Linux' ]]; then\
+	     systemctl restart docker.service;\
+	    fi;\
+	    if [[ '$(OS)' == 'Darwin' ]]; then\
+	     open --background -a /./Applications/Docker.app/Contents/MacOS/Docker;\
+	    fi;\
+	sleep 1;\
+	done\
+	)
+
+docker-install:## 	Download Docker.amd64.93002.dmg for MacOS Intel Compatibility
+
+	@[[ '$(shell uname -s)' == 'Darwin' ]] && echo "is Darwin" || echo "not Darwin";
+	@[[ '$(shell uname -m)' == 'x86_64' ]] && echo "is x86_64" || echo "not x86_64";
+	@[[ '$(shell uname -p)' == 'i386' ]]   && echo "is i386" || echo "not i386";
+	@[[ '$(shell uname -s)' == 'Darwin' ]] && [[ '$(shell uname -m)' == 'x86_64' ]]   && echo "is Darwin AND x86_64"     || echo "not Darwin AND x86_64";
+	@[[ '$(shell uname -s)' == 'Darwin' ]] && [[ ! '$(shell uname -m)' == 'x86_64' ]] && echo "is Darwin AND NOT x86_64" || echo "is NOT (Darwin AND NOT x86_64)";
+
+	#@[[ '$(shell uname -s)' != 'Darwin' ]] && echo "not Darwin" || echo "is Darwin";
+	#@[[ '$(shell uname -m)' != 'x86_64' ]] && echo "not x86_64" || echo "is x86_64";
+	#@[[ '$(shell uname -p)' != 'i386' ]]   && echo "not i386" || echo "is i386";
+
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && sudo -S chown -R $(shell whoami):admin /Users/$(shell whoami)/.docker/buildx/current || echo
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && echo "Install Docker.amd64.93002.dmg if MacOS Catalina - known compatible version!"
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && curl -o Docker.amd64.93002.dmg -C - https://desktop.docker.com/mac/main/amd64/93002/Docker.dmg
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && echo "Using: $(shell type -P openssl)"
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && openssl dgst -sha256 -r Docker.amd64.93002.dmg | sed 's/*Docker.amd64.93002.dmg//'
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && echo "Using: $(shell type -P sha256sum)"
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && sha256sum               Docker.amd64.93002.dmg | sed 's/Docker.amd64.93002.dmg//'
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && echo "Expected hash:"
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && echo "bee41d646916e579b16b7fae014e2fb5e5e7b5dbaf7c1949821fd311d3ce430b"
+	@[[ '$(shell uname -s)' == 'Darwin'* ]] && type -P open 2>/dev/null && open Docker.amd64.93002.dmg
+
+
 .PHONY: shell alpine alpine-shell debian debian-shell d-shell
-shell: alpine-shell
+shell: alpine-shell docker-start
 ##	:	alpine-shell		run install-shell.sh alpine user=root
 alpine-shell: alpine
 alpine:
-	test docker && ./install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
+	test docker && $(DOTFILES_PATH)/install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
 ##	:	alpine-build		run install-shell.sh alpine-build user=root
 alpine-build:
-	test docker && ./install-shell.sh alpine-build || echo "make docker OR checkbrew -i docker"
+	test docker && $(DOTFILES_PATH)/install-shell.sh alpine-build || echo "make docker OR checkbrew -i docker"
 d-shell: debian-shell
 ##	:	debian-shell		run install-shell.sh debian user=root
 debian-shell: debian
-debian:
-	test docker && ./install-shell.sh debian || echo "make docker OR checkbrew -i docker"
-	./install-shell.sh debian
+debian: docker-start
+	test docker && $(DOTFILES_PATH)/install-shell.sh debian || echo "make docker OR checkbrew -i docker"
+	$(DOTFILES_PATH)/install-shell.sh debian
 
 ##	:	porter
 porter:
@@ -459,11 +518,11 @@ porter:
 .PHONY: vim
 ##	:	install-vim			install vim and macvim on macos
 install-vim: executable
-	./install-vim.sh $(FORCE)
+	$(DOTFILES_PATH)/install-vim.sh $(FORCE)
 
 .PHONY: protonvpn
 protonvpn: executable
-	./install-protonvpn.sh $(FORCE)
+	$(DOTFILES_PATH)/install-protonvpn.sh $(FORCE)
 
 .PHONY: config-git
 config-git: executable
@@ -488,7 +547,7 @@ config-github: executable
 ##	:
 ##	:	bitcoin-libs		install bitcoin-libs
 bitcoin-libs: exec
-	bash -c "source $(PWD)/bitcoin-libs && install-bitcoin-libs"
+	bash -c "source $(DOTFILES_PATH)/bitcoin-libs && install-bitcoin-libs"
 .PHONY: bitcoin-depends
 .ONESHELL:
 ##	:	bitcoin-depends		make depends from bitcoin repo

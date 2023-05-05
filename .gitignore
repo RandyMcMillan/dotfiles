@@ -107,3 +107,5 @@ m4/progtest.m4
 m4/progtest.m4~
 po/
 
+#bash_profile log
+bash_profile.log

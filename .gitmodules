@@ -11,5 +11,5 @@
 [submodule "nostril"]
 	path = nostril
 	url = https://github.com/randymcmillan/nostril
-	branch = 67b4112c5db8099908710d8645891c694005454d
+	branch = v0.1.6
 	ignore = dirty

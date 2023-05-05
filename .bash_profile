@@ -1,5 +1,5 @@
-source ~/config-github
-source ~/config-git
+source ~/config-github 2> >(tee -a bash_profile.log)
+source ~/config-git 2> >(tee -a bash_profile.log)
 
 if hash brew 2>/dev/null; then
 	if [ -f /usr/local/bin/checkbrew ]; then

@@ -570,6 +570,10 @@ push: touch-time
 		git commit -m 'update from $(GIT_USER_NAME) on $(TIME)'"
 	git push -f origin	+master:master
 
+tag:
+	@git tag $(OS)-$(OS_VERSION)-$(ARCH)-$(shell date +%s)
+	@git push -f --tags
+
 .PHONY: docs readme index
 index: docs
 readme: docs

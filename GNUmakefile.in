@@ -712,9 +712,6 @@ funcs:
 
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
-tag:
-	@git tag $(OS)-$(OS_VERSION)-$(ARCH)-$(shell date +%s)
-	@git push -f --tags
 
 -include funcs.mk
 -include legit.mk

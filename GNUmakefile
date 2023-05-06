@@ -291,8 +291,8 @@ init:-## chsh -s /bin/bash && ./scripts/initialize
 	./scripts/initialize
 brew:-## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
-	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
+	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
 iterm:## brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \

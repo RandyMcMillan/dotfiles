@@ -108,6 +108,7 @@ export NVM_DIR="$HOME/.nvm"
 
 #export GPG_TTY=$(tty)
 # Set PATH, MANPATH, etc., for Homebrew.
-if hash brew 2>/dev/null; then
-	eval "$(/usr/local/bin/brew shellenv)"
+if ! hash brew 2>/dev/null; then
+       eval "$(/usr/local/bin/brew shellenv)" || echo
+       eval "$(/opt/homebrew/bin/brew shellenv)" || echo
 fi

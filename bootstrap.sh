@@ -9,6 +9,9 @@ touch ~/session.log
 
 function doIt() {
 	rsync --exclude ".git/" \
+		--exclude "legit" \
+		--exclude "nostril" \
+		--exclude "rust" \
 		--exclude ".DS_Store" \
 		--exclude ".osx" \
 		--exclude "bootstrap" \

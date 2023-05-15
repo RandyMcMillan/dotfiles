@@ -181,6 +181,9 @@ function doIt() {
 		--exclude "venv.mk" \
 		--exclude "vimrc" \
 		--exclude "whatami.sh" \
+		--exclude "legit" \
+		--exclude "nostril" \
+		--exclude "rust" \
 		--exclude ".DS_Store" \
 		--exclude ".osx" \
 		--exclude "autom4te.cache" \

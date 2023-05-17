@@ -31,6 +31,8 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: '3'
       - name: install rustup unattended
         run: |
             curl https://sh.rustup.rs -sSf | sh -s -- -y
@@ -43,4 +45,4 @@ jobs:
             make
       - name: make legit
         run: |
-            make legit
+            make submodules legit

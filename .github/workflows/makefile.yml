@@ -29,10 +29,10 @@ jobs:
     #      ./autogen.sh && ./configure
     - name: make
       run: |
-          sudo make
+          make
     #- name: make legit
     #  run: |
     #      sudo make legit
     - name: make nostril
       run: |
-          sudo make nostril
+          make nostril

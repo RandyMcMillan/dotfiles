@@ -204,6 +204,20 @@ function doIt() {
 		--exclude "*.mk" \
 		--exclude "*akefile" \
 		--exclude "autom4te.cache/" \
+		--exclude ".DS_Store" \
+		--exclude ".git" \
+		--exclude ".nojekyll" \
+		--exclude ".osx" \
+		--exclude "bootstrap*" \
+		--exclude "README.md" \
+		--exclude "LICENSE-MIT.txt" \
+		--exclude "**.sh" \
+		--exclude "**.bash" \
+		--exclude "**akefile**" \
+		--exclude "autom4te.cache/" \
+		--exclude "legit" \
+		--exclude "nostril" \
+		--exclude "rust" \
 		-avh --no-perms . ~;
 	source $PWD/.bashrc;
 }

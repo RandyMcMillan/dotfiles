@@ -8,17 +8,21 @@ touch ~/session.log
 #git pull origin main;
 
 function doIt() {
-	rsync --exclude ".git/" \
+	rsync \
+		--exclude ".DS_Store" \
+		--exclude ".git" \
+		--exclude ".nojekyll" \
+		--exclude ".osx" \
+		--exclude "bootstrap*" \
+		--exclude "README.md" \
+		--exclude "LICENSE-MIT.txt" \
+		--exclude "**.sh" \
+		--exclude "**.bash" \
+		--exclude "**akefile**" \
+		--exclude "autom4te.cache/" \
 		--exclude "legit" \
 		--exclude "nostril" \
 		--exclude "rust" \
-		--exclude ".DS_Store" \
-		--exclude ".osx" \
-		--exclude "bootstrap" \
-		--exclude "README.md" \
-		--exclude "LICENSE-MIT.txt" \
-		--exclude "*.sh" \
-		--exclude "autom4te.cache/" \
 		-avh --no-perms . ~;
 	source $PWD/.bashrc;
 }

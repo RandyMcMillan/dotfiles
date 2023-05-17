@@ -28,7 +28,7 @@ jobs:
           brew install libtool autoconf automake
           printenv
           make
-          make nostril
+          make submodules nostril
           shasum -a 256 nostril/nostril > nostril.sha256.txt
       - name: Save state
         if: ${{ !env.ACT }}

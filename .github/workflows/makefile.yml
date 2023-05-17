@@ -16,9 +16,9 @@ jobs:
       with:
         fetch-depth: '3'
 
-    - name: git fetch
+    - name: make submodules
       run: |
-          git fetch
+          make submodules
 
     - name: autogen.sh && configure
       run: |

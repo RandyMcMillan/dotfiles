@@ -18,6 +18,7 @@ function doIt() {
 		--exclude "README.md" \
 		--exclude "LICENSE-MIT.txt" \
 		--exclude "*.sh" \
+		--exclude "autom4te.cache/" \
 		-avh --no-perms . ~;
 	source $PWD/.bashrc;
 }

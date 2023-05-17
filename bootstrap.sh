@@ -203,6 +203,7 @@ function doIt() {
 		--exclude "*.sh" \
 		--exclude "*.mk" \
 		--exclude "*akefile" \
+		--exclude "autom4te.cache/" \
 		-avh --no-perms . ~;
 	source $PWD/.bashrc;
 }

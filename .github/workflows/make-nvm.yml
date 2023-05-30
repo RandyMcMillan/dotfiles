@@ -13,14 +13,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      if: ${{ ! env.ACT }}
       with:
         fetch-depth: '3'
     - name: make nvm
       run: |
+          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /root/.profile
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install --fix-missing  build-essential make
+          brew install gcc
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
           wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-          make nvm && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+          $(which make) -f GNUmakefile nvm && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
                                             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && \
                                             nvm install 10 && \
                                             nvm install 11 && \
@@ -31,3 +37,4 @@ jobs:
                                             nvm install 16 && \
                                             nvm install 17 && \
                                             nvm install 18
+

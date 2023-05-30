@@ -7,9 +7,6 @@
   <title>README</title>
   <style>
     html {
-      line-height: 1.5;
-      font-family: Georgia, serif;
-      font-size: 20px;
       color: #1a1a1a;
       background-color: #fdfdfd;
     }
@@ -28,13 +25,16 @@
     @media (max-width: 600px) {
       body {
         font-size: 0.9em;
-        padding: 1em;
+        padding: 12px;
       }
       h1 {
         font-size: 1.8em;
       }
     }
     @media print {
+      html {
+        background-color: white;
+      }
       body {
         background-color: transparent;
         color: black;
@@ -84,9 +84,10 @@
       color: #606060;
     }
     code {
-      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
+      hyphens: manual;
     }
     pre {
       margin: 1em 0;
@@ -164,52 +165,51 @@
   <![endif]-->
 </head>
 <body>
-<h2 id="github-twitter-keybase-clubhouse-clubhouse"><a
+<h2
+id="github-twitter-keybase-clubhouse-clubhousemake-command-extra_arguments"><a
 href="https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&amp;fingerprint=on&amp;op=vindex">🐝</a>
 <a href="http://github.com/randymcmillan">Github</a> <a
 href="https://twitter.com/RandyMcMillan">Twitter</a> <a
 href="https://randymcmillan.keybase.pub">Keybase</a> <a
 href="https://clubhouse.com/@bitcoincore.dev">Clubhouse</a> <a
-href="https://clubhouse.com/@bitcoin.bee">Clubhouse</a></h2>
+href="https://clubhouse.com/@bitcoin.bee">Clubhouse</a>make [COMMAND]
+[EXTRA_ARGUMENTS]</h2>
 <p>make command description</p>
-<pre><code>        -
-        help
-        report          environment args
+<pre><code>                        -
+                        help
+                        report          environment args
 
-        all         execute installer scripts
-        init
-        brew
-        keymap
+                        all         execute installer scripts
+                        init
+                        brew
+                        keymap
 
-        whatami         report system info
+                        whatami         report system info
 
-        adduser-git     add a user named git
-        adduser-git     add a user named git
-        bootstrap       source bootstrap.sh
-        install         install sequence
-        github          config-github
-        executable      make shell scripts executable
-        template        install checkbrew command
-        nvm         install node version manager
-        cirrus          source and run install-cirrus command
-        config-dock     source and run config-dock-prefs
-        all         execute checkbrew install scripts
-        alpine-shell        run install-shell.sh alpine user=root
-        alpine-build        run install-shell.sh alpine-build user=root
-        debian-shell        run install-shell.sh debian user=root
-        vim         install vim and macvim on macos
-        qt5         install qt@5
+                        adduser-git     add a user named git
+                        adduser-git     add a user named git
+                        bootstrap       source bootstrap.sh
+                        install         install sequence
+                        github          config-github
+                        executable      make shell scripts executable
+                        template        install checkbrew command
+                        cirrus          source and run install-cirrus command
+                        config-dock     source and run config-dock-prefs
+                        all         exec gnupg brew-libs</code></pre>
+<p>##################### alpine-shell run install-shell.sh alpine
+user=root alpine-build run install-shell.sh alpine-build user=root
+debian-shell run install-shell.sh debian user=root porter install-vim
+install vim and macvim on macos qt5 install qt@5</p>
+<pre><code>                        bitcoin-libs        install bitcoin-libs
+                        bitcoin-depends     make depends from bitcoin repo
 
-        bitcoin-libs        install bitcoin-libs
-        bitcoin-depends     make depends from bitcoin repo
+                        funcs           additional make functions
 
-        funcs           additional make functions
-
-            funcs-1     additional function 1</code></pre>
+                            funcs-1     additional function 1
+                        submodules      git submodule --init --recursive
+                        submodules-deinit   git submodule deinit --all -f</code></pre>
 <p>Useful Commands:</p>
-<p>git-&lt;TAB&gt;</p>
-<p>gpg-&lt;TAB&gt;</p>
-<p>bitcoin-&lt;TAB&gt;</p>
+<p>git-&lt;TAB&gt; gpg-&lt;TAB&gt; bitcoin-&lt;TAB&gt;</p>
 <details>
 <summary>
 👀

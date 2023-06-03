@@ -287,6 +287,9 @@ dist-hook:
 		-name 'Makefile.in' -o -name 'Makefile' -o \
 		-name 'BUNDLES' \) -exec rm -f {} +
 
+requirements:
+	$(shell which python3) -m pip install -r requirements.txt
+
 include $(top_srcdir)/makefiles/testing.mak
 
 include $(top_srcdir)/makefiles/help.mak

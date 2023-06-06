@@ -52,8 +52,8 @@ GLIBTOOL								:=$(shell which glibtool)
 export GLIBTOOL
 GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
-AUTOCONF                                :=$(shell which autoconf)
-export AUTOCONF
+#AUTOCONF                                :=$(shell which autoconf)
+#export AUTOCONF
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
 THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
@@ -246,19 +246,13 @@ export PORTER_VERSION
 ##	:
 -:## - default - try 'make submodules'
 -:
-	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
-	eval "$(/opt/homebrew/bin/brew shellenv)" &
+	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
+	eval "$(/opt/homebrew/bin/brew shellenv)" #&
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 autoconf:## ./autogen.sh && ./configure
-	@$(SHELL) ./autogen.sh
-	@$(SHELL) ./configure
-ifeq ($(BREW),)
-	$(MAKE) brew
-endif
-	@./configure --quiet
-	#$(MAKE) -
+	$(PWD)/autogen.sh configure
 
 nodegit$(EXEEXT):
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
@@ -286,10 +280,11 @@ keymap:## install ./init/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:-## chsh -s /bin/bash && ./scripts/initialize
+init:## chsh -s /bin/bash && ./scripts/initialize
+.ONESHELL:
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
-	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
-	./scripts/initialize
+	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
+	bash -c "source $(PWD)/scripts/initialize"
 brew:-## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
@@ -406,7 +401,7 @@ template:
 .PHONY: nvm
 .ONESHELL:
 nvm: executable ## nvm
-	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
+	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull -C $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
 	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
 
 ##	:	cirrus			source and run install-cirrus command
@@ -416,12 +411,14 @@ cirrus: executable
 config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
-.PHONY: all
-##	:	all			exec gnupg brew-libs
-all: executable gnupg brew-libs
+macvim: vim##
 vim:## vim - install-vim.sh
-	bash -c "source $(PWD)/template && checkbrew install	vim"
+	install -d ./vimrc ~/.vim_runtime
+	bash -c "source $(PWD)/template && checkbrew install --cask	macvim"
+
 	./install-vim.sh
+rustup-rs:## 	
+	curl https://sh.rustup.rs -sSf | sh -s -- -y
 macdown:
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
 glow:
@@ -584,15 +581,15 @@ shell: alpine-shell docker-start
 ##	:	alpine-shell		run install-shell.sh alpine user=root
 alpine-shell: alpine
 alpine:
-	test docker && $(DOTFILES_PATH)/install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
+	test docker && $(DOTFILES_PATH)/scripts/install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
 ##	:	alpine-build		run install-shell.sh alpine-build user=root
 alpine-build:
-	test docker && $(DOTFILES_PATH)/install-shell.sh alpine-build || echo "make docker OR checkbrew -i docker"
+	test docker && $(DOTFILES_PATH)/scripts/install-shell.sh alpine-build || echo "make docker OR checkbrew -i docker"
 d-shell: debian-shell
 ##	:	debian-shell		run install-shell.sh debian user=root
 debian-shell: debian
 debian: docker-start
-	test docker && $(DOTFILES_PATH)/install-shell.sh debian || echo "make docker OR checkbrew -i docker"
+	test docker && $(DOTFILES_PATH)/scripts/install-shell.sh debian || echo "make docker OR checkbrew -i docker"
 	$(DOTFILES_PATH)/install-shell.sh debian
 
 ##	:	porter
@@ -603,7 +600,7 @@ porter:
 
 .PHONY: vim
 ##	:	install-vim			install vim and macvim on macos
-install-vim: executable
+install-vim: executable##
 	$(DOTFILES_PATH)/install-vim.sh $(FORCE)
 
 .PHONY: protonvpn
@@ -668,8 +665,14 @@ tag:
 .PHONY: docs readme index
 index: docs
 readme: docs
-docs:-
+docs: docker-start## 	docs
 	@echo 'docs'
+	bash -c 'if pgrep MacDown; then pkill MacDown; fi'
+	@if hash pandoc 2>/dev/null; then \
+		bash -c 'pandoc -s README.md -o index.html'; \
+		fi || if hash docker 2>/dev/null; then \
+		docker run --rm --volume "`pwd`:/data" --user `id -u`:`id -g` pandoc/latex:2.6 README.md; \
+		fi
 	bash -c "if pgrep MacDown; then pkill MacDown; fi"
 	bash -c "make help > $(PWD)/sources/COMMANDS.md"
 	bash -c 'cat $(PWD)/sources/HEADER.md                >  $(PWD)/README.md'
@@ -677,14 +680,16 @@ docs:-
 	bash -c 'cat $(PWD)/sources/FOOTER.md                >> $(PWD)/README.md'
 	#bash -c "if hash open 2>/dev/null; then open README.md; fi || echo failed to open README.md"
 	#brew install pandoc
-	bash -c "if hash pandoc 2>/dev/null; then echo; fi || brew install pandoc"
+	#bash -c "if hash pandoc 2>/dev/null; then echo; fi || brew install pandoc"
 	#bash -c 'pandoc -s README.md -o index.html  --metadata title="$(GH_USER_SPECIAL_REPO)" '
-	bash -c 'pandoc -s README.md -o index.html'
 	#bash -c "if hash open 2>/dev/null; then open README.md; fi || echo failed to open README.md"
 	git add --ignore-errors sources/*.md
 	git add --ignore-errors *.md
 	git add --ignore-errors *.html
 	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git
+
+docs-docker:## 	
+	@docker run --rm --volume "`pwd`:/data" --user `id -u`:`id -g` pandoc/latex:2.6 README.md;
 
 .PHONY: touch-time
 .ONESHELL:

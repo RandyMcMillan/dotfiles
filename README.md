@@ -1,4 +1,6 @@
-## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub) [Clubhouse](https://clubhouse.com/@bitcoincore.dev) [Clubhouse](https://clubhouse.com/@bitcoin.bee)make [COMMAND] [EXTRA_ARGUMENTS]	
+## [🐝](https://keyserver.ubuntu.com/pks/lookup?search=randy.lee.mcmillan%40gmail.com&fingerprint=on&op=vindex) [Github ](http://github.com/randymcmillan) [Twitter](https://twitter.com/RandyMcMillan) [Keybase](https://randymcmillan.keybase.pub) [Clubhouse](https://clubhouse.com/@bitcoincore.dev) [Clubhouse](https://clubhouse.com/@bitcoin.bee) /bin/sh ./config.status
+config.status: executing depfiles commands
+make [COMMAND] [EXTRA_ARGUMENTS]	
 
  make	                   	command			description
  	
@@ -22,7 +24,6 @@
  	                       	template		install checkbrew command
  	                       	cirrus			source and run install-cirrus command
  	                       	config-dock		source and run config-dock-prefs
- 	                       	all			exec gnupg brew-libs
  #####################
  	                       	alpine-shell		run install-shell.sh alpine user=root
  	                       	alpine-build		run install-shell.sh alpine-build user=root

@@ -201,14 +201,18 @@ if [[ ${!i} == "info" ]] || [[ ${!i} == "--info" ]]; then
     done
 fi
 #--help
-if [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]]; then
+if [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]] || [[ ${!i} == " " ]]; then
     HELP=TRUE
     export HELP
+    ## echo $HELP
     checkbrew-help
 else
+    ## silence is golden
+    ## no output if no args
     HELP=FALSE
     export HELP
     ((i++))
+    checkbrew-help
 fi
 
 done
@@ -217,26 +221,28 @@ done
 
 function checkbrew-help(){
 
-echo ""
-echo "checkbrew -a --arg    -c    command <item>"
-echo ""
-echo "checkbrew -s --sudo"
-echo "checkbrew -f --force"
-echo ""
-echo "checkbrew             -h    help"
-echo ""
-echo "checkbrew             -i    install <brew lib>"
-echo ""
-echo "checkbrew                   info <brew lib>"
-echo ""
-echo "checkbrew             -ud   brew update"
-echo "checkbrew             -ug   brew upgrade lib"
-echo "checkbrew             -uu   brew update & upgrade lib"
-echo ""
-echo "checkbrew                   update"
-echo "checkbrew                   upgrade"
-echo "checkbrew                   cleanup"
-echo ""
-echo "checkbrew                   sudoless"
-
+if [[ $HELP == "TRUE" ]]; then
+    echo ""
+    echo "checkbrew -a --arg    -c    command <item>"
+    echo ""
+    echo "checkbrew -s --sudo"
+    echo "checkbrew -f --force"
+    echo ""
+    echo "checkbrew             -h    help"
+    echo ""
+    echo "checkbrew             -i    install <brew lib>"
+    echo ""
+    echo "checkbrew                   info <brew lib>"
+    echo ""
+    echo "checkbrew             -ud   brew update"
+    echo "checkbrew             -ug   brew upgrade lib"
+    echo "checkbrew             -uu   brew update & upgrade lib"
+    echo ""
+    echo "checkbrew                   update"
+    echo "checkbrew                   upgrade"
+    echo "checkbrew                   cleanup"
+    echo ""
+    echo "checkbrew                   sudoless"
+fi
 }
+cat ./template.sh > ./template

@@ -31,16 +31,12 @@ jobs:
         if: ${{ !env.ACT }}
         with:
           access_token: ${{ github.token }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: printenv
         run: |
           printenv
       - name: make
         run: |
           make
-          make init
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-      - name: make submodules
-        run: |
-          make submodules
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" || echo $(which brew)
 

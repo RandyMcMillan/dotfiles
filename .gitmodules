@@ -15,4 +15,5 @@
 	ignore = dirty
 [submodule "vimrc"]
 	path = vimrc
-	url = git@github.com:RandyMcMillan/vimrc.git
+	url = https://github.com/randymcmillan/vimrc.git
+	ignore = dirty

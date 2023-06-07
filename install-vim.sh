@@ -41,24 +41,26 @@ export VIMRC_DESTINATION
 echo $VIMRC_DESTINATION
 #read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
 #if [[ $REPLY =~ ^[Yy]$ ]]; then
-    if [ -d "$VIMRC_DESTINATION" ]; then
-      pushd ~/.vim_runtime
-      git pull -f origin master
-      python3 -m pip install --user requests
-      if [ ! "$ARCH" = "x86_64" ]; then
-      python3 update_plugins.py
-      else
-      pushd ~/.vim_runtime && git checkout $X86_64HASH
-      fi
-      sh ~/.vim_runtime/install_awesome_vimrc.sh
-      #we exclude from ~/ because we link to here
-      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
-      popd
-    else
-      git clone --depth 3 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
-      pushd ~/.vim_runtime && git checkout $X86_64HASH
-      sh ~/.vim_runtime/install_awesome_vimrc.sh
-      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+	if [ -d "$VIMRC_DESTINATION" ]; then
+	pushd $VIMRC_DESTINATION
+		  git pull -f origin master
+		  $(which python3) -m pip install --user requests
+		  if [ ! "$ARCH" = "x86_64" ]; then
+			$(which python3) update_plugins.py
+		  else
+			git checkout $X86_64HASH && $(which python3) update_plugins.py
+		  fi
+		  . $VIMRC_DESTINATION/install_awesome_vimrc.sh
+		  #we exclude from ~/ because we link to here
+		  install $DOTFILES_PATH.vimrc  $VIMRC_DESTINATION/my_configs.vim
+	popd
+	else
+	if [[ ! -d "$VIMRC_DESTINATION" ]]; then
+		git clone https://github.com/randymcmillan/vimrc.git $VIMRC_DESTINATION || echo
+	fi
+		pushd $VIMRC_DESTINATION && git checkout $X86_64HASH
+		. $VIMRC_DESTINATION/install_awesome_vimrc.sh
+		install $DOTFILES_PATH.vimrc  $VIMRC_DESTINATION/my_configs.vim
     fi
 #fi
 }

@@ -153,6 +153,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add jonas-gui	https://github.com/jonasschnelli/gui.git || true
     git remote add jonatack	https://github.com/jonatack/bitcoin.git || true
     git remote add jonatack-gui	https://github.com/jonatack/gui.git || true
+    git remote add jamesob	https://github.com/jamesob/bitcoin.git || true
     git remote add kallewoof	git@github.com:kallewoof/bitcoin.git || true
     git remote add kouloumos	git@github.com:kouloumos/bitcoin.git || true
     git remote add laanwj	https://github.com/laanwj/bitcoin.git || true

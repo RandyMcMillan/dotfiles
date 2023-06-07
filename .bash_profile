@@ -14,8 +14,10 @@ if hash brew 2>/dev/null; then
 fi
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
 # Add `~/init` to the `$PATH`
-#export PATH="$HOME/init:$PATH";
+export PATH="$HOME/init:$PATH";
 
 #if hash brew &> /dev/null; then
 #        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile

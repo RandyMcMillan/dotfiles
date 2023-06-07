@@ -2,7 +2,7 @@
 ARCH=$(uname -m);
 export ARCH
 echo ARCH=$ARCH
-X86_64HASH=afd92fa75d7b6a103a5d44719e2fbcf4077f1bb4
+X86_64HASH=ad56af98049d7f3166bba14846bd63a7fc8e1cd2
 export X86_64HASH
 
 echo X86_64HASH=$X86_64HASH

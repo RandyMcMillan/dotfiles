@@ -233,4 +233,6 @@ else
 		doIt;
 	fi;
 fi;
+ln -sf $PWD/known_hosts ~/.ssh/known_hosts
+
 unset doIt;

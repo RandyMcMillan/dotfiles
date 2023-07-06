@@ -9,11 +9,11 @@ install-dotfiles-on-remote:
 submodule: submodules
 ##	:	submodules		git submodule --init --recursive
 submodules:
-	git submodule update --init --recursive
-	git submodule foreach 'git fetch origin; git checkout $$(git rev-parse --abbrev-ref HEAD); git reset --hard origin/$$(git rev-parse --abbrev-ref HEAD); git submodule update --recursive; git clean -dfx'
+	type -P git && git submodule update --init --recursive || echo
+	type -P git && git submodule foreach 'git fetch origin; git submodule update --init --recursive; git clean -dfx' || echo
 ##	:	submodules-deinit	git submodule deinit --all -f
 submodules-deinit:
-	@git submodule deinit --all -f
+	@type -P git && git submodule deinit --all -f
 
 # vim: set noexpandtab:
 # vim: set setfiletype make

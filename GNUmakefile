@@ -247,7 +247,7 @@ export PORTER_VERSION
 -:## - default - try 'make submodules'
 -:
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
-	eval "$(/opt/homebrew/bin/brew shellenv)" &
+	type -P brew || eval "$(/opt/homebrew/bin/brew shellenv)"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -291,9 +291,13 @@ init:-## chsh -s /bin/bash && ./scripts/initialize
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	./scripts/initialize
 brew:-## install or update/upgrade brew
+.ONESHELL:
 	export HOMEBREW_INSTALL_FROM_API=1
+	echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /root/.profile
+	echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /root/.profile
+	type -P brew && $(which brew) ||  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" || echo "install brew"
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
-	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
+	type -P brew && && brew upgrade  --casks && brew update || eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)"
 iterm:## brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
@@ -405,9 +409,9 @@ template:
 
 .PHONY: nvm
 .ONESHELL:
-nvm: executable ## nvm
-	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
-	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
+nvm:## 	nvm
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion" && nvm install $(NODE_VERSION)
+	@. $(HOME)/.bashrc && nvm use $(NODE_VERSION) && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
 
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
@@ -663,7 +667,7 @@ push: touch-time
 
 tag:
 	@git tag $(OS)-$(OS_VERSION)-$(ARCH)-$(shell date +%s)
-	@git push -f --tags
+	@git push -f --tags || echo "git push -f --tags failed..."
 
 .PHONY: docs readme index
 index: docs

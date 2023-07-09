@@ -5,6 +5,24 @@
 find_package(PkgConfig REQUIRED)
 
 function(remove_isystem_from_include_directories_internal target)
+  #[=[
+  A workaround for https://gitlab.kitware.com/cmake/cmake/-/issues/20652.
+
+  When the pkg-config provides CFLAGS with -isystem options, for instance:
+
+    $ pkg-config --cflags-only-I libzmq
+    -isystem /usr/include/mit-krb5 -I/usr/include/pgm-5.3 -I/usr/include/libxml2
+
+  an old CMake fails to parse them properly and the INTERFACE_INCLUDE_DIRECTORIES
+  property contains "-isystem" as a separated element:
+
+    -isystem;/usr/include/mit-krb5;/usr/include/pgm-5.3;/usr/include/libxml2
+
+  which ends with an error "Imported target includes non-existent path".
+
+  Fixing by removing the "-isystem" element from the INTERFACE_INCLUDE_DIRECTORIES.
+  ]=]
+
   get_target_property(include_directories ${target} INTERFACE_INCLUDE_DIRECTORIES)
   if(include_directories)
     list(REMOVE_ITEM include_directories -isystem)
@@ -25,7 +43,6 @@ macro(cross_pkg_check_modules prefix)
     pkg_check_modules(${prefix} ${ARGN})
   endif()
 
-  # A workaround for https://gitlab.kitware.com/cmake/cmake/-/issues/20652.
   if(CMAKE_VERSION VERSION_LESS 3.17.3 AND TARGET PkgConfig::${prefix})
     remove_isystem_from_include_directories_internal(PkgConfig::${prefix})
   endif()

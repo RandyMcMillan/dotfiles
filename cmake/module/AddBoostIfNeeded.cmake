@@ -21,7 +21,8 @@ function(add_boost_if_needed)
   find_package(Boost 1.64.0 REQUIRED)
   set_target_properties(Boost::boost PROPERTIES IMPORTED_GLOBAL TRUE)
   target_compile_definitions(Boost::boost INTERFACE
-    $<$<CONFIG:Debug>:BOOST_MULTI_INDEX_ENABLE_SAFE_MODE>
+    # We don't use multi_index serialization.
+    BOOST_MULTI_INDEX_DISABLE_SERIALIZATION
   )
   if(CMAKE_VERSION VERSION_LESS 3.15)
     add_library(Boost::headers ALIAS Boost::boost)

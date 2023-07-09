@@ -12,8 +12,12 @@ export PACKAGES="clang-16 llvm-16 libclang-rt-16-dev libevent-dev libboost-dev l
 export NO_DEPENDS=1
 export RUN_UNIT_TESTS=false
 export RUN_FUNCTIONAL_TESTS=false
-export RUN_FUZZ_TESTS=true
-export GOAL="install"
-export BITCOIN_CONFIG="--enable-fuzz --with-sanitizers=fuzzer,address,undefined,float-divide-by-zero,integer \
-CC='clang-16 -ftrivial-auto-var-init=pattern' CXX='clang++-16 -ftrivial-auto-var-init=pattern'"
+
+# TODO: Reenable when it will be implementd in CMake.
+# export RUN_FUZZ_TESTS=true
+
+# TODO: Reenable when it will be implementd in CMake.
+# export GOAL="install"
+
+export BITCOIN_CONFIG="-DFUZZ=ON -DSANITIZERS=fuzzer,address,undefined,float-divide-by-zero,integer -DCMAKE_C_COMPILER='clang-16;-ftrivial-auto-var-init=pattern' -DCMAKE_CXX_COMPILER='clang++-16;-ftrivial-auto-var-init=pattern'"
 export CCACHE_SIZE=200M

@@ -11,5 +11,8 @@ export CI_IMAGE_NAME_TAG="ubuntu:20.04"
 # Use minimum supported python3.8 and clang-10, see doc/dependencies.md
 export PACKAGES="python3-zmq clang-10 llvm-10 libc++abi-10-dev libc++-10-dev"
 export DEP_OPTS="NO_WALLET=1 CC=clang-10 CXX='clang++-10 -stdlib=libc++'"
-export GOAL="install"
-export BITCOIN_CONFIG="--enable-reduce-exports --enable-experimental-util-chainstate --with-experimental-kernel-lib --enable-shared"
+
+# TODO: Reenable when it will be implementd in CMake.
+# export GOAL="install"
+
+export BITCOIN_CONFIG="-DREDUCE_EXPORTS=ON -DBUILD_UTIL_CHAINSTATE=ON -DBUILD_BITCOINKERNEL_LIB=ON"

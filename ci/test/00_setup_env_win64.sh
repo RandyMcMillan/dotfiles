@@ -12,5 +12,11 @@ export HOST=x86_64-w64-mingw32
 export DPKG_ADD_ARCH="i386"
 export PACKAGES="nsis g++-mingw-w64-x86-64-posix wine-binfmt wine64 wine32 file"
 export RUN_FUNCTIONAL_TESTS=false
-export GOAL="deploy"
-export BITCOIN_CONFIG="--enable-reduce-exports --enable-external-signer --disable-gui-tests"
+
+# TODO: Remove after https://github.com/hebasto/bitcoin/pull/18
+export RUN_UNIT_TESTS=false
+
+# TODO: Reenable when it will be implementd in CMake.
+# export GOAL="deploy"
+
+export BITCOIN_CONFIG="-DREDUCE_EXPORTS=ON -DWITH_EXTERNAL_SIGNER=ON -DCMAKE_CXX_FLAGS='-Wno-error=redundant-move'"

@@ -16,10 +16,16 @@ export CONTAINER_NAME="ci_native_fuzz_msan"
 export PACKAGES="cmake ninja-build"
 # BDB generates false-positives and will be removed in future
 export DEP_OPTS="NO_BDB=1 NO_QT=1 CC=clang CXX=clang++ CFLAGS='${MSAN_FLAGS}' CXXFLAGS='${MSAN_AND_LIBCXX_FLAGS}'"
-export GOAL="install"
+
+# TODO: Reenable when it will be implementd in CMake.
+# export GOAL="install"
+
 export BITCOIN_CONFIG="--enable-fuzz --with-sanitizers=fuzzer,memory --disable-hardening --with-asm=no CFLAGS='${MSAN_FLAGS}' CPPFLAGS='-DBOOST_MULTI_INDEX_ENABLE_SAFE_MODE' CXXFLAGS='${MSAN_AND_LIBCXX_FLAGS}'"
 export USE_MEMORY_SANITIZER="true"
 export RUN_UNIT_TESTS="false"
 export RUN_FUNCTIONAL_TESTS="false"
-export RUN_FUZZ_TESTS=true
+
+# TODO: Reenable when it will be implementd in CMake.
+# export RUN_FUZZ_TESTS=true
+
 export CCACHE_SIZE=250M

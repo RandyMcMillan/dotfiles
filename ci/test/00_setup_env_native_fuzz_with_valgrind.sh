@@ -12,9 +12,15 @@ export PACKAGES="clang llvm libclang-rt-dev libevent-dev libboost-dev libsqlite3
 export NO_DEPENDS=1
 export RUN_UNIT_TESTS=false
 export RUN_FUNCTIONAL_TESTS=false
-export RUN_FUZZ_TESTS=true
+
+# TODO: Reenable when it will be implementd in CMake.
+# export RUN_FUZZ_TESTS=true
+
 export FUZZ_TESTS_CONFIG="--valgrind"
-export GOAL="install"
+
+# TODO: Reenable when it will be implementd in CMake.
+# export GOAL="install"
+
 # Temporarily pin dwarf 4, until using Valgrind 3.20 or later
 export BITCOIN_CONFIG="--enable-fuzz --with-sanitizers=fuzzer CC=clang CXX=clang++ CFLAGS='-gdwarf-4' CXXFLAGS='-gdwarf-4'"
 export CCACHE_SIZE=200M

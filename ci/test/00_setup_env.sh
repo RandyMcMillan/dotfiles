@@ -66,8 +66,11 @@ export BASE_BUILD_DIR=${BASE_BUILD_DIR:-$BASE_SCRATCH_DIR/build}
 export PREVIOUS_RELEASES_DIR=${PREVIOUS_RELEASES_DIR:-$BASE_ROOT_DIR/releases/$HOST}
 export DIR_IWYU="${BASE_SCRATCH_DIR}/iwyu"
 export SDK_URL=${SDK_URL:-https://bitcoincore.org/depends-sources/sdks}
-export CI_BASE_PACKAGES=${CI_BASE_PACKAGES:-build-essential libtool autotools-dev automake pkg-config bsdmainutils curl ca-certificates ccache python3 rsync git procps bison}
-export GOAL=${GOAL:-install}
+export CI_BASE_PACKAGES=${CI_BASE_PACKAGES:-build-essential libtool autotools-dev automake cmake pkg-config bsdmainutils curl ca-certificates ccache python3 rsync git procps bison}
+
+# TODO: Reenable when it will be implementd in CMake.
+# export GOAL=${GOAL:-install}
+
 export DIR_QA_ASSETS=${DIR_QA_ASSETS:-${BASE_SCRATCH_DIR}/qa-assets}
 export PATH=${BASE_ROOT_DIR}/ci/retry:$PATH
 export CI_RETRY_EXE=${CI_RETRY_EXE:-"retry --"}

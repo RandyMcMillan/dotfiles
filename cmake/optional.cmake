@@ -5,14 +5,14 @@
 # Optional features and packages.
 
 if(CCACHE)
-  find_program(CCACHE_EXECUTABLE ccache)
-  if(CCACHE_EXECUTABLE)
+  find_program(CCACHE_COMMAND ccache)
+  if(CCACHE_COMMAND)
     if(MSVC)
       if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
         # ccache >= 4.8 requires compile batching turned off that is available since CMake 3.24.
         # See https://github.com/ccache/ccache/wiki/MS-Visual-Studio
         set(CCACHE ON)
-        set(MSVC_CCACHE_WRAPPER_CONTENT "\"${CCACHE_EXECUTABLE}\" \"${CMAKE_CXX_COMPILER}\"")
+        set(MSVC_CCACHE_WRAPPER_CONTENT "\"${CCACHE_COMMAND}\" \"${CMAKE_CXX_COMPILER}\"")
         set(MSVC_CCACHE_WRAPPER_FILENAME wrapped-cl.bat)
         file(WRITE ${CMAKE_BINARY_DIR}/${MSVC_CCACHE_WRAPPER_FILENAME} "${MSVC_CCACHE_WRAPPER_CONTENT} %*")
         list(APPEND CMAKE_VS_GLOBALS
@@ -30,15 +30,15 @@ if(CCACHE)
       endif()
     else()
       set(CCACHE ON)
-      list(APPEND CMAKE_C_COMPILER_LAUNCHER ${CCACHE_EXECUTABLE})
-      list(APPEND CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_EXECUTABLE})
+      list(APPEND CMAKE_C_COMPILER_LAUNCHER ${CCACHE_COMMAND})
+      list(APPEND CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_COMMAND})
     endif()
   elseif(CCACHE STREQUAL "AUTO")
     set(CCACHE OFF)
   else()
     message(FATAL_ERROR "ccache requested, but not found.")
   endif()
-  mark_as_advanced(CCACHE_EXECUTABLE)
+  mark_as_advanced(CCACHE_COMMAND)
 endif()
 
 if(WITH_NATPMP)

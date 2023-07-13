@@ -16,7 +16,6 @@ if(CCACHE)
       list(APPEND CMAKE_VS_GLOBALS
         "CLToolExe=${MSVC_CCACHE_WRAPPER_FILENAME}"
         "CLToolPath=${CMAKE_BINARY_DIR}"
-        "TrackFileAccess=false"
         "DebugInformationFormat=OldStyle"
       )
     else()

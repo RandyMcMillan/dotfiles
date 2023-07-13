@@ -7,18 +7,29 @@
 if(CCACHE)
   find_program(CCACHE_EXECUTABLE ccache)
   if(CCACHE_EXECUTABLE)
-    set(CCACHE ON)
     if(MSVC)
-      # See https://github.com/ccache/ccache/wiki/MS-Visual-Studio
-      set(MSVC_CCACHE_WRAPPER_CONTENT "\"${CCACHE_EXECUTABLE}\" \"${CMAKE_CXX_COMPILER}\"")
-      set(MSVC_CCACHE_WRAPPER_FILENAME wrapped-cl.bat)
-      file(WRITE ${CMAKE_BINARY_DIR}/${MSVC_CCACHE_WRAPPER_FILENAME} "${MSVC_CCACHE_WRAPPER_CONTENT} %*")
-      list(APPEND CMAKE_VS_GLOBALS
-        "CLToolExe=${MSVC_CCACHE_WRAPPER_FILENAME}"
-        "CLToolPath=${CMAKE_BINARY_DIR}"
-        "DebugInformationFormat=OldStyle"
-      )
+      if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
+        # ccache >= 4.8 requires compile batching turned off that is available since CMake 3.24.
+        # See https://github.com/ccache/ccache/wiki/MS-Visual-Studio
+        set(CCACHE ON)
+        set(MSVC_CCACHE_WRAPPER_CONTENT "\"${CCACHE_EXECUTABLE}\" \"${CMAKE_CXX_COMPILER}\"")
+        set(MSVC_CCACHE_WRAPPER_FILENAME wrapped-cl.bat)
+        file(WRITE ${CMAKE_BINARY_DIR}/${MSVC_CCACHE_WRAPPER_FILENAME} "${MSVC_CCACHE_WRAPPER_CONTENT} %*")
+        list(APPEND CMAKE_VS_GLOBALS
+          "CLToolExe=${MSVC_CCACHE_WRAPPER_FILENAME}"
+          "CLToolPath=${CMAKE_BINARY_DIR}"
+          "DebugInformationFormat=OldStyle"
+        )
+        set(CMAKE_VS_NO_COMPILE_BATCHING ON)
+      elseif(CCACHE STREQUAL "AUTO")
+        message(WARNING "ccache requested and found, but CMake >= 3.24 is required to use it properly. Disabling.\n"
+                        "To skip ccache check, use \"-DCCACHE=OFF\".\n")
+        set(CCACHE OFF)
+      else()
+        message(FATAL_ERROR "ccache requested and found, but CMake >= 3.24 is required to use it properly.")
+      endif()
     else()
+      set(CCACHE ON)
       list(APPEND CMAKE_C_COMPILER_LAUNCHER ${CCACHE_EXECUTABLE})
       list(APPEND CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_EXECUTABLE})
     endif()

@@ -54,7 +54,7 @@ GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
 AUTOCONF                                :=$(shell which autoconf)
 export AUTOCONF
-DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
+DOTFILES_PATH                           :=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
 THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
 export THIS_FILE
@@ -244,14 +244,14 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--:## - default - try 'make submodules'
+-:## 	- default - try 'make submodules'
 -:
 	@$(SHELL) -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	type -P brew || eval "$(/opt/homebrew/bin/brew shellenv)"
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-autoconf:## ./autogen.sh && ./configure
+autoconf:## 	./autogen.sh && ./configure
 	@$(SHELL) ./autogen.sh
 	@$(SHELL) ./configure
 ifeq ($(BREW),)
@@ -260,10 +260,11 @@ endif
 	@./configure --quiet
 	#$(MAKE) -
 
-nodegit$(EXEEXT):
+nodegit$(EXEEXT):## 	nodegit
+	npm install nodegit
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
 
-clean-local:
+clean-local:## 	cd $(NODE_MODULE_DIR) && node-gyp clean
 	-cd $(NODE_MODULE_DIR) && node-gyp clean
 
 ##	:	-
@@ -280,17 +281,17 @@ clean-local:
 ##	:
 ##	:	adduser-git		add a user named git
 
-keymap:## install ./init/com.local.KeyRemapping.plist
+keymap:## 	install ./init/com.local.KeyRemapping.plist
 	@mkdir -p ~/Library/LaunchAgents/
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:-## chsh -s /bin/bash && ./scripts/initialize
+init:-## 	chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	./scripts/initialize
-brew:-## install or update/upgrade brew
+brew:-## 	install or update/upgrade brew
 .ONESHELL:
 	export HOMEBREW_INSTALL_FROM_API=1
 	echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /root/.profile
@@ -298,13 +299,13 @@ brew:-## install or update/upgrade brew
 	type -P brew && $(which brew) ||  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" || echo "install brew"
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 	type -P brew && && brew upgrade  --casks && brew update || eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)"
-iterm:## brew install --cask iterm2
+iterm:## 	brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
 .PHONY: help
-help:## print verbose help
+help:## 	print verbose help
 	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -318,22 +319,28 @@ help:## print verbose help
 	@echo "bitcoin-\<TAB>";
 	@echo ""
 
-report:
+report:## 	print make environments variables
+	@echo ''
+	@echo ' [MAKE ENVIRONMENT VARIABLES]:	'
+	@echo ''
+	@echo ' TIME=${TIME}	'
+	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
+	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
 	@echo ''
 	@echo ' CMAKE=${CMAKE}	'
 	@echo ' GLIBTOOL=${GLIBTOOL}	'
 	@echo ' GLIBTOOLIZE=${GLIBTOOLIZE}	'
 	@echo ' AUTOCONF=${AUTOCONF}	'
-	@echo '	[DEV ENVIRONMENT]:	'
 	@echo ''
-	@echo ' TIME=${TIME}	'
 	@echo ' SHELL=${SHELL}	'
 	@echo ' POWERSHELL=${POWERSHELL}	'
-	@echo ' DOTFILES_PATH=${DOTFILES_PATH}	'
-	@echo ' PROJECT_NAME=${PROJECT_NAME}	'
+	@echo ''
+	@echo ' [NODE/NVM]:	'
 	@echo ''
 	@echo ' NODE_VERSION=${NODE_VERSION}	'
 	@echo ' NODE_ALIAS=${NODE_ALIAS}	'
+	@echo ''
+	@echo ' [GIT CONFIG/VARIABLES]:	'
 	@echo ''
 	@echo ' GIT_USER_NAME=${GIT_USER_NAME}	'
 	@echo ' GIT_USER_EMAIL=${GIT_USER_EMAIL}	'
@@ -345,6 +352,8 @@ report:
 	@echo ' GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
 	@echo ' GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo ' GIT_REPO_PATH=${GIT_REPO_PATH}	'
+	@echo ''
+	@echo ' [HOMEBREW CONFIG/VARIABLES]:	'
 	@echo ''
 	@echo ' BREW=${BREW}	'
 	@echo ' HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
@@ -360,7 +369,7 @@ report:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
-whatami:
+whatami: 	whatami
 	@bash ./whatami.sh
 #.PHONY:readme
 #readme:
@@ -423,12 +432,12 @@ config-dock: executable
 .PHONY: all
 ##	:	all			exec gnupg brew-libs
 all: executable gnupg brew-libs
-vim:## vim - install-vim.sh
+vim:## 	vim - install-vim.sh
 	bash -c "source $(PWD)/template && checkbrew install	vim"
 	./install-vim.sh
 macdown:
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
-rustup:
+rustup:## 	rustup
 	. install-rustup.sh
 glow:
 	bash -c "source $(PWD)/template && checkbrew install	glow"
@@ -552,7 +561,7 @@ docker-start:## 	start docker
 	    while ! docker system info > /dev/null 2>&1; do\
 	    echo 'Waiting for docker to start...';\
 	    if [[ '$(OS)' == 'Linux' ]]; then\
-	     systemctl restart docker.service;\
+	    type -P systemctl && systemctl restart docker.service || type -P service && service docker restart || type -P apk && apk add openrc docker && rc-service docker restart || echo "try installing docker manually...";\
 	    fi;\
 	    if [[ '$(OS)' == 'Darwin' ]]; then\
 	     open --background -a /./Applications/Docker.app/Contents/MacOS/Docker;\
@@ -674,7 +683,7 @@ tag:
 .PHONY: docs readme index
 index: docs
 readme: docs
-docs:-
+docs:-## 	docs
 	@echo 'docs'
 	bash -c "if pgrep MacDown; then pkill MacDown; fi"
 	bash -c "make help > $(PWD)/sources/COMMANDS.md"
@@ -715,10 +724,10 @@ bitcoin-test-battery:
 .PHONY: funcs
 ##	:
 ##	:	funcs			additional make functions
-funcs:
+funcs:## 	funcs
 	make -f funcs.mk
 
-clean-nvm: ## clean-nvm
+clean-nvm: ## 	clean-nvm
 	@rm -rf ~/.nvm
 
 -include Makefile

@@ -428,6 +428,8 @@ vim:## vim - install-vim.sh
 	./install-vim.sh
 macdown:
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
+rustup:
+	. install-rustup.sh
 glow:
 	bash -c "source $(PWD)/template && checkbrew install	glow"
 coreutils:

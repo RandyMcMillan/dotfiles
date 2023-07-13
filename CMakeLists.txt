@@ -102,6 +102,9 @@ if(WIN32)
   if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     add_compile_options(/utf-8 /Zc:__cplusplus)
+    # Improve parallelism in MSBuild.
+    # See: https://devblogs.microsoft.com/cppblog/improved-parallelism-in-msbuild/.
+    list(APPEND CMAKE_VS_GLOBALS "UseMultiToolTask=true")
   endif()
 
   if(MINGW)

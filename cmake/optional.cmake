@@ -13,11 +13,10 @@ if(CCACHE)
       set(MSVC_CCACHE_WRAPPER_CONTENT "\"${CCACHE_EXECUTABLE}\" \"${CMAKE_CXX_COMPILER}\"")
       set(MSVC_CCACHE_WRAPPER_FILENAME wrapped-cl.bat)
       file(WRITE ${CMAKE_BINARY_DIR}/${MSVC_CCACHE_WRAPPER_FILENAME} "${MSVC_CCACHE_WRAPPER_CONTENT} %*")
-      set(CMAKE_VS_GLOBALS
+      list(APPEND CMAKE_VS_GLOBALS
         "CLToolExe=${MSVC_CCACHE_WRAPPER_FILENAME}"
         "CLToolPath=${CMAKE_BINARY_DIR}"
         "TrackFileAccess=false"
-        "UseMultiToolTask=true"
         "DebugInformationFormat=OldStyle"
       )
     else()

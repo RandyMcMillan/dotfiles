@@ -13,8 +13,8 @@ B() {
         export COMPUTER_NAME=$(echo '"\u20BF"' | jq .) &&
         export COMPUTER_NAME=$(echo "${COMPUTER_NAME//\"}")
         echo $COMPUTER_NAME &&
-        sudo scutil --set ComputerName "$COMPUTER_NAME"
-        sudo scutil --set HostName "$COMPUTER_NAME"
+        sudo scutil --set ComputerName "B"#"$COMPUTER_NAME"
+        sudo scutil --set HostName "B"#"$COMPUTER_NAME"
         #sudo scutil --set LocalHostName "$COMPUTER_NAME"
         scutil --get HostName
         scutil --get LocalHostName

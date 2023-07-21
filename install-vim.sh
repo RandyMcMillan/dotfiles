@@ -7,6 +7,21 @@ export X86_64HASH
 
 echo X86_64HASH=$X86_64HASH
 
+VIM=$(find  /usr/local/bin -name vim)
+export VIM
+echo   $VIM
+
+MVIM=$(find  /usr/local/bin -name mvim)
+export MVIM
+echo   $MVIM
+MACVIM=$(find  /usr/local/Caskroom -name macvim)
+export MACVIM
+echo   $MACVIM
+MACVIM_APP=$(find  /usr/local/Caskroom -name MacVim.app)
+export MACVIM_APP
+echo   $MACVIM_APP
+
+
 if [ hash ssh-agent 2>/dev/null ]; then
     ssh-agent ssh-add
 else
@@ -63,13 +78,6 @@ echo $VIMRC_DESTINATION
 #fi
 }
 
-MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
-export MACVIM
-echo   $MACVIM
-MVIM=$(find /usr/local/Cellar/macvim -name mvim)
-export MVIM
-echo   $MVIM
-
 install-macvim(){
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if hash brew 2>/dev/null; then
@@ -94,10 +102,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
             if ! hash dockutil 2>/dev/null; then
                 curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
                 chmod a+x /usr/local/bin/dockutil
-                MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
-                echo $MACVIM
-                export MACVIM
-                dockutil --add $MACVIM --replacing 'MacVim'
+                dockutil --add $MACVIM --r 'MacVim'
             fi
         fi
     else

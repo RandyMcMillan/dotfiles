@@ -18,14 +18,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: styfle/cancel-workflow-action@0.11.0
+        if: ${{ !env.ACT }}
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v3
         with:
-          fetch-depth: '3'
+          fetch-depth: '0'
+          submodules: 'recursive'
       - name: "build pre-release"
         run: |
           make
+          make submodules
           make nostril
           shasum -a 256 nostril/nostril > nostril.sha256.txt
       - name: Save state

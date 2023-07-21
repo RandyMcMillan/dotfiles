@@ -1,6 +1,8 @@
-source ~/config-github 2> >(tee -a bash_profile.log)
-source ~/config-git 2> >(tee -a bash_profile.log)
+#source ~/config-github 2> >(tee -a bash_profile.log)
+#source ~/config-git 2> >(tee -a bash_profile.log)
+#
 export PATH="$PATH:$HOME/. cargo/bin"
+
 if hash brew 2>/dev/null; then
 	if [ -f /usr/local/bin/checkbrew ]; then
 	source /usr/local/bin/checkbrew

@@ -287,10 +287,7 @@ keymap:## 	install ./init/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:-## 	chsh -s /bin/bash && ./scripts/initialize
-	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
-	["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
-	./scripts/initialize
+init:-##init
 brew:-## 	install or update/upgrade brew
 .ONESHELL:
 	export HOMEBREW_INSTALL_FROM_API=1

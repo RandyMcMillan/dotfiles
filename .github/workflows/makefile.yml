@@ -1,0 +1,45 @@
+name: makefile.yml
+
+on:
+  push:
+    branches: [ "master", "main" , "**", "**/**" ]
+  pull_request:
+    branches: [ "master", "main" , "**", "**/**" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: make commands
+      run: |
+          make
+          make help
+          make autoconf
+          make init
+          make brew
+          make vim
+          make nvm
+
+    - name: autogen.sh && configure
+      run: |
+          sudo apt-get install autotools-dev \
+          autoconf automake libtool m4 \
+          build-essential gettext-base gettext \
+          libssl-dev libcrypto++-dev
+    #      ./autogen.sh && ./configure
+    - name: make
+      run: |
+          make
+          make docs
+    #- name: make legit
+    #  run: |
+    #      sudo make legit
+    - name: make nostril
+      run: |
+          make nostril

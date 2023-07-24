@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
+defaults write com.apple.AppleMultitouchTrackpad DragLock -bool true
+defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+defaults read com.apple.AppleMultitouchTrackpad
 # ~/.macos — https://mths.be/macos
+
+#For MacFUSE
+defaults write com.apple.DiskUtility DUDebugMenuEnabled 1
+defaults write com.apple.finder ShowMountedServersOnDesktop 1
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
@@ -21,6 +28,11 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 #sudo scutil --set HostName "0x6D746873"
 #sudo scutil --set LocalHostName "0x6D746873"
 #sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "0x6D746873"
+# Set ComputerName and HostName to ₿
+export COMPUTER_NAME=$(echo '"\u20BF"' | jq .) &&
+export COMPUTER_NAME=$(echo "${COMPUTER_NAME//\"}") &&
+sudo scutil --set ComputerName "$COMPUTER_NAME" &&
+sudo scutil --set HostName "$COMPUTER_NAME" &&
 
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
@@ -40,6 +52,9 @@ defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 
 # Disable the over-the-top focus ring animation
 defaults write NSGlobalDomain NSUseAnimatedFocusRing -bool false
+
+# Adjust toolbar title rollover delay
+defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0
 
 # Disable smooth scrolling
 # (Uncomment if you’re on an older Mac that messes up the animation)
@@ -88,6 +103,9 @@ defaults write com.apple.helpviewer DevMode -bool true
 # Commented out, as this is known to cause problems in various Adobe apps :(
 # See https://github.com/mathiasbynens/dotfiles/issues/237
 #echo "0x08000100:0" > ~/.CFUserTextEncoding
+
+# Enable text selection in QuickLook
+defaults write com.apple.finder QLEnableTextSelection -bool TRUE
 
 # Reveal IP address, hostname, OS version, etc. when clicking the clock
 # in the login window
@@ -154,20 +172,44 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 1
 defaults write NSGlobalDomain InitialKeyRepeat -int 10
+#defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
+#defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
+# Follow the keyboard focus while zoomed in
+#defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
+
+
+# The step values that correspond to the sliders on the GUI are as follow (lower equals faster):
+
+# KeyRepeat: 120, 90, 60, 30, 12, 6, 2
+
+# InitialKeyRepeat: 120, 94, 68, 35, 25, 15
+
+# Lower values are slower values for InitialKeyRepeat
+# Long is 120, short is 15.
+
+# Opposite for KeyRepeat
+# Slow is 120, fast is 12.
+
+# Disable press-and-hold for keys in favor of key repeat
+#defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+# Set a blazingly fast keyboard repeat rate
+#defaults write NSGlobalDomain KeyRepeat -int 12
+#defaults write NSGlobalDomain InitialKeyRepeat -int 24
 
 # Set language and text formats
 # Note: if you’re in the US, replace `EUR` with `USD`, `Centimeters` with
 # `Inches`, `en_GB` with `en_US`, and `true` with `false`.
-defaults write NSGlobalDomain AppleLanguages -array "en" "nl"
-defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR"
-defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
-defaults write NSGlobalDomain AppleMetricUnits -bool true
+defaults write NSGlobalDomain AppleLanguages -array "en_US" "nl"
+defaults write NSGlobalDomain AppleLocale -string "en_US@currency=USD"
+defaults write NSGlobalDomain AppleMeasurementUnits -string "Inches"
+defaults write NSGlobalDomain AppleMetricUnits -bool false
 
 # Show language menu in the top right corner of the boot screen
 sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
-sudo systemsetup -settimezone "Europe/Brussels" > /dev/null
+sudo systemsetup -settimezone "GMT" > /dev/null
 
 # Stop iTunes from responding to the keyboard media keys
 #launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
@@ -219,7 +261,7 @@ sudo chflags uchg /private/var/vm/sleepimage
 
 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
+defaults write com.apple.screensaver askForPasswordDelay -int 1
 
 # Save screenshots to the desktop
 defaults write com.apple.screencapture location -string "${HOME}/Desktop"
@@ -248,9 +290,10 @@ defaults write com.apple.finder QuitMenuItem -bool true
 defaults write com.apple.finder DisableAllAnimations -bool true
 
 # Set Desktop as the default location for new Finder windows
+# Set ~/ as the default location for new Finder windows
 # For other paths, use `PfLo` and `file:///full/path/here/`
 defaults write com.apple.finder NewWindowTarget -string "PfDe"
-defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Desktop/"
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
 
 # Show icons for hard drives, servers, and removable media on the desktop
 defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
@@ -444,14 +487,30 @@ sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/Simulator (
 # 12: Notification Center
 # 13: Lock Screen
 # Top left screen corner → Mission Control
-defaults write com.apple.dock wvous-tl-corner -int 2
+#defaults write com.apple.dock wvous-tl-corner -int 2
+#defaults write com.apple.dock wvous-tl-modifier -int 0
+## Top right screen corner → Desktop
+#defaults write com.apple.dock wvous-tr-corner -int 4
+#defaults write com.apple.dock wvous-tr-modifier -int 0
+## Bottom left screen corner → Start screen saver
+#defaults write com.apple.dock wvous-bl-corner -int 5
+#defaults write com.apple.dock wvous-bl-modifier -int 0
+
+# Top left screen corner → Mission Control
+defaults write com.apple.dock wvous-tl-corner -int 11
 defaults write com.apple.dock wvous-tl-modifier -int 0
+
 # Top right screen corner → Desktop
-defaults write com.apple.dock wvous-tr-corner -int 4
+defaults write com.apple.dock wvous-tr-corner -int 2
 defaults write com.apple.dock wvous-tr-modifier -int 0
+
 # Bottom left screen corner → Start screen saver
-defaults write com.apple.dock wvous-bl-corner -int 5
+defaults write com.apple.dock wvous-bl-corner -int 11
 defaults write com.apple.dock wvous-bl-modifier -int 0
+
+# Bottom right screen corner → Start screen saver
+defaults write com.apple.dock wvous-br-corner -int 4
+defaults write com.apple.dock wvous-br-modifier -int 0
 
 ###############################################################################
 # Safari & WebKit                                                             #
@@ -685,6 +744,7 @@ defaults write com.apple.Terminal ShowLineMarks -int 0
 open "${HOME}/init/Solarized Dark.itermcolors"
 
 # Don’t display the annoying prompt when quitting iTerm
+# iterm
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false
 
 ###############################################################################
@@ -696,6 +756,9 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 # Disable local Time Machine backups
 hash tmutil &> /dev/null && sudo tmutil disablelocal
+
+# iterm
+defaults write com.googlecode.iterm2 PromptOnQuit -bool true
 
 ###############################################################################
 # Activity Monitor                                                            #

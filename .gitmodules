@@ -13,3 +13,6 @@
 	url = https://github.com/randymcmillan/nostril
 	branch = v0.1.6
 	ignore = dirty
+[submodule ".vim_runtime"]
+	path = .vim_runtime
+	url = git@github.com:RandyMcMillan/vimrc.git

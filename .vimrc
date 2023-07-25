@@ -66,6 +66,7 @@ set showcmd             " show (partial) command in status line
 " green     #859900
 "
 if has("gui_running")
+set go+=!
 set background=dark
 let g:solarized_termcolors=256
     set termguicolors

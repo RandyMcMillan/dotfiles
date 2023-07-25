@@ -1,0 +1,4 @@
+#prepend PATH
+PATH=$PATH:~/.cargo/bin
+#append PATH
+PATH=~/.cargo/bin:$PATH

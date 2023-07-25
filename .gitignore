@@ -1,9 +1,27 @@
+*.tmp
+init/init
+*.dmg
+1.1.1*
+infinity
+infinity/*
+
+Python-2.*
+
 # Compiled Python files
 *.pyc
 
 # Folder view configuration files
 .DS_Store
 Desktop.ini
+./config/.DS_Store
+.DS_Store
+Desktop.ini
+.config/.DS_Store
+
+#autoconf
+config.h
+config.h.in~
+>>>>>>> a4171a0ca (rebase)
 
 # Thumbnail cache files
 ._*
@@ -12,3 +30,93 @@ Thumbs.db
 # Files that might appear on external disks
 .Spotlight-V100
 .Trashes
+
+autom4te.cache/
+brew/
+homebrew-core/
+config.log
+config.status
+bitcoin
+iokit.log
+bash_profile.log
+
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## User settings
+xcuserdata/
+
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+*.xcscmblueprint
+*.xccheckout
+
+## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
+build/
+DerivedData/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+## Gcc Patch
+/*.gcno
+
+hosts
+etc-dnsmasq.d
+etc-pihole
+.DS_Store
+.config/QtProject
+1.1.1i
+docker.shell
+
+bitcoin-test-battery
+autom4te.cache/
+config.log
+config.status
+configure
+patch.diff
+
+
+configure~
+
+guix.sigs
+
+nostril/bin/
+nostril/share/
+
+#ARTIFACTS
+ABOUT-NLS
+ChangeLog~
+Makefile.am~
+config.rpath
+configure.ac~
+m4/gettext.m4
+m4/gettext.m4~
+m4/host-cpu-c-abi.m4
+m4/host-cpu-c-abi.m4~
+m4/iconv.m4
+m4/iconv.m4~
+m4/intlmacosx.m4
+m4/intlmacosx.m4~
+m4/lib-ld.m4
+m4/lib-ld.m4~
+m4/lib-link.m4
+m4/lib-link.m4~
+m4/lib-prefix.m4
+m4/lib-prefix.m4~
+m4/nls.m4
+m4/nls.m4~
+m4/po.m4
+m4/po.m4~
+m4/progtest.m4
+m4/progtest.m4~
+po/
+
+#bash_profile log
+bash_profile.log

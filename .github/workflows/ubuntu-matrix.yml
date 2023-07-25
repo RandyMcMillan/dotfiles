@@ -1,64 +1,42 @@
-name: Ubuntu
+name: ubuntu-matrix
 
+# Controls when the action will run.
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
-env:
-  GIT_DISCOVERY_ACROSS_FILESYSTEM: 1
+    branches:
+      - '*'
+      - '*/*'
+      - '**'
+      - 'master'
+      - 'main'
+  push:
+    branches:
+      - '*'
+      - '*/*'
+      - '**'
+      - 'master'
+      - 'main'
 
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
-
+  ubuntu-build_and_test:
     strategy:
-      fail-fast: false
       matrix:
-        version: [22.04]#,20.04,18.04]
-
-    runs-on: ubuntu-${{ matrix.version }}
-
+        os: [ubuntu-20.04, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      ## pre-checkout sequence
-      - run: apt -y update
-      - run: |
-          apt -y install bash docker* util-linux
-      - run: |
-          apt -y install \
-          autoconf \
-          file \
-          gettext \
-          git \
-          libtool \
-          pkg-config \
-          python3 \
-          python3-pip
-
-      - uses: actions/checkout@v3
+      - uses: styfle/cancel-workflow-action@0.11.0
+        if: ${{ !env.ACT }}
         with:
-          fetch-depth: '0'
-          submodules: 'true'
-          set-safe-directory: 'true'
-
-      ## post-checkout sequence
-      - run: make
-      - run: make help
-      - run: make docker-start
-      - run: make report
-      - run: make submodules
-      #- run: make nvm
-
-      ## build example
-      #- run:  if [ ! -d ctags ]; then git clone https://github.com/universal-ctags/ctags; fi
-      #- run: apt -y install gcc make pkg-config autoconf automake python3-docutils libseccomp-dev libjansson-dev libyaml-dev libxml2-dev
-      #- run: install autogen.sh ctags
-      #- run: cd ctags && ./autogen.sh configure
-      #- run: cd ctags && ./configure --prefix=/usr
-      #- run: cd ctags && make
-      #- run: cd ctags && make install
-      #- run: file /usr/bin/ctags
-      #- run: /usr/bin/ctags --version
-
-      ## sequence success!!
-      - run: make tag 2>/dev/null || echo "make tag fail..."
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v3
+      - name: printenv
+        run: |
+          printenv
+      - name: make
+        run: |
+          make
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" || echo $(which brew)
 

@@ -1,13 +1,15 @@
 # Process this file with autoconf to produce a configure script.
-
-AC_PREREQ([2.69])
-AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
-#AC_INIT([mumble], [1.5])
-m4_pattern_allow([AM_INIT_AUTOMAKE])
+#m4_pattern_allow([AM_INIT_AUTOMAKE])
+#AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_SRCDIR([src/foo.c])
-AC_CONFIG_FILES([GNUmakefile])
+AC_CONFIG_FILES([GNUmakefile Makefile])
+
+AC_PREREQ([2.59])
+AC_INIT([dotfiles.randymcmillan.net], [0.1], [randy.lee.mcmillan@gmail.com])
+AM_INIT_AUTOMAKE
 #AM_MISSING_PROG(HELP2MAN, help2man)
+AC_PATH_PROG(NOSTRIL, nostril, false // No nostril //)
 AC_PATH_PROG(HELP2MAN, help2man, false // No help2man //)
 AC_PATH_PROG(BREW, brew, false // No help2man //)
 # Checks for programs.

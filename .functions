@@ -141,42 +141,46 @@ function git-fetch-branches(){
 }
 function git-add-remote-bitcoin-devs(){
 
-    git remote add Hyunhum	git@github.com:Hyunhum/bitcoin.git || true
-    git remote add MarcoFalke	git@github.com:MarcoFalke/bitcoin || true
-    git remote add bitcoincore-dev	git@github.com:bitcoincore-dev/bitcoin.git || true
-    git remote add bitcoincore-dev-gui	git@github.com:bitcoincore-dev/gui.git || true
-    git remote add fanquake	https://github.com/fanquake/bitcoin.git || true
-    git remote add fjahr	https://github.com/fjahr/bitcoin.git || true
-    git remote add hebasto	https://github.com/hebasto/bitcoin.git || true
-    git remote add hebasto-gui	https://github.com/hebasto/gui.git || true
-    git remote add jonas	https://github.com/jonasschnelli/bitcoin.git || true
-    git remote add jonas-gui	https://github.com/jonasschnelli/gui.git || true
-    git remote add jonatack	https://github.com/jonatack/bitcoin.git || true
-    git remote add jonatack-gui	https://github.com/jonatack/gui.git || true
-    git remote add kallewoof	git@github.com:kallewoof/bitcoin.git || true
-    git remote add kouloumos	git@github.com:kouloumos/bitcoin.git || true
-    git remote add laanwj	https://github.com/laanwj/bitcoin.git || true
-    git remote add luke-jr	https://github.com/luke-jr/bitcoin-core-gui.git || true
-    git remote add marco-falke	https://github.com/MarcoFalke/bitcoin.git || true
-    git remote add marco-falke-gui	https://github.com/MarcoFalke/bitcoin-core-gui.git || true
-    git remote add mempool-tab	git@github.com:RandyMcMillan/mempool-tab.git || true
-    git remote add mzumsande	git@github.com:mzumsande/bitcoin.git || true
-    git remote add origin	git@github.com:RandyMcMillan/bitcoin.git || true
-    git remote add origin-gui	git@github.com:randymcmillan/gui.git || true
-    git remote add pinheadmz	git@github.com:pinheadmz/bitcoin.git || true
-    git remote add randymcmillan	git@github.com:RandyMcMillan/bitcoin.git || true
-    git remote add russeree	git@github.com:russeree/bitcoin || true
-    git remote add upstream	https://github.com/bitcoin/bitcoin.git || true
-    git remote add upstream-gui	git@github.com:bitcoin-core/gui.git || true
-    git remote add virtu	git@github.com:virtu/bitcoin.git || true
+    git remote add Hyunhum              git@github.com:Hyunhum/bitcoin.git          || true
+    git remote add MarcoFalke           git@github.com:MarcoFalke/bitcoin           || true
+    git remote add bitcoincore-dev      git@github.com:bitcoincore-dev/bitcoin.git  || true
+    git remote add bitcoincore-dev-gui	git@github.com:bitcoincore-dev/gui.git      || true
+    git remote add fanquake	            git@github.com:fanquake/bitcoin.git         || true
+    git remote add fjahr	            git@github.com:fjahr/bitcoin.git            || true
+    git remote add hebasto              git@github.com:hebasto/bitcoin.git          || true
+    git remote add hebasto-gui          git@github.com:hebasto/gui.git              || true
+    git remote add jonas                git@github.com:jonasschnelli/bitcoin.git    || true
+    git remote add jonas-gui            git@github.com:jonasschnelli/gui.git        || true
+    git remote add jonatack             git@github.com:jonatack/bitcoin.git         || true
+    git remote add jonatack-gui         git@github.com:jonatack/gui.git             || true
+    git remote add jamesob              git@github.com:jamesob/bitcoin.git          || true
+    git remote add kallewoof            git@github.com:kallewoof/bitcoin.git        || true
+    git remote add kouloumos            git@github.com:kouloumos/bitcoin.git        || true
+    git remote add laanwj               git@github.com:laanwj/bitcoin.git           || true
+    git remote add luke-jr              git@github.com:luke-jr/bitcoin-core-gui.git || true
+    git remote add marco-falke          git@github.com:MarcoFalke/bitcoin.git       || true
+    git remote add marco-falke-gui      git@github.com:MarcoFalke/bitcoin-core-gui.git  || true
+    git remote add mempool-tab          git@github.com:RandyMcMillan/mempool-tab.git    || true
+    git remote add mzumsande            git@github.com:mzumsande/bitcoin.git        || true
+    git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git    || true
+    git remote add randymcmillan-gui	git@github.com:randymcmillan/gui.git        || true
+    git remote add pinheadmz            git@github.com:pinheadmz/bitcoin.git        || true
+    git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git    || true
+    git remote add russeree             git@github.com:russeree/bitcoin             || true
+    git remote add upstream             git@github.com:bitcoin/bitcoin.git          || true
+    git remote add upstream-gui         git@github.com:bitcoin-core/gui.git         || true
+    git remote add virtu                git@github.com:virtu/bitcoin.git            || true
 
 }
 function gpg-sync-keys-bitcoin-devs(){
 
+gpg-recv-keys-bitcoin-devs
+
 #PGP_SERVERS="pgp.mit.edu"
-PGP_SERVERS="keys.openpgp.org"
+#PGP_SERVERS="keys.openpgp.org"
 #PGP_SERVERS="keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
-#PGP_SERVERS="pgpkeys.eu keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
+PGP_SERVERS="pgpkeys.eu keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
+
 for server in $PGP_SERVERS; do
 
 #laanwj list
@@ -340,19 +344,19 @@ function targz() {
 	echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
 }
 
-# Determine size of a file or total size of a directory
-function fs() {
-	if du -b /dev/null > /dev/null 2>&1; then
-		local arg=-sbh;
-	else
-		local arg=-sh;
-	fi
-	if [[ -n "$@" ]]; then
-		du $arg -- "$@";
-	else
-		du $arg .[^.]* ./*;
-	fi;
-}
+# # Determine size of a file or total size of a directory
+# function fs() {
+# 	if du -b /dev/null > /dev/null 2>&1; then
+# 		local arg=-sbh;
+# 	else
+# 		local arg=-sh;
+# 	fi
+# 	if [[ -n "$@" ]]; then
+# 		du $arg -- "$@";
+# 	else
+# 		du $arg .[^.]* ./*;
+# 	fi;
+# }
 
 # Use Git’s colored diff when available
 hash git &>/dev/null;

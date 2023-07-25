@@ -7,12 +7,11 @@ infinity/*
 
 Python-2.*
 
+known_hosts
 # Compiled Python files
 *.pyc
 
 # Folder view configuration files
-.DS_Store
-Desktop.ini
 ./config/.DS_Store
 .DS_Store
 Desktop.ini
@@ -21,7 +20,6 @@ Desktop.ini
 #autoconf
 config.h
 config.h.in~
->>>>>>> a4171a0ca (rebase)
 
 # Thumbnail cache files
 ._*
@@ -30,7 +28,6 @@ Thumbs.db
 # Files that might appear on external disks
 .Spotlight-V100
 .Trashes
-
 autom4te.cache/
 brew/
 homebrew-core/

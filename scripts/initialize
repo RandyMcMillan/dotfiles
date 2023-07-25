@@ -40,7 +40,8 @@ function checkbrew() {
         if ! hash node 2>/dev/null; then
 			echo "! node"
             echo
-            brew install nvm yarn && source ~/.bashrc
+            brew install nvm yarn
+			source ~/.bashrc
 			yarn global add gulp gulp-watch q @npmcli/fs #@mapbox/node-pre-gyp
 			nvm install $NODE_VERSION && nvm use $NODE_VERSION
 			nvm alias $NODE_ALIAS $NODE_VERSION
@@ -196,16 +197,16 @@ echo
 fi
 
 }
-##source ~/.bashrc
-#if hash nvm 2>/dev/null; then
-#
-#	echo "hash nvm"
-#	echo "NODE_VERSION=""$NODE_VERSION"
-#	echo "NODE_ALIAS=""$NODE_ALIAS"
-#
-#	nvm install "$NODE_VERSION" && nvm use "$NODE_VERSION"
-#	nvm alias "$NODE_ALIAS $NODE_VERSION"
-#else
-#	checknvm
-#fi
+#source ~/.bashrc
+if hash nvm 2>/dev/null; then
+
+	echo "hash nvm"
+	echo "NODE_VERSION=""$NODE_VERSION"
+	echo "NODE_ALIAS=""$NODE_ALIAS"
+
+	nvm install "$NODE_VERSION" && nvm use "$NODE_VERSION"
+	nvm alias "$NODE_ALIAS $NODE_VERSION"
+else
+	checknvm
+fi
 yarn-installs

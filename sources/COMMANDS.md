@@ -1,3 +1,5 @@
+ /bin/sh ./config.status
+config.status: executing depfiles commands
 make [COMMAND] [EXTRA_ARGUMENTS]	
 
  make	                   	command			description
@@ -22,7 +24,6 @@ make [COMMAND] [EXTRA_ARGUMENTS]
  	                       	template		install checkbrew command
  	                       	cirrus			source and run install-cirrus command
  	                       	config-dock		source and run config-dock-prefs
- 	                       	all			exec gnupg brew-libs
  #####################
  	                       	alpine-shell		run install-shell.sh alpine user=root
  	                       	alpine-build		run install-shell.sh alpine-build user=root

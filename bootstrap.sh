@@ -2,6 +2,8 @@
 
 cd "$(dirname "${BASH_SOURCE}")";
 
+touch ~/session.log
+
 #git pull origin master;
 #git pull origin main;
 
@@ -178,7 +180,6 @@ function doIt() {
 		--exclude "uninstall-brew-all.sh" \
 		--exclude "venv.mk" \
 		--exclude "vimrc" \
-		--exclude ".vimrc" \
 		--exclude "whatami.sh" \
 		--exclude "legit" \
 		--exclude "nostril" \
@@ -232,4 +233,6 @@ else
 		doIt;
 	fi;
 fi;
+ln -sf $PWD/known_hosts ~/.ssh/known_hosts
+
 unset doIt;

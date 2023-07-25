@@ -1,14 +1,11 @@
-# Add `~/bin` to the `$PATH`
-export PATH="$HOME/bin:$PATH";
-export PATH="$PATH:$HOME/.cargo/bin"
+#!/usr/bin/env bash
 
-# Load the shell dotfiles, and then some:
-# * ~/.path can be used to extend `$PATH`.
-# * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
-	[ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
+if [ -f ~/config-git ]; then
+	source ~/config-git 2> >(tee -a bash_profile.log) 2>/dev/null
+fi
+if [ -f "$HOME/.cargo/env" ]; then
+	source "$HOME/.cargo/env" 2> >(tee -a bash_profile.log) 2>/dev/null
+fi
 
 if hash brew 2>/dev/null; then
 	if [ -f /usr/local/bin/checkbrew ]; then
@@ -17,8 +14,10 @@ if hash brew 2>/dev/null; then
 fi
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
 # Add `~/init` to the `$PATH`
-#export PATH="$HOME/init:$PATH";
+export PATH="$HOME/init:$PATH";
 
 #if hash brew &> /dev/null; then
 #        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
@@ -67,11 +66,11 @@ elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
 
-# Enable tab completion for `g` by marking it as an alias for `git`
+## Enable tab completion for `g` by marking it as an alias for `git`
 if type _git &> /dev/null; then
 	complete -o default -o nospace -F _git g;
 fi;
-
+#
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
 
@@ -80,7 +79,7 @@ fi;
 complete -W "NSGlobalDomain" defaults;
 
 # Add `killall` tab completion for common apps
-complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Dock Finder Mail Safari iTunes* SystemUIServer Terminal iTerm* Twitter bitcoind" killall;
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -118,6 +117,6 @@ export NVM_DIR="$HOME/.nvm"
 #export GPG_TTY=$(tty)
 # Set PATH, MANPATH, etc., for Homebrew.
 if ! hash brew 2>/dev/null; then
-       eval "$(/usr/local/bin/brew shellenv)" || echo
-       eval "$(/opt/homebrew/bin/brew shellenv)" || echo
+       eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
+       eval "$(/opt/homebrew/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
 fi

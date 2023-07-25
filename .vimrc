@@ -45,6 +45,15 @@ set backspace=indent,eol,start
 set ruler               " show line and column number
 syntax on               " syntax highlighting
 set showcmd             " show (partial) command in status line
+set number
+set scrolloff=3
+
+" Use hybrid line numbers
+if exists("&relativenumber")
+    set number relativenumber
+    au BufReadPost * set relativenumber
+endif
+
 
 " SOLARIZED HEX
 " --------- -------
@@ -77,6 +86,7 @@ let g:solarized_termcolors=256
     set termguicolors
     colorscheme solarized
 endif
+let g:solarized_termtrans=1
 "
 if has('title') && (has('gui_running') || &title)
 "  set titlestring=

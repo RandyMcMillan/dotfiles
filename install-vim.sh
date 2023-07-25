@@ -55,10 +55,11 @@ make submodules
 X86_64HASH=afd92fa75d7b6a103a5d44719e2fbcf4077f1bb4
 export X86_64HASH
 echo X86_64HASH=$X86_64HASH
-pushd ~/.vim_runtime
-git init && git remote add origin $VIMRC_REPO \
-  git pull -f origin master
-popd
+git submodule update --init --recursive
+#pushd ~/.vim_runtime
+#git init && git remote add origin $VIMRC_REPO \
+#  git pull -f origin master
+#popd
 read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo

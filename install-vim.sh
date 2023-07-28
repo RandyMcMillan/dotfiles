@@ -64,7 +64,7 @@ read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo
 	#git submodule update --init --recursive && mv .vim_runtime $VIMRC_DESTINATION || return;
-    mv .vim_runtime ~/
+    git clone .vim_runtime ~/.vim_runtime  #mv .vim_runtime ~/
     cat .vimrc > /Users/git/.vim_runtime/my_configs.vim
     if [ -d "$VIMRC_DESTINATION" ]; then
         pushd $VIMRC_DESTINATION

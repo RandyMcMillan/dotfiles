@@ -1,0 +1,1 @@
+git config --global --add safe.directory $args[0]

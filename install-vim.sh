@@ -6,7 +6,7 @@ echo SCRIPT_DIR=$SCRIPT_DIR
 ARCH=$(uname -m);
 export ARCH
 echo ARCH=$ARCH
-X86_64HASH=afd92fa75d7b6a103a5d44719e2fbcf4077f1bb4
+X86_64HASH=844a139554b24c09530f6532f7d1857fe9ea072f
 export X86_64HASH
 
 BREW=$(which brew)
@@ -33,17 +33,13 @@ if [ hash apk  2>/dev/null ]; then
     apk add git bash
 fi
 
-# VIM=$(find /usr/local/Cellar/macvim -name vim)
-# export VIM
-# echo   $VIM
-
 install-vim() {
 # brew uninstall  --ignore-dependencies --force ruby perl vim && brew install vim && brew link vim
 #WE install this regaurdless of OSTYPE
 VIMRC_REPO="https://github.com/randymcmillan/vimrc.git"
 export VIMRC_REPO
 echo $VIMRC_REPO
-VIMRC_DESTINATION="$HOME/.vim_runtime"
+VIMRC_DESTINATION=$HOME/.vim_runtime
 export VIMRC_DESTINATION
 echo VIMRC_DESTINATION=$VIMRC_DESTINATION
 #read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
@@ -62,7 +58,7 @@ echo VIMRC_DESTINATION=$VIMRC_DESTINATION
       cat $SCRIPT_DIR/.vimrc > $VIMRC_DESTINATION/my_configs.vim
       popd
     else
-      git clone --depth 3 https://github.com/randymcmillan/vimrc.git $VIMRC_DESTINATION
+      git clone -b v0.0.1  https://github.com/randymcmillan/vimrc.git $VIMRC_DESTINATION
       pushd $VIMRC_DESTINATION && git checkout $X86_64HASH
       sh $VIMRC_DESTINATION/install_awesome_vimrc.sh
       cat $SCRIPT_DIR/.vimrc > $VIMRC_DESTINATION/my_configs.vim
@@ -70,10 +66,10 @@ echo VIMRC_DESTINATION=$VIMRC_DESTINATION
 #fi
 }
 
-MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
+MACVIM=$(find /usr/local/Cellar -name MacVim.app)
 export MACVIM
 echo   $MACVIM
-MVIM=$(find /usr/local/Cellar/macvim -name mvim)
+MVIM=$(find /usr/local/Cellar -name mvim)
 export MVIM
 echo   $MVIM
 
@@ -101,7 +97,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
             if ! hash dockutil 2>/dev/null; then
                 curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
                 chmod a+x /usr/local/bin/dockutil
-                MACVIM=$(find /usr/local/Cellar/macvim -name MacVim.app)
+                MACVIM=$(find /usr/local/Cellar -name MacVim.app)
                 echo $MACVIM
                 export MACVIM
                 dockutil --add $MACVIM --replacing 'MacVim'

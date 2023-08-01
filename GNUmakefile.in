@@ -413,11 +413,8 @@ config-dock: executable
 
 macvim: vim##
 vim:## vim - install-vim.sh
-	install -d ./vimrc ~/.vim_runtime
-	bash -c "source $(PWD)/template && checkbrew install --cask	macvim"
-
 	./install-vim.sh
-rustup-rs:## 	
+rustup-rs:##
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
 macdown:
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
@@ -688,7 +685,7 @@ docs: docker-start## 	docs
 	git add --ignore-errors *.html
 	#git ls-files -co --exclude-standard | grep '\.md/$\' | xargs git
 
-docs-docker:## 	
+docs-docker:##
 	@docker run --rm --volume "`pwd`:/data" --user `id -u`:`id -g` pandoc/latex:2.6 README.md;
 
 .PHONY: touch-time

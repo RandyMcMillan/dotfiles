@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+echo SCRIPT_DIR=$SCRIPT_DIR
+
 ARCH=$(uname -m);
 export ARCH
 echo ARCH=$ARCH
 X86_64HASH=afd92fa75d7b6a103a5d44719e2fbcf4077f1bb4
 export X86_64HASH
+
+BREW=$(which brew)
+export BREW
 
 echo X86_64HASH=$X86_64HASH
 
@@ -13,8 +20,8 @@ else
     echo "if fail try make config-github"
     echo "if fail try make config-git"
 fi
-if [ hash brew 2>/dev/null ]; then
-    brew install git bash llvm
+if [ hash $BREW 2>/dev/null ]; then
+    $BREW install git bash llvm
 fi
 if [ hash git  2>/dev/null ]; then
     git config --global core.editor vim
@@ -38,27 +45,27 @@ export VIMRC_REPO
 echo $VIMRC_REPO
 VIMRC_DESTINATION="$HOME/.vim_runtime"
 export VIMRC_DESTINATION
-echo $VIMRC_DESTINATION
+echo VIMRC_DESTINATION=$VIMRC_DESTINATION
 #read -t 5 -p "Install .vim_runtime ? (y/n) " -n 1;
 #if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [ -d "$VIMRC_DESTINATION" ]; then
-      pushd ~/.vim_runtime
+      pushd $VIMRC_DESTINATION
       git pull -f origin master
       python3 -m pip install --user requests
       if [ ! "$ARCH" = "x86_64" ]; then
-      python3 update_plugins.py
+          python3 update_plugins.py
       else
-      pushd ~/.vim_runtime && git checkout $X86_64HASH
+          pushd $VIMRC_DESTINATION && git checkout $X86_64HASH
       fi
-      sh ~/.vim_runtime/install_awesome_vimrc.sh
+      sh $VIMRC_DESTINATION/install_awesome_vimrc.sh
       #we exclude from ~/ because we link to here
-      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+      cat $SCRIPT_DIR/.vimrc > $VIMRC_DESTINATION/my_configs.vim
       popd
     else
-      git clone --depth 3 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
-      pushd ~/.vim_runtime && git checkout $X86_64HASH
-      sh ~/.vim_runtime/install_awesome_vimrc.sh
-      ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
+      git clone --depth 3 https://github.com/randymcmillan/vimrc.git $VIMRC_DESTINATION
+      pushd $VIMRC_DESTINATION && git checkout $X86_64HASH
+      sh $VIMRC_DESTINATION/install_awesome_vimrc.sh
+      cat $SCRIPT_DIR/.vimrc > $VIMRC_DESTINATION/my_configs.vim
     fi
 #fi
 }
@@ -72,7 +79,7 @@ echo   $MVIM
 
 install-macvim(){
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    if hash brew 2>/dev/null; then
+    if hash $BREW 2>/dev/null; then
         if ! hash mvim 2>/dev/null; then
             read -t 5 -p "Install MacVim? (y/n) " -n 1;
             echo "";
@@ -80,16 +87,16 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
                 rm -f /usr/local/bin/*vi*
                 if [ ! hash mvim 2>/dev/null ]; then
                     # brew link --overwrite macvim
-                    brew install -f homebrew/cask/macvim
-                    brew link --overwrite macvim
+                    $BREW install -f homebrew/cask/macvim
+                    $BREW link --overwrite macvim
                 else
                     echo MacVim already installed.
                     echo
-                    brew upgrade macvim
+                    $BREW upgrade macvim
                 fi
             fi
             if ! hash tccutil 2>/dev/null; then
-                brew install tccutil
+                $BREW install tccutil
             fi
             if ! hash dockutil 2>/dev/null; then
                 curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil

@@ -1,4 +1,7 @@
 set go+=!,
+
+autocmd! bufwritepost .vimrc source %
+
 if has("autocmd")
     " configure expanding of tabs for various file types
     au BufRead,BufNewFile *.py set expandtab
@@ -78,8 +81,21 @@ let g:solarized_termcolors=256
     colorscheme solarized
 endif
 
-highlight CursorLine    ctermbg=red guibg=Grey40
-highlight CursorColumn  ctermbg=red guibg=Grey40
+" highlight CursorLine    ctermbg=red guibg=grey ctermfg=grey guifg=grey
+" highlight CursorColumn  ctermbg=red guibg=grey
+
+" highlight LightlineLeft_tabline_0  ctermfg=252 ctermbg=242 guifg=#d0d0d0 guibg=#666666
+" highlight LightlineLeft_tabline_0_1  ctermfg=242 ctermbg=238 guifg=#666666 guibg=#444444
+" highlight LightlineLeft_tabline_0_tabsel  ctermfg=242 ctermbg=235 guifg=#666666 guibg=#242424
+" highlight LightlineLeft_tabline_tabsel  ctermfg=252 ctermbg=235 guifg=#d0d0d0 guibg=#242424
+" highlight LightlineLeft_tabline_tabsel_0  ctermfg=235 ctermbg=242 guifg=#242424 guibg=#666666
+" highlight LightlineLeft_tabline_tabsel_1  ctermfg=235 ctermbg=238 guifg=#242424 guibg=#444444
+" highlight LightlineLeft_tabline_tabsel_tabsel  ctermfg=235 ctermbg=235 guifg=#242424 guibg=#242424
+" highlight LightlineRight_tabline_0  ctermfg=248 ctermbg=242 guifg=#a8a8a8 guibg=#666666
+" highlight LightlineRight_tabline_0_1  ctermfg=242 ctermbg=238 guifg=#666666 guibg=#444444
+" highlight LightlineRight_tabline_0_tabsel  ctermfg=242 ctermbg=235 guifg=#666666 guibg=#242424
+" highlight LightlineRight_tabline_tabsel  ctermfg=252 ctermbg=235 guifg=#d0d0d0 guibg=#242424
+" highlight LightlineRight_tabline_tabsel_0  ctermfg=235 ctermbg=242 guifg=#242424 guibg=#666666
 
 " TOGGLE INVISIBLES
 " backslash l

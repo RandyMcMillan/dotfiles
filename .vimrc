@@ -1,3 +1,7 @@
+" for listchars
+scriptencoding utf-8
+set encoding=utf-8
+
 if has("autocmd")
     " configure expanding of tabs for various file types
     au BufRead,BufNewFile *.py          set expandtab
@@ -122,6 +126,8 @@ highlight LightlinLeft_inactive_1         ctermfg=0 ctermbg=0 guifg=#666666 guib
 " backslash l
 let mapleader = "\\"
 nmap <leader>l :set list!<CR>
+scriptencoding utf-8
+set encoding=utf-8
 set listchars=tab:▸\ ,eol:¬
 "
 "

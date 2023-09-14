@@ -5,6 +5,8 @@ init/init
 infinity
 infinity/*
 
+known_hosts
+
 Python-2.*
 
 known_hosts

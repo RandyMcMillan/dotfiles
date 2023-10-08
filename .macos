@@ -161,23 +161,10 @@ defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
 # Use scroll gesture with the Ctrl (^) modifier key to zoom
-#defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
-#defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
+defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
+defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
 # Follow the keyboard focus while zoomed in
-#defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
-
-
-# The step values that correspond to the sliders on the GUI are as follow (lower equals faster):
-
-# KeyRepeat: 120, 90, 60, 30, 12, 6, 2
-
-# InitialKeyRepeat: 120, 94, 68, 35, 25, 15
-
-# Lower values are slower values for InitialKeyRepeat
-# Long is 120, short is 15.
-
-# Opposite for KeyRepeat
-# Slow is 120, fast is 12.
+defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
 # Disable press-and-hold for keys in favor of key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
@@ -769,7 +756,6 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 # Disable local Time Machine backups
 hash tmutil &> /dev/null && sudo tmutil disablelocal
-defaults write com.googlecode.iterm2 PromptOnQuit -bool true
 
 # iterm
 defaults write com.googlecode.iterm2 PromptOnQuit -bool true

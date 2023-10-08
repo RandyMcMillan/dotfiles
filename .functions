@@ -145,6 +145,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add MarcoFalke           git@github.com:MarcoFalke/bitcoin           || true
     git remote add bitcoincore-dev      git@github.com:bitcoincore-dev/bitcoin.git  || true
     git remote add bitcoincore-dev-gui	git@github.com:bitcoincore-dev/gui.git      || true
+    git remote add darosior             git@github.com:darosior/bitcoin.git         || true
     git remote add fanquake	            git@github.com:fanquake/bitcoin.git         || true
     git remote add fjahr	            git@github.com:fjahr/bitcoin.git            || true
     git remote add hebasto              git@github.com:hebasto/bitcoin.git          || true

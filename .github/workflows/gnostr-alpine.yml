@@ -31,7 +31,6 @@ jobs:
     container: node:${{ matrix.tag }}-alpine
 
     steps:
-      - run: git config --global --add safe.directory /__w/dotfiles/dotfiles
       ## notice: this is a pre checkout step
       ## notice: additional operations can be done prior to checkout
       - run: apk update && apk add bash cmake git python3 && python3 -m ensurepip
@@ -39,11 +38,11 @@ jobs:
       - name: checkout@v3 fetch-depth submodules set-safe-dir true
         uses: actions/checkout@v3
         with:
-          fetch-depth: '10'
+          fetch-depth: '0'
           submodules: 'true'
           set-safe-directory: 'true'
       ## notice: these are post checkout steps
-      - run: apk update && apk add autoconf automake build-base openssl-dev libtool make
+      - run: apk update && apk add autoconf automake build-base libtool openssl-dev perl make
       - run: touch ~/GITHUB_TOKEN.txt
       - run: git config --global --add safe.directory /__w/dotfiles/dotfiles
       - run: make

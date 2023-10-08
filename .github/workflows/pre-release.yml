@@ -70,6 +70,7 @@ jobs:
           default: true
           override: true
 
+      - run: git config --global --add safe.directory /__w/dotfiles/dotfiles
       - name: echo GNOSTR
         #if: ${{ !env.ACT }}
         run: |

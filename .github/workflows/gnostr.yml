@@ -29,6 +29,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - run: git config --global --add safe.directory /__w/dotfiles/dotfiles
       - name: echo test
         #if: ${{ !env.ACT }}
         run: |
@@ -73,6 +74,7 @@ jobs:
           touch ~/GITHUB_TOKEN.txt
 
       - run: python3 -m pip install virtualenv
+      - run: git config --global --add safe.directory /__w/dotfiles/dotfiles
 
       - run: V=1 make
 

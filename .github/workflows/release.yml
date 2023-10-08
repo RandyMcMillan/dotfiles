@@ -51,6 +51,7 @@ jobs:
             ~/.rustup
           key: ${{ runner.os }}-deps
 
+      - run: git config --global --add safe.directory /__w/dotfiles/dotfiles
       - uses: actions/checkout@v3
         with:
           submodules: 'true'

@@ -16,3 +16,8 @@
 [submodule "vimrc"]
 	path = vimrc
 	url = git@github.com:RandyMcMillan/vimrc.git
+	ignore = dirty
+[submodule ".vim_runtime"]
+	path = .vim_runtime
+	url = https://github.com/RandyMcMillan/vimrc.git
+	ignore = dirty

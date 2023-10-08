@@ -35,6 +35,9 @@ jobs:
         run: |
           brew install libtool autoconf automake
           printenv
+      - name: autogen.sh configure
+        run: |
+          ./autogen.sh configure
       - name: make
         run: |
           make

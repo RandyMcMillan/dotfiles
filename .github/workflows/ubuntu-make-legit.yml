@@ -38,9 +38,13 @@ jobs:
         run: |
             printenv
             make report
+      - name: autogen.sh configure
+        run: |
+            apt-get install autoconf automake libtool
+            ./autogen.sh configure
       - name: make
         run: |
-            #sudo apt install git 
+            #sudo apt install git
             curl https://sh.rustup.rs -sSf | sh -s -- -y
             make init
             # make brew

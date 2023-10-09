@@ -48,5 +48,6 @@ jobs:
       - run: ./autogen.sh configure
       - run: V=1 make
       - run: V=1 make help
+      - run: cargo install cargo-binstall
       ## TODO: add ssh config to act sequence
       - run: rm -rf .venv

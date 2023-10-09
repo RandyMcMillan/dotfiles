@@ -33,7 +33,7 @@ jobs:
     steps:
       ## notice: this is a pre checkout step
       ## notice: additional operations can be done prior to checkout
-      - run: apk update && apk add bash cmake git python3 && python3 -m ensurepip
+      - run: RUSTUP_INIT_SKIP_PATH_CHECK=yes && apk update && apk add bash cargo cmake curl git python3 && python3 -m ensurepip
       - run: printenv
       - name: checkout@v3 fetch-depth submodules set-safe-dir true
         uses: actions/checkout@v3
@@ -42,11 +42,10 @@ jobs:
           submodules: 'true'
           set-safe-directory: 'true'
       ## notice: these are post checkout steps
-      - run: apk update && apk add autoconf automake build-base libtool openssl-dev perl make
+      - run: apk update && apk add autoconf automake build-base libtool openssl-dev perl make sudo
       - run: touch ~/GITHUB_TOKEN.txt
       - run: git config --global --add safe.directory /__w/dotfiles/dotfiles
       - run: ./autogen.sh configure
-      - run: V=1 make detect
       - run: V=1 make
       - run: V=1 make help
       ## TODO: add ssh config to act sequence

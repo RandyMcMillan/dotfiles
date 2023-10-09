@@ -52,7 +52,7 @@ endif
 	bash -c "[ '$(shell uname -s)' == 'Linux' ] && type -P brew >/tmp/gnostr.log && \
 		export LIBRARY_PATH='$(LIBRARY_PATH):$(brew --prefix)/lib' || echo"
 	bash -c "[ '$(shell uname -s)' == 'Linux' ] && \
-    sudo $(shell which apt-get) update                    || echo   "
+        sudo $(shell which apt-get) update                    || echo   "
 	bash -c "[ '$(shell uname -s)' == 'Linux' ] && \
         sudo $(shell which apt-get) install autoconf          || echo   "
 	bash -c "[ '$(shell uname -s)' == 'Linux' ] && \

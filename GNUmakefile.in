@@ -697,6 +697,7 @@ clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 
 -include Makefile
+-include detect.mk
 -include funcs.mk
 -include legit.mk
 -include nostril.mk

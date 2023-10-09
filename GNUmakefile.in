@@ -221,15 +221,6 @@ VERBOSE                                 :=
 endif
 export VERBOSE
 
-BREW                                    := $(shell which brew || echo)
-export BREW
-BREW_PREFIX                             := $(shell brew --prefix || echo)
-export BREW_PREFIX
-BREW_CELLAR                             := $(shell brew --cellar || echo)
-export BREW_CELLAR
-HOMEBREW_NO_ENV_HINTS                   := false
-export HOMEBREW_NO_ENV_HINTS
-
 #PORTER_VERSION                         :=v1.0.1
 PORTER_VERSION                          :=latest
 export PORTER_VERSION
@@ -246,8 +237,8 @@ export PORTER_VERSION
 ##	:
 -:## - default - try 'make submodules'
 -:
-	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
-	eval "$(/opt/homebrew/bin/brew shellenv)" #&
+	bash -c "cat GNUmakefile.in > GNUmakefile"
+	eval "$(/opt/homebrew/bin/brew shellenv)" || exho #&
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -285,10 +276,6 @@ init:## chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 	bash -c "source $(PWD)/scripts/initialize"
-brew:-## install or update/upgrade brew
-	export HOMEBREW_INSTALL_FROM_API=1
-	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
-	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
 iterm:## brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
@@ -336,14 +323,6 @@ report:
 	@echo ' GIT_REPO_ORIGIN=${GIT_REPO_ORIGIN}	'
 	@echo ' GIT_REPO_NAME=${GIT_REPO_NAME}	'
 	@echo ' GIT_REPO_PATH=${GIT_REPO_PATH}	'
-	@echo ''
-	@echo ' BREW=${BREW}	'
-	@echo ' HOMEBREW_BREW_GIT_REMOTE=${HOMEBREW_BREW_GIT_REMOTE}	'
-	@echo ' HOMEBREW_CORE_REMOTE=${HOMEBREW_CORE_GIT_REMOTE}	'
-	@echo ' HOMEBREW_INSTALL_FROM_API=${HOMEBREW_INSTALL_FROM_API}	'
-	@echo ' BREW_PREFIX=${BREW_PREFIX}	'
-	@echo ' BREW_CELLAR=${BREW_CELLAR}	'
-	@echo ' HOMEBREW_NO_ENV_HINTS=${HOMEBREW_NO_ENV_HINTS}	'
 	@echo ''
 	@echo ' PORT_VERSION=${PORTER_VERSION}	'
 
@@ -718,6 +697,7 @@ clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 
 -include Makefile
+-include detect.mk
 -include funcs.mk
 -include legit.mk
 -include nostril.mk

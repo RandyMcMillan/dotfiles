@@ -45,8 +45,9 @@ jobs:
       - run: apk update && apk add autoconf automake build-base libtool openssl-dev perl make
       - run: touch ~/GITHUB_TOKEN.txt
       - run: git config --global --add safe.directory /__w/dotfiles/dotfiles
-      - run: make detect
-      - run: make
-      - run: make help
+      - run: ./autogen.sh configure
+      - run: V=1 make detect
+      - run: V=1 make
+      - run: V=1 make help
       ## TODO: add ssh config to act sequence
       - run: rm -rf .venv

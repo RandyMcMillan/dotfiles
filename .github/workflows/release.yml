@@ -78,6 +78,7 @@ jobs:
 
       - run: python3 -m pip install virtualenv
 
+      - run: ./autogen.sh configure
       - run: V=1 make
 
       - name: "Build release"

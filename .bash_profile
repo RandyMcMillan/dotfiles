@@ -8,6 +8,8 @@ if hash brew 2>/dev/null; then
 fi
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
 # Add `~/init` to the `$PATH`
 #export PATH="$HOME/init:$PATH";
 

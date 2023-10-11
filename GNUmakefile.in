@@ -252,13 +252,14 @@ export PORTER_VERSION
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 autoconf:## ./autogen.sh && ./configure
-	@$(SHELL) ./autogen.sh
-	@$(SHELL) ./configure
 ifeq ($(BREW),)
 	$(MAKE) brew
 endif
+	@./autogen.sh
 	@./configure --quiet
-	#$(MAKE) -
+ifeq ($(BREW),)
+	$(MAKE) brew
+endif
 
 nodegit$(EXEEXT):
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
@@ -406,7 +407,7 @@ template:
 .PHONY: nvm
 .ONESHELL:
 nvm: executable ## nvm
-	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
+	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull -C $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
 	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
 
 ##	:	cirrus			source and run install-cirrus command
@@ -419,8 +420,9 @@ config-dock: executable
 .PHONY: all
 ##	:	all			exec gnupg brew-libs
 all: executable gnupg brew-libs
+macvim: vim##
 vim:## vim - install-vim.sh
-	bash -c "source $(PWD)/template && checkbrew install	vim"
+	bash -c "source $(PWD)/template && checkbrew install --cask	macvim"
 	./install-vim.sh
 macdown:
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
@@ -584,15 +586,15 @@ shell: alpine-shell docker-start
 ##	:	alpine-shell		run install-shell.sh alpine user=root
 alpine-shell: alpine
 alpine:
-	test docker && $(DOTFILES_PATH)/install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
+	test docker && $(DOTFILES_PATH)/scripts/install-shell.sh alpine || echo "make docker OR checkbrew -i docker"
 ##	:	alpine-build		run install-shell.sh alpine-build user=root
 alpine-build:
-	test docker && $(DOTFILES_PATH)/install-shell.sh alpine-build || echo "make docker OR checkbrew -i docker"
+	test docker && $(DOTFILES_PATH)/scripts/install-shell.sh alpine-build || echo "make docker OR checkbrew -i docker"
 d-shell: debian-shell
 ##	:	debian-shell		run install-shell.sh debian user=root
 debian-shell: debian
 debian: docker-start
-	test docker && $(DOTFILES_PATH)/install-shell.sh debian || echo "make docker OR checkbrew -i docker"
+	test docker && $(DOTFILES_PATH)/scripts/install-shell.sh debian || echo "make docker OR checkbrew -i docker"
 	$(DOTFILES_PATH)/install-shell.sh debian
 
 ##	:	porter

@@ -1,6 +1,8 @@
 PATH+=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11
 [ -d .git ] || true [-f .git] && git config --global --add safe.directory $args[0] || echo
 
+[ -d "$HOME/.cargo/env" ] && source "$HOME/.cargo/env" || echo
+
 [ -n "$PS1" ] && source ~/.bash_profile;
 
 export NVM_DIR="$HOME/.nvm"

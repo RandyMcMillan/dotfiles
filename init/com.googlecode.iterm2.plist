@@ -826,7 +826,7 @@
 			<key>Show Status Bar</key>
 			<true/>
 			<key>Show Timestamps</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>Silence Bell</key>
 			<true/>
 			<key>Space</key>

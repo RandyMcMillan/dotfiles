@@ -66,10 +66,10 @@ echo VIMRC_DESTINATION=$VIMRC_DESTINATION
 #fi
 }
 
-MACVIM=$(find /usr/local/Cellar -name MacVim.app)
+MACVIM=$(find $(brew --prefix) -name MacVim.app)
 export MACVIM
 echo   $MACVIM
-MVIM=$(find /usr/local/Cellar -name mvim)
+MVIM=$(find $(brew --prefix) -name mvim)
 export MVIM
 echo   $MVIM
 
@@ -97,7 +97,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
             if ! hash dockutil 2>/dev/null; then
                 curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
                 chmod a+x /usr/local/bin/dockutil
-                MACVIM=$(find /usr/local/Cellar -name MacVim.app)
+                MACVIM=$(find $(brew --prefix) -name MacVim.app)
                 echo $MACVIM
                 export MACVIM
                 dockutil --add $MACVIM --replacing 'MacVim'

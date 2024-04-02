@@ -5,14 +5,14 @@
 	ignore = dirty
 [submodule "legit"]
 	path = legit
-	url = https://github.com/randymcmillan/legit
+	url = https://github.com/randymcmillan/legit.git
 	branch = 7c11d5488c6821767e4bdb74dc88abf25269a513
 	ignore = dirty
 [submodule "nostril"]
 	path = nostril
-	url = https://github.com/randymcmillan/nostril
+	url = https://github.com/randymcmillan/nostril.git
 	branch = v0.1.6
 	ignore = dirty
 [submodule "vimrc"]
-	path = vimrc
-	url = git@github.com:RandyMcMillan/vimrc.git
+	path = .vim_runtime
+	url = https://github.com/randymcmillan/vimrc.git

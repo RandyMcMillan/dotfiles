@@ -264,6 +264,10 @@ fi
 }
 function git-checkout-b (){
 
+type -P gnostr-weeble >/dev/null || cargo install gnostr-bins
+type -P gnostr-wobble >/dev/null || cargo install gnostr-bins
+type -P gnostr-blockheight >/dev/null || cargo install gnostr-bins
+
 git checkout -b $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
     if [ ! -z "$1" ]
     then

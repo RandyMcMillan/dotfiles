@@ -1,0 +1,84 @@
+# https://github.com/leleliu008/autogen.sh
+
+regist_dependency required exe cc:gcc:clang
+regist_dependency required exe pkg-config ge 0.18
+regist_dependency required exe python3:python:python3.9:python3.8:python3.7:python3.6:python3.5 ge 3.5
+
+gen_config_pre() {
+    step "gen config pre"
+    # https://lwn.net/Articles/839395/
+    # configure.ac:242: warning: The macro `AC_PROG_CC_C99' is obsolete.
+    if command_exists_in_filesystem_and_version_matched autoconf ge '2.70' ; then
+       sed_in_place '/AC_PROG_CC_C99/d' configure.ac
+    fi
+}
+
+gen_config_post() {
+    step "convert optlib/*.ctags to optlib/*.c"
+    for input in optlib/*.ctags
+    do
+        output="${input%.ctags}.c"
+        printf "${COLOR_GREEN}perl misc/optlib2c %-27s > %s${COLOR_OFF}\n" "$input" "$output"
+        perl ./misc/optlib2c "$input" > "$output" || return 1
+    done
+    
+    __die_if_no_c_compiler
+
+    step "check if $HOST_CC works."
+    (__check_if_c_compiler_works) || die "$HOST_CC not works."
+
+    step "build packcc"
+    . ./config.host
+    for item in -DPCC_USE_SYSTEM_STRNLEN ""
+    do
+        if run "$HOST_CC $HOST_CFLAGS $item -o packcc$host_os_exec_ext misc/packcc/src/packcc.c" ; then
+            success "build packcc successfully."
+            return 0
+        fi
+    done
+    die "build packcc failed."
+}
+
+__die_if_no_c_compiler() {
+    step "find c compiler"
+    [ -z "$HOST_CC" ] && {
+        for cc in cc gcc clang
+        do
+            if command_exists_in_filesystem "$cc" ; then
+                HOST_CC="$cc"
+                break
+            fi
+        done
+    }
+
+    echo "HOST_CC     = $HOST_CC"
+    echo "HOST_CFLAGS = $HOST_CFLAGS"
+
+    [ -n "$HOST_CC" ] || die "can't find a C compiler. you can use HOST_CC and HOST_CFLAGS environment variable"
+}
+
+# run in a subshell
+__check_if_c_compiler_works() {
+    TEMP_DIR_FOR_CHECKING=$(mktemp -d)
+    run cd "$TEMP_DIR_FOR_CHECKING"
+
+    echo '#include<string.h>\nint main() { return 0; }' > test.c
+
+    if command_exists_in_filesystem bat ; then
+        run bat --style=plain test.c
+    else
+        run cat test.c
+    fi
+
+    if command -v apk > /dev/null ; then
+       run $sudo apk add libc-dev
+    fi
+
+    run "$HOST_CC $HOST_CFLAGS test.c"
+    run ls
+    if file_exists a.exe ; then
+        run "echo "host_os_exec_ext='.exe'" > $PROJECT_DIR/config.host"
+    else
+        run "echo 'host_os_exec_ext='       > $PROJECT_DIR/config.host"
+    fi
+}

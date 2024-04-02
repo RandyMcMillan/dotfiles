@@ -530,7 +530,7 @@ gpg-recv-keys-bitcoin-devs:
 #######################
 .ONESHELL:
 docker-start:## 	start docker
-	test -d .venv || $(PYTHON3) -m virtualenv .venv
+	test -d .venv || pipx install virtualenv && virtualenv .venv
 	( \
 	   source .venv/bin/activate; pip install -q -r requirements.txt; \
 	   python3 -m pip install -q omegaconf \
@@ -543,7 +543,7 @@ docker-start:## 	start docker
 	     systemctl restart docker.service;\
 	    fi;\
 	    if [[ '$(OS)' == 'Darwin' ]]; then\
-	     open --background -a /./Applications/Docker.app/Contents/MacOS/Docker;\
+	     open --background -a /./Applications/Docker.app/Contents/MacOS/Docker\ Desktop.app/Contents/MacOS/Docker\ Desktop;\
 	    fi;\
 	sleep 1;\
 	done\

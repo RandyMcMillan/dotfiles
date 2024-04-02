@@ -14,6 +14,13 @@
 
 
 
+#
+# Shared macros
+#
+#   $(NULL) at the end of a list makes diff readable
+
+
+
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
     false; \
@@ -69,10 +76,10 @@ am__make_running_with_option = \
   test $$has_opt = yes
 am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
-pkgdatadir = $(datadir)/@PACKAGE@
-pkgincludedir = $(includedir)/@PACKAGE@
-pkglibdir = $(libdir)/@PACKAGE@
-pkglibexecdir = $(libexecdir)/@PACKAGE@
+pkgdatadir = $(datadir)/universal-ctags
+pkgincludedir = $(includedir)/universal-ctags
+pkglibdir = $(libdir)/universal-ctags
+pkglibexecdir = $(libexecdir)/universal-ctags
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -85,9 +92,68 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_triplet = x86_64-apple-darwin22.6.0
+host_triplet = x86_64-apple-darwin22.6.0
+bin_PROGRAMS = ctags$(EXEEXT) $(am__EXEEXT_1) optscript$(EXEEXT)
+noinst_PROGRAMS = utiltest$(EXEEXT) mini-geany$(EXEEXT)
+am__append_1 = -DPCC_USE_SYSTEM_STRNLEN
+am__append_2 = readtags
+#am__append_3 = $(DEBUG_CPPFLAGS)
+am__append_4 = $(PCRE2_SRCS) $(OPTLIB2C_PCRE2_SRCS)
+am__append_5 = $(PCRE2_HEADS)
+am__append_6 = $(XML_SRCS)
+am__append_7 = $(XML_HEADS)
+#am__append_8 = $(JANSSON_SRCS)
+#am__append_9 = $(JANSSON_HEADS)
+am__append_10 = $(YAML_SRCS)
+am__append_11 = $(YAML_HEADS)
+#am__append_12 = $(DEBUG_CPPFLAGS)
+#am__append_13 = $(DEBUG_CPPFLAGS)
+#am__append_14 = $(DEBUG_CPPFLAGS)
+am__append_15 = -DUSE_SYSTEM_STRNLEN
+am__append_16 = .ctags
+am__append_17 = .ps
+#am__append_18 = $(RES_OBJ)
+#am__append_19 = $(RES_OBJ)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
+	$(top_srcdir)/m4/__inline.m4 \
+	$(top_srcdir)/m4/absolute-header.m4 $(top_srcdir)/m4/alloca.m4 \
+	$(top_srcdir)/m4/ax_check_compile_flag.m4 \
+	$(top_srcdir)/m4/btowc.m4 $(top_srcdir)/m4/builtin-expect.m4 \
+	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/ctype_h.m4 \
+	$(top_srcdir)/m4/eealloc.m4 $(top_srcdir)/m4/extensions.m4 \
+	$(top_srcdir)/m4/extern-inline.m4 \
+	$(top_srcdir)/m4/flexmember.m4 $(top_srcdir)/m4/fnmatch.m4 \
+	$(top_srcdir)/m4/fnmatch_h.m4 \
+	$(top_srcdir)/m4/gnulib-common.m4 \
+	$(top_srcdir)/m4/gnulib-comp.m4 \
+	$(top_srcdir)/m4/include_next.m4 $(top_srcdir)/m4/inttypes.m4 \
+	$(top_srcdir)/m4/isblank.m4 $(top_srcdir)/m4/langinfo_h.m4 \
+	$(top_srcdir)/m4/limits-h.m4 $(top_srcdir)/m4/localcharset.m4 \
+	$(top_srcdir)/m4/locale-fr.m4 $(top_srcdir)/m4/locale-ja.m4 \
+	$(top_srcdir)/m4/locale-zh.m4 $(top_srcdir)/m4/locale_h.m4 \
+	$(top_srcdir)/m4/localeconv.m4 $(top_srcdir)/m4/lock.m4 \
+	$(top_srcdir)/m4/mbrtowc.m4 $(top_srcdir)/m4/mbsinit.m4 \
+	$(top_srcdir)/m4/mbsrtowcs.m4 $(top_srcdir)/m4/mbstate_t.m4 \
+	$(top_srcdir)/m4/mbtowc.m4 $(top_srcdir)/m4/memchr.m4 \
+	$(top_srcdir)/m4/mempcpy.m4 $(top_srcdir)/m4/mmap-anon.m4 \
+	$(top_srcdir)/m4/multiarch.m4 $(top_srcdir)/m4/nl_langinfo.m4 \
+	$(top_srcdir)/m4/off_t.m4 \
+	$(top_srcdir)/m4/pthread_rwlock_rdlock.m4 \
+	$(top_srcdir)/m4/regex.m4 $(top_srcdir)/m4/setlocale_null.m4 \
+	$(top_srcdir)/m4/ssize_t.m4 $(top_srcdir)/m4/stdbool.m4 \
+	$(top_srcdir)/m4/stddef_h.m4 $(top_srcdir)/m4/stdint.m4 \
+	$(top_srcdir)/m4/stdlib_h.m4 $(top_srcdir)/m4/string_h.m4 \
+	$(top_srcdir)/m4/strnlen.m4 $(top_srcdir)/m4/sys_types_h.m4 \
+	$(top_srcdir)/m4/threadlib.m4 $(top_srcdir)/m4/unistd_h.m4 \
+	$(top_srcdir)/m4/visibility.m4 $(top_srcdir)/m4/warn-on-use.m4 \
+	$(top_srcdir)/m4/wchar_h.m4 $(top_srcdir)/m4/wchar_t.m4 \
+	$(top_srcdir)/m4/wcrtomb.m4 $(top_srcdir)/m4/wctype_h.m4 \
+	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/wmemchr.m4 \
+	$(top_srcdir)/m4/wmempcpy.m4 $(top_srcdir)/m4/zzgnulib.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
@@ -95,31 +161,772 @@ DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
+CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = GNUmakefile
 CONFIG_CLEAN_VPATH_FILES =
-AM_V_P = $(am__v_P_@AM_V@)
-am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
+am__EXEEXT_1 = readtags$(EXEEXT)
+am__installdirs = "$(DESTDIR)$(bindir)"
+PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
+LIBRARIES = $(noinst_LIBRARIES)
+AM_V_AR = $(am__v_AR_$(V))
+am__v_AR_ = $(am__v_AR_$(AM_DEFAULT_VERBOSITY))
+am__v_AR_0 = @echo "  AR      " $@;
+am__v_AR_1 = 
+libctags_a_AR = $(AR) $(ARFLAGS)
+libctags_a_LIBADD =
+am__dist_libctags_a_SOURCES_DIST = main/ctags.h main/general.h \
+	main/fname.h main/gcc-attr.h main/htable.h main/inline.h \
+	main/numarray.h main/ptrarray.h main/routines.h \
+	main/trashbox.h main/vstring.h main/dependency.h main/entry.h \
+	main/field.h main/gvars.h main/interval_tree_generic.h \
+	main/keyword.h main/kind.h main/lregex.h main/lxpath.h \
+	main/mbcs.h main/nestlevel.h main/objpool.h main/options.h \
+	main/param.h main/parse.h main/promise.h main/rbtree.h \
+	main/rbtree_augmented.h main/read.h main/selectors.h \
+	main/strlist.h main/subparser.h main/tokeninfo.h main/trace.h \
+	main/types.h main/unwindi.h main/xtag.h main/routines_p.h \
+	main/args_p.h main/colprint_p.h main/dependency_p.h \
+	main/entry_p.h main/error_p.h main/field_p.h main/flags_p.h \
+	main/fmt_p.h main/interactive_p.h main/keyword_p.h \
+	main/kind_p.h main/lregex_p.h main/lxpath_p.h main/main_p.h \
+	main/mbcs_p.h main/options_p.h main/param_p.h main/parse_p.h \
+	main/parsers_p.h main/portable-dirent_p.h main/promise_p.h \
+	main/ptag_p.h main/read_p.h main/script_p.h main/sort_p.h \
+	main/stats_p.h main/subparser_p.h main/trashbox_p.h \
+	main/utf8_str.h main/writer_p.h main/xtag_p.h main/mio.h \
+	parsers/autoconf.h parsers/cpreprocessor.h \
+	parsers/cxx/cxx_debug.h parsers/cxx/cxx_keyword.h \
+	parsers/cxx/cxx_parser_internal.h parsers/cxx/cxx_parser.h \
+	parsers/cxx/cxx_scope.h parsers/cxx/cxx_side_chain.h \
+	parsers/cxx/cxx_subparser.h \
+	parsers/cxx/cxx_subparser_internal.h parsers/cxx/cxx_tag.h \
+	parsers/cxx/cxx_token.h parsers/cxx/cxx_token_chain.h \
+	parsers/bibtex.h parsers/frontmatter.h parsers/iniconf.h \
+	parsers/jscript.h parsers/m4.h parsers/make.h \
+	parsers/markdown.h parsers/perl.h parsers/r.h parsers/ruby.h \
+	parsers/sh.h parsers/tcl.h parsers/tex.h parsers/xml.h \
+	parsers/yaml.h peg/peg_common.h peg/varlink_pre.h \
+	peg/kotlin_pre.h peg/thrift_pre.h peg/elm_pre.h \
+	peg/varlink_post.h peg/kotlin_post.h peg/thrift_post.h \
+	peg/elm_post.h main/debug.h dsl/es.h dsl/optscript.h \
+	main/fname.c main/htable.c main/numarray.c main/ptrarray.c \
+	main/routines.c main/trashbox.c main/vstring.c main/args.c \
+	main/colprint.c main/dependency.c main/entry.c \
+	main/entry_private.c main/error.c main/field.c main/flags.c \
+	main/fmt.c main/keyword.c main/kind.c main/lregex.c \
+	main/lregex-default.c main/lxpath.c main/main.c main/mbcs.c \
+	main/nestlevel.c main/objpool.c main/options.c main/param.c \
+	main/parse.c main/portable-scandir.c main/promise.c \
+	main/ptag.c main/rbtree.c main/read.c main/script.c \
+	main/seccomp.c main/selectors.c main/sort.c main/stats.c \
+	main/strlist.c main/trace.c main/tokeninfo.c main/unwindi.c \
+	main/utf8_str.c main/writer.c main/writer-etags.c \
+	main/writer-ctags.c main/writer-json.c main/writer-xref.c \
+	main/xtag.c main/CommonPrelude.c main/repoinfo.c main/mio.c \
+	parsers/abaqus.c parsers/abc.c parsers/ada.c parsers/ant.c \
+	parsers/asciidoc.c parsers/asm.c parsers/asp.c \
+	parsers/autoconf.c parsers/autoit.c parsers/automake.c \
+	parsers/awk.c parsers/basic.c parsers/bats.c parsers/beta.c \
+	parsers/biblatex.c parsers/bibtex.c parsers/c-based.c \
+	parsers/clojure.c parsers/css.c parsers/cobol.c \
+	parsers/cpreprocessor.c parsers/cxx/cxx.c \
+	parsers/cxx/cxx_debug.c parsers/cxx/cxx_debug_type.c \
+	parsers/cxx/cxx_keyword.c parsers/cxx/cxx_parser.c \
+	parsers/cxx/cxx_parser_block.c \
+	parsers/cxx/cxx_parser_function.c \
+	parsers/cxx/cxx_parser_lambda.c \
+	parsers/cxx/cxx_parser_module.c \
+	parsers/cxx/cxx_parser_namespace.c \
+	parsers/cxx/cxx_parser_template.c \
+	parsers/cxx/cxx_parser_tokenizer.c \
+	parsers/cxx/cxx_parser_typedef.c \
+	parsers/cxx/cxx_parser_using.c \
+	parsers/cxx/cxx_parser_variable.c parsers/cxx/cxx_qtmoc.c \
+	parsers/cxx/cxx_scope.c parsers/cxx/cxx_side_chain.c \
+	parsers/cxx/cxx_subparser.c parsers/cxx/cxx_tag.c \
+	parsers/cxx/cxx_token.c parsers/cxx/cxx_token_chain.c \
+	parsers/diff.c parsers/dosbatch.c parsers/dtd.c parsers/dts.c \
+	parsers/eiffel.c parsers/erlang.c parsers/falcon.c \
+	parsers/flex.c parsers/fortran.c parsers/frontmatter.c \
+	parsers/fypp.c parsers/gdscript.c parsers/gemspec.c \
+	parsers/go.c parsers/haskell.c parsers/haxe.c parsers/html.c \
+	parsers/iniconf.c parsers/itcl.c parsers/jprop.c \
+	parsers/jscript.c parsers/json.c parsers/julia.c \
+	parsers/ldscript.c parsers/lisp.c parsers/lua.c parsers/m4.c \
+	parsers/make.c parsers/markdown.c parsers/matlab.c \
+	parsers/myrddin.c parsers/nsis.c parsers/objc.c \
+	parsers/ocaml.c parsers/pascal.c parsers/perl.c \
+	parsers/perl-function-parameters.c parsers/perl-moose.c \
+	parsers/php.c parsers/powershell.c parsers/protobuf.c \
+	parsers/python.c parsers/pythonloggingconfig.c \
+	parsers/quarto.c parsers/r-r6class.c parsers/r-s4class.c \
+	parsers/r.c parsers/rake.c parsers/raku.c parsers/rexx.c \
+	parsers/rmarkdown.c parsers/robot.c parsers/rpmspec.c \
+	parsers/rspec.c parsers/rst.c parsers/ruby.c parsers/rust.c \
+	parsers/scheme.c parsers/sh.c parsers/slang.c parsers/sml.c \
+	parsers/sql.c parsers/systemdunit.c parsers/tcl.c \
+	parsers/tcloo.c parsers/tex.c parsers/tex-beamer.c \
+	parsers/ttcn.c parsers/txt2tags.c parsers/typescript.c \
+	parsers/v.c parsers/vera.c parsers/verilog.c parsers/vhdl.c \
+	parsers/vim.c parsers/windres.c parsers/yumrepo.c \
+	optlib/cmake.c optlib/ctags-optlib.c optlib/elixir.c \
+	optlib/forth.c optlib/gdbinit.c optlib/gperf.c optlib/inko.c \
+	optlib/iPythonCell.c optlib/kconfig.c optlib/lex.c \
+	optlib/man.c optlib/meson.c optlib/mesonOptions.c optlib/org.c \
+	optlib/passwd.c optlib/pkgConfig.c optlib/pod.c \
+	optlib/puppetManifest.c optlib/qemuhx.c optlib/rpmMacros.c \
+	optlib/scss.c optlib/systemtap.c optlib/terraform.c \
+	optlib/terraformvariables.c optlib/yacc.c main/lregex-pcre2.c \
+	optlib/rdoc.c parsers/maven2.c parsers/dbusintrospect.c \
+	parsers/glade.c parsers/svg.c parsers/plist.c \
+	parsers/relaxng.c parsers/xml.c parsers/xrc.c parsers/xslt.c \
+	parsers/yaml.c parsers/openapi.c parsers/ansibleplaybook.c \
+	parsers/yamlfrontmatter.c parsers/i18nrubygem.c main/debug.c \
+	dsl/es.c dsl/optscript.c
+am__objects_1 =
+am__objects_2 = $(am__objects_1)
+am__objects_3 = $(am__objects_2) $(am__objects_2) $(am__objects_1) \
+	$(am__objects_1)
+am__objects_4 = $(am__objects_1)
+am__objects_5 = $(am__objects_1)
+am__objects_6 = $(am__objects_1)
+am__objects_7 = $(am__objects_1) $(am__objects_1)
+am__objects_8 = $(am__objects_4) $(am__objects_5) $(am__objects_6) \
+	$(am__objects_7)
+am__objects_9 = $(am__objects_3) $(am__objects_8) $(am__objects_1) \
+	$(am__objects_1)
+am__dirstamp = $(am__leading_dot)dirstamp
+am__objects_10 = main/libctags_a-fname.$(OBJEXT) \
+	main/libctags_a-htable.$(OBJEXT) \
+	main/libctags_a-numarray.$(OBJEXT) \
+	main/libctags_a-ptrarray.$(OBJEXT) \
+	main/libctags_a-routines.$(OBJEXT) \
+	main/libctags_a-trashbox.$(OBJEXT) \
+	main/libctags_a-vstring.$(OBJEXT)
+am__objects_11 = main/libctags_a-CommonPrelude.$(OBJEXT)
+am__objects_12 = $(am__objects_11)
+am__objects_13 = main/libctags_a-repoinfo.$(OBJEXT)
+am__objects_14 = main/libctags_a-mio.$(OBJEXT)
+am__objects_15 = $(am__objects_10) main/libctags_a-args.$(OBJEXT) \
+	main/libctags_a-colprint.$(OBJEXT) \
+	main/libctags_a-dependency.$(OBJEXT) \
+	main/libctags_a-entry.$(OBJEXT) \
+	main/libctags_a-entry_private.$(OBJEXT) \
+	main/libctags_a-error.$(OBJEXT) \
+	main/libctags_a-field.$(OBJEXT) \
+	main/libctags_a-flags.$(OBJEXT) main/libctags_a-fmt.$(OBJEXT) \
+	main/libctags_a-keyword.$(OBJEXT) \
+	main/libctags_a-kind.$(OBJEXT) \
+	main/libctags_a-lregex.$(OBJEXT) \
+	main/libctags_a-lregex-default.$(OBJEXT) \
+	main/libctags_a-lxpath.$(OBJEXT) \
+	main/libctags_a-main.$(OBJEXT) main/libctags_a-mbcs.$(OBJEXT) \
+	main/libctags_a-nestlevel.$(OBJEXT) \
+	main/libctags_a-objpool.$(OBJEXT) \
+	main/libctags_a-options.$(OBJEXT) \
+	main/libctags_a-param.$(OBJEXT) \
+	main/libctags_a-parse.$(OBJEXT) \
+	main/libctags_a-portable-scandir.$(OBJEXT) \
+	main/libctags_a-promise.$(OBJEXT) \
+	main/libctags_a-ptag.$(OBJEXT) \
+	main/libctags_a-rbtree.$(OBJEXT) \
+	main/libctags_a-read.$(OBJEXT) \
+	main/libctags_a-script.$(OBJEXT) \
+	main/libctags_a-seccomp.$(OBJEXT) \
+	main/libctags_a-selectors.$(OBJEXT) \
+	main/libctags_a-sort.$(OBJEXT) main/libctags_a-stats.$(OBJEXT) \
+	main/libctags_a-strlist.$(OBJEXT) \
+	main/libctags_a-trace.$(OBJEXT) \
+	main/libctags_a-tokeninfo.$(OBJEXT) \
+	main/libctags_a-unwindi.$(OBJEXT) \
+	main/libctags_a-utf8_str.$(OBJEXT) \
+	main/libctags_a-writer.$(OBJEXT) \
+	main/libctags_a-writer-etags.$(OBJEXT) \
+	main/libctags_a-writer-ctags.$(OBJEXT) \
+	main/libctags_a-writer-json.$(OBJEXT) \
+	main/libctags_a-writer-xref.$(OBJEXT) \
+	main/libctags_a-xtag.$(OBJEXT) $(am__objects_12) \
+	$(am__objects_13) $(am__objects_14) $(am__objects_1)
+am__objects_16 = optlib/libctags_a-cmake.$(OBJEXT) \
+	optlib/libctags_a-ctags-optlib.$(OBJEXT) \
+	optlib/libctags_a-elixir.$(OBJEXT) \
+	optlib/libctags_a-forth.$(OBJEXT) \
+	optlib/libctags_a-gdbinit.$(OBJEXT) \
+	optlib/libctags_a-gperf.$(OBJEXT) \
+	optlib/libctags_a-inko.$(OBJEXT) \
+	optlib/libctags_a-iPythonCell.$(OBJEXT) \
+	optlib/libctags_a-kconfig.$(OBJEXT) \
+	optlib/libctags_a-lex.$(OBJEXT) \
+	optlib/libctags_a-man.$(OBJEXT) \
+	optlib/libctags_a-meson.$(OBJEXT) \
+	optlib/libctags_a-mesonOptions.$(OBJEXT) \
+	optlib/libctags_a-org.$(OBJEXT) \
+	optlib/libctags_a-passwd.$(OBJEXT) \
+	optlib/libctags_a-pkgConfig.$(OBJEXT) \
+	optlib/libctags_a-pod.$(OBJEXT) \
+	optlib/libctags_a-puppetManifest.$(OBJEXT) \
+	optlib/libctags_a-qemuhx.$(OBJEXT) \
+	optlib/libctags_a-rpmMacros.$(OBJEXT) \
+	optlib/libctags_a-scss.$(OBJEXT) \
+	optlib/libctags_a-systemtap.$(OBJEXT) \
+	optlib/libctags_a-terraform.$(OBJEXT) \
+	optlib/libctags_a-terraformvariables.$(OBJEXT) \
+	optlib/libctags_a-yacc.$(OBJEXT)
+am__objects_17 = $(am__objects_16)
+am__objects_18 = main/libctags_a-lregex-pcre2.$(OBJEXT)
+am__objects_19 = optlib/libctags_a-rdoc.$(OBJEXT)
+am__objects_20 = $(am__objects_19)
+am__objects_21 = $(am__objects_18) $(am__objects_20)
+am__objects_22 = parsers/libctags_a-maven2.$(OBJEXT) \
+	parsers/libctags_a-dbusintrospect.$(OBJEXT) \
+	parsers/libctags_a-glade.$(OBJEXT) \
+	parsers/libctags_a-svg.$(OBJEXT) \
+	parsers/libctags_a-plist.$(OBJEXT) \
+	parsers/libctags_a-relaxng.$(OBJEXT) \
+	parsers/libctags_a-xml.$(OBJEXT) \
+	parsers/libctags_a-xrc.$(OBJEXT) \
+	parsers/libctags_a-xslt.$(OBJEXT)
+am__objects_23 = $(am__objects_22)
+am__objects_24 = parsers/libctags_a-yaml.$(OBJEXT) \
+	parsers/libctags_a-openapi.$(OBJEXT) \
+	parsers/libctags_a-ansibleplaybook.$(OBJEXT) \
+	parsers/libctags_a-yamlfrontmatter.$(OBJEXT) \
+	parsers/libctags_a-i18nrubygem.$(OBJEXT)
+am__objects_25 = $(am__objects_24)
+am__objects_26 = parsers/libctags_a-abaqus.$(OBJEXT) \
+	parsers/libctags_a-abc.$(OBJEXT) \
+	parsers/libctags_a-ada.$(OBJEXT) \
+	parsers/libctags_a-ant.$(OBJEXT) \
+	parsers/libctags_a-asciidoc.$(OBJEXT) \
+	parsers/libctags_a-asm.$(OBJEXT) \
+	parsers/libctags_a-asp.$(OBJEXT) \
+	parsers/libctags_a-autoconf.$(OBJEXT) \
+	parsers/libctags_a-autoit.$(OBJEXT) \
+	parsers/libctags_a-automake.$(OBJEXT) \
+	parsers/libctags_a-awk.$(OBJEXT) \
+	parsers/libctags_a-basic.$(OBJEXT) \
+	parsers/libctags_a-bats.$(OBJEXT) \
+	parsers/libctags_a-beta.$(OBJEXT) \
+	parsers/libctags_a-biblatex.$(OBJEXT) \
+	parsers/libctags_a-bibtex.$(OBJEXT) \
+	parsers/libctags_a-c-based.$(OBJEXT) \
+	parsers/libctags_a-clojure.$(OBJEXT) \
+	parsers/libctags_a-css.$(OBJEXT) \
+	parsers/libctags_a-cobol.$(OBJEXT) \
+	parsers/libctags_a-cpreprocessor.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_debug.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_debug_type.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_keyword.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_block.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_function.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_lambda.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_module.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_namespace.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_template.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_tokenizer.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_typedef.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_using.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_parser_variable.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_qtmoc.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_scope.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_side_chain.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_subparser.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_tag.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_token.$(OBJEXT) \
+	parsers/cxx/libctags_a-cxx_token_chain.$(OBJEXT) \
+	parsers/libctags_a-diff.$(OBJEXT) \
+	parsers/libctags_a-dosbatch.$(OBJEXT) \
+	parsers/libctags_a-dtd.$(OBJEXT) \
+	parsers/libctags_a-dts.$(OBJEXT) \
+	parsers/libctags_a-eiffel.$(OBJEXT) \
+	parsers/libctags_a-erlang.$(OBJEXT) \
+	parsers/libctags_a-falcon.$(OBJEXT) \
+	parsers/libctags_a-flex.$(OBJEXT) \
+	parsers/libctags_a-fortran.$(OBJEXT) \
+	parsers/libctags_a-frontmatter.$(OBJEXT) \
+	parsers/libctags_a-fypp.$(OBJEXT) \
+	parsers/libctags_a-gdscript.$(OBJEXT) \
+	parsers/libctags_a-gemspec.$(OBJEXT) \
+	parsers/libctags_a-go.$(OBJEXT) \
+	parsers/libctags_a-haskell.$(OBJEXT) \
+	parsers/libctags_a-haxe.$(OBJEXT) \
+	parsers/libctags_a-html.$(OBJEXT) \
+	parsers/libctags_a-iniconf.$(OBJEXT) \
+	parsers/libctags_a-itcl.$(OBJEXT) \
+	parsers/libctags_a-jprop.$(OBJEXT) \
+	parsers/libctags_a-jscript.$(OBJEXT) \
+	parsers/libctags_a-json.$(OBJEXT) \
+	parsers/libctags_a-julia.$(OBJEXT) \
+	parsers/libctags_a-ldscript.$(OBJEXT) \
+	parsers/libctags_a-lisp.$(OBJEXT) \
+	parsers/libctags_a-lua.$(OBJEXT) \
+	parsers/libctags_a-m4.$(OBJEXT) \
+	parsers/libctags_a-make.$(OBJEXT) \
+	parsers/libctags_a-markdown.$(OBJEXT) \
+	parsers/libctags_a-matlab.$(OBJEXT) \
+	parsers/libctags_a-myrddin.$(OBJEXT) \
+	parsers/libctags_a-nsis.$(OBJEXT) \
+	parsers/libctags_a-objc.$(OBJEXT) \
+	parsers/libctags_a-ocaml.$(OBJEXT) \
+	parsers/libctags_a-pascal.$(OBJEXT) \
+	parsers/libctags_a-perl.$(OBJEXT) \
+	parsers/libctags_a-perl-function-parameters.$(OBJEXT) \
+	parsers/libctags_a-perl-moose.$(OBJEXT) \
+	parsers/libctags_a-php.$(OBJEXT) \
+	parsers/libctags_a-powershell.$(OBJEXT) \
+	parsers/libctags_a-protobuf.$(OBJEXT) \
+	parsers/libctags_a-python.$(OBJEXT) \
+	parsers/libctags_a-pythonloggingconfig.$(OBJEXT) \
+	parsers/libctags_a-quarto.$(OBJEXT) \
+	parsers/libctags_a-r-r6class.$(OBJEXT) \
+	parsers/libctags_a-r-s4class.$(OBJEXT) \
+	parsers/libctags_a-r.$(OBJEXT) \
+	parsers/libctags_a-rake.$(OBJEXT) \
+	parsers/libctags_a-raku.$(OBJEXT) \
+	parsers/libctags_a-rexx.$(OBJEXT) \
+	parsers/libctags_a-rmarkdown.$(OBJEXT) \
+	parsers/libctags_a-robot.$(OBJEXT) \
+	parsers/libctags_a-rpmspec.$(OBJEXT) \
+	parsers/libctags_a-rspec.$(OBJEXT) \
+	parsers/libctags_a-rst.$(OBJEXT) \
+	parsers/libctags_a-ruby.$(OBJEXT) \
+	parsers/libctags_a-rust.$(OBJEXT) \
+	parsers/libctags_a-scheme.$(OBJEXT) \
+	parsers/libctags_a-sh.$(OBJEXT) \
+	parsers/libctags_a-slang.$(OBJEXT) \
+	parsers/libctags_a-sml.$(OBJEXT) \
+	parsers/libctags_a-sql.$(OBJEXT) \
+	parsers/libctags_a-systemdunit.$(OBJEXT) \
+	parsers/libctags_a-tcl.$(OBJEXT) \
+	parsers/libctags_a-tcloo.$(OBJEXT) \
+	parsers/libctags_a-tex.$(OBJEXT) \
+	parsers/libctags_a-tex-beamer.$(OBJEXT) \
+	parsers/libctags_a-ttcn.$(OBJEXT) \
+	parsers/libctags_a-txt2tags.$(OBJEXT) \
+	parsers/libctags_a-typescript.$(OBJEXT) \
+	parsers/libctags_a-v.$(OBJEXT) \
+	parsers/libctags_a-vera.$(OBJEXT) \
+	parsers/libctags_a-verilog.$(OBJEXT) \
+	parsers/libctags_a-vhdl.$(OBJEXT) \
+	parsers/libctags_a-vim.$(OBJEXT) \
+	parsers/libctags_a-windres.$(OBJEXT) \
+	parsers/libctags_a-yumrepo.$(OBJEXT) $(am__objects_17) \
+	$(am__objects_21) $(am__objects_23) $(am__objects_25)
+am__objects_27 = main/libctags_a-debug.$(OBJEXT)
+am__objects_28 = dsl/libctags_a-es.$(OBJEXT) \
+	dsl/libctags_a-optscript.$(OBJEXT)
+am__objects_29 = $(am__objects_15) $(am__objects_26) $(am__objects_27) \
+	$(am__objects_28)
+dist_libctags_a_OBJECTS = $(am__objects_9) $(am__objects_29)
+am__objects_30 = peg/libctags_a-varlink.$(OBJEXT) \
+	peg/libctags_a-kotlin.$(OBJEXT) \
+	peg/libctags_a-thrift.$(OBJEXT) peg/libctags_a-elm.$(OBJEXT)
+am__objects_31 = $(am__objects_30)
+nodist_libctags_a_OBJECTS = $(am__objects_1) $(am__objects_31) \
+	$(am__objects_2)
+libctags_a_OBJECTS = $(dist_libctags_a_OBJECTS) \
+	$(nodist_libctags_a_OBJECTS)
+libutil_a_AR = $(AR) $(ARFLAGS)
+libutil_a_LIBADD =
+am__objects_32 = main/libutil_a-fname.$(OBJEXT) \
+	main/libutil_a-htable.$(OBJEXT) \
+	main/libutil_a-numarray.$(OBJEXT) \
+	main/libutil_a-ptrarray.$(OBJEXT) \
+	main/libutil_a-routines.$(OBJEXT) \
+	main/libutil_a-trashbox.$(OBJEXT) \
+	main/libutil_a-vstring.$(OBJEXT)
+dist_libutil_a_OBJECTS = $(am__objects_7) $(am__objects_32)
+libutil_a_OBJECTS = $(dist_libutil_a_OBJECTS)
+am__objects_33 = main/ctags-cmd.$(OBJEXT)
+dist_ctags_OBJECTS = $(am__objects_1) $(am__objects_33)
+ctags_OBJECTS = $(dist_ctags_OBJECTS)
+am__DEPENDENCIES_1 =
+am__DEPENDENCIES_2 = $(GNULIB_DIR)/libgnu.a $(am__DEPENDENCIES_1)
+ctags_DEPENDENCIES = libctags.a $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(am__append_18)
+ctags_LINK = $(CCLD) $(ctags_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am__objects_34 = main/mini_geany-mini-geany.$(OBJEXT)
+am_mini_geany_OBJECTS = $(am__objects_1) $(am__objects_34)
+mini_geany_OBJECTS = $(am_mini_geany_OBJECTS)
+mini_geany_DEPENDENCIES = libctags.a $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+mini_geany_LINK = $(CCLD) $(mini_geany_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am__objects_35 = extra-cmds/optscript-optscript-repl.$(OBJEXT)
+am_optscript_OBJECTS = $(am__objects_35)
+optscript_OBJECTS = $(am_optscript_OBJECTS)
+optscript_DEPENDENCIES = libctags.a $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+optscript_LINK = $(CCLD) $(optscript_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am__dist_readtags_SOURCES_DIST = libreadtags/readtags.c \
+	extra-cmds/printtags.c extra-cmds/readtags-cmd.c \
+	extra-cmds/readtags-stub.c libreadtags/readtags.h \
+	extra-cmds/printtags.h extra-cmds/readtags-stub.h dsl/es.c \
+	dsl/dsl.c dsl/formatter.c dsl/qualifier.c dsl/sorter.c \
+	main/mio.c dsl/es.h dsl/dsl.h dsl/formatter.h dsl/qualifier.h \
+	dsl/sorter.h main/mio.h
+am__objects_36 = libreadtags/readtags-readtags.$(OBJEXT) \
+	extra-cmds/readtags-printtags.$(OBJEXT) \
+	extra-cmds/readtags-readtags-cmd.$(OBJEXT) \
+	extra-cmds/readtags-readtags-stub.$(OBJEXT)
+am__objects_37 = main/readtags-mio.$(OBJEXT)
+am__objects_38 = dsl/readtags-es.$(OBJEXT) dsl/readtags-dsl.$(OBJEXT) \
+	dsl/readtags-formatter.$(OBJEXT) \
+	dsl/readtags-qualifier.$(OBJEXT) dsl/readtags-sorter.$(OBJEXT) \
+	$(am__objects_37)
+dist_readtags_OBJECTS = $(am__objects_36) \
+	$(am__objects_1) $(am__objects_38) \
+	$(am__objects_2)
+readtags_OBJECTS = $(dist_readtags_OBJECTS)
+readtags_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+	libutil.a
+readtags_LINK = $(CCLD) $(readtags_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am__objects_39 = main/utiltest-mio.$(OBJEXT)
+am__objects_40 = extra-cmds/utiltest-utiltest.$(OBJEXT) \
+	extra-cmds/utiltest-readtags-stub.$(OBJEXT) $(am__objects_39)
+dist_utiltest_OBJECTS = $(am__objects_2) $(am__objects_40)
+utiltest_OBJECTS = $(dist_utiltest_OBJECTS)
+utiltest_DEPENDENCIES = libutil.a
+utiltest_LINK = $(CCLD) $(utiltest_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
+AM_V_P = $(am__v_P_$(V))
+am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
 am__v_P_0 = false
 am__v_P_1 = :
-AM_V_GEN = $(am__v_GEN_@AM_V@)
-am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN     " $@;
 am__v_GEN_1 = 
-AM_V_at = $(am__v_at_@AM_V@)
-am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
 am__v_at_0 = @
 am__v_at_1 = 
-SOURCES =
-DIST_SOURCES =
+DEFAULT_INCLUDES = -I.
+depcomp = $(SHELL) $(top_srcdir)/depcomp
+am__maybe_remake_depfiles = depfiles
+am__depfiles_remade = dsl/$(DEPDIR)/libctags_a-es.Po \
+	dsl/$(DEPDIR)/libctags_a-optscript.Po \
+	dsl/$(DEPDIR)/readtags-dsl.Po dsl/$(DEPDIR)/readtags-es.Po \
+	dsl/$(DEPDIR)/readtags-formatter.Po \
+	dsl/$(DEPDIR)/readtags-qualifier.Po \
+	dsl/$(DEPDIR)/readtags-sorter.Po \
+	extra-cmds/$(DEPDIR)/optscript-optscript-repl.Po \
+	extra-cmds/$(DEPDIR)/readtags-printtags.Po \
+	extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Po \
+	extra-cmds/$(DEPDIR)/readtags-readtags-stub.Po \
+	extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Po \
+	extra-cmds/$(DEPDIR)/utiltest-utiltest.Po \
+	libreadtags/$(DEPDIR)/readtags-readtags.Po \
+	main/$(DEPDIR)/ctags-cmd.Po \
+	main/$(DEPDIR)/libctags_a-CommonPrelude.Po \
+	main/$(DEPDIR)/libctags_a-args.Po \
+	main/$(DEPDIR)/libctags_a-colprint.Po \
+	main/$(DEPDIR)/libctags_a-debug.Po \
+	main/$(DEPDIR)/libctags_a-dependency.Po \
+	main/$(DEPDIR)/libctags_a-entry.Po \
+	main/$(DEPDIR)/libctags_a-entry_private.Po \
+	main/$(DEPDIR)/libctags_a-error.Po \
+	main/$(DEPDIR)/libctags_a-field.Po \
+	main/$(DEPDIR)/libctags_a-flags.Po \
+	main/$(DEPDIR)/libctags_a-fmt.Po \
+	main/$(DEPDIR)/libctags_a-fname.Po \
+	main/$(DEPDIR)/libctags_a-htable.Po \
+	main/$(DEPDIR)/libctags_a-keyword.Po \
+	main/$(DEPDIR)/libctags_a-kind.Po \
+	main/$(DEPDIR)/libctags_a-lregex-default.Po \
+	main/$(DEPDIR)/libctags_a-lregex-pcre2.Po \
+	main/$(DEPDIR)/libctags_a-lregex.Po \
+	main/$(DEPDIR)/libctags_a-lxpath.Po \
+	main/$(DEPDIR)/libctags_a-main.Po \
+	main/$(DEPDIR)/libctags_a-mbcs.Po \
+	main/$(DEPDIR)/libctags_a-mio.Po \
+	main/$(DEPDIR)/libctags_a-nestlevel.Po \
+	main/$(DEPDIR)/libctags_a-numarray.Po \
+	main/$(DEPDIR)/libctags_a-objpool.Po \
+	main/$(DEPDIR)/libctags_a-options.Po \
+	main/$(DEPDIR)/libctags_a-param.Po \
+	main/$(DEPDIR)/libctags_a-parse.Po \
+	main/$(DEPDIR)/libctags_a-portable-scandir.Po \
+	main/$(DEPDIR)/libctags_a-promise.Po \
+	main/$(DEPDIR)/libctags_a-ptag.Po \
+	main/$(DEPDIR)/libctags_a-ptrarray.Po \
+	main/$(DEPDIR)/libctags_a-rbtree.Po \
+	main/$(DEPDIR)/libctags_a-read.Po \
+	main/$(DEPDIR)/libctags_a-repoinfo.Po \
+	main/$(DEPDIR)/libctags_a-routines.Po \
+	main/$(DEPDIR)/libctags_a-script.Po \
+	main/$(DEPDIR)/libctags_a-seccomp.Po \
+	main/$(DEPDIR)/libctags_a-selectors.Po \
+	main/$(DEPDIR)/libctags_a-sort.Po \
+	main/$(DEPDIR)/libctags_a-stats.Po \
+	main/$(DEPDIR)/libctags_a-strlist.Po \
+	main/$(DEPDIR)/libctags_a-tokeninfo.Po \
+	main/$(DEPDIR)/libctags_a-trace.Po \
+	main/$(DEPDIR)/libctags_a-trashbox.Po \
+	main/$(DEPDIR)/libctags_a-unwindi.Po \
+	main/$(DEPDIR)/libctags_a-utf8_str.Po \
+	main/$(DEPDIR)/libctags_a-vstring.Po \
+	main/$(DEPDIR)/libctags_a-writer-ctags.Po \
+	main/$(DEPDIR)/libctags_a-writer-etags.Po \
+	main/$(DEPDIR)/libctags_a-writer-json.Po \
+	main/$(DEPDIR)/libctags_a-writer-xref.Po \
+	main/$(DEPDIR)/libctags_a-writer.Po \
+	main/$(DEPDIR)/libctags_a-xtag.Po \
+	main/$(DEPDIR)/libutil_a-fname.Po \
+	main/$(DEPDIR)/libutil_a-htable.Po \
+	main/$(DEPDIR)/libutil_a-numarray.Po \
+	main/$(DEPDIR)/libutil_a-ptrarray.Po \
+	main/$(DEPDIR)/libutil_a-routines.Po \
+	main/$(DEPDIR)/libutil_a-trashbox.Po \
+	main/$(DEPDIR)/libutil_a-vstring.Po \
+	main/$(DEPDIR)/mini_geany-mini-geany.Po \
+	main/$(DEPDIR)/readtags-mio.Po main/$(DEPDIR)/utiltest-mio.Po \
+	optlib/$(DEPDIR)/libctags_a-cmake.Po \
+	optlib/$(DEPDIR)/libctags_a-ctags-optlib.Po \
+	optlib/$(DEPDIR)/libctags_a-elixir.Po \
+	optlib/$(DEPDIR)/libctags_a-forth.Po \
+	optlib/$(DEPDIR)/libctags_a-gdbinit.Po \
+	optlib/$(DEPDIR)/libctags_a-gperf.Po \
+	optlib/$(DEPDIR)/libctags_a-iPythonCell.Po \
+	optlib/$(DEPDIR)/libctags_a-inko.Po \
+	optlib/$(DEPDIR)/libctags_a-kconfig.Po \
+	optlib/$(DEPDIR)/libctags_a-lex.Po \
+	optlib/$(DEPDIR)/libctags_a-man.Po \
+	optlib/$(DEPDIR)/libctags_a-meson.Po \
+	optlib/$(DEPDIR)/libctags_a-mesonOptions.Po \
+	optlib/$(DEPDIR)/libctags_a-org.Po \
+	optlib/$(DEPDIR)/libctags_a-passwd.Po \
+	optlib/$(DEPDIR)/libctags_a-pkgConfig.Po \
+	optlib/$(DEPDIR)/libctags_a-pod.Po \
+	optlib/$(DEPDIR)/libctags_a-puppetManifest.Po \
+	optlib/$(DEPDIR)/libctags_a-qemuhx.Po \
+	optlib/$(DEPDIR)/libctags_a-rdoc.Po \
+	optlib/$(DEPDIR)/libctags_a-rpmMacros.Po \
+	optlib/$(DEPDIR)/libctags_a-scss.Po \
+	optlib/$(DEPDIR)/libctags_a-systemtap.Po \
+	optlib/$(DEPDIR)/libctags_a-terraform.Po \
+	optlib/$(DEPDIR)/libctags_a-terraformvariables.Po \
+	optlib/$(DEPDIR)/libctags_a-yacc.Po \
+	parsers/$(DEPDIR)/libctags_a-abaqus.Po \
+	parsers/$(DEPDIR)/libctags_a-abc.Po \
+	parsers/$(DEPDIR)/libctags_a-ada.Po \
+	parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Po \
+	parsers/$(DEPDIR)/libctags_a-ant.Po \
+	parsers/$(DEPDIR)/libctags_a-asciidoc.Po \
+	parsers/$(DEPDIR)/libctags_a-asm.Po \
+	parsers/$(DEPDIR)/libctags_a-asp.Po \
+	parsers/$(DEPDIR)/libctags_a-autoconf.Po \
+	parsers/$(DEPDIR)/libctags_a-autoit.Po \
+	parsers/$(DEPDIR)/libctags_a-automake.Po \
+	parsers/$(DEPDIR)/libctags_a-awk.Po \
+	parsers/$(DEPDIR)/libctags_a-basic.Po \
+	parsers/$(DEPDIR)/libctags_a-bats.Po \
+	parsers/$(DEPDIR)/libctags_a-beta.Po \
+	parsers/$(DEPDIR)/libctags_a-biblatex.Po \
+	parsers/$(DEPDIR)/libctags_a-bibtex.Po \
+	parsers/$(DEPDIR)/libctags_a-c-based.Po \
+	parsers/$(DEPDIR)/libctags_a-clojure.Po \
+	parsers/$(DEPDIR)/libctags_a-cobol.Po \
+	parsers/$(DEPDIR)/libctags_a-cpreprocessor.Po \
+	parsers/$(DEPDIR)/libctags_a-css.Po \
+	parsers/$(DEPDIR)/libctags_a-dbusintrospect.Po \
+	parsers/$(DEPDIR)/libctags_a-diff.Po \
+	parsers/$(DEPDIR)/libctags_a-dosbatch.Po \
+	parsers/$(DEPDIR)/libctags_a-dtd.Po \
+	parsers/$(DEPDIR)/libctags_a-dts.Po \
+	parsers/$(DEPDIR)/libctags_a-eiffel.Po \
+	parsers/$(DEPDIR)/libctags_a-erlang.Po \
+	parsers/$(DEPDIR)/libctags_a-falcon.Po \
+	parsers/$(DEPDIR)/libctags_a-flex.Po \
+	parsers/$(DEPDIR)/libctags_a-fortran.Po \
+	parsers/$(DEPDIR)/libctags_a-frontmatter.Po \
+	parsers/$(DEPDIR)/libctags_a-fypp.Po \
+	parsers/$(DEPDIR)/libctags_a-gdscript.Po \
+	parsers/$(DEPDIR)/libctags_a-gemspec.Po \
+	parsers/$(DEPDIR)/libctags_a-glade.Po \
+	parsers/$(DEPDIR)/libctags_a-go.Po \
+	parsers/$(DEPDIR)/libctags_a-haskell.Po \
+	parsers/$(DEPDIR)/libctags_a-haxe.Po \
+	parsers/$(DEPDIR)/libctags_a-html.Po \
+	parsers/$(DEPDIR)/libctags_a-i18nrubygem.Po \
+	parsers/$(DEPDIR)/libctags_a-iniconf.Po \
+	parsers/$(DEPDIR)/libctags_a-itcl.Po \
+	parsers/$(DEPDIR)/libctags_a-jprop.Po \
+	parsers/$(DEPDIR)/libctags_a-jscript.Po \
+	parsers/$(DEPDIR)/libctags_a-json.Po \
+	parsers/$(DEPDIR)/libctags_a-julia.Po \
+	parsers/$(DEPDIR)/libctags_a-ldscript.Po \
+	parsers/$(DEPDIR)/libctags_a-lisp.Po \
+	parsers/$(DEPDIR)/libctags_a-lua.Po \
+	parsers/$(DEPDIR)/libctags_a-m4.Po \
+	parsers/$(DEPDIR)/libctags_a-make.Po \
+	parsers/$(DEPDIR)/libctags_a-markdown.Po \
+	parsers/$(DEPDIR)/libctags_a-matlab.Po \
+	parsers/$(DEPDIR)/libctags_a-maven2.Po \
+	parsers/$(DEPDIR)/libctags_a-myrddin.Po \
+	parsers/$(DEPDIR)/libctags_a-nsis.Po \
+	parsers/$(DEPDIR)/libctags_a-objc.Po \
+	parsers/$(DEPDIR)/libctags_a-ocaml.Po \
+	parsers/$(DEPDIR)/libctags_a-openapi.Po \
+	parsers/$(DEPDIR)/libctags_a-pascal.Po \
+	parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Po \
+	parsers/$(DEPDIR)/libctags_a-perl-moose.Po \
+	parsers/$(DEPDIR)/libctags_a-perl.Po \
+	parsers/$(DEPDIR)/libctags_a-php.Po \
+	parsers/$(DEPDIR)/libctags_a-plist.Po \
+	parsers/$(DEPDIR)/libctags_a-powershell.Po \
+	parsers/$(DEPDIR)/libctags_a-protobuf.Po \
+	parsers/$(DEPDIR)/libctags_a-python.Po \
+	parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Po \
+	parsers/$(DEPDIR)/libctags_a-quarto.Po \
+	parsers/$(DEPDIR)/libctags_a-r-r6class.Po \
+	parsers/$(DEPDIR)/libctags_a-r-s4class.Po \
+	parsers/$(DEPDIR)/libctags_a-r.Po \
+	parsers/$(DEPDIR)/libctags_a-rake.Po \
+	parsers/$(DEPDIR)/libctags_a-raku.Po \
+	parsers/$(DEPDIR)/libctags_a-relaxng.Po \
+	parsers/$(DEPDIR)/libctags_a-rexx.Po \
+	parsers/$(DEPDIR)/libctags_a-rmarkdown.Po \
+	parsers/$(DEPDIR)/libctags_a-robot.Po \
+	parsers/$(DEPDIR)/libctags_a-rpmspec.Po \
+	parsers/$(DEPDIR)/libctags_a-rspec.Po \
+	parsers/$(DEPDIR)/libctags_a-rst.Po \
+	parsers/$(DEPDIR)/libctags_a-ruby.Po \
+	parsers/$(DEPDIR)/libctags_a-rust.Po \
+	parsers/$(DEPDIR)/libctags_a-scheme.Po \
+	parsers/$(DEPDIR)/libctags_a-sh.Po \
+	parsers/$(DEPDIR)/libctags_a-slang.Po \
+	parsers/$(DEPDIR)/libctags_a-sml.Po \
+	parsers/$(DEPDIR)/libctags_a-sql.Po \
+	parsers/$(DEPDIR)/libctags_a-svg.Po \
+	parsers/$(DEPDIR)/libctags_a-systemdunit.Po \
+	parsers/$(DEPDIR)/libctags_a-tcl.Po \
+	parsers/$(DEPDIR)/libctags_a-tcloo.Po \
+	parsers/$(DEPDIR)/libctags_a-tex-beamer.Po \
+	parsers/$(DEPDIR)/libctags_a-tex.Po \
+	parsers/$(DEPDIR)/libctags_a-ttcn.Po \
+	parsers/$(DEPDIR)/libctags_a-txt2tags.Po \
+	parsers/$(DEPDIR)/libctags_a-typescript.Po \
+	parsers/$(DEPDIR)/libctags_a-v.Po \
+	parsers/$(DEPDIR)/libctags_a-vera.Po \
+	parsers/$(DEPDIR)/libctags_a-verilog.Po \
+	parsers/$(DEPDIR)/libctags_a-vhdl.Po \
+	parsers/$(DEPDIR)/libctags_a-vim.Po \
+	parsers/$(DEPDIR)/libctags_a-windres.Po \
+	parsers/$(DEPDIR)/libctags_a-xml.Po \
+	parsers/$(DEPDIR)/libctags_a-xrc.Po \
+	parsers/$(DEPDIR)/libctags_a-xslt.Po \
+	parsers/$(DEPDIR)/libctags_a-yaml.Po \
+	parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Po \
+	parsers/$(DEPDIR)/libctags_a-yumrepo.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Po \
+	parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Po \
+	peg/$(DEPDIR)/libctags_a-elm.Po \
+	peg/$(DEPDIR)/libctags_a-kotlin.Po \
+	peg/$(DEPDIR)/libctags_a-thrift.Po \
+	peg/$(DEPDIR)/libctags_a-varlink.Po
+am__mv = mv -f
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+am__v_lt_1 = 
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC      " $@;
+am__v_CC_1 = 
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD    " $@;
+am__v_CCLD_1 = 
+SOURCES = $(dist_libctags_a_SOURCES) $(nodist_libctags_a_SOURCES) \
+	$(dist_libutil_a_SOURCES) $(dist_ctags_SOURCES) \
+	$(mini_geany_SOURCES) $(optscript_SOURCES) \
+	$(dist_readtags_SOURCES) $(dist_utiltest_SOURCES)
+DIST_SOURCES = $(am__dist_libctags_a_SOURCES_DIST) \
+	$(dist_libutil_a_SOURCES) $(dist_ctags_SOURCES) \
+	$(mini_geany_SOURCES) $(optscript_SOURCES) \
+	$(am__dist_readtags_SOURCES_DIST) $(dist_utiltest_SOURCES)
+RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
+	ctags-recursive dvi-recursive html-recursive info-recursive \
+	install-data-recursive install-dvi-recursive \
+	install-exec-recursive install-html-recursive \
+	install-info-recursive install-pdf-recursive \
+	install-ps-recursive install-recursive installcheck-recursive \
+	installdirs-recursive pdf-recursive ps-recursive \
+	tags-recursive uninstall-recursive
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
+RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
+  distclean-recursive maintainer-clean-recursive
+am__recursive_targets = \
+  $(RECURSIVE_TARGETS) \
+  $(RECURSIVE_CLEAN_TARGETS) \
+  $(am__extra_recursive_targets)
+AM_RECURSIVE_TARGETS = $(am__recursive_targets:-recursive=) TAGS CTAGS \
+	cscope distdir distdir-am dist dist-all distcheck
+am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP) \
+	config.h.in
+# Read a list of newline-separated strings from the standard input,
+# and print each of them once, without duplicates.  Input order is
+# *not* preserved.
+am__uniquify_input = $(AWK) '\
+  BEGIN { nonempty = 0; } \
+  { items[$$0] = 1; nonempty = 1; } \
+  END { if (nonempty) { for (i in items) print i; }; } \
+'
+# Make sure the list of sources is unique.  This is necessary because,
+# e.g., the same source file might be shared among _SOURCES variables
+# for different programs/libraries.
+am__define_uniq_tagged_files = \
+  list='$(am__tagged_files)'; \
+  unique=`for i in $$list; do \
+    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+  done | $(am__uniquify_input)`
+DIST_SUBDIRS = $(SUBDIRS)
 am__DIST_COMMON = $(srcdir)/GNUmakefile.in $(srcdir)/Makefile.in \
+	$(srcdir)/config.h.in $(top_srcdir)/act.mk \
+	$(top_srcdir)/makefiles/help.mak \
+	$(top_srcdir)/makefiles/testing.mak $(top_srcdir)/source.mak \
 	AUTHORS COPYING ChangeLog INSTALL NEWS README.md compile \
-	install-sh ltmain.sh missing
+	config.guess config.sub depcomp install-sh ltmain.sh missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -130,6 +937,31 @@ am__remove_distdir = \
       || { sleep 5 && rm -rf "$(distdir)"; }; \
   else :; fi
 am__post_remove_distdir = $(am__remove_distdir)
+am__relativize = \
+  dir0=`pwd`; \
+  sed_first='s,^\([^/]*\)/.*$$,\1,'; \
+  sed_rest='s,^[^/]*/*,,'; \
+  sed_last='s,^.*/\([^/]*\)$$,\1,'; \
+  sed_butlast='s,/*[^/]*$$,,'; \
+  while test -n "$$dir1"; do \
+    first=`echo "$$dir1" | sed -e "$$sed_first"`; \
+    if test "$$first" != "."; then \
+      if test "$$first" = ".."; then \
+        dir2=`echo "$$dir0" | sed -e "$$sed_last"`/"$$dir2"; \
+        dir0=`echo "$$dir0" | sed -e "$$sed_butlast"`; \
+      else \
+        first2=`echo "$$dir2" | sed -e "$$sed_first"`; \
+        if test "$$first2" = "$$first"; then \
+          dir2=`echo "$$dir2" | sed -e "$$sed_rest"`; \
+        else \
+          dir2="../$$dir2"; \
+        fi; \
+        dir0="$$dir0"/"$$first"; \
+      fi; \
+    fi; \
+    dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
+  done; \
+  reldir="$$dir2"
 DIST_ARCHIVES = $(distdir).tar.gz
 GZIP_ENV = --best
 DIST_TARGETS = dist-gzip
@@ -139,94 +971,786 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = @ACLOCAL@
-AMTAR = @AMTAR@
-AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
-AUTOCONF = @AUTOCONF@
-AUTOHEADER = @AUTOHEADER@
-AUTOMAKE = @AUTOMAKE@
+ACLOCAL = ${SHELL} '/Users/randymcmillan/randymcmillan/dotfiles/missing' aclocal-1.16
+ALLOCA = 
+ALLOCA_H = alloca.h
+AMTAR = $${TAR-tar}
+AM_DEFAULT_VERBOSITY = 0
+APPLE_UNIVERSAL_BUILD = 0
+AR = ar
+ARFLAGS = cr
+AUTOCONF = ${SHELL} '/Users/randymcmillan/randymcmillan/dotfiles/missing' autoconf
+AUTOHEADER = ${SHELL} '/Users/randymcmillan/randymcmillan/dotfiles/missing' autoheader
+AUTOMAKE = ${SHELL} '/Users/randymcmillan/randymcmillan/dotfiles/missing' automake-1.16
 AWK = gawk
-BREW = /usr/local/bin/brew
+BITSIZEOF_PTRDIFF_T = 
+BITSIZEOF_SIG_ATOMIC_T = 
+BITSIZEOF_SIZE_T = 
+BITSIZEOF_WCHAR_T = 
+BITSIZEOF_WINT_T = 
+BUILD_EXEEXT = 
+BUILD_OBJEXT = o
 CC = gcc
-CCDEPMODE = @CCDEPMODE@
+CCDEPMODE = depmode=gcc3
+CC_FOR_BUILD = gcc
 CFLAGS = -g -O2
+CFLAGS_FOR_BUILD = -g -O2
+CFLAG_VISIBILITY = -fvisibility=hidden
+CGCC_CFLAGS = 
+COVERAGE_CFLAGS = 
+COVERAGE_LDFLAGS = 
+CPP = gcc -E
 CPPFLAGS = 
-CSCOPE = @CSCOPE@
-CTAGS = @CTAGS@
-CYGPATH_W = @CYGPATH_W@
-DEFS = -DPACKAGE_NAME=\"FULL-PACKAGE-NAME\" -DPACKAGE_TARNAME=\"full-package-name\" -DPACKAGE_VERSION=\"VERSION\" -DPACKAGE_STRING=\"FULL-PACKAGE-NAME\ VERSION\" -DPACKAGE_BUGREPORT=\"BUG-REPORT-ADDRESS\" -DPACKAGE_URL=\"\"
-DEPDIR = @DEPDIR@
+CPPFLAGS_FOR_BUILD = 
+CSCOPE = cscope
+CTAGS = ctags
+CTAGS_NAME_EXECUTABLE = ctags
+CYGPATH_W = echo
+DEBUG_CPPFLAGS = -DDEBUG
+DEFS = -DHAVE_CONFIG_H
+DEPDIR = .deps
 ECHO_C = \c
 ECHO_N = 
 ECHO_T = 
-ETAGS = @ETAGS@
+ETAGS = etags
+ETAGS_NAME_EXECUTABLE = etags
 EXEEXT = 
-HELP2MAN = /usr/local/bin/help2man
+EXTRA_CFLAGS = -std=gnu99
+EXTRA_CPPFLAGS = -D_GNU_SOURCE -D__USE_GNU
+EXTRA_LDFLAGS = 
+FNMATCH_H = fnmatch.h
+GIT = git
+GL_GNULIB_ACCESS = 0
+GL_GNULIB_ALIGNED_ALLOC = 0
+GL_GNULIB_ATOLL = 0
+GL_GNULIB_BTOWC = 1
+GL_GNULIB_CALLOC_POSIX = 0
+GL_GNULIB_CANONICALIZE_FILE_NAME = 0
+GL_GNULIB_CHDIR = 0
+GL_GNULIB_CHOWN = 0
+GL_GNULIB_CLOSE = 0
+GL_GNULIB_COPY_FILE_RANGE = 0
+GL_GNULIB_DUP = 0
+GL_GNULIB_DUP2 = 0
+GL_GNULIB_DUP3 = 0
+GL_GNULIB_DUPLOCALE = 0
+GL_GNULIB_ENVIRON = 0
+GL_GNULIB_EUIDACCESS = 0
+GL_GNULIB_EXECL = 0
+GL_GNULIB_EXECLE = 0
+GL_GNULIB_EXECLP = 0
+GL_GNULIB_EXECV = 0
+GL_GNULIB_EXECVE = 0
+GL_GNULIB_EXECVP = 0
+GL_GNULIB_EXECVPE = 0
+GL_GNULIB_EXPLICIT_BZERO = 0
+GL_GNULIB_FACCESSAT = 0
+GL_GNULIB_FCHDIR = 0
+GL_GNULIB_FCHOWNAT = 0
+GL_GNULIB_FDATASYNC = 0
+GL_GNULIB_FFSL = 0
+GL_GNULIB_FFSLL = 0
+GL_GNULIB_FNMATCH = 1
+GL_GNULIB_FREE_POSIX = 0
+GL_GNULIB_FSYNC = 0
+GL_GNULIB_FTRUNCATE = 0
+GL_GNULIB_GETCWD = 0
+GL_GNULIB_GETDOMAINNAME = 0
+GL_GNULIB_GETDTABLESIZE = 0
+GL_GNULIB_GETENTROPY = 0
+GL_GNULIB_GETGROUPS = 0
+GL_GNULIB_GETHOSTNAME = 0
+GL_GNULIB_GETLOADAVG = 0
+GL_GNULIB_GETLOGIN = 0
+GL_GNULIB_GETLOGIN_R = 0
+GL_GNULIB_GETOPT_POSIX = 0
+GL_GNULIB_GETPAGESIZE = 0
+GL_GNULIB_GETPASS = 0
+GL_GNULIB_GETSUBOPT = 0
+GL_GNULIB_GETUSERSHELL = 0
+GL_GNULIB_GRANTPT = 0
+GL_GNULIB_GROUP_MEMBER = 0
+GL_GNULIB_IMAXABS = 0
+GL_GNULIB_IMAXDIV = 0
+GL_GNULIB_ISATTY = 0
+GL_GNULIB_ISBLANK = 1
+GL_GNULIB_ISWBLANK = 0
+GL_GNULIB_ISWCTYPE = 0
+GL_GNULIB_ISWDIGIT = 0
+GL_GNULIB_ISWXDIGIT = 0
+GL_GNULIB_LCHOWN = 0
+GL_GNULIB_LINK = 0
+GL_GNULIB_LINKAT = 0
+GL_GNULIB_LOCALECONV = 1
+GL_GNULIB_LOCALENAME = 0
+GL_GNULIB_LSEEK = 0
+GL_GNULIB_MALLOC_POSIX = 0
+GL_GNULIB_MBRLEN = 0
+GL_GNULIB_MBRTOWC = 1
+GL_GNULIB_MBSCASECMP = 0
+GL_GNULIB_MBSCASESTR = 0
+GL_GNULIB_MBSCHR = 0
+GL_GNULIB_MBSCSPN = 0
+GL_GNULIB_MBSINIT = 1
+GL_GNULIB_MBSLEN = 0
+GL_GNULIB_MBSNCASECMP = 0
+GL_GNULIB_MBSNLEN = 0
+GL_GNULIB_MBSNRTOWCS = 0
+GL_GNULIB_MBSPBRK = 0
+GL_GNULIB_MBSPCASECMP = 0
+GL_GNULIB_MBSRCHR = 0
+GL_GNULIB_MBSRTOWCS = 1
+GL_GNULIB_MBSSEP = 0
+GL_GNULIB_MBSSPN = 0
+GL_GNULIB_MBSSTR = 0
+GL_GNULIB_MBSTOK_R = 0
+GL_GNULIB_MBTOWC = 1
+GL_GNULIB_MDA_ACCESS = 1
+GL_GNULIB_MDA_CHDIR = 1
+GL_GNULIB_MDA_CLOSE = 1
+GL_GNULIB_MDA_DUP = 1
+GL_GNULIB_MDA_DUP2 = 1
+GL_GNULIB_MDA_ECVT = 1
+GL_GNULIB_MDA_EXECL = 1
+GL_GNULIB_MDA_EXECLE = 1
+GL_GNULIB_MDA_EXECLP = 1
+GL_GNULIB_MDA_EXECV = 1
+GL_GNULIB_MDA_EXECVE = 1
+GL_GNULIB_MDA_EXECVP = 1
+GL_GNULIB_MDA_EXECVPE = 1
+GL_GNULIB_MDA_FCVT = 1
+GL_GNULIB_MDA_GCVT = 1
+GL_GNULIB_MDA_GETCWD = 1
+GL_GNULIB_MDA_GETPID = 1
+GL_GNULIB_MDA_ISATTY = 1
+GL_GNULIB_MDA_LSEEK = 1
+GL_GNULIB_MDA_MEMCCPY = 1
+GL_GNULIB_MDA_MKTEMP = 1
+GL_GNULIB_MDA_PUTENV = 1
+GL_GNULIB_MDA_READ = 1
+GL_GNULIB_MDA_RMDIR = 1
+GL_GNULIB_MDA_STRDUP = 1
+GL_GNULIB_MDA_SWAB = 1
+GL_GNULIB_MDA_UNLINK = 1
+GL_GNULIB_MDA_WCSDUP = 1
+GL_GNULIB_MDA_WRITE = 1
+GL_GNULIB_MEMCHR = 1
+GL_GNULIB_MEMMEM = 0
+GL_GNULIB_MEMPCPY = 1
+GL_GNULIB_MEMRCHR = 0
+GL_GNULIB_MKDTEMP = 0
+GL_GNULIB_MKOSTEMP = 0
+GL_GNULIB_MKOSTEMPS = 0
+GL_GNULIB_MKSTEMP = 0
+GL_GNULIB_MKSTEMPS = 0
+GL_GNULIB_NL_LANGINFO = 1
+GL_GNULIB_PIPE = 0
+GL_GNULIB_PIPE2 = 0
+GL_GNULIB_POSIX_MEMALIGN = 0
+GL_GNULIB_POSIX_OPENPT = 0
+GL_GNULIB_PREAD = 0
+GL_GNULIB_PTSNAME = 0
+GL_GNULIB_PTSNAME_R = 0
+GL_GNULIB_PUTENV = 0
+GL_GNULIB_PWRITE = 0
+GL_GNULIB_QSORT_R = 0
+GL_GNULIB_RANDOM = 0
+GL_GNULIB_RANDOM_R = 0
+GL_GNULIB_RAWMEMCHR = 0
+GL_GNULIB_READ = 0
+GL_GNULIB_READLINK = 0
+GL_GNULIB_READLINKAT = 0
+GL_GNULIB_REALLOCARRAY = 0
+GL_GNULIB_REALLOC_POSIX = 0
+GL_GNULIB_REALPATH = 0
+GL_GNULIB_RMDIR = 0
+GL_GNULIB_RPMATCH = 0
+GL_GNULIB_SECURE_GETENV = 0
+GL_GNULIB_SETENV = 0
+GL_GNULIB_SETHOSTNAME = 0
+GL_GNULIB_SETLOCALE = 0
+GL_GNULIB_SETLOCALE_NULL = 1
+GL_GNULIB_SIGABBREV_NP = 0
+GL_GNULIB_SIGDESCR_NP = 0
+GL_GNULIB_SLEEP = 0
+GL_GNULIB_STPCPY = 0
+GL_GNULIB_STPNCPY = 0
+GL_GNULIB_STRCASESTR = 0
+GL_GNULIB_STRCHRNUL = 0
+GL_GNULIB_STRDUP = 0
+GL_GNULIB_STRERROR = 0
+GL_GNULIB_STRERRORNAME_NP = 0
+GL_GNULIB_STRERROR_R = 0
+GL_GNULIB_STRNCAT = 0
+GL_GNULIB_STRNDUP = 0
+GL_GNULIB_STRNLEN = 1
+GL_GNULIB_STRPBRK = 0
+GL_GNULIB_STRSEP = 0
+GL_GNULIB_STRSIGNAL = 0
+GL_GNULIB_STRSTR = 0
+GL_GNULIB_STRTOD = 0
+GL_GNULIB_STRTOIMAX = 0
+GL_GNULIB_STRTOK_R = 0
+GL_GNULIB_STRTOL = 0
+GL_GNULIB_STRTOLD = 0
+GL_GNULIB_STRTOLL = 0
+GL_GNULIB_STRTOUL = 0
+GL_GNULIB_STRTOULL = 0
+GL_GNULIB_STRTOUMAX = 0
+GL_GNULIB_STRVERSCMP = 0
+GL_GNULIB_SYMLINK = 0
+GL_GNULIB_SYMLINKAT = 0
+GL_GNULIB_SYSTEM_POSIX = 0
+GL_GNULIB_TOWCTRANS = 0
+GL_GNULIB_TRUNCATE = 0
+GL_GNULIB_TTYNAME_R = 0
+GL_GNULIB_UNISTD_H_GETOPT = 0
+GL_GNULIB_UNISTD_H_NONBLOCKING = 0
+GL_GNULIB_UNISTD_H_SIGPIPE = 0
+GL_GNULIB_UNLINK = 0
+GL_GNULIB_UNLINKAT = 0
+GL_GNULIB_UNLOCKPT = 0
+GL_GNULIB_UNSETENV = 0
+GL_GNULIB_USLEEP = 0
+GL_GNULIB_WCPCPY = 0
+GL_GNULIB_WCPNCPY = 0
+GL_GNULIB_WCRTOMB = 1
+GL_GNULIB_WCSCASECMP = 0
+GL_GNULIB_WCSCAT = 0
+GL_GNULIB_WCSCHR = 0
+GL_GNULIB_WCSCMP = 0
+GL_GNULIB_WCSCOLL = 0
+GL_GNULIB_WCSCPY = 0
+GL_GNULIB_WCSCSPN = 0
+GL_GNULIB_WCSDUP = 0
+GL_GNULIB_WCSFTIME = 0
+GL_GNULIB_WCSLEN = 0
+GL_GNULIB_WCSNCASECMP = 0
+GL_GNULIB_WCSNCAT = 0
+GL_GNULIB_WCSNCMP = 0
+GL_GNULIB_WCSNCPY = 0
+GL_GNULIB_WCSNLEN = 0
+GL_GNULIB_WCSNRTOMBS = 0
+GL_GNULIB_WCSPBRK = 0
+GL_GNULIB_WCSRCHR = 0
+GL_GNULIB_WCSRTOMBS = 0
+GL_GNULIB_WCSSPN = 0
+GL_GNULIB_WCSSTR = 0
+GL_GNULIB_WCSTOK = 0
+GL_GNULIB_WCSWIDTH = 0
+GL_GNULIB_WCSXFRM = 0
+GL_GNULIB_WCTOB = 0
+GL_GNULIB_WCTOMB = 0
+GL_GNULIB_WCTRANS = 0
+GL_GNULIB_WCTYPE = 0
+GL_GNULIB_WCWIDTH = 0
+GL_GNULIB_WMEMCHR = 1
+GL_GNULIB_WMEMCMP = 0
+GL_GNULIB_WMEMCPY = 0
+GL_GNULIB_WMEMMOVE = 0
+GL_GNULIB_WMEMPCPY = 1
+GL_GNULIB_WMEMSET = 0
+GL_GNULIB_WRITE = 0
+GL_GNULIB__EXIT = 0
+GNULIBHEADERS_OVERRIDE_WINT_T = 0
+HAVE_ALIGNED_ALLOC = 1
+HAVE_ALLOCA_H = 1
+HAVE_ATOLL = 1
+HAVE_BTOWC = 1
+HAVE_C99_STDINT_H = 1
+HAVE_CANONICALIZE_FILE_NAME = 1
+HAVE_CHOWN = 1
+HAVE_COPY_FILE_RANGE = 1
+HAVE_CRTDEFS_H = 0
+HAVE_DECL_ECVT = 1
+HAVE_DECL_ENVIRON = 1
+HAVE_DECL_EXECVPE = 0
+HAVE_DECL_FCHDIR = 1
+HAVE_DECL_FCVT = 1
+HAVE_DECL_FDATASYNC = 1
+HAVE_DECL_GCVT = 1
+HAVE_DECL_GETDOMAINNAME = 1
+HAVE_DECL_GETLOADAVG = 1
+HAVE_DECL_GETLOGIN = 1
+HAVE_DECL_GETLOGIN_R = 1
+HAVE_DECL_GETPAGESIZE = 1
+HAVE_DECL_GETUSERSHELL = 1
+HAVE_DECL_IMAXABS = 1
+HAVE_DECL_IMAXDIV = 1
+HAVE_DECL_INITSTATE = 1
+HAVE_DECL_MEMMEM = 1
+HAVE_DECL_MEMRCHR = 1
+HAVE_DECL_SETENV = 1
+HAVE_DECL_SETHOSTNAME = 1
+HAVE_DECL_SETSTATE = 1
+HAVE_DECL_STRDUP = 1
+HAVE_DECL_STRERROR_R = 1
+HAVE_DECL_STRNDUP = 1
+HAVE_DECL_STRNLEN = 1
+HAVE_DECL_STRSIGNAL = 1
+HAVE_DECL_STRTOIMAX = 1
+HAVE_DECL_STRTOK_R = 1
+HAVE_DECL_STRTOUMAX = 1
+HAVE_DECL_TRUNCATE = 1
+HAVE_DECL_TTYNAME_R = 1
+HAVE_DECL_UNSETENV = 1
+HAVE_DECL_WCSDUP = 1
+HAVE_DECL_WCTOB = 1
+HAVE_DECL_WCWIDTH = 1
+HAVE_DUP3 = 1
+HAVE_DUPLOCALE = 1
+HAVE_EUIDACCESS = 1
+HAVE_EXECVPE = 1
+HAVE_EXPLICIT_BZERO = 1
+HAVE_FACCESSAT = 1
+HAVE_FCHDIR = 1
+HAVE_FCHOWNAT = 1
+HAVE_FDATASYNC = 1
+HAVE_FEATURES_H = 0
+HAVE_FFSL = 1
+HAVE_FFSLL = 1
+HAVE_FNMATCH = 1
+HAVE_FNMATCH_H = 1
+HAVE_FREELOCALE = 1
+HAVE_FSYNC = 1
+HAVE_FTRUNCATE = 1
+HAVE_GETDTABLESIZE = 1
+HAVE_GETENTROPY = 1
+HAVE_GETGROUPS = 1
+HAVE_GETHOSTNAME = 1
+HAVE_GETLOGIN = 1
+HAVE_GETPAGESIZE = 1
+HAVE_GETPASS = 1
+HAVE_GETSUBOPT = 1
+HAVE_GRANTPT = 1
+HAVE_GROUP_MEMBER = 1
+HAVE_IMAXDIV_T = 1
+HAVE_INITSTATE = 1
+HAVE_INTTYPES_H = 1
+HAVE_ISBLANK = 1
+HAVE_ISWBLANK = 1
+HAVE_ISWCNTRL = 1
+HAVE_LANGINFO_ALTMON = 0
+HAVE_LANGINFO_CODESET = 1
+HAVE_LANGINFO_ERA = 1
+HAVE_LANGINFO_H = 1
+HAVE_LANGINFO_T_FMT_AMPM = 1
+HAVE_LANGINFO_YESEXPR = 1
+HAVE_LCHOWN = 1
+HAVE_LINK = 1
+HAVE_LINKAT = 1
+HAVE_MAX_ALIGN_T = 1
+HAVE_MBRLEN = 1
+HAVE_MBRTOWC = 1
+HAVE_MBSINIT = 1
+HAVE_MBSLEN = 0
+HAVE_MBSNRTOWCS = 1
+HAVE_MBSRTOWCS = 1
+HAVE_MBTOWC = 1
+HAVE_MEMPCPY = 0
+HAVE_MKDTEMP = 1
+HAVE_MKOSTEMP = 1
+HAVE_MKOSTEMPS = 1
+HAVE_MKSTEMP = 1
+HAVE_MKSTEMPS = 1
+HAVE_NEWLOCALE = 1
+HAVE_NL_LANGINFO = 1
+HAVE_OS_H = 0
+HAVE_PIPE = 1
+HAVE_PIPE2 = 1
+HAVE_POSIX_MEMALIGN = 1
+HAVE_POSIX_OPENPT = 1
+HAVE_PREAD = 1
+HAVE_PTSNAME = 1
+HAVE_PTSNAME_R = 1
+HAVE_PWRITE = 1
+HAVE_QSORT_R = 1
+HAVE_RANDOM = 1
+HAVE_RANDOM_H = 1
+HAVE_RANDOM_R = 1
+HAVE_RAWMEMCHR = 1
+HAVE_READLINK = 1
+HAVE_READLINKAT = 1
+HAVE_REALLOCARRAY = 1
+HAVE_REALPATH = 1
+HAVE_RPMATCH = 1
+HAVE_SECURE_GETENV = 1
+HAVE_SETENV = 1
+HAVE_SETHOSTNAME = 1
+HAVE_SETSTATE = 1
+HAVE_SIGABBREV_NP = 1
+HAVE_SIGDESCR_NP = 1
+HAVE_SIGNED_SIG_ATOMIC_T = 
+HAVE_SIGNED_WCHAR_T = 
+HAVE_SIGNED_WINT_T = 
+HAVE_SLEEP = 1
+HAVE_STDINT_H = 1
+HAVE_STPCPY = 1
+HAVE_STPNCPY = 1
+HAVE_STRCASESTR = 1
+HAVE_STRCHRNUL = 1
+HAVE_STRERRORNAME_NP = 1
+HAVE_STRPBRK = 1
+HAVE_STRSEP = 1
+HAVE_STRTOD = 1
+HAVE_STRTOL = 1
+HAVE_STRTOLD = 1
+HAVE_STRTOLL = 1
+HAVE_STRTOUL = 1
+HAVE_STRTOULL = 1
+HAVE_STRUCT_RANDOM_DATA = 1
+HAVE_STRVERSCMP = 1
+HAVE_SYMLINK = 1
+HAVE_SYMLINKAT = 1
+HAVE_SYS_BITYPES_H = 0
+HAVE_SYS_INTTYPES_H = 0
+HAVE_SYS_LOADAVG_H = 0
+HAVE_SYS_PARAM_H = 0
+HAVE_SYS_TYPES_H = 1
+HAVE_UNISTD_H = 1
+HAVE_UNLINKAT = 1
+HAVE_UNLOCKPT = 1
+HAVE_USLEEP = 1
+HAVE_VISIBILITY = 1
+HAVE_WCHAR_H = 1
+HAVE_WCHAR_T = 1
+HAVE_WCPCPY = 1
+HAVE_WCPNCPY = 1
+HAVE_WCRTOMB = 1
+HAVE_WCSCASECMP = 1
+HAVE_WCSCAT = 1
+HAVE_WCSCHR = 1
+HAVE_WCSCMP = 1
+HAVE_WCSCOLL = 1
+HAVE_WCSCPY = 1
+HAVE_WCSCSPN = 1
+HAVE_WCSDUP = 1
+HAVE_WCSFTIME = 1
+HAVE_WCSLEN = 1
+HAVE_WCSNCASECMP = 1
+HAVE_WCSNCAT = 1
+HAVE_WCSNCMP = 1
+HAVE_WCSNCPY = 1
+HAVE_WCSNLEN = 1
+HAVE_WCSNRTOMBS = 1
+HAVE_WCSPBRK = 1
+HAVE_WCSRCHR = 1
+HAVE_WCSRTOMBS = 1
+HAVE_WCSSPN = 1
+HAVE_WCSSTR = 1
+HAVE_WCSTOK = 1
+HAVE_WCSWIDTH = 1
+HAVE_WCSXFRM = 1
+HAVE_WCTRANS_T = 1
+HAVE_WCTYPE_H = 1
+HAVE_WCTYPE_T = 1
+HAVE_WINT_T = 1
+HAVE_WMEMCHR = 1
+HAVE_WMEMCMP = 1
+HAVE_WMEMCPY = 1
+HAVE_WMEMMOVE = 1
+HAVE_WMEMPCPY = 0
+HAVE_WMEMSET = 1
+HAVE_XLOCALE_H = 1
+HAVE__BOOL = 1
+HAVE__EXIT = 1
+ICONV_LIBS = -liconv
+INCLUDE_NEXT = include_next
+INCLUDE_NEXT_AS_FIRST_DIRECTIVE = include_next
 INSTALL = /usr/local/bin/ginstall -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
-INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
+INT32_MAX_LT_INTMAX_MAX = 1
+INT64_MAX_EQ_LONG_MAX = defined _LP64
+JANSSON_CFLAGS = 
+JANSSON_LIBS = 
 LDFLAGS = 
+LDFLAGS_FOR_BUILD = 
+LIBGNU_LIBDEPS = 
+LIBGNU_LTLIBDEPS = 
+LIBMULTITHREAD = -lpthread
 LIBOBJS = 
+LIBPMULTITHREAD = -lpthread
+LIBPTHREAD = 
 LIBS = 
+LIBSTDTHREAD = 
+LIBTHREAD = 
+LIBXML12d0_CFLAGS = 
+LIBXML12d0_LIBS = 
+LIBXML12d1_CFLAGS = 
+LIBXML12d1_LIBS = 
+LIBXML_CFLAGS = 
+LIBXML_LIBS = -lxml2
+LIBYAML_CFLAGS = -I/usr/local/Cellar/libyaml/0.2.5/include
+LIBYAML_LIBS = -L/usr/local/Cellar/libyaml/0.2.5/lib -lyaml
+LIB_HARD_LOCALE = 
+LIB_MBRTOWC = 
+LIB_NL_LANGINFO = 
+LIB_SCHED_YIELD = 
+LIB_SETLOCALE_NULL = 
+LIMITS_H = limits.h
 LN_S = ln -s
+LOCALCHARSET_TESTS_ENVIRONMENT = 
+LOCALENAME_ENHANCE_LOCALE_FUNCS = 0
+LOCALE_FR = fr_FR.ISO8859-1
+LOCALE_FR_UTF8 = fr_FR.UTF-8
+LOCALE_JA = ja_JP.eucJP
+LOCALE_ZH_CN = zh_CN.GB18030
+LTLIBMULTITHREAD = -lpthread
 LTLIBOBJS = 
-MAKEINFO = @MAKEINFO@
-MKDIR_P = @MKDIR_P@
-NOSTRIL = /usr/local/bin/nostril
+LTLIBTHREAD = 
+LTO_AR = ar
+LTO_RANLIB = 
+MAKEINFO = ${SHELL} '/Users/randymcmillan/randymcmillan/dotfiles/missing' makeinfo
+MKDIR_P = /usr/local/bin/gmkdir -p
+NEXT_AS_FIRST_DIRECTIVE_CTYPE_H = <ctype.h>
+NEXT_AS_FIRST_DIRECTIVE_FNMATCH_H = <fnmatch.h>
+NEXT_AS_FIRST_DIRECTIVE_INTTYPES_H = <inttypes.h>
+NEXT_AS_FIRST_DIRECTIVE_LANGINFO_H = <langinfo.h>
+NEXT_AS_FIRST_DIRECTIVE_LIMITS_H = <limits.h>
+NEXT_AS_FIRST_DIRECTIVE_LOCALE_H = <locale.h>
+NEXT_AS_FIRST_DIRECTIVE_STDDEF_H = 
+NEXT_AS_FIRST_DIRECTIVE_STDINT_H = <stdint.h>
+NEXT_AS_FIRST_DIRECTIVE_STDLIB_H = <stdlib.h>
+NEXT_AS_FIRST_DIRECTIVE_STRING_H = <string.h>
+NEXT_AS_FIRST_DIRECTIVE_SYS_TYPES_H = <sys/types.h>
+NEXT_AS_FIRST_DIRECTIVE_UNISTD_H = <unistd.h>
+NEXT_AS_FIRST_DIRECTIVE_WCHAR_H = <wchar.h>
+NEXT_AS_FIRST_DIRECTIVE_WCTYPE_H = <wctype.h>
+NEXT_CTYPE_H = <ctype.h>
+NEXT_FNMATCH_H = <fnmatch.h>
+NEXT_INTTYPES_H = <inttypes.h>
+NEXT_LANGINFO_H = <langinfo.h>
+NEXT_LIMITS_H = <limits.h>
+NEXT_LOCALE_H = <locale.h>
+NEXT_STDDEF_H = 
+NEXT_STDINT_H = <stdint.h>
+NEXT_STDLIB_H = <stdlib.h>
+NEXT_STRING_H = <string.h>
+NEXT_SYS_TYPES_H = <sys/types.h>
+NEXT_UNISTD_H = <unistd.h>
+NEXT_WCHAR_H = <wchar.h>
+NEXT_WCTYPE_H = <wctype.h>
 OBJEXT = o
-PACKAGE = @PACKAGE@
-PACKAGE_BUGREPORT = BUG-REPORT-ADDRESS
-PACKAGE_NAME = FULL-PACKAGE-NAME
-PACKAGE_STRING = FULL-PACKAGE-NAME VERSION
-PACKAGE_TARNAME = full-package-name
+PACKAGE = universal-ctags
+PACKAGE_BUGREPORT = 
+PACKAGE_NAME = universal-ctags
+PACKAGE_STRING = universal-ctags 6.1.0
+PACKAGE_TARNAME = universal-ctags
 PACKAGE_URL = 
-PACKAGE_VERSION = VERSION
+PACKAGE_VERSION = 6.1.0
 PATH_SEPARATOR = :
+PCRE2_CFLAGS = -I/usr/local/Cellar/pcre2/10.43/include
+PCRE2_LIBS = -L/usr/local/Cellar/pcre2/10.43/lib -lpcre2-8
+PKG_CONFIG = /usr/local/bin/pkg-config
+PKG_CONFIG_LIBDIR = 
+PKG_CONFIG_PATH = 
+PRAGMA_COLUMNS = 
+PRAGMA_SYSTEM_HEADER = #pragma GCC system_header
+PRIPTR_PREFIX = __PRIPTR_PREFIX
+PTRDIFF_T_SUFFIX = 
+PYTHON = python3
+RANLIB = ranlib
+REAL_CC = 
+REPLACE_ACCESS = 0
+REPLACE_ALIGNED_ALLOC = 0
+REPLACE_BTOWC = 0
+REPLACE_CALLOC = 0
+REPLACE_CANONICALIZE_FILE_NAME = 0
+REPLACE_CHOWN = 0
+REPLACE_CLOSE = 0
+REPLACE_DUP = 0
+REPLACE_DUP2 = 0
+REPLACE_DUPLOCALE = 0
+REPLACE_EXECL = 0
+REPLACE_EXECLE = 0
+REPLACE_EXECLP = 0
+REPLACE_EXECV = 0
+REPLACE_EXECVE = 0
+REPLACE_EXECVP = 0
+REPLACE_EXECVPE = 0
+REPLACE_FACCESSAT = 0
+REPLACE_FCHOWNAT = 0
+REPLACE_FFSLL = 0
+REPLACE_FNMATCH = 1
+REPLACE_FREE = 0
+REPLACE_FREELOCALE = 0
+REPLACE_FTRUNCATE = 0
+REPLACE_GETCWD = 0
+REPLACE_GETDOMAINNAME = 0
+REPLACE_GETDTABLESIZE = 0
+REPLACE_GETGROUPS = 0
+REPLACE_GETLOGIN_R = 0
+REPLACE_GETPAGESIZE = 0
+REPLACE_GETPASS = 0
+REPLACE_INITSTATE = 0
+REPLACE_ISATTY = 0
+REPLACE_ISWBLANK = 0
+REPLACE_ISWCNTRL = 0
+REPLACE_ISWDIGIT = 0
+REPLACE_ISWXDIGIT = 0
+REPLACE_LCHOWN = 0
+REPLACE_LINK = 0
+REPLACE_LINKAT = 0
+REPLACE_LOCALECONV = 0
+REPLACE_LSEEK = 0
+REPLACE_MALLOC = 0
+REPLACE_MBRLEN = 0
+REPLACE_MBRTOWC = 0
+REPLACE_MBSINIT = 0
+REPLACE_MBSNRTOWCS = 0
+REPLACE_MBSRTOWCS = 0
+REPLACE_MBSTATE_T = 0
+REPLACE_MBTOWC = 0
+REPLACE_MEMCHR = 0
+REPLACE_MEMMEM = 0
+REPLACE_MKSTEMP = 0
+REPLACE_NEWLOCALE = 0
+REPLACE_NL_LANGINFO = 1
+REPLACE_NULL = 0
+REPLACE_POSIX_MEMALIGN = 0
+REPLACE_PREAD = 0
+REPLACE_PTSNAME = 0
+REPLACE_PTSNAME_R = 0
+REPLACE_PUTENV = 0
+REPLACE_PWRITE = 0
+REPLACE_QSORT_R = 0
+REPLACE_RANDOM = 0
+REPLACE_RANDOM_R = 0
+REPLACE_READ = 0
+REPLACE_READLINK = 0
+REPLACE_READLINKAT = 0
+REPLACE_REALLOC = 0
+REPLACE_REALLOCARRAY = 0
+REPLACE_REALPATH = 0
+REPLACE_RMDIR = 0
+REPLACE_SETENV = 0
+REPLACE_SETLOCALE = 0
+REPLACE_SETSTATE = 0
+REPLACE_SLEEP = 0
+REPLACE_STPNCPY = 0
+REPLACE_STRCASESTR = 0
+REPLACE_STRCHRNUL = 0
+REPLACE_STRDUP = 0
+REPLACE_STRERROR = 0
+REPLACE_STRERRORNAME_NP = 0
+REPLACE_STRERROR_R = 0
+REPLACE_STRNCAT = 0
+REPLACE_STRNDUP = 0
+REPLACE_STRNLEN = 0
+REPLACE_STRSIGNAL = 0
+REPLACE_STRSTR = 0
+REPLACE_STRTOD = 0
+REPLACE_STRTOIMAX = 0
+REPLACE_STRTOK_R = 0
+REPLACE_STRTOL = 0
+REPLACE_STRTOLD = 0
+REPLACE_STRTOLL = 0
+REPLACE_STRTOUL = 0
+REPLACE_STRTOULL = 0
+REPLACE_STRTOUMAX = 0
+REPLACE_STRUCT_LCONV = 0
+REPLACE_SYMLINK = 0
+REPLACE_SYMLINKAT = 0
+REPLACE_TOWLOWER = 0
+REPLACE_TRUNCATE = 0
+REPLACE_TTYNAME_R = 0
+REPLACE_UNLINK = 0
+REPLACE_UNLINKAT = 0
+REPLACE_UNSETENV = 0
+REPLACE_USLEEP = 0
+REPLACE_WCRTOMB = 0
+REPLACE_WCSFTIME = 0
+REPLACE_WCSNRTOMBS = 0
+REPLACE_WCSRTOMBS = 0
+REPLACE_WCSTOK = 0
+REPLACE_WCSWIDTH = 0
+REPLACE_WCTOB = 0
+REPLACE_WCTOMB = 0
+REPLACE_WCWIDTH = 0
+REPLACE_WRITE = 0
+RST2HTML = no
+RST2MAN = no
+RST2MAN_OPTIONS = 
+RST2PDF = no
+SECCOMP_CFLAGS = 
+SECCOMP_LIBS = 
 SET_MAKE = 
 SHELL = /bin/sh
-STRIP = @STRIP@
-VERSION = @VERSION@
-YACC = bison -y
-YFLAGS = 
-abs_builddir = /Users/Shared/randymcmillan/dotfiles
-abs_srcdir = /Users/Shared/randymcmillan/dotfiles
-abs_top_builddir = /Users/Shared/randymcmillan/dotfiles
-abs_top_srcdir = /Users/Shared/randymcmillan/dotfiles
+SIG_ATOMIC_T_SUFFIX = 
+SIZE_T_SUFFIX = 
+STDBOOL_H = 
+STDDEF_H = 
+STDINT_H = stdint.h
+STRIP = strip
+TESTING_TIMEOUT = timeout
+UINT32_MAX_LT_UINTMAX_MAX = 1
+UINT64_MAX_EQ_ULONG_MAX = defined _LP64
+UNDEFINE_STRTOK_R = 0
+UNISTD_H_HAVE_SYS_RANDOM_H = 0
+UNISTD_H_HAVE_WINSOCK2_H = 0
+UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS = 0
+VERSION = 6.1.0
+WARNING_CFLAGS = -Wall
+WCHAR_T_SUFFIX = 
+WINDOWS_64_BIT_OFF_T = 0
+WINDOWS_STAT_INODES = 0
+WINDRES = windres
+WINT_T_SUFFIX = 
+abs_builddir = /Users/randymcmillan/randymcmillan/dotfiles
+abs_srcdir = /Users/randymcmillan/randymcmillan/dotfiles
+abs_top_builddir = /Users/randymcmillan/randymcmillan/dotfiles
+abs_top_srcdir = /Users/randymcmillan/randymcmillan/dotfiles
 ac_ct_CC = gcc
-am__include = @am__include@
-am__leading_dot = @am__leading_dot@
-am__quote = @am__quote@
-am__tar = @am__tar@
-am__untar = @am__untar@
+am__include = include
+am__leading_dot = .
+am__quote = 
+am__tar = tar --format=ustar -chf - "$$tardir"
+am__untar = tar -xf -
 bindir = ${exec_prefix}/bin
+build = x86_64-apple-darwin22.6.0
 build_alias = 
+build_cpu = x86_64
+build_os = darwin22.6.0
+build_vendor = apple
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
+gl_LIBOBJS =  fnmatch.o mempcpy.o nl_langinfo.o regex.o setlocale-lock.o wmempcpy.o
+gl_LTLIBOBJS =  fnmatch.lo mempcpy.lo nl_langinfo.lo regex.lo setlocale-lock.lo wmempcpy.lo
+gltests_LIBOBJS = 
+gltests_LTLIBOBJS = 
+gltests_WITNESS = IN_UNIVERSAL_CTAGS_GNULIB_TESTS
+host = x86_64-apple-darwin22.6.0
 host_alias = 
+host_cpu = x86_64
+host_os = darwin22.6.0
+host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = @install_sh@
+install_sh = ${SHELL} /Users/randymcmillan/randymcmillan/dotfiles/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
 mandir = ${datarootdir}/man
-mkdir_p = @mkdir_p@
+mkdir_p = $(MKDIR_P)
 oldincludedir = /usr/include
 pdfdir = ${docdir}
+perl_found = yes
 prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
 runstatedir = ${localstatedir}/run
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
+sort_found = yes
 srcdir = .
 sysconfdir = ${prefix}/etc
 target_alias = 
@@ -234,24 +1758,618 @@ top_build_prefix =
 top_builddir = .
 top_srcdir = .
 ACLOCAL_AMFLAGS = -I m4
-all: all-am
+#AM_CPPFLAGS = -I$(top_builddir)/gnulib -I$(top_srcdir)/gnulib
+GNULIB_DIR = gnulib
+GNULIB_CPPFLAGS = -I$(top_builddir)/$(GNULIB_DIR) -I$(top_srcdir)/$(GNULIB_DIR)
+GNULIB_LIBS = $(GNULIB_DIR)/libgnu.a $(LIBPTHREAD)
+SUBDIRS = $(GNULIB_DIR) . man
+
+# REPOINFO_HEADS is included from REPOINFO_SRCS
+# only when the building environment has ability
+# to generate the header file.
+# REPOINFO_OBJS is always linked to ctags executable.
+REPOINFO_HEADS = main/repoinfo.h
+REPOINFO_SRCS = main/repoinfo.c
+REPOINFO_OBJS = $(REPOINFO_SRCS:.c=.$(OBJEXT))
+MIO_HEADS = main/mio.h
+MIO_SRCS = main/mio.c
+UTIL_PUBLIC_HEADS = \
+	main/general.h		\
+	\
+	main/fname.h		\
+	main/gcc-attr.h		\
+	main/htable.h		\
+	main/inline.h		\
+	main/numarray.h		\
+	main/ptrarray.h		\
+	main/routines.h		\
+	main/trashbox.h 	\
+	main/vstring.h		\
+	\
+	$(NULL)
+
+UTIL_PRIVATE_HEADS = \
+	main/routines_p.h	\
+	\
+	$(NULL)
+
+UTIL_HEADS = \
+	$(UTIL_PUBLIC_HEADS)	\
+	$(UTIL_PRIVATE_HEADS)	\
+	\
+	$(NULL)
+
+UTIL_SRCS = \
+	main/fname.c		\
+	main/htable.c		\
+	main/numarray.c		\
+	main/ptrarray.c		\
+	main/routines.c		\
+	main/trashbox.c		\
+	main/vstring.c		\
+	\
+	$(NULL)
+
+UTIL_OBJS = $(UTIL_SRCS:.c=.$(OBJEXT))
+UTILTEST_HEADS = \
+	extra-cmds/acutest.h \
+	\
+	$(MIO_HEADS) \
+	\
+	$(NULL)
+
+UTILTEST_SRCS = \
+	extra-cmds/utiltest.c \
+	extra-cmds/readtags-stub.c \
+	\
+	$(MIO_SRCS) \
+	\
+	$(NULL)
+
+UTILTEST_OBJS = $(UTILTEST_SRCS:.c=.$(OBJEXT))
+MAIN_PUBLIC_HEADS = \
+	$(UTIL_PUBLIC_HEADS)	\
+	\
+	main/dependency.h	\
+	main/entry.h		\
+	main/field.h		\
+	main/gvars.h		\
+	main/interval_tree_generic.h \
+	main/keyword.h		\
+	main/kind.h		\
+	main/lregex.h		\
+	main/lxpath.h		\
+	main/mbcs.h		\
+	main/nestlevel.h	\
+	main/objpool.h		\
+	main/options.h		\
+	main/param.h		\
+	main/parse.h		\
+	main/promise.h		\
+	main/rbtree.h		\
+	main/rbtree_augmented.h	\
+	main/read.h		\
+	main/selectors.h	\
+	main/strlist.h		\
+	main/subparser.h	\
+	main/tokeninfo.h	\
+	main/trace.h		\
+	main/types.h		\
+	main/unwindi.h  	\
+	main/xtag.h		\
+	\
+	$(NULL)
+
+LIB_PRIVATE_HEADS = \
+	$(UTIL_PRIVATE_HEADS)	\
+	\
+	main/args_p.h		\
+	main/colprint_p.h	\
+	main/dependency_p.h	\
+	main/entry_p.h		\
+	main/error_p.h		\
+	main/field_p.h		\
+	main/flags_p.h		\
+	main/fmt_p.h		\
+	main/interactive_p.h	\
+	main/keyword_p.h	\
+	main/kind_p.h		\
+	main/lregex_p.h		\
+	main/lxpath_p.h		\
+	main/main_p.h		\
+	main/mbcs_p.h		\
+	main/options_p.h	\
+	main/param_p.h		\
+	main/parse_p.h		\
+	main/parsers_p.h	\
+	main/portable-dirent_p.h\
+	main/promise_p.h	\
+	main/ptag_p.h		\
+	main/read_p.h		\
+	main/script_p.h		\
+	main/sort_p.h		\
+	main/stats_p.h		\
+	main/subparser_p.h	\
+	main/trashbox_p.h	\
+	main/utf8_str.h		\
+	main/writer_p.h		\
+	main/xtag_p.h		\
+	\
+	$(NULL)
+
+LIB_HEADS = main/ctags.h $(MAIN_PUBLIC_HEADS) $(LIB_PRIVATE_HEADS) \
+	$(MIO_HEADS) $(NULL) $(am__append_9)
+LIB_SRCS = $(UTIL_SRCS) main/args.c main/colprint.c main/dependency.c \
+	main/entry.c main/entry_private.c main/error.c main/field.c \
+	main/flags.c main/fmt.c main/keyword.c main/kind.c \
+	main/lregex.c main/lregex-default.c main/lxpath.c main/main.c \
+	main/mbcs.c main/nestlevel.c main/objpool.c main/options.c \
+	main/param.c main/parse.c main/portable-scandir.c \
+	main/promise.c main/ptag.c main/rbtree.c main/read.c \
+	main/script.c main/seccomp.c main/selectors.c main/sort.c \
+	main/stats.c main/strlist.c main/trace.c main/tokeninfo.c \
+	main/unwindi.c main/utf8_str.c main/writer.c \
+	main/writer-etags.c main/writer-ctags.c main/writer-json.c \
+	main/writer-xref.c main/xtag.c $(TXT2CSTR_SRCS) \
+	$(REPOINFO_SRCS) $(MIO_SRCS) $(NULL) $(am__append_8)
+CMDLINE_HEADS = 
+CMDLINE_SRCS = \
+	main/cmd.c \
+	\
+	$(NULL)
+
+DEBUG_HEADS = main/debug.h
+DEBUG_SRCS = main/debug.c
+MINI_GEANY_HEADS = 
+MINI_GEANY_SRCS = \
+	main/mini-geany.c \
+	\
+	$(NULL)
+
+OPTSCRIPT_SRCS = \
+	extra-cmds/optscript-repl.c \
+	\
+	$(NULL)
+
+OPTSCRIPT_OBJS = $(OPTSCRIPT_SRCS:.c=.$(OBJEXT))
+OPTLIB2C_PCRE2_INPUT = \
+   optlib/rdoc.ctags         \
+   \
+   $(NULL)
+
+OPTLIB2C_PCRE2_SRCS = $(OPTLIB2C_PCRE2_INPUT:.ctags=.c)
+OPTLIB2C_INPUT = \
+	optlib/cmake.ctags			\
+	optlib/ctags-optlib.ctags		\
+	optlib/elixir.ctags			\
+	optlib/forth.ctags			\
+	optlib/gdbinit.ctags			\
+	optlib/gperf.ctags			\
+	optlib/inko.ctags			\
+	optlib/iPythonCell.ctags		\
+	optlib/kconfig.ctags			\
+	optlib/lex.ctags			\
+	optlib/man.ctags			\
+	optlib/meson.ctags			\
+	optlib/mesonOptions.ctags		\
+	optlib/org.ctags			\
+	optlib/passwd.ctags			\
+	optlib/pkgConfig.ctags			\
+	optlib/pod.ctags			\
+	optlib/puppetManifest.ctags		\
+	optlib/qemuhx.ctags			\
+	optlib/rpmMacros.ctags			\
+	optlib/scss.ctags			\
+	optlib/systemtap.ctags			\
+	optlib/terraform.ctags			\
+	optlib/terraformvariables.ctags		\
+	optlib/yacc.ctags			\
+	\
+	$(NULL)
+
+OPTLIB2C_SRCS = $(OPTLIB2C_INPUT:.ctags=.c)
+TXT2CSTR_INPUT = \
+	main/CommonPrelude.ps			\
+	\
+	$(NULL)
+
+TXT2CSTR_SRCS = $(TXT2CSTR_INPUT:.ps=.c)
+PEG_INPUT = \
+       peg/varlink.peg				\
+       peg/kotlin.peg				\
+       peg/thrift.peg				\
+       peg/elm.peg					\
+       \
+       $(NULL)
+
+PEG_SRCS = $(PEG_INPUT:.peg=.c)
+PEG_HEADS = $(PEG_INPUT:.peg=.h)
+PEG_EXTRA_HEADS = peg/peg_common.h $(PEG_INPUT:.peg=_pre.h) $(PEG_INPUT:.peg=_post.h)
+PEG_OBJS = $(PEG_SRCS:.c=.$(OBJEXT))
+PARSER_HEADS = parsers/autoconf.h parsers/cpreprocessor.h \
+	parsers/cxx/cxx_debug.h parsers/cxx/cxx_keyword.h \
+	parsers/cxx/cxx_parser_internal.h parsers/cxx/cxx_parser.h \
+	parsers/cxx/cxx_scope.h parsers/cxx/cxx_side_chain.h \
+	parsers/cxx/cxx_subparser.h \
+	parsers/cxx/cxx_subparser_internal.h parsers/cxx/cxx_tag.h \
+	parsers/cxx/cxx_token.h parsers/cxx/cxx_token_chain.h \
+	parsers/bibtex.h parsers/frontmatter.h parsers/iniconf.h \
+	parsers/jscript.h parsers/m4.h parsers/make.h \
+	parsers/markdown.h parsers/perl.h parsers/r.h parsers/ruby.h \
+	parsers/sh.h parsers/tcl.h parsers/tex.h $(NULL) \
+	$(am__append_5) $(am__append_7) $(am__append_11) \
+	$(PEG_EXTRA_HEADS)
+PARSER_SRCS = parsers/abaqus.c parsers/abc.c parsers/ada.c \
+	parsers/ant.c parsers/asciidoc.c parsers/asm.c parsers/asp.c \
+	parsers/autoconf.c parsers/autoit.c parsers/automake.c \
+	parsers/awk.c parsers/basic.c parsers/bats.c parsers/beta.c \
+	parsers/biblatex.c parsers/bibtex.c parsers/c-based.c \
+	parsers/clojure.c parsers/css.c parsers/cobol.c \
+	parsers/cpreprocessor.c parsers/cxx/cxx.c \
+	parsers/cxx/cxx_debug.c parsers/cxx/cxx_debug_type.c \
+	parsers/cxx/cxx_keyword.c parsers/cxx/cxx_parser.c \
+	parsers/cxx/cxx_parser_block.c \
+	parsers/cxx/cxx_parser_function.c \
+	parsers/cxx/cxx_parser_lambda.c \
+	parsers/cxx/cxx_parser_module.c \
+	parsers/cxx/cxx_parser_namespace.c \
+	parsers/cxx/cxx_parser_template.c \
+	parsers/cxx/cxx_parser_tokenizer.c \
+	parsers/cxx/cxx_parser_typedef.c \
+	parsers/cxx/cxx_parser_using.c \
+	parsers/cxx/cxx_parser_variable.c parsers/cxx/cxx_qtmoc.c \
+	parsers/cxx/cxx_scope.c parsers/cxx/cxx_side_chain.c \
+	parsers/cxx/cxx_subparser.c parsers/cxx/cxx_tag.c \
+	parsers/cxx/cxx_token.c parsers/cxx/cxx_token_chain.c \
+	parsers/diff.c parsers/dosbatch.c parsers/dtd.c parsers/dts.c \
+	parsers/eiffel.c parsers/erlang.c parsers/falcon.c \
+	parsers/flex.c parsers/fortran.c parsers/frontmatter.c \
+	parsers/fypp.c parsers/gdscript.c parsers/gemspec.c \
+	parsers/go.c parsers/haskell.c parsers/haxe.c parsers/html.c \
+	parsers/iniconf.c parsers/itcl.c parsers/jprop.c \
+	parsers/jscript.c parsers/json.c parsers/julia.c \
+	parsers/ldscript.c parsers/lisp.c parsers/lua.c parsers/m4.c \
+	parsers/make.c parsers/markdown.c parsers/matlab.c \
+	parsers/myrddin.c parsers/nsis.c parsers/objc.c \
+	parsers/ocaml.c parsers/pascal.c parsers/perl.c \
+	parsers/perl-function-parameters.c parsers/perl-moose.c \
+	parsers/php.c parsers/powershell.c parsers/protobuf.c \
+	parsers/python.c parsers/pythonloggingconfig.c \
+	parsers/quarto.c parsers/r-r6class.c parsers/r-s4class.c \
+	parsers/r.c parsers/rake.c parsers/raku.c parsers/rexx.c \
+	parsers/rmarkdown.c parsers/robot.c parsers/rpmspec.c \
+	parsers/rspec.c parsers/rst.c parsers/ruby.c parsers/rust.c \
+	parsers/scheme.c parsers/sh.c parsers/slang.c parsers/sml.c \
+	parsers/sql.c parsers/systemdunit.c parsers/tcl.c \
+	parsers/tcloo.c parsers/tex.c parsers/tex-beamer.c \
+	parsers/ttcn.c parsers/txt2tags.c parsers/typescript.c \
+	parsers/v.c parsers/vera.c parsers/verilog.c parsers/vhdl.c \
+	parsers/vim.c parsers/windres.c parsers/yumrepo.c \
+	$(OPTLIB2C_SRCS) $(NULL) $(am__append_4) $(am__append_6) \
+	$(am__append_10)
+XML_HEADS = parsers/xml.h
+XML_SRCS = \
+	parsers/maven2.c		\
+	parsers/dbusintrospect.c	\
+	parsers/glade.c			\
+	parsers/svg.c			\
+	parsers/plist.c			\
+	parsers/relaxng.c		\
+	parsers/xml.c			\
+	parsers/xrc.c			\
+	parsers/xslt.c			\
+	\
+	$(NULL)
+
+YAML_HEADS = parsers/yaml.h
+YAML_SRCS = \
+	parsers/yaml.c		\
+	\
+	parsers/openapi.c	\
+	\
+	parsers/ansibleplaybook.c	\
+	\
+	parsers/yamlfrontmatter.c	\
+	\
+	parsers/i18nrubygem.c	\
+	\
+	$(NULL)
+
+PCRE2_HEADS = 
+PCRE2_SRCS = \
+	    main/lregex-pcre2.c \
+	    \
+	    $(NULL)
+
+OPTSCRIPT_DSL_HEADS = \
+	dsl/es.h \
+	dsl/optscript.h \
+	\
+	$(NULL)
+
+OPTSCRIPT_DSL_SRCS = \
+	dsl/es.c \
+	dsl/optscript.c \
+	\
+	$(NULL)
+
+OPTSCRIPT_DSL_OBJS = $(OPTSCRIPT_DSL_SRCS:.c=.$(OBJEXT))
+READTAGS_DSL_HEADS = \
+	dsl/es.h \
+	dsl/dsl.h \
+	dsl/formatter.h \
+	dsl/qualifier.h \
+	dsl/sorter.h \
+	\
+	$(MIO_HEADS) \
+	\
+	$(NULL)
+
+READTAGS_DSL_SRCS = \
+	dsl/es.c \
+	dsl/dsl.c \
+	dsl/formatter.c \
+	dsl/qualifier.c \
+	dsl/sorter.c \
+	\
+	$(MIO_SRCS) \
+	\
+	$(NULL)
+
+READTAGS_DSL_OBJS = $(READTAGS_DSL_SRCS:.c=.$(OBJEXT))
+READTAGS_SRCS = \
+	libreadtags/readtags.c      \
+	extra-cmds/printtags.c  \
+	extra-cmds/readtags-cmd.c  \
+	extra-cmds/readtags-stub.c \
+	\
+	$(NULL)
+
+READTAGS_HEADS = \
+	libreadtags/readtags.h \
+	extra-cmds/printtags.h  \
+	extra-cmds/readtags-stub.h \
+	\
+	$(NULL)
+
+READTAGS_OBJS = $(READTAGS_SRCS:.c=.$(OBJEXT))
+PACKCC_SRC = misc/packcc/src/packcc.c
+PACKCC_OBJ = $(PACKCC_SRC:.c=.$(OBJEXT))
+WIN32_HEADS = main/e_msoft.h
+WIN32_SRCS = win32/mkstemp/mkstemp.c
+WIN32_OBJS = $(WIN32_SRCS:.c=.$(OBJEXT))
+
+# common to MVC and MINGW
+COMMON_GNULIB_HEADS = \
+	gnulib/regex.h			\
+	gnulib/fnmatch.h		\
+	\
+	$(NULL)
+
+COMMON_GNULIB_SRCS = \
+	gnulib/regex.c			\
+	gnulib/nl_langinfo.c		\
+	gnulib/setlocale_null.c		\
+	gnulib/malloc/dynarray_resize.c	\
+	gnulib/fnmatch.c		\
+	gnulib/mempcpy.c		\
+	gnulib/wmempcpy.c		\
+	\
+	$(NULL)
+
+MVC_GNULIB_HEADS = \
+	$(COMMON_GNULIB_HEADS)		\
+	\
+	$(NULL)
+
+MVC_GNULIB_SRCS = \
+	$(COMMON_GNULIB_SRCS)		\
+	\
+	$(NULL)
+
+MINGW_GNULIB_HEADS = \
+	$(COMMON_GNULIB_HEADS)		\
+	\
+	$(NULL)
+
+MINGW_GNULIB_SRCS = \
+	$(COMMON_GNULIB_SRCS)		\
+	gnulib/localeconv.c		\
+	\
+	$(NULL)
+
+ENVIRONMENT_HEADS = 
+ENVIRONMENT_SRCS = 
+ALL_LIB_HEADS = $(LIB_HEADS) $(PARSER_HEADS) $(DEBUG_HEADS) $(DSL_HEADS) $(OPTSCRIPT_DSL_HEADS)
+ALL_LIB_SRCS = $(LIB_SRCS) $(PARSER_SRCS) $(DEBUG_SRCS) $(DSL_SRCS) $(OPTSCRIPT_DSL_SRCS)
+ALL_LIB_OBJS = \
+	$(ALL_LIB_SRCS:.c=.$(OBJEXT)) \
+	$(LIBOBJS)
+
+ALL_HEADS = $(ALL_LIB_HEADS) $(CMDLINE_HEADS)
+ALL_SRCS = $(ALL_LIB_SRCS) $(CMDLINE_SRCS)
+ALL_OBJS = \
+	$(ALL_SRCS:.c=.$(OBJEXT)) \
+	$(LIBOBJS)
+
+PACKCC_FILES = misc/packcc/.gitignore   \
+	       misc/packcc/README.md    \
+	       misc/packcc/LICENSE      \
+	       misc/packcc/src/packcc.c \
+	       \
+	       $(NULL)
+
+EXTRA_DIST = README.md NEWS.rst autogen.sh misc/optlib2c \
+	.ctags.d/exclusion.ctags .dir-locals.el .editorconfig .gdbinit \
+	.gitignore .indent.pro .uncrustify.cfg \
+	misc/ctags-optlib-mode.el misc/mk-interactive-request.sh \
+	misc/roundtrip misc/tinst $(PACKCC_FILES) \
+	misc/validators/validator-jq \
+	misc/validators/validator-KNOWN-INVALIDATION \
+	misc/validators/validator-NONE \
+	misc/validators/validator-puppet $(WIN32_HEADS) $(WIN32_SRCS) \
+	mk_mingw.mak mk_mvc.mak \
+	win32/mkstemp/COPYING.MinGW-w64-runtime.txt win32/ctags.rc \
+	win32/ctags.exe.manifest win32/resource.h \
+	win32/ctags_vs2013.sln win32/ctags_vs2013.vcxproj \
+	win32/ctags_vs2013.vcxproj.filters \
+	win32/ctags_vs2013.vcxproj.in \
+	win32/ctags_vs2013.vcxproj.filters.in win32/GNUmakefile \
+	win32/gen-repoinfo.bat misc/txt2cstr $(PEG_INPUT) \
+	$(OPTLIB2C_INPUT) $(OPTLIB2C_PCRE2_INPUT) $(TXT2CSTR_INPUT) \
+	docs Tmain Units m4/gnulib-cache.m4 misc/units misc/units.py \
+	misc/man-test.py misc/tlib misc/mini-geany.expected
+CLEANFILES = $(PACKCC) $(REPOINFO_HEADS) $(PEG_SRCS) $(PEG_HEADS)
+MOSTLYCLEANFILES = $(am__append_19)
+MAINTAINERCLEANFILES = autom4te.cache
+noinst_LIBRARIES = libctags.a libutil.a
+AM_LDFLAGS = $(EXTRA_LDFLAGS)
+
+# packcc always uses native compiler even when cross-compiling.
+# packcc cannot use the standard Automake rule.
+PACKCC_CPPFLAGS_FOR_BUILD = -fsigned-char $(am__append_1)
+PACKCC = $(top_builddir)/packcc$(BUILD_EXEEXT)
+cc4b_verbose = $(cc4b_verbose_$(V))
+cc4b_verbose_ = $(cc4b_verbose_$(AM_DEFAULT_VERBOSITY))
+cc4b_verbose_0 = @echo CC4BUILD "  $@";
+readtags_CPPFLAGS = -I. -I$(srcdir) -I$(srcdir)/main \
+	-I$(srcdir)/libreadtags $(am__append_3) \
+	$(GNULIB_CPPFLAGS) -DREADTAGS_DSL \
+	-I$(srcdir)/dsl
+readtags_CFLAGS = $(EXTRA_CFLAGS) $(WARNING_CFLAGS) $(COVERAGE_CFLAGS)
+dist_readtags_SOURCES = $(READTAGS_SRCS) \
+	$(READTAGS_HEADS) $(READTAGS_DSL_SRCS) \
+	$(READTAGS_DSL_HEADS)
+readtags_LDADD = $(GNULIB_LIBS) libutil.a
+libutil_a_CPPFLAGS = -I$(srcdir) -I$(srcdir)/main $(am__append_12)
+libutil_a_CFLAGS = $(EXTRA_CFLAGS) $(WARNING_CFLAGS) \
+	$(COVERAGE_CFLAGS)
+dist_libutil_a_SOURCES = $(UTIL_HEADS) $(UTIL_SRCS)
+utiltest_CPPFLAGS = -I$(srcdir) -I$(srcdir)/main $(am__append_13)
+utiltest_CFLAGS = $(EXTRA_CFLAGS) $(WARNING_CFLAGS) $(COVERAGE_CFLAGS)
+utiltest_LDADD = libutil.a
+dist_utiltest_SOURCES = $(UTILTEST_HEADS) $(UTILTEST_SRCS)
+libctags_a_CPPFLAGS = -I. -I$(srcdir) -I$(srcdir)/main -I$(srcdir)/dsl \
+	-I$(srcdir)/peg -DHAVE_PACKCC $(am__append_14) \
+	$(am__append_15) $(GNULIB_CPPFLAGS) -DHAVE_REPOINFO_H
+libctags_a_CFLAGS = $(EXTRA_CFLAGS) $(WARNING_CFLAGS) \
+	$(COVERAGE_CFLAGS) $(CGCC_CFLAGS) $(LIBXML_CFLAGS) \
+	$(JANSSON_CFLAGS) $(LIBYAML_CFLAGS) $(SECCOMP_CFLAGS) \
+	$(PCRE2_CFLAGS)
+nodist_libctags_a_SOURCES = $(REPOINFO_HEADS) $(PEG_SRCS) $(PEG_HEADS)
+BUILT_SOURCES = $(REPOINFO_HEADS)
+EXTRA_libctags_a_DEPENDENCIES = $(GNULIB_LIBS)
+repoinfo_verbose = $(repoinfo_verbose_$(V))
+repoinfo_verbose_ = $(repoinfo_verbose_$(AM_DEFAULT_VERBOSITY))
+repoinfo_verbose_0 = @echo REPOINFO "  $@";
+GEN_REPOINFO = $(srcdir)/misc/gen-repoinfo
+SUFFIXES = $(am__append_16) $(am__append_17) .peg
+optlib2c_verbose = $(optlib2c_verbose_$(V))
+optlib2c_verbose_ = $(optlib2c_verbose_$(AM_DEFAULT_VERBOSITY))
+optlib2c_verbose_0 = @echo OPTLIB2C "  $@";
+OPTLIB2C = $(srcdir)/misc/optlib2c
+OPTLIB2C_DIR = optlib
+txt2cstr_verbose = $(txt2cstr_verbose_$(V))
+txt2cstr_verbose_ = $(txt2cstr_verbose_$(AM_DEFAULT_VERBOSITY))
+txt2cstr_verbose_0 = @echo TXT2CSTR "  $@";
+TXT2CSTR = $(srcdir)/misc/txt2cstr
+TXT2CSTR_DIR = main
+packcc_verbose = $(packcc_verbose_$(V))
+packcc_verbose_ = $(packcc_verbose_$(AM_DEFAULT_VERBOSITY))
+packcc_verbose_0 = @echo PACKCC "    $@";
+dist_libctags_a_SOURCES = $(ALL_LIB_HEADS) $(ALL_LIB_SRCS)
+ctags_CPPFLAGS = $(libctags_a_CPPFLAGS)
+ctags_CFLAGS = $(libctags_a_CFLAGS)
+ctags_LDADD = libctags.a $(GNULIB_LIBS) $(LIBXML_LIBS) $(JANSSON_LIBS) \
+	$(LIBYAML_LIBS) $(SECCOMP_LIBS) $(ICONV_LIBS) $(PCRE2_LIBS) \
+	$(am__append_18)
+dist_ctags_SOURCES = $(CMDLINE_HEADS) $(CMDLINE_SRCS)
+#RES_OBJ = win32/ctags.res.o
+#windres_verbose = $(windres_verbose_$(V))
+#windres_verbose_ = $(windres_verbose_$(AM_DEFAULT_VERBOSITY))
+#windres_verbose_0 = @echo WINDRES "   $@";
+mini_geany_CPPFLAGS = $(libctags_a_CPPFLAGS)
+mini_geany_CFLAGS = $(libctags_a_CFLAGS)
+mini_geany_LDADD = libctags.a $(GNULIB_LIBS) $(LIBXML_LIBS) \
+	$(JANSSON_LIBS) $(LIBYAML_LIBS) $(SECCOMP_LIBS) $(ICONV_LIBS) \
+	$(PCRE2_LIBS)
+mini_geany_SOURCES = $(MINI_GEANY_HEADS) $(MINI_GEANY_SRCS)
+optscript_CPPFLAGS = $(libctags_a_CPPFLAGS)
+optscript_CFLAGS = $(libctags_a_CFLAGS)
+# TODO: remove these dependencies from optscript command.
+optscript_LDADD = libctags.a $(GNULIB_LIBS) $(LIBXML_LIBS) \
+	$(JANSSON_LIBS) $(LIBYAML_LIBS) $(SECCOMP_LIBS) $(ICONV_LIBS) \
+	$(PCRE2_LIBS)
+optscript_SOURCES = $(OPTSCRIPT_SRCS)
+MAN_TEST_TMPDIR = ManTest
+CTAGS_TEST = ./ctags$(EXEEXT)
+READTAGS_TEST = ./readtags$(EXEEXT)
+MINI_GEANY_TEST = ./mini-geany$(EXEEXT)
+OPTSCRIPT_TEST = ./optscript$(EXEEXT)
+UTILTEST_TEST = ./utiltest$(EXEEXT)
+
+# Make these macros empty from make's command line
+# if you don't want to (re)build these executables
+# before testing.
+# e.g.
+#
+#    $ make units CTAGS_DEP=
+#
+CTAGS_DEP = $(CTAGS_TEST)
+READTAGS_DEP = $(READTAGS_TEST)
+MINI_GEANY_DEP = $(MINI_GEANY_TEST)
+OPTSCRIPT_DEP = $(OPTSCRIPT_TEST)
+UTILTEST_DEP = $(UTILTEST_TEST)
+#TIMEOUT = 0
+TIMEOUT = 1
+LANGUAGES = 
+CATEGORIES = 
+UNITS = 
+PMAP = 
+SILENT = $(SILENT_$(V))
+SILENT_ = $(SILENT_$(AM_DEFAULT_VERBOSITY))
+SILENT_0 = @
+V_RUN = $(V_RUN_$(V))
+V_RUN_ = $(V_RUN_$(AM_DEFAULT_VERBOSITY))
+V_RUN_0 = @echo "  RUN      $@";
+
+#
+# Cppcheck
+#
+CPPCHECK_DEFS = -DHAVE_LIBYAML -DHAVE_LIBXML -DHAVE_COPROC -DHAVE_DECL___ENVIRON
+CPPCHECK_UNDEFS = -UDEBUG -UMIO_DEBUG -UCXX_DEBUGGING_ENABLED
+CPPCHECK_FLAGS = --enable=all
+
+# check if generated files are committed.
+#   Note: "make -B" cannot be used here, since it reruns automake
+chkgen_verbose = $(chkgen_verbose_$(V))
+chkgen_verbose_ = $(chkgen_verbose_$(AM_DEFAULT_VERBOSITY))
+chkgen_verbose_0 = @echo CHKGEN "    $@";
+cgok = echo "<ok>       $@:"
+cgerr = echo "<ERROR>    $@:"
+cgskip = echo "<skip>     $@:"
+recover_side_effects = cg-force-optlib2c-srcs cg-force-txt2cstr-srcs cg-force-man-docs
+CTAGS_PROG = $(CTAGS_NAME_EXECUTABLE)
+all: $(BUILT_SOURCES) config.h
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
+.SUFFIXES: .ctags .ps .peg .c .h .o .obj
 am--refresh: Makefile
 	@:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/act.mk $(top_srcdir)/source.mak $(top_srcdir)/makefiles/testing.mak $(top_srcdir)/makefiles/help.mak $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
-	      echo ' cd $(srcdir) && $(AUTOMAKE) --gnu'; \
-	      $(am__cd) $(srcdir) && $(AUTOMAKE) --gnu \
+	      echo ' cd $(srcdir) && $(AUTOMAKE) --foreign'; \
+	      $(am__cd) $(srcdir) && $(AUTOMAKE) --foreign \
 		&& exit 0; \
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu Makefile
+	  $(AUTOMAKE) --foreign Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -261,6 +2379,7 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__maybe_remake_depfiles)'; \
 	    cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__maybe_remake_depfiles);; \
 	esac;
+$(top_srcdir)/act.mk $(top_srcdir)/source.mak $(top_srcdir)/makefiles/testing.mak $(top_srcdir)/makefiles/help.mak $(am__empty):
 
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
@@ -270,14 +2389,4446 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
+
+config.h: stamp-h1
+	@test -f $@ || rm -f stamp-h1
+	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) stamp-h1
+
+stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
+	@rm -f stamp-h1
+	cd $(top_builddir) && $(SHELL) ./config.status config.h
+$(srcdir)/config.h.in:  $(am__configure_deps) 
+	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
+	rm -f stamp-h1
+	touch $@
+
+distclean-hdr:
+	-rm -f config.h stamp-h1
 GNUmakefile: $(top_builddir)/config.status $(srcdir)/GNUmakefile.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-tags TAGS:
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
+	if test -n "$$list"; then \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(bindir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(bindir)" || exit 1; \
+	fi; \
+	for p in $$list; do echo "$$p $$p"; done | \
+	sed 's/$(EXEEXT)$$//' | \
+	while read p p1; do if test -f $$p \
+	  ; then echo "$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n;h' \
+	    -e 's|.*|.|' \
+	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
+	sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
+	    else { print "f", $$3 "/" $$4, $$1; } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	    test -z "$$files" || { \
+	      echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
+	      $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
+	    } \
+	; done
 
-ctags CTAGS:
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
+	      -e 's/$$/$(EXEEXT)/' \
+	`; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(bindir)" && rm -f $$files
 
-cscope cscopelist:
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
+clean-noinstPROGRAMS:
+	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+main/$(am__dirstamp):
+	@$(MKDIR_P) main
+	@: > main/$(am__dirstamp)
+main/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) main/$(DEPDIR)
+	@: > main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-fname.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-htable.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-numarray.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-ptrarray.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-routines.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-trashbox.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-vstring.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-args.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-colprint.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-dependency.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-entry.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-entry_private.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-error.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-field.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-flags.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-fmt.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-keyword.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-kind.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-lregex.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-lregex-default.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-lxpath.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-main.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-mbcs.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-nestlevel.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-objpool.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-options.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-param.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-parse.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-portable-scandir.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-promise.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-ptag.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-rbtree.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-read.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-script.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-seccomp.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-selectors.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-sort.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-stats.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-strlist.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-trace.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-tokeninfo.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-unwindi.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-utf8_str.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-writer.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-writer-etags.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-writer-ctags.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-writer-json.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-writer-xref.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-xtag.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-CommonPrelude.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-repoinfo.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-mio.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+parsers/$(am__dirstamp):
+	@$(MKDIR_P) parsers
+	@: > parsers/$(am__dirstamp)
+parsers/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) parsers/$(DEPDIR)
+	@: > parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-abaqus.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-abc.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-ada.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-ant.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-asciidoc.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-asm.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-asp.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-autoconf.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-autoit.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-automake.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-awk.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-basic.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-bats.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-beta.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-biblatex.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-bibtex.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-c-based.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-clojure.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-css.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-cobol.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-cpreprocessor.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/$(am__dirstamp):
+	@$(MKDIR_P) parsers/cxx
+	@: > parsers/cxx/$(am__dirstamp)
+parsers/cxx/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) parsers/cxx/$(DEPDIR)
+	@: > parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx.$(OBJEXT): parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_debug.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_debug_type.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_keyword.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_block.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_function.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_lambda.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_module.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_namespace.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_template.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_tokenizer.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_typedef.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_using.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_parser_variable.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_qtmoc.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_scope.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_side_chain.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_subparser.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_tag.$(OBJEXT): parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_token.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/cxx/libctags_a-cxx_token_chain.$(OBJEXT):  \
+	parsers/cxx/$(am__dirstamp) \
+	parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-diff.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-dosbatch.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-dtd.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-dts.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-eiffel.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-erlang.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-falcon.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-flex.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-fortran.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-frontmatter.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-fypp.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-gdscript.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-gemspec.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-go.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-haskell.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-haxe.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-html.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-iniconf.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-itcl.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-jprop.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-jscript.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-json.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-julia.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-ldscript.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-lisp.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-lua.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-m4.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-make.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-markdown.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-matlab.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-myrddin.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-nsis.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-objc.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-ocaml.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-pascal.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-perl.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-perl-function-parameters.$(OBJEXT):  \
+	parsers/$(am__dirstamp) parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-perl-moose.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-php.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-powershell.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-protobuf.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-python.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-pythonloggingconfig.$(OBJEXT):  \
+	parsers/$(am__dirstamp) parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-quarto.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-r-r6class.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-r-s4class.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-r.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-rake.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-raku.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-rexx.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-rmarkdown.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-robot.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-rpmspec.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-rspec.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-rst.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-ruby.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-rust.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-scheme.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-sh.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-slang.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-sml.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-sql.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-systemdunit.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-tcl.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-tcloo.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-tex.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-tex-beamer.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-ttcn.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-txt2tags.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-typescript.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-v.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-vera.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-verilog.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-vhdl.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-vim.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-windres.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-yumrepo.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+optlib/$(am__dirstamp):
+	@$(MKDIR_P) optlib
+	@: > optlib/$(am__dirstamp)
+optlib/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) optlib/$(DEPDIR)
+	@: > optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-cmake.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-ctags-optlib.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-elixir.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-forth.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-gdbinit.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-gperf.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-inko.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-iPythonCell.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-kconfig.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-lex.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-man.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-meson.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-mesonOptions.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-org.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-passwd.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-pkgConfig.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-pod.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-puppetManifest.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-qemuhx.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-rpmMacros.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-scss.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-systemtap.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-terraform.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-terraformvariables.$(OBJEXT):  \
+	optlib/$(am__dirstamp) optlib/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-yacc.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-lregex-pcre2.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+optlib/libctags_a-rdoc.$(OBJEXT): optlib/$(am__dirstamp) \
+	optlib/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-maven2.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-dbusintrospect.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-glade.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-svg.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-plist.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-relaxng.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-xml.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-xrc.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-xslt.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-yaml.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-openapi.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-ansibleplaybook.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-yamlfrontmatter.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+parsers/libctags_a-i18nrubygem.$(OBJEXT): parsers/$(am__dirstamp) \
+	parsers/$(DEPDIR)/$(am__dirstamp)
+main/libctags_a-debug.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+dsl/$(am__dirstamp):
+	@$(MKDIR_P) dsl
+	@: > dsl/$(am__dirstamp)
+dsl/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) dsl/$(DEPDIR)
+	@: > dsl/$(DEPDIR)/$(am__dirstamp)
+dsl/libctags_a-es.$(OBJEXT): dsl/$(am__dirstamp) \
+	dsl/$(DEPDIR)/$(am__dirstamp)
+dsl/libctags_a-optscript.$(OBJEXT): dsl/$(am__dirstamp) \
+	dsl/$(DEPDIR)/$(am__dirstamp)
+peg/$(am__dirstamp):
+	@$(MKDIR_P) peg
+	@: > peg/$(am__dirstamp)
+peg/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) peg/$(DEPDIR)
+	@: > peg/$(DEPDIR)/$(am__dirstamp)
+peg/libctags_a-varlink.$(OBJEXT): peg/$(am__dirstamp) \
+	peg/$(DEPDIR)/$(am__dirstamp)
+peg/libctags_a-kotlin.$(OBJEXT): peg/$(am__dirstamp) \
+	peg/$(DEPDIR)/$(am__dirstamp)
+peg/libctags_a-thrift.$(OBJEXT): peg/$(am__dirstamp) \
+	peg/$(DEPDIR)/$(am__dirstamp)
+peg/libctags_a-elm.$(OBJEXT): peg/$(am__dirstamp) \
+	peg/$(DEPDIR)/$(am__dirstamp)
+
+libctags.a: $(libctags_a_OBJECTS) $(libctags_a_DEPENDENCIES) $(EXTRA_libctags_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libctags.a
+	$(AM_V_AR)$(libctags_a_AR) libctags.a $(libctags_a_OBJECTS) $(libctags_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libctags.a
+main/libutil_a-fname.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libutil_a-htable.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libutil_a-numarray.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libutil_a-ptrarray.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libutil_a-routines.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libutil_a-trashbox.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+main/libutil_a-vstring.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+
+libutil.a: $(libutil_a_OBJECTS) $(libutil_a_DEPENDENCIES) $(EXTRA_libutil_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libutil.a
+	$(AM_V_AR)$(libutil_a_AR) libutil.a $(libutil_a_OBJECTS) $(libutil_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libutil.a
+main/ctags-cmd.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+
+ctags$(EXEEXT): $(ctags_OBJECTS) $(ctags_DEPENDENCIES) $(EXTRA_ctags_DEPENDENCIES) 
+	@rm -f ctags$(EXEEXT)
+	$(AM_V_CCLD)$(ctags_LINK) $(ctags_OBJECTS) $(ctags_LDADD) $(LIBS)
+main/mini_geany-mini-geany.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+
+mini-geany$(EXEEXT): $(mini_geany_OBJECTS) $(mini_geany_DEPENDENCIES) $(EXTRA_mini_geany_DEPENDENCIES) 
+	@rm -f mini-geany$(EXEEXT)
+	$(AM_V_CCLD)$(mini_geany_LINK) $(mini_geany_OBJECTS) $(mini_geany_LDADD) $(LIBS)
+extra-cmds/$(am__dirstamp):
+	@$(MKDIR_P) extra-cmds
+	@: > extra-cmds/$(am__dirstamp)
+extra-cmds/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) extra-cmds/$(DEPDIR)
+	@: > extra-cmds/$(DEPDIR)/$(am__dirstamp)
+extra-cmds/optscript-optscript-repl.$(OBJEXT):  \
+	extra-cmds/$(am__dirstamp) \
+	extra-cmds/$(DEPDIR)/$(am__dirstamp)
+
+optscript$(EXEEXT): $(optscript_OBJECTS) $(optscript_DEPENDENCIES) $(EXTRA_optscript_DEPENDENCIES) 
+	@rm -f optscript$(EXEEXT)
+	$(AM_V_CCLD)$(optscript_LINK) $(optscript_OBJECTS) $(optscript_LDADD) $(LIBS)
+libreadtags/$(am__dirstamp):
+	@$(MKDIR_P) libreadtags
+	@: > libreadtags/$(am__dirstamp)
+libreadtags/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) libreadtags/$(DEPDIR)
+	@: > libreadtags/$(DEPDIR)/$(am__dirstamp)
+libreadtags/readtags-readtags.$(OBJEXT): libreadtags/$(am__dirstamp) \
+	libreadtags/$(DEPDIR)/$(am__dirstamp)
+extra-cmds/readtags-printtags.$(OBJEXT): extra-cmds/$(am__dirstamp) \
+	extra-cmds/$(DEPDIR)/$(am__dirstamp)
+extra-cmds/readtags-readtags-cmd.$(OBJEXT):  \
+	extra-cmds/$(am__dirstamp) \
+	extra-cmds/$(DEPDIR)/$(am__dirstamp)
+extra-cmds/readtags-readtags-stub.$(OBJEXT):  \
+	extra-cmds/$(am__dirstamp) \
+	extra-cmds/$(DEPDIR)/$(am__dirstamp)
+dsl/readtags-es.$(OBJEXT): dsl/$(am__dirstamp) \
+	dsl/$(DEPDIR)/$(am__dirstamp)
+dsl/readtags-dsl.$(OBJEXT): dsl/$(am__dirstamp) \
+	dsl/$(DEPDIR)/$(am__dirstamp)
+dsl/readtags-formatter.$(OBJEXT): dsl/$(am__dirstamp) \
+	dsl/$(DEPDIR)/$(am__dirstamp)
+dsl/readtags-qualifier.$(OBJEXT): dsl/$(am__dirstamp) \
+	dsl/$(DEPDIR)/$(am__dirstamp)
+dsl/readtags-sorter.$(OBJEXT): dsl/$(am__dirstamp) \
+	dsl/$(DEPDIR)/$(am__dirstamp)
+main/readtags-mio.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+
+readtags$(EXEEXT): $(readtags_OBJECTS) $(readtags_DEPENDENCIES) $(EXTRA_readtags_DEPENDENCIES) 
+	@rm -f readtags$(EXEEXT)
+	$(AM_V_CCLD)$(readtags_LINK) $(readtags_OBJECTS) $(readtags_LDADD) $(LIBS)
+extra-cmds/utiltest-utiltest.$(OBJEXT): extra-cmds/$(am__dirstamp) \
+	extra-cmds/$(DEPDIR)/$(am__dirstamp)
+extra-cmds/utiltest-readtags-stub.$(OBJEXT):  \
+	extra-cmds/$(am__dirstamp) \
+	extra-cmds/$(DEPDIR)/$(am__dirstamp)
+main/utiltest-mio.$(OBJEXT): main/$(am__dirstamp) \
+	main/$(DEPDIR)/$(am__dirstamp)
+
+utiltest$(EXEEXT): $(utiltest_OBJECTS) $(utiltest_DEPENDENCIES) $(EXTRA_utiltest_DEPENDENCIES) 
+	@rm -f utiltest$(EXEEXT)
+	$(AM_V_CCLD)$(utiltest_LINK) $(utiltest_OBJECTS) $(utiltest_LDADD) $(LIBS)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT)
+	-rm -f dsl/*.$(OBJEXT)
+	-rm -f extra-cmds/*.$(OBJEXT)
+	-rm -f libreadtags/*.$(OBJEXT)
+	-rm -f main/*.$(OBJEXT)
+	-rm -f optlib/*.$(OBJEXT)
+	-rm -f parsers/*.$(OBJEXT)
+	-rm -f parsers/cxx/*.$(OBJEXT)
+	-rm -f peg/*.$(OBJEXT)
+
+distclean-compile:
+	-rm -f *.tab.c
+
+include dsl/$(DEPDIR)/libctags_a-es.Po # am--include-marker
+include dsl/$(DEPDIR)/libctags_a-optscript.Po # am--include-marker
+include dsl/$(DEPDIR)/readtags-dsl.Po # am--include-marker
+include dsl/$(DEPDIR)/readtags-es.Po # am--include-marker
+include dsl/$(DEPDIR)/readtags-formatter.Po # am--include-marker
+include dsl/$(DEPDIR)/readtags-qualifier.Po # am--include-marker
+include dsl/$(DEPDIR)/readtags-sorter.Po # am--include-marker
+include extra-cmds/$(DEPDIR)/optscript-optscript-repl.Po # am--include-marker
+include extra-cmds/$(DEPDIR)/readtags-printtags.Po # am--include-marker
+include extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Po # am--include-marker
+include extra-cmds/$(DEPDIR)/readtags-readtags-stub.Po # am--include-marker
+include extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Po # am--include-marker
+include extra-cmds/$(DEPDIR)/utiltest-utiltest.Po # am--include-marker
+include libreadtags/$(DEPDIR)/readtags-readtags.Po # am--include-marker
+include main/$(DEPDIR)/ctags-cmd.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-CommonPrelude.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-args.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-colprint.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-debug.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-dependency.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-entry.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-entry_private.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-error.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-field.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-flags.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-fmt.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-fname.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-htable.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-keyword.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-kind.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-lregex-default.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-lregex-pcre2.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-lregex.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-lxpath.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-main.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-mbcs.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-mio.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-nestlevel.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-numarray.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-objpool.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-options.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-param.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-parse.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-portable-scandir.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-promise.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-ptag.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-ptrarray.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-rbtree.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-read.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-repoinfo.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-routines.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-script.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-seccomp.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-selectors.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-sort.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-stats.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-strlist.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-tokeninfo.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-trace.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-trashbox.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-unwindi.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-utf8_str.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-vstring.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-writer-ctags.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-writer-etags.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-writer-json.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-writer-xref.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-writer.Po # am--include-marker
+include main/$(DEPDIR)/libctags_a-xtag.Po # am--include-marker
+include main/$(DEPDIR)/libutil_a-fname.Po # am--include-marker
+include main/$(DEPDIR)/libutil_a-htable.Po # am--include-marker
+include main/$(DEPDIR)/libutil_a-numarray.Po # am--include-marker
+include main/$(DEPDIR)/libutil_a-ptrarray.Po # am--include-marker
+include main/$(DEPDIR)/libutil_a-routines.Po # am--include-marker
+include main/$(DEPDIR)/libutil_a-trashbox.Po # am--include-marker
+include main/$(DEPDIR)/libutil_a-vstring.Po # am--include-marker
+include main/$(DEPDIR)/mini_geany-mini-geany.Po # am--include-marker
+include main/$(DEPDIR)/readtags-mio.Po # am--include-marker
+include main/$(DEPDIR)/utiltest-mio.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-cmake.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-ctags-optlib.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-elixir.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-forth.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-gdbinit.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-gperf.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-iPythonCell.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-inko.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-kconfig.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-lex.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-man.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-meson.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-mesonOptions.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-org.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-passwd.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-pkgConfig.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-pod.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-puppetManifest.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-qemuhx.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-rdoc.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-rpmMacros.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-scss.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-systemtap.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-terraform.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-terraformvariables.Po # am--include-marker
+include optlib/$(DEPDIR)/libctags_a-yacc.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-abaqus.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-abc.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-ada.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-ant.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-asciidoc.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-asm.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-asp.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-autoconf.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-autoit.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-automake.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-awk.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-basic.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-bats.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-beta.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-biblatex.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-bibtex.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-c-based.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-clojure.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-cobol.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-cpreprocessor.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-css.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-dbusintrospect.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-diff.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-dosbatch.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-dtd.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-dts.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-eiffel.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-erlang.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-falcon.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-flex.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-fortran.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-frontmatter.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-fypp.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-gdscript.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-gemspec.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-glade.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-go.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-haskell.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-haxe.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-html.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-i18nrubygem.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-iniconf.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-itcl.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-jprop.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-jscript.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-json.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-julia.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-ldscript.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-lisp.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-lua.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-m4.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-make.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-markdown.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-matlab.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-maven2.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-myrddin.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-nsis.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-objc.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-ocaml.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-openapi.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-pascal.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-perl-moose.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-perl.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-php.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-plist.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-powershell.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-protobuf.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-python.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-quarto.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-r-r6class.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-r-s4class.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-r.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-rake.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-raku.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-relaxng.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-rexx.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-rmarkdown.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-robot.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-rpmspec.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-rspec.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-rst.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-ruby.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-rust.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-scheme.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-sh.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-slang.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-sml.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-sql.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-svg.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-systemdunit.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-tcl.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-tcloo.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-tex-beamer.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-tex.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-ttcn.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-txt2tags.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-typescript.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-v.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-vera.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-verilog.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-vhdl.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-vim.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-windres.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-xml.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-xrc.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-xslt.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-yaml.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Po # am--include-marker
+include parsers/$(DEPDIR)/libctags_a-yumrepo.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Po # am--include-marker
+include parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Po # am--include-marker
+include peg/$(DEPDIR)/libctags_a-elm.Po # am--include-marker
+include peg/$(DEPDIR)/libctags_a-kotlin.Po # am--include-marker
+include peg/$(DEPDIR)/libctags_a-thrift.Po # am--include-marker
+include peg/$(DEPDIR)/libctags_a-varlink.Po # am--include-marker
+
+$(am__depfiles_remade):
+	@$(MKDIR_P) $(@D)
+	@echo '# dummy' >$@-t && $(am__mv) $@-t $@
+
+am--depfiles: $(am__depfiles_remade)
+
+.c.o:
+	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+	$(am__mv) $$depbase.Tpo $$depbase.Po
+#	$(AM_V_CC)source='$<' object='$@' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(COMPILE) -c -o $@ $<
+
+.c.obj:
+	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+	$(am__mv) $$depbase.Tpo $$depbase.Po
+#	$(AM_V_CC)source='$<' object='$@' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+main/libctags_a-fname.o: main/fname.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-fname.o -MD -MP -MF main/$(DEPDIR)/libctags_a-fname.Tpo -c -o main/libctags_a-fname.o `test -f 'main/fname.c' || echo '$(srcdir)/'`main/fname.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-fname.Tpo main/$(DEPDIR)/libctags_a-fname.Po
+#	$(AM_V_CC)source='main/fname.c' object='main/libctags_a-fname.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-fname.o `test -f 'main/fname.c' || echo '$(srcdir)/'`main/fname.c
+
+main/libctags_a-fname.obj: main/fname.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-fname.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-fname.Tpo -c -o main/libctags_a-fname.obj `if test -f 'main/fname.c'; then $(CYGPATH_W) 'main/fname.c'; else $(CYGPATH_W) '$(srcdir)/main/fname.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-fname.Tpo main/$(DEPDIR)/libctags_a-fname.Po
+#	$(AM_V_CC)source='main/fname.c' object='main/libctags_a-fname.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-fname.obj `if test -f 'main/fname.c'; then $(CYGPATH_W) 'main/fname.c'; else $(CYGPATH_W) '$(srcdir)/main/fname.c'; fi`
+
+main/libctags_a-htable.o: main/htable.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-htable.o -MD -MP -MF main/$(DEPDIR)/libctags_a-htable.Tpo -c -o main/libctags_a-htable.o `test -f 'main/htable.c' || echo '$(srcdir)/'`main/htable.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-htable.Tpo main/$(DEPDIR)/libctags_a-htable.Po
+#	$(AM_V_CC)source='main/htable.c' object='main/libctags_a-htable.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-htable.o `test -f 'main/htable.c' || echo '$(srcdir)/'`main/htable.c
+
+main/libctags_a-htable.obj: main/htable.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-htable.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-htable.Tpo -c -o main/libctags_a-htable.obj `if test -f 'main/htable.c'; then $(CYGPATH_W) 'main/htable.c'; else $(CYGPATH_W) '$(srcdir)/main/htable.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-htable.Tpo main/$(DEPDIR)/libctags_a-htable.Po
+#	$(AM_V_CC)source='main/htable.c' object='main/libctags_a-htable.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-htable.obj `if test -f 'main/htable.c'; then $(CYGPATH_W) 'main/htable.c'; else $(CYGPATH_W) '$(srcdir)/main/htable.c'; fi`
+
+main/libctags_a-numarray.o: main/numarray.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-numarray.o -MD -MP -MF main/$(DEPDIR)/libctags_a-numarray.Tpo -c -o main/libctags_a-numarray.o `test -f 'main/numarray.c' || echo '$(srcdir)/'`main/numarray.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-numarray.Tpo main/$(DEPDIR)/libctags_a-numarray.Po
+#	$(AM_V_CC)source='main/numarray.c' object='main/libctags_a-numarray.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-numarray.o `test -f 'main/numarray.c' || echo '$(srcdir)/'`main/numarray.c
+
+main/libctags_a-numarray.obj: main/numarray.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-numarray.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-numarray.Tpo -c -o main/libctags_a-numarray.obj `if test -f 'main/numarray.c'; then $(CYGPATH_W) 'main/numarray.c'; else $(CYGPATH_W) '$(srcdir)/main/numarray.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-numarray.Tpo main/$(DEPDIR)/libctags_a-numarray.Po
+#	$(AM_V_CC)source='main/numarray.c' object='main/libctags_a-numarray.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-numarray.obj `if test -f 'main/numarray.c'; then $(CYGPATH_W) 'main/numarray.c'; else $(CYGPATH_W) '$(srcdir)/main/numarray.c'; fi`
+
+main/libctags_a-ptrarray.o: main/ptrarray.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-ptrarray.o -MD -MP -MF main/$(DEPDIR)/libctags_a-ptrarray.Tpo -c -o main/libctags_a-ptrarray.o `test -f 'main/ptrarray.c' || echo '$(srcdir)/'`main/ptrarray.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-ptrarray.Tpo main/$(DEPDIR)/libctags_a-ptrarray.Po
+#	$(AM_V_CC)source='main/ptrarray.c' object='main/libctags_a-ptrarray.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-ptrarray.o `test -f 'main/ptrarray.c' || echo '$(srcdir)/'`main/ptrarray.c
+
+main/libctags_a-ptrarray.obj: main/ptrarray.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-ptrarray.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-ptrarray.Tpo -c -o main/libctags_a-ptrarray.obj `if test -f 'main/ptrarray.c'; then $(CYGPATH_W) 'main/ptrarray.c'; else $(CYGPATH_W) '$(srcdir)/main/ptrarray.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-ptrarray.Tpo main/$(DEPDIR)/libctags_a-ptrarray.Po
+#	$(AM_V_CC)source='main/ptrarray.c' object='main/libctags_a-ptrarray.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-ptrarray.obj `if test -f 'main/ptrarray.c'; then $(CYGPATH_W) 'main/ptrarray.c'; else $(CYGPATH_W) '$(srcdir)/main/ptrarray.c'; fi`
+
+main/libctags_a-routines.o: main/routines.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-routines.o -MD -MP -MF main/$(DEPDIR)/libctags_a-routines.Tpo -c -o main/libctags_a-routines.o `test -f 'main/routines.c' || echo '$(srcdir)/'`main/routines.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-routines.Tpo main/$(DEPDIR)/libctags_a-routines.Po
+#	$(AM_V_CC)source='main/routines.c' object='main/libctags_a-routines.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-routines.o `test -f 'main/routines.c' || echo '$(srcdir)/'`main/routines.c
+
+main/libctags_a-routines.obj: main/routines.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-routines.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-routines.Tpo -c -o main/libctags_a-routines.obj `if test -f 'main/routines.c'; then $(CYGPATH_W) 'main/routines.c'; else $(CYGPATH_W) '$(srcdir)/main/routines.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-routines.Tpo main/$(DEPDIR)/libctags_a-routines.Po
+#	$(AM_V_CC)source='main/routines.c' object='main/libctags_a-routines.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-routines.obj `if test -f 'main/routines.c'; then $(CYGPATH_W) 'main/routines.c'; else $(CYGPATH_W) '$(srcdir)/main/routines.c'; fi`
+
+main/libctags_a-trashbox.o: main/trashbox.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-trashbox.o -MD -MP -MF main/$(DEPDIR)/libctags_a-trashbox.Tpo -c -o main/libctags_a-trashbox.o `test -f 'main/trashbox.c' || echo '$(srcdir)/'`main/trashbox.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-trashbox.Tpo main/$(DEPDIR)/libctags_a-trashbox.Po
+#	$(AM_V_CC)source='main/trashbox.c' object='main/libctags_a-trashbox.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-trashbox.o `test -f 'main/trashbox.c' || echo '$(srcdir)/'`main/trashbox.c
+
+main/libctags_a-trashbox.obj: main/trashbox.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-trashbox.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-trashbox.Tpo -c -o main/libctags_a-trashbox.obj `if test -f 'main/trashbox.c'; then $(CYGPATH_W) 'main/trashbox.c'; else $(CYGPATH_W) '$(srcdir)/main/trashbox.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-trashbox.Tpo main/$(DEPDIR)/libctags_a-trashbox.Po
+#	$(AM_V_CC)source='main/trashbox.c' object='main/libctags_a-trashbox.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-trashbox.obj `if test -f 'main/trashbox.c'; then $(CYGPATH_W) 'main/trashbox.c'; else $(CYGPATH_W) '$(srcdir)/main/trashbox.c'; fi`
+
+main/libctags_a-vstring.o: main/vstring.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-vstring.o -MD -MP -MF main/$(DEPDIR)/libctags_a-vstring.Tpo -c -o main/libctags_a-vstring.o `test -f 'main/vstring.c' || echo '$(srcdir)/'`main/vstring.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-vstring.Tpo main/$(DEPDIR)/libctags_a-vstring.Po
+#	$(AM_V_CC)source='main/vstring.c' object='main/libctags_a-vstring.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-vstring.o `test -f 'main/vstring.c' || echo '$(srcdir)/'`main/vstring.c
+
+main/libctags_a-vstring.obj: main/vstring.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-vstring.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-vstring.Tpo -c -o main/libctags_a-vstring.obj `if test -f 'main/vstring.c'; then $(CYGPATH_W) 'main/vstring.c'; else $(CYGPATH_W) '$(srcdir)/main/vstring.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-vstring.Tpo main/$(DEPDIR)/libctags_a-vstring.Po
+#	$(AM_V_CC)source='main/vstring.c' object='main/libctags_a-vstring.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-vstring.obj `if test -f 'main/vstring.c'; then $(CYGPATH_W) 'main/vstring.c'; else $(CYGPATH_W) '$(srcdir)/main/vstring.c'; fi`
+
+main/libctags_a-args.o: main/args.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-args.o -MD -MP -MF main/$(DEPDIR)/libctags_a-args.Tpo -c -o main/libctags_a-args.o `test -f 'main/args.c' || echo '$(srcdir)/'`main/args.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-args.Tpo main/$(DEPDIR)/libctags_a-args.Po
+#	$(AM_V_CC)source='main/args.c' object='main/libctags_a-args.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-args.o `test -f 'main/args.c' || echo '$(srcdir)/'`main/args.c
+
+main/libctags_a-args.obj: main/args.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-args.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-args.Tpo -c -o main/libctags_a-args.obj `if test -f 'main/args.c'; then $(CYGPATH_W) 'main/args.c'; else $(CYGPATH_W) '$(srcdir)/main/args.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-args.Tpo main/$(DEPDIR)/libctags_a-args.Po
+#	$(AM_V_CC)source='main/args.c' object='main/libctags_a-args.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-args.obj `if test -f 'main/args.c'; then $(CYGPATH_W) 'main/args.c'; else $(CYGPATH_W) '$(srcdir)/main/args.c'; fi`
+
+main/libctags_a-colprint.o: main/colprint.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-colprint.o -MD -MP -MF main/$(DEPDIR)/libctags_a-colprint.Tpo -c -o main/libctags_a-colprint.o `test -f 'main/colprint.c' || echo '$(srcdir)/'`main/colprint.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-colprint.Tpo main/$(DEPDIR)/libctags_a-colprint.Po
+#	$(AM_V_CC)source='main/colprint.c' object='main/libctags_a-colprint.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-colprint.o `test -f 'main/colprint.c' || echo '$(srcdir)/'`main/colprint.c
+
+main/libctags_a-colprint.obj: main/colprint.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-colprint.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-colprint.Tpo -c -o main/libctags_a-colprint.obj `if test -f 'main/colprint.c'; then $(CYGPATH_W) 'main/colprint.c'; else $(CYGPATH_W) '$(srcdir)/main/colprint.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-colprint.Tpo main/$(DEPDIR)/libctags_a-colprint.Po
+#	$(AM_V_CC)source='main/colprint.c' object='main/libctags_a-colprint.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-colprint.obj `if test -f 'main/colprint.c'; then $(CYGPATH_W) 'main/colprint.c'; else $(CYGPATH_W) '$(srcdir)/main/colprint.c'; fi`
+
+main/libctags_a-dependency.o: main/dependency.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-dependency.o -MD -MP -MF main/$(DEPDIR)/libctags_a-dependency.Tpo -c -o main/libctags_a-dependency.o `test -f 'main/dependency.c' || echo '$(srcdir)/'`main/dependency.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-dependency.Tpo main/$(DEPDIR)/libctags_a-dependency.Po
+#	$(AM_V_CC)source='main/dependency.c' object='main/libctags_a-dependency.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-dependency.o `test -f 'main/dependency.c' || echo '$(srcdir)/'`main/dependency.c
+
+main/libctags_a-dependency.obj: main/dependency.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-dependency.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-dependency.Tpo -c -o main/libctags_a-dependency.obj `if test -f 'main/dependency.c'; then $(CYGPATH_W) 'main/dependency.c'; else $(CYGPATH_W) '$(srcdir)/main/dependency.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-dependency.Tpo main/$(DEPDIR)/libctags_a-dependency.Po
+#	$(AM_V_CC)source='main/dependency.c' object='main/libctags_a-dependency.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-dependency.obj `if test -f 'main/dependency.c'; then $(CYGPATH_W) 'main/dependency.c'; else $(CYGPATH_W) '$(srcdir)/main/dependency.c'; fi`
+
+main/libctags_a-entry.o: main/entry.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-entry.o -MD -MP -MF main/$(DEPDIR)/libctags_a-entry.Tpo -c -o main/libctags_a-entry.o `test -f 'main/entry.c' || echo '$(srcdir)/'`main/entry.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-entry.Tpo main/$(DEPDIR)/libctags_a-entry.Po
+#	$(AM_V_CC)source='main/entry.c' object='main/libctags_a-entry.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-entry.o `test -f 'main/entry.c' || echo '$(srcdir)/'`main/entry.c
+
+main/libctags_a-entry.obj: main/entry.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-entry.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-entry.Tpo -c -o main/libctags_a-entry.obj `if test -f 'main/entry.c'; then $(CYGPATH_W) 'main/entry.c'; else $(CYGPATH_W) '$(srcdir)/main/entry.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-entry.Tpo main/$(DEPDIR)/libctags_a-entry.Po
+#	$(AM_V_CC)source='main/entry.c' object='main/libctags_a-entry.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-entry.obj `if test -f 'main/entry.c'; then $(CYGPATH_W) 'main/entry.c'; else $(CYGPATH_W) '$(srcdir)/main/entry.c'; fi`
+
+main/libctags_a-entry_private.o: main/entry_private.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-entry_private.o -MD -MP -MF main/$(DEPDIR)/libctags_a-entry_private.Tpo -c -o main/libctags_a-entry_private.o `test -f 'main/entry_private.c' || echo '$(srcdir)/'`main/entry_private.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-entry_private.Tpo main/$(DEPDIR)/libctags_a-entry_private.Po
+#	$(AM_V_CC)source='main/entry_private.c' object='main/libctags_a-entry_private.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-entry_private.o `test -f 'main/entry_private.c' || echo '$(srcdir)/'`main/entry_private.c
+
+main/libctags_a-entry_private.obj: main/entry_private.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-entry_private.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-entry_private.Tpo -c -o main/libctags_a-entry_private.obj `if test -f 'main/entry_private.c'; then $(CYGPATH_W) 'main/entry_private.c'; else $(CYGPATH_W) '$(srcdir)/main/entry_private.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-entry_private.Tpo main/$(DEPDIR)/libctags_a-entry_private.Po
+#	$(AM_V_CC)source='main/entry_private.c' object='main/libctags_a-entry_private.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-entry_private.obj `if test -f 'main/entry_private.c'; then $(CYGPATH_W) 'main/entry_private.c'; else $(CYGPATH_W) '$(srcdir)/main/entry_private.c'; fi`
+
+main/libctags_a-error.o: main/error.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-error.o -MD -MP -MF main/$(DEPDIR)/libctags_a-error.Tpo -c -o main/libctags_a-error.o `test -f 'main/error.c' || echo '$(srcdir)/'`main/error.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-error.Tpo main/$(DEPDIR)/libctags_a-error.Po
+#	$(AM_V_CC)source='main/error.c' object='main/libctags_a-error.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-error.o `test -f 'main/error.c' || echo '$(srcdir)/'`main/error.c
+
+main/libctags_a-error.obj: main/error.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-error.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-error.Tpo -c -o main/libctags_a-error.obj `if test -f 'main/error.c'; then $(CYGPATH_W) 'main/error.c'; else $(CYGPATH_W) '$(srcdir)/main/error.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-error.Tpo main/$(DEPDIR)/libctags_a-error.Po
+#	$(AM_V_CC)source='main/error.c' object='main/libctags_a-error.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-error.obj `if test -f 'main/error.c'; then $(CYGPATH_W) 'main/error.c'; else $(CYGPATH_W) '$(srcdir)/main/error.c'; fi`
+
+main/libctags_a-field.o: main/field.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-field.o -MD -MP -MF main/$(DEPDIR)/libctags_a-field.Tpo -c -o main/libctags_a-field.o `test -f 'main/field.c' || echo '$(srcdir)/'`main/field.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-field.Tpo main/$(DEPDIR)/libctags_a-field.Po
+#	$(AM_V_CC)source='main/field.c' object='main/libctags_a-field.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-field.o `test -f 'main/field.c' || echo '$(srcdir)/'`main/field.c
+
+main/libctags_a-field.obj: main/field.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-field.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-field.Tpo -c -o main/libctags_a-field.obj `if test -f 'main/field.c'; then $(CYGPATH_W) 'main/field.c'; else $(CYGPATH_W) '$(srcdir)/main/field.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-field.Tpo main/$(DEPDIR)/libctags_a-field.Po
+#	$(AM_V_CC)source='main/field.c' object='main/libctags_a-field.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-field.obj `if test -f 'main/field.c'; then $(CYGPATH_W) 'main/field.c'; else $(CYGPATH_W) '$(srcdir)/main/field.c'; fi`
+
+main/libctags_a-flags.o: main/flags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-flags.o -MD -MP -MF main/$(DEPDIR)/libctags_a-flags.Tpo -c -o main/libctags_a-flags.o `test -f 'main/flags.c' || echo '$(srcdir)/'`main/flags.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-flags.Tpo main/$(DEPDIR)/libctags_a-flags.Po
+#	$(AM_V_CC)source='main/flags.c' object='main/libctags_a-flags.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-flags.o `test -f 'main/flags.c' || echo '$(srcdir)/'`main/flags.c
+
+main/libctags_a-flags.obj: main/flags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-flags.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-flags.Tpo -c -o main/libctags_a-flags.obj `if test -f 'main/flags.c'; then $(CYGPATH_W) 'main/flags.c'; else $(CYGPATH_W) '$(srcdir)/main/flags.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-flags.Tpo main/$(DEPDIR)/libctags_a-flags.Po
+#	$(AM_V_CC)source='main/flags.c' object='main/libctags_a-flags.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-flags.obj `if test -f 'main/flags.c'; then $(CYGPATH_W) 'main/flags.c'; else $(CYGPATH_W) '$(srcdir)/main/flags.c'; fi`
+
+main/libctags_a-fmt.o: main/fmt.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-fmt.o -MD -MP -MF main/$(DEPDIR)/libctags_a-fmt.Tpo -c -o main/libctags_a-fmt.o `test -f 'main/fmt.c' || echo '$(srcdir)/'`main/fmt.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-fmt.Tpo main/$(DEPDIR)/libctags_a-fmt.Po
+#	$(AM_V_CC)source='main/fmt.c' object='main/libctags_a-fmt.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-fmt.o `test -f 'main/fmt.c' || echo '$(srcdir)/'`main/fmt.c
+
+main/libctags_a-fmt.obj: main/fmt.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-fmt.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-fmt.Tpo -c -o main/libctags_a-fmt.obj `if test -f 'main/fmt.c'; then $(CYGPATH_W) 'main/fmt.c'; else $(CYGPATH_W) '$(srcdir)/main/fmt.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-fmt.Tpo main/$(DEPDIR)/libctags_a-fmt.Po
+#	$(AM_V_CC)source='main/fmt.c' object='main/libctags_a-fmt.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-fmt.obj `if test -f 'main/fmt.c'; then $(CYGPATH_W) 'main/fmt.c'; else $(CYGPATH_W) '$(srcdir)/main/fmt.c'; fi`
+
+main/libctags_a-keyword.o: main/keyword.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-keyword.o -MD -MP -MF main/$(DEPDIR)/libctags_a-keyword.Tpo -c -o main/libctags_a-keyword.o `test -f 'main/keyword.c' || echo '$(srcdir)/'`main/keyword.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-keyword.Tpo main/$(DEPDIR)/libctags_a-keyword.Po
+#	$(AM_V_CC)source='main/keyword.c' object='main/libctags_a-keyword.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-keyword.o `test -f 'main/keyword.c' || echo '$(srcdir)/'`main/keyword.c
+
+main/libctags_a-keyword.obj: main/keyword.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-keyword.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-keyword.Tpo -c -o main/libctags_a-keyword.obj `if test -f 'main/keyword.c'; then $(CYGPATH_W) 'main/keyword.c'; else $(CYGPATH_W) '$(srcdir)/main/keyword.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-keyword.Tpo main/$(DEPDIR)/libctags_a-keyword.Po
+#	$(AM_V_CC)source='main/keyword.c' object='main/libctags_a-keyword.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-keyword.obj `if test -f 'main/keyword.c'; then $(CYGPATH_W) 'main/keyword.c'; else $(CYGPATH_W) '$(srcdir)/main/keyword.c'; fi`
+
+main/libctags_a-kind.o: main/kind.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-kind.o -MD -MP -MF main/$(DEPDIR)/libctags_a-kind.Tpo -c -o main/libctags_a-kind.o `test -f 'main/kind.c' || echo '$(srcdir)/'`main/kind.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-kind.Tpo main/$(DEPDIR)/libctags_a-kind.Po
+#	$(AM_V_CC)source='main/kind.c' object='main/libctags_a-kind.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-kind.o `test -f 'main/kind.c' || echo '$(srcdir)/'`main/kind.c
+
+main/libctags_a-kind.obj: main/kind.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-kind.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-kind.Tpo -c -o main/libctags_a-kind.obj `if test -f 'main/kind.c'; then $(CYGPATH_W) 'main/kind.c'; else $(CYGPATH_W) '$(srcdir)/main/kind.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-kind.Tpo main/$(DEPDIR)/libctags_a-kind.Po
+#	$(AM_V_CC)source='main/kind.c' object='main/libctags_a-kind.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-kind.obj `if test -f 'main/kind.c'; then $(CYGPATH_W) 'main/kind.c'; else $(CYGPATH_W) '$(srcdir)/main/kind.c'; fi`
+
+main/libctags_a-lregex.o: main/lregex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-lregex.o -MD -MP -MF main/$(DEPDIR)/libctags_a-lregex.Tpo -c -o main/libctags_a-lregex.o `test -f 'main/lregex.c' || echo '$(srcdir)/'`main/lregex.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-lregex.Tpo main/$(DEPDIR)/libctags_a-lregex.Po
+#	$(AM_V_CC)source='main/lregex.c' object='main/libctags_a-lregex.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-lregex.o `test -f 'main/lregex.c' || echo '$(srcdir)/'`main/lregex.c
+
+main/libctags_a-lregex.obj: main/lregex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-lregex.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-lregex.Tpo -c -o main/libctags_a-lregex.obj `if test -f 'main/lregex.c'; then $(CYGPATH_W) 'main/lregex.c'; else $(CYGPATH_W) '$(srcdir)/main/lregex.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-lregex.Tpo main/$(DEPDIR)/libctags_a-lregex.Po
+#	$(AM_V_CC)source='main/lregex.c' object='main/libctags_a-lregex.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-lregex.obj `if test -f 'main/lregex.c'; then $(CYGPATH_W) 'main/lregex.c'; else $(CYGPATH_W) '$(srcdir)/main/lregex.c'; fi`
+
+main/libctags_a-lregex-default.o: main/lregex-default.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-lregex-default.o -MD -MP -MF main/$(DEPDIR)/libctags_a-lregex-default.Tpo -c -o main/libctags_a-lregex-default.o `test -f 'main/lregex-default.c' || echo '$(srcdir)/'`main/lregex-default.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-lregex-default.Tpo main/$(DEPDIR)/libctags_a-lregex-default.Po
+#	$(AM_V_CC)source='main/lregex-default.c' object='main/libctags_a-lregex-default.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-lregex-default.o `test -f 'main/lregex-default.c' || echo '$(srcdir)/'`main/lregex-default.c
+
+main/libctags_a-lregex-default.obj: main/lregex-default.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-lregex-default.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-lregex-default.Tpo -c -o main/libctags_a-lregex-default.obj `if test -f 'main/lregex-default.c'; then $(CYGPATH_W) 'main/lregex-default.c'; else $(CYGPATH_W) '$(srcdir)/main/lregex-default.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-lregex-default.Tpo main/$(DEPDIR)/libctags_a-lregex-default.Po
+#	$(AM_V_CC)source='main/lregex-default.c' object='main/libctags_a-lregex-default.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-lregex-default.obj `if test -f 'main/lregex-default.c'; then $(CYGPATH_W) 'main/lregex-default.c'; else $(CYGPATH_W) '$(srcdir)/main/lregex-default.c'; fi`
+
+main/libctags_a-lxpath.o: main/lxpath.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-lxpath.o -MD -MP -MF main/$(DEPDIR)/libctags_a-lxpath.Tpo -c -o main/libctags_a-lxpath.o `test -f 'main/lxpath.c' || echo '$(srcdir)/'`main/lxpath.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-lxpath.Tpo main/$(DEPDIR)/libctags_a-lxpath.Po
+#	$(AM_V_CC)source='main/lxpath.c' object='main/libctags_a-lxpath.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-lxpath.o `test -f 'main/lxpath.c' || echo '$(srcdir)/'`main/lxpath.c
+
+main/libctags_a-lxpath.obj: main/lxpath.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-lxpath.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-lxpath.Tpo -c -o main/libctags_a-lxpath.obj `if test -f 'main/lxpath.c'; then $(CYGPATH_W) 'main/lxpath.c'; else $(CYGPATH_W) '$(srcdir)/main/lxpath.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-lxpath.Tpo main/$(DEPDIR)/libctags_a-lxpath.Po
+#	$(AM_V_CC)source='main/lxpath.c' object='main/libctags_a-lxpath.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-lxpath.obj `if test -f 'main/lxpath.c'; then $(CYGPATH_W) 'main/lxpath.c'; else $(CYGPATH_W) '$(srcdir)/main/lxpath.c'; fi`
+
+main/libctags_a-main.o: main/main.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-main.o -MD -MP -MF main/$(DEPDIR)/libctags_a-main.Tpo -c -o main/libctags_a-main.o `test -f 'main/main.c' || echo '$(srcdir)/'`main/main.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-main.Tpo main/$(DEPDIR)/libctags_a-main.Po
+#	$(AM_V_CC)source='main/main.c' object='main/libctags_a-main.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-main.o `test -f 'main/main.c' || echo '$(srcdir)/'`main/main.c
+
+main/libctags_a-main.obj: main/main.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-main.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-main.Tpo -c -o main/libctags_a-main.obj `if test -f 'main/main.c'; then $(CYGPATH_W) 'main/main.c'; else $(CYGPATH_W) '$(srcdir)/main/main.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-main.Tpo main/$(DEPDIR)/libctags_a-main.Po
+#	$(AM_V_CC)source='main/main.c' object='main/libctags_a-main.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-main.obj `if test -f 'main/main.c'; then $(CYGPATH_W) 'main/main.c'; else $(CYGPATH_W) '$(srcdir)/main/main.c'; fi`
+
+main/libctags_a-mbcs.o: main/mbcs.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-mbcs.o -MD -MP -MF main/$(DEPDIR)/libctags_a-mbcs.Tpo -c -o main/libctags_a-mbcs.o `test -f 'main/mbcs.c' || echo '$(srcdir)/'`main/mbcs.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-mbcs.Tpo main/$(DEPDIR)/libctags_a-mbcs.Po
+#	$(AM_V_CC)source='main/mbcs.c' object='main/libctags_a-mbcs.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-mbcs.o `test -f 'main/mbcs.c' || echo '$(srcdir)/'`main/mbcs.c
+
+main/libctags_a-mbcs.obj: main/mbcs.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-mbcs.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-mbcs.Tpo -c -o main/libctags_a-mbcs.obj `if test -f 'main/mbcs.c'; then $(CYGPATH_W) 'main/mbcs.c'; else $(CYGPATH_W) '$(srcdir)/main/mbcs.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-mbcs.Tpo main/$(DEPDIR)/libctags_a-mbcs.Po
+#	$(AM_V_CC)source='main/mbcs.c' object='main/libctags_a-mbcs.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-mbcs.obj `if test -f 'main/mbcs.c'; then $(CYGPATH_W) 'main/mbcs.c'; else $(CYGPATH_W) '$(srcdir)/main/mbcs.c'; fi`
+
+main/libctags_a-nestlevel.o: main/nestlevel.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-nestlevel.o -MD -MP -MF main/$(DEPDIR)/libctags_a-nestlevel.Tpo -c -o main/libctags_a-nestlevel.o `test -f 'main/nestlevel.c' || echo '$(srcdir)/'`main/nestlevel.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-nestlevel.Tpo main/$(DEPDIR)/libctags_a-nestlevel.Po
+#	$(AM_V_CC)source='main/nestlevel.c' object='main/libctags_a-nestlevel.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-nestlevel.o `test -f 'main/nestlevel.c' || echo '$(srcdir)/'`main/nestlevel.c
+
+main/libctags_a-nestlevel.obj: main/nestlevel.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-nestlevel.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-nestlevel.Tpo -c -o main/libctags_a-nestlevel.obj `if test -f 'main/nestlevel.c'; then $(CYGPATH_W) 'main/nestlevel.c'; else $(CYGPATH_W) '$(srcdir)/main/nestlevel.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-nestlevel.Tpo main/$(DEPDIR)/libctags_a-nestlevel.Po
+#	$(AM_V_CC)source='main/nestlevel.c' object='main/libctags_a-nestlevel.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-nestlevel.obj `if test -f 'main/nestlevel.c'; then $(CYGPATH_W) 'main/nestlevel.c'; else $(CYGPATH_W) '$(srcdir)/main/nestlevel.c'; fi`
+
+main/libctags_a-objpool.o: main/objpool.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-objpool.o -MD -MP -MF main/$(DEPDIR)/libctags_a-objpool.Tpo -c -o main/libctags_a-objpool.o `test -f 'main/objpool.c' || echo '$(srcdir)/'`main/objpool.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-objpool.Tpo main/$(DEPDIR)/libctags_a-objpool.Po
+#	$(AM_V_CC)source='main/objpool.c' object='main/libctags_a-objpool.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-objpool.o `test -f 'main/objpool.c' || echo '$(srcdir)/'`main/objpool.c
+
+main/libctags_a-objpool.obj: main/objpool.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-objpool.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-objpool.Tpo -c -o main/libctags_a-objpool.obj `if test -f 'main/objpool.c'; then $(CYGPATH_W) 'main/objpool.c'; else $(CYGPATH_W) '$(srcdir)/main/objpool.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-objpool.Tpo main/$(DEPDIR)/libctags_a-objpool.Po
+#	$(AM_V_CC)source='main/objpool.c' object='main/libctags_a-objpool.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-objpool.obj `if test -f 'main/objpool.c'; then $(CYGPATH_W) 'main/objpool.c'; else $(CYGPATH_W) '$(srcdir)/main/objpool.c'; fi`
+
+main/libctags_a-options.o: main/options.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-options.o -MD -MP -MF main/$(DEPDIR)/libctags_a-options.Tpo -c -o main/libctags_a-options.o `test -f 'main/options.c' || echo '$(srcdir)/'`main/options.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-options.Tpo main/$(DEPDIR)/libctags_a-options.Po
+#	$(AM_V_CC)source='main/options.c' object='main/libctags_a-options.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-options.o `test -f 'main/options.c' || echo '$(srcdir)/'`main/options.c
+
+main/libctags_a-options.obj: main/options.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-options.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-options.Tpo -c -o main/libctags_a-options.obj `if test -f 'main/options.c'; then $(CYGPATH_W) 'main/options.c'; else $(CYGPATH_W) '$(srcdir)/main/options.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-options.Tpo main/$(DEPDIR)/libctags_a-options.Po
+#	$(AM_V_CC)source='main/options.c' object='main/libctags_a-options.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-options.obj `if test -f 'main/options.c'; then $(CYGPATH_W) 'main/options.c'; else $(CYGPATH_W) '$(srcdir)/main/options.c'; fi`
+
+main/libctags_a-param.o: main/param.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-param.o -MD -MP -MF main/$(DEPDIR)/libctags_a-param.Tpo -c -o main/libctags_a-param.o `test -f 'main/param.c' || echo '$(srcdir)/'`main/param.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-param.Tpo main/$(DEPDIR)/libctags_a-param.Po
+#	$(AM_V_CC)source='main/param.c' object='main/libctags_a-param.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-param.o `test -f 'main/param.c' || echo '$(srcdir)/'`main/param.c
+
+main/libctags_a-param.obj: main/param.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-param.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-param.Tpo -c -o main/libctags_a-param.obj `if test -f 'main/param.c'; then $(CYGPATH_W) 'main/param.c'; else $(CYGPATH_W) '$(srcdir)/main/param.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-param.Tpo main/$(DEPDIR)/libctags_a-param.Po
+#	$(AM_V_CC)source='main/param.c' object='main/libctags_a-param.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-param.obj `if test -f 'main/param.c'; then $(CYGPATH_W) 'main/param.c'; else $(CYGPATH_W) '$(srcdir)/main/param.c'; fi`
+
+main/libctags_a-parse.o: main/parse.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-parse.o -MD -MP -MF main/$(DEPDIR)/libctags_a-parse.Tpo -c -o main/libctags_a-parse.o `test -f 'main/parse.c' || echo '$(srcdir)/'`main/parse.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-parse.Tpo main/$(DEPDIR)/libctags_a-parse.Po
+#	$(AM_V_CC)source='main/parse.c' object='main/libctags_a-parse.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-parse.o `test -f 'main/parse.c' || echo '$(srcdir)/'`main/parse.c
+
+main/libctags_a-parse.obj: main/parse.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-parse.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-parse.Tpo -c -o main/libctags_a-parse.obj `if test -f 'main/parse.c'; then $(CYGPATH_W) 'main/parse.c'; else $(CYGPATH_W) '$(srcdir)/main/parse.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-parse.Tpo main/$(DEPDIR)/libctags_a-parse.Po
+#	$(AM_V_CC)source='main/parse.c' object='main/libctags_a-parse.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-parse.obj `if test -f 'main/parse.c'; then $(CYGPATH_W) 'main/parse.c'; else $(CYGPATH_W) '$(srcdir)/main/parse.c'; fi`
+
+main/libctags_a-portable-scandir.o: main/portable-scandir.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-portable-scandir.o -MD -MP -MF main/$(DEPDIR)/libctags_a-portable-scandir.Tpo -c -o main/libctags_a-portable-scandir.o `test -f 'main/portable-scandir.c' || echo '$(srcdir)/'`main/portable-scandir.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-portable-scandir.Tpo main/$(DEPDIR)/libctags_a-portable-scandir.Po
+#	$(AM_V_CC)source='main/portable-scandir.c' object='main/libctags_a-portable-scandir.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-portable-scandir.o `test -f 'main/portable-scandir.c' || echo '$(srcdir)/'`main/portable-scandir.c
+
+main/libctags_a-portable-scandir.obj: main/portable-scandir.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-portable-scandir.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-portable-scandir.Tpo -c -o main/libctags_a-portable-scandir.obj `if test -f 'main/portable-scandir.c'; then $(CYGPATH_W) 'main/portable-scandir.c'; else $(CYGPATH_W) '$(srcdir)/main/portable-scandir.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-portable-scandir.Tpo main/$(DEPDIR)/libctags_a-portable-scandir.Po
+#	$(AM_V_CC)source='main/portable-scandir.c' object='main/libctags_a-portable-scandir.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-portable-scandir.obj `if test -f 'main/portable-scandir.c'; then $(CYGPATH_W) 'main/portable-scandir.c'; else $(CYGPATH_W) '$(srcdir)/main/portable-scandir.c'; fi`
+
+main/libctags_a-promise.o: main/promise.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-promise.o -MD -MP -MF main/$(DEPDIR)/libctags_a-promise.Tpo -c -o main/libctags_a-promise.o `test -f 'main/promise.c' || echo '$(srcdir)/'`main/promise.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-promise.Tpo main/$(DEPDIR)/libctags_a-promise.Po
+#	$(AM_V_CC)source='main/promise.c' object='main/libctags_a-promise.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-promise.o `test -f 'main/promise.c' || echo '$(srcdir)/'`main/promise.c
+
+main/libctags_a-promise.obj: main/promise.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-promise.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-promise.Tpo -c -o main/libctags_a-promise.obj `if test -f 'main/promise.c'; then $(CYGPATH_W) 'main/promise.c'; else $(CYGPATH_W) '$(srcdir)/main/promise.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-promise.Tpo main/$(DEPDIR)/libctags_a-promise.Po
+#	$(AM_V_CC)source='main/promise.c' object='main/libctags_a-promise.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-promise.obj `if test -f 'main/promise.c'; then $(CYGPATH_W) 'main/promise.c'; else $(CYGPATH_W) '$(srcdir)/main/promise.c'; fi`
+
+main/libctags_a-ptag.o: main/ptag.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-ptag.o -MD -MP -MF main/$(DEPDIR)/libctags_a-ptag.Tpo -c -o main/libctags_a-ptag.o `test -f 'main/ptag.c' || echo '$(srcdir)/'`main/ptag.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-ptag.Tpo main/$(DEPDIR)/libctags_a-ptag.Po
+#	$(AM_V_CC)source='main/ptag.c' object='main/libctags_a-ptag.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-ptag.o `test -f 'main/ptag.c' || echo '$(srcdir)/'`main/ptag.c
+
+main/libctags_a-ptag.obj: main/ptag.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-ptag.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-ptag.Tpo -c -o main/libctags_a-ptag.obj `if test -f 'main/ptag.c'; then $(CYGPATH_W) 'main/ptag.c'; else $(CYGPATH_W) '$(srcdir)/main/ptag.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-ptag.Tpo main/$(DEPDIR)/libctags_a-ptag.Po
+#	$(AM_V_CC)source='main/ptag.c' object='main/libctags_a-ptag.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-ptag.obj `if test -f 'main/ptag.c'; then $(CYGPATH_W) 'main/ptag.c'; else $(CYGPATH_W) '$(srcdir)/main/ptag.c'; fi`
+
+main/libctags_a-rbtree.o: main/rbtree.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-rbtree.o -MD -MP -MF main/$(DEPDIR)/libctags_a-rbtree.Tpo -c -o main/libctags_a-rbtree.o `test -f 'main/rbtree.c' || echo '$(srcdir)/'`main/rbtree.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-rbtree.Tpo main/$(DEPDIR)/libctags_a-rbtree.Po
+#	$(AM_V_CC)source='main/rbtree.c' object='main/libctags_a-rbtree.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-rbtree.o `test -f 'main/rbtree.c' || echo '$(srcdir)/'`main/rbtree.c
+
+main/libctags_a-rbtree.obj: main/rbtree.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-rbtree.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-rbtree.Tpo -c -o main/libctags_a-rbtree.obj `if test -f 'main/rbtree.c'; then $(CYGPATH_W) 'main/rbtree.c'; else $(CYGPATH_W) '$(srcdir)/main/rbtree.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-rbtree.Tpo main/$(DEPDIR)/libctags_a-rbtree.Po
+#	$(AM_V_CC)source='main/rbtree.c' object='main/libctags_a-rbtree.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-rbtree.obj `if test -f 'main/rbtree.c'; then $(CYGPATH_W) 'main/rbtree.c'; else $(CYGPATH_W) '$(srcdir)/main/rbtree.c'; fi`
+
+main/libctags_a-read.o: main/read.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-read.o -MD -MP -MF main/$(DEPDIR)/libctags_a-read.Tpo -c -o main/libctags_a-read.o `test -f 'main/read.c' || echo '$(srcdir)/'`main/read.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-read.Tpo main/$(DEPDIR)/libctags_a-read.Po
+#	$(AM_V_CC)source='main/read.c' object='main/libctags_a-read.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-read.o `test -f 'main/read.c' || echo '$(srcdir)/'`main/read.c
+
+main/libctags_a-read.obj: main/read.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-read.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-read.Tpo -c -o main/libctags_a-read.obj `if test -f 'main/read.c'; then $(CYGPATH_W) 'main/read.c'; else $(CYGPATH_W) '$(srcdir)/main/read.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-read.Tpo main/$(DEPDIR)/libctags_a-read.Po
+#	$(AM_V_CC)source='main/read.c' object='main/libctags_a-read.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-read.obj `if test -f 'main/read.c'; then $(CYGPATH_W) 'main/read.c'; else $(CYGPATH_W) '$(srcdir)/main/read.c'; fi`
+
+main/libctags_a-script.o: main/script.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-script.o -MD -MP -MF main/$(DEPDIR)/libctags_a-script.Tpo -c -o main/libctags_a-script.o `test -f 'main/script.c' || echo '$(srcdir)/'`main/script.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-script.Tpo main/$(DEPDIR)/libctags_a-script.Po
+#	$(AM_V_CC)source='main/script.c' object='main/libctags_a-script.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-script.o `test -f 'main/script.c' || echo '$(srcdir)/'`main/script.c
+
+main/libctags_a-script.obj: main/script.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-script.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-script.Tpo -c -o main/libctags_a-script.obj `if test -f 'main/script.c'; then $(CYGPATH_W) 'main/script.c'; else $(CYGPATH_W) '$(srcdir)/main/script.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-script.Tpo main/$(DEPDIR)/libctags_a-script.Po
+#	$(AM_V_CC)source='main/script.c' object='main/libctags_a-script.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-script.obj `if test -f 'main/script.c'; then $(CYGPATH_W) 'main/script.c'; else $(CYGPATH_W) '$(srcdir)/main/script.c'; fi`
+
+main/libctags_a-seccomp.o: main/seccomp.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-seccomp.o -MD -MP -MF main/$(DEPDIR)/libctags_a-seccomp.Tpo -c -o main/libctags_a-seccomp.o `test -f 'main/seccomp.c' || echo '$(srcdir)/'`main/seccomp.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-seccomp.Tpo main/$(DEPDIR)/libctags_a-seccomp.Po
+#	$(AM_V_CC)source='main/seccomp.c' object='main/libctags_a-seccomp.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-seccomp.o `test -f 'main/seccomp.c' || echo '$(srcdir)/'`main/seccomp.c
+
+main/libctags_a-seccomp.obj: main/seccomp.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-seccomp.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-seccomp.Tpo -c -o main/libctags_a-seccomp.obj `if test -f 'main/seccomp.c'; then $(CYGPATH_W) 'main/seccomp.c'; else $(CYGPATH_W) '$(srcdir)/main/seccomp.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-seccomp.Tpo main/$(DEPDIR)/libctags_a-seccomp.Po
+#	$(AM_V_CC)source='main/seccomp.c' object='main/libctags_a-seccomp.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-seccomp.obj `if test -f 'main/seccomp.c'; then $(CYGPATH_W) 'main/seccomp.c'; else $(CYGPATH_W) '$(srcdir)/main/seccomp.c'; fi`
+
+main/libctags_a-selectors.o: main/selectors.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-selectors.o -MD -MP -MF main/$(DEPDIR)/libctags_a-selectors.Tpo -c -o main/libctags_a-selectors.o `test -f 'main/selectors.c' || echo '$(srcdir)/'`main/selectors.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-selectors.Tpo main/$(DEPDIR)/libctags_a-selectors.Po
+#	$(AM_V_CC)source='main/selectors.c' object='main/libctags_a-selectors.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-selectors.o `test -f 'main/selectors.c' || echo '$(srcdir)/'`main/selectors.c
+
+main/libctags_a-selectors.obj: main/selectors.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-selectors.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-selectors.Tpo -c -o main/libctags_a-selectors.obj `if test -f 'main/selectors.c'; then $(CYGPATH_W) 'main/selectors.c'; else $(CYGPATH_W) '$(srcdir)/main/selectors.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-selectors.Tpo main/$(DEPDIR)/libctags_a-selectors.Po
+#	$(AM_V_CC)source='main/selectors.c' object='main/libctags_a-selectors.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-selectors.obj `if test -f 'main/selectors.c'; then $(CYGPATH_W) 'main/selectors.c'; else $(CYGPATH_W) '$(srcdir)/main/selectors.c'; fi`
+
+main/libctags_a-sort.o: main/sort.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-sort.o -MD -MP -MF main/$(DEPDIR)/libctags_a-sort.Tpo -c -o main/libctags_a-sort.o `test -f 'main/sort.c' || echo '$(srcdir)/'`main/sort.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-sort.Tpo main/$(DEPDIR)/libctags_a-sort.Po
+#	$(AM_V_CC)source='main/sort.c' object='main/libctags_a-sort.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-sort.o `test -f 'main/sort.c' || echo '$(srcdir)/'`main/sort.c
+
+main/libctags_a-sort.obj: main/sort.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-sort.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-sort.Tpo -c -o main/libctags_a-sort.obj `if test -f 'main/sort.c'; then $(CYGPATH_W) 'main/sort.c'; else $(CYGPATH_W) '$(srcdir)/main/sort.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-sort.Tpo main/$(DEPDIR)/libctags_a-sort.Po
+#	$(AM_V_CC)source='main/sort.c' object='main/libctags_a-sort.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-sort.obj `if test -f 'main/sort.c'; then $(CYGPATH_W) 'main/sort.c'; else $(CYGPATH_W) '$(srcdir)/main/sort.c'; fi`
+
+main/libctags_a-stats.o: main/stats.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-stats.o -MD -MP -MF main/$(DEPDIR)/libctags_a-stats.Tpo -c -o main/libctags_a-stats.o `test -f 'main/stats.c' || echo '$(srcdir)/'`main/stats.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-stats.Tpo main/$(DEPDIR)/libctags_a-stats.Po
+#	$(AM_V_CC)source='main/stats.c' object='main/libctags_a-stats.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-stats.o `test -f 'main/stats.c' || echo '$(srcdir)/'`main/stats.c
+
+main/libctags_a-stats.obj: main/stats.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-stats.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-stats.Tpo -c -o main/libctags_a-stats.obj `if test -f 'main/stats.c'; then $(CYGPATH_W) 'main/stats.c'; else $(CYGPATH_W) '$(srcdir)/main/stats.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-stats.Tpo main/$(DEPDIR)/libctags_a-stats.Po
+#	$(AM_V_CC)source='main/stats.c' object='main/libctags_a-stats.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-stats.obj `if test -f 'main/stats.c'; then $(CYGPATH_W) 'main/stats.c'; else $(CYGPATH_W) '$(srcdir)/main/stats.c'; fi`
+
+main/libctags_a-strlist.o: main/strlist.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-strlist.o -MD -MP -MF main/$(DEPDIR)/libctags_a-strlist.Tpo -c -o main/libctags_a-strlist.o `test -f 'main/strlist.c' || echo '$(srcdir)/'`main/strlist.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-strlist.Tpo main/$(DEPDIR)/libctags_a-strlist.Po
+#	$(AM_V_CC)source='main/strlist.c' object='main/libctags_a-strlist.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-strlist.o `test -f 'main/strlist.c' || echo '$(srcdir)/'`main/strlist.c
+
+main/libctags_a-strlist.obj: main/strlist.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-strlist.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-strlist.Tpo -c -o main/libctags_a-strlist.obj `if test -f 'main/strlist.c'; then $(CYGPATH_W) 'main/strlist.c'; else $(CYGPATH_W) '$(srcdir)/main/strlist.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-strlist.Tpo main/$(DEPDIR)/libctags_a-strlist.Po
+#	$(AM_V_CC)source='main/strlist.c' object='main/libctags_a-strlist.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-strlist.obj `if test -f 'main/strlist.c'; then $(CYGPATH_W) 'main/strlist.c'; else $(CYGPATH_W) '$(srcdir)/main/strlist.c'; fi`
+
+main/libctags_a-trace.o: main/trace.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-trace.o -MD -MP -MF main/$(DEPDIR)/libctags_a-trace.Tpo -c -o main/libctags_a-trace.o `test -f 'main/trace.c' || echo '$(srcdir)/'`main/trace.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-trace.Tpo main/$(DEPDIR)/libctags_a-trace.Po
+#	$(AM_V_CC)source='main/trace.c' object='main/libctags_a-trace.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-trace.o `test -f 'main/trace.c' || echo '$(srcdir)/'`main/trace.c
+
+main/libctags_a-trace.obj: main/trace.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-trace.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-trace.Tpo -c -o main/libctags_a-trace.obj `if test -f 'main/trace.c'; then $(CYGPATH_W) 'main/trace.c'; else $(CYGPATH_W) '$(srcdir)/main/trace.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-trace.Tpo main/$(DEPDIR)/libctags_a-trace.Po
+#	$(AM_V_CC)source='main/trace.c' object='main/libctags_a-trace.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-trace.obj `if test -f 'main/trace.c'; then $(CYGPATH_W) 'main/trace.c'; else $(CYGPATH_W) '$(srcdir)/main/trace.c'; fi`
+
+main/libctags_a-tokeninfo.o: main/tokeninfo.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-tokeninfo.o -MD -MP -MF main/$(DEPDIR)/libctags_a-tokeninfo.Tpo -c -o main/libctags_a-tokeninfo.o `test -f 'main/tokeninfo.c' || echo '$(srcdir)/'`main/tokeninfo.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-tokeninfo.Tpo main/$(DEPDIR)/libctags_a-tokeninfo.Po
+#	$(AM_V_CC)source='main/tokeninfo.c' object='main/libctags_a-tokeninfo.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-tokeninfo.o `test -f 'main/tokeninfo.c' || echo '$(srcdir)/'`main/tokeninfo.c
+
+main/libctags_a-tokeninfo.obj: main/tokeninfo.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-tokeninfo.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-tokeninfo.Tpo -c -o main/libctags_a-tokeninfo.obj `if test -f 'main/tokeninfo.c'; then $(CYGPATH_W) 'main/tokeninfo.c'; else $(CYGPATH_W) '$(srcdir)/main/tokeninfo.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-tokeninfo.Tpo main/$(DEPDIR)/libctags_a-tokeninfo.Po
+#	$(AM_V_CC)source='main/tokeninfo.c' object='main/libctags_a-tokeninfo.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-tokeninfo.obj `if test -f 'main/tokeninfo.c'; then $(CYGPATH_W) 'main/tokeninfo.c'; else $(CYGPATH_W) '$(srcdir)/main/tokeninfo.c'; fi`
+
+main/libctags_a-unwindi.o: main/unwindi.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-unwindi.o -MD -MP -MF main/$(DEPDIR)/libctags_a-unwindi.Tpo -c -o main/libctags_a-unwindi.o `test -f 'main/unwindi.c' || echo '$(srcdir)/'`main/unwindi.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-unwindi.Tpo main/$(DEPDIR)/libctags_a-unwindi.Po
+#	$(AM_V_CC)source='main/unwindi.c' object='main/libctags_a-unwindi.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-unwindi.o `test -f 'main/unwindi.c' || echo '$(srcdir)/'`main/unwindi.c
+
+main/libctags_a-unwindi.obj: main/unwindi.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-unwindi.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-unwindi.Tpo -c -o main/libctags_a-unwindi.obj `if test -f 'main/unwindi.c'; then $(CYGPATH_W) 'main/unwindi.c'; else $(CYGPATH_W) '$(srcdir)/main/unwindi.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-unwindi.Tpo main/$(DEPDIR)/libctags_a-unwindi.Po
+#	$(AM_V_CC)source='main/unwindi.c' object='main/libctags_a-unwindi.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-unwindi.obj `if test -f 'main/unwindi.c'; then $(CYGPATH_W) 'main/unwindi.c'; else $(CYGPATH_W) '$(srcdir)/main/unwindi.c'; fi`
+
+main/libctags_a-utf8_str.o: main/utf8_str.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-utf8_str.o -MD -MP -MF main/$(DEPDIR)/libctags_a-utf8_str.Tpo -c -o main/libctags_a-utf8_str.o `test -f 'main/utf8_str.c' || echo '$(srcdir)/'`main/utf8_str.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-utf8_str.Tpo main/$(DEPDIR)/libctags_a-utf8_str.Po
+#	$(AM_V_CC)source='main/utf8_str.c' object='main/libctags_a-utf8_str.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-utf8_str.o `test -f 'main/utf8_str.c' || echo '$(srcdir)/'`main/utf8_str.c
+
+main/libctags_a-utf8_str.obj: main/utf8_str.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-utf8_str.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-utf8_str.Tpo -c -o main/libctags_a-utf8_str.obj `if test -f 'main/utf8_str.c'; then $(CYGPATH_W) 'main/utf8_str.c'; else $(CYGPATH_W) '$(srcdir)/main/utf8_str.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-utf8_str.Tpo main/$(DEPDIR)/libctags_a-utf8_str.Po
+#	$(AM_V_CC)source='main/utf8_str.c' object='main/libctags_a-utf8_str.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-utf8_str.obj `if test -f 'main/utf8_str.c'; then $(CYGPATH_W) 'main/utf8_str.c'; else $(CYGPATH_W) '$(srcdir)/main/utf8_str.c'; fi`
+
+main/libctags_a-writer.o: main/writer.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer.o -MD -MP -MF main/$(DEPDIR)/libctags_a-writer.Tpo -c -o main/libctags_a-writer.o `test -f 'main/writer.c' || echo '$(srcdir)/'`main/writer.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer.Tpo main/$(DEPDIR)/libctags_a-writer.Po
+#	$(AM_V_CC)source='main/writer.c' object='main/libctags_a-writer.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer.o `test -f 'main/writer.c' || echo '$(srcdir)/'`main/writer.c
+
+main/libctags_a-writer.obj: main/writer.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-writer.Tpo -c -o main/libctags_a-writer.obj `if test -f 'main/writer.c'; then $(CYGPATH_W) 'main/writer.c'; else $(CYGPATH_W) '$(srcdir)/main/writer.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer.Tpo main/$(DEPDIR)/libctags_a-writer.Po
+#	$(AM_V_CC)source='main/writer.c' object='main/libctags_a-writer.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer.obj `if test -f 'main/writer.c'; then $(CYGPATH_W) 'main/writer.c'; else $(CYGPATH_W) '$(srcdir)/main/writer.c'; fi`
+
+main/libctags_a-writer-etags.o: main/writer-etags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer-etags.o -MD -MP -MF main/$(DEPDIR)/libctags_a-writer-etags.Tpo -c -o main/libctags_a-writer-etags.o `test -f 'main/writer-etags.c' || echo '$(srcdir)/'`main/writer-etags.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer-etags.Tpo main/$(DEPDIR)/libctags_a-writer-etags.Po
+#	$(AM_V_CC)source='main/writer-etags.c' object='main/libctags_a-writer-etags.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer-etags.o `test -f 'main/writer-etags.c' || echo '$(srcdir)/'`main/writer-etags.c
+
+main/libctags_a-writer-etags.obj: main/writer-etags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer-etags.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-writer-etags.Tpo -c -o main/libctags_a-writer-etags.obj `if test -f 'main/writer-etags.c'; then $(CYGPATH_W) 'main/writer-etags.c'; else $(CYGPATH_W) '$(srcdir)/main/writer-etags.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer-etags.Tpo main/$(DEPDIR)/libctags_a-writer-etags.Po
+#	$(AM_V_CC)source='main/writer-etags.c' object='main/libctags_a-writer-etags.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer-etags.obj `if test -f 'main/writer-etags.c'; then $(CYGPATH_W) 'main/writer-etags.c'; else $(CYGPATH_W) '$(srcdir)/main/writer-etags.c'; fi`
+
+main/libctags_a-writer-ctags.o: main/writer-ctags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer-ctags.o -MD -MP -MF main/$(DEPDIR)/libctags_a-writer-ctags.Tpo -c -o main/libctags_a-writer-ctags.o `test -f 'main/writer-ctags.c' || echo '$(srcdir)/'`main/writer-ctags.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer-ctags.Tpo main/$(DEPDIR)/libctags_a-writer-ctags.Po
+#	$(AM_V_CC)source='main/writer-ctags.c' object='main/libctags_a-writer-ctags.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer-ctags.o `test -f 'main/writer-ctags.c' || echo '$(srcdir)/'`main/writer-ctags.c
+
+main/libctags_a-writer-ctags.obj: main/writer-ctags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer-ctags.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-writer-ctags.Tpo -c -o main/libctags_a-writer-ctags.obj `if test -f 'main/writer-ctags.c'; then $(CYGPATH_W) 'main/writer-ctags.c'; else $(CYGPATH_W) '$(srcdir)/main/writer-ctags.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer-ctags.Tpo main/$(DEPDIR)/libctags_a-writer-ctags.Po
+#	$(AM_V_CC)source='main/writer-ctags.c' object='main/libctags_a-writer-ctags.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer-ctags.obj `if test -f 'main/writer-ctags.c'; then $(CYGPATH_W) 'main/writer-ctags.c'; else $(CYGPATH_W) '$(srcdir)/main/writer-ctags.c'; fi`
+
+main/libctags_a-writer-json.o: main/writer-json.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer-json.o -MD -MP -MF main/$(DEPDIR)/libctags_a-writer-json.Tpo -c -o main/libctags_a-writer-json.o `test -f 'main/writer-json.c' || echo '$(srcdir)/'`main/writer-json.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer-json.Tpo main/$(DEPDIR)/libctags_a-writer-json.Po
+#	$(AM_V_CC)source='main/writer-json.c' object='main/libctags_a-writer-json.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer-json.o `test -f 'main/writer-json.c' || echo '$(srcdir)/'`main/writer-json.c
+
+main/libctags_a-writer-json.obj: main/writer-json.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer-json.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-writer-json.Tpo -c -o main/libctags_a-writer-json.obj `if test -f 'main/writer-json.c'; then $(CYGPATH_W) 'main/writer-json.c'; else $(CYGPATH_W) '$(srcdir)/main/writer-json.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer-json.Tpo main/$(DEPDIR)/libctags_a-writer-json.Po
+#	$(AM_V_CC)source='main/writer-json.c' object='main/libctags_a-writer-json.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer-json.obj `if test -f 'main/writer-json.c'; then $(CYGPATH_W) 'main/writer-json.c'; else $(CYGPATH_W) '$(srcdir)/main/writer-json.c'; fi`
+
+main/libctags_a-writer-xref.o: main/writer-xref.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer-xref.o -MD -MP -MF main/$(DEPDIR)/libctags_a-writer-xref.Tpo -c -o main/libctags_a-writer-xref.o `test -f 'main/writer-xref.c' || echo '$(srcdir)/'`main/writer-xref.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer-xref.Tpo main/$(DEPDIR)/libctags_a-writer-xref.Po
+#	$(AM_V_CC)source='main/writer-xref.c' object='main/libctags_a-writer-xref.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer-xref.o `test -f 'main/writer-xref.c' || echo '$(srcdir)/'`main/writer-xref.c
+
+main/libctags_a-writer-xref.obj: main/writer-xref.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-writer-xref.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-writer-xref.Tpo -c -o main/libctags_a-writer-xref.obj `if test -f 'main/writer-xref.c'; then $(CYGPATH_W) 'main/writer-xref.c'; else $(CYGPATH_W) '$(srcdir)/main/writer-xref.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-writer-xref.Tpo main/$(DEPDIR)/libctags_a-writer-xref.Po
+#	$(AM_V_CC)source='main/writer-xref.c' object='main/libctags_a-writer-xref.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-writer-xref.obj `if test -f 'main/writer-xref.c'; then $(CYGPATH_W) 'main/writer-xref.c'; else $(CYGPATH_W) '$(srcdir)/main/writer-xref.c'; fi`
+
+main/libctags_a-xtag.o: main/xtag.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-xtag.o -MD -MP -MF main/$(DEPDIR)/libctags_a-xtag.Tpo -c -o main/libctags_a-xtag.o `test -f 'main/xtag.c' || echo '$(srcdir)/'`main/xtag.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-xtag.Tpo main/$(DEPDIR)/libctags_a-xtag.Po
+#	$(AM_V_CC)source='main/xtag.c' object='main/libctags_a-xtag.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-xtag.o `test -f 'main/xtag.c' || echo '$(srcdir)/'`main/xtag.c
+
+main/libctags_a-xtag.obj: main/xtag.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-xtag.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-xtag.Tpo -c -o main/libctags_a-xtag.obj `if test -f 'main/xtag.c'; then $(CYGPATH_W) 'main/xtag.c'; else $(CYGPATH_W) '$(srcdir)/main/xtag.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-xtag.Tpo main/$(DEPDIR)/libctags_a-xtag.Po
+#	$(AM_V_CC)source='main/xtag.c' object='main/libctags_a-xtag.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-xtag.obj `if test -f 'main/xtag.c'; then $(CYGPATH_W) 'main/xtag.c'; else $(CYGPATH_W) '$(srcdir)/main/xtag.c'; fi`
+
+main/libctags_a-CommonPrelude.o: main/CommonPrelude.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-CommonPrelude.o -MD -MP -MF main/$(DEPDIR)/libctags_a-CommonPrelude.Tpo -c -o main/libctags_a-CommonPrelude.o `test -f 'main/CommonPrelude.c' || echo '$(srcdir)/'`main/CommonPrelude.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-CommonPrelude.Tpo main/$(DEPDIR)/libctags_a-CommonPrelude.Po
+#	$(AM_V_CC)source='main/CommonPrelude.c' object='main/libctags_a-CommonPrelude.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-CommonPrelude.o `test -f 'main/CommonPrelude.c' || echo '$(srcdir)/'`main/CommonPrelude.c
+
+main/libctags_a-CommonPrelude.obj: main/CommonPrelude.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-CommonPrelude.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-CommonPrelude.Tpo -c -o main/libctags_a-CommonPrelude.obj `if test -f 'main/CommonPrelude.c'; then $(CYGPATH_W) 'main/CommonPrelude.c'; else $(CYGPATH_W) '$(srcdir)/main/CommonPrelude.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-CommonPrelude.Tpo main/$(DEPDIR)/libctags_a-CommonPrelude.Po
+#	$(AM_V_CC)source='main/CommonPrelude.c' object='main/libctags_a-CommonPrelude.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-CommonPrelude.obj `if test -f 'main/CommonPrelude.c'; then $(CYGPATH_W) 'main/CommonPrelude.c'; else $(CYGPATH_W) '$(srcdir)/main/CommonPrelude.c'; fi`
+
+main/libctags_a-repoinfo.o: main/repoinfo.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-repoinfo.o -MD -MP -MF main/$(DEPDIR)/libctags_a-repoinfo.Tpo -c -o main/libctags_a-repoinfo.o `test -f 'main/repoinfo.c' || echo '$(srcdir)/'`main/repoinfo.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-repoinfo.Tpo main/$(DEPDIR)/libctags_a-repoinfo.Po
+#	$(AM_V_CC)source='main/repoinfo.c' object='main/libctags_a-repoinfo.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-repoinfo.o `test -f 'main/repoinfo.c' || echo '$(srcdir)/'`main/repoinfo.c
+
+main/libctags_a-repoinfo.obj: main/repoinfo.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-repoinfo.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-repoinfo.Tpo -c -o main/libctags_a-repoinfo.obj `if test -f 'main/repoinfo.c'; then $(CYGPATH_W) 'main/repoinfo.c'; else $(CYGPATH_W) '$(srcdir)/main/repoinfo.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-repoinfo.Tpo main/$(DEPDIR)/libctags_a-repoinfo.Po
+#	$(AM_V_CC)source='main/repoinfo.c' object='main/libctags_a-repoinfo.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-repoinfo.obj `if test -f 'main/repoinfo.c'; then $(CYGPATH_W) 'main/repoinfo.c'; else $(CYGPATH_W) '$(srcdir)/main/repoinfo.c'; fi`
+
+main/libctags_a-mio.o: main/mio.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-mio.o -MD -MP -MF main/$(DEPDIR)/libctags_a-mio.Tpo -c -o main/libctags_a-mio.o `test -f 'main/mio.c' || echo '$(srcdir)/'`main/mio.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-mio.Tpo main/$(DEPDIR)/libctags_a-mio.Po
+#	$(AM_V_CC)source='main/mio.c' object='main/libctags_a-mio.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-mio.o `test -f 'main/mio.c' || echo '$(srcdir)/'`main/mio.c
+
+main/libctags_a-mio.obj: main/mio.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-mio.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-mio.Tpo -c -o main/libctags_a-mio.obj `if test -f 'main/mio.c'; then $(CYGPATH_W) 'main/mio.c'; else $(CYGPATH_W) '$(srcdir)/main/mio.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-mio.Tpo main/$(DEPDIR)/libctags_a-mio.Po
+#	$(AM_V_CC)source='main/mio.c' object='main/libctags_a-mio.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-mio.obj `if test -f 'main/mio.c'; then $(CYGPATH_W) 'main/mio.c'; else $(CYGPATH_W) '$(srcdir)/main/mio.c'; fi`
+
+parsers/libctags_a-abaqus.o: parsers/abaqus.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-abaqus.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-abaqus.Tpo -c -o parsers/libctags_a-abaqus.o `test -f 'parsers/abaqus.c' || echo '$(srcdir)/'`parsers/abaqus.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-abaqus.Tpo parsers/$(DEPDIR)/libctags_a-abaqus.Po
+#	$(AM_V_CC)source='parsers/abaqus.c' object='parsers/libctags_a-abaqus.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-abaqus.o `test -f 'parsers/abaqus.c' || echo '$(srcdir)/'`parsers/abaqus.c
+
+parsers/libctags_a-abaqus.obj: parsers/abaqus.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-abaqus.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-abaqus.Tpo -c -o parsers/libctags_a-abaqus.obj `if test -f 'parsers/abaqus.c'; then $(CYGPATH_W) 'parsers/abaqus.c'; else $(CYGPATH_W) '$(srcdir)/parsers/abaqus.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-abaqus.Tpo parsers/$(DEPDIR)/libctags_a-abaqus.Po
+#	$(AM_V_CC)source='parsers/abaqus.c' object='parsers/libctags_a-abaqus.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-abaqus.obj `if test -f 'parsers/abaqus.c'; then $(CYGPATH_W) 'parsers/abaqus.c'; else $(CYGPATH_W) '$(srcdir)/parsers/abaqus.c'; fi`
+
+parsers/libctags_a-abc.o: parsers/abc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-abc.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-abc.Tpo -c -o parsers/libctags_a-abc.o `test -f 'parsers/abc.c' || echo '$(srcdir)/'`parsers/abc.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-abc.Tpo parsers/$(DEPDIR)/libctags_a-abc.Po
+#	$(AM_V_CC)source='parsers/abc.c' object='parsers/libctags_a-abc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-abc.o `test -f 'parsers/abc.c' || echo '$(srcdir)/'`parsers/abc.c
+
+parsers/libctags_a-abc.obj: parsers/abc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-abc.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-abc.Tpo -c -o parsers/libctags_a-abc.obj `if test -f 'parsers/abc.c'; then $(CYGPATH_W) 'parsers/abc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/abc.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-abc.Tpo parsers/$(DEPDIR)/libctags_a-abc.Po
+#	$(AM_V_CC)source='parsers/abc.c' object='parsers/libctags_a-abc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-abc.obj `if test -f 'parsers/abc.c'; then $(CYGPATH_W) 'parsers/abc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/abc.c'; fi`
+
+parsers/libctags_a-ada.o: parsers/ada.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ada.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ada.Tpo -c -o parsers/libctags_a-ada.o `test -f 'parsers/ada.c' || echo '$(srcdir)/'`parsers/ada.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ada.Tpo parsers/$(DEPDIR)/libctags_a-ada.Po
+#	$(AM_V_CC)source='parsers/ada.c' object='parsers/libctags_a-ada.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ada.o `test -f 'parsers/ada.c' || echo '$(srcdir)/'`parsers/ada.c
+
+parsers/libctags_a-ada.obj: parsers/ada.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ada.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ada.Tpo -c -o parsers/libctags_a-ada.obj `if test -f 'parsers/ada.c'; then $(CYGPATH_W) 'parsers/ada.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ada.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ada.Tpo parsers/$(DEPDIR)/libctags_a-ada.Po
+#	$(AM_V_CC)source='parsers/ada.c' object='parsers/libctags_a-ada.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ada.obj `if test -f 'parsers/ada.c'; then $(CYGPATH_W) 'parsers/ada.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ada.c'; fi`
+
+parsers/libctags_a-ant.o: parsers/ant.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ant.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ant.Tpo -c -o parsers/libctags_a-ant.o `test -f 'parsers/ant.c' || echo '$(srcdir)/'`parsers/ant.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ant.Tpo parsers/$(DEPDIR)/libctags_a-ant.Po
+#	$(AM_V_CC)source='parsers/ant.c' object='parsers/libctags_a-ant.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ant.o `test -f 'parsers/ant.c' || echo '$(srcdir)/'`parsers/ant.c
+
+parsers/libctags_a-ant.obj: parsers/ant.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ant.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ant.Tpo -c -o parsers/libctags_a-ant.obj `if test -f 'parsers/ant.c'; then $(CYGPATH_W) 'parsers/ant.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ant.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ant.Tpo parsers/$(DEPDIR)/libctags_a-ant.Po
+#	$(AM_V_CC)source='parsers/ant.c' object='parsers/libctags_a-ant.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ant.obj `if test -f 'parsers/ant.c'; then $(CYGPATH_W) 'parsers/ant.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ant.c'; fi`
+
+parsers/libctags_a-asciidoc.o: parsers/asciidoc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-asciidoc.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-asciidoc.Tpo -c -o parsers/libctags_a-asciidoc.o `test -f 'parsers/asciidoc.c' || echo '$(srcdir)/'`parsers/asciidoc.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-asciidoc.Tpo parsers/$(DEPDIR)/libctags_a-asciidoc.Po
+#	$(AM_V_CC)source='parsers/asciidoc.c' object='parsers/libctags_a-asciidoc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-asciidoc.o `test -f 'parsers/asciidoc.c' || echo '$(srcdir)/'`parsers/asciidoc.c
+
+parsers/libctags_a-asciidoc.obj: parsers/asciidoc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-asciidoc.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-asciidoc.Tpo -c -o parsers/libctags_a-asciidoc.obj `if test -f 'parsers/asciidoc.c'; then $(CYGPATH_W) 'parsers/asciidoc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/asciidoc.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-asciidoc.Tpo parsers/$(DEPDIR)/libctags_a-asciidoc.Po
+#	$(AM_V_CC)source='parsers/asciidoc.c' object='parsers/libctags_a-asciidoc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-asciidoc.obj `if test -f 'parsers/asciidoc.c'; then $(CYGPATH_W) 'parsers/asciidoc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/asciidoc.c'; fi`
+
+parsers/libctags_a-asm.o: parsers/asm.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-asm.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-asm.Tpo -c -o parsers/libctags_a-asm.o `test -f 'parsers/asm.c' || echo '$(srcdir)/'`parsers/asm.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-asm.Tpo parsers/$(DEPDIR)/libctags_a-asm.Po
+#	$(AM_V_CC)source='parsers/asm.c' object='parsers/libctags_a-asm.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-asm.o `test -f 'parsers/asm.c' || echo '$(srcdir)/'`parsers/asm.c
+
+parsers/libctags_a-asm.obj: parsers/asm.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-asm.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-asm.Tpo -c -o parsers/libctags_a-asm.obj `if test -f 'parsers/asm.c'; then $(CYGPATH_W) 'parsers/asm.c'; else $(CYGPATH_W) '$(srcdir)/parsers/asm.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-asm.Tpo parsers/$(DEPDIR)/libctags_a-asm.Po
+#	$(AM_V_CC)source='parsers/asm.c' object='parsers/libctags_a-asm.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-asm.obj `if test -f 'parsers/asm.c'; then $(CYGPATH_W) 'parsers/asm.c'; else $(CYGPATH_W) '$(srcdir)/parsers/asm.c'; fi`
+
+parsers/libctags_a-asp.o: parsers/asp.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-asp.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-asp.Tpo -c -o parsers/libctags_a-asp.o `test -f 'parsers/asp.c' || echo '$(srcdir)/'`parsers/asp.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-asp.Tpo parsers/$(DEPDIR)/libctags_a-asp.Po
+#	$(AM_V_CC)source='parsers/asp.c' object='parsers/libctags_a-asp.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-asp.o `test -f 'parsers/asp.c' || echo '$(srcdir)/'`parsers/asp.c
+
+parsers/libctags_a-asp.obj: parsers/asp.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-asp.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-asp.Tpo -c -o parsers/libctags_a-asp.obj `if test -f 'parsers/asp.c'; then $(CYGPATH_W) 'parsers/asp.c'; else $(CYGPATH_W) '$(srcdir)/parsers/asp.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-asp.Tpo parsers/$(DEPDIR)/libctags_a-asp.Po
+#	$(AM_V_CC)source='parsers/asp.c' object='parsers/libctags_a-asp.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-asp.obj `if test -f 'parsers/asp.c'; then $(CYGPATH_W) 'parsers/asp.c'; else $(CYGPATH_W) '$(srcdir)/parsers/asp.c'; fi`
+
+parsers/libctags_a-autoconf.o: parsers/autoconf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-autoconf.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-autoconf.Tpo -c -o parsers/libctags_a-autoconf.o `test -f 'parsers/autoconf.c' || echo '$(srcdir)/'`parsers/autoconf.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-autoconf.Tpo parsers/$(DEPDIR)/libctags_a-autoconf.Po
+#	$(AM_V_CC)source='parsers/autoconf.c' object='parsers/libctags_a-autoconf.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-autoconf.o `test -f 'parsers/autoconf.c' || echo '$(srcdir)/'`parsers/autoconf.c
+
+parsers/libctags_a-autoconf.obj: parsers/autoconf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-autoconf.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-autoconf.Tpo -c -o parsers/libctags_a-autoconf.obj `if test -f 'parsers/autoconf.c'; then $(CYGPATH_W) 'parsers/autoconf.c'; else $(CYGPATH_W) '$(srcdir)/parsers/autoconf.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-autoconf.Tpo parsers/$(DEPDIR)/libctags_a-autoconf.Po
+#	$(AM_V_CC)source='parsers/autoconf.c' object='parsers/libctags_a-autoconf.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-autoconf.obj `if test -f 'parsers/autoconf.c'; then $(CYGPATH_W) 'parsers/autoconf.c'; else $(CYGPATH_W) '$(srcdir)/parsers/autoconf.c'; fi`
+
+parsers/libctags_a-autoit.o: parsers/autoit.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-autoit.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-autoit.Tpo -c -o parsers/libctags_a-autoit.o `test -f 'parsers/autoit.c' || echo '$(srcdir)/'`parsers/autoit.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-autoit.Tpo parsers/$(DEPDIR)/libctags_a-autoit.Po
+#	$(AM_V_CC)source='parsers/autoit.c' object='parsers/libctags_a-autoit.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-autoit.o `test -f 'parsers/autoit.c' || echo '$(srcdir)/'`parsers/autoit.c
+
+parsers/libctags_a-autoit.obj: parsers/autoit.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-autoit.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-autoit.Tpo -c -o parsers/libctags_a-autoit.obj `if test -f 'parsers/autoit.c'; then $(CYGPATH_W) 'parsers/autoit.c'; else $(CYGPATH_W) '$(srcdir)/parsers/autoit.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-autoit.Tpo parsers/$(DEPDIR)/libctags_a-autoit.Po
+#	$(AM_V_CC)source='parsers/autoit.c' object='parsers/libctags_a-autoit.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-autoit.obj `if test -f 'parsers/autoit.c'; then $(CYGPATH_W) 'parsers/autoit.c'; else $(CYGPATH_W) '$(srcdir)/parsers/autoit.c'; fi`
+
+parsers/libctags_a-automake.o: parsers/automake.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-automake.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-automake.Tpo -c -o parsers/libctags_a-automake.o `test -f 'parsers/automake.c' || echo '$(srcdir)/'`parsers/automake.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-automake.Tpo parsers/$(DEPDIR)/libctags_a-automake.Po
+#	$(AM_V_CC)source='parsers/automake.c' object='parsers/libctags_a-automake.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-automake.o `test -f 'parsers/automake.c' || echo '$(srcdir)/'`parsers/automake.c
+
+parsers/libctags_a-automake.obj: parsers/automake.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-automake.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-automake.Tpo -c -o parsers/libctags_a-automake.obj `if test -f 'parsers/automake.c'; then $(CYGPATH_W) 'parsers/automake.c'; else $(CYGPATH_W) '$(srcdir)/parsers/automake.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-automake.Tpo parsers/$(DEPDIR)/libctags_a-automake.Po
+#	$(AM_V_CC)source='parsers/automake.c' object='parsers/libctags_a-automake.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-automake.obj `if test -f 'parsers/automake.c'; then $(CYGPATH_W) 'parsers/automake.c'; else $(CYGPATH_W) '$(srcdir)/parsers/automake.c'; fi`
+
+parsers/libctags_a-awk.o: parsers/awk.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-awk.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-awk.Tpo -c -o parsers/libctags_a-awk.o `test -f 'parsers/awk.c' || echo '$(srcdir)/'`parsers/awk.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-awk.Tpo parsers/$(DEPDIR)/libctags_a-awk.Po
+#	$(AM_V_CC)source='parsers/awk.c' object='parsers/libctags_a-awk.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-awk.o `test -f 'parsers/awk.c' || echo '$(srcdir)/'`parsers/awk.c
+
+parsers/libctags_a-awk.obj: parsers/awk.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-awk.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-awk.Tpo -c -o parsers/libctags_a-awk.obj `if test -f 'parsers/awk.c'; then $(CYGPATH_W) 'parsers/awk.c'; else $(CYGPATH_W) '$(srcdir)/parsers/awk.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-awk.Tpo parsers/$(DEPDIR)/libctags_a-awk.Po
+#	$(AM_V_CC)source='parsers/awk.c' object='parsers/libctags_a-awk.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-awk.obj `if test -f 'parsers/awk.c'; then $(CYGPATH_W) 'parsers/awk.c'; else $(CYGPATH_W) '$(srcdir)/parsers/awk.c'; fi`
+
+parsers/libctags_a-basic.o: parsers/basic.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-basic.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-basic.Tpo -c -o parsers/libctags_a-basic.o `test -f 'parsers/basic.c' || echo '$(srcdir)/'`parsers/basic.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-basic.Tpo parsers/$(DEPDIR)/libctags_a-basic.Po
+#	$(AM_V_CC)source='parsers/basic.c' object='parsers/libctags_a-basic.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-basic.o `test -f 'parsers/basic.c' || echo '$(srcdir)/'`parsers/basic.c
+
+parsers/libctags_a-basic.obj: parsers/basic.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-basic.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-basic.Tpo -c -o parsers/libctags_a-basic.obj `if test -f 'parsers/basic.c'; then $(CYGPATH_W) 'parsers/basic.c'; else $(CYGPATH_W) '$(srcdir)/parsers/basic.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-basic.Tpo parsers/$(DEPDIR)/libctags_a-basic.Po
+#	$(AM_V_CC)source='parsers/basic.c' object='parsers/libctags_a-basic.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-basic.obj `if test -f 'parsers/basic.c'; then $(CYGPATH_W) 'parsers/basic.c'; else $(CYGPATH_W) '$(srcdir)/parsers/basic.c'; fi`
+
+parsers/libctags_a-bats.o: parsers/bats.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-bats.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-bats.Tpo -c -o parsers/libctags_a-bats.o `test -f 'parsers/bats.c' || echo '$(srcdir)/'`parsers/bats.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-bats.Tpo parsers/$(DEPDIR)/libctags_a-bats.Po
+#	$(AM_V_CC)source='parsers/bats.c' object='parsers/libctags_a-bats.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-bats.o `test -f 'parsers/bats.c' || echo '$(srcdir)/'`parsers/bats.c
+
+parsers/libctags_a-bats.obj: parsers/bats.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-bats.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-bats.Tpo -c -o parsers/libctags_a-bats.obj `if test -f 'parsers/bats.c'; then $(CYGPATH_W) 'parsers/bats.c'; else $(CYGPATH_W) '$(srcdir)/parsers/bats.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-bats.Tpo parsers/$(DEPDIR)/libctags_a-bats.Po
+#	$(AM_V_CC)source='parsers/bats.c' object='parsers/libctags_a-bats.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-bats.obj `if test -f 'parsers/bats.c'; then $(CYGPATH_W) 'parsers/bats.c'; else $(CYGPATH_W) '$(srcdir)/parsers/bats.c'; fi`
+
+parsers/libctags_a-beta.o: parsers/beta.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-beta.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-beta.Tpo -c -o parsers/libctags_a-beta.o `test -f 'parsers/beta.c' || echo '$(srcdir)/'`parsers/beta.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-beta.Tpo parsers/$(DEPDIR)/libctags_a-beta.Po
+#	$(AM_V_CC)source='parsers/beta.c' object='parsers/libctags_a-beta.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-beta.o `test -f 'parsers/beta.c' || echo '$(srcdir)/'`parsers/beta.c
+
+parsers/libctags_a-beta.obj: parsers/beta.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-beta.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-beta.Tpo -c -o parsers/libctags_a-beta.obj `if test -f 'parsers/beta.c'; then $(CYGPATH_W) 'parsers/beta.c'; else $(CYGPATH_W) '$(srcdir)/parsers/beta.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-beta.Tpo parsers/$(DEPDIR)/libctags_a-beta.Po
+#	$(AM_V_CC)source='parsers/beta.c' object='parsers/libctags_a-beta.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-beta.obj `if test -f 'parsers/beta.c'; then $(CYGPATH_W) 'parsers/beta.c'; else $(CYGPATH_W) '$(srcdir)/parsers/beta.c'; fi`
+
+parsers/libctags_a-biblatex.o: parsers/biblatex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-biblatex.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-biblatex.Tpo -c -o parsers/libctags_a-biblatex.o `test -f 'parsers/biblatex.c' || echo '$(srcdir)/'`parsers/biblatex.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-biblatex.Tpo parsers/$(DEPDIR)/libctags_a-biblatex.Po
+#	$(AM_V_CC)source='parsers/biblatex.c' object='parsers/libctags_a-biblatex.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-biblatex.o `test -f 'parsers/biblatex.c' || echo '$(srcdir)/'`parsers/biblatex.c
+
+parsers/libctags_a-biblatex.obj: parsers/biblatex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-biblatex.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-biblatex.Tpo -c -o parsers/libctags_a-biblatex.obj `if test -f 'parsers/biblatex.c'; then $(CYGPATH_W) 'parsers/biblatex.c'; else $(CYGPATH_W) '$(srcdir)/parsers/biblatex.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-biblatex.Tpo parsers/$(DEPDIR)/libctags_a-biblatex.Po
+#	$(AM_V_CC)source='parsers/biblatex.c' object='parsers/libctags_a-biblatex.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-biblatex.obj `if test -f 'parsers/biblatex.c'; then $(CYGPATH_W) 'parsers/biblatex.c'; else $(CYGPATH_W) '$(srcdir)/parsers/biblatex.c'; fi`
+
+parsers/libctags_a-bibtex.o: parsers/bibtex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-bibtex.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-bibtex.Tpo -c -o parsers/libctags_a-bibtex.o `test -f 'parsers/bibtex.c' || echo '$(srcdir)/'`parsers/bibtex.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-bibtex.Tpo parsers/$(DEPDIR)/libctags_a-bibtex.Po
+#	$(AM_V_CC)source='parsers/bibtex.c' object='parsers/libctags_a-bibtex.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-bibtex.o `test -f 'parsers/bibtex.c' || echo '$(srcdir)/'`parsers/bibtex.c
+
+parsers/libctags_a-bibtex.obj: parsers/bibtex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-bibtex.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-bibtex.Tpo -c -o parsers/libctags_a-bibtex.obj `if test -f 'parsers/bibtex.c'; then $(CYGPATH_W) 'parsers/bibtex.c'; else $(CYGPATH_W) '$(srcdir)/parsers/bibtex.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-bibtex.Tpo parsers/$(DEPDIR)/libctags_a-bibtex.Po
+#	$(AM_V_CC)source='parsers/bibtex.c' object='parsers/libctags_a-bibtex.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-bibtex.obj `if test -f 'parsers/bibtex.c'; then $(CYGPATH_W) 'parsers/bibtex.c'; else $(CYGPATH_W) '$(srcdir)/parsers/bibtex.c'; fi`
+
+parsers/libctags_a-c-based.o: parsers/c-based.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-c-based.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-c-based.Tpo -c -o parsers/libctags_a-c-based.o `test -f 'parsers/c-based.c' || echo '$(srcdir)/'`parsers/c-based.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-c-based.Tpo parsers/$(DEPDIR)/libctags_a-c-based.Po
+#	$(AM_V_CC)source='parsers/c-based.c' object='parsers/libctags_a-c-based.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-c-based.o `test -f 'parsers/c-based.c' || echo '$(srcdir)/'`parsers/c-based.c
+
+parsers/libctags_a-c-based.obj: parsers/c-based.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-c-based.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-c-based.Tpo -c -o parsers/libctags_a-c-based.obj `if test -f 'parsers/c-based.c'; then $(CYGPATH_W) 'parsers/c-based.c'; else $(CYGPATH_W) '$(srcdir)/parsers/c-based.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-c-based.Tpo parsers/$(DEPDIR)/libctags_a-c-based.Po
+#	$(AM_V_CC)source='parsers/c-based.c' object='parsers/libctags_a-c-based.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-c-based.obj `if test -f 'parsers/c-based.c'; then $(CYGPATH_W) 'parsers/c-based.c'; else $(CYGPATH_W) '$(srcdir)/parsers/c-based.c'; fi`
+
+parsers/libctags_a-clojure.o: parsers/clojure.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-clojure.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-clojure.Tpo -c -o parsers/libctags_a-clojure.o `test -f 'parsers/clojure.c' || echo '$(srcdir)/'`parsers/clojure.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-clojure.Tpo parsers/$(DEPDIR)/libctags_a-clojure.Po
+#	$(AM_V_CC)source='parsers/clojure.c' object='parsers/libctags_a-clojure.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-clojure.o `test -f 'parsers/clojure.c' || echo '$(srcdir)/'`parsers/clojure.c
+
+parsers/libctags_a-clojure.obj: parsers/clojure.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-clojure.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-clojure.Tpo -c -o parsers/libctags_a-clojure.obj `if test -f 'parsers/clojure.c'; then $(CYGPATH_W) 'parsers/clojure.c'; else $(CYGPATH_W) '$(srcdir)/parsers/clojure.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-clojure.Tpo parsers/$(DEPDIR)/libctags_a-clojure.Po
+#	$(AM_V_CC)source='parsers/clojure.c' object='parsers/libctags_a-clojure.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-clojure.obj `if test -f 'parsers/clojure.c'; then $(CYGPATH_W) 'parsers/clojure.c'; else $(CYGPATH_W) '$(srcdir)/parsers/clojure.c'; fi`
+
+parsers/libctags_a-css.o: parsers/css.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-css.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-css.Tpo -c -o parsers/libctags_a-css.o `test -f 'parsers/css.c' || echo '$(srcdir)/'`parsers/css.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-css.Tpo parsers/$(DEPDIR)/libctags_a-css.Po
+#	$(AM_V_CC)source='parsers/css.c' object='parsers/libctags_a-css.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-css.o `test -f 'parsers/css.c' || echo '$(srcdir)/'`parsers/css.c
+
+parsers/libctags_a-css.obj: parsers/css.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-css.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-css.Tpo -c -o parsers/libctags_a-css.obj `if test -f 'parsers/css.c'; then $(CYGPATH_W) 'parsers/css.c'; else $(CYGPATH_W) '$(srcdir)/parsers/css.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-css.Tpo parsers/$(DEPDIR)/libctags_a-css.Po
+#	$(AM_V_CC)source='parsers/css.c' object='parsers/libctags_a-css.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-css.obj `if test -f 'parsers/css.c'; then $(CYGPATH_W) 'parsers/css.c'; else $(CYGPATH_W) '$(srcdir)/parsers/css.c'; fi`
+
+parsers/libctags_a-cobol.o: parsers/cobol.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-cobol.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-cobol.Tpo -c -o parsers/libctags_a-cobol.o `test -f 'parsers/cobol.c' || echo '$(srcdir)/'`parsers/cobol.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-cobol.Tpo parsers/$(DEPDIR)/libctags_a-cobol.Po
+#	$(AM_V_CC)source='parsers/cobol.c' object='parsers/libctags_a-cobol.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-cobol.o `test -f 'parsers/cobol.c' || echo '$(srcdir)/'`parsers/cobol.c
+
+parsers/libctags_a-cobol.obj: parsers/cobol.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-cobol.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-cobol.Tpo -c -o parsers/libctags_a-cobol.obj `if test -f 'parsers/cobol.c'; then $(CYGPATH_W) 'parsers/cobol.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cobol.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-cobol.Tpo parsers/$(DEPDIR)/libctags_a-cobol.Po
+#	$(AM_V_CC)source='parsers/cobol.c' object='parsers/libctags_a-cobol.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-cobol.obj `if test -f 'parsers/cobol.c'; then $(CYGPATH_W) 'parsers/cobol.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cobol.c'; fi`
+
+parsers/libctags_a-cpreprocessor.o: parsers/cpreprocessor.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-cpreprocessor.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-cpreprocessor.Tpo -c -o parsers/libctags_a-cpreprocessor.o `test -f 'parsers/cpreprocessor.c' || echo '$(srcdir)/'`parsers/cpreprocessor.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-cpreprocessor.Tpo parsers/$(DEPDIR)/libctags_a-cpreprocessor.Po
+#	$(AM_V_CC)source='parsers/cpreprocessor.c' object='parsers/libctags_a-cpreprocessor.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-cpreprocessor.o `test -f 'parsers/cpreprocessor.c' || echo '$(srcdir)/'`parsers/cpreprocessor.c
+
+parsers/libctags_a-cpreprocessor.obj: parsers/cpreprocessor.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-cpreprocessor.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-cpreprocessor.Tpo -c -o parsers/libctags_a-cpreprocessor.obj `if test -f 'parsers/cpreprocessor.c'; then $(CYGPATH_W) 'parsers/cpreprocessor.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cpreprocessor.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-cpreprocessor.Tpo parsers/$(DEPDIR)/libctags_a-cpreprocessor.Po
+#	$(AM_V_CC)source='parsers/cpreprocessor.c' object='parsers/libctags_a-cpreprocessor.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-cpreprocessor.obj `if test -f 'parsers/cpreprocessor.c'; then $(CYGPATH_W) 'parsers/cpreprocessor.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cpreprocessor.c'; fi`
+
+parsers/cxx/libctags_a-cxx.o: parsers/cxx/cxx.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx.Tpo -c -o parsers/cxx/libctags_a-cxx.o `test -f 'parsers/cxx/cxx.c' || echo '$(srcdir)/'`parsers/cxx/cxx.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx.c' object='parsers/cxx/libctags_a-cxx.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx.o `test -f 'parsers/cxx/cxx.c' || echo '$(srcdir)/'`parsers/cxx/cxx.c
+
+parsers/cxx/libctags_a-cxx.obj: parsers/cxx/cxx.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx.Tpo -c -o parsers/cxx/libctags_a-cxx.obj `if test -f 'parsers/cxx/cxx.c'; then $(CYGPATH_W) 'parsers/cxx/cxx.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx.c' object='parsers/cxx/libctags_a-cxx.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx.obj `if test -f 'parsers/cxx/cxx.c'; then $(CYGPATH_W) 'parsers/cxx/cxx.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx.c'; fi`
+
+parsers/cxx/libctags_a-cxx_debug.o: parsers/cxx/cxx_debug.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_debug.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Tpo -c -o parsers/cxx/libctags_a-cxx_debug.o `test -f 'parsers/cxx/cxx_debug.c' || echo '$(srcdir)/'`parsers/cxx/cxx_debug.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_debug.c' object='parsers/cxx/libctags_a-cxx_debug.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_debug.o `test -f 'parsers/cxx/cxx_debug.c' || echo '$(srcdir)/'`parsers/cxx/cxx_debug.c
+
+parsers/cxx/libctags_a-cxx_debug.obj: parsers/cxx/cxx_debug.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_debug.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Tpo -c -o parsers/cxx/libctags_a-cxx_debug.obj `if test -f 'parsers/cxx/cxx_debug.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_debug.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_debug.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_debug.c' object='parsers/cxx/libctags_a-cxx_debug.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_debug.obj `if test -f 'parsers/cxx/cxx_debug.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_debug.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_debug.c'; fi`
+
+parsers/cxx/libctags_a-cxx_debug_type.o: parsers/cxx/cxx_debug_type.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_debug_type.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Tpo -c -o parsers/cxx/libctags_a-cxx_debug_type.o `test -f 'parsers/cxx/cxx_debug_type.c' || echo '$(srcdir)/'`parsers/cxx/cxx_debug_type.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_debug_type.c' object='parsers/cxx/libctags_a-cxx_debug_type.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_debug_type.o `test -f 'parsers/cxx/cxx_debug_type.c' || echo '$(srcdir)/'`parsers/cxx/cxx_debug_type.c
+
+parsers/cxx/libctags_a-cxx_debug_type.obj: parsers/cxx/cxx_debug_type.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_debug_type.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Tpo -c -o parsers/cxx/libctags_a-cxx_debug_type.obj `if test -f 'parsers/cxx/cxx_debug_type.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_debug_type.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_debug_type.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_debug_type.c' object='parsers/cxx/libctags_a-cxx_debug_type.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_debug_type.obj `if test -f 'parsers/cxx/cxx_debug_type.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_debug_type.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_debug_type.c'; fi`
+
+parsers/cxx/libctags_a-cxx_keyword.o: parsers/cxx/cxx_keyword.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_keyword.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Tpo -c -o parsers/cxx/libctags_a-cxx_keyword.o `test -f 'parsers/cxx/cxx_keyword.c' || echo '$(srcdir)/'`parsers/cxx/cxx_keyword.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_keyword.c' object='parsers/cxx/libctags_a-cxx_keyword.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_keyword.o `test -f 'parsers/cxx/cxx_keyword.c' || echo '$(srcdir)/'`parsers/cxx/cxx_keyword.c
+
+parsers/cxx/libctags_a-cxx_keyword.obj: parsers/cxx/cxx_keyword.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_keyword.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Tpo -c -o parsers/cxx/libctags_a-cxx_keyword.obj `if test -f 'parsers/cxx/cxx_keyword.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_keyword.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_keyword.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_keyword.c' object='parsers/cxx/libctags_a-cxx_keyword.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_keyword.obj `if test -f 'parsers/cxx/cxx_keyword.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_keyword.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_keyword.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser.o: parsers/cxx/cxx_parser.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Tpo -c -o parsers/cxx/libctags_a-cxx_parser.o `test -f 'parsers/cxx/cxx_parser.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser.c' object='parsers/cxx/libctags_a-cxx_parser.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser.o `test -f 'parsers/cxx/cxx_parser.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser.c
+
+parsers/cxx/libctags_a-cxx_parser.obj: parsers/cxx/cxx_parser.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Tpo -c -o parsers/cxx/libctags_a-cxx_parser.obj `if test -f 'parsers/cxx/cxx_parser.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser.c' object='parsers/cxx/libctags_a-cxx_parser.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser.obj `if test -f 'parsers/cxx/cxx_parser.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_block.o: parsers/cxx/cxx_parser_block.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_block.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_block.o `test -f 'parsers/cxx/cxx_parser_block.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_block.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_block.c' object='parsers/cxx/libctags_a-cxx_parser_block.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_block.o `test -f 'parsers/cxx/cxx_parser_block.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_block.c
+
+parsers/cxx/libctags_a-cxx_parser_block.obj: parsers/cxx/cxx_parser_block.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_block.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_block.obj `if test -f 'parsers/cxx/cxx_parser_block.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_block.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_block.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_block.c' object='parsers/cxx/libctags_a-cxx_parser_block.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_block.obj `if test -f 'parsers/cxx/cxx_parser_block.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_block.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_block.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_function.o: parsers/cxx/cxx_parser_function.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_function.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_function.o `test -f 'parsers/cxx/cxx_parser_function.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_function.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_function.c' object='parsers/cxx/libctags_a-cxx_parser_function.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_function.o `test -f 'parsers/cxx/cxx_parser_function.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_function.c
+
+parsers/cxx/libctags_a-cxx_parser_function.obj: parsers/cxx/cxx_parser_function.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_function.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_function.obj `if test -f 'parsers/cxx/cxx_parser_function.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_function.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_function.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_function.c' object='parsers/cxx/libctags_a-cxx_parser_function.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_function.obj `if test -f 'parsers/cxx/cxx_parser_function.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_function.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_function.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_lambda.o: parsers/cxx/cxx_parser_lambda.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_lambda.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_lambda.o `test -f 'parsers/cxx/cxx_parser_lambda.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_lambda.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_lambda.c' object='parsers/cxx/libctags_a-cxx_parser_lambda.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_lambda.o `test -f 'parsers/cxx/cxx_parser_lambda.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_lambda.c
+
+parsers/cxx/libctags_a-cxx_parser_lambda.obj: parsers/cxx/cxx_parser_lambda.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_lambda.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_lambda.obj `if test -f 'parsers/cxx/cxx_parser_lambda.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_lambda.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_lambda.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_lambda.c' object='parsers/cxx/libctags_a-cxx_parser_lambda.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_lambda.obj `if test -f 'parsers/cxx/cxx_parser_lambda.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_lambda.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_lambda.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_module.o: parsers/cxx/cxx_parser_module.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_module.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_module.o `test -f 'parsers/cxx/cxx_parser_module.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_module.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_module.c' object='parsers/cxx/libctags_a-cxx_parser_module.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_module.o `test -f 'parsers/cxx/cxx_parser_module.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_module.c
+
+parsers/cxx/libctags_a-cxx_parser_module.obj: parsers/cxx/cxx_parser_module.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_module.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_module.obj `if test -f 'parsers/cxx/cxx_parser_module.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_module.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_module.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_module.c' object='parsers/cxx/libctags_a-cxx_parser_module.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_module.obj `if test -f 'parsers/cxx/cxx_parser_module.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_module.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_module.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_namespace.o: parsers/cxx/cxx_parser_namespace.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_namespace.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_namespace.o `test -f 'parsers/cxx/cxx_parser_namespace.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_namespace.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_namespace.c' object='parsers/cxx/libctags_a-cxx_parser_namespace.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_namespace.o `test -f 'parsers/cxx/cxx_parser_namespace.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_namespace.c
+
+parsers/cxx/libctags_a-cxx_parser_namespace.obj: parsers/cxx/cxx_parser_namespace.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_namespace.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_namespace.obj `if test -f 'parsers/cxx/cxx_parser_namespace.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_namespace.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_namespace.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_namespace.c' object='parsers/cxx/libctags_a-cxx_parser_namespace.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_namespace.obj `if test -f 'parsers/cxx/cxx_parser_namespace.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_namespace.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_namespace.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_template.o: parsers/cxx/cxx_parser_template.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_template.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_template.o `test -f 'parsers/cxx/cxx_parser_template.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_template.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_template.c' object='parsers/cxx/libctags_a-cxx_parser_template.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_template.o `test -f 'parsers/cxx/cxx_parser_template.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_template.c
+
+parsers/cxx/libctags_a-cxx_parser_template.obj: parsers/cxx/cxx_parser_template.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_template.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_template.obj `if test -f 'parsers/cxx/cxx_parser_template.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_template.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_template.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_template.c' object='parsers/cxx/libctags_a-cxx_parser_template.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_template.obj `if test -f 'parsers/cxx/cxx_parser_template.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_template.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_template.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_tokenizer.o: parsers/cxx/cxx_parser_tokenizer.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_tokenizer.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_tokenizer.o `test -f 'parsers/cxx/cxx_parser_tokenizer.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_tokenizer.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_tokenizer.c' object='parsers/cxx/libctags_a-cxx_parser_tokenizer.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_tokenizer.o `test -f 'parsers/cxx/cxx_parser_tokenizer.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_tokenizer.c
+
+parsers/cxx/libctags_a-cxx_parser_tokenizer.obj: parsers/cxx/cxx_parser_tokenizer.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_tokenizer.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_tokenizer.obj `if test -f 'parsers/cxx/cxx_parser_tokenizer.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_tokenizer.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_tokenizer.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_tokenizer.c' object='parsers/cxx/libctags_a-cxx_parser_tokenizer.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_tokenizer.obj `if test -f 'parsers/cxx/cxx_parser_tokenizer.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_tokenizer.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_tokenizer.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_typedef.o: parsers/cxx/cxx_parser_typedef.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_typedef.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_typedef.o `test -f 'parsers/cxx/cxx_parser_typedef.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_typedef.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_typedef.c' object='parsers/cxx/libctags_a-cxx_parser_typedef.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_typedef.o `test -f 'parsers/cxx/cxx_parser_typedef.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_typedef.c
+
+parsers/cxx/libctags_a-cxx_parser_typedef.obj: parsers/cxx/cxx_parser_typedef.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_typedef.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_typedef.obj `if test -f 'parsers/cxx/cxx_parser_typedef.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_typedef.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_typedef.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_typedef.c' object='parsers/cxx/libctags_a-cxx_parser_typedef.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_typedef.obj `if test -f 'parsers/cxx/cxx_parser_typedef.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_typedef.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_typedef.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_using.o: parsers/cxx/cxx_parser_using.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_using.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_using.o `test -f 'parsers/cxx/cxx_parser_using.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_using.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_using.c' object='parsers/cxx/libctags_a-cxx_parser_using.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_using.o `test -f 'parsers/cxx/cxx_parser_using.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_using.c
+
+parsers/cxx/libctags_a-cxx_parser_using.obj: parsers/cxx/cxx_parser_using.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_using.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_using.obj `if test -f 'parsers/cxx/cxx_parser_using.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_using.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_using.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_using.c' object='parsers/cxx/libctags_a-cxx_parser_using.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_using.obj `if test -f 'parsers/cxx/cxx_parser_using.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_using.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_using.c'; fi`
+
+parsers/cxx/libctags_a-cxx_parser_variable.o: parsers/cxx/cxx_parser_variable.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_variable.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_variable.o `test -f 'parsers/cxx/cxx_parser_variable.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_variable.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_variable.c' object='parsers/cxx/libctags_a-cxx_parser_variable.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_variable.o `test -f 'parsers/cxx/cxx_parser_variable.c' || echo '$(srcdir)/'`parsers/cxx/cxx_parser_variable.c
+
+parsers/cxx/libctags_a-cxx_parser_variable.obj: parsers/cxx/cxx_parser_variable.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_parser_variable.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Tpo -c -o parsers/cxx/libctags_a-cxx_parser_variable.obj `if test -f 'parsers/cxx/cxx_parser_variable.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_variable.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_variable.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_parser_variable.c' object='parsers/cxx/libctags_a-cxx_parser_variable.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_parser_variable.obj `if test -f 'parsers/cxx/cxx_parser_variable.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_parser_variable.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_parser_variable.c'; fi`
+
+parsers/cxx/libctags_a-cxx_qtmoc.o: parsers/cxx/cxx_qtmoc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_qtmoc.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Tpo -c -o parsers/cxx/libctags_a-cxx_qtmoc.o `test -f 'parsers/cxx/cxx_qtmoc.c' || echo '$(srcdir)/'`parsers/cxx/cxx_qtmoc.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_qtmoc.c' object='parsers/cxx/libctags_a-cxx_qtmoc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_qtmoc.o `test -f 'parsers/cxx/cxx_qtmoc.c' || echo '$(srcdir)/'`parsers/cxx/cxx_qtmoc.c
+
+parsers/cxx/libctags_a-cxx_qtmoc.obj: parsers/cxx/cxx_qtmoc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_qtmoc.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Tpo -c -o parsers/cxx/libctags_a-cxx_qtmoc.obj `if test -f 'parsers/cxx/cxx_qtmoc.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_qtmoc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_qtmoc.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_qtmoc.c' object='parsers/cxx/libctags_a-cxx_qtmoc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_qtmoc.obj `if test -f 'parsers/cxx/cxx_qtmoc.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_qtmoc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_qtmoc.c'; fi`
+
+parsers/cxx/libctags_a-cxx_scope.o: parsers/cxx/cxx_scope.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_scope.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Tpo -c -o parsers/cxx/libctags_a-cxx_scope.o `test -f 'parsers/cxx/cxx_scope.c' || echo '$(srcdir)/'`parsers/cxx/cxx_scope.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_scope.c' object='parsers/cxx/libctags_a-cxx_scope.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_scope.o `test -f 'parsers/cxx/cxx_scope.c' || echo '$(srcdir)/'`parsers/cxx/cxx_scope.c
+
+parsers/cxx/libctags_a-cxx_scope.obj: parsers/cxx/cxx_scope.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_scope.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Tpo -c -o parsers/cxx/libctags_a-cxx_scope.obj `if test -f 'parsers/cxx/cxx_scope.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_scope.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_scope.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_scope.c' object='parsers/cxx/libctags_a-cxx_scope.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_scope.obj `if test -f 'parsers/cxx/cxx_scope.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_scope.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_scope.c'; fi`
+
+parsers/cxx/libctags_a-cxx_side_chain.o: parsers/cxx/cxx_side_chain.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_side_chain.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Tpo -c -o parsers/cxx/libctags_a-cxx_side_chain.o `test -f 'parsers/cxx/cxx_side_chain.c' || echo '$(srcdir)/'`parsers/cxx/cxx_side_chain.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_side_chain.c' object='parsers/cxx/libctags_a-cxx_side_chain.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_side_chain.o `test -f 'parsers/cxx/cxx_side_chain.c' || echo '$(srcdir)/'`parsers/cxx/cxx_side_chain.c
+
+parsers/cxx/libctags_a-cxx_side_chain.obj: parsers/cxx/cxx_side_chain.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_side_chain.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Tpo -c -o parsers/cxx/libctags_a-cxx_side_chain.obj `if test -f 'parsers/cxx/cxx_side_chain.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_side_chain.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_side_chain.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_side_chain.c' object='parsers/cxx/libctags_a-cxx_side_chain.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_side_chain.obj `if test -f 'parsers/cxx/cxx_side_chain.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_side_chain.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_side_chain.c'; fi`
+
+parsers/cxx/libctags_a-cxx_subparser.o: parsers/cxx/cxx_subparser.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_subparser.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Tpo -c -o parsers/cxx/libctags_a-cxx_subparser.o `test -f 'parsers/cxx/cxx_subparser.c' || echo '$(srcdir)/'`parsers/cxx/cxx_subparser.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_subparser.c' object='parsers/cxx/libctags_a-cxx_subparser.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_subparser.o `test -f 'parsers/cxx/cxx_subparser.c' || echo '$(srcdir)/'`parsers/cxx/cxx_subparser.c
+
+parsers/cxx/libctags_a-cxx_subparser.obj: parsers/cxx/cxx_subparser.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_subparser.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Tpo -c -o parsers/cxx/libctags_a-cxx_subparser.obj `if test -f 'parsers/cxx/cxx_subparser.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_subparser.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_subparser.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_subparser.c' object='parsers/cxx/libctags_a-cxx_subparser.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_subparser.obj `if test -f 'parsers/cxx/cxx_subparser.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_subparser.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_subparser.c'; fi`
+
+parsers/cxx/libctags_a-cxx_tag.o: parsers/cxx/cxx_tag.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_tag.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Tpo -c -o parsers/cxx/libctags_a-cxx_tag.o `test -f 'parsers/cxx/cxx_tag.c' || echo '$(srcdir)/'`parsers/cxx/cxx_tag.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_tag.c' object='parsers/cxx/libctags_a-cxx_tag.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_tag.o `test -f 'parsers/cxx/cxx_tag.c' || echo '$(srcdir)/'`parsers/cxx/cxx_tag.c
+
+parsers/cxx/libctags_a-cxx_tag.obj: parsers/cxx/cxx_tag.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_tag.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Tpo -c -o parsers/cxx/libctags_a-cxx_tag.obj `if test -f 'parsers/cxx/cxx_tag.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_tag.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_tag.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_tag.c' object='parsers/cxx/libctags_a-cxx_tag.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_tag.obj `if test -f 'parsers/cxx/cxx_tag.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_tag.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_tag.c'; fi`
+
+parsers/cxx/libctags_a-cxx_token.o: parsers/cxx/cxx_token.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_token.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Tpo -c -o parsers/cxx/libctags_a-cxx_token.o `test -f 'parsers/cxx/cxx_token.c' || echo '$(srcdir)/'`parsers/cxx/cxx_token.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_token.c' object='parsers/cxx/libctags_a-cxx_token.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_token.o `test -f 'parsers/cxx/cxx_token.c' || echo '$(srcdir)/'`parsers/cxx/cxx_token.c
+
+parsers/cxx/libctags_a-cxx_token.obj: parsers/cxx/cxx_token.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_token.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Tpo -c -o parsers/cxx/libctags_a-cxx_token.obj `if test -f 'parsers/cxx/cxx_token.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_token.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_token.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_token.c' object='parsers/cxx/libctags_a-cxx_token.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_token.obj `if test -f 'parsers/cxx/cxx_token.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_token.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_token.c'; fi`
+
+parsers/cxx/libctags_a-cxx_token_chain.o: parsers/cxx/cxx_token_chain.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_token_chain.o -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Tpo -c -o parsers/cxx/libctags_a-cxx_token_chain.o `test -f 'parsers/cxx/cxx_token_chain.c' || echo '$(srcdir)/'`parsers/cxx/cxx_token_chain.c
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_token_chain.c' object='parsers/cxx/libctags_a-cxx_token_chain.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_token_chain.o `test -f 'parsers/cxx/cxx_token_chain.c' || echo '$(srcdir)/'`parsers/cxx/cxx_token_chain.c
+
+parsers/cxx/libctags_a-cxx_token_chain.obj: parsers/cxx/cxx_token_chain.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/cxx/libctags_a-cxx_token_chain.obj -MD -MP -MF parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Tpo -c -o parsers/cxx/libctags_a-cxx_token_chain.obj `if test -f 'parsers/cxx/cxx_token_chain.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_token_chain.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_token_chain.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Tpo parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Po
+#	$(AM_V_CC)source='parsers/cxx/cxx_token_chain.c' object='parsers/cxx/libctags_a-cxx_token_chain.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/cxx/libctags_a-cxx_token_chain.obj `if test -f 'parsers/cxx/cxx_token_chain.c'; then $(CYGPATH_W) 'parsers/cxx/cxx_token_chain.c'; else $(CYGPATH_W) '$(srcdir)/parsers/cxx/cxx_token_chain.c'; fi`
+
+parsers/libctags_a-diff.o: parsers/diff.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-diff.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-diff.Tpo -c -o parsers/libctags_a-diff.o `test -f 'parsers/diff.c' || echo '$(srcdir)/'`parsers/diff.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-diff.Tpo parsers/$(DEPDIR)/libctags_a-diff.Po
+#	$(AM_V_CC)source='parsers/diff.c' object='parsers/libctags_a-diff.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-diff.o `test -f 'parsers/diff.c' || echo '$(srcdir)/'`parsers/diff.c
+
+parsers/libctags_a-diff.obj: parsers/diff.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-diff.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-diff.Tpo -c -o parsers/libctags_a-diff.obj `if test -f 'parsers/diff.c'; then $(CYGPATH_W) 'parsers/diff.c'; else $(CYGPATH_W) '$(srcdir)/parsers/diff.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-diff.Tpo parsers/$(DEPDIR)/libctags_a-diff.Po
+#	$(AM_V_CC)source='parsers/diff.c' object='parsers/libctags_a-diff.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-diff.obj `if test -f 'parsers/diff.c'; then $(CYGPATH_W) 'parsers/diff.c'; else $(CYGPATH_W) '$(srcdir)/parsers/diff.c'; fi`
+
+parsers/libctags_a-dosbatch.o: parsers/dosbatch.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-dosbatch.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-dosbatch.Tpo -c -o parsers/libctags_a-dosbatch.o `test -f 'parsers/dosbatch.c' || echo '$(srcdir)/'`parsers/dosbatch.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-dosbatch.Tpo parsers/$(DEPDIR)/libctags_a-dosbatch.Po
+#	$(AM_V_CC)source='parsers/dosbatch.c' object='parsers/libctags_a-dosbatch.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-dosbatch.o `test -f 'parsers/dosbatch.c' || echo '$(srcdir)/'`parsers/dosbatch.c
+
+parsers/libctags_a-dosbatch.obj: parsers/dosbatch.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-dosbatch.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-dosbatch.Tpo -c -o parsers/libctags_a-dosbatch.obj `if test -f 'parsers/dosbatch.c'; then $(CYGPATH_W) 'parsers/dosbatch.c'; else $(CYGPATH_W) '$(srcdir)/parsers/dosbatch.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-dosbatch.Tpo parsers/$(DEPDIR)/libctags_a-dosbatch.Po
+#	$(AM_V_CC)source='parsers/dosbatch.c' object='parsers/libctags_a-dosbatch.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-dosbatch.obj `if test -f 'parsers/dosbatch.c'; then $(CYGPATH_W) 'parsers/dosbatch.c'; else $(CYGPATH_W) '$(srcdir)/parsers/dosbatch.c'; fi`
+
+parsers/libctags_a-dtd.o: parsers/dtd.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-dtd.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-dtd.Tpo -c -o parsers/libctags_a-dtd.o `test -f 'parsers/dtd.c' || echo '$(srcdir)/'`parsers/dtd.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-dtd.Tpo parsers/$(DEPDIR)/libctags_a-dtd.Po
+#	$(AM_V_CC)source='parsers/dtd.c' object='parsers/libctags_a-dtd.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-dtd.o `test -f 'parsers/dtd.c' || echo '$(srcdir)/'`parsers/dtd.c
+
+parsers/libctags_a-dtd.obj: parsers/dtd.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-dtd.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-dtd.Tpo -c -o parsers/libctags_a-dtd.obj `if test -f 'parsers/dtd.c'; then $(CYGPATH_W) 'parsers/dtd.c'; else $(CYGPATH_W) '$(srcdir)/parsers/dtd.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-dtd.Tpo parsers/$(DEPDIR)/libctags_a-dtd.Po
+#	$(AM_V_CC)source='parsers/dtd.c' object='parsers/libctags_a-dtd.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-dtd.obj `if test -f 'parsers/dtd.c'; then $(CYGPATH_W) 'parsers/dtd.c'; else $(CYGPATH_W) '$(srcdir)/parsers/dtd.c'; fi`
+
+parsers/libctags_a-dts.o: parsers/dts.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-dts.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-dts.Tpo -c -o parsers/libctags_a-dts.o `test -f 'parsers/dts.c' || echo '$(srcdir)/'`parsers/dts.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-dts.Tpo parsers/$(DEPDIR)/libctags_a-dts.Po
+#	$(AM_V_CC)source='parsers/dts.c' object='parsers/libctags_a-dts.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-dts.o `test -f 'parsers/dts.c' || echo '$(srcdir)/'`parsers/dts.c
+
+parsers/libctags_a-dts.obj: parsers/dts.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-dts.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-dts.Tpo -c -o parsers/libctags_a-dts.obj `if test -f 'parsers/dts.c'; then $(CYGPATH_W) 'parsers/dts.c'; else $(CYGPATH_W) '$(srcdir)/parsers/dts.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-dts.Tpo parsers/$(DEPDIR)/libctags_a-dts.Po
+#	$(AM_V_CC)source='parsers/dts.c' object='parsers/libctags_a-dts.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-dts.obj `if test -f 'parsers/dts.c'; then $(CYGPATH_W) 'parsers/dts.c'; else $(CYGPATH_W) '$(srcdir)/parsers/dts.c'; fi`
+
+parsers/libctags_a-eiffel.o: parsers/eiffel.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-eiffel.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-eiffel.Tpo -c -o parsers/libctags_a-eiffel.o `test -f 'parsers/eiffel.c' || echo '$(srcdir)/'`parsers/eiffel.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-eiffel.Tpo parsers/$(DEPDIR)/libctags_a-eiffel.Po
+#	$(AM_V_CC)source='parsers/eiffel.c' object='parsers/libctags_a-eiffel.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-eiffel.o `test -f 'parsers/eiffel.c' || echo '$(srcdir)/'`parsers/eiffel.c
+
+parsers/libctags_a-eiffel.obj: parsers/eiffel.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-eiffel.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-eiffel.Tpo -c -o parsers/libctags_a-eiffel.obj `if test -f 'parsers/eiffel.c'; then $(CYGPATH_W) 'parsers/eiffel.c'; else $(CYGPATH_W) '$(srcdir)/parsers/eiffel.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-eiffel.Tpo parsers/$(DEPDIR)/libctags_a-eiffel.Po
+#	$(AM_V_CC)source='parsers/eiffel.c' object='parsers/libctags_a-eiffel.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-eiffel.obj `if test -f 'parsers/eiffel.c'; then $(CYGPATH_W) 'parsers/eiffel.c'; else $(CYGPATH_W) '$(srcdir)/parsers/eiffel.c'; fi`
+
+parsers/libctags_a-erlang.o: parsers/erlang.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-erlang.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-erlang.Tpo -c -o parsers/libctags_a-erlang.o `test -f 'parsers/erlang.c' || echo '$(srcdir)/'`parsers/erlang.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-erlang.Tpo parsers/$(DEPDIR)/libctags_a-erlang.Po
+#	$(AM_V_CC)source='parsers/erlang.c' object='parsers/libctags_a-erlang.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-erlang.o `test -f 'parsers/erlang.c' || echo '$(srcdir)/'`parsers/erlang.c
+
+parsers/libctags_a-erlang.obj: parsers/erlang.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-erlang.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-erlang.Tpo -c -o parsers/libctags_a-erlang.obj `if test -f 'parsers/erlang.c'; then $(CYGPATH_W) 'parsers/erlang.c'; else $(CYGPATH_W) '$(srcdir)/parsers/erlang.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-erlang.Tpo parsers/$(DEPDIR)/libctags_a-erlang.Po
+#	$(AM_V_CC)source='parsers/erlang.c' object='parsers/libctags_a-erlang.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-erlang.obj `if test -f 'parsers/erlang.c'; then $(CYGPATH_W) 'parsers/erlang.c'; else $(CYGPATH_W) '$(srcdir)/parsers/erlang.c'; fi`
+
+parsers/libctags_a-falcon.o: parsers/falcon.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-falcon.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-falcon.Tpo -c -o parsers/libctags_a-falcon.o `test -f 'parsers/falcon.c' || echo '$(srcdir)/'`parsers/falcon.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-falcon.Tpo parsers/$(DEPDIR)/libctags_a-falcon.Po
+#	$(AM_V_CC)source='parsers/falcon.c' object='parsers/libctags_a-falcon.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-falcon.o `test -f 'parsers/falcon.c' || echo '$(srcdir)/'`parsers/falcon.c
+
+parsers/libctags_a-falcon.obj: parsers/falcon.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-falcon.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-falcon.Tpo -c -o parsers/libctags_a-falcon.obj `if test -f 'parsers/falcon.c'; then $(CYGPATH_W) 'parsers/falcon.c'; else $(CYGPATH_W) '$(srcdir)/parsers/falcon.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-falcon.Tpo parsers/$(DEPDIR)/libctags_a-falcon.Po
+#	$(AM_V_CC)source='parsers/falcon.c' object='parsers/libctags_a-falcon.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-falcon.obj `if test -f 'parsers/falcon.c'; then $(CYGPATH_W) 'parsers/falcon.c'; else $(CYGPATH_W) '$(srcdir)/parsers/falcon.c'; fi`
+
+parsers/libctags_a-flex.o: parsers/flex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-flex.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-flex.Tpo -c -o parsers/libctags_a-flex.o `test -f 'parsers/flex.c' || echo '$(srcdir)/'`parsers/flex.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-flex.Tpo parsers/$(DEPDIR)/libctags_a-flex.Po
+#	$(AM_V_CC)source='parsers/flex.c' object='parsers/libctags_a-flex.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-flex.o `test -f 'parsers/flex.c' || echo '$(srcdir)/'`parsers/flex.c
+
+parsers/libctags_a-flex.obj: parsers/flex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-flex.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-flex.Tpo -c -o parsers/libctags_a-flex.obj `if test -f 'parsers/flex.c'; then $(CYGPATH_W) 'parsers/flex.c'; else $(CYGPATH_W) '$(srcdir)/parsers/flex.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-flex.Tpo parsers/$(DEPDIR)/libctags_a-flex.Po
+#	$(AM_V_CC)source='parsers/flex.c' object='parsers/libctags_a-flex.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-flex.obj `if test -f 'parsers/flex.c'; then $(CYGPATH_W) 'parsers/flex.c'; else $(CYGPATH_W) '$(srcdir)/parsers/flex.c'; fi`
+
+parsers/libctags_a-fortran.o: parsers/fortran.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-fortran.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-fortran.Tpo -c -o parsers/libctags_a-fortran.o `test -f 'parsers/fortran.c' || echo '$(srcdir)/'`parsers/fortran.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-fortran.Tpo parsers/$(DEPDIR)/libctags_a-fortran.Po
+#	$(AM_V_CC)source='parsers/fortran.c' object='parsers/libctags_a-fortran.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-fortran.o `test -f 'parsers/fortran.c' || echo '$(srcdir)/'`parsers/fortran.c
+
+parsers/libctags_a-fortran.obj: parsers/fortran.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-fortran.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-fortran.Tpo -c -o parsers/libctags_a-fortran.obj `if test -f 'parsers/fortran.c'; then $(CYGPATH_W) 'parsers/fortran.c'; else $(CYGPATH_W) '$(srcdir)/parsers/fortran.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-fortran.Tpo parsers/$(DEPDIR)/libctags_a-fortran.Po
+#	$(AM_V_CC)source='parsers/fortran.c' object='parsers/libctags_a-fortran.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-fortran.obj `if test -f 'parsers/fortran.c'; then $(CYGPATH_W) 'parsers/fortran.c'; else $(CYGPATH_W) '$(srcdir)/parsers/fortran.c'; fi`
+
+parsers/libctags_a-frontmatter.o: parsers/frontmatter.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-frontmatter.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-frontmatter.Tpo -c -o parsers/libctags_a-frontmatter.o `test -f 'parsers/frontmatter.c' || echo '$(srcdir)/'`parsers/frontmatter.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-frontmatter.Tpo parsers/$(DEPDIR)/libctags_a-frontmatter.Po
+#	$(AM_V_CC)source='parsers/frontmatter.c' object='parsers/libctags_a-frontmatter.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-frontmatter.o `test -f 'parsers/frontmatter.c' || echo '$(srcdir)/'`parsers/frontmatter.c
+
+parsers/libctags_a-frontmatter.obj: parsers/frontmatter.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-frontmatter.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-frontmatter.Tpo -c -o parsers/libctags_a-frontmatter.obj `if test -f 'parsers/frontmatter.c'; then $(CYGPATH_W) 'parsers/frontmatter.c'; else $(CYGPATH_W) '$(srcdir)/parsers/frontmatter.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-frontmatter.Tpo parsers/$(DEPDIR)/libctags_a-frontmatter.Po
+#	$(AM_V_CC)source='parsers/frontmatter.c' object='parsers/libctags_a-frontmatter.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-frontmatter.obj `if test -f 'parsers/frontmatter.c'; then $(CYGPATH_W) 'parsers/frontmatter.c'; else $(CYGPATH_W) '$(srcdir)/parsers/frontmatter.c'; fi`
+
+parsers/libctags_a-fypp.o: parsers/fypp.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-fypp.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-fypp.Tpo -c -o parsers/libctags_a-fypp.o `test -f 'parsers/fypp.c' || echo '$(srcdir)/'`parsers/fypp.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-fypp.Tpo parsers/$(DEPDIR)/libctags_a-fypp.Po
+#	$(AM_V_CC)source='parsers/fypp.c' object='parsers/libctags_a-fypp.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-fypp.o `test -f 'parsers/fypp.c' || echo '$(srcdir)/'`parsers/fypp.c
+
+parsers/libctags_a-fypp.obj: parsers/fypp.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-fypp.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-fypp.Tpo -c -o parsers/libctags_a-fypp.obj `if test -f 'parsers/fypp.c'; then $(CYGPATH_W) 'parsers/fypp.c'; else $(CYGPATH_W) '$(srcdir)/parsers/fypp.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-fypp.Tpo parsers/$(DEPDIR)/libctags_a-fypp.Po
+#	$(AM_V_CC)source='parsers/fypp.c' object='parsers/libctags_a-fypp.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-fypp.obj `if test -f 'parsers/fypp.c'; then $(CYGPATH_W) 'parsers/fypp.c'; else $(CYGPATH_W) '$(srcdir)/parsers/fypp.c'; fi`
+
+parsers/libctags_a-gdscript.o: parsers/gdscript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-gdscript.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-gdscript.Tpo -c -o parsers/libctags_a-gdscript.o `test -f 'parsers/gdscript.c' || echo '$(srcdir)/'`parsers/gdscript.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-gdscript.Tpo parsers/$(DEPDIR)/libctags_a-gdscript.Po
+#	$(AM_V_CC)source='parsers/gdscript.c' object='parsers/libctags_a-gdscript.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-gdscript.o `test -f 'parsers/gdscript.c' || echo '$(srcdir)/'`parsers/gdscript.c
+
+parsers/libctags_a-gdscript.obj: parsers/gdscript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-gdscript.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-gdscript.Tpo -c -o parsers/libctags_a-gdscript.obj `if test -f 'parsers/gdscript.c'; then $(CYGPATH_W) 'parsers/gdscript.c'; else $(CYGPATH_W) '$(srcdir)/parsers/gdscript.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-gdscript.Tpo parsers/$(DEPDIR)/libctags_a-gdscript.Po
+#	$(AM_V_CC)source='parsers/gdscript.c' object='parsers/libctags_a-gdscript.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-gdscript.obj `if test -f 'parsers/gdscript.c'; then $(CYGPATH_W) 'parsers/gdscript.c'; else $(CYGPATH_W) '$(srcdir)/parsers/gdscript.c'; fi`
+
+parsers/libctags_a-gemspec.o: parsers/gemspec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-gemspec.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-gemspec.Tpo -c -o parsers/libctags_a-gemspec.o `test -f 'parsers/gemspec.c' || echo '$(srcdir)/'`parsers/gemspec.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-gemspec.Tpo parsers/$(DEPDIR)/libctags_a-gemspec.Po
+#	$(AM_V_CC)source='parsers/gemspec.c' object='parsers/libctags_a-gemspec.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-gemspec.o `test -f 'parsers/gemspec.c' || echo '$(srcdir)/'`parsers/gemspec.c
+
+parsers/libctags_a-gemspec.obj: parsers/gemspec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-gemspec.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-gemspec.Tpo -c -o parsers/libctags_a-gemspec.obj `if test -f 'parsers/gemspec.c'; then $(CYGPATH_W) 'parsers/gemspec.c'; else $(CYGPATH_W) '$(srcdir)/parsers/gemspec.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-gemspec.Tpo parsers/$(DEPDIR)/libctags_a-gemspec.Po
+#	$(AM_V_CC)source='parsers/gemspec.c' object='parsers/libctags_a-gemspec.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-gemspec.obj `if test -f 'parsers/gemspec.c'; then $(CYGPATH_W) 'parsers/gemspec.c'; else $(CYGPATH_W) '$(srcdir)/parsers/gemspec.c'; fi`
+
+parsers/libctags_a-go.o: parsers/go.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-go.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-go.Tpo -c -o parsers/libctags_a-go.o `test -f 'parsers/go.c' || echo '$(srcdir)/'`parsers/go.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-go.Tpo parsers/$(DEPDIR)/libctags_a-go.Po
+#	$(AM_V_CC)source='parsers/go.c' object='parsers/libctags_a-go.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-go.o `test -f 'parsers/go.c' || echo '$(srcdir)/'`parsers/go.c
+
+parsers/libctags_a-go.obj: parsers/go.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-go.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-go.Tpo -c -o parsers/libctags_a-go.obj `if test -f 'parsers/go.c'; then $(CYGPATH_W) 'parsers/go.c'; else $(CYGPATH_W) '$(srcdir)/parsers/go.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-go.Tpo parsers/$(DEPDIR)/libctags_a-go.Po
+#	$(AM_V_CC)source='parsers/go.c' object='parsers/libctags_a-go.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-go.obj `if test -f 'parsers/go.c'; then $(CYGPATH_W) 'parsers/go.c'; else $(CYGPATH_W) '$(srcdir)/parsers/go.c'; fi`
+
+parsers/libctags_a-haskell.o: parsers/haskell.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-haskell.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-haskell.Tpo -c -o parsers/libctags_a-haskell.o `test -f 'parsers/haskell.c' || echo '$(srcdir)/'`parsers/haskell.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-haskell.Tpo parsers/$(DEPDIR)/libctags_a-haskell.Po
+#	$(AM_V_CC)source='parsers/haskell.c' object='parsers/libctags_a-haskell.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-haskell.o `test -f 'parsers/haskell.c' || echo '$(srcdir)/'`parsers/haskell.c
+
+parsers/libctags_a-haskell.obj: parsers/haskell.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-haskell.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-haskell.Tpo -c -o parsers/libctags_a-haskell.obj `if test -f 'parsers/haskell.c'; then $(CYGPATH_W) 'parsers/haskell.c'; else $(CYGPATH_W) '$(srcdir)/parsers/haskell.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-haskell.Tpo parsers/$(DEPDIR)/libctags_a-haskell.Po
+#	$(AM_V_CC)source='parsers/haskell.c' object='parsers/libctags_a-haskell.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-haskell.obj `if test -f 'parsers/haskell.c'; then $(CYGPATH_W) 'parsers/haskell.c'; else $(CYGPATH_W) '$(srcdir)/parsers/haskell.c'; fi`
+
+parsers/libctags_a-haxe.o: parsers/haxe.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-haxe.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-haxe.Tpo -c -o parsers/libctags_a-haxe.o `test -f 'parsers/haxe.c' || echo '$(srcdir)/'`parsers/haxe.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-haxe.Tpo parsers/$(DEPDIR)/libctags_a-haxe.Po
+#	$(AM_V_CC)source='parsers/haxe.c' object='parsers/libctags_a-haxe.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-haxe.o `test -f 'parsers/haxe.c' || echo '$(srcdir)/'`parsers/haxe.c
+
+parsers/libctags_a-haxe.obj: parsers/haxe.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-haxe.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-haxe.Tpo -c -o parsers/libctags_a-haxe.obj `if test -f 'parsers/haxe.c'; then $(CYGPATH_W) 'parsers/haxe.c'; else $(CYGPATH_W) '$(srcdir)/parsers/haxe.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-haxe.Tpo parsers/$(DEPDIR)/libctags_a-haxe.Po
+#	$(AM_V_CC)source='parsers/haxe.c' object='parsers/libctags_a-haxe.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-haxe.obj `if test -f 'parsers/haxe.c'; then $(CYGPATH_W) 'parsers/haxe.c'; else $(CYGPATH_W) '$(srcdir)/parsers/haxe.c'; fi`
+
+parsers/libctags_a-html.o: parsers/html.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-html.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-html.Tpo -c -o parsers/libctags_a-html.o `test -f 'parsers/html.c' || echo '$(srcdir)/'`parsers/html.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-html.Tpo parsers/$(DEPDIR)/libctags_a-html.Po
+#	$(AM_V_CC)source='parsers/html.c' object='parsers/libctags_a-html.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-html.o `test -f 'parsers/html.c' || echo '$(srcdir)/'`parsers/html.c
+
+parsers/libctags_a-html.obj: parsers/html.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-html.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-html.Tpo -c -o parsers/libctags_a-html.obj `if test -f 'parsers/html.c'; then $(CYGPATH_W) 'parsers/html.c'; else $(CYGPATH_W) '$(srcdir)/parsers/html.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-html.Tpo parsers/$(DEPDIR)/libctags_a-html.Po
+#	$(AM_V_CC)source='parsers/html.c' object='parsers/libctags_a-html.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-html.obj `if test -f 'parsers/html.c'; then $(CYGPATH_W) 'parsers/html.c'; else $(CYGPATH_W) '$(srcdir)/parsers/html.c'; fi`
+
+parsers/libctags_a-iniconf.o: parsers/iniconf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-iniconf.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-iniconf.Tpo -c -o parsers/libctags_a-iniconf.o `test -f 'parsers/iniconf.c' || echo '$(srcdir)/'`parsers/iniconf.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-iniconf.Tpo parsers/$(DEPDIR)/libctags_a-iniconf.Po
+#	$(AM_V_CC)source='parsers/iniconf.c' object='parsers/libctags_a-iniconf.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-iniconf.o `test -f 'parsers/iniconf.c' || echo '$(srcdir)/'`parsers/iniconf.c
+
+parsers/libctags_a-iniconf.obj: parsers/iniconf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-iniconf.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-iniconf.Tpo -c -o parsers/libctags_a-iniconf.obj `if test -f 'parsers/iniconf.c'; then $(CYGPATH_W) 'parsers/iniconf.c'; else $(CYGPATH_W) '$(srcdir)/parsers/iniconf.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-iniconf.Tpo parsers/$(DEPDIR)/libctags_a-iniconf.Po
+#	$(AM_V_CC)source='parsers/iniconf.c' object='parsers/libctags_a-iniconf.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-iniconf.obj `if test -f 'parsers/iniconf.c'; then $(CYGPATH_W) 'parsers/iniconf.c'; else $(CYGPATH_W) '$(srcdir)/parsers/iniconf.c'; fi`
+
+parsers/libctags_a-itcl.o: parsers/itcl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-itcl.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-itcl.Tpo -c -o parsers/libctags_a-itcl.o `test -f 'parsers/itcl.c' || echo '$(srcdir)/'`parsers/itcl.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-itcl.Tpo parsers/$(DEPDIR)/libctags_a-itcl.Po
+#	$(AM_V_CC)source='parsers/itcl.c' object='parsers/libctags_a-itcl.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-itcl.o `test -f 'parsers/itcl.c' || echo '$(srcdir)/'`parsers/itcl.c
+
+parsers/libctags_a-itcl.obj: parsers/itcl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-itcl.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-itcl.Tpo -c -o parsers/libctags_a-itcl.obj `if test -f 'parsers/itcl.c'; then $(CYGPATH_W) 'parsers/itcl.c'; else $(CYGPATH_W) '$(srcdir)/parsers/itcl.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-itcl.Tpo parsers/$(DEPDIR)/libctags_a-itcl.Po
+#	$(AM_V_CC)source='parsers/itcl.c' object='parsers/libctags_a-itcl.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-itcl.obj `if test -f 'parsers/itcl.c'; then $(CYGPATH_W) 'parsers/itcl.c'; else $(CYGPATH_W) '$(srcdir)/parsers/itcl.c'; fi`
+
+parsers/libctags_a-jprop.o: parsers/jprop.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-jprop.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-jprop.Tpo -c -o parsers/libctags_a-jprop.o `test -f 'parsers/jprop.c' || echo '$(srcdir)/'`parsers/jprop.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-jprop.Tpo parsers/$(DEPDIR)/libctags_a-jprop.Po
+#	$(AM_V_CC)source='parsers/jprop.c' object='parsers/libctags_a-jprop.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-jprop.o `test -f 'parsers/jprop.c' || echo '$(srcdir)/'`parsers/jprop.c
+
+parsers/libctags_a-jprop.obj: parsers/jprop.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-jprop.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-jprop.Tpo -c -o parsers/libctags_a-jprop.obj `if test -f 'parsers/jprop.c'; then $(CYGPATH_W) 'parsers/jprop.c'; else $(CYGPATH_W) '$(srcdir)/parsers/jprop.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-jprop.Tpo parsers/$(DEPDIR)/libctags_a-jprop.Po
+#	$(AM_V_CC)source='parsers/jprop.c' object='parsers/libctags_a-jprop.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-jprop.obj `if test -f 'parsers/jprop.c'; then $(CYGPATH_W) 'parsers/jprop.c'; else $(CYGPATH_W) '$(srcdir)/parsers/jprop.c'; fi`
+
+parsers/libctags_a-jscript.o: parsers/jscript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-jscript.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-jscript.Tpo -c -o parsers/libctags_a-jscript.o `test -f 'parsers/jscript.c' || echo '$(srcdir)/'`parsers/jscript.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-jscript.Tpo parsers/$(DEPDIR)/libctags_a-jscript.Po
+#	$(AM_V_CC)source='parsers/jscript.c' object='parsers/libctags_a-jscript.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-jscript.o `test -f 'parsers/jscript.c' || echo '$(srcdir)/'`parsers/jscript.c
+
+parsers/libctags_a-jscript.obj: parsers/jscript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-jscript.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-jscript.Tpo -c -o parsers/libctags_a-jscript.obj `if test -f 'parsers/jscript.c'; then $(CYGPATH_W) 'parsers/jscript.c'; else $(CYGPATH_W) '$(srcdir)/parsers/jscript.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-jscript.Tpo parsers/$(DEPDIR)/libctags_a-jscript.Po
+#	$(AM_V_CC)source='parsers/jscript.c' object='parsers/libctags_a-jscript.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-jscript.obj `if test -f 'parsers/jscript.c'; then $(CYGPATH_W) 'parsers/jscript.c'; else $(CYGPATH_W) '$(srcdir)/parsers/jscript.c'; fi`
+
+parsers/libctags_a-json.o: parsers/json.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-json.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-json.Tpo -c -o parsers/libctags_a-json.o `test -f 'parsers/json.c' || echo '$(srcdir)/'`parsers/json.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-json.Tpo parsers/$(DEPDIR)/libctags_a-json.Po
+#	$(AM_V_CC)source='parsers/json.c' object='parsers/libctags_a-json.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-json.o `test -f 'parsers/json.c' || echo '$(srcdir)/'`parsers/json.c
+
+parsers/libctags_a-json.obj: parsers/json.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-json.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-json.Tpo -c -o parsers/libctags_a-json.obj `if test -f 'parsers/json.c'; then $(CYGPATH_W) 'parsers/json.c'; else $(CYGPATH_W) '$(srcdir)/parsers/json.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-json.Tpo parsers/$(DEPDIR)/libctags_a-json.Po
+#	$(AM_V_CC)source='parsers/json.c' object='parsers/libctags_a-json.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-json.obj `if test -f 'parsers/json.c'; then $(CYGPATH_W) 'parsers/json.c'; else $(CYGPATH_W) '$(srcdir)/parsers/json.c'; fi`
+
+parsers/libctags_a-julia.o: parsers/julia.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-julia.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-julia.Tpo -c -o parsers/libctags_a-julia.o `test -f 'parsers/julia.c' || echo '$(srcdir)/'`parsers/julia.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-julia.Tpo parsers/$(DEPDIR)/libctags_a-julia.Po
+#	$(AM_V_CC)source='parsers/julia.c' object='parsers/libctags_a-julia.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-julia.o `test -f 'parsers/julia.c' || echo '$(srcdir)/'`parsers/julia.c
+
+parsers/libctags_a-julia.obj: parsers/julia.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-julia.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-julia.Tpo -c -o parsers/libctags_a-julia.obj `if test -f 'parsers/julia.c'; then $(CYGPATH_W) 'parsers/julia.c'; else $(CYGPATH_W) '$(srcdir)/parsers/julia.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-julia.Tpo parsers/$(DEPDIR)/libctags_a-julia.Po
+#	$(AM_V_CC)source='parsers/julia.c' object='parsers/libctags_a-julia.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-julia.obj `if test -f 'parsers/julia.c'; then $(CYGPATH_W) 'parsers/julia.c'; else $(CYGPATH_W) '$(srcdir)/parsers/julia.c'; fi`
+
+parsers/libctags_a-ldscript.o: parsers/ldscript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ldscript.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ldscript.Tpo -c -o parsers/libctags_a-ldscript.o `test -f 'parsers/ldscript.c' || echo '$(srcdir)/'`parsers/ldscript.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ldscript.Tpo parsers/$(DEPDIR)/libctags_a-ldscript.Po
+#	$(AM_V_CC)source='parsers/ldscript.c' object='parsers/libctags_a-ldscript.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ldscript.o `test -f 'parsers/ldscript.c' || echo '$(srcdir)/'`parsers/ldscript.c
+
+parsers/libctags_a-ldscript.obj: parsers/ldscript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ldscript.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ldscript.Tpo -c -o parsers/libctags_a-ldscript.obj `if test -f 'parsers/ldscript.c'; then $(CYGPATH_W) 'parsers/ldscript.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ldscript.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ldscript.Tpo parsers/$(DEPDIR)/libctags_a-ldscript.Po
+#	$(AM_V_CC)source='parsers/ldscript.c' object='parsers/libctags_a-ldscript.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ldscript.obj `if test -f 'parsers/ldscript.c'; then $(CYGPATH_W) 'parsers/ldscript.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ldscript.c'; fi`
+
+parsers/libctags_a-lisp.o: parsers/lisp.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-lisp.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-lisp.Tpo -c -o parsers/libctags_a-lisp.o `test -f 'parsers/lisp.c' || echo '$(srcdir)/'`parsers/lisp.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-lisp.Tpo parsers/$(DEPDIR)/libctags_a-lisp.Po
+#	$(AM_V_CC)source='parsers/lisp.c' object='parsers/libctags_a-lisp.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-lisp.o `test -f 'parsers/lisp.c' || echo '$(srcdir)/'`parsers/lisp.c
+
+parsers/libctags_a-lisp.obj: parsers/lisp.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-lisp.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-lisp.Tpo -c -o parsers/libctags_a-lisp.obj `if test -f 'parsers/lisp.c'; then $(CYGPATH_W) 'parsers/lisp.c'; else $(CYGPATH_W) '$(srcdir)/parsers/lisp.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-lisp.Tpo parsers/$(DEPDIR)/libctags_a-lisp.Po
+#	$(AM_V_CC)source='parsers/lisp.c' object='parsers/libctags_a-lisp.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-lisp.obj `if test -f 'parsers/lisp.c'; then $(CYGPATH_W) 'parsers/lisp.c'; else $(CYGPATH_W) '$(srcdir)/parsers/lisp.c'; fi`
+
+parsers/libctags_a-lua.o: parsers/lua.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-lua.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-lua.Tpo -c -o parsers/libctags_a-lua.o `test -f 'parsers/lua.c' || echo '$(srcdir)/'`parsers/lua.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-lua.Tpo parsers/$(DEPDIR)/libctags_a-lua.Po
+#	$(AM_V_CC)source='parsers/lua.c' object='parsers/libctags_a-lua.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-lua.o `test -f 'parsers/lua.c' || echo '$(srcdir)/'`parsers/lua.c
+
+parsers/libctags_a-lua.obj: parsers/lua.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-lua.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-lua.Tpo -c -o parsers/libctags_a-lua.obj `if test -f 'parsers/lua.c'; then $(CYGPATH_W) 'parsers/lua.c'; else $(CYGPATH_W) '$(srcdir)/parsers/lua.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-lua.Tpo parsers/$(DEPDIR)/libctags_a-lua.Po
+#	$(AM_V_CC)source='parsers/lua.c' object='parsers/libctags_a-lua.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-lua.obj `if test -f 'parsers/lua.c'; then $(CYGPATH_W) 'parsers/lua.c'; else $(CYGPATH_W) '$(srcdir)/parsers/lua.c'; fi`
+
+parsers/libctags_a-m4.o: parsers/m4.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-m4.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-m4.Tpo -c -o parsers/libctags_a-m4.o `test -f 'parsers/m4.c' || echo '$(srcdir)/'`parsers/m4.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-m4.Tpo parsers/$(DEPDIR)/libctags_a-m4.Po
+#	$(AM_V_CC)source='parsers/m4.c' object='parsers/libctags_a-m4.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-m4.o `test -f 'parsers/m4.c' || echo '$(srcdir)/'`parsers/m4.c
+
+parsers/libctags_a-m4.obj: parsers/m4.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-m4.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-m4.Tpo -c -o parsers/libctags_a-m4.obj `if test -f 'parsers/m4.c'; then $(CYGPATH_W) 'parsers/m4.c'; else $(CYGPATH_W) '$(srcdir)/parsers/m4.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-m4.Tpo parsers/$(DEPDIR)/libctags_a-m4.Po
+#	$(AM_V_CC)source='parsers/m4.c' object='parsers/libctags_a-m4.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-m4.obj `if test -f 'parsers/m4.c'; then $(CYGPATH_W) 'parsers/m4.c'; else $(CYGPATH_W) '$(srcdir)/parsers/m4.c'; fi`
+
+parsers/libctags_a-make.o: parsers/make.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-make.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-make.Tpo -c -o parsers/libctags_a-make.o `test -f 'parsers/make.c' || echo '$(srcdir)/'`parsers/make.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-make.Tpo parsers/$(DEPDIR)/libctags_a-make.Po
+#	$(AM_V_CC)source='parsers/make.c' object='parsers/libctags_a-make.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-make.o `test -f 'parsers/make.c' || echo '$(srcdir)/'`parsers/make.c
+
+parsers/libctags_a-make.obj: parsers/make.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-make.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-make.Tpo -c -o parsers/libctags_a-make.obj `if test -f 'parsers/make.c'; then $(CYGPATH_W) 'parsers/make.c'; else $(CYGPATH_W) '$(srcdir)/parsers/make.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-make.Tpo parsers/$(DEPDIR)/libctags_a-make.Po
+#	$(AM_V_CC)source='parsers/make.c' object='parsers/libctags_a-make.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-make.obj `if test -f 'parsers/make.c'; then $(CYGPATH_W) 'parsers/make.c'; else $(CYGPATH_W) '$(srcdir)/parsers/make.c'; fi`
+
+parsers/libctags_a-markdown.o: parsers/markdown.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-markdown.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-markdown.Tpo -c -o parsers/libctags_a-markdown.o `test -f 'parsers/markdown.c' || echo '$(srcdir)/'`parsers/markdown.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-markdown.Tpo parsers/$(DEPDIR)/libctags_a-markdown.Po
+#	$(AM_V_CC)source='parsers/markdown.c' object='parsers/libctags_a-markdown.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-markdown.o `test -f 'parsers/markdown.c' || echo '$(srcdir)/'`parsers/markdown.c
+
+parsers/libctags_a-markdown.obj: parsers/markdown.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-markdown.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-markdown.Tpo -c -o parsers/libctags_a-markdown.obj `if test -f 'parsers/markdown.c'; then $(CYGPATH_W) 'parsers/markdown.c'; else $(CYGPATH_W) '$(srcdir)/parsers/markdown.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-markdown.Tpo parsers/$(DEPDIR)/libctags_a-markdown.Po
+#	$(AM_V_CC)source='parsers/markdown.c' object='parsers/libctags_a-markdown.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-markdown.obj `if test -f 'parsers/markdown.c'; then $(CYGPATH_W) 'parsers/markdown.c'; else $(CYGPATH_W) '$(srcdir)/parsers/markdown.c'; fi`
+
+parsers/libctags_a-matlab.o: parsers/matlab.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-matlab.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-matlab.Tpo -c -o parsers/libctags_a-matlab.o `test -f 'parsers/matlab.c' || echo '$(srcdir)/'`parsers/matlab.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-matlab.Tpo parsers/$(DEPDIR)/libctags_a-matlab.Po
+#	$(AM_V_CC)source='parsers/matlab.c' object='parsers/libctags_a-matlab.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-matlab.o `test -f 'parsers/matlab.c' || echo '$(srcdir)/'`parsers/matlab.c
+
+parsers/libctags_a-matlab.obj: parsers/matlab.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-matlab.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-matlab.Tpo -c -o parsers/libctags_a-matlab.obj `if test -f 'parsers/matlab.c'; then $(CYGPATH_W) 'parsers/matlab.c'; else $(CYGPATH_W) '$(srcdir)/parsers/matlab.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-matlab.Tpo parsers/$(DEPDIR)/libctags_a-matlab.Po
+#	$(AM_V_CC)source='parsers/matlab.c' object='parsers/libctags_a-matlab.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-matlab.obj `if test -f 'parsers/matlab.c'; then $(CYGPATH_W) 'parsers/matlab.c'; else $(CYGPATH_W) '$(srcdir)/parsers/matlab.c'; fi`
+
+parsers/libctags_a-myrddin.o: parsers/myrddin.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-myrddin.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-myrddin.Tpo -c -o parsers/libctags_a-myrddin.o `test -f 'parsers/myrddin.c' || echo '$(srcdir)/'`parsers/myrddin.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-myrddin.Tpo parsers/$(DEPDIR)/libctags_a-myrddin.Po
+#	$(AM_V_CC)source='parsers/myrddin.c' object='parsers/libctags_a-myrddin.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-myrddin.o `test -f 'parsers/myrddin.c' || echo '$(srcdir)/'`parsers/myrddin.c
+
+parsers/libctags_a-myrddin.obj: parsers/myrddin.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-myrddin.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-myrddin.Tpo -c -o parsers/libctags_a-myrddin.obj `if test -f 'parsers/myrddin.c'; then $(CYGPATH_W) 'parsers/myrddin.c'; else $(CYGPATH_W) '$(srcdir)/parsers/myrddin.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-myrddin.Tpo parsers/$(DEPDIR)/libctags_a-myrddin.Po
+#	$(AM_V_CC)source='parsers/myrddin.c' object='parsers/libctags_a-myrddin.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-myrddin.obj `if test -f 'parsers/myrddin.c'; then $(CYGPATH_W) 'parsers/myrddin.c'; else $(CYGPATH_W) '$(srcdir)/parsers/myrddin.c'; fi`
+
+parsers/libctags_a-nsis.o: parsers/nsis.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-nsis.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-nsis.Tpo -c -o parsers/libctags_a-nsis.o `test -f 'parsers/nsis.c' || echo '$(srcdir)/'`parsers/nsis.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-nsis.Tpo parsers/$(DEPDIR)/libctags_a-nsis.Po
+#	$(AM_V_CC)source='parsers/nsis.c' object='parsers/libctags_a-nsis.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-nsis.o `test -f 'parsers/nsis.c' || echo '$(srcdir)/'`parsers/nsis.c
+
+parsers/libctags_a-nsis.obj: parsers/nsis.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-nsis.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-nsis.Tpo -c -o parsers/libctags_a-nsis.obj `if test -f 'parsers/nsis.c'; then $(CYGPATH_W) 'parsers/nsis.c'; else $(CYGPATH_W) '$(srcdir)/parsers/nsis.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-nsis.Tpo parsers/$(DEPDIR)/libctags_a-nsis.Po
+#	$(AM_V_CC)source='parsers/nsis.c' object='parsers/libctags_a-nsis.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-nsis.obj `if test -f 'parsers/nsis.c'; then $(CYGPATH_W) 'parsers/nsis.c'; else $(CYGPATH_W) '$(srcdir)/parsers/nsis.c'; fi`
+
+parsers/libctags_a-objc.o: parsers/objc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-objc.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-objc.Tpo -c -o parsers/libctags_a-objc.o `test -f 'parsers/objc.c' || echo '$(srcdir)/'`parsers/objc.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-objc.Tpo parsers/$(DEPDIR)/libctags_a-objc.Po
+#	$(AM_V_CC)source='parsers/objc.c' object='parsers/libctags_a-objc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-objc.o `test -f 'parsers/objc.c' || echo '$(srcdir)/'`parsers/objc.c
+
+parsers/libctags_a-objc.obj: parsers/objc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-objc.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-objc.Tpo -c -o parsers/libctags_a-objc.obj `if test -f 'parsers/objc.c'; then $(CYGPATH_W) 'parsers/objc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/objc.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-objc.Tpo parsers/$(DEPDIR)/libctags_a-objc.Po
+#	$(AM_V_CC)source='parsers/objc.c' object='parsers/libctags_a-objc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-objc.obj `if test -f 'parsers/objc.c'; then $(CYGPATH_W) 'parsers/objc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/objc.c'; fi`
+
+parsers/libctags_a-ocaml.o: parsers/ocaml.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ocaml.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ocaml.Tpo -c -o parsers/libctags_a-ocaml.o `test -f 'parsers/ocaml.c' || echo '$(srcdir)/'`parsers/ocaml.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ocaml.Tpo parsers/$(DEPDIR)/libctags_a-ocaml.Po
+#	$(AM_V_CC)source='parsers/ocaml.c' object='parsers/libctags_a-ocaml.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ocaml.o `test -f 'parsers/ocaml.c' || echo '$(srcdir)/'`parsers/ocaml.c
+
+parsers/libctags_a-ocaml.obj: parsers/ocaml.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ocaml.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ocaml.Tpo -c -o parsers/libctags_a-ocaml.obj `if test -f 'parsers/ocaml.c'; then $(CYGPATH_W) 'parsers/ocaml.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ocaml.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ocaml.Tpo parsers/$(DEPDIR)/libctags_a-ocaml.Po
+#	$(AM_V_CC)source='parsers/ocaml.c' object='parsers/libctags_a-ocaml.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ocaml.obj `if test -f 'parsers/ocaml.c'; then $(CYGPATH_W) 'parsers/ocaml.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ocaml.c'; fi`
+
+parsers/libctags_a-pascal.o: parsers/pascal.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-pascal.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-pascal.Tpo -c -o parsers/libctags_a-pascal.o `test -f 'parsers/pascal.c' || echo '$(srcdir)/'`parsers/pascal.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-pascal.Tpo parsers/$(DEPDIR)/libctags_a-pascal.Po
+#	$(AM_V_CC)source='parsers/pascal.c' object='parsers/libctags_a-pascal.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-pascal.o `test -f 'parsers/pascal.c' || echo '$(srcdir)/'`parsers/pascal.c
+
+parsers/libctags_a-pascal.obj: parsers/pascal.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-pascal.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-pascal.Tpo -c -o parsers/libctags_a-pascal.obj `if test -f 'parsers/pascal.c'; then $(CYGPATH_W) 'parsers/pascal.c'; else $(CYGPATH_W) '$(srcdir)/parsers/pascal.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-pascal.Tpo parsers/$(DEPDIR)/libctags_a-pascal.Po
+#	$(AM_V_CC)source='parsers/pascal.c' object='parsers/libctags_a-pascal.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-pascal.obj `if test -f 'parsers/pascal.c'; then $(CYGPATH_W) 'parsers/pascal.c'; else $(CYGPATH_W) '$(srcdir)/parsers/pascal.c'; fi`
+
+parsers/libctags_a-perl.o: parsers/perl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-perl.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-perl.Tpo -c -o parsers/libctags_a-perl.o `test -f 'parsers/perl.c' || echo '$(srcdir)/'`parsers/perl.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-perl.Tpo parsers/$(DEPDIR)/libctags_a-perl.Po
+#	$(AM_V_CC)source='parsers/perl.c' object='parsers/libctags_a-perl.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-perl.o `test -f 'parsers/perl.c' || echo '$(srcdir)/'`parsers/perl.c
+
+parsers/libctags_a-perl.obj: parsers/perl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-perl.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-perl.Tpo -c -o parsers/libctags_a-perl.obj `if test -f 'parsers/perl.c'; then $(CYGPATH_W) 'parsers/perl.c'; else $(CYGPATH_W) '$(srcdir)/parsers/perl.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-perl.Tpo parsers/$(DEPDIR)/libctags_a-perl.Po
+#	$(AM_V_CC)source='parsers/perl.c' object='parsers/libctags_a-perl.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-perl.obj `if test -f 'parsers/perl.c'; then $(CYGPATH_W) 'parsers/perl.c'; else $(CYGPATH_W) '$(srcdir)/parsers/perl.c'; fi`
+
+parsers/libctags_a-perl-function-parameters.o: parsers/perl-function-parameters.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-perl-function-parameters.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Tpo -c -o parsers/libctags_a-perl-function-parameters.o `test -f 'parsers/perl-function-parameters.c' || echo '$(srcdir)/'`parsers/perl-function-parameters.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Tpo parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Po
+#	$(AM_V_CC)source='parsers/perl-function-parameters.c' object='parsers/libctags_a-perl-function-parameters.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-perl-function-parameters.o `test -f 'parsers/perl-function-parameters.c' || echo '$(srcdir)/'`parsers/perl-function-parameters.c
+
+parsers/libctags_a-perl-function-parameters.obj: parsers/perl-function-parameters.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-perl-function-parameters.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Tpo -c -o parsers/libctags_a-perl-function-parameters.obj `if test -f 'parsers/perl-function-parameters.c'; then $(CYGPATH_W) 'parsers/perl-function-parameters.c'; else $(CYGPATH_W) '$(srcdir)/parsers/perl-function-parameters.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Tpo parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Po
+#	$(AM_V_CC)source='parsers/perl-function-parameters.c' object='parsers/libctags_a-perl-function-parameters.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-perl-function-parameters.obj `if test -f 'parsers/perl-function-parameters.c'; then $(CYGPATH_W) 'parsers/perl-function-parameters.c'; else $(CYGPATH_W) '$(srcdir)/parsers/perl-function-parameters.c'; fi`
+
+parsers/libctags_a-perl-moose.o: parsers/perl-moose.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-perl-moose.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-perl-moose.Tpo -c -o parsers/libctags_a-perl-moose.o `test -f 'parsers/perl-moose.c' || echo '$(srcdir)/'`parsers/perl-moose.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-perl-moose.Tpo parsers/$(DEPDIR)/libctags_a-perl-moose.Po
+#	$(AM_V_CC)source='parsers/perl-moose.c' object='parsers/libctags_a-perl-moose.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-perl-moose.o `test -f 'parsers/perl-moose.c' || echo '$(srcdir)/'`parsers/perl-moose.c
+
+parsers/libctags_a-perl-moose.obj: parsers/perl-moose.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-perl-moose.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-perl-moose.Tpo -c -o parsers/libctags_a-perl-moose.obj `if test -f 'parsers/perl-moose.c'; then $(CYGPATH_W) 'parsers/perl-moose.c'; else $(CYGPATH_W) '$(srcdir)/parsers/perl-moose.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-perl-moose.Tpo parsers/$(DEPDIR)/libctags_a-perl-moose.Po
+#	$(AM_V_CC)source='parsers/perl-moose.c' object='parsers/libctags_a-perl-moose.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-perl-moose.obj `if test -f 'parsers/perl-moose.c'; then $(CYGPATH_W) 'parsers/perl-moose.c'; else $(CYGPATH_W) '$(srcdir)/parsers/perl-moose.c'; fi`
+
+parsers/libctags_a-php.o: parsers/php.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-php.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-php.Tpo -c -o parsers/libctags_a-php.o `test -f 'parsers/php.c' || echo '$(srcdir)/'`parsers/php.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-php.Tpo parsers/$(DEPDIR)/libctags_a-php.Po
+#	$(AM_V_CC)source='parsers/php.c' object='parsers/libctags_a-php.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-php.o `test -f 'parsers/php.c' || echo '$(srcdir)/'`parsers/php.c
+
+parsers/libctags_a-php.obj: parsers/php.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-php.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-php.Tpo -c -o parsers/libctags_a-php.obj `if test -f 'parsers/php.c'; then $(CYGPATH_W) 'parsers/php.c'; else $(CYGPATH_W) '$(srcdir)/parsers/php.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-php.Tpo parsers/$(DEPDIR)/libctags_a-php.Po
+#	$(AM_V_CC)source='parsers/php.c' object='parsers/libctags_a-php.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-php.obj `if test -f 'parsers/php.c'; then $(CYGPATH_W) 'parsers/php.c'; else $(CYGPATH_W) '$(srcdir)/parsers/php.c'; fi`
+
+parsers/libctags_a-powershell.o: parsers/powershell.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-powershell.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-powershell.Tpo -c -o parsers/libctags_a-powershell.o `test -f 'parsers/powershell.c' || echo '$(srcdir)/'`parsers/powershell.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-powershell.Tpo parsers/$(DEPDIR)/libctags_a-powershell.Po
+#	$(AM_V_CC)source='parsers/powershell.c' object='parsers/libctags_a-powershell.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-powershell.o `test -f 'parsers/powershell.c' || echo '$(srcdir)/'`parsers/powershell.c
+
+parsers/libctags_a-powershell.obj: parsers/powershell.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-powershell.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-powershell.Tpo -c -o parsers/libctags_a-powershell.obj `if test -f 'parsers/powershell.c'; then $(CYGPATH_W) 'parsers/powershell.c'; else $(CYGPATH_W) '$(srcdir)/parsers/powershell.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-powershell.Tpo parsers/$(DEPDIR)/libctags_a-powershell.Po
+#	$(AM_V_CC)source='parsers/powershell.c' object='parsers/libctags_a-powershell.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-powershell.obj `if test -f 'parsers/powershell.c'; then $(CYGPATH_W) 'parsers/powershell.c'; else $(CYGPATH_W) '$(srcdir)/parsers/powershell.c'; fi`
+
+parsers/libctags_a-protobuf.o: parsers/protobuf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-protobuf.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-protobuf.Tpo -c -o parsers/libctags_a-protobuf.o `test -f 'parsers/protobuf.c' || echo '$(srcdir)/'`parsers/protobuf.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-protobuf.Tpo parsers/$(DEPDIR)/libctags_a-protobuf.Po
+#	$(AM_V_CC)source='parsers/protobuf.c' object='parsers/libctags_a-protobuf.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-protobuf.o `test -f 'parsers/protobuf.c' || echo '$(srcdir)/'`parsers/protobuf.c
+
+parsers/libctags_a-protobuf.obj: parsers/protobuf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-protobuf.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-protobuf.Tpo -c -o parsers/libctags_a-protobuf.obj `if test -f 'parsers/protobuf.c'; then $(CYGPATH_W) 'parsers/protobuf.c'; else $(CYGPATH_W) '$(srcdir)/parsers/protobuf.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-protobuf.Tpo parsers/$(DEPDIR)/libctags_a-protobuf.Po
+#	$(AM_V_CC)source='parsers/protobuf.c' object='parsers/libctags_a-protobuf.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-protobuf.obj `if test -f 'parsers/protobuf.c'; then $(CYGPATH_W) 'parsers/protobuf.c'; else $(CYGPATH_W) '$(srcdir)/parsers/protobuf.c'; fi`
+
+parsers/libctags_a-python.o: parsers/python.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-python.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-python.Tpo -c -o parsers/libctags_a-python.o `test -f 'parsers/python.c' || echo '$(srcdir)/'`parsers/python.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-python.Tpo parsers/$(DEPDIR)/libctags_a-python.Po
+#	$(AM_V_CC)source='parsers/python.c' object='parsers/libctags_a-python.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-python.o `test -f 'parsers/python.c' || echo '$(srcdir)/'`parsers/python.c
+
+parsers/libctags_a-python.obj: parsers/python.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-python.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-python.Tpo -c -o parsers/libctags_a-python.obj `if test -f 'parsers/python.c'; then $(CYGPATH_W) 'parsers/python.c'; else $(CYGPATH_W) '$(srcdir)/parsers/python.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-python.Tpo parsers/$(DEPDIR)/libctags_a-python.Po
+#	$(AM_V_CC)source='parsers/python.c' object='parsers/libctags_a-python.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-python.obj `if test -f 'parsers/python.c'; then $(CYGPATH_W) 'parsers/python.c'; else $(CYGPATH_W) '$(srcdir)/parsers/python.c'; fi`
+
+parsers/libctags_a-pythonloggingconfig.o: parsers/pythonloggingconfig.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-pythonloggingconfig.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Tpo -c -o parsers/libctags_a-pythonloggingconfig.o `test -f 'parsers/pythonloggingconfig.c' || echo '$(srcdir)/'`parsers/pythonloggingconfig.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Tpo parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Po
+#	$(AM_V_CC)source='parsers/pythonloggingconfig.c' object='parsers/libctags_a-pythonloggingconfig.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-pythonloggingconfig.o `test -f 'parsers/pythonloggingconfig.c' || echo '$(srcdir)/'`parsers/pythonloggingconfig.c
+
+parsers/libctags_a-pythonloggingconfig.obj: parsers/pythonloggingconfig.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-pythonloggingconfig.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Tpo -c -o parsers/libctags_a-pythonloggingconfig.obj `if test -f 'parsers/pythonloggingconfig.c'; then $(CYGPATH_W) 'parsers/pythonloggingconfig.c'; else $(CYGPATH_W) '$(srcdir)/parsers/pythonloggingconfig.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Tpo parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Po
+#	$(AM_V_CC)source='parsers/pythonloggingconfig.c' object='parsers/libctags_a-pythonloggingconfig.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-pythonloggingconfig.obj `if test -f 'parsers/pythonloggingconfig.c'; then $(CYGPATH_W) 'parsers/pythonloggingconfig.c'; else $(CYGPATH_W) '$(srcdir)/parsers/pythonloggingconfig.c'; fi`
+
+parsers/libctags_a-quarto.o: parsers/quarto.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-quarto.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-quarto.Tpo -c -o parsers/libctags_a-quarto.o `test -f 'parsers/quarto.c' || echo '$(srcdir)/'`parsers/quarto.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-quarto.Tpo parsers/$(DEPDIR)/libctags_a-quarto.Po
+#	$(AM_V_CC)source='parsers/quarto.c' object='parsers/libctags_a-quarto.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-quarto.o `test -f 'parsers/quarto.c' || echo '$(srcdir)/'`parsers/quarto.c
+
+parsers/libctags_a-quarto.obj: parsers/quarto.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-quarto.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-quarto.Tpo -c -o parsers/libctags_a-quarto.obj `if test -f 'parsers/quarto.c'; then $(CYGPATH_W) 'parsers/quarto.c'; else $(CYGPATH_W) '$(srcdir)/parsers/quarto.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-quarto.Tpo parsers/$(DEPDIR)/libctags_a-quarto.Po
+#	$(AM_V_CC)source='parsers/quarto.c' object='parsers/libctags_a-quarto.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-quarto.obj `if test -f 'parsers/quarto.c'; then $(CYGPATH_W) 'parsers/quarto.c'; else $(CYGPATH_W) '$(srcdir)/parsers/quarto.c'; fi`
+
+parsers/libctags_a-r-r6class.o: parsers/r-r6class.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-r-r6class.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-r-r6class.Tpo -c -o parsers/libctags_a-r-r6class.o `test -f 'parsers/r-r6class.c' || echo '$(srcdir)/'`parsers/r-r6class.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-r-r6class.Tpo parsers/$(DEPDIR)/libctags_a-r-r6class.Po
+#	$(AM_V_CC)source='parsers/r-r6class.c' object='parsers/libctags_a-r-r6class.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-r-r6class.o `test -f 'parsers/r-r6class.c' || echo '$(srcdir)/'`parsers/r-r6class.c
+
+parsers/libctags_a-r-r6class.obj: parsers/r-r6class.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-r-r6class.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-r-r6class.Tpo -c -o parsers/libctags_a-r-r6class.obj `if test -f 'parsers/r-r6class.c'; then $(CYGPATH_W) 'parsers/r-r6class.c'; else $(CYGPATH_W) '$(srcdir)/parsers/r-r6class.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-r-r6class.Tpo parsers/$(DEPDIR)/libctags_a-r-r6class.Po
+#	$(AM_V_CC)source='parsers/r-r6class.c' object='parsers/libctags_a-r-r6class.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-r-r6class.obj `if test -f 'parsers/r-r6class.c'; then $(CYGPATH_W) 'parsers/r-r6class.c'; else $(CYGPATH_W) '$(srcdir)/parsers/r-r6class.c'; fi`
+
+parsers/libctags_a-r-s4class.o: parsers/r-s4class.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-r-s4class.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-r-s4class.Tpo -c -o parsers/libctags_a-r-s4class.o `test -f 'parsers/r-s4class.c' || echo '$(srcdir)/'`parsers/r-s4class.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-r-s4class.Tpo parsers/$(DEPDIR)/libctags_a-r-s4class.Po
+#	$(AM_V_CC)source='parsers/r-s4class.c' object='parsers/libctags_a-r-s4class.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-r-s4class.o `test -f 'parsers/r-s4class.c' || echo '$(srcdir)/'`parsers/r-s4class.c
+
+parsers/libctags_a-r-s4class.obj: parsers/r-s4class.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-r-s4class.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-r-s4class.Tpo -c -o parsers/libctags_a-r-s4class.obj `if test -f 'parsers/r-s4class.c'; then $(CYGPATH_W) 'parsers/r-s4class.c'; else $(CYGPATH_W) '$(srcdir)/parsers/r-s4class.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-r-s4class.Tpo parsers/$(DEPDIR)/libctags_a-r-s4class.Po
+#	$(AM_V_CC)source='parsers/r-s4class.c' object='parsers/libctags_a-r-s4class.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-r-s4class.obj `if test -f 'parsers/r-s4class.c'; then $(CYGPATH_W) 'parsers/r-s4class.c'; else $(CYGPATH_W) '$(srcdir)/parsers/r-s4class.c'; fi`
+
+parsers/libctags_a-r.o: parsers/r.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-r.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-r.Tpo -c -o parsers/libctags_a-r.o `test -f 'parsers/r.c' || echo '$(srcdir)/'`parsers/r.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-r.Tpo parsers/$(DEPDIR)/libctags_a-r.Po
+#	$(AM_V_CC)source='parsers/r.c' object='parsers/libctags_a-r.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-r.o `test -f 'parsers/r.c' || echo '$(srcdir)/'`parsers/r.c
+
+parsers/libctags_a-r.obj: parsers/r.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-r.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-r.Tpo -c -o parsers/libctags_a-r.obj `if test -f 'parsers/r.c'; then $(CYGPATH_W) 'parsers/r.c'; else $(CYGPATH_W) '$(srcdir)/parsers/r.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-r.Tpo parsers/$(DEPDIR)/libctags_a-r.Po
+#	$(AM_V_CC)source='parsers/r.c' object='parsers/libctags_a-r.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-r.obj `if test -f 'parsers/r.c'; then $(CYGPATH_W) 'parsers/r.c'; else $(CYGPATH_W) '$(srcdir)/parsers/r.c'; fi`
+
+parsers/libctags_a-rake.o: parsers/rake.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rake.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rake.Tpo -c -o parsers/libctags_a-rake.o `test -f 'parsers/rake.c' || echo '$(srcdir)/'`parsers/rake.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rake.Tpo parsers/$(DEPDIR)/libctags_a-rake.Po
+#	$(AM_V_CC)source='parsers/rake.c' object='parsers/libctags_a-rake.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rake.o `test -f 'parsers/rake.c' || echo '$(srcdir)/'`parsers/rake.c
+
+parsers/libctags_a-rake.obj: parsers/rake.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rake.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rake.Tpo -c -o parsers/libctags_a-rake.obj `if test -f 'parsers/rake.c'; then $(CYGPATH_W) 'parsers/rake.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rake.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rake.Tpo parsers/$(DEPDIR)/libctags_a-rake.Po
+#	$(AM_V_CC)source='parsers/rake.c' object='parsers/libctags_a-rake.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rake.obj `if test -f 'parsers/rake.c'; then $(CYGPATH_W) 'parsers/rake.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rake.c'; fi`
+
+parsers/libctags_a-raku.o: parsers/raku.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-raku.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-raku.Tpo -c -o parsers/libctags_a-raku.o `test -f 'parsers/raku.c' || echo '$(srcdir)/'`parsers/raku.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-raku.Tpo parsers/$(DEPDIR)/libctags_a-raku.Po
+#	$(AM_V_CC)source='parsers/raku.c' object='parsers/libctags_a-raku.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-raku.o `test -f 'parsers/raku.c' || echo '$(srcdir)/'`parsers/raku.c
+
+parsers/libctags_a-raku.obj: parsers/raku.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-raku.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-raku.Tpo -c -o parsers/libctags_a-raku.obj `if test -f 'parsers/raku.c'; then $(CYGPATH_W) 'parsers/raku.c'; else $(CYGPATH_W) '$(srcdir)/parsers/raku.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-raku.Tpo parsers/$(DEPDIR)/libctags_a-raku.Po
+#	$(AM_V_CC)source='parsers/raku.c' object='parsers/libctags_a-raku.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-raku.obj `if test -f 'parsers/raku.c'; then $(CYGPATH_W) 'parsers/raku.c'; else $(CYGPATH_W) '$(srcdir)/parsers/raku.c'; fi`
+
+parsers/libctags_a-rexx.o: parsers/rexx.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rexx.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rexx.Tpo -c -o parsers/libctags_a-rexx.o `test -f 'parsers/rexx.c' || echo '$(srcdir)/'`parsers/rexx.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rexx.Tpo parsers/$(DEPDIR)/libctags_a-rexx.Po
+#	$(AM_V_CC)source='parsers/rexx.c' object='parsers/libctags_a-rexx.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rexx.o `test -f 'parsers/rexx.c' || echo '$(srcdir)/'`parsers/rexx.c
+
+parsers/libctags_a-rexx.obj: parsers/rexx.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rexx.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rexx.Tpo -c -o parsers/libctags_a-rexx.obj `if test -f 'parsers/rexx.c'; then $(CYGPATH_W) 'parsers/rexx.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rexx.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rexx.Tpo parsers/$(DEPDIR)/libctags_a-rexx.Po
+#	$(AM_V_CC)source='parsers/rexx.c' object='parsers/libctags_a-rexx.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rexx.obj `if test -f 'parsers/rexx.c'; then $(CYGPATH_W) 'parsers/rexx.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rexx.c'; fi`
+
+parsers/libctags_a-rmarkdown.o: parsers/rmarkdown.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rmarkdown.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rmarkdown.Tpo -c -o parsers/libctags_a-rmarkdown.o `test -f 'parsers/rmarkdown.c' || echo '$(srcdir)/'`parsers/rmarkdown.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rmarkdown.Tpo parsers/$(DEPDIR)/libctags_a-rmarkdown.Po
+#	$(AM_V_CC)source='parsers/rmarkdown.c' object='parsers/libctags_a-rmarkdown.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rmarkdown.o `test -f 'parsers/rmarkdown.c' || echo '$(srcdir)/'`parsers/rmarkdown.c
+
+parsers/libctags_a-rmarkdown.obj: parsers/rmarkdown.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rmarkdown.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rmarkdown.Tpo -c -o parsers/libctags_a-rmarkdown.obj `if test -f 'parsers/rmarkdown.c'; then $(CYGPATH_W) 'parsers/rmarkdown.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rmarkdown.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rmarkdown.Tpo parsers/$(DEPDIR)/libctags_a-rmarkdown.Po
+#	$(AM_V_CC)source='parsers/rmarkdown.c' object='parsers/libctags_a-rmarkdown.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rmarkdown.obj `if test -f 'parsers/rmarkdown.c'; then $(CYGPATH_W) 'parsers/rmarkdown.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rmarkdown.c'; fi`
+
+parsers/libctags_a-robot.o: parsers/robot.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-robot.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-robot.Tpo -c -o parsers/libctags_a-robot.o `test -f 'parsers/robot.c' || echo '$(srcdir)/'`parsers/robot.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-robot.Tpo parsers/$(DEPDIR)/libctags_a-robot.Po
+#	$(AM_V_CC)source='parsers/robot.c' object='parsers/libctags_a-robot.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-robot.o `test -f 'parsers/robot.c' || echo '$(srcdir)/'`parsers/robot.c
+
+parsers/libctags_a-robot.obj: parsers/robot.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-robot.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-robot.Tpo -c -o parsers/libctags_a-robot.obj `if test -f 'parsers/robot.c'; then $(CYGPATH_W) 'parsers/robot.c'; else $(CYGPATH_W) '$(srcdir)/parsers/robot.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-robot.Tpo parsers/$(DEPDIR)/libctags_a-robot.Po
+#	$(AM_V_CC)source='parsers/robot.c' object='parsers/libctags_a-robot.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-robot.obj `if test -f 'parsers/robot.c'; then $(CYGPATH_W) 'parsers/robot.c'; else $(CYGPATH_W) '$(srcdir)/parsers/robot.c'; fi`
+
+parsers/libctags_a-rpmspec.o: parsers/rpmspec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rpmspec.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rpmspec.Tpo -c -o parsers/libctags_a-rpmspec.o `test -f 'parsers/rpmspec.c' || echo '$(srcdir)/'`parsers/rpmspec.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rpmspec.Tpo parsers/$(DEPDIR)/libctags_a-rpmspec.Po
+#	$(AM_V_CC)source='parsers/rpmspec.c' object='parsers/libctags_a-rpmspec.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rpmspec.o `test -f 'parsers/rpmspec.c' || echo '$(srcdir)/'`parsers/rpmspec.c
+
+parsers/libctags_a-rpmspec.obj: parsers/rpmspec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rpmspec.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rpmspec.Tpo -c -o parsers/libctags_a-rpmspec.obj `if test -f 'parsers/rpmspec.c'; then $(CYGPATH_W) 'parsers/rpmspec.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rpmspec.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rpmspec.Tpo parsers/$(DEPDIR)/libctags_a-rpmspec.Po
+#	$(AM_V_CC)source='parsers/rpmspec.c' object='parsers/libctags_a-rpmspec.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rpmspec.obj `if test -f 'parsers/rpmspec.c'; then $(CYGPATH_W) 'parsers/rpmspec.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rpmspec.c'; fi`
+
+parsers/libctags_a-rspec.o: parsers/rspec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rspec.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rspec.Tpo -c -o parsers/libctags_a-rspec.o `test -f 'parsers/rspec.c' || echo '$(srcdir)/'`parsers/rspec.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rspec.Tpo parsers/$(DEPDIR)/libctags_a-rspec.Po
+#	$(AM_V_CC)source='parsers/rspec.c' object='parsers/libctags_a-rspec.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rspec.o `test -f 'parsers/rspec.c' || echo '$(srcdir)/'`parsers/rspec.c
+
+parsers/libctags_a-rspec.obj: parsers/rspec.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rspec.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rspec.Tpo -c -o parsers/libctags_a-rspec.obj `if test -f 'parsers/rspec.c'; then $(CYGPATH_W) 'parsers/rspec.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rspec.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rspec.Tpo parsers/$(DEPDIR)/libctags_a-rspec.Po
+#	$(AM_V_CC)source='parsers/rspec.c' object='parsers/libctags_a-rspec.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rspec.obj `if test -f 'parsers/rspec.c'; then $(CYGPATH_W) 'parsers/rspec.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rspec.c'; fi`
+
+parsers/libctags_a-rst.o: parsers/rst.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rst.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rst.Tpo -c -o parsers/libctags_a-rst.o `test -f 'parsers/rst.c' || echo '$(srcdir)/'`parsers/rst.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rst.Tpo parsers/$(DEPDIR)/libctags_a-rst.Po
+#	$(AM_V_CC)source='parsers/rst.c' object='parsers/libctags_a-rst.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rst.o `test -f 'parsers/rst.c' || echo '$(srcdir)/'`parsers/rst.c
+
+parsers/libctags_a-rst.obj: parsers/rst.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rst.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rst.Tpo -c -o parsers/libctags_a-rst.obj `if test -f 'parsers/rst.c'; then $(CYGPATH_W) 'parsers/rst.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rst.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rst.Tpo parsers/$(DEPDIR)/libctags_a-rst.Po
+#	$(AM_V_CC)source='parsers/rst.c' object='parsers/libctags_a-rst.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rst.obj `if test -f 'parsers/rst.c'; then $(CYGPATH_W) 'parsers/rst.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rst.c'; fi`
+
+parsers/libctags_a-ruby.o: parsers/ruby.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ruby.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ruby.Tpo -c -o parsers/libctags_a-ruby.o `test -f 'parsers/ruby.c' || echo '$(srcdir)/'`parsers/ruby.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ruby.Tpo parsers/$(DEPDIR)/libctags_a-ruby.Po
+#	$(AM_V_CC)source='parsers/ruby.c' object='parsers/libctags_a-ruby.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ruby.o `test -f 'parsers/ruby.c' || echo '$(srcdir)/'`parsers/ruby.c
+
+parsers/libctags_a-ruby.obj: parsers/ruby.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ruby.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ruby.Tpo -c -o parsers/libctags_a-ruby.obj `if test -f 'parsers/ruby.c'; then $(CYGPATH_W) 'parsers/ruby.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ruby.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ruby.Tpo parsers/$(DEPDIR)/libctags_a-ruby.Po
+#	$(AM_V_CC)source='parsers/ruby.c' object='parsers/libctags_a-ruby.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ruby.obj `if test -f 'parsers/ruby.c'; then $(CYGPATH_W) 'parsers/ruby.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ruby.c'; fi`
+
+parsers/libctags_a-rust.o: parsers/rust.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rust.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rust.Tpo -c -o parsers/libctags_a-rust.o `test -f 'parsers/rust.c' || echo '$(srcdir)/'`parsers/rust.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rust.Tpo parsers/$(DEPDIR)/libctags_a-rust.Po
+#	$(AM_V_CC)source='parsers/rust.c' object='parsers/libctags_a-rust.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rust.o `test -f 'parsers/rust.c' || echo '$(srcdir)/'`parsers/rust.c
+
+parsers/libctags_a-rust.obj: parsers/rust.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-rust.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-rust.Tpo -c -o parsers/libctags_a-rust.obj `if test -f 'parsers/rust.c'; then $(CYGPATH_W) 'parsers/rust.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rust.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-rust.Tpo parsers/$(DEPDIR)/libctags_a-rust.Po
+#	$(AM_V_CC)source='parsers/rust.c' object='parsers/libctags_a-rust.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-rust.obj `if test -f 'parsers/rust.c'; then $(CYGPATH_W) 'parsers/rust.c'; else $(CYGPATH_W) '$(srcdir)/parsers/rust.c'; fi`
+
+parsers/libctags_a-scheme.o: parsers/scheme.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-scheme.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-scheme.Tpo -c -o parsers/libctags_a-scheme.o `test -f 'parsers/scheme.c' || echo '$(srcdir)/'`parsers/scheme.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-scheme.Tpo parsers/$(DEPDIR)/libctags_a-scheme.Po
+#	$(AM_V_CC)source='parsers/scheme.c' object='parsers/libctags_a-scheme.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-scheme.o `test -f 'parsers/scheme.c' || echo '$(srcdir)/'`parsers/scheme.c
+
+parsers/libctags_a-scheme.obj: parsers/scheme.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-scheme.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-scheme.Tpo -c -o parsers/libctags_a-scheme.obj `if test -f 'parsers/scheme.c'; then $(CYGPATH_W) 'parsers/scheme.c'; else $(CYGPATH_W) '$(srcdir)/parsers/scheme.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-scheme.Tpo parsers/$(DEPDIR)/libctags_a-scheme.Po
+#	$(AM_V_CC)source='parsers/scheme.c' object='parsers/libctags_a-scheme.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-scheme.obj `if test -f 'parsers/scheme.c'; then $(CYGPATH_W) 'parsers/scheme.c'; else $(CYGPATH_W) '$(srcdir)/parsers/scheme.c'; fi`
+
+parsers/libctags_a-sh.o: parsers/sh.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-sh.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-sh.Tpo -c -o parsers/libctags_a-sh.o `test -f 'parsers/sh.c' || echo '$(srcdir)/'`parsers/sh.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-sh.Tpo parsers/$(DEPDIR)/libctags_a-sh.Po
+#	$(AM_V_CC)source='parsers/sh.c' object='parsers/libctags_a-sh.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-sh.o `test -f 'parsers/sh.c' || echo '$(srcdir)/'`parsers/sh.c
+
+parsers/libctags_a-sh.obj: parsers/sh.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-sh.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-sh.Tpo -c -o parsers/libctags_a-sh.obj `if test -f 'parsers/sh.c'; then $(CYGPATH_W) 'parsers/sh.c'; else $(CYGPATH_W) '$(srcdir)/parsers/sh.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-sh.Tpo parsers/$(DEPDIR)/libctags_a-sh.Po
+#	$(AM_V_CC)source='parsers/sh.c' object='parsers/libctags_a-sh.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-sh.obj `if test -f 'parsers/sh.c'; then $(CYGPATH_W) 'parsers/sh.c'; else $(CYGPATH_W) '$(srcdir)/parsers/sh.c'; fi`
+
+parsers/libctags_a-slang.o: parsers/slang.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-slang.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-slang.Tpo -c -o parsers/libctags_a-slang.o `test -f 'parsers/slang.c' || echo '$(srcdir)/'`parsers/slang.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-slang.Tpo parsers/$(DEPDIR)/libctags_a-slang.Po
+#	$(AM_V_CC)source='parsers/slang.c' object='parsers/libctags_a-slang.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-slang.o `test -f 'parsers/slang.c' || echo '$(srcdir)/'`parsers/slang.c
+
+parsers/libctags_a-slang.obj: parsers/slang.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-slang.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-slang.Tpo -c -o parsers/libctags_a-slang.obj `if test -f 'parsers/slang.c'; then $(CYGPATH_W) 'parsers/slang.c'; else $(CYGPATH_W) '$(srcdir)/parsers/slang.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-slang.Tpo parsers/$(DEPDIR)/libctags_a-slang.Po
+#	$(AM_V_CC)source='parsers/slang.c' object='parsers/libctags_a-slang.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-slang.obj `if test -f 'parsers/slang.c'; then $(CYGPATH_W) 'parsers/slang.c'; else $(CYGPATH_W) '$(srcdir)/parsers/slang.c'; fi`
+
+parsers/libctags_a-sml.o: parsers/sml.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-sml.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-sml.Tpo -c -o parsers/libctags_a-sml.o `test -f 'parsers/sml.c' || echo '$(srcdir)/'`parsers/sml.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-sml.Tpo parsers/$(DEPDIR)/libctags_a-sml.Po
+#	$(AM_V_CC)source='parsers/sml.c' object='parsers/libctags_a-sml.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-sml.o `test -f 'parsers/sml.c' || echo '$(srcdir)/'`parsers/sml.c
+
+parsers/libctags_a-sml.obj: parsers/sml.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-sml.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-sml.Tpo -c -o parsers/libctags_a-sml.obj `if test -f 'parsers/sml.c'; then $(CYGPATH_W) 'parsers/sml.c'; else $(CYGPATH_W) '$(srcdir)/parsers/sml.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-sml.Tpo parsers/$(DEPDIR)/libctags_a-sml.Po
+#	$(AM_V_CC)source='parsers/sml.c' object='parsers/libctags_a-sml.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-sml.obj `if test -f 'parsers/sml.c'; then $(CYGPATH_W) 'parsers/sml.c'; else $(CYGPATH_W) '$(srcdir)/parsers/sml.c'; fi`
+
+parsers/libctags_a-sql.o: parsers/sql.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-sql.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-sql.Tpo -c -o parsers/libctags_a-sql.o `test -f 'parsers/sql.c' || echo '$(srcdir)/'`parsers/sql.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-sql.Tpo parsers/$(DEPDIR)/libctags_a-sql.Po
+#	$(AM_V_CC)source='parsers/sql.c' object='parsers/libctags_a-sql.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-sql.o `test -f 'parsers/sql.c' || echo '$(srcdir)/'`parsers/sql.c
+
+parsers/libctags_a-sql.obj: parsers/sql.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-sql.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-sql.Tpo -c -o parsers/libctags_a-sql.obj `if test -f 'parsers/sql.c'; then $(CYGPATH_W) 'parsers/sql.c'; else $(CYGPATH_W) '$(srcdir)/parsers/sql.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-sql.Tpo parsers/$(DEPDIR)/libctags_a-sql.Po
+#	$(AM_V_CC)source='parsers/sql.c' object='parsers/libctags_a-sql.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-sql.obj `if test -f 'parsers/sql.c'; then $(CYGPATH_W) 'parsers/sql.c'; else $(CYGPATH_W) '$(srcdir)/parsers/sql.c'; fi`
+
+parsers/libctags_a-systemdunit.o: parsers/systemdunit.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-systemdunit.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-systemdunit.Tpo -c -o parsers/libctags_a-systemdunit.o `test -f 'parsers/systemdunit.c' || echo '$(srcdir)/'`parsers/systemdunit.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-systemdunit.Tpo parsers/$(DEPDIR)/libctags_a-systemdunit.Po
+#	$(AM_V_CC)source='parsers/systemdunit.c' object='parsers/libctags_a-systemdunit.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-systemdunit.o `test -f 'parsers/systemdunit.c' || echo '$(srcdir)/'`parsers/systemdunit.c
+
+parsers/libctags_a-systemdunit.obj: parsers/systemdunit.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-systemdunit.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-systemdunit.Tpo -c -o parsers/libctags_a-systemdunit.obj `if test -f 'parsers/systemdunit.c'; then $(CYGPATH_W) 'parsers/systemdunit.c'; else $(CYGPATH_W) '$(srcdir)/parsers/systemdunit.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-systemdunit.Tpo parsers/$(DEPDIR)/libctags_a-systemdunit.Po
+#	$(AM_V_CC)source='parsers/systemdunit.c' object='parsers/libctags_a-systemdunit.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-systemdunit.obj `if test -f 'parsers/systemdunit.c'; then $(CYGPATH_W) 'parsers/systemdunit.c'; else $(CYGPATH_W) '$(srcdir)/parsers/systemdunit.c'; fi`
+
+parsers/libctags_a-tcl.o: parsers/tcl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-tcl.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-tcl.Tpo -c -o parsers/libctags_a-tcl.o `test -f 'parsers/tcl.c' || echo '$(srcdir)/'`parsers/tcl.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-tcl.Tpo parsers/$(DEPDIR)/libctags_a-tcl.Po
+#	$(AM_V_CC)source='parsers/tcl.c' object='parsers/libctags_a-tcl.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-tcl.o `test -f 'parsers/tcl.c' || echo '$(srcdir)/'`parsers/tcl.c
+
+parsers/libctags_a-tcl.obj: parsers/tcl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-tcl.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-tcl.Tpo -c -o parsers/libctags_a-tcl.obj `if test -f 'parsers/tcl.c'; then $(CYGPATH_W) 'parsers/tcl.c'; else $(CYGPATH_W) '$(srcdir)/parsers/tcl.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-tcl.Tpo parsers/$(DEPDIR)/libctags_a-tcl.Po
+#	$(AM_V_CC)source='parsers/tcl.c' object='parsers/libctags_a-tcl.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-tcl.obj `if test -f 'parsers/tcl.c'; then $(CYGPATH_W) 'parsers/tcl.c'; else $(CYGPATH_W) '$(srcdir)/parsers/tcl.c'; fi`
+
+parsers/libctags_a-tcloo.o: parsers/tcloo.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-tcloo.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-tcloo.Tpo -c -o parsers/libctags_a-tcloo.o `test -f 'parsers/tcloo.c' || echo '$(srcdir)/'`parsers/tcloo.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-tcloo.Tpo parsers/$(DEPDIR)/libctags_a-tcloo.Po
+#	$(AM_V_CC)source='parsers/tcloo.c' object='parsers/libctags_a-tcloo.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-tcloo.o `test -f 'parsers/tcloo.c' || echo '$(srcdir)/'`parsers/tcloo.c
+
+parsers/libctags_a-tcloo.obj: parsers/tcloo.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-tcloo.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-tcloo.Tpo -c -o parsers/libctags_a-tcloo.obj `if test -f 'parsers/tcloo.c'; then $(CYGPATH_W) 'parsers/tcloo.c'; else $(CYGPATH_W) '$(srcdir)/parsers/tcloo.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-tcloo.Tpo parsers/$(DEPDIR)/libctags_a-tcloo.Po
+#	$(AM_V_CC)source='parsers/tcloo.c' object='parsers/libctags_a-tcloo.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-tcloo.obj `if test -f 'parsers/tcloo.c'; then $(CYGPATH_W) 'parsers/tcloo.c'; else $(CYGPATH_W) '$(srcdir)/parsers/tcloo.c'; fi`
+
+parsers/libctags_a-tex.o: parsers/tex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-tex.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-tex.Tpo -c -o parsers/libctags_a-tex.o `test -f 'parsers/tex.c' || echo '$(srcdir)/'`parsers/tex.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-tex.Tpo parsers/$(DEPDIR)/libctags_a-tex.Po
+#	$(AM_V_CC)source='parsers/tex.c' object='parsers/libctags_a-tex.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-tex.o `test -f 'parsers/tex.c' || echo '$(srcdir)/'`parsers/tex.c
+
+parsers/libctags_a-tex.obj: parsers/tex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-tex.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-tex.Tpo -c -o parsers/libctags_a-tex.obj `if test -f 'parsers/tex.c'; then $(CYGPATH_W) 'parsers/tex.c'; else $(CYGPATH_W) '$(srcdir)/parsers/tex.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-tex.Tpo parsers/$(DEPDIR)/libctags_a-tex.Po
+#	$(AM_V_CC)source='parsers/tex.c' object='parsers/libctags_a-tex.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-tex.obj `if test -f 'parsers/tex.c'; then $(CYGPATH_W) 'parsers/tex.c'; else $(CYGPATH_W) '$(srcdir)/parsers/tex.c'; fi`
+
+parsers/libctags_a-tex-beamer.o: parsers/tex-beamer.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-tex-beamer.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-tex-beamer.Tpo -c -o parsers/libctags_a-tex-beamer.o `test -f 'parsers/tex-beamer.c' || echo '$(srcdir)/'`parsers/tex-beamer.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-tex-beamer.Tpo parsers/$(DEPDIR)/libctags_a-tex-beamer.Po
+#	$(AM_V_CC)source='parsers/tex-beamer.c' object='parsers/libctags_a-tex-beamer.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-tex-beamer.o `test -f 'parsers/tex-beamer.c' || echo '$(srcdir)/'`parsers/tex-beamer.c
+
+parsers/libctags_a-tex-beamer.obj: parsers/tex-beamer.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-tex-beamer.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-tex-beamer.Tpo -c -o parsers/libctags_a-tex-beamer.obj `if test -f 'parsers/tex-beamer.c'; then $(CYGPATH_W) 'parsers/tex-beamer.c'; else $(CYGPATH_W) '$(srcdir)/parsers/tex-beamer.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-tex-beamer.Tpo parsers/$(DEPDIR)/libctags_a-tex-beamer.Po
+#	$(AM_V_CC)source='parsers/tex-beamer.c' object='parsers/libctags_a-tex-beamer.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-tex-beamer.obj `if test -f 'parsers/tex-beamer.c'; then $(CYGPATH_W) 'parsers/tex-beamer.c'; else $(CYGPATH_W) '$(srcdir)/parsers/tex-beamer.c'; fi`
+
+parsers/libctags_a-ttcn.o: parsers/ttcn.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ttcn.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ttcn.Tpo -c -o parsers/libctags_a-ttcn.o `test -f 'parsers/ttcn.c' || echo '$(srcdir)/'`parsers/ttcn.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ttcn.Tpo parsers/$(DEPDIR)/libctags_a-ttcn.Po
+#	$(AM_V_CC)source='parsers/ttcn.c' object='parsers/libctags_a-ttcn.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ttcn.o `test -f 'parsers/ttcn.c' || echo '$(srcdir)/'`parsers/ttcn.c
+
+parsers/libctags_a-ttcn.obj: parsers/ttcn.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ttcn.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ttcn.Tpo -c -o parsers/libctags_a-ttcn.obj `if test -f 'parsers/ttcn.c'; then $(CYGPATH_W) 'parsers/ttcn.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ttcn.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ttcn.Tpo parsers/$(DEPDIR)/libctags_a-ttcn.Po
+#	$(AM_V_CC)source='parsers/ttcn.c' object='parsers/libctags_a-ttcn.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ttcn.obj `if test -f 'parsers/ttcn.c'; then $(CYGPATH_W) 'parsers/ttcn.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ttcn.c'; fi`
+
+parsers/libctags_a-txt2tags.o: parsers/txt2tags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-txt2tags.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-txt2tags.Tpo -c -o parsers/libctags_a-txt2tags.o `test -f 'parsers/txt2tags.c' || echo '$(srcdir)/'`parsers/txt2tags.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-txt2tags.Tpo parsers/$(DEPDIR)/libctags_a-txt2tags.Po
+#	$(AM_V_CC)source='parsers/txt2tags.c' object='parsers/libctags_a-txt2tags.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-txt2tags.o `test -f 'parsers/txt2tags.c' || echo '$(srcdir)/'`parsers/txt2tags.c
+
+parsers/libctags_a-txt2tags.obj: parsers/txt2tags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-txt2tags.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-txt2tags.Tpo -c -o parsers/libctags_a-txt2tags.obj `if test -f 'parsers/txt2tags.c'; then $(CYGPATH_W) 'parsers/txt2tags.c'; else $(CYGPATH_W) '$(srcdir)/parsers/txt2tags.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-txt2tags.Tpo parsers/$(DEPDIR)/libctags_a-txt2tags.Po
+#	$(AM_V_CC)source='parsers/txt2tags.c' object='parsers/libctags_a-txt2tags.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-txt2tags.obj `if test -f 'parsers/txt2tags.c'; then $(CYGPATH_W) 'parsers/txt2tags.c'; else $(CYGPATH_W) '$(srcdir)/parsers/txt2tags.c'; fi`
+
+parsers/libctags_a-typescript.o: parsers/typescript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-typescript.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-typescript.Tpo -c -o parsers/libctags_a-typescript.o `test -f 'parsers/typescript.c' || echo '$(srcdir)/'`parsers/typescript.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-typescript.Tpo parsers/$(DEPDIR)/libctags_a-typescript.Po
+#	$(AM_V_CC)source='parsers/typescript.c' object='parsers/libctags_a-typescript.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-typescript.o `test -f 'parsers/typescript.c' || echo '$(srcdir)/'`parsers/typescript.c
+
+parsers/libctags_a-typescript.obj: parsers/typescript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-typescript.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-typescript.Tpo -c -o parsers/libctags_a-typescript.obj `if test -f 'parsers/typescript.c'; then $(CYGPATH_W) 'parsers/typescript.c'; else $(CYGPATH_W) '$(srcdir)/parsers/typescript.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-typescript.Tpo parsers/$(DEPDIR)/libctags_a-typescript.Po
+#	$(AM_V_CC)source='parsers/typescript.c' object='parsers/libctags_a-typescript.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-typescript.obj `if test -f 'parsers/typescript.c'; then $(CYGPATH_W) 'parsers/typescript.c'; else $(CYGPATH_W) '$(srcdir)/parsers/typescript.c'; fi`
+
+parsers/libctags_a-v.o: parsers/v.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-v.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-v.Tpo -c -o parsers/libctags_a-v.o `test -f 'parsers/v.c' || echo '$(srcdir)/'`parsers/v.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-v.Tpo parsers/$(DEPDIR)/libctags_a-v.Po
+#	$(AM_V_CC)source='parsers/v.c' object='parsers/libctags_a-v.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-v.o `test -f 'parsers/v.c' || echo '$(srcdir)/'`parsers/v.c
+
+parsers/libctags_a-v.obj: parsers/v.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-v.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-v.Tpo -c -o parsers/libctags_a-v.obj `if test -f 'parsers/v.c'; then $(CYGPATH_W) 'parsers/v.c'; else $(CYGPATH_W) '$(srcdir)/parsers/v.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-v.Tpo parsers/$(DEPDIR)/libctags_a-v.Po
+#	$(AM_V_CC)source='parsers/v.c' object='parsers/libctags_a-v.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-v.obj `if test -f 'parsers/v.c'; then $(CYGPATH_W) 'parsers/v.c'; else $(CYGPATH_W) '$(srcdir)/parsers/v.c'; fi`
+
+parsers/libctags_a-vera.o: parsers/vera.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-vera.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-vera.Tpo -c -o parsers/libctags_a-vera.o `test -f 'parsers/vera.c' || echo '$(srcdir)/'`parsers/vera.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-vera.Tpo parsers/$(DEPDIR)/libctags_a-vera.Po
+#	$(AM_V_CC)source='parsers/vera.c' object='parsers/libctags_a-vera.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-vera.o `test -f 'parsers/vera.c' || echo '$(srcdir)/'`parsers/vera.c
+
+parsers/libctags_a-vera.obj: parsers/vera.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-vera.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-vera.Tpo -c -o parsers/libctags_a-vera.obj `if test -f 'parsers/vera.c'; then $(CYGPATH_W) 'parsers/vera.c'; else $(CYGPATH_W) '$(srcdir)/parsers/vera.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-vera.Tpo parsers/$(DEPDIR)/libctags_a-vera.Po
+#	$(AM_V_CC)source='parsers/vera.c' object='parsers/libctags_a-vera.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-vera.obj `if test -f 'parsers/vera.c'; then $(CYGPATH_W) 'parsers/vera.c'; else $(CYGPATH_W) '$(srcdir)/parsers/vera.c'; fi`
+
+parsers/libctags_a-verilog.o: parsers/verilog.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-verilog.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-verilog.Tpo -c -o parsers/libctags_a-verilog.o `test -f 'parsers/verilog.c' || echo '$(srcdir)/'`parsers/verilog.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-verilog.Tpo parsers/$(DEPDIR)/libctags_a-verilog.Po
+#	$(AM_V_CC)source='parsers/verilog.c' object='parsers/libctags_a-verilog.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-verilog.o `test -f 'parsers/verilog.c' || echo '$(srcdir)/'`parsers/verilog.c
+
+parsers/libctags_a-verilog.obj: parsers/verilog.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-verilog.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-verilog.Tpo -c -o parsers/libctags_a-verilog.obj `if test -f 'parsers/verilog.c'; then $(CYGPATH_W) 'parsers/verilog.c'; else $(CYGPATH_W) '$(srcdir)/parsers/verilog.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-verilog.Tpo parsers/$(DEPDIR)/libctags_a-verilog.Po
+#	$(AM_V_CC)source='parsers/verilog.c' object='parsers/libctags_a-verilog.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-verilog.obj `if test -f 'parsers/verilog.c'; then $(CYGPATH_W) 'parsers/verilog.c'; else $(CYGPATH_W) '$(srcdir)/parsers/verilog.c'; fi`
+
+parsers/libctags_a-vhdl.o: parsers/vhdl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-vhdl.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-vhdl.Tpo -c -o parsers/libctags_a-vhdl.o `test -f 'parsers/vhdl.c' || echo '$(srcdir)/'`parsers/vhdl.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-vhdl.Tpo parsers/$(DEPDIR)/libctags_a-vhdl.Po
+#	$(AM_V_CC)source='parsers/vhdl.c' object='parsers/libctags_a-vhdl.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-vhdl.o `test -f 'parsers/vhdl.c' || echo '$(srcdir)/'`parsers/vhdl.c
+
+parsers/libctags_a-vhdl.obj: parsers/vhdl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-vhdl.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-vhdl.Tpo -c -o parsers/libctags_a-vhdl.obj `if test -f 'parsers/vhdl.c'; then $(CYGPATH_W) 'parsers/vhdl.c'; else $(CYGPATH_W) '$(srcdir)/parsers/vhdl.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-vhdl.Tpo parsers/$(DEPDIR)/libctags_a-vhdl.Po
+#	$(AM_V_CC)source='parsers/vhdl.c' object='parsers/libctags_a-vhdl.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-vhdl.obj `if test -f 'parsers/vhdl.c'; then $(CYGPATH_W) 'parsers/vhdl.c'; else $(CYGPATH_W) '$(srcdir)/parsers/vhdl.c'; fi`
+
+parsers/libctags_a-vim.o: parsers/vim.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-vim.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-vim.Tpo -c -o parsers/libctags_a-vim.o `test -f 'parsers/vim.c' || echo '$(srcdir)/'`parsers/vim.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-vim.Tpo parsers/$(DEPDIR)/libctags_a-vim.Po
+#	$(AM_V_CC)source='parsers/vim.c' object='parsers/libctags_a-vim.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-vim.o `test -f 'parsers/vim.c' || echo '$(srcdir)/'`parsers/vim.c
+
+parsers/libctags_a-vim.obj: parsers/vim.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-vim.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-vim.Tpo -c -o parsers/libctags_a-vim.obj `if test -f 'parsers/vim.c'; then $(CYGPATH_W) 'parsers/vim.c'; else $(CYGPATH_W) '$(srcdir)/parsers/vim.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-vim.Tpo parsers/$(DEPDIR)/libctags_a-vim.Po
+#	$(AM_V_CC)source='parsers/vim.c' object='parsers/libctags_a-vim.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-vim.obj `if test -f 'parsers/vim.c'; then $(CYGPATH_W) 'parsers/vim.c'; else $(CYGPATH_W) '$(srcdir)/parsers/vim.c'; fi`
+
+parsers/libctags_a-windres.o: parsers/windres.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-windres.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-windres.Tpo -c -o parsers/libctags_a-windres.o `test -f 'parsers/windres.c' || echo '$(srcdir)/'`parsers/windres.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-windres.Tpo parsers/$(DEPDIR)/libctags_a-windres.Po
+#	$(AM_V_CC)source='parsers/windres.c' object='parsers/libctags_a-windres.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-windres.o `test -f 'parsers/windres.c' || echo '$(srcdir)/'`parsers/windres.c
+
+parsers/libctags_a-windres.obj: parsers/windres.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-windres.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-windres.Tpo -c -o parsers/libctags_a-windres.obj `if test -f 'parsers/windres.c'; then $(CYGPATH_W) 'parsers/windres.c'; else $(CYGPATH_W) '$(srcdir)/parsers/windres.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-windres.Tpo parsers/$(DEPDIR)/libctags_a-windres.Po
+#	$(AM_V_CC)source='parsers/windres.c' object='parsers/libctags_a-windres.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-windres.obj `if test -f 'parsers/windres.c'; then $(CYGPATH_W) 'parsers/windres.c'; else $(CYGPATH_W) '$(srcdir)/parsers/windres.c'; fi`
+
+parsers/libctags_a-yumrepo.o: parsers/yumrepo.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-yumrepo.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-yumrepo.Tpo -c -o parsers/libctags_a-yumrepo.o `test -f 'parsers/yumrepo.c' || echo '$(srcdir)/'`parsers/yumrepo.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-yumrepo.Tpo parsers/$(DEPDIR)/libctags_a-yumrepo.Po
+#	$(AM_V_CC)source='parsers/yumrepo.c' object='parsers/libctags_a-yumrepo.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-yumrepo.o `test -f 'parsers/yumrepo.c' || echo '$(srcdir)/'`parsers/yumrepo.c
+
+parsers/libctags_a-yumrepo.obj: parsers/yumrepo.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-yumrepo.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-yumrepo.Tpo -c -o parsers/libctags_a-yumrepo.obj `if test -f 'parsers/yumrepo.c'; then $(CYGPATH_W) 'parsers/yumrepo.c'; else $(CYGPATH_W) '$(srcdir)/parsers/yumrepo.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-yumrepo.Tpo parsers/$(DEPDIR)/libctags_a-yumrepo.Po
+#	$(AM_V_CC)source='parsers/yumrepo.c' object='parsers/libctags_a-yumrepo.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-yumrepo.obj `if test -f 'parsers/yumrepo.c'; then $(CYGPATH_W) 'parsers/yumrepo.c'; else $(CYGPATH_W) '$(srcdir)/parsers/yumrepo.c'; fi`
+
+optlib/libctags_a-cmake.o: optlib/cmake.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-cmake.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-cmake.Tpo -c -o optlib/libctags_a-cmake.o `test -f 'optlib/cmake.c' || echo '$(srcdir)/'`optlib/cmake.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-cmake.Tpo optlib/$(DEPDIR)/libctags_a-cmake.Po
+#	$(AM_V_CC)source='optlib/cmake.c' object='optlib/libctags_a-cmake.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-cmake.o `test -f 'optlib/cmake.c' || echo '$(srcdir)/'`optlib/cmake.c
+
+optlib/libctags_a-cmake.obj: optlib/cmake.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-cmake.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-cmake.Tpo -c -o optlib/libctags_a-cmake.obj `if test -f 'optlib/cmake.c'; then $(CYGPATH_W) 'optlib/cmake.c'; else $(CYGPATH_W) '$(srcdir)/optlib/cmake.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-cmake.Tpo optlib/$(DEPDIR)/libctags_a-cmake.Po
+#	$(AM_V_CC)source='optlib/cmake.c' object='optlib/libctags_a-cmake.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-cmake.obj `if test -f 'optlib/cmake.c'; then $(CYGPATH_W) 'optlib/cmake.c'; else $(CYGPATH_W) '$(srcdir)/optlib/cmake.c'; fi`
+
+optlib/libctags_a-ctags-optlib.o: optlib/ctags-optlib.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-ctags-optlib.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-ctags-optlib.Tpo -c -o optlib/libctags_a-ctags-optlib.o `test -f 'optlib/ctags-optlib.c' || echo '$(srcdir)/'`optlib/ctags-optlib.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-ctags-optlib.Tpo optlib/$(DEPDIR)/libctags_a-ctags-optlib.Po
+#	$(AM_V_CC)source='optlib/ctags-optlib.c' object='optlib/libctags_a-ctags-optlib.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-ctags-optlib.o `test -f 'optlib/ctags-optlib.c' || echo '$(srcdir)/'`optlib/ctags-optlib.c
+
+optlib/libctags_a-ctags-optlib.obj: optlib/ctags-optlib.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-ctags-optlib.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-ctags-optlib.Tpo -c -o optlib/libctags_a-ctags-optlib.obj `if test -f 'optlib/ctags-optlib.c'; then $(CYGPATH_W) 'optlib/ctags-optlib.c'; else $(CYGPATH_W) '$(srcdir)/optlib/ctags-optlib.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-ctags-optlib.Tpo optlib/$(DEPDIR)/libctags_a-ctags-optlib.Po
+#	$(AM_V_CC)source='optlib/ctags-optlib.c' object='optlib/libctags_a-ctags-optlib.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-ctags-optlib.obj `if test -f 'optlib/ctags-optlib.c'; then $(CYGPATH_W) 'optlib/ctags-optlib.c'; else $(CYGPATH_W) '$(srcdir)/optlib/ctags-optlib.c'; fi`
+
+optlib/libctags_a-elixir.o: optlib/elixir.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-elixir.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-elixir.Tpo -c -o optlib/libctags_a-elixir.o `test -f 'optlib/elixir.c' || echo '$(srcdir)/'`optlib/elixir.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-elixir.Tpo optlib/$(DEPDIR)/libctags_a-elixir.Po
+#	$(AM_V_CC)source='optlib/elixir.c' object='optlib/libctags_a-elixir.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-elixir.o `test -f 'optlib/elixir.c' || echo '$(srcdir)/'`optlib/elixir.c
+
+optlib/libctags_a-elixir.obj: optlib/elixir.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-elixir.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-elixir.Tpo -c -o optlib/libctags_a-elixir.obj `if test -f 'optlib/elixir.c'; then $(CYGPATH_W) 'optlib/elixir.c'; else $(CYGPATH_W) '$(srcdir)/optlib/elixir.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-elixir.Tpo optlib/$(DEPDIR)/libctags_a-elixir.Po
+#	$(AM_V_CC)source='optlib/elixir.c' object='optlib/libctags_a-elixir.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-elixir.obj `if test -f 'optlib/elixir.c'; then $(CYGPATH_W) 'optlib/elixir.c'; else $(CYGPATH_W) '$(srcdir)/optlib/elixir.c'; fi`
+
+optlib/libctags_a-forth.o: optlib/forth.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-forth.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-forth.Tpo -c -o optlib/libctags_a-forth.o `test -f 'optlib/forth.c' || echo '$(srcdir)/'`optlib/forth.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-forth.Tpo optlib/$(DEPDIR)/libctags_a-forth.Po
+#	$(AM_V_CC)source='optlib/forth.c' object='optlib/libctags_a-forth.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-forth.o `test -f 'optlib/forth.c' || echo '$(srcdir)/'`optlib/forth.c
+
+optlib/libctags_a-forth.obj: optlib/forth.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-forth.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-forth.Tpo -c -o optlib/libctags_a-forth.obj `if test -f 'optlib/forth.c'; then $(CYGPATH_W) 'optlib/forth.c'; else $(CYGPATH_W) '$(srcdir)/optlib/forth.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-forth.Tpo optlib/$(DEPDIR)/libctags_a-forth.Po
+#	$(AM_V_CC)source='optlib/forth.c' object='optlib/libctags_a-forth.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-forth.obj `if test -f 'optlib/forth.c'; then $(CYGPATH_W) 'optlib/forth.c'; else $(CYGPATH_W) '$(srcdir)/optlib/forth.c'; fi`
+
+optlib/libctags_a-gdbinit.o: optlib/gdbinit.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-gdbinit.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-gdbinit.Tpo -c -o optlib/libctags_a-gdbinit.o `test -f 'optlib/gdbinit.c' || echo '$(srcdir)/'`optlib/gdbinit.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-gdbinit.Tpo optlib/$(DEPDIR)/libctags_a-gdbinit.Po
+#	$(AM_V_CC)source='optlib/gdbinit.c' object='optlib/libctags_a-gdbinit.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-gdbinit.o `test -f 'optlib/gdbinit.c' || echo '$(srcdir)/'`optlib/gdbinit.c
+
+optlib/libctags_a-gdbinit.obj: optlib/gdbinit.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-gdbinit.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-gdbinit.Tpo -c -o optlib/libctags_a-gdbinit.obj `if test -f 'optlib/gdbinit.c'; then $(CYGPATH_W) 'optlib/gdbinit.c'; else $(CYGPATH_W) '$(srcdir)/optlib/gdbinit.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-gdbinit.Tpo optlib/$(DEPDIR)/libctags_a-gdbinit.Po
+#	$(AM_V_CC)source='optlib/gdbinit.c' object='optlib/libctags_a-gdbinit.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-gdbinit.obj `if test -f 'optlib/gdbinit.c'; then $(CYGPATH_W) 'optlib/gdbinit.c'; else $(CYGPATH_W) '$(srcdir)/optlib/gdbinit.c'; fi`
+
+optlib/libctags_a-gperf.o: optlib/gperf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-gperf.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-gperf.Tpo -c -o optlib/libctags_a-gperf.o `test -f 'optlib/gperf.c' || echo '$(srcdir)/'`optlib/gperf.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-gperf.Tpo optlib/$(DEPDIR)/libctags_a-gperf.Po
+#	$(AM_V_CC)source='optlib/gperf.c' object='optlib/libctags_a-gperf.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-gperf.o `test -f 'optlib/gperf.c' || echo '$(srcdir)/'`optlib/gperf.c
+
+optlib/libctags_a-gperf.obj: optlib/gperf.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-gperf.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-gperf.Tpo -c -o optlib/libctags_a-gperf.obj `if test -f 'optlib/gperf.c'; then $(CYGPATH_W) 'optlib/gperf.c'; else $(CYGPATH_W) '$(srcdir)/optlib/gperf.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-gperf.Tpo optlib/$(DEPDIR)/libctags_a-gperf.Po
+#	$(AM_V_CC)source='optlib/gperf.c' object='optlib/libctags_a-gperf.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-gperf.obj `if test -f 'optlib/gperf.c'; then $(CYGPATH_W) 'optlib/gperf.c'; else $(CYGPATH_W) '$(srcdir)/optlib/gperf.c'; fi`
+
+optlib/libctags_a-inko.o: optlib/inko.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-inko.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-inko.Tpo -c -o optlib/libctags_a-inko.o `test -f 'optlib/inko.c' || echo '$(srcdir)/'`optlib/inko.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-inko.Tpo optlib/$(DEPDIR)/libctags_a-inko.Po
+#	$(AM_V_CC)source='optlib/inko.c' object='optlib/libctags_a-inko.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-inko.o `test -f 'optlib/inko.c' || echo '$(srcdir)/'`optlib/inko.c
+
+optlib/libctags_a-inko.obj: optlib/inko.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-inko.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-inko.Tpo -c -o optlib/libctags_a-inko.obj `if test -f 'optlib/inko.c'; then $(CYGPATH_W) 'optlib/inko.c'; else $(CYGPATH_W) '$(srcdir)/optlib/inko.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-inko.Tpo optlib/$(DEPDIR)/libctags_a-inko.Po
+#	$(AM_V_CC)source='optlib/inko.c' object='optlib/libctags_a-inko.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-inko.obj `if test -f 'optlib/inko.c'; then $(CYGPATH_W) 'optlib/inko.c'; else $(CYGPATH_W) '$(srcdir)/optlib/inko.c'; fi`
+
+optlib/libctags_a-iPythonCell.o: optlib/iPythonCell.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-iPythonCell.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-iPythonCell.Tpo -c -o optlib/libctags_a-iPythonCell.o `test -f 'optlib/iPythonCell.c' || echo '$(srcdir)/'`optlib/iPythonCell.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-iPythonCell.Tpo optlib/$(DEPDIR)/libctags_a-iPythonCell.Po
+#	$(AM_V_CC)source='optlib/iPythonCell.c' object='optlib/libctags_a-iPythonCell.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-iPythonCell.o `test -f 'optlib/iPythonCell.c' || echo '$(srcdir)/'`optlib/iPythonCell.c
+
+optlib/libctags_a-iPythonCell.obj: optlib/iPythonCell.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-iPythonCell.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-iPythonCell.Tpo -c -o optlib/libctags_a-iPythonCell.obj `if test -f 'optlib/iPythonCell.c'; then $(CYGPATH_W) 'optlib/iPythonCell.c'; else $(CYGPATH_W) '$(srcdir)/optlib/iPythonCell.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-iPythonCell.Tpo optlib/$(DEPDIR)/libctags_a-iPythonCell.Po
+#	$(AM_V_CC)source='optlib/iPythonCell.c' object='optlib/libctags_a-iPythonCell.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-iPythonCell.obj `if test -f 'optlib/iPythonCell.c'; then $(CYGPATH_W) 'optlib/iPythonCell.c'; else $(CYGPATH_W) '$(srcdir)/optlib/iPythonCell.c'; fi`
+
+optlib/libctags_a-kconfig.o: optlib/kconfig.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-kconfig.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-kconfig.Tpo -c -o optlib/libctags_a-kconfig.o `test -f 'optlib/kconfig.c' || echo '$(srcdir)/'`optlib/kconfig.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-kconfig.Tpo optlib/$(DEPDIR)/libctags_a-kconfig.Po
+#	$(AM_V_CC)source='optlib/kconfig.c' object='optlib/libctags_a-kconfig.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-kconfig.o `test -f 'optlib/kconfig.c' || echo '$(srcdir)/'`optlib/kconfig.c
+
+optlib/libctags_a-kconfig.obj: optlib/kconfig.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-kconfig.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-kconfig.Tpo -c -o optlib/libctags_a-kconfig.obj `if test -f 'optlib/kconfig.c'; then $(CYGPATH_W) 'optlib/kconfig.c'; else $(CYGPATH_W) '$(srcdir)/optlib/kconfig.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-kconfig.Tpo optlib/$(DEPDIR)/libctags_a-kconfig.Po
+#	$(AM_V_CC)source='optlib/kconfig.c' object='optlib/libctags_a-kconfig.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-kconfig.obj `if test -f 'optlib/kconfig.c'; then $(CYGPATH_W) 'optlib/kconfig.c'; else $(CYGPATH_W) '$(srcdir)/optlib/kconfig.c'; fi`
+
+optlib/libctags_a-lex.o: optlib/lex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-lex.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-lex.Tpo -c -o optlib/libctags_a-lex.o `test -f 'optlib/lex.c' || echo '$(srcdir)/'`optlib/lex.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-lex.Tpo optlib/$(DEPDIR)/libctags_a-lex.Po
+#	$(AM_V_CC)source='optlib/lex.c' object='optlib/libctags_a-lex.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-lex.o `test -f 'optlib/lex.c' || echo '$(srcdir)/'`optlib/lex.c
+
+optlib/libctags_a-lex.obj: optlib/lex.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-lex.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-lex.Tpo -c -o optlib/libctags_a-lex.obj `if test -f 'optlib/lex.c'; then $(CYGPATH_W) 'optlib/lex.c'; else $(CYGPATH_W) '$(srcdir)/optlib/lex.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-lex.Tpo optlib/$(DEPDIR)/libctags_a-lex.Po
+#	$(AM_V_CC)source='optlib/lex.c' object='optlib/libctags_a-lex.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-lex.obj `if test -f 'optlib/lex.c'; then $(CYGPATH_W) 'optlib/lex.c'; else $(CYGPATH_W) '$(srcdir)/optlib/lex.c'; fi`
+
+optlib/libctags_a-man.o: optlib/man.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-man.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-man.Tpo -c -o optlib/libctags_a-man.o `test -f 'optlib/man.c' || echo '$(srcdir)/'`optlib/man.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-man.Tpo optlib/$(DEPDIR)/libctags_a-man.Po
+#	$(AM_V_CC)source='optlib/man.c' object='optlib/libctags_a-man.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-man.o `test -f 'optlib/man.c' || echo '$(srcdir)/'`optlib/man.c
+
+optlib/libctags_a-man.obj: optlib/man.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-man.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-man.Tpo -c -o optlib/libctags_a-man.obj `if test -f 'optlib/man.c'; then $(CYGPATH_W) 'optlib/man.c'; else $(CYGPATH_W) '$(srcdir)/optlib/man.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-man.Tpo optlib/$(DEPDIR)/libctags_a-man.Po
+#	$(AM_V_CC)source='optlib/man.c' object='optlib/libctags_a-man.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-man.obj `if test -f 'optlib/man.c'; then $(CYGPATH_W) 'optlib/man.c'; else $(CYGPATH_W) '$(srcdir)/optlib/man.c'; fi`
+
+optlib/libctags_a-meson.o: optlib/meson.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-meson.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-meson.Tpo -c -o optlib/libctags_a-meson.o `test -f 'optlib/meson.c' || echo '$(srcdir)/'`optlib/meson.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-meson.Tpo optlib/$(DEPDIR)/libctags_a-meson.Po
+#	$(AM_V_CC)source='optlib/meson.c' object='optlib/libctags_a-meson.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-meson.o `test -f 'optlib/meson.c' || echo '$(srcdir)/'`optlib/meson.c
+
+optlib/libctags_a-meson.obj: optlib/meson.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-meson.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-meson.Tpo -c -o optlib/libctags_a-meson.obj `if test -f 'optlib/meson.c'; then $(CYGPATH_W) 'optlib/meson.c'; else $(CYGPATH_W) '$(srcdir)/optlib/meson.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-meson.Tpo optlib/$(DEPDIR)/libctags_a-meson.Po
+#	$(AM_V_CC)source='optlib/meson.c' object='optlib/libctags_a-meson.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-meson.obj `if test -f 'optlib/meson.c'; then $(CYGPATH_W) 'optlib/meson.c'; else $(CYGPATH_W) '$(srcdir)/optlib/meson.c'; fi`
+
+optlib/libctags_a-mesonOptions.o: optlib/mesonOptions.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-mesonOptions.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-mesonOptions.Tpo -c -o optlib/libctags_a-mesonOptions.o `test -f 'optlib/mesonOptions.c' || echo '$(srcdir)/'`optlib/mesonOptions.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-mesonOptions.Tpo optlib/$(DEPDIR)/libctags_a-mesonOptions.Po
+#	$(AM_V_CC)source='optlib/mesonOptions.c' object='optlib/libctags_a-mesonOptions.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-mesonOptions.o `test -f 'optlib/mesonOptions.c' || echo '$(srcdir)/'`optlib/mesonOptions.c
+
+optlib/libctags_a-mesonOptions.obj: optlib/mesonOptions.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-mesonOptions.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-mesonOptions.Tpo -c -o optlib/libctags_a-mesonOptions.obj `if test -f 'optlib/mesonOptions.c'; then $(CYGPATH_W) 'optlib/mesonOptions.c'; else $(CYGPATH_W) '$(srcdir)/optlib/mesonOptions.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-mesonOptions.Tpo optlib/$(DEPDIR)/libctags_a-mesonOptions.Po
+#	$(AM_V_CC)source='optlib/mesonOptions.c' object='optlib/libctags_a-mesonOptions.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-mesonOptions.obj `if test -f 'optlib/mesonOptions.c'; then $(CYGPATH_W) 'optlib/mesonOptions.c'; else $(CYGPATH_W) '$(srcdir)/optlib/mesonOptions.c'; fi`
+
+optlib/libctags_a-org.o: optlib/org.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-org.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-org.Tpo -c -o optlib/libctags_a-org.o `test -f 'optlib/org.c' || echo '$(srcdir)/'`optlib/org.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-org.Tpo optlib/$(DEPDIR)/libctags_a-org.Po
+#	$(AM_V_CC)source='optlib/org.c' object='optlib/libctags_a-org.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-org.o `test -f 'optlib/org.c' || echo '$(srcdir)/'`optlib/org.c
+
+optlib/libctags_a-org.obj: optlib/org.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-org.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-org.Tpo -c -o optlib/libctags_a-org.obj `if test -f 'optlib/org.c'; then $(CYGPATH_W) 'optlib/org.c'; else $(CYGPATH_W) '$(srcdir)/optlib/org.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-org.Tpo optlib/$(DEPDIR)/libctags_a-org.Po
+#	$(AM_V_CC)source='optlib/org.c' object='optlib/libctags_a-org.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-org.obj `if test -f 'optlib/org.c'; then $(CYGPATH_W) 'optlib/org.c'; else $(CYGPATH_W) '$(srcdir)/optlib/org.c'; fi`
+
+optlib/libctags_a-passwd.o: optlib/passwd.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-passwd.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-passwd.Tpo -c -o optlib/libctags_a-passwd.o `test -f 'optlib/passwd.c' || echo '$(srcdir)/'`optlib/passwd.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-passwd.Tpo optlib/$(DEPDIR)/libctags_a-passwd.Po
+#	$(AM_V_CC)source='optlib/passwd.c' object='optlib/libctags_a-passwd.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-passwd.o `test -f 'optlib/passwd.c' || echo '$(srcdir)/'`optlib/passwd.c
+
+optlib/libctags_a-passwd.obj: optlib/passwd.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-passwd.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-passwd.Tpo -c -o optlib/libctags_a-passwd.obj `if test -f 'optlib/passwd.c'; then $(CYGPATH_W) 'optlib/passwd.c'; else $(CYGPATH_W) '$(srcdir)/optlib/passwd.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-passwd.Tpo optlib/$(DEPDIR)/libctags_a-passwd.Po
+#	$(AM_V_CC)source='optlib/passwd.c' object='optlib/libctags_a-passwd.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-passwd.obj `if test -f 'optlib/passwd.c'; then $(CYGPATH_W) 'optlib/passwd.c'; else $(CYGPATH_W) '$(srcdir)/optlib/passwd.c'; fi`
+
+optlib/libctags_a-pkgConfig.o: optlib/pkgConfig.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-pkgConfig.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-pkgConfig.Tpo -c -o optlib/libctags_a-pkgConfig.o `test -f 'optlib/pkgConfig.c' || echo '$(srcdir)/'`optlib/pkgConfig.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-pkgConfig.Tpo optlib/$(DEPDIR)/libctags_a-pkgConfig.Po
+#	$(AM_V_CC)source='optlib/pkgConfig.c' object='optlib/libctags_a-pkgConfig.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-pkgConfig.o `test -f 'optlib/pkgConfig.c' || echo '$(srcdir)/'`optlib/pkgConfig.c
+
+optlib/libctags_a-pkgConfig.obj: optlib/pkgConfig.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-pkgConfig.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-pkgConfig.Tpo -c -o optlib/libctags_a-pkgConfig.obj `if test -f 'optlib/pkgConfig.c'; then $(CYGPATH_W) 'optlib/pkgConfig.c'; else $(CYGPATH_W) '$(srcdir)/optlib/pkgConfig.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-pkgConfig.Tpo optlib/$(DEPDIR)/libctags_a-pkgConfig.Po
+#	$(AM_V_CC)source='optlib/pkgConfig.c' object='optlib/libctags_a-pkgConfig.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-pkgConfig.obj `if test -f 'optlib/pkgConfig.c'; then $(CYGPATH_W) 'optlib/pkgConfig.c'; else $(CYGPATH_W) '$(srcdir)/optlib/pkgConfig.c'; fi`
+
+optlib/libctags_a-pod.o: optlib/pod.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-pod.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-pod.Tpo -c -o optlib/libctags_a-pod.o `test -f 'optlib/pod.c' || echo '$(srcdir)/'`optlib/pod.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-pod.Tpo optlib/$(DEPDIR)/libctags_a-pod.Po
+#	$(AM_V_CC)source='optlib/pod.c' object='optlib/libctags_a-pod.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-pod.o `test -f 'optlib/pod.c' || echo '$(srcdir)/'`optlib/pod.c
+
+optlib/libctags_a-pod.obj: optlib/pod.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-pod.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-pod.Tpo -c -o optlib/libctags_a-pod.obj `if test -f 'optlib/pod.c'; then $(CYGPATH_W) 'optlib/pod.c'; else $(CYGPATH_W) '$(srcdir)/optlib/pod.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-pod.Tpo optlib/$(DEPDIR)/libctags_a-pod.Po
+#	$(AM_V_CC)source='optlib/pod.c' object='optlib/libctags_a-pod.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-pod.obj `if test -f 'optlib/pod.c'; then $(CYGPATH_W) 'optlib/pod.c'; else $(CYGPATH_W) '$(srcdir)/optlib/pod.c'; fi`
+
+optlib/libctags_a-puppetManifest.o: optlib/puppetManifest.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-puppetManifest.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-puppetManifest.Tpo -c -o optlib/libctags_a-puppetManifest.o `test -f 'optlib/puppetManifest.c' || echo '$(srcdir)/'`optlib/puppetManifest.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-puppetManifest.Tpo optlib/$(DEPDIR)/libctags_a-puppetManifest.Po
+#	$(AM_V_CC)source='optlib/puppetManifest.c' object='optlib/libctags_a-puppetManifest.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-puppetManifest.o `test -f 'optlib/puppetManifest.c' || echo '$(srcdir)/'`optlib/puppetManifest.c
+
+optlib/libctags_a-puppetManifest.obj: optlib/puppetManifest.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-puppetManifest.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-puppetManifest.Tpo -c -o optlib/libctags_a-puppetManifest.obj `if test -f 'optlib/puppetManifest.c'; then $(CYGPATH_W) 'optlib/puppetManifest.c'; else $(CYGPATH_W) '$(srcdir)/optlib/puppetManifest.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-puppetManifest.Tpo optlib/$(DEPDIR)/libctags_a-puppetManifest.Po
+#	$(AM_V_CC)source='optlib/puppetManifest.c' object='optlib/libctags_a-puppetManifest.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-puppetManifest.obj `if test -f 'optlib/puppetManifest.c'; then $(CYGPATH_W) 'optlib/puppetManifest.c'; else $(CYGPATH_W) '$(srcdir)/optlib/puppetManifest.c'; fi`
+
+optlib/libctags_a-qemuhx.o: optlib/qemuhx.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-qemuhx.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-qemuhx.Tpo -c -o optlib/libctags_a-qemuhx.o `test -f 'optlib/qemuhx.c' || echo '$(srcdir)/'`optlib/qemuhx.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-qemuhx.Tpo optlib/$(DEPDIR)/libctags_a-qemuhx.Po
+#	$(AM_V_CC)source='optlib/qemuhx.c' object='optlib/libctags_a-qemuhx.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-qemuhx.o `test -f 'optlib/qemuhx.c' || echo '$(srcdir)/'`optlib/qemuhx.c
+
+optlib/libctags_a-qemuhx.obj: optlib/qemuhx.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-qemuhx.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-qemuhx.Tpo -c -o optlib/libctags_a-qemuhx.obj `if test -f 'optlib/qemuhx.c'; then $(CYGPATH_W) 'optlib/qemuhx.c'; else $(CYGPATH_W) '$(srcdir)/optlib/qemuhx.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-qemuhx.Tpo optlib/$(DEPDIR)/libctags_a-qemuhx.Po
+#	$(AM_V_CC)source='optlib/qemuhx.c' object='optlib/libctags_a-qemuhx.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-qemuhx.obj `if test -f 'optlib/qemuhx.c'; then $(CYGPATH_W) 'optlib/qemuhx.c'; else $(CYGPATH_W) '$(srcdir)/optlib/qemuhx.c'; fi`
+
+optlib/libctags_a-rpmMacros.o: optlib/rpmMacros.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-rpmMacros.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-rpmMacros.Tpo -c -o optlib/libctags_a-rpmMacros.o `test -f 'optlib/rpmMacros.c' || echo '$(srcdir)/'`optlib/rpmMacros.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-rpmMacros.Tpo optlib/$(DEPDIR)/libctags_a-rpmMacros.Po
+#	$(AM_V_CC)source='optlib/rpmMacros.c' object='optlib/libctags_a-rpmMacros.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-rpmMacros.o `test -f 'optlib/rpmMacros.c' || echo '$(srcdir)/'`optlib/rpmMacros.c
+
+optlib/libctags_a-rpmMacros.obj: optlib/rpmMacros.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-rpmMacros.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-rpmMacros.Tpo -c -o optlib/libctags_a-rpmMacros.obj `if test -f 'optlib/rpmMacros.c'; then $(CYGPATH_W) 'optlib/rpmMacros.c'; else $(CYGPATH_W) '$(srcdir)/optlib/rpmMacros.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-rpmMacros.Tpo optlib/$(DEPDIR)/libctags_a-rpmMacros.Po
+#	$(AM_V_CC)source='optlib/rpmMacros.c' object='optlib/libctags_a-rpmMacros.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-rpmMacros.obj `if test -f 'optlib/rpmMacros.c'; then $(CYGPATH_W) 'optlib/rpmMacros.c'; else $(CYGPATH_W) '$(srcdir)/optlib/rpmMacros.c'; fi`
+
+optlib/libctags_a-scss.o: optlib/scss.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-scss.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-scss.Tpo -c -o optlib/libctags_a-scss.o `test -f 'optlib/scss.c' || echo '$(srcdir)/'`optlib/scss.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-scss.Tpo optlib/$(DEPDIR)/libctags_a-scss.Po
+#	$(AM_V_CC)source='optlib/scss.c' object='optlib/libctags_a-scss.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-scss.o `test -f 'optlib/scss.c' || echo '$(srcdir)/'`optlib/scss.c
+
+optlib/libctags_a-scss.obj: optlib/scss.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-scss.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-scss.Tpo -c -o optlib/libctags_a-scss.obj `if test -f 'optlib/scss.c'; then $(CYGPATH_W) 'optlib/scss.c'; else $(CYGPATH_W) '$(srcdir)/optlib/scss.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-scss.Tpo optlib/$(DEPDIR)/libctags_a-scss.Po
+#	$(AM_V_CC)source='optlib/scss.c' object='optlib/libctags_a-scss.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-scss.obj `if test -f 'optlib/scss.c'; then $(CYGPATH_W) 'optlib/scss.c'; else $(CYGPATH_W) '$(srcdir)/optlib/scss.c'; fi`
+
+optlib/libctags_a-systemtap.o: optlib/systemtap.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-systemtap.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-systemtap.Tpo -c -o optlib/libctags_a-systemtap.o `test -f 'optlib/systemtap.c' || echo '$(srcdir)/'`optlib/systemtap.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-systemtap.Tpo optlib/$(DEPDIR)/libctags_a-systemtap.Po
+#	$(AM_V_CC)source='optlib/systemtap.c' object='optlib/libctags_a-systemtap.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-systemtap.o `test -f 'optlib/systemtap.c' || echo '$(srcdir)/'`optlib/systemtap.c
+
+optlib/libctags_a-systemtap.obj: optlib/systemtap.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-systemtap.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-systemtap.Tpo -c -o optlib/libctags_a-systemtap.obj `if test -f 'optlib/systemtap.c'; then $(CYGPATH_W) 'optlib/systemtap.c'; else $(CYGPATH_W) '$(srcdir)/optlib/systemtap.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-systemtap.Tpo optlib/$(DEPDIR)/libctags_a-systemtap.Po
+#	$(AM_V_CC)source='optlib/systemtap.c' object='optlib/libctags_a-systemtap.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-systemtap.obj `if test -f 'optlib/systemtap.c'; then $(CYGPATH_W) 'optlib/systemtap.c'; else $(CYGPATH_W) '$(srcdir)/optlib/systemtap.c'; fi`
+
+optlib/libctags_a-terraform.o: optlib/terraform.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-terraform.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-terraform.Tpo -c -o optlib/libctags_a-terraform.o `test -f 'optlib/terraform.c' || echo '$(srcdir)/'`optlib/terraform.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-terraform.Tpo optlib/$(DEPDIR)/libctags_a-terraform.Po
+#	$(AM_V_CC)source='optlib/terraform.c' object='optlib/libctags_a-terraform.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-terraform.o `test -f 'optlib/terraform.c' || echo '$(srcdir)/'`optlib/terraform.c
+
+optlib/libctags_a-terraform.obj: optlib/terraform.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-terraform.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-terraform.Tpo -c -o optlib/libctags_a-terraform.obj `if test -f 'optlib/terraform.c'; then $(CYGPATH_W) 'optlib/terraform.c'; else $(CYGPATH_W) '$(srcdir)/optlib/terraform.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-terraform.Tpo optlib/$(DEPDIR)/libctags_a-terraform.Po
+#	$(AM_V_CC)source='optlib/terraform.c' object='optlib/libctags_a-terraform.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-terraform.obj `if test -f 'optlib/terraform.c'; then $(CYGPATH_W) 'optlib/terraform.c'; else $(CYGPATH_W) '$(srcdir)/optlib/terraform.c'; fi`
+
+optlib/libctags_a-terraformvariables.o: optlib/terraformvariables.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-terraformvariables.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-terraformvariables.Tpo -c -o optlib/libctags_a-terraformvariables.o `test -f 'optlib/terraformvariables.c' || echo '$(srcdir)/'`optlib/terraformvariables.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-terraformvariables.Tpo optlib/$(DEPDIR)/libctags_a-terraformvariables.Po
+#	$(AM_V_CC)source='optlib/terraformvariables.c' object='optlib/libctags_a-terraformvariables.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-terraformvariables.o `test -f 'optlib/terraformvariables.c' || echo '$(srcdir)/'`optlib/terraformvariables.c
+
+optlib/libctags_a-terraformvariables.obj: optlib/terraformvariables.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-terraformvariables.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-terraformvariables.Tpo -c -o optlib/libctags_a-terraformvariables.obj `if test -f 'optlib/terraformvariables.c'; then $(CYGPATH_W) 'optlib/terraformvariables.c'; else $(CYGPATH_W) '$(srcdir)/optlib/terraformvariables.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-terraformvariables.Tpo optlib/$(DEPDIR)/libctags_a-terraformvariables.Po
+#	$(AM_V_CC)source='optlib/terraformvariables.c' object='optlib/libctags_a-terraformvariables.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-terraformvariables.obj `if test -f 'optlib/terraformvariables.c'; then $(CYGPATH_W) 'optlib/terraformvariables.c'; else $(CYGPATH_W) '$(srcdir)/optlib/terraformvariables.c'; fi`
+
+optlib/libctags_a-yacc.o: optlib/yacc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-yacc.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-yacc.Tpo -c -o optlib/libctags_a-yacc.o `test -f 'optlib/yacc.c' || echo '$(srcdir)/'`optlib/yacc.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-yacc.Tpo optlib/$(DEPDIR)/libctags_a-yacc.Po
+#	$(AM_V_CC)source='optlib/yacc.c' object='optlib/libctags_a-yacc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-yacc.o `test -f 'optlib/yacc.c' || echo '$(srcdir)/'`optlib/yacc.c
+
+optlib/libctags_a-yacc.obj: optlib/yacc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-yacc.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-yacc.Tpo -c -o optlib/libctags_a-yacc.obj `if test -f 'optlib/yacc.c'; then $(CYGPATH_W) 'optlib/yacc.c'; else $(CYGPATH_W) '$(srcdir)/optlib/yacc.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-yacc.Tpo optlib/$(DEPDIR)/libctags_a-yacc.Po
+#	$(AM_V_CC)source='optlib/yacc.c' object='optlib/libctags_a-yacc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-yacc.obj `if test -f 'optlib/yacc.c'; then $(CYGPATH_W) 'optlib/yacc.c'; else $(CYGPATH_W) '$(srcdir)/optlib/yacc.c'; fi`
+
+main/libctags_a-lregex-pcre2.o: main/lregex-pcre2.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-lregex-pcre2.o -MD -MP -MF main/$(DEPDIR)/libctags_a-lregex-pcre2.Tpo -c -o main/libctags_a-lregex-pcre2.o `test -f 'main/lregex-pcre2.c' || echo '$(srcdir)/'`main/lregex-pcre2.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-lregex-pcre2.Tpo main/$(DEPDIR)/libctags_a-lregex-pcre2.Po
+#	$(AM_V_CC)source='main/lregex-pcre2.c' object='main/libctags_a-lregex-pcre2.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-lregex-pcre2.o `test -f 'main/lregex-pcre2.c' || echo '$(srcdir)/'`main/lregex-pcre2.c
+
+main/libctags_a-lregex-pcre2.obj: main/lregex-pcre2.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-lregex-pcre2.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-lregex-pcre2.Tpo -c -o main/libctags_a-lregex-pcre2.obj `if test -f 'main/lregex-pcre2.c'; then $(CYGPATH_W) 'main/lregex-pcre2.c'; else $(CYGPATH_W) '$(srcdir)/main/lregex-pcre2.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-lregex-pcre2.Tpo main/$(DEPDIR)/libctags_a-lregex-pcre2.Po
+#	$(AM_V_CC)source='main/lregex-pcre2.c' object='main/libctags_a-lregex-pcre2.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-lregex-pcre2.obj `if test -f 'main/lregex-pcre2.c'; then $(CYGPATH_W) 'main/lregex-pcre2.c'; else $(CYGPATH_W) '$(srcdir)/main/lregex-pcre2.c'; fi`
+
+optlib/libctags_a-rdoc.o: optlib/rdoc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-rdoc.o -MD -MP -MF optlib/$(DEPDIR)/libctags_a-rdoc.Tpo -c -o optlib/libctags_a-rdoc.o `test -f 'optlib/rdoc.c' || echo '$(srcdir)/'`optlib/rdoc.c
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-rdoc.Tpo optlib/$(DEPDIR)/libctags_a-rdoc.Po
+#	$(AM_V_CC)source='optlib/rdoc.c' object='optlib/libctags_a-rdoc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-rdoc.o `test -f 'optlib/rdoc.c' || echo '$(srcdir)/'`optlib/rdoc.c
+
+optlib/libctags_a-rdoc.obj: optlib/rdoc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT optlib/libctags_a-rdoc.obj -MD -MP -MF optlib/$(DEPDIR)/libctags_a-rdoc.Tpo -c -o optlib/libctags_a-rdoc.obj `if test -f 'optlib/rdoc.c'; then $(CYGPATH_W) 'optlib/rdoc.c'; else $(CYGPATH_W) '$(srcdir)/optlib/rdoc.c'; fi`
+	$(AM_V_at)$(am__mv) optlib/$(DEPDIR)/libctags_a-rdoc.Tpo optlib/$(DEPDIR)/libctags_a-rdoc.Po
+#	$(AM_V_CC)source='optlib/rdoc.c' object='optlib/libctags_a-rdoc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o optlib/libctags_a-rdoc.obj `if test -f 'optlib/rdoc.c'; then $(CYGPATH_W) 'optlib/rdoc.c'; else $(CYGPATH_W) '$(srcdir)/optlib/rdoc.c'; fi`
+
+parsers/libctags_a-maven2.o: parsers/maven2.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-maven2.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-maven2.Tpo -c -o parsers/libctags_a-maven2.o `test -f 'parsers/maven2.c' || echo '$(srcdir)/'`parsers/maven2.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-maven2.Tpo parsers/$(DEPDIR)/libctags_a-maven2.Po
+#	$(AM_V_CC)source='parsers/maven2.c' object='parsers/libctags_a-maven2.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-maven2.o `test -f 'parsers/maven2.c' || echo '$(srcdir)/'`parsers/maven2.c
+
+parsers/libctags_a-maven2.obj: parsers/maven2.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-maven2.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-maven2.Tpo -c -o parsers/libctags_a-maven2.obj `if test -f 'parsers/maven2.c'; then $(CYGPATH_W) 'parsers/maven2.c'; else $(CYGPATH_W) '$(srcdir)/parsers/maven2.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-maven2.Tpo parsers/$(DEPDIR)/libctags_a-maven2.Po
+#	$(AM_V_CC)source='parsers/maven2.c' object='parsers/libctags_a-maven2.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-maven2.obj `if test -f 'parsers/maven2.c'; then $(CYGPATH_W) 'parsers/maven2.c'; else $(CYGPATH_W) '$(srcdir)/parsers/maven2.c'; fi`
+
+parsers/libctags_a-dbusintrospect.o: parsers/dbusintrospect.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-dbusintrospect.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-dbusintrospect.Tpo -c -o parsers/libctags_a-dbusintrospect.o `test -f 'parsers/dbusintrospect.c' || echo '$(srcdir)/'`parsers/dbusintrospect.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-dbusintrospect.Tpo parsers/$(DEPDIR)/libctags_a-dbusintrospect.Po
+#	$(AM_V_CC)source='parsers/dbusintrospect.c' object='parsers/libctags_a-dbusintrospect.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-dbusintrospect.o `test -f 'parsers/dbusintrospect.c' || echo '$(srcdir)/'`parsers/dbusintrospect.c
+
+parsers/libctags_a-dbusintrospect.obj: parsers/dbusintrospect.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-dbusintrospect.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-dbusintrospect.Tpo -c -o parsers/libctags_a-dbusintrospect.obj `if test -f 'parsers/dbusintrospect.c'; then $(CYGPATH_W) 'parsers/dbusintrospect.c'; else $(CYGPATH_W) '$(srcdir)/parsers/dbusintrospect.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-dbusintrospect.Tpo parsers/$(DEPDIR)/libctags_a-dbusintrospect.Po
+#	$(AM_V_CC)source='parsers/dbusintrospect.c' object='parsers/libctags_a-dbusintrospect.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-dbusintrospect.obj `if test -f 'parsers/dbusintrospect.c'; then $(CYGPATH_W) 'parsers/dbusintrospect.c'; else $(CYGPATH_W) '$(srcdir)/parsers/dbusintrospect.c'; fi`
+
+parsers/libctags_a-glade.o: parsers/glade.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-glade.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-glade.Tpo -c -o parsers/libctags_a-glade.o `test -f 'parsers/glade.c' || echo '$(srcdir)/'`parsers/glade.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-glade.Tpo parsers/$(DEPDIR)/libctags_a-glade.Po
+#	$(AM_V_CC)source='parsers/glade.c' object='parsers/libctags_a-glade.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-glade.o `test -f 'parsers/glade.c' || echo '$(srcdir)/'`parsers/glade.c
+
+parsers/libctags_a-glade.obj: parsers/glade.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-glade.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-glade.Tpo -c -o parsers/libctags_a-glade.obj `if test -f 'parsers/glade.c'; then $(CYGPATH_W) 'parsers/glade.c'; else $(CYGPATH_W) '$(srcdir)/parsers/glade.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-glade.Tpo parsers/$(DEPDIR)/libctags_a-glade.Po
+#	$(AM_V_CC)source='parsers/glade.c' object='parsers/libctags_a-glade.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-glade.obj `if test -f 'parsers/glade.c'; then $(CYGPATH_W) 'parsers/glade.c'; else $(CYGPATH_W) '$(srcdir)/parsers/glade.c'; fi`
+
+parsers/libctags_a-svg.o: parsers/svg.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-svg.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-svg.Tpo -c -o parsers/libctags_a-svg.o `test -f 'parsers/svg.c' || echo '$(srcdir)/'`parsers/svg.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-svg.Tpo parsers/$(DEPDIR)/libctags_a-svg.Po
+#	$(AM_V_CC)source='parsers/svg.c' object='parsers/libctags_a-svg.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-svg.o `test -f 'parsers/svg.c' || echo '$(srcdir)/'`parsers/svg.c
+
+parsers/libctags_a-svg.obj: parsers/svg.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-svg.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-svg.Tpo -c -o parsers/libctags_a-svg.obj `if test -f 'parsers/svg.c'; then $(CYGPATH_W) 'parsers/svg.c'; else $(CYGPATH_W) '$(srcdir)/parsers/svg.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-svg.Tpo parsers/$(DEPDIR)/libctags_a-svg.Po
+#	$(AM_V_CC)source='parsers/svg.c' object='parsers/libctags_a-svg.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-svg.obj `if test -f 'parsers/svg.c'; then $(CYGPATH_W) 'parsers/svg.c'; else $(CYGPATH_W) '$(srcdir)/parsers/svg.c'; fi`
+
+parsers/libctags_a-plist.o: parsers/plist.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-plist.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-plist.Tpo -c -o parsers/libctags_a-plist.o `test -f 'parsers/plist.c' || echo '$(srcdir)/'`parsers/plist.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-plist.Tpo parsers/$(DEPDIR)/libctags_a-plist.Po
+#	$(AM_V_CC)source='parsers/plist.c' object='parsers/libctags_a-plist.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-plist.o `test -f 'parsers/plist.c' || echo '$(srcdir)/'`parsers/plist.c
+
+parsers/libctags_a-plist.obj: parsers/plist.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-plist.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-plist.Tpo -c -o parsers/libctags_a-plist.obj `if test -f 'parsers/plist.c'; then $(CYGPATH_W) 'parsers/plist.c'; else $(CYGPATH_W) '$(srcdir)/parsers/plist.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-plist.Tpo parsers/$(DEPDIR)/libctags_a-plist.Po
+#	$(AM_V_CC)source='parsers/plist.c' object='parsers/libctags_a-plist.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-plist.obj `if test -f 'parsers/plist.c'; then $(CYGPATH_W) 'parsers/plist.c'; else $(CYGPATH_W) '$(srcdir)/parsers/plist.c'; fi`
+
+parsers/libctags_a-relaxng.o: parsers/relaxng.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-relaxng.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-relaxng.Tpo -c -o parsers/libctags_a-relaxng.o `test -f 'parsers/relaxng.c' || echo '$(srcdir)/'`parsers/relaxng.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-relaxng.Tpo parsers/$(DEPDIR)/libctags_a-relaxng.Po
+#	$(AM_V_CC)source='parsers/relaxng.c' object='parsers/libctags_a-relaxng.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-relaxng.o `test -f 'parsers/relaxng.c' || echo '$(srcdir)/'`parsers/relaxng.c
+
+parsers/libctags_a-relaxng.obj: parsers/relaxng.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-relaxng.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-relaxng.Tpo -c -o parsers/libctags_a-relaxng.obj `if test -f 'parsers/relaxng.c'; then $(CYGPATH_W) 'parsers/relaxng.c'; else $(CYGPATH_W) '$(srcdir)/parsers/relaxng.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-relaxng.Tpo parsers/$(DEPDIR)/libctags_a-relaxng.Po
+#	$(AM_V_CC)source='parsers/relaxng.c' object='parsers/libctags_a-relaxng.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-relaxng.obj `if test -f 'parsers/relaxng.c'; then $(CYGPATH_W) 'parsers/relaxng.c'; else $(CYGPATH_W) '$(srcdir)/parsers/relaxng.c'; fi`
+
+parsers/libctags_a-xml.o: parsers/xml.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-xml.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-xml.Tpo -c -o parsers/libctags_a-xml.o `test -f 'parsers/xml.c' || echo '$(srcdir)/'`parsers/xml.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-xml.Tpo parsers/$(DEPDIR)/libctags_a-xml.Po
+#	$(AM_V_CC)source='parsers/xml.c' object='parsers/libctags_a-xml.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-xml.o `test -f 'parsers/xml.c' || echo '$(srcdir)/'`parsers/xml.c
+
+parsers/libctags_a-xml.obj: parsers/xml.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-xml.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-xml.Tpo -c -o parsers/libctags_a-xml.obj `if test -f 'parsers/xml.c'; then $(CYGPATH_W) 'parsers/xml.c'; else $(CYGPATH_W) '$(srcdir)/parsers/xml.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-xml.Tpo parsers/$(DEPDIR)/libctags_a-xml.Po
+#	$(AM_V_CC)source='parsers/xml.c' object='parsers/libctags_a-xml.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-xml.obj `if test -f 'parsers/xml.c'; then $(CYGPATH_W) 'parsers/xml.c'; else $(CYGPATH_W) '$(srcdir)/parsers/xml.c'; fi`
+
+parsers/libctags_a-xrc.o: parsers/xrc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-xrc.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-xrc.Tpo -c -o parsers/libctags_a-xrc.o `test -f 'parsers/xrc.c' || echo '$(srcdir)/'`parsers/xrc.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-xrc.Tpo parsers/$(DEPDIR)/libctags_a-xrc.Po
+#	$(AM_V_CC)source='parsers/xrc.c' object='parsers/libctags_a-xrc.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-xrc.o `test -f 'parsers/xrc.c' || echo '$(srcdir)/'`parsers/xrc.c
+
+parsers/libctags_a-xrc.obj: parsers/xrc.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-xrc.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-xrc.Tpo -c -o parsers/libctags_a-xrc.obj `if test -f 'parsers/xrc.c'; then $(CYGPATH_W) 'parsers/xrc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/xrc.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-xrc.Tpo parsers/$(DEPDIR)/libctags_a-xrc.Po
+#	$(AM_V_CC)source='parsers/xrc.c' object='parsers/libctags_a-xrc.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-xrc.obj `if test -f 'parsers/xrc.c'; then $(CYGPATH_W) 'parsers/xrc.c'; else $(CYGPATH_W) '$(srcdir)/parsers/xrc.c'; fi`
+
+parsers/libctags_a-xslt.o: parsers/xslt.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-xslt.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-xslt.Tpo -c -o parsers/libctags_a-xslt.o `test -f 'parsers/xslt.c' || echo '$(srcdir)/'`parsers/xslt.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-xslt.Tpo parsers/$(DEPDIR)/libctags_a-xslt.Po
+#	$(AM_V_CC)source='parsers/xslt.c' object='parsers/libctags_a-xslt.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-xslt.o `test -f 'parsers/xslt.c' || echo '$(srcdir)/'`parsers/xslt.c
+
+parsers/libctags_a-xslt.obj: parsers/xslt.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-xslt.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-xslt.Tpo -c -o parsers/libctags_a-xslt.obj `if test -f 'parsers/xslt.c'; then $(CYGPATH_W) 'parsers/xslt.c'; else $(CYGPATH_W) '$(srcdir)/parsers/xslt.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-xslt.Tpo parsers/$(DEPDIR)/libctags_a-xslt.Po
+#	$(AM_V_CC)source='parsers/xslt.c' object='parsers/libctags_a-xslt.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-xslt.obj `if test -f 'parsers/xslt.c'; then $(CYGPATH_W) 'parsers/xslt.c'; else $(CYGPATH_W) '$(srcdir)/parsers/xslt.c'; fi`
+
+parsers/libctags_a-yaml.o: parsers/yaml.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-yaml.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-yaml.Tpo -c -o parsers/libctags_a-yaml.o `test -f 'parsers/yaml.c' || echo '$(srcdir)/'`parsers/yaml.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-yaml.Tpo parsers/$(DEPDIR)/libctags_a-yaml.Po
+#	$(AM_V_CC)source='parsers/yaml.c' object='parsers/libctags_a-yaml.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-yaml.o `test -f 'parsers/yaml.c' || echo '$(srcdir)/'`parsers/yaml.c
+
+parsers/libctags_a-yaml.obj: parsers/yaml.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-yaml.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-yaml.Tpo -c -o parsers/libctags_a-yaml.obj `if test -f 'parsers/yaml.c'; then $(CYGPATH_W) 'parsers/yaml.c'; else $(CYGPATH_W) '$(srcdir)/parsers/yaml.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-yaml.Tpo parsers/$(DEPDIR)/libctags_a-yaml.Po
+#	$(AM_V_CC)source='parsers/yaml.c' object='parsers/libctags_a-yaml.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-yaml.obj `if test -f 'parsers/yaml.c'; then $(CYGPATH_W) 'parsers/yaml.c'; else $(CYGPATH_W) '$(srcdir)/parsers/yaml.c'; fi`
+
+parsers/libctags_a-openapi.o: parsers/openapi.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-openapi.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-openapi.Tpo -c -o parsers/libctags_a-openapi.o `test -f 'parsers/openapi.c' || echo '$(srcdir)/'`parsers/openapi.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-openapi.Tpo parsers/$(DEPDIR)/libctags_a-openapi.Po
+#	$(AM_V_CC)source='parsers/openapi.c' object='parsers/libctags_a-openapi.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-openapi.o `test -f 'parsers/openapi.c' || echo '$(srcdir)/'`parsers/openapi.c
+
+parsers/libctags_a-openapi.obj: parsers/openapi.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-openapi.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-openapi.Tpo -c -o parsers/libctags_a-openapi.obj `if test -f 'parsers/openapi.c'; then $(CYGPATH_W) 'parsers/openapi.c'; else $(CYGPATH_W) '$(srcdir)/parsers/openapi.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-openapi.Tpo parsers/$(DEPDIR)/libctags_a-openapi.Po
+#	$(AM_V_CC)source='parsers/openapi.c' object='parsers/libctags_a-openapi.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-openapi.obj `if test -f 'parsers/openapi.c'; then $(CYGPATH_W) 'parsers/openapi.c'; else $(CYGPATH_W) '$(srcdir)/parsers/openapi.c'; fi`
+
+parsers/libctags_a-ansibleplaybook.o: parsers/ansibleplaybook.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ansibleplaybook.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Tpo -c -o parsers/libctags_a-ansibleplaybook.o `test -f 'parsers/ansibleplaybook.c' || echo '$(srcdir)/'`parsers/ansibleplaybook.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Tpo parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Po
+#	$(AM_V_CC)source='parsers/ansibleplaybook.c' object='parsers/libctags_a-ansibleplaybook.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ansibleplaybook.o `test -f 'parsers/ansibleplaybook.c' || echo '$(srcdir)/'`parsers/ansibleplaybook.c
+
+parsers/libctags_a-ansibleplaybook.obj: parsers/ansibleplaybook.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-ansibleplaybook.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Tpo -c -o parsers/libctags_a-ansibleplaybook.obj `if test -f 'parsers/ansibleplaybook.c'; then $(CYGPATH_W) 'parsers/ansibleplaybook.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ansibleplaybook.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Tpo parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Po
+#	$(AM_V_CC)source='parsers/ansibleplaybook.c' object='parsers/libctags_a-ansibleplaybook.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-ansibleplaybook.obj `if test -f 'parsers/ansibleplaybook.c'; then $(CYGPATH_W) 'parsers/ansibleplaybook.c'; else $(CYGPATH_W) '$(srcdir)/parsers/ansibleplaybook.c'; fi`
+
+parsers/libctags_a-yamlfrontmatter.o: parsers/yamlfrontmatter.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-yamlfrontmatter.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Tpo -c -o parsers/libctags_a-yamlfrontmatter.o `test -f 'parsers/yamlfrontmatter.c' || echo '$(srcdir)/'`parsers/yamlfrontmatter.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Tpo parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Po
+#	$(AM_V_CC)source='parsers/yamlfrontmatter.c' object='parsers/libctags_a-yamlfrontmatter.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-yamlfrontmatter.o `test -f 'parsers/yamlfrontmatter.c' || echo '$(srcdir)/'`parsers/yamlfrontmatter.c
+
+parsers/libctags_a-yamlfrontmatter.obj: parsers/yamlfrontmatter.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-yamlfrontmatter.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Tpo -c -o parsers/libctags_a-yamlfrontmatter.obj `if test -f 'parsers/yamlfrontmatter.c'; then $(CYGPATH_W) 'parsers/yamlfrontmatter.c'; else $(CYGPATH_W) '$(srcdir)/parsers/yamlfrontmatter.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Tpo parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Po
+#	$(AM_V_CC)source='parsers/yamlfrontmatter.c' object='parsers/libctags_a-yamlfrontmatter.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-yamlfrontmatter.obj `if test -f 'parsers/yamlfrontmatter.c'; then $(CYGPATH_W) 'parsers/yamlfrontmatter.c'; else $(CYGPATH_W) '$(srcdir)/parsers/yamlfrontmatter.c'; fi`
+
+parsers/libctags_a-i18nrubygem.o: parsers/i18nrubygem.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-i18nrubygem.o -MD -MP -MF parsers/$(DEPDIR)/libctags_a-i18nrubygem.Tpo -c -o parsers/libctags_a-i18nrubygem.o `test -f 'parsers/i18nrubygem.c' || echo '$(srcdir)/'`parsers/i18nrubygem.c
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-i18nrubygem.Tpo parsers/$(DEPDIR)/libctags_a-i18nrubygem.Po
+#	$(AM_V_CC)source='parsers/i18nrubygem.c' object='parsers/libctags_a-i18nrubygem.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-i18nrubygem.o `test -f 'parsers/i18nrubygem.c' || echo '$(srcdir)/'`parsers/i18nrubygem.c
+
+parsers/libctags_a-i18nrubygem.obj: parsers/i18nrubygem.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT parsers/libctags_a-i18nrubygem.obj -MD -MP -MF parsers/$(DEPDIR)/libctags_a-i18nrubygem.Tpo -c -o parsers/libctags_a-i18nrubygem.obj `if test -f 'parsers/i18nrubygem.c'; then $(CYGPATH_W) 'parsers/i18nrubygem.c'; else $(CYGPATH_W) '$(srcdir)/parsers/i18nrubygem.c'; fi`
+	$(AM_V_at)$(am__mv) parsers/$(DEPDIR)/libctags_a-i18nrubygem.Tpo parsers/$(DEPDIR)/libctags_a-i18nrubygem.Po
+#	$(AM_V_CC)source='parsers/i18nrubygem.c' object='parsers/libctags_a-i18nrubygem.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o parsers/libctags_a-i18nrubygem.obj `if test -f 'parsers/i18nrubygem.c'; then $(CYGPATH_W) 'parsers/i18nrubygem.c'; else $(CYGPATH_W) '$(srcdir)/parsers/i18nrubygem.c'; fi`
+
+main/libctags_a-debug.o: main/debug.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-debug.o -MD -MP -MF main/$(DEPDIR)/libctags_a-debug.Tpo -c -o main/libctags_a-debug.o `test -f 'main/debug.c' || echo '$(srcdir)/'`main/debug.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-debug.Tpo main/$(DEPDIR)/libctags_a-debug.Po
+#	$(AM_V_CC)source='main/debug.c' object='main/libctags_a-debug.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-debug.o `test -f 'main/debug.c' || echo '$(srcdir)/'`main/debug.c
+
+main/libctags_a-debug.obj: main/debug.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT main/libctags_a-debug.obj -MD -MP -MF main/$(DEPDIR)/libctags_a-debug.Tpo -c -o main/libctags_a-debug.obj `if test -f 'main/debug.c'; then $(CYGPATH_W) 'main/debug.c'; else $(CYGPATH_W) '$(srcdir)/main/debug.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libctags_a-debug.Tpo main/$(DEPDIR)/libctags_a-debug.Po
+#	$(AM_V_CC)source='main/debug.c' object='main/libctags_a-debug.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o main/libctags_a-debug.obj `if test -f 'main/debug.c'; then $(CYGPATH_W) 'main/debug.c'; else $(CYGPATH_W) '$(srcdir)/main/debug.c'; fi`
+
+dsl/libctags_a-es.o: dsl/es.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT dsl/libctags_a-es.o -MD -MP -MF dsl/$(DEPDIR)/libctags_a-es.Tpo -c -o dsl/libctags_a-es.o `test -f 'dsl/es.c' || echo '$(srcdir)/'`dsl/es.c
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/libctags_a-es.Tpo dsl/$(DEPDIR)/libctags_a-es.Po
+#	$(AM_V_CC)source='dsl/es.c' object='dsl/libctags_a-es.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o dsl/libctags_a-es.o `test -f 'dsl/es.c' || echo '$(srcdir)/'`dsl/es.c
+
+dsl/libctags_a-es.obj: dsl/es.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT dsl/libctags_a-es.obj -MD -MP -MF dsl/$(DEPDIR)/libctags_a-es.Tpo -c -o dsl/libctags_a-es.obj `if test -f 'dsl/es.c'; then $(CYGPATH_W) 'dsl/es.c'; else $(CYGPATH_W) '$(srcdir)/dsl/es.c'; fi`
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/libctags_a-es.Tpo dsl/$(DEPDIR)/libctags_a-es.Po
+#	$(AM_V_CC)source='dsl/es.c' object='dsl/libctags_a-es.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o dsl/libctags_a-es.obj `if test -f 'dsl/es.c'; then $(CYGPATH_W) 'dsl/es.c'; else $(CYGPATH_W) '$(srcdir)/dsl/es.c'; fi`
+
+dsl/libctags_a-optscript.o: dsl/optscript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT dsl/libctags_a-optscript.o -MD -MP -MF dsl/$(DEPDIR)/libctags_a-optscript.Tpo -c -o dsl/libctags_a-optscript.o `test -f 'dsl/optscript.c' || echo '$(srcdir)/'`dsl/optscript.c
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/libctags_a-optscript.Tpo dsl/$(DEPDIR)/libctags_a-optscript.Po
+#	$(AM_V_CC)source='dsl/optscript.c' object='dsl/libctags_a-optscript.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o dsl/libctags_a-optscript.o `test -f 'dsl/optscript.c' || echo '$(srcdir)/'`dsl/optscript.c
+
+dsl/libctags_a-optscript.obj: dsl/optscript.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT dsl/libctags_a-optscript.obj -MD -MP -MF dsl/$(DEPDIR)/libctags_a-optscript.Tpo -c -o dsl/libctags_a-optscript.obj `if test -f 'dsl/optscript.c'; then $(CYGPATH_W) 'dsl/optscript.c'; else $(CYGPATH_W) '$(srcdir)/dsl/optscript.c'; fi`
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/libctags_a-optscript.Tpo dsl/$(DEPDIR)/libctags_a-optscript.Po
+#	$(AM_V_CC)source='dsl/optscript.c' object='dsl/libctags_a-optscript.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o dsl/libctags_a-optscript.obj `if test -f 'dsl/optscript.c'; then $(CYGPATH_W) 'dsl/optscript.c'; else $(CYGPATH_W) '$(srcdir)/dsl/optscript.c'; fi`
+
+peg/libctags_a-varlink.o: peg/varlink.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT peg/libctags_a-varlink.o -MD -MP -MF peg/$(DEPDIR)/libctags_a-varlink.Tpo -c -o peg/libctags_a-varlink.o `test -f 'peg/varlink.c' || echo '$(srcdir)/'`peg/varlink.c
+	$(AM_V_at)$(am__mv) peg/$(DEPDIR)/libctags_a-varlink.Tpo peg/$(DEPDIR)/libctags_a-varlink.Po
+#	$(AM_V_CC)source='peg/varlink.c' object='peg/libctags_a-varlink.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o peg/libctags_a-varlink.o `test -f 'peg/varlink.c' || echo '$(srcdir)/'`peg/varlink.c
+
+peg/libctags_a-varlink.obj: peg/varlink.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT peg/libctags_a-varlink.obj -MD -MP -MF peg/$(DEPDIR)/libctags_a-varlink.Tpo -c -o peg/libctags_a-varlink.obj `if test -f 'peg/varlink.c'; then $(CYGPATH_W) 'peg/varlink.c'; else $(CYGPATH_W) '$(srcdir)/peg/varlink.c'; fi`
+	$(AM_V_at)$(am__mv) peg/$(DEPDIR)/libctags_a-varlink.Tpo peg/$(DEPDIR)/libctags_a-varlink.Po
+#	$(AM_V_CC)source='peg/varlink.c' object='peg/libctags_a-varlink.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o peg/libctags_a-varlink.obj `if test -f 'peg/varlink.c'; then $(CYGPATH_W) 'peg/varlink.c'; else $(CYGPATH_W) '$(srcdir)/peg/varlink.c'; fi`
+
+peg/libctags_a-kotlin.o: peg/kotlin.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT peg/libctags_a-kotlin.o -MD -MP -MF peg/$(DEPDIR)/libctags_a-kotlin.Tpo -c -o peg/libctags_a-kotlin.o `test -f 'peg/kotlin.c' || echo '$(srcdir)/'`peg/kotlin.c
+	$(AM_V_at)$(am__mv) peg/$(DEPDIR)/libctags_a-kotlin.Tpo peg/$(DEPDIR)/libctags_a-kotlin.Po
+#	$(AM_V_CC)source='peg/kotlin.c' object='peg/libctags_a-kotlin.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o peg/libctags_a-kotlin.o `test -f 'peg/kotlin.c' || echo '$(srcdir)/'`peg/kotlin.c
+
+peg/libctags_a-kotlin.obj: peg/kotlin.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT peg/libctags_a-kotlin.obj -MD -MP -MF peg/$(DEPDIR)/libctags_a-kotlin.Tpo -c -o peg/libctags_a-kotlin.obj `if test -f 'peg/kotlin.c'; then $(CYGPATH_W) 'peg/kotlin.c'; else $(CYGPATH_W) '$(srcdir)/peg/kotlin.c'; fi`
+	$(AM_V_at)$(am__mv) peg/$(DEPDIR)/libctags_a-kotlin.Tpo peg/$(DEPDIR)/libctags_a-kotlin.Po
+#	$(AM_V_CC)source='peg/kotlin.c' object='peg/libctags_a-kotlin.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o peg/libctags_a-kotlin.obj `if test -f 'peg/kotlin.c'; then $(CYGPATH_W) 'peg/kotlin.c'; else $(CYGPATH_W) '$(srcdir)/peg/kotlin.c'; fi`
+
+peg/libctags_a-thrift.o: peg/thrift.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT peg/libctags_a-thrift.o -MD -MP -MF peg/$(DEPDIR)/libctags_a-thrift.Tpo -c -o peg/libctags_a-thrift.o `test -f 'peg/thrift.c' || echo '$(srcdir)/'`peg/thrift.c
+	$(AM_V_at)$(am__mv) peg/$(DEPDIR)/libctags_a-thrift.Tpo peg/$(DEPDIR)/libctags_a-thrift.Po
+#	$(AM_V_CC)source='peg/thrift.c' object='peg/libctags_a-thrift.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o peg/libctags_a-thrift.o `test -f 'peg/thrift.c' || echo '$(srcdir)/'`peg/thrift.c
+
+peg/libctags_a-thrift.obj: peg/thrift.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT peg/libctags_a-thrift.obj -MD -MP -MF peg/$(DEPDIR)/libctags_a-thrift.Tpo -c -o peg/libctags_a-thrift.obj `if test -f 'peg/thrift.c'; then $(CYGPATH_W) 'peg/thrift.c'; else $(CYGPATH_W) '$(srcdir)/peg/thrift.c'; fi`
+	$(AM_V_at)$(am__mv) peg/$(DEPDIR)/libctags_a-thrift.Tpo peg/$(DEPDIR)/libctags_a-thrift.Po
+#	$(AM_V_CC)source='peg/thrift.c' object='peg/libctags_a-thrift.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o peg/libctags_a-thrift.obj `if test -f 'peg/thrift.c'; then $(CYGPATH_W) 'peg/thrift.c'; else $(CYGPATH_W) '$(srcdir)/peg/thrift.c'; fi`
+
+peg/libctags_a-elm.o: peg/elm.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT peg/libctags_a-elm.o -MD -MP -MF peg/$(DEPDIR)/libctags_a-elm.Tpo -c -o peg/libctags_a-elm.o `test -f 'peg/elm.c' || echo '$(srcdir)/'`peg/elm.c
+	$(AM_V_at)$(am__mv) peg/$(DEPDIR)/libctags_a-elm.Tpo peg/$(DEPDIR)/libctags_a-elm.Po
+#	$(AM_V_CC)source='peg/elm.c' object='peg/libctags_a-elm.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o peg/libctags_a-elm.o `test -f 'peg/elm.c' || echo '$(srcdir)/'`peg/elm.c
+
+peg/libctags_a-elm.obj: peg/elm.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -MT peg/libctags_a-elm.obj -MD -MP -MF peg/$(DEPDIR)/libctags_a-elm.Tpo -c -o peg/libctags_a-elm.obj `if test -f 'peg/elm.c'; then $(CYGPATH_W) 'peg/elm.c'; else $(CYGPATH_W) '$(srcdir)/peg/elm.c'; fi`
+	$(AM_V_at)$(am__mv) peg/$(DEPDIR)/libctags_a-elm.Tpo peg/$(DEPDIR)/libctags_a-elm.Po
+#	$(AM_V_CC)source='peg/elm.c' object='peg/libctags_a-elm.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libctags_a_CPPFLAGS) $(CPPFLAGS) $(libctags_a_CFLAGS) $(CFLAGS) -c -o peg/libctags_a-elm.obj `if test -f 'peg/elm.c'; then $(CYGPATH_W) 'peg/elm.c'; else $(CYGPATH_W) '$(srcdir)/peg/elm.c'; fi`
+
+main/libutil_a-fname.o: main/fname.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-fname.o -MD -MP -MF main/$(DEPDIR)/libutil_a-fname.Tpo -c -o main/libutil_a-fname.o `test -f 'main/fname.c' || echo '$(srcdir)/'`main/fname.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-fname.Tpo main/$(DEPDIR)/libutil_a-fname.Po
+#	$(AM_V_CC)source='main/fname.c' object='main/libutil_a-fname.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-fname.o `test -f 'main/fname.c' || echo '$(srcdir)/'`main/fname.c
+
+main/libutil_a-fname.obj: main/fname.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-fname.obj -MD -MP -MF main/$(DEPDIR)/libutil_a-fname.Tpo -c -o main/libutil_a-fname.obj `if test -f 'main/fname.c'; then $(CYGPATH_W) 'main/fname.c'; else $(CYGPATH_W) '$(srcdir)/main/fname.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-fname.Tpo main/$(DEPDIR)/libutil_a-fname.Po
+#	$(AM_V_CC)source='main/fname.c' object='main/libutil_a-fname.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-fname.obj `if test -f 'main/fname.c'; then $(CYGPATH_W) 'main/fname.c'; else $(CYGPATH_W) '$(srcdir)/main/fname.c'; fi`
+
+main/libutil_a-htable.o: main/htable.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-htable.o -MD -MP -MF main/$(DEPDIR)/libutil_a-htable.Tpo -c -o main/libutil_a-htable.o `test -f 'main/htable.c' || echo '$(srcdir)/'`main/htable.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-htable.Tpo main/$(DEPDIR)/libutil_a-htable.Po
+#	$(AM_V_CC)source='main/htable.c' object='main/libutil_a-htable.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-htable.o `test -f 'main/htable.c' || echo '$(srcdir)/'`main/htable.c
+
+main/libutil_a-htable.obj: main/htable.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-htable.obj -MD -MP -MF main/$(DEPDIR)/libutil_a-htable.Tpo -c -o main/libutil_a-htable.obj `if test -f 'main/htable.c'; then $(CYGPATH_W) 'main/htable.c'; else $(CYGPATH_W) '$(srcdir)/main/htable.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-htable.Tpo main/$(DEPDIR)/libutil_a-htable.Po
+#	$(AM_V_CC)source='main/htable.c' object='main/libutil_a-htable.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-htable.obj `if test -f 'main/htable.c'; then $(CYGPATH_W) 'main/htable.c'; else $(CYGPATH_W) '$(srcdir)/main/htable.c'; fi`
+
+main/libutil_a-numarray.o: main/numarray.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-numarray.o -MD -MP -MF main/$(DEPDIR)/libutil_a-numarray.Tpo -c -o main/libutil_a-numarray.o `test -f 'main/numarray.c' || echo '$(srcdir)/'`main/numarray.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-numarray.Tpo main/$(DEPDIR)/libutil_a-numarray.Po
+#	$(AM_V_CC)source='main/numarray.c' object='main/libutil_a-numarray.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-numarray.o `test -f 'main/numarray.c' || echo '$(srcdir)/'`main/numarray.c
+
+main/libutil_a-numarray.obj: main/numarray.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-numarray.obj -MD -MP -MF main/$(DEPDIR)/libutil_a-numarray.Tpo -c -o main/libutil_a-numarray.obj `if test -f 'main/numarray.c'; then $(CYGPATH_W) 'main/numarray.c'; else $(CYGPATH_W) '$(srcdir)/main/numarray.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-numarray.Tpo main/$(DEPDIR)/libutil_a-numarray.Po
+#	$(AM_V_CC)source='main/numarray.c' object='main/libutil_a-numarray.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-numarray.obj `if test -f 'main/numarray.c'; then $(CYGPATH_W) 'main/numarray.c'; else $(CYGPATH_W) '$(srcdir)/main/numarray.c'; fi`
+
+main/libutil_a-ptrarray.o: main/ptrarray.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-ptrarray.o -MD -MP -MF main/$(DEPDIR)/libutil_a-ptrarray.Tpo -c -o main/libutil_a-ptrarray.o `test -f 'main/ptrarray.c' || echo '$(srcdir)/'`main/ptrarray.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-ptrarray.Tpo main/$(DEPDIR)/libutil_a-ptrarray.Po
+#	$(AM_V_CC)source='main/ptrarray.c' object='main/libutil_a-ptrarray.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-ptrarray.o `test -f 'main/ptrarray.c' || echo '$(srcdir)/'`main/ptrarray.c
+
+main/libutil_a-ptrarray.obj: main/ptrarray.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-ptrarray.obj -MD -MP -MF main/$(DEPDIR)/libutil_a-ptrarray.Tpo -c -o main/libutil_a-ptrarray.obj `if test -f 'main/ptrarray.c'; then $(CYGPATH_W) 'main/ptrarray.c'; else $(CYGPATH_W) '$(srcdir)/main/ptrarray.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-ptrarray.Tpo main/$(DEPDIR)/libutil_a-ptrarray.Po
+#	$(AM_V_CC)source='main/ptrarray.c' object='main/libutil_a-ptrarray.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-ptrarray.obj `if test -f 'main/ptrarray.c'; then $(CYGPATH_W) 'main/ptrarray.c'; else $(CYGPATH_W) '$(srcdir)/main/ptrarray.c'; fi`
+
+main/libutil_a-routines.o: main/routines.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-routines.o -MD -MP -MF main/$(DEPDIR)/libutil_a-routines.Tpo -c -o main/libutil_a-routines.o `test -f 'main/routines.c' || echo '$(srcdir)/'`main/routines.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-routines.Tpo main/$(DEPDIR)/libutil_a-routines.Po
+#	$(AM_V_CC)source='main/routines.c' object='main/libutil_a-routines.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-routines.o `test -f 'main/routines.c' || echo '$(srcdir)/'`main/routines.c
+
+main/libutil_a-routines.obj: main/routines.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-routines.obj -MD -MP -MF main/$(DEPDIR)/libutil_a-routines.Tpo -c -o main/libutil_a-routines.obj `if test -f 'main/routines.c'; then $(CYGPATH_W) 'main/routines.c'; else $(CYGPATH_W) '$(srcdir)/main/routines.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-routines.Tpo main/$(DEPDIR)/libutil_a-routines.Po
+#	$(AM_V_CC)source='main/routines.c' object='main/libutil_a-routines.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-routines.obj `if test -f 'main/routines.c'; then $(CYGPATH_W) 'main/routines.c'; else $(CYGPATH_W) '$(srcdir)/main/routines.c'; fi`
+
+main/libutil_a-trashbox.o: main/trashbox.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-trashbox.o -MD -MP -MF main/$(DEPDIR)/libutil_a-trashbox.Tpo -c -o main/libutil_a-trashbox.o `test -f 'main/trashbox.c' || echo '$(srcdir)/'`main/trashbox.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-trashbox.Tpo main/$(DEPDIR)/libutil_a-trashbox.Po
+#	$(AM_V_CC)source='main/trashbox.c' object='main/libutil_a-trashbox.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-trashbox.o `test -f 'main/trashbox.c' || echo '$(srcdir)/'`main/trashbox.c
+
+main/libutil_a-trashbox.obj: main/trashbox.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-trashbox.obj -MD -MP -MF main/$(DEPDIR)/libutil_a-trashbox.Tpo -c -o main/libutil_a-trashbox.obj `if test -f 'main/trashbox.c'; then $(CYGPATH_W) 'main/trashbox.c'; else $(CYGPATH_W) '$(srcdir)/main/trashbox.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-trashbox.Tpo main/$(DEPDIR)/libutil_a-trashbox.Po
+#	$(AM_V_CC)source='main/trashbox.c' object='main/libutil_a-trashbox.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-trashbox.obj `if test -f 'main/trashbox.c'; then $(CYGPATH_W) 'main/trashbox.c'; else $(CYGPATH_W) '$(srcdir)/main/trashbox.c'; fi`
+
+main/libutil_a-vstring.o: main/vstring.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-vstring.o -MD -MP -MF main/$(DEPDIR)/libutil_a-vstring.Tpo -c -o main/libutil_a-vstring.o `test -f 'main/vstring.c' || echo '$(srcdir)/'`main/vstring.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-vstring.Tpo main/$(DEPDIR)/libutil_a-vstring.Po
+#	$(AM_V_CC)source='main/vstring.c' object='main/libutil_a-vstring.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-vstring.o `test -f 'main/vstring.c' || echo '$(srcdir)/'`main/vstring.c
+
+main/libutil_a-vstring.obj: main/vstring.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -MT main/libutil_a-vstring.obj -MD -MP -MF main/$(DEPDIR)/libutil_a-vstring.Tpo -c -o main/libutil_a-vstring.obj `if test -f 'main/vstring.c'; then $(CYGPATH_W) 'main/vstring.c'; else $(CYGPATH_W) '$(srcdir)/main/vstring.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/libutil_a-vstring.Tpo main/$(DEPDIR)/libutil_a-vstring.Po
+#	$(AM_V_CC)source='main/vstring.c' object='main/libutil_a-vstring.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libutil_a_CPPFLAGS) $(CPPFLAGS) $(libutil_a_CFLAGS) $(CFLAGS) -c -o main/libutil_a-vstring.obj `if test -f 'main/vstring.c'; then $(CYGPATH_W) 'main/vstring.c'; else $(CYGPATH_W) '$(srcdir)/main/vstring.c'; fi`
+
+main/ctags-cmd.o: main/cmd.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ctags_CPPFLAGS) $(CPPFLAGS) $(ctags_CFLAGS) $(CFLAGS) -MT main/ctags-cmd.o -MD -MP -MF main/$(DEPDIR)/ctags-cmd.Tpo -c -o main/ctags-cmd.o `test -f 'main/cmd.c' || echo '$(srcdir)/'`main/cmd.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/ctags-cmd.Tpo main/$(DEPDIR)/ctags-cmd.Po
+#	$(AM_V_CC)source='main/cmd.c' object='main/ctags-cmd.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ctags_CPPFLAGS) $(CPPFLAGS) $(ctags_CFLAGS) $(CFLAGS) -c -o main/ctags-cmd.o `test -f 'main/cmd.c' || echo '$(srcdir)/'`main/cmd.c
+
+main/ctags-cmd.obj: main/cmd.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ctags_CPPFLAGS) $(CPPFLAGS) $(ctags_CFLAGS) $(CFLAGS) -MT main/ctags-cmd.obj -MD -MP -MF main/$(DEPDIR)/ctags-cmd.Tpo -c -o main/ctags-cmd.obj `if test -f 'main/cmd.c'; then $(CYGPATH_W) 'main/cmd.c'; else $(CYGPATH_W) '$(srcdir)/main/cmd.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/ctags-cmd.Tpo main/$(DEPDIR)/ctags-cmd.Po
+#	$(AM_V_CC)source='main/cmd.c' object='main/ctags-cmd.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ctags_CPPFLAGS) $(CPPFLAGS) $(ctags_CFLAGS) $(CFLAGS) -c -o main/ctags-cmd.obj `if test -f 'main/cmd.c'; then $(CYGPATH_W) 'main/cmd.c'; else $(CYGPATH_W) '$(srcdir)/main/cmd.c'; fi`
+
+main/mini_geany-mini-geany.o: main/mini-geany.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mini_geany_CPPFLAGS) $(CPPFLAGS) $(mini_geany_CFLAGS) $(CFLAGS) -MT main/mini_geany-mini-geany.o -MD -MP -MF main/$(DEPDIR)/mini_geany-mini-geany.Tpo -c -o main/mini_geany-mini-geany.o `test -f 'main/mini-geany.c' || echo '$(srcdir)/'`main/mini-geany.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/mini_geany-mini-geany.Tpo main/$(DEPDIR)/mini_geany-mini-geany.Po
+#	$(AM_V_CC)source='main/mini-geany.c' object='main/mini_geany-mini-geany.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mini_geany_CPPFLAGS) $(CPPFLAGS) $(mini_geany_CFLAGS) $(CFLAGS) -c -o main/mini_geany-mini-geany.o `test -f 'main/mini-geany.c' || echo '$(srcdir)/'`main/mini-geany.c
+
+main/mini_geany-mini-geany.obj: main/mini-geany.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mini_geany_CPPFLAGS) $(CPPFLAGS) $(mini_geany_CFLAGS) $(CFLAGS) -MT main/mini_geany-mini-geany.obj -MD -MP -MF main/$(DEPDIR)/mini_geany-mini-geany.Tpo -c -o main/mini_geany-mini-geany.obj `if test -f 'main/mini-geany.c'; then $(CYGPATH_W) 'main/mini-geany.c'; else $(CYGPATH_W) '$(srcdir)/main/mini-geany.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/mini_geany-mini-geany.Tpo main/$(DEPDIR)/mini_geany-mini-geany.Po
+#	$(AM_V_CC)source='main/mini-geany.c' object='main/mini_geany-mini-geany.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(mini_geany_CPPFLAGS) $(CPPFLAGS) $(mini_geany_CFLAGS) $(CFLAGS) -c -o main/mini_geany-mini-geany.obj `if test -f 'main/mini-geany.c'; then $(CYGPATH_W) 'main/mini-geany.c'; else $(CYGPATH_W) '$(srcdir)/main/mini-geany.c'; fi`
+
+extra-cmds/optscript-optscript-repl.o: extra-cmds/optscript-repl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(optscript_CPPFLAGS) $(CPPFLAGS) $(optscript_CFLAGS) $(CFLAGS) -MT extra-cmds/optscript-optscript-repl.o -MD -MP -MF extra-cmds/$(DEPDIR)/optscript-optscript-repl.Tpo -c -o extra-cmds/optscript-optscript-repl.o `test -f 'extra-cmds/optscript-repl.c' || echo '$(srcdir)/'`extra-cmds/optscript-repl.c
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/optscript-optscript-repl.Tpo extra-cmds/$(DEPDIR)/optscript-optscript-repl.Po
+#	$(AM_V_CC)source='extra-cmds/optscript-repl.c' object='extra-cmds/optscript-optscript-repl.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(optscript_CPPFLAGS) $(CPPFLAGS) $(optscript_CFLAGS) $(CFLAGS) -c -o extra-cmds/optscript-optscript-repl.o `test -f 'extra-cmds/optscript-repl.c' || echo '$(srcdir)/'`extra-cmds/optscript-repl.c
+
+extra-cmds/optscript-optscript-repl.obj: extra-cmds/optscript-repl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(optscript_CPPFLAGS) $(CPPFLAGS) $(optscript_CFLAGS) $(CFLAGS) -MT extra-cmds/optscript-optscript-repl.obj -MD -MP -MF extra-cmds/$(DEPDIR)/optscript-optscript-repl.Tpo -c -o extra-cmds/optscript-optscript-repl.obj `if test -f 'extra-cmds/optscript-repl.c'; then $(CYGPATH_W) 'extra-cmds/optscript-repl.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/optscript-repl.c'; fi`
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/optscript-optscript-repl.Tpo extra-cmds/$(DEPDIR)/optscript-optscript-repl.Po
+#	$(AM_V_CC)source='extra-cmds/optscript-repl.c' object='extra-cmds/optscript-optscript-repl.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(optscript_CPPFLAGS) $(CPPFLAGS) $(optscript_CFLAGS) $(CFLAGS) -c -o extra-cmds/optscript-optscript-repl.obj `if test -f 'extra-cmds/optscript-repl.c'; then $(CYGPATH_W) 'extra-cmds/optscript-repl.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/optscript-repl.c'; fi`
+
+libreadtags/readtags-readtags.o: libreadtags/readtags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT libreadtags/readtags-readtags.o -MD -MP -MF libreadtags/$(DEPDIR)/readtags-readtags.Tpo -c -o libreadtags/readtags-readtags.o `test -f 'libreadtags/readtags.c' || echo '$(srcdir)/'`libreadtags/readtags.c
+	$(AM_V_at)$(am__mv) libreadtags/$(DEPDIR)/readtags-readtags.Tpo libreadtags/$(DEPDIR)/readtags-readtags.Po
+#	$(AM_V_CC)source='libreadtags/readtags.c' object='libreadtags/readtags-readtags.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o libreadtags/readtags-readtags.o `test -f 'libreadtags/readtags.c' || echo '$(srcdir)/'`libreadtags/readtags.c
+
+libreadtags/readtags-readtags.obj: libreadtags/readtags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT libreadtags/readtags-readtags.obj -MD -MP -MF libreadtags/$(DEPDIR)/readtags-readtags.Tpo -c -o libreadtags/readtags-readtags.obj `if test -f 'libreadtags/readtags.c'; then $(CYGPATH_W) 'libreadtags/readtags.c'; else $(CYGPATH_W) '$(srcdir)/libreadtags/readtags.c'; fi`
+	$(AM_V_at)$(am__mv) libreadtags/$(DEPDIR)/readtags-readtags.Tpo libreadtags/$(DEPDIR)/readtags-readtags.Po
+#	$(AM_V_CC)source='libreadtags/readtags.c' object='libreadtags/readtags-readtags.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o libreadtags/readtags-readtags.obj `if test -f 'libreadtags/readtags.c'; then $(CYGPATH_W) 'libreadtags/readtags.c'; else $(CYGPATH_W) '$(srcdir)/libreadtags/readtags.c'; fi`
+
+extra-cmds/readtags-printtags.o: extra-cmds/printtags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT extra-cmds/readtags-printtags.o -MD -MP -MF extra-cmds/$(DEPDIR)/readtags-printtags.Tpo -c -o extra-cmds/readtags-printtags.o `test -f 'extra-cmds/printtags.c' || echo '$(srcdir)/'`extra-cmds/printtags.c
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/readtags-printtags.Tpo extra-cmds/$(DEPDIR)/readtags-printtags.Po
+#	$(AM_V_CC)source='extra-cmds/printtags.c' object='extra-cmds/readtags-printtags.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o extra-cmds/readtags-printtags.o `test -f 'extra-cmds/printtags.c' || echo '$(srcdir)/'`extra-cmds/printtags.c
+
+extra-cmds/readtags-printtags.obj: extra-cmds/printtags.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT extra-cmds/readtags-printtags.obj -MD -MP -MF extra-cmds/$(DEPDIR)/readtags-printtags.Tpo -c -o extra-cmds/readtags-printtags.obj `if test -f 'extra-cmds/printtags.c'; then $(CYGPATH_W) 'extra-cmds/printtags.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/printtags.c'; fi`
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/readtags-printtags.Tpo extra-cmds/$(DEPDIR)/readtags-printtags.Po
+#	$(AM_V_CC)source='extra-cmds/printtags.c' object='extra-cmds/readtags-printtags.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o extra-cmds/readtags-printtags.obj `if test -f 'extra-cmds/printtags.c'; then $(CYGPATH_W) 'extra-cmds/printtags.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/printtags.c'; fi`
+
+extra-cmds/readtags-readtags-cmd.o: extra-cmds/readtags-cmd.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT extra-cmds/readtags-readtags-cmd.o -MD -MP -MF extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Tpo -c -o extra-cmds/readtags-readtags-cmd.o `test -f 'extra-cmds/readtags-cmd.c' || echo '$(srcdir)/'`extra-cmds/readtags-cmd.c
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Tpo extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Po
+#	$(AM_V_CC)source='extra-cmds/readtags-cmd.c' object='extra-cmds/readtags-readtags-cmd.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o extra-cmds/readtags-readtags-cmd.o `test -f 'extra-cmds/readtags-cmd.c' || echo '$(srcdir)/'`extra-cmds/readtags-cmd.c
+
+extra-cmds/readtags-readtags-cmd.obj: extra-cmds/readtags-cmd.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT extra-cmds/readtags-readtags-cmd.obj -MD -MP -MF extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Tpo -c -o extra-cmds/readtags-readtags-cmd.obj `if test -f 'extra-cmds/readtags-cmd.c'; then $(CYGPATH_W) 'extra-cmds/readtags-cmd.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/readtags-cmd.c'; fi`
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Tpo extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Po
+#	$(AM_V_CC)source='extra-cmds/readtags-cmd.c' object='extra-cmds/readtags-readtags-cmd.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o extra-cmds/readtags-readtags-cmd.obj `if test -f 'extra-cmds/readtags-cmd.c'; then $(CYGPATH_W) 'extra-cmds/readtags-cmd.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/readtags-cmd.c'; fi`
+
+extra-cmds/readtags-readtags-stub.o: extra-cmds/readtags-stub.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT extra-cmds/readtags-readtags-stub.o -MD -MP -MF extra-cmds/$(DEPDIR)/readtags-readtags-stub.Tpo -c -o extra-cmds/readtags-readtags-stub.o `test -f 'extra-cmds/readtags-stub.c' || echo '$(srcdir)/'`extra-cmds/readtags-stub.c
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/readtags-readtags-stub.Tpo extra-cmds/$(DEPDIR)/readtags-readtags-stub.Po
+#	$(AM_V_CC)source='extra-cmds/readtags-stub.c' object='extra-cmds/readtags-readtags-stub.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o extra-cmds/readtags-readtags-stub.o `test -f 'extra-cmds/readtags-stub.c' || echo '$(srcdir)/'`extra-cmds/readtags-stub.c
+
+extra-cmds/readtags-readtags-stub.obj: extra-cmds/readtags-stub.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT extra-cmds/readtags-readtags-stub.obj -MD -MP -MF extra-cmds/$(DEPDIR)/readtags-readtags-stub.Tpo -c -o extra-cmds/readtags-readtags-stub.obj `if test -f 'extra-cmds/readtags-stub.c'; then $(CYGPATH_W) 'extra-cmds/readtags-stub.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/readtags-stub.c'; fi`
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/readtags-readtags-stub.Tpo extra-cmds/$(DEPDIR)/readtags-readtags-stub.Po
+#	$(AM_V_CC)source='extra-cmds/readtags-stub.c' object='extra-cmds/readtags-readtags-stub.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o extra-cmds/readtags-readtags-stub.obj `if test -f 'extra-cmds/readtags-stub.c'; then $(CYGPATH_W) 'extra-cmds/readtags-stub.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/readtags-stub.c'; fi`
+
+dsl/readtags-es.o: dsl/es.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-es.o -MD -MP -MF dsl/$(DEPDIR)/readtags-es.Tpo -c -o dsl/readtags-es.o `test -f 'dsl/es.c' || echo '$(srcdir)/'`dsl/es.c
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-es.Tpo dsl/$(DEPDIR)/readtags-es.Po
+#	$(AM_V_CC)source='dsl/es.c' object='dsl/readtags-es.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-es.o `test -f 'dsl/es.c' || echo '$(srcdir)/'`dsl/es.c
+
+dsl/readtags-es.obj: dsl/es.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-es.obj -MD -MP -MF dsl/$(DEPDIR)/readtags-es.Tpo -c -o dsl/readtags-es.obj `if test -f 'dsl/es.c'; then $(CYGPATH_W) 'dsl/es.c'; else $(CYGPATH_W) '$(srcdir)/dsl/es.c'; fi`
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-es.Tpo dsl/$(DEPDIR)/readtags-es.Po
+#	$(AM_V_CC)source='dsl/es.c' object='dsl/readtags-es.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-es.obj `if test -f 'dsl/es.c'; then $(CYGPATH_W) 'dsl/es.c'; else $(CYGPATH_W) '$(srcdir)/dsl/es.c'; fi`
+
+dsl/readtags-dsl.o: dsl/dsl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-dsl.o -MD -MP -MF dsl/$(DEPDIR)/readtags-dsl.Tpo -c -o dsl/readtags-dsl.o `test -f 'dsl/dsl.c' || echo '$(srcdir)/'`dsl/dsl.c
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-dsl.Tpo dsl/$(DEPDIR)/readtags-dsl.Po
+#	$(AM_V_CC)source='dsl/dsl.c' object='dsl/readtags-dsl.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-dsl.o `test -f 'dsl/dsl.c' || echo '$(srcdir)/'`dsl/dsl.c
+
+dsl/readtags-dsl.obj: dsl/dsl.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-dsl.obj -MD -MP -MF dsl/$(DEPDIR)/readtags-dsl.Tpo -c -o dsl/readtags-dsl.obj `if test -f 'dsl/dsl.c'; then $(CYGPATH_W) 'dsl/dsl.c'; else $(CYGPATH_W) '$(srcdir)/dsl/dsl.c'; fi`
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-dsl.Tpo dsl/$(DEPDIR)/readtags-dsl.Po
+#	$(AM_V_CC)source='dsl/dsl.c' object='dsl/readtags-dsl.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-dsl.obj `if test -f 'dsl/dsl.c'; then $(CYGPATH_W) 'dsl/dsl.c'; else $(CYGPATH_W) '$(srcdir)/dsl/dsl.c'; fi`
+
+dsl/readtags-formatter.o: dsl/formatter.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-formatter.o -MD -MP -MF dsl/$(DEPDIR)/readtags-formatter.Tpo -c -o dsl/readtags-formatter.o `test -f 'dsl/formatter.c' || echo '$(srcdir)/'`dsl/formatter.c
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-formatter.Tpo dsl/$(DEPDIR)/readtags-formatter.Po
+#	$(AM_V_CC)source='dsl/formatter.c' object='dsl/readtags-formatter.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-formatter.o `test -f 'dsl/formatter.c' || echo '$(srcdir)/'`dsl/formatter.c
+
+dsl/readtags-formatter.obj: dsl/formatter.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-formatter.obj -MD -MP -MF dsl/$(DEPDIR)/readtags-formatter.Tpo -c -o dsl/readtags-formatter.obj `if test -f 'dsl/formatter.c'; then $(CYGPATH_W) 'dsl/formatter.c'; else $(CYGPATH_W) '$(srcdir)/dsl/formatter.c'; fi`
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-formatter.Tpo dsl/$(DEPDIR)/readtags-formatter.Po
+#	$(AM_V_CC)source='dsl/formatter.c' object='dsl/readtags-formatter.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-formatter.obj `if test -f 'dsl/formatter.c'; then $(CYGPATH_W) 'dsl/formatter.c'; else $(CYGPATH_W) '$(srcdir)/dsl/formatter.c'; fi`
+
+dsl/readtags-qualifier.o: dsl/qualifier.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-qualifier.o -MD -MP -MF dsl/$(DEPDIR)/readtags-qualifier.Tpo -c -o dsl/readtags-qualifier.o `test -f 'dsl/qualifier.c' || echo '$(srcdir)/'`dsl/qualifier.c
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-qualifier.Tpo dsl/$(DEPDIR)/readtags-qualifier.Po
+#	$(AM_V_CC)source='dsl/qualifier.c' object='dsl/readtags-qualifier.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-qualifier.o `test -f 'dsl/qualifier.c' || echo '$(srcdir)/'`dsl/qualifier.c
+
+dsl/readtags-qualifier.obj: dsl/qualifier.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-qualifier.obj -MD -MP -MF dsl/$(DEPDIR)/readtags-qualifier.Tpo -c -o dsl/readtags-qualifier.obj `if test -f 'dsl/qualifier.c'; then $(CYGPATH_W) 'dsl/qualifier.c'; else $(CYGPATH_W) '$(srcdir)/dsl/qualifier.c'; fi`
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-qualifier.Tpo dsl/$(DEPDIR)/readtags-qualifier.Po
+#	$(AM_V_CC)source='dsl/qualifier.c' object='dsl/readtags-qualifier.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-qualifier.obj `if test -f 'dsl/qualifier.c'; then $(CYGPATH_W) 'dsl/qualifier.c'; else $(CYGPATH_W) '$(srcdir)/dsl/qualifier.c'; fi`
+
+dsl/readtags-sorter.o: dsl/sorter.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-sorter.o -MD -MP -MF dsl/$(DEPDIR)/readtags-sorter.Tpo -c -o dsl/readtags-sorter.o `test -f 'dsl/sorter.c' || echo '$(srcdir)/'`dsl/sorter.c
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-sorter.Tpo dsl/$(DEPDIR)/readtags-sorter.Po
+#	$(AM_V_CC)source='dsl/sorter.c' object='dsl/readtags-sorter.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-sorter.o `test -f 'dsl/sorter.c' || echo '$(srcdir)/'`dsl/sorter.c
+
+dsl/readtags-sorter.obj: dsl/sorter.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT dsl/readtags-sorter.obj -MD -MP -MF dsl/$(DEPDIR)/readtags-sorter.Tpo -c -o dsl/readtags-sorter.obj `if test -f 'dsl/sorter.c'; then $(CYGPATH_W) 'dsl/sorter.c'; else $(CYGPATH_W) '$(srcdir)/dsl/sorter.c'; fi`
+	$(AM_V_at)$(am__mv) dsl/$(DEPDIR)/readtags-sorter.Tpo dsl/$(DEPDIR)/readtags-sorter.Po
+#	$(AM_V_CC)source='dsl/sorter.c' object='dsl/readtags-sorter.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o dsl/readtags-sorter.obj `if test -f 'dsl/sorter.c'; then $(CYGPATH_W) 'dsl/sorter.c'; else $(CYGPATH_W) '$(srcdir)/dsl/sorter.c'; fi`
+
+main/readtags-mio.o: main/mio.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT main/readtags-mio.o -MD -MP -MF main/$(DEPDIR)/readtags-mio.Tpo -c -o main/readtags-mio.o `test -f 'main/mio.c' || echo '$(srcdir)/'`main/mio.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/readtags-mio.Tpo main/$(DEPDIR)/readtags-mio.Po
+#	$(AM_V_CC)source='main/mio.c' object='main/readtags-mio.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o main/readtags-mio.o `test -f 'main/mio.c' || echo '$(srcdir)/'`main/mio.c
+
+main/readtags-mio.obj: main/mio.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -MT main/readtags-mio.obj -MD -MP -MF main/$(DEPDIR)/readtags-mio.Tpo -c -o main/readtags-mio.obj `if test -f 'main/mio.c'; then $(CYGPATH_W) 'main/mio.c'; else $(CYGPATH_W) '$(srcdir)/main/mio.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/readtags-mio.Tpo main/$(DEPDIR)/readtags-mio.Po
+#	$(AM_V_CC)source='main/mio.c' object='main/readtags-mio.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(readtags_CPPFLAGS) $(CPPFLAGS) $(readtags_CFLAGS) $(CFLAGS) -c -o main/readtags-mio.obj `if test -f 'main/mio.c'; then $(CYGPATH_W) 'main/mio.c'; else $(CYGPATH_W) '$(srcdir)/main/mio.c'; fi`
+
+extra-cmds/utiltest-utiltest.o: extra-cmds/utiltest.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -MT extra-cmds/utiltest-utiltest.o -MD -MP -MF extra-cmds/$(DEPDIR)/utiltest-utiltest.Tpo -c -o extra-cmds/utiltest-utiltest.o `test -f 'extra-cmds/utiltest.c' || echo '$(srcdir)/'`extra-cmds/utiltest.c
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/utiltest-utiltest.Tpo extra-cmds/$(DEPDIR)/utiltest-utiltest.Po
+#	$(AM_V_CC)source='extra-cmds/utiltest.c' object='extra-cmds/utiltest-utiltest.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -c -o extra-cmds/utiltest-utiltest.o `test -f 'extra-cmds/utiltest.c' || echo '$(srcdir)/'`extra-cmds/utiltest.c
+
+extra-cmds/utiltest-utiltest.obj: extra-cmds/utiltest.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -MT extra-cmds/utiltest-utiltest.obj -MD -MP -MF extra-cmds/$(DEPDIR)/utiltest-utiltest.Tpo -c -o extra-cmds/utiltest-utiltest.obj `if test -f 'extra-cmds/utiltest.c'; then $(CYGPATH_W) 'extra-cmds/utiltest.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/utiltest.c'; fi`
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/utiltest-utiltest.Tpo extra-cmds/$(DEPDIR)/utiltest-utiltest.Po
+#	$(AM_V_CC)source='extra-cmds/utiltest.c' object='extra-cmds/utiltest-utiltest.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -c -o extra-cmds/utiltest-utiltest.obj `if test -f 'extra-cmds/utiltest.c'; then $(CYGPATH_W) 'extra-cmds/utiltest.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/utiltest.c'; fi`
+
+extra-cmds/utiltest-readtags-stub.o: extra-cmds/readtags-stub.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -MT extra-cmds/utiltest-readtags-stub.o -MD -MP -MF extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Tpo -c -o extra-cmds/utiltest-readtags-stub.o `test -f 'extra-cmds/readtags-stub.c' || echo '$(srcdir)/'`extra-cmds/readtags-stub.c
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Tpo extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Po
+#	$(AM_V_CC)source='extra-cmds/readtags-stub.c' object='extra-cmds/utiltest-readtags-stub.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -c -o extra-cmds/utiltest-readtags-stub.o `test -f 'extra-cmds/readtags-stub.c' || echo '$(srcdir)/'`extra-cmds/readtags-stub.c
+
+extra-cmds/utiltest-readtags-stub.obj: extra-cmds/readtags-stub.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -MT extra-cmds/utiltest-readtags-stub.obj -MD -MP -MF extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Tpo -c -o extra-cmds/utiltest-readtags-stub.obj `if test -f 'extra-cmds/readtags-stub.c'; then $(CYGPATH_W) 'extra-cmds/readtags-stub.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/readtags-stub.c'; fi`
+	$(AM_V_at)$(am__mv) extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Tpo extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Po
+#	$(AM_V_CC)source='extra-cmds/readtags-stub.c' object='extra-cmds/utiltest-readtags-stub.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -c -o extra-cmds/utiltest-readtags-stub.obj `if test -f 'extra-cmds/readtags-stub.c'; then $(CYGPATH_W) 'extra-cmds/readtags-stub.c'; else $(CYGPATH_W) '$(srcdir)/extra-cmds/readtags-stub.c'; fi`
+
+main/utiltest-mio.o: main/mio.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -MT main/utiltest-mio.o -MD -MP -MF main/$(DEPDIR)/utiltest-mio.Tpo -c -o main/utiltest-mio.o `test -f 'main/mio.c' || echo '$(srcdir)/'`main/mio.c
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/utiltest-mio.Tpo main/$(DEPDIR)/utiltest-mio.Po
+#	$(AM_V_CC)source='main/mio.c' object='main/utiltest-mio.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -c -o main/utiltest-mio.o `test -f 'main/mio.c' || echo '$(srcdir)/'`main/mio.c
+
+main/utiltest-mio.obj: main/mio.c
+	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -MT main/utiltest-mio.obj -MD -MP -MF main/$(DEPDIR)/utiltest-mio.Tpo -c -o main/utiltest-mio.obj `if test -f 'main/mio.c'; then $(CYGPATH_W) 'main/mio.c'; else $(CYGPATH_W) '$(srcdir)/main/mio.c'; fi`
+	$(AM_V_at)$(am__mv) main/$(DEPDIR)/utiltest-mio.Tpo main/$(DEPDIR)/utiltest-mio.Po
+#	$(AM_V_CC)source='main/mio.c' object='main/utiltest-mio.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(utiltest_CPPFLAGS) $(CPPFLAGS) $(utiltest_CFLAGS) $(CFLAGS) -c -o main/utiltest-mio.obj `if test -f 'main/mio.c'; then $(CYGPATH_W) 'main/mio.c'; else $(CYGPATH_W) '$(srcdir)/main/mio.c'; fi`
+
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run 'make' without going through this Makefile.
+# To change the values of 'make' variables: instead of editing Makefiles,
+# (1) if the variable is set in 'config.status', edit 'config.status'
+#     (which will cause the Makefiles to be regenerated when you run 'make');
+# (2) otherwise, pass the desired values on the 'make' command line.
+$(am__recursive_targets):
+	@fail=; \
+	if $(am__make_keepgoing); then \
+	  failcom='fail=yes'; \
+	else \
+	  failcom='exit 1'; \
+	fi; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	case "$@" in \
+	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+	  *) list='$(SUBDIRS)' ;; \
+	esac; \
+	for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
+ID: $(am__tagged_files)
+	$(am__define_uniq_tagged_files); mkid -fID $$unique
+tags: tags-recursive
+TAGS: tags
+
+tags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
+	set x; \
+	here=`pwd`; \
+	if ($(ETAGS) --etags-include --version) >/dev/null 2>&1; then \
+	  include_option=--etags-include; \
+	  empty_fix=.; \
+	else \
+	  include_option=--include; \
+	  empty_fix=; \
+	fi; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test ! -f $$subdir/TAGS || \
+	      set "$$@" "$$include_option=$$here/$$subdir/TAGS"; \
+	  fi; \
+	done; \
+	$(am__define_uniq_tagged_files); \
+	shift; \
+	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
+	  test -n "$$unique" || unique=$$empty_fix; \
+	  if test $$# -gt 0; then \
+	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+	      "$$@" $$unique; \
+	  else \
+	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+	      $$unique; \
+	  fi; \
+	fi
+
+CTAGS: ctags
+ctags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
+	$(am__define_uniq_tagged_files); \
+	test -z "$(CTAGS_ARGS)$$unique" \
+	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
+	     $$unique
+
+GTAGS:
+	here=`$(am__cd) $(top_builddir) && pwd` \
+	  && $(am__cd) $(top_srcdir) \
+	  && gtags -i $(GTAGS_ARGS) "$$here"
+cscope: cscope.files
+	test ! -s cscope.files \
+	  || $(CSCOPE) -b -q $(AM_CSCOPEFLAGS) $(CSCOPEFLAGS) -i cscope.files $(CSCOPE_ARGS)
+clean-cscope:
+	-rm -f cscope.files
+cscope.files: clean-cscope cscopelist
+cscopelist: cscopelist-recursive
+
+cscopelist-am: $(am__tagged_files)
+	list='$(am__tagged_files)'; \
+	case "$(srcdir)" in \
+	  [\\/]* | ?:[\\/]*) sdir="$(srcdir)" ;; \
+	  *) sdir=$(subdir)/$(srcdir) ;; \
+	esac; \
+	for i in $$list; do \
+	  if test -f "$$i"; then \
+	    echo "$(subdir)/$$i"; \
+	  else \
+	    echo "$$sdir/$$i"; \
+	  fi; \
+	done >> $(top_builddir)/cscope.files
+
+distclean-tags:
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
+	-rm -f cscope.out cscope.in.out cscope.po.out cscope.files
 distdir: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) distdir-am
 
@@ -313,6 +6864,34 @@ distdir-am: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
+	@list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    $(am__make_dryrun) \
+	      || test -d "$(distdir)/$$subdir" \
+	      || $(MKDIR_P) "$(distdir)/$$subdir" \
+	      || exit 1; \
+	    dir1=$$subdir; dir2="$(distdir)/$$subdir"; \
+	    $(am__relativize); \
+	    new_distdir=$$reldir; \
+	    dir1=$$subdir; dir2="$(top_distdir)"; \
+	    $(am__relativize); \
+	    new_top_distdir=$$reldir; \
+	    echo " (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir="$$new_top_distdir" distdir="$$new_distdir" \\"; \
+	    echo "     am__remove_distdir=: am__skip_length_check=: am__skip_mode_fix=: distdir)"; \
+	    ($(am__cd) $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$$new_top_distdir" \
+	        distdir="$$new_distdir" \
+		am__remove_distdir=: \
+		am__skip_length_check=: \
+		am__skip_mode_fix=: \
+	        distdir) \
+	      || exit 1; \
+	  fi; \
+	done
+	$(MAKE) $(AM_MAKEFLAGS) \
+	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
+	  dist-hook
 	-test -n "$(am__skip_mode_fix)" \
 	|| find "$(distdir)" -type d ! -perm -755 \
 		-exec chmod u+rwx,go+rx {} \; -o \
@@ -451,18 +7030,25 @@ distcleancheck: distclean
 	       $(distcleancheck_listfiles) ; \
 	       exit 1; } >&2
 check-am: all-am
-check: check-am
-all-am: Makefile
-installdirs:
-install: install-am
-install-exec: install-exec-am
-install-data: install-data-am
-uninstall: uninstall-am
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-recursive
+all-am: Makefile $(PROGRAMS) $(LIBRARIES) config.h
+installdirs: installdirs-recursive
+installdirs-am:
+	for dir in "$(DESTDIR)$(bindir)"; do \
+	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+	done
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-recursive
+install-exec: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-exec-recursive
+install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
-installcheck: installcheck-am
+installcheck: installcheck-recursive
 install-strip:
 	if test -z '$(STRIP)'; then \
 	  $(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
@@ -474,103 +7060,1135 @@ install-strip:
 	    "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'" install; \
 	fi
 mostlyclean-generic:
+	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f dsl/$(DEPDIR)/$(am__dirstamp)
+	-rm -f dsl/$(am__dirstamp)
+	-rm -f extra-cmds/$(DEPDIR)/$(am__dirstamp)
+	-rm -f extra-cmds/$(am__dirstamp)
+	-rm -f libreadtags/$(DEPDIR)/$(am__dirstamp)
+	-rm -f libreadtags/$(am__dirstamp)
+	-rm -f main/$(DEPDIR)/$(am__dirstamp)
+	-rm -f main/$(am__dirstamp)
+	-rm -f optlib/$(DEPDIR)/$(am__dirstamp)
+	-rm -f optlib/$(am__dirstamp)
+	-rm -f parsers/$(DEPDIR)/$(am__dirstamp)
+	-rm -f parsers/$(am__dirstamp)
+	-rm -f parsers/cxx/$(DEPDIR)/$(am__dirstamp)
+	-rm -f parsers/cxx/$(am__dirstamp)
+	-rm -f peg/$(DEPDIR)/$(am__dirstamp)
+	-rm -f peg/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean: clean-am
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
+install-exec-hook:
+uninstall-hook:
+clean: clean-recursive
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-local \
+	clean-noinstLIBRARIES clean-noinstPROGRAMS mostlyclean-am
 
-distclean: distclean-am
+distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
+		-rm -f dsl/$(DEPDIR)/libctags_a-es.Po
+	-rm -f dsl/$(DEPDIR)/libctags_a-optscript.Po
+	-rm -f dsl/$(DEPDIR)/readtags-dsl.Po
+	-rm -f dsl/$(DEPDIR)/readtags-es.Po
+	-rm -f dsl/$(DEPDIR)/readtags-formatter.Po
+	-rm -f dsl/$(DEPDIR)/readtags-qualifier.Po
+	-rm -f dsl/$(DEPDIR)/readtags-sorter.Po
+	-rm -f extra-cmds/$(DEPDIR)/optscript-optscript-repl.Po
+	-rm -f extra-cmds/$(DEPDIR)/readtags-printtags.Po
+	-rm -f extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Po
+	-rm -f extra-cmds/$(DEPDIR)/readtags-readtags-stub.Po
+	-rm -f extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Po
+	-rm -f extra-cmds/$(DEPDIR)/utiltest-utiltest.Po
+	-rm -f libreadtags/$(DEPDIR)/readtags-readtags.Po
+	-rm -f main/$(DEPDIR)/ctags-cmd.Po
+	-rm -f main/$(DEPDIR)/libctags_a-CommonPrelude.Po
+	-rm -f main/$(DEPDIR)/libctags_a-args.Po
+	-rm -f main/$(DEPDIR)/libctags_a-colprint.Po
+	-rm -f main/$(DEPDIR)/libctags_a-debug.Po
+	-rm -f main/$(DEPDIR)/libctags_a-dependency.Po
+	-rm -f main/$(DEPDIR)/libctags_a-entry.Po
+	-rm -f main/$(DEPDIR)/libctags_a-entry_private.Po
+	-rm -f main/$(DEPDIR)/libctags_a-error.Po
+	-rm -f main/$(DEPDIR)/libctags_a-field.Po
+	-rm -f main/$(DEPDIR)/libctags_a-flags.Po
+	-rm -f main/$(DEPDIR)/libctags_a-fmt.Po
+	-rm -f main/$(DEPDIR)/libctags_a-fname.Po
+	-rm -f main/$(DEPDIR)/libctags_a-htable.Po
+	-rm -f main/$(DEPDIR)/libctags_a-keyword.Po
+	-rm -f main/$(DEPDIR)/libctags_a-kind.Po
+	-rm -f main/$(DEPDIR)/libctags_a-lregex-default.Po
+	-rm -f main/$(DEPDIR)/libctags_a-lregex-pcre2.Po
+	-rm -f main/$(DEPDIR)/libctags_a-lregex.Po
+	-rm -f main/$(DEPDIR)/libctags_a-lxpath.Po
+	-rm -f main/$(DEPDIR)/libctags_a-main.Po
+	-rm -f main/$(DEPDIR)/libctags_a-mbcs.Po
+	-rm -f main/$(DEPDIR)/libctags_a-mio.Po
+	-rm -f main/$(DEPDIR)/libctags_a-nestlevel.Po
+	-rm -f main/$(DEPDIR)/libctags_a-numarray.Po
+	-rm -f main/$(DEPDIR)/libctags_a-objpool.Po
+	-rm -f main/$(DEPDIR)/libctags_a-options.Po
+	-rm -f main/$(DEPDIR)/libctags_a-param.Po
+	-rm -f main/$(DEPDIR)/libctags_a-parse.Po
+	-rm -f main/$(DEPDIR)/libctags_a-portable-scandir.Po
+	-rm -f main/$(DEPDIR)/libctags_a-promise.Po
+	-rm -f main/$(DEPDIR)/libctags_a-ptag.Po
+	-rm -f main/$(DEPDIR)/libctags_a-ptrarray.Po
+	-rm -f main/$(DEPDIR)/libctags_a-rbtree.Po
+	-rm -f main/$(DEPDIR)/libctags_a-read.Po
+	-rm -f main/$(DEPDIR)/libctags_a-repoinfo.Po
+	-rm -f main/$(DEPDIR)/libctags_a-routines.Po
+	-rm -f main/$(DEPDIR)/libctags_a-script.Po
+	-rm -f main/$(DEPDIR)/libctags_a-seccomp.Po
+	-rm -f main/$(DEPDIR)/libctags_a-selectors.Po
+	-rm -f main/$(DEPDIR)/libctags_a-sort.Po
+	-rm -f main/$(DEPDIR)/libctags_a-stats.Po
+	-rm -f main/$(DEPDIR)/libctags_a-strlist.Po
+	-rm -f main/$(DEPDIR)/libctags_a-tokeninfo.Po
+	-rm -f main/$(DEPDIR)/libctags_a-trace.Po
+	-rm -f main/$(DEPDIR)/libctags_a-trashbox.Po
+	-rm -f main/$(DEPDIR)/libctags_a-unwindi.Po
+	-rm -f main/$(DEPDIR)/libctags_a-utf8_str.Po
+	-rm -f main/$(DEPDIR)/libctags_a-vstring.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer-ctags.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer-etags.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer-json.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer-xref.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer.Po
+	-rm -f main/$(DEPDIR)/libctags_a-xtag.Po
+	-rm -f main/$(DEPDIR)/libutil_a-fname.Po
+	-rm -f main/$(DEPDIR)/libutil_a-htable.Po
+	-rm -f main/$(DEPDIR)/libutil_a-numarray.Po
+	-rm -f main/$(DEPDIR)/libutil_a-ptrarray.Po
+	-rm -f main/$(DEPDIR)/libutil_a-routines.Po
+	-rm -f main/$(DEPDIR)/libutil_a-trashbox.Po
+	-rm -f main/$(DEPDIR)/libutil_a-vstring.Po
+	-rm -f main/$(DEPDIR)/mini_geany-mini-geany.Po
+	-rm -f main/$(DEPDIR)/readtags-mio.Po
+	-rm -f main/$(DEPDIR)/utiltest-mio.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-cmake.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-ctags-optlib.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-elixir.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-forth.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-gdbinit.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-gperf.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-iPythonCell.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-inko.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-kconfig.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-lex.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-man.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-meson.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-mesonOptions.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-org.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-passwd.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-pkgConfig.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-pod.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-puppetManifest.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-qemuhx.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-rdoc.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-rpmMacros.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-scss.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-systemtap.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-terraform.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-terraformvariables.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-yacc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-abaqus.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-abc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ada.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ant.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-asciidoc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-asm.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-asp.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-autoconf.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-autoit.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-automake.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-awk.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-basic.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-bats.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-beta.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-biblatex.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-bibtex.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-c-based.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-clojure.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-cobol.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-cpreprocessor.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-css.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-dbusintrospect.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-diff.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-dosbatch.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-dtd.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-dts.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-eiffel.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-erlang.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-falcon.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-flex.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-fortran.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-frontmatter.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-fypp.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-gdscript.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-gemspec.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-glade.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-go.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-haskell.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-haxe.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-html.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-i18nrubygem.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-iniconf.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-itcl.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-jprop.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-jscript.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-json.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-julia.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ldscript.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-lisp.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-lua.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-m4.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-make.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-markdown.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-matlab.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-maven2.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-myrddin.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-nsis.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-objc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ocaml.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-openapi.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-pascal.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-perl-moose.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-perl.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-php.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-plist.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-powershell.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-protobuf.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-python.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-quarto.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-r-r6class.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-r-s4class.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-r.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rake.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-raku.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-relaxng.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rexx.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rmarkdown.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-robot.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rpmspec.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rspec.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rst.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ruby.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rust.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-scheme.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-sh.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-slang.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-sml.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-sql.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-svg.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-systemdunit.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-tcl.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-tcloo.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-tex-beamer.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-tex.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ttcn.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-txt2tags.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-typescript.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-v.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-vera.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-verilog.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-vhdl.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-vim.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-windres.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-xml.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-xrc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-xslt.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-yaml.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-yumrepo.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Po
+	-rm -f peg/$(DEPDIR)/libctags_a-elm.Po
+	-rm -f peg/$(DEPDIR)/libctags_a-kotlin.Po
+	-rm -f peg/$(DEPDIR)/libctags_a-thrift.Po
+	-rm -f peg/$(DEPDIR)/libctags_a-varlink.Po
 	-rm -f Makefile
-distclean-am: clean-am distclean-generic
+distclean-am: clean-am distclean-compile distclean-generic \
+	distclean-hdr distclean-tags
 
-dvi: dvi-am
+dvi: dvi-recursive
 
 dvi-am:
 
-html: html-am
+html: html-recursive
 
 html-am:
 
-info: info-am
+info: info-recursive
 
 info-am:
 
 install-data-am:
 
-install-dvi: install-dvi-am
+install-dvi: install-dvi-recursive
 
 install-dvi-am:
 
-install-exec-am:
-
-install-html: install-html-am
+install-exec-am: install-binPROGRAMS
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
+install-html: install-html-recursive
 
 install-html-am:
 
-install-info: install-info-am
+install-info: install-info-recursive
 
 install-info-am:
 
 install-man:
 
-install-pdf: install-pdf-am
+install-pdf: install-pdf-recursive
 
 install-pdf-am:
 
-install-ps: install-ps-am
+install-ps: install-ps-recursive
 
 install-ps-am:
 
 installcheck-am:
 
-maintainer-clean: maintainer-clean-am
+maintainer-clean: maintainer-clean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
+		-rm -f dsl/$(DEPDIR)/libctags_a-es.Po
+	-rm -f dsl/$(DEPDIR)/libctags_a-optscript.Po
+	-rm -f dsl/$(DEPDIR)/readtags-dsl.Po
+	-rm -f dsl/$(DEPDIR)/readtags-es.Po
+	-rm -f dsl/$(DEPDIR)/readtags-formatter.Po
+	-rm -f dsl/$(DEPDIR)/readtags-qualifier.Po
+	-rm -f dsl/$(DEPDIR)/readtags-sorter.Po
+	-rm -f extra-cmds/$(DEPDIR)/optscript-optscript-repl.Po
+	-rm -f extra-cmds/$(DEPDIR)/readtags-printtags.Po
+	-rm -f extra-cmds/$(DEPDIR)/readtags-readtags-cmd.Po
+	-rm -f extra-cmds/$(DEPDIR)/readtags-readtags-stub.Po
+	-rm -f extra-cmds/$(DEPDIR)/utiltest-readtags-stub.Po
+	-rm -f extra-cmds/$(DEPDIR)/utiltest-utiltest.Po
+	-rm -f libreadtags/$(DEPDIR)/readtags-readtags.Po
+	-rm -f main/$(DEPDIR)/ctags-cmd.Po
+	-rm -f main/$(DEPDIR)/libctags_a-CommonPrelude.Po
+	-rm -f main/$(DEPDIR)/libctags_a-args.Po
+	-rm -f main/$(DEPDIR)/libctags_a-colprint.Po
+	-rm -f main/$(DEPDIR)/libctags_a-debug.Po
+	-rm -f main/$(DEPDIR)/libctags_a-dependency.Po
+	-rm -f main/$(DEPDIR)/libctags_a-entry.Po
+	-rm -f main/$(DEPDIR)/libctags_a-entry_private.Po
+	-rm -f main/$(DEPDIR)/libctags_a-error.Po
+	-rm -f main/$(DEPDIR)/libctags_a-field.Po
+	-rm -f main/$(DEPDIR)/libctags_a-flags.Po
+	-rm -f main/$(DEPDIR)/libctags_a-fmt.Po
+	-rm -f main/$(DEPDIR)/libctags_a-fname.Po
+	-rm -f main/$(DEPDIR)/libctags_a-htable.Po
+	-rm -f main/$(DEPDIR)/libctags_a-keyword.Po
+	-rm -f main/$(DEPDIR)/libctags_a-kind.Po
+	-rm -f main/$(DEPDIR)/libctags_a-lregex-default.Po
+	-rm -f main/$(DEPDIR)/libctags_a-lregex-pcre2.Po
+	-rm -f main/$(DEPDIR)/libctags_a-lregex.Po
+	-rm -f main/$(DEPDIR)/libctags_a-lxpath.Po
+	-rm -f main/$(DEPDIR)/libctags_a-main.Po
+	-rm -f main/$(DEPDIR)/libctags_a-mbcs.Po
+	-rm -f main/$(DEPDIR)/libctags_a-mio.Po
+	-rm -f main/$(DEPDIR)/libctags_a-nestlevel.Po
+	-rm -f main/$(DEPDIR)/libctags_a-numarray.Po
+	-rm -f main/$(DEPDIR)/libctags_a-objpool.Po
+	-rm -f main/$(DEPDIR)/libctags_a-options.Po
+	-rm -f main/$(DEPDIR)/libctags_a-param.Po
+	-rm -f main/$(DEPDIR)/libctags_a-parse.Po
+	-rm -f main/$(DEPDIR)/libctags_a-portable-scandir.Po
+	-rm -f main/$(DEPDIR)/libctags_a-promise.Po
+	-rm -f main/$(DEPDIR)/libctags_a-ptag.Po
+	-rm -f main/$(DEPDIR)/libctags_a-ptrarray.Po
+	-rm -f main/$(DEPDIR)/libctags_a-rbtree.Po
+	-rm -f main/$(DEPDIR)/libctags_a-read.Po
+	-rm -f main/$(DEPDIR)/libctags_a-repoinfo.Po
+	-rm -f main/$(DEPDIR)/libctags_a-routines.Po
+	-rm -f main/$(DEPDIR)/libctags_a-script.Po
+	-rm -f main/$(DEPDIR)/libctags_a-seccomp.Po
+	-rm -f main/$(DEPDIR)/libctags_a-selectors.Po
+	-rm -f main/$(DEPDIR)/libctags_a-sort.Po
+	-rm -f main/$(DEPDIR)/libctags_a-stats.Po
+	-rm -f main/$(DEPDIR)/libctags_a-strlist.Po
+	-rm -f main/$(DEPDIR)/libctags_a-tokeninfo.Po
+	-rm -f main/$(DEPDIR)/libctags_a-trace.Po
+	-rm -f main/$(DEPDIR)/libctags_a-trashbox.Po
+	-rm -f main/$(DEPDIR)/libctags_a-unwindi.Po
+	-rm -f main/$(DEPDIR)/libctags_a-utf8_str.Po
+	-rm -f main/$(DEPDIR)/libctags_a-vstring.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer-ctags.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer-etags.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer-json.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer-xref.Po
+	-rm -f main/$(DEPDIR)/libctags_a-writer.Po
+	-rm -f main/$(DEPDIR)/libctags_a-xtag.Po
+	-rm -f main/$(DEPDIR)/libutil_a-fname.Po
+	-rm -f main/$(DEPDIR)/libutil_a-htable.Po
+	-rm -f main/$(DEPDIR)/libutil_a-numarray.Po
+	-rm -f main/$(DEPDIR)/libutil_a-ptrarray.Po
+	-rm -f main/$(DEPDIR)/libutil_a-routines.Po
+	-rm -f main/$(DEPDIR)/libutil_a-trashbox.Po
+	-rm -f main/$(DEPDIR)/libutil_a-vstring.Po
+	-rm -f main/$(DEPDIR)/mini_geany-mini-geany.Po
+	-rm -f main/$(DEPDIR)/readtags-mio.Po
+	-rm -f main/$(DEPDIR)/utiltest-mio.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-cmake.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-ctags-optlib.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-elixir.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-forth.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-gdbinit.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-gperf.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-iPythonCell.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-inko.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-kconfig.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-lex.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-man.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-meson.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-mesonOptions.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-org.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-passwd.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-pkgConfig.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-pod.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-puppetManifest.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-qemuhx.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-rdoc.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-rpmMacros.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-scss.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-systemtap.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-terraform.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-terraformvariables.Po
+	-rm -f optlib/$(DEPDIR)/libctags_a-yacc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-abaqus.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-abc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ada.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ansibleplaybook.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ant.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-asciidoc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-asm.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-asp.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-autoconf.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-autoit.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-automake.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-awk.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-basic.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-bats.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-beta.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-biblatex.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-bibtex.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-c-based.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-clojure.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-cobol.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-cpreprocessor.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-css.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-dbusintrospect.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-diff.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-dosbatch.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-dtd.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-dts.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-eiffel.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-erlang.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-falcon.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-flex.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-fortran.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-frontmatter.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-fypp.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-gdscript.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-gemspec.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-glade.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-go.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-haskell.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-haxe.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-html.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-i18nrubygem.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-iniconf.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-itcl.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-jprop.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-jscript.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-json.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-julia.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ldscript.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-lisp.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-lua.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-m4.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-make.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-markdown.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-matlab.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-maven2.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-myrddin.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-nsis.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-objc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ocaml.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-openapi.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-pascal.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-perl-function-parameters.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-perl-moose.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-perl.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-php.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-plist.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-powershell.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-protobuf.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-python.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-pythonloggingconfig.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-quarto.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-r-r6class.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-r-s4class.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-r.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rake.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-raku.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-relaxng.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rexx.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rmarkdown.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-robot.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rpmspec.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rspec.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rst.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ruby.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-rust.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-scheme.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-sh.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-slang.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-sml.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-sql.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-svg.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-systemdunit.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-tcl.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-tcloo.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-tex-beamer.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-tex.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-ttcn.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-txt2tags.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-typescript.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-v.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-vera.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-verilog.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-vhdl.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-vim.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-windres.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-xml.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-xrc.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-xslt.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-yaml.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-yamlfrontmatter.Po
+	-rm -f parsers/$(DEPDIR)/libctags_a-yumrepo.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_debug_type.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_keyword.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_block.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_function.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_lambda.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_module.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_namespace.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_template.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_tokenizer.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_typedef.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_using.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_parser_variable.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_qtmoc.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_scope.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_side_chain.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_subparser.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_tag.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_token.Po
+	-rm -f parsers/cxx/$(DEPDIR)/libctags_a-cxx_token_chain.Po
+	-rm -f peg/$(DEPDIR)/libctags_a-elm.Po
+	-rm -f peg/$(DEPDIR)/libctags_a-kotlin.Po
+	-rm -f peg/$(DEPDIR)/libctags_a-thrift.Po
+	-rm -f peg/$(DEPDIR)/libctags_a-varlink.Po
 	-rm -f Makefile
-maintainer-clean-am: distclean-am maintainer-clean-generic
+maintainer-clean-am: distclean-am maintainer-clean-generic \
+	maintainer-clean-local
 
-mostlyclean: mostlyclean-am
+mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-generic
+mostlyclean-am: mostlyclean-compile mostlyclean-generic
 
-pdf: pdf-am
+pdf: pdf-recursive
 
 pdf-am:
 
-ps: ps-am
+ps: ps-recursive
 
 ps-am:
 
-uninstall-am:
+uninstall-am: uninstall-binPROGRAMS
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
+.MAKE: $(am__recursive_targets) all check install install-am \
+	install-exec install-exec-am install-strip uninstall-am
 
-.MAKE: install-am install-strip
-
-.PHONY: all all-am am--refresh check check-am clean clean-generic \
-	cscopelist-am ctags-am dist dist-all dist-bzip2 dist-gzip \
-	dist-lzip dist-shar dist-tarZ dist-xz dist-zip dist-zstd \
-	distcheck distclean distclean-generic distcleancheck distdir \
-	distuninstallcheck dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am tags-am uninstall \
-	uninstall-am
+.PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
+	am--depfiles am--refresh check check-am clean \
+	clean-binPROGRAMS clean-cscope clean-generic clean-local \
+	clean-noinstLIBRARIES clean-noinstPROGRAMS cscope \
+	cscopelist-am ctags ctags-am dist dist-all dist-bzip2 \
+	dist-gzip dist-hook dist-lzip dist-shar dist-tarZ dist-xz \
+	dist-zip dist-zstd distcheck distclean distclean-compile \
+	distclean-generic distclean-hdr distclean-tags distcleancheck \
+	distdir distuninstallcheck dvi dvi-am html html-am info \
+	info-am install install-am install-binPROGRAMS install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-exec-hook install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic \
+	maintainer-clean-local mostlyclean mostlyclean-compile \
+	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am uninstall-binPROGRAMS uninstall-hook
 
 .PRECIOUS: Makefile
 
+$(GNULIB_LIBS):
+	$(MAKE) -C $(GNULIB_DIR) all
+
+#NOTE: using -C for container context
+#gpg-recv-keys-bitcoin-devs:##
+#	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD)/.github -vr -W $(PWD)/.github/workflows/$@.yml
+macos-matrix:docker-start## 	macos-matrix
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
+make-nvm:docker-start## 	make-nvm
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
+ubuntu-make-legit:docker-start## 	ubuntu-make-legit
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
+ubuntu-pre-release:docker-start## 	ubuntu-pre-release
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
+macos-make-legit:docker-start## 	macos-make-legit
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
+macos-pre-release:docker-start## 	macos-pre-release
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
+makefile:docker-start## 	makefile
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vb  -W $(PWD)/.github/workflows/$@.yml
+ubuntu-matrix:docker-start## 	ubuntu-matrix
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
+
+# vim: ts=8
+
+# for distcheck
+clean-local:
+	@if test "$(top_srcdir)" != "$(top_builddir)"; then \
+		rm -rf $(OPTLIB2C_SRCS) $(OPTLIB2C_PCRE2_SRCS); \
+		rm -rf $(TXT2CSTR_SRCS); \
+	else \
+		$(MAKE) -C docs clean; \
+	fi
+
+maintainer-clean-local:
+	rm -rf .deps misc/packcc/.dirstamp
+$(PACKCC): $(srcdir)/$(PACKCC_SRC)
+	$(cc4b_verbose)$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) $(CPPFLAGS_FOR_BUILD) $(PACKCC_CPPFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) -o $@ $(srcdir)/$(PACKCC_SRC)
+$(REPOINFO_SRCS): $(REPOINFO_HEADS)
+$(REPOINFO_HEADS): FORCE
+	$(repoinfo_verbose)$(GEN_REPOINFO) $@
+FORCE:
+#$(REPOINFO_HEADS):
+#	$(repoinfo_verbose)echo > $@
+.ctags.c:
+	$(optlib2c_verbose)$(OPTLIB2C) $< > $@
+$(OPTLIB2C_SRCS): $(OPTLIB2C) Makefile
+$(OPTLIB2C_PCRE2_SRCS): $(OPTLIB2C) Makefile
+.ps.c:
+	$(txt2cstr_verbose)$(TXT2CSTR) $< > $@
+$(TXT2CSTR_SRCS): $(TXT2CSTR) Makefile
+.peg.c:
+	$(packcc_verbose)$(PACKCC) -o $(top_builddir)/peg/$(*F) "$<"
+.peg.h:
+	$(packcc_verbose)$(PACKCC) -o $(top_builddir)/peg/$(*F) "$<"
+# You cannot use $(PACKCC) as a target name here.
+$(PEG_SRCS) $(PEG_HEADS): $(PACKCC) Makefile
+#$(RES_OBJ): win32/ctags.rc win32/ctags.exe.manifest win32/resource.h
+#	@mkdir -p $(builddir)/win32
+#	$(windres_verbose)$(WINDRES) -o $@ -O coff $<
+
+#install-exec-hook:
+#	cd $(DESTDIR)$(bindir) && \
+#		$(LN_S) ctags$(EXEEXT) etags$(EXEEXT)
+
+#uninstall-hook:
+#	rm $(DESTDIR)$(bindir)/etags$(EXEEXT)
+
+dist-hook:
+	rm -rf $(distdir)/docs/_build
+	find $(distdir)/Tmain $(distdir)/Units \( \
+		-name '*-actual.txt' -o -name '*-diff.txt' -o \
+		-name '*.TMP' -o -name '*.tmp' -o -name '*~' -o \
+		-name 'dist.m4' -o -name 'Makefile.am' -o \
+		-name 'Makefile.in' -o -name 'Makefile' -o \
+		-name 'BUNDLES' \) -exec rm -f {} +
+
+requirements:
+	$(shell which python3) -m pip install -r requirements.txt
+
+# -*- makefile -*-
+.PHONY: check units fuzz noise tmain tinst tlib man-test clean-units clean-tlib clean-tmain clean-gcov clean-man-test run-gcov codecheck cppcheck dicts validate-input check-genfile tutil
+
+check: tmain units tlib man-test check-genfile tutil
+
+# We may use CLEANFILES, DISTCLEANFILES, or etc.
+clean-local: clean-units clean-tmain clean-man-test clean-tlib clean-gcov
+
+#
+# FUZZ Target
+#
+# SHELL must be dash or bash.
+#
+fuzz: $(CTAGS_DEP)
+	$(V_RUN) \
+	if test -n "$${ZSH_VERSION+set}"; then set -o SH_WORD_SPLIT; fi; \
+	if test x$(VG) = x1; then		\
+		VALGRIND=--with-valgrind;	\
+	fi;					\
+	c="$(srcdir)/misc/units fuzz \
+		--ctags=$(CTAGS_TEST) \
+		--languages=$(LANGUAGES) \
+		$${VALGRIND} --run-shrink \
+		--with-timeout=`expr $(TIMEOUT) '*' 10`"; \
+	$(SHELL) $${c} $(srcdir)/Units
+
+#
+# NOISE Target
+#
+noise: $(CTAGS_DEP)
+	$(V_RUN) \
+	if test -n "$${ZSH_VERSION+set}"; then set -o SH_WORD_SPLIT; fi; \
+	if test x$(VG) = x1; then		\
+		VALGRIND=--with-valgrind;	\
+	fi;					\
+	c="$(srcdir)/misc/units noise \
+		--ctags=$(CTAGS_TEST) \
+		--languages=$(LANGUAGES) \
+		$${VALGRIND} --run-shrink \
+		--with-timeout=$(TIMEOUT)"; \
+	$(SHELL) $${c} $(srcdir)/Units
+
+#
+# CHOP Target
+#
+chop: $(CTAGS_DEP)
+	$(V_RUN) \
+	if test -n "$${ZSH_VERSION+set}"; then set -o SH_WORD_SPLIT; fi; \
+	if test x$(VG) = x1; then		\
+		VALGRIND=--with-valgrind;	\
+	fi;					\
+	c="$(srcdir)/misc/units chop \
+		--ctags=$(CTAGS_TEST) \
+		--languages=$(LANGUAGES) \
+		$${VALGRIND} --run-shrink \
+		--with-timeout=$(TIMEOUT)"; \
+	$(SHELL) $${c} $(srcdir)/Units
+slap: $(CTAGS_DEP)
+	$(V_RUN) \
+	if test -n "$${ZSH_VERSION+set}"; then set -o SH_WORD_SPLIT; fi; \
+	if test x$(VG) = x1; then		\
+		VALGRIND=--with-valgrind;	\
+	fi;					\
+	c="$(srcdir)/misc/units slap \
+		--ctags=$(CTAGS_TEST) \
+		--languages=$(LANGUAGES) \
+		$${VALGRIND} --run-shrink \
+		--with-timeout=$(TIMEOUT)"; \
+	$(SHELL) $${c} $(srcdir)/Units
+
+#
+# UNITS Target
+#
+units: $(CTAGS_DEP)
+	$(V_RUN) \
+	if test -n "$${ZSH_VERSION+set}"; then set -o SH_WORD_SPLIT; fi; \
+	if test x$(VG) = x1; then		\
+		VALGRIND=--with-valgrind;	\
+	fi;					\
+	if ! test x$(CI) = x; then	\
+		SHOW_DIFF_OUTPUT=--show-diff-output;		\
+	fi;							\
+	builddir=$$(pwd); \
+	if ! test x$(PYTHON) = x; then	\
+		PROG=$(PYTHON);		\
+		SCRIPT=$(srcdir)/misc/units.py;	\
+		if type cygpath > /dev/null 2>&1; then	\
+			builddir=$$(cygpath -m "$$(pwd)");	\
+			if ! test x$(SHELL) = x; then	\
+				SHELL_OPT=--shell=$$(cygpath -m $(SHELL));	\
+			fi;	\
+		else	\
+			if ! test x$(SHELL) = x; then	\
+				SHELL_OPT=--shell=$(SHELL);	\
+			fi;	\
+		fi;	\
+	else	\
+		PROG=$(SHELL);		\
+		SCRIPT=$(srcdir)/misc/units;	\
+	fi;	\
+	mkdir -p $${builddir}/Units && \
+	\
+	c="$${SCRIPT} run \
+		--ctags=$(CTAGS_TEST) \
+		--languages=$(LANGUAGES) \
+		--categories=$(CATEGORIES) \
+		--units=$(UNITS) \
+		--with-pretense-map=$(PMAP) \
+		$${VALGRIND} --run-shrink \
+		--with-timeout=`expr $(TIMEOUT) '*' 10`\
+		$${SHELL_OPT} \
+		$${SHOW_DIFF_OUTPUT}"; \
+		 $${PROG} $${c} $(srcdir)/Units $${builddir}/Units
+
+clean-units:
+	$(SILENT) echo Cleaning test units
+	$(SILENT) if test -d $$(pwd)/Units; then \
+		$(SHELL) $(srcdir)/misc/units clean $$(pwd)/Units; \
+	fi
+
+#
+# VALIDATE-INPUT Target
+#
+validate-input:
+	$(V_RUN) \
+	if test -n "$${ZSH_VERSION+set}"; then set -o SH_WORD_SPLIT; fi; \
+	if test -n "$(VALIDATORS)"; then	\
+		VALIDATORS="--validators=$(VALIDATORS)"; \
+	fi; \
+	c="$(srcdir)/misc/units validate-input \
+		--categories=$(CATEGORIES) \
+		$${VALIDATORS}"; \
+	$(SHELL) $${c} $(srcdir)/Units $(srcdir)/misc/validators
+
+#
+# Test main part, not parsers
+#
+tmain: $(CTAGS_DEP) $(READTAGS_DEP) $(OPTSCRIPT_DEP)
+	$(V_RUN) \
+	if test -n "$${ZSH_VERSION+set}"; then set -o SH_WORD_SPLIT; fi; \
+	if test x$(VG) = x1; then		\
+		VALGRIND=--with-valgrind;	\
+	fi;					\
+	if ! test x$(CI) = x; then	\
+		SHOW_DIFF_OUTPUT=--show-diff-output;		\
+	fi;							\
+	builddir=$$(pwd); \
+	if ! test x$(PYTHON) = x; then	\
+		PROG=$(PYTHON);		\
+		SCRIPT=$(srcdir)/misc/units.py;	\
+		if type cygpath > /dev/null 2>&1; then	\
+			builddir=$$(cygpath -m "$$(pwd)");	\
+			if ! test x$(SHELL) = x; then	\
+				SHELL_OPT=--shell=$$(cygpath -m $(SHELL));	\
+			fi;	\
+		else	\
+			if ! test x$(SHELL) = x; then	\
+				SHELL_OPT=--shell=$(SHELL);	\
+			fi;	\
+		fi;	\
+	else	\
+		PROG=$(SHELL);		\
+		SCRIPT=$(srcdir)/misc/units;	\
+	fi;	\
+	mkdir -p $${builddir}/Tmain && \
+	\
+	c="$${SCRIPT} tmain \
+		--ctags=$(CTAGS_TEST) \
+		--units=$(UNITS) \
+		$${VALGRIND} \
+		$${SHELL_OPT} \
+		$${SHOW_DIFF_OUTPUT}"; \
+		$${PROG} $${c} $(srcdir)/Tmain $${builddir}/Tmain
+
+clean-tmain:
+	$(SILENT) echo Cleaning main part tests
+	$(SILENT) if test -d $$(pwd)/Tmain; then \
+		$(SHELL) $(srcdir)/misc/units clean-tmain $$(pwd)/Tmain; \
+	fi
+
+tlib: $(MINI_GEANY_DEP)
+	$(V_RUN) \
+	builddir=$$(pwd); \
+	mkdir -p $${builddir}/misc; \
+	if test -s '$(MINI_GEANY_TEST)'; then \
+		if $(SHELL) $(srcdir)/misc/tlib $(MINI_GEANY_TEST) \
+			$(srcdir)/misc/mini-geany.expected \
+			$${builddir}/misc/mini-geany.actual \
+			$(VG); then \
+			echo 'mini-geany: OK'; true; \
+		else \
+			echo 'mini-geany: FAILED'; false; \
+		fi; \
+	else \
+		echo 'mini-geany: SKIP'; true; \
+	fi
+clean-tlib:
+	$(SILENT) echo Cleaning libctags part tests
+	$(SILENT) builddir=$$(pwd); \
+		rm -f $${builddir}/misc/mini-geany.actual
+
+#
+# Test installation
+#
+tinst:
+	$(V_RUN) \
+	builddir=$$(pwd); \
+	rm -rf $$builddir/$(TINST_ROOT); \
+	$(SHELL) $(srcdir)/misc/tinst $(srcdir) $$builddir/$(TINST_ROOT)
+
+#
+# Test readtags
+#
+roundtrip: $(READTAGS_DEP)
+	$(V_RUN) \
+	if ! test x$(CI) = x; then	\
+		ROUNDTRIP_FLAGS=--minitrip;			\
+	fi;							\
+	builddir=$$(pwd); \
+	$(SHELL) $(srcdir)/misc/roundtrip $(READTAGS_TEST) $${builddir}/Units $${ROUNDTRIP_FLAGS}
+#roundtrip:
+
+#
+# Checking code in ctags own rules
+#
+codecheck: $(CTAGS_DEP)
+	$(V_RUN) $(SHELL) misc/src-check
+
+#
+# Report coverage (usable only if ctags is built with "configure --enable-coverage-gcov".)
+#
+run-gcov:
+	$(CTAGS_TEST) -o - $$(find ./Units -name 'input.*'| grep -v '.*b/.*') > /dev/null
+	gcov $$(find -name '*.gcda')
+
+clean-gcov:
+	$(SILENT) echo Cleaning coverage reports
+	$(SILENT) rm -f $(ALL_SRCS:.c=.gcda)
+	$(SILENT) rm -f $(srcdir)/*.gcov
+
+cppcheck:
+	cppcheck $(CPPCHECK_DEFS) $(CPPCHECK_UNDEFS) $(CPPCHECK_FLAGS) \
+		 $$(git  ls-files | grep '^\(parsers\|main\)/.*\.[ch]' )
+
+#
+# Testing examples in per-language man pages
+#
+man-test: $(CTAGS_DEP)
+	$(V_RUN) \
+	$(PYTHON) $(srcdir)/misc/man-test.py $(MAN_TEST_TMPDIR) $(CTAGS_TEST) $(srcdir)/man/ctags-lang-*.7.rst.in
+
+clean-man-test:
+	rm -rf $(MAN_TEST_TMPDIR)
+
+# OPTLIB2C_SRCS : committed for win32 build
+.PHONY: cg-clean-optlib2c-srcs cg-force-optlib2c-srcs check-genfile-optlib2c-srcs
+cg-clean-optlib2c-srcs:
+	$(chkgen_verbose)rm -f $(OPTLIB2C_SRCS)
+cg-force-optlib2c-srcs: cg-clean-optlib2c-srcs
+	$(chkgen_verbose)$(MAKE) $(OPTLIB2C_SRCS)
+check-genfile-optlib2c-srcs: $(recover_side_effects) cg-force-optlib2c-srcs
+	$(chkgen_verbose)if ! git diff --exit-code $(OPTLIB2C_DIR); then \
+		$(cgerr) "Files under $(OPTLIB2C_DIR) are not up to date." ; \
+		$(cgerr) "If you change $(OPTLIB2C_DIR)/foo.ctags, don't forget to add $(OPTLIB2C_DIR)/foo.c to your commit." ; \
+		exit 1 ; \
+	else \
+		$(cgok) "Files under $(OPTLIB2C_DIR) are up to date." ; \
+	fi
+
+# TXT2CSTR_SRCS : committed for win32 build
+.PHONY: cg-clean-txt2cstr-srcs cg-force-txt2cstr-srcs check-genfile-txt2cstr-srcs
+cg-clean-txt2cstr-srcs:
+	$(chkgen_verbose)rm -f $(TXT2CSTR_SRCS)
+cg-force-txt2cstr-srcs: cg-clean-txt2cstr-srcs
+	$(chkgen_verbose)$(MAKE) $(TXT2CSTR_SRCS)
+check-genfile-txt2cstr-srcs: $(recover_side_effects) cg-force-txt2cstr-srcs
+	$(chkgen_verbose)if ! git diff --exit-code $(TXT2CSTR_DIR); then \
+		$(cgerr) "Files under $(TXT2CSTR_DIR) are not up to date." ; \
+		$(cgerr) "If you change $(TXT2CSTR_DIR)/foo.ps, don't forget to add $(TXT2CSTR_DIR)/foo.c to your commit." ; \
+		exit 1 ; \
+	else \
+		$(cgok) "Files under $(TXT2CSTR_DIR) are up to date." ; \
+	fi
+
+# man/*.in : committed for man pages to be genrated without rst2man
+#   make clean-docs remove both man/*.in and docs/man/*.rst
+.PHONY: cg-clean-man-docs cg-force-man-docs check-genfile-man-docs
+cg-clean-man-docs:
+#	$(chkgen_verbose)$(MAKE) -C man clean-docs
+cg-force-man-docs: cg-clean-man-docs
+#	$(chkgen_verbose)$(MAKE) -C man man-in
+check-genfile-man-docs:  $(recover_side_effects) cg-force-man-docs
+#	$(chkgen_verbose)if ! git diff --exit-code -- man; then \
+#		$(cgerr) "Files under man/ are not up to date." ; \
+#		$(cgerr) "Please execute 'make -C man man-in' and commit them." ; \
+#		exit 1 ; \
+#	else \
+#		$(cgok) "Files under man are up to date." ; \
+#	fi
+
+# docs/man/*.rst : committed for Read the Docs
+.PHONY: cg-force-update-docs check-genfile-update-docs
+cg-force-update-docs: check-genfile-man-docs
+#	$(chkgen_verbose)$(MAKE) -C man update-docs
+
+check-genfile-update-docs: cg-force-update-docs $(recover_side_effects)
+#	$(chkgen_verbose)if ! git diff --exit-code -- docs/man; then \
+#		$(cgerr) "Files under docs/man/ are not up to date." ; \
+#		$(cgerr) "Please execute 'make -C man update-docs' and commit them." ; \
+#		exit 1 ; \
+#	else \
+#		$(cgok) "Files under docs/man are up to date." ; \
+#	fi
+
+# win32/ctags_vs2013.vcxproj* : committed for win32 build without POSIX tools
+#   regenerate files w/o out-of-source build and w/ GNU make
+.PHONY: cg-force-win32 check-genfile-win32
+cg-force-win32:
+	$(chkgen_verbose)if test "$(top_srcdir)" = "$(top_builddir)" \
+		&& ($(MAKE) --version) 2>/dev/null | grep -q GNU ; then \
+		$(MAKE) -BC win32 ; \
+	fi
+check-genfile-win32: cg-force-win32 $(recover_side_effects)
+	$(chkgen_verbose)if ! git diff --exit-code -- win32; then \
+		if test "$(SKIP_CHECKGEN_WIN32)" = "yes"; then \
+			$(cgskip) "Skip checking the files under win32." ; \
+			exit 0 ; \
+		else \
+			$(cgerr) "Files under win32/ are not up to date." ; \
+			$(cgerr) "Please execute 'make -BC win32' and commit them." ; \
+			exit 1 ; \
+		fi \
+	else \
+		$(cgok) "Files under win32 are up to date." ; \
+	fi
+
+.PHONY: check-genfile-add-docs-man
+check-genfile-add-docs-man: $(recover_side_effects)
+	$(chkgen_verbose) {\
+		(cd man; git ls-files .) | grep ctags-lang- | sed -e 's/\.in$$//' > TEMP-MAN-LS; \
+		(cd docs/man; git ls-files .) | grep ctags-lang-  > TEMP-DOCS-MAN-LS; \
+		if ! diff TEMP-MAN-LS TEMP-DOCS-MAN-LS; then \
+			$(cgerr) 'See "<" lines above.'; \
+			$(cgerr) 'docs/man/*rst genereated from man/*rst.in are not in the git repo'; \
+			$(cgerr) 'Please add the genereated file to the git repo'; \
+			rm TEMP-MAN-LS TEMP-DOCS-MAN-LS; \
+			exit 1 ; \
+		else \
+			rm TEMP-MAN-LS TEMP-DOCS-MAN-LS; \
+			$(cgok) 'All rst files under docs/man are in our git repo'; \
+		fi; \
+	}
+
+.PHONY: check-genfile-docs-man-pages-rst
+check-genfile-docs-man-pages-rst: $(recover_side_effects)
+	$(chkgen_verbose) for f in $$( (cd docs/man; git ls-files .) | grep ctags-lang- ); do \
+		if ! grep -q $$f docs/man-pages.rst; then \
+			$(cgerr) "$$f is not found in docs/man-pages.rst"; \
+			$(cgerr) "Please add $$f to docs/man-pages.rst"; \
+			exit 1; \
+		fi; \
+	done; \
+	$(cgok) "docs/man-pages.rst includes all ctags-lang-*.rst"
+
+check-genfile: \
+	check-genfile-optlib2c-srcs \
+	check-genfile-txt2cstr-srcs \
+	check-genfile-update-docs \
+	check-genfile-add-docs-man \
+	check-genfile-docs-man-pages-rst \
+	check-genfile-win32
+
+#
+# Test installation
+#
+tutil: $(UTILTEST_DEP)
+# See _VALGRIND_EXIT in misc/uints.py about 56.
+	$(V_RUN) vg=; \
+	if test x$(VG) = x1; then \
+		vg="valgrind "; \
+		vg="$$vg --leak-check=full"; \
+		vg="$$vg --track-origins=yes"; \
+		vg="$$vg --error-exitcode=56"; \
+	fi; \
+	\
+	builddir=$$(pwd); \
+	$$vg $$builddir/$(UTILTEST_TEST) -v
+
+# -*- makefile -*-
+.PHONY: help
+
+help:
+	@echo "Compilation targets:"
+	@echo ""
+	@echo "make                              - Build $(CTAGS_PROG)"
+	@echo "make V=1                          - Build $(CTAGS_PROG) with verbose output"
+	@echo "make -f mk_mingw.mak              - Build $(CTAGS_PROG) using MinGW"
+	@echo "make -f mk_mingw.mak V=1          - Build $(CTAGS_PROG) using MinGW with verbose output"
+	@echo "make -C docs html                 - Build HTML documents by Sphinx"
+	@echo ""
+	@echo "Testing targets:"
+	@echo ""
+	@echo "make units                        - Run parser unit test cases"
+	@echo "make tmain                        - Run ctags main functionality test cases"
+	@echo "make tlib                         - Run mini-geany test cases"
+	@echo "make tutil                        - Run utiltest test cases"
+	@echo "make man-test                     - Run testing examples in per-language man pages"
+	@echo "make check-genfile                - Run testing generated files are committed"
+	@echo "make check                        - Run all tests above"
+	@echo ""
+	@echo "make fuzz                         - Verify that all parsers are able to properly process each available test unit"
+	@echo "make noise                        - Verify the behavior of parsers for broken input: a character injected or removed randomly"
+	@echo "make chop                         - Verify the behavior of parsers for broken input: randomly truncated from tail"
+	@echo "make slap                         - Verify the behavior of parsers for broken input: randomly truncated from head"
+	@echo "make roundtrip                    - Verify the behavior of readtags command"
+	@echo
+	@echo "Arguments that can be used in testing targets:"
+	@echo
+	@echo "V=1                               - Verbose output"
+	@echo "VG=1                              - Run test cases with Valgrind memory profiler"
+	@echo "LANGUAGES=<language>[,<language>] - Only run test cases of the selected languages"
+	@echo "CATEGORIES=<category>             - Only run tests available under folder Units/<category>.r"
+	@echo "UNITS=<case>[,<case>]             - Only run tests named Units/[category.r/]/<case>.d in units target"
+	@echo "                                                         Tmain/<case>.d in tmain target"
+	@echo "PMAP=<newlang>/<oldlang>[,...]    - Make <newlang> parser pretend <oldlang> (units target only)"
+	@echo ""
+	@echo "Input validation target:"
+	@echo ""
+	@echo "make validate-input               - Validate the input files themselves, not ctags"
+	@echo
+	@echo "Arguments that can be used in input validation target:"
+	@echo "VALIDATORS=<validator>,[<validator>] - Validate only input files expecting validated by VALIDATORs"
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

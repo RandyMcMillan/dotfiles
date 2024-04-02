@@ -7,6 +7,12 @@ $(GNULIB_LIBS):
 	$(MAKE) -C $(GNULIB_DIR) all
 SUBDIRS = $(GNULIB_DIR) . man
 
+include $(top_srcdir)/funcs.mk
+include $(top_srcdir)/legit.mk
+include $(top_srcdir)/nostril.mk
+include $(top_srcdir)/venv.mk
+include $(top_srcdir)/act.mk
+
 include $(top_srcdir)/source.mak
 
 PACKCC_FILES = misc/packcc/.gitignore   \

@@ -244,8 +244,7 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--:## - default - try 'make submodules'
--:
+default:## - default - try 'make submodules'
 	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	eval "$(/opt/homebrew/bin/brew shellenv)" #&
 	#NOTE: 2 hashes are detected as 1st column output with color
@@ -257,7 +256,7 @@ autoconf:## ./autogen.sh && ./configure
 nodegit$(EXEEXT):
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
 
-clean-local:
+gnu-clean-local:
 	-cd $(NODE_MODULE_DIR) && node-gyp clean
 
 ##	:	-
@@ -295,7 +294,7 @@ iterm:## brew install --cask iterm2
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
 .PHONY: help
-help:## print verbose help
+gnu-help:## print verbose help
 	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
 	@echo ''
 	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
@@ -371,7 +370,7 @@ bootstrap: exec
 
 .PHONY: install
 ##	:	install		 	install sequence
-install: executable
+gnu-install: executable
 	@echo "install sequence here..."
 
 
@@ -717,7 +716,7 @@ funcs:
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 
--include Makefile
+#-include Makefile
 -include funcs.mk
 -include legit.mk
 -include nostril.mk

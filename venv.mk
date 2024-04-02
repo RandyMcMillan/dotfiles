@@ -31,11 +31,9 @@ export PYTHON_VERSION
 
 .PHONY: venv
 venv:
-	@#rm -rf .venv
-	@#python -c 'import sys; print (sys.real_prefix)' 2>/dev/null && INVENV=1 && echo $(INVENV) || INVENV=0 && echo $(INVENV)
-	test -d .venv || $(shell which python3.8) -m virtualenv .venv
+	test -d .venv || pipx install virtualenv && virtualenv .venv
 	( \
-	   source .venv/bin/activate; pip install -r requirements.txt; \
+	source .venv/bin/activate; python3 -m pip install -r requirements.txt; \
 	);
 	@echo "To activate (venv)"
 	@echo "try:"
@@ -43,26 +41,24 @@ venv:
 	@echo "or:"
 	@echo "make venv-test"
 venv-test:
-	# insert test commands here
+# insert test commands here
 	test -d .venv || $(shell which python3.8) -m virtualenv .venv
 	( \
 	   source .venv/bin/activate; pip install -r requirements.txt; \
 	);
 venv-install:
 	@echo "python3 v$(python_version_major).$(python_version_minor).$(python_version_patch)"
-ifneq (python_version_major,3)
-ifneq (python_version_minor,8)
-	@echo "installing python@3.8"
-	@if hash brew 2>/dev/null; then brew install -q python@3.8 libpq; python3.8 -m pip install virtualenv; fi;
-	@if hash apt-get 2>/dev/null; then sudo apt-get update && sudo apt-get install software-properties-common; fi;
-	@if hash add-apt-repository 2>/dev/null; then sudo add-apt-repository ppa:deadsnakes/ppa; sudo apt-get install python3.8; fi;
-endif
-ifeq (python_version_minor,8)
-	@export LDFLAGS="-L/usr/local/opt/libpq/lib"
-	@export CPPFLAGS="-I/usr/local/opt/libpq/include"
-	@export PKG_CONFIG_PATH="/usr/local/opt/libpq/lib/pkgconfig"
-	@git submodule update --init --recursive
-	#@$(shell command -v python3.8) -m pip install -U -r requirements.txt
-	@$(shell command -v python3.8) -m pip install -U -r requirements.lock
-endif
-endif
+	ifneq (python_version_major,3)
+	
+	ifneq (python_version_minor,8)
+		@echo "installing python@3.8"
+		@if hash brew 2>/dev/null; then brew install -q python@3.8 libpq; python3.8 -m pip install virtualenv; fi;
+		@if hash apt-get 2>/dev/null; then sudo apt-get update && sudo apt-get install software-properties-common; fi;
+		@if hash add-apt-repository 2>/dev/null; then sudo add-apt-repository ppa:deadsnakes/ppa; sudo apt-get install python3.8; fi;
+		@export LDFLAGS="-L/usr/local/opt/libpq/lib"
+		@export CPPFLAGS="-I/usr/local/opt/libpq/include"
+		@export PKG_CONFIG_PATH="/usr/local/opt/libpq/lib/pkgconfig"
+		@git submodule update --init --recursive
+		@$(shell command -v python3.8) -m pip install -U -r requirements.lock
+	endif
+	endif

@@ -32,6 +32,7 @@
 #include "parse.h"
 #include "read.h"
 #include "routines.h"
+#include "selectors.h"
 #include "xtag.h"
 #include "ptrarray.h"
 
@@ -302,7 +303,7 @@ static ptrArray *tagContents;
 static fieldDefinition *fieldTable = NULL;
 
 // IEEE Std 1364-2005 LRM, Appendix B "List of Keywords"
-const static struct keywordGroup verilogKeywords = {
+static const struct keywordGroup verilogKeywords = {
 	.value = K_IGNORE,
 	.addingUnlessExisting = true,
 	.keywords = {
@@ -329,7 +330,7 @@ const static struct keywordGroup verilogKeywords = {
 	},
 };
 // IEEE Std 1800-2017 LRM, Annex B "Keywords"
-const static struct keywordGroup systemVerilogKeywords = {
+static const struct keywordGroup systemVerilogKeywords = {
 	.value = K_IGNORE,
 	.addingUnlessExisting = true,
 	.keywords = {
@@ -379,7 +380,7 @@ const static struct keywordGroup systemVerilogKeywords = {
 };
 
 // IEEE Std 1364-2005 LRM, "19. Compiler directives"
-const static struct keywordGroup verilogDirectives = {
+static const struct keywordGroup verilogDirectives = {
 	.value = K_DIRECTIVE,
 	.addingUnlessExisting = true,
 	.keywords = {
@@ -392,7 +393,7 @@ const static struct keywordGroup verilogDirectives = {
 };
 
 // IEEE Std 1800-2017 LRM, "22. Compiler directives"
-const static struct keywordGroup systemVerilogDirectives = {
+static const struct keywordGroup systemVerilogDirectives = {
 	.value = K_DIRECTIVE,
 	.addingUnlessExisting = true,
 	.keywords = {
@@ -651,7 +652,7 @@ static int verilogSkipOverCComment (void)
 				c = next;
 			else
 			{
-				c = SPACE;	/* replace comment with space */
+				c = ' ';	/* replace comment with space */
 				break;
 			}
 		}
@@ -940,7 +941,7 @@ static void createContext (verilogKind kind, vString* const name)
 	}
 }
 
-static void dropContext ()
+static void dropContext (void)
 {
 	verbose ("Dropping context %s\n", vStringValue (currentContext->name));
 	currentContext = popToken (currentContext);
@@ -1014,8 +1015,7 @@ static void createTagFull (tokenInfo *const token, verilogKind kind, int role, t
 		initTagEntry (&tag, vStringValue (token->name), kind);
 	else
 		initRefTagEntry (&tag, vStringValue (token->name), kind, role);
-	tag.lineNumber = token->lineNumber;
-	tag.filePosition = token->filePosition;
+	updateTagLine (&tag, token->lineNumber, token->filePosition);
 
 	verbose ("Adding tag %s (kind %d)", vStringValue (token->name), kind);
 	if (currentContext->kind != K_UNDEFINED)
@@ -1878,7 +1878,8 @@ static int tagIdsInPort (tokenInfo *const token, int c, verilogKind kind, bool m
 // Tag a list of identifiers in a data declaration
 static int tagIdsInDataDecl (tokenInfo* token, int c, verilogKind kind)
 {
-	c = skipClassType (token, c);
+	if (token->kind != K_NET)
+		c = skipClassType (token, c);
 	if (c == ';')
 		return c;
 
@@ -2115,6 +2116,7 @@ extern parserDefinition* VerilogParser (void)
 {
 	static const char *const extensions [] = { "v", NULL };
 	parserDefinition* def = parserNew ("Verilog");
+	static selectLanguage selectors[] = { selectVOrVerilogByKeywords, NULL };
 	def->versionCurrent = 1;
 	def->versionAge = 1;
 	def->kindTable  = VerilogKinds;
@@ -2124,6 +2126,7 @@ extern parserDefinition* VerilogParser (void)
 	def->extensions = extensions;
 	def->parser     = findVerilogTags;
 	def->initialize = initializeVerilog;
+	def->selectLanguage  = selectors;
 	return def;
 }
 

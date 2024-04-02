@@ -56,7 +56,12 @@ struct sTagEntryInfo {
 	 */
 	unsigned int placeholder    :1;	 /* is used only for keeping corkIndex based scope chain.
 					    Put this entry to cork queue but
-					    don't print it to tags file. */
+						the tag is not printed:
+						* not printed as a tag entry,
+						* never used as a part of automatically generated FQ tag, and
+						* not printed as a part of scope.
+						See getTagScopeInformation() and
+						getFullQualifiedScopeNameFromCorkQueue. */
 
 	/*
 	 * the bit fields only the main part can access.
@@ -68,8 +73,10 @@ struct sTagEntryInfo {
 	unsigned int isInputFileNameShared: 1; /* shares the value for inputFileName.
 											* Set in the cork queue; don't touch this.*/
 	unsigned int boundaryInfo: 2; /* info about nested input stream */
+	unsigned int inIntevalTab:1;
 
-	unsigned long lineNumber;     /* line number of tag */
+	unsigned long lineNumber;     /* line number of tag;
+									 use updateTagLine() for updating this member. */
 	const char* pattern;	      /* pattern for locating input line
 				       * (may be NULL if not present) *//*  */
 	MIOPos      filePosition;     /* file position of line containing tag */
@@ -119,7 +126,7 @@ struct sTagEntryInfo {
 #ifdef HAVE_LIBXML
 		const char* xpath;
 #endif
-		unsigned long endLine;
+		unsigned long _endLine;	/* Don't set directly. Use setTagEndLine() */
 		time_t epoch;
 #define NO_NTH_FIELD -1
 		short nth;
@@ -241,12 +248,59 @@ int           anyKindsEntryInScopeRecursive (int corkIndex,
 											 const int * kinds, int count,
 											 bool onlyDefinitionTag);
 
+extern void    updateTagLine(tagEntryInfo *tag, unsigned long lineNumber, MIOPos filePosition);
+extern void    setTagEndLine (tagEntryInfo *tag, unsigned long endLine);
+extern void    setTagEndLineToCorkEntry (int corkIndex, unsigned long endLine);
+
+extern int     queryIntervalTabByLine(unsigned long lineNum);
+extern int     queryIntervalTabByRange(unsigned long startLine, unsigned long endLine);
+extern int     queryIntervalTabByCorkEntry(int corkIndex);
+extern bool    removeFromIntervalTabMaybe(int corkIndex);
+
 extern void    markTagExtraBit     (tagEntryInfo *const tag, xtagType extra);
 extern void    unmarkTagExtraBit   (tagEntryInfo *const tag, xtagType extra);
 extern bool isTagExtraBitMarked (const tagEntryInfo *const tag, xtagType extra);
 
 /* If any extra bit is on, return true. */
 extern bool isTagExtra (const tagEntryInfo *const tag);
+
+/*
+  In the following frequently used code-pattern:
+
+     tagEntryInfo *original = getEntryInCorkQueue (index);
+     tagEntryInfo xtag = *original;
+	 ... customize XTAG ...
+	 makeTagEntry (&xtag);
+
+   ORIGINAL and XTAG share some memory objects through their members.
+   TagEntryInfo::name is one of obvious ones.
+   When updating the member in the ... customize XTAG ... stage, you will
+   do:
+
+      vStringValue *xtag_name = vStringNewInit (xtags->name);
+	  ... customize XTAG_NAME with vString functions ...
+	  xtag.name = vStringValue (xtag_name);
+	  makeTagEntry (&xtag);
+	  vStringDelete (xtag_name);
+
+   There are some vague ones: extraDynamic and parserFieldsDynamic.
+   resetTagCorkState does:
+
+   - mark the TAG is not in cork queue: set inCorkQueue 0.
+   - copy,  clear, or dont touch the extraDynamic member.
+   - copy,  clear, or dont touch the parserFieldsDynamic member.
+
+*/
+
+enum resetTagMemberAction {
+	RESET_TAG_MEMBER_COPY,
+	RESET_TAG_MEMBER_CLEAR,
+	RESET_TAG_MEMBER_DONTTOUCH,
+};
+
+extern void resetTagCorkState (tagEntryInfo *const tag,
+							   enum resetTagMemberAction xtagAction,
+							   enum resetTagMemberAction parserFieldsAction);
 
 /* Functions for attaching parser specific fields
  *

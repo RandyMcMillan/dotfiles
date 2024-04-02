@@ -11,8 +11,9 @@ jobs:
     runs-on: windows-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        msystem: [MSYS, MINGW32, MINGW64]
+        msystem: [MINGW32, MINGW64, CLANG32, CLANG64]
 
     defaults:
       run:
@@ -23,23 +24,13 @@ jobs:
       with:
         msystem: ${{ matrix.msystem }}
         update: true
-        install: git make automake1.16 autoconf
+        install: automake autoconf make dos2unix
+        pacboy: toolchain:p python3-sphinx:p jansson:p libxml2:p libyaml:p pcre2:p
 
-    - if:  matrix.msystem == 'MSYS'
-      run: pacman -S --noconfirm gcc libiconv-devel pkg-config python dos2unix
-
-    - if:  matrix.msystem == 'MINGW32'
-      run: pacman -S --noconfirm mingw-w64-i686-toolchain
-
-    - if:  matrix.msystem == 'MINGW64'
-      run: pacman -S --noconfirm mingw-w64-x86_64-toolchain
-
-    - run: ln -s /usr/bin/automake-1.16 /usr/bin/automake
-    - run: ln -s /usr/bin/aclocal-1.16  /usr/bin/aclocal
-    
     - run: git config --global core.autocrlf input
       shell: bash
-    - uses: actions/checkout@v3
+
+    - uses: actions/checkout@v4
 
     - run: ./autogen.sh
     - run: ./configure --prefix=/usr
@@ -47,10 +38,12 @@ jobs:
     - run: make install
     - run: file /usr/bin/ctags
     - run: ctags --version
-    
+
     - run: make check V=1
-     
+
     # FAILED: "./readtags.exe" -t "/d/a/ctags2/ctags2/Units/parser-asciidoc.r/utf8-asciidoc.d/expected.tags" - "@Ѐ–𐀀"
     # The raw tag name was "@Ѐ–𐀀"
-    - if:  matrix.msystem == 'MSYS'
-      run: make roundtrip
+    #- run: make roundtrip
+
+    - run: make tmain
+    - run: make units

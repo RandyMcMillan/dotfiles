@@ -385,6 +385,22 @@ vString * cxxTokenChainJoin(
 	return s;
 }
 
+void cxxTokenChainAppendEntries(CXXTokenChain * src, CXXTokenChain * dest)
+{
+	CXXToken * pDestLast = cxxTokenChainLast(dest);
+	CXXToken * pSrcFirst = cxxTokenChainFirst(src);
+
+	pDestLast->pNext = pSrcFirst;
+	pSrcFirst->pPrev = pDestLast;
+
+	dest->iCount += src->iCount;
+	dest->pTail = src->pTail;
+
+	src->iCount = 0;
+	src->pHead = NULL;
+	src->pTail = NULL;
+}
+
 #if 0
 // currently unused
 void cxxTokenChainMoveEntries(CXXTokenChain * src,CXXTokenChain * dest)
@@ -605,7 +621,7 @@ CXXToken * cxxTokenChainSkipBackToStartOfTemplateAngleBracket(CXXToken * t)
 	if(!t)
 		return NULL;
 	CXX_DEBUG_ASSERT(
-			t->eType == CXXTokenTypeGreaterThanSign,
+			cxxTokenTypeIs(t, CXXTokenTypeGreaterThanSign),
 			"This function must be called when pointing to a >"
 		);
 	int iLevel = 1;
@@ -637,7 +653,7 @@ CXXToken * cxxTokenChainFirstTokenOfType(
 	CXXToken * t = tc->pHead;
 	while(t)
 	{
-		if(t->eType & uTokenTypes)
+		if(cxxTokenTypeIsOneOf(t, uTokenTypes))
 			return t;
 		t = t->pNext;
 	}
@@ -654,7 +670,7 @@ CXXToken * cxxTokenChainNextTokenOfType(
 	t = t->pNext;
 	while(t)
 	{
-		if(t->eType & uTokenTypes)
+		if(cxxTokenTypeIsOneOf(t, uTokenTypes))
 			return t;
 		t = t->pNext;
 	}
@@ -671,7 +687,7 @@ CXXToken * cxxTokenChainPreviousTokenOfType(
 	t = t->pPrev;
 	while(t)
 	{
-		if(t->eType & uTokenTypes)
+		if(cxxTokenTypeIsOneOf(t, uTokenTypes))
 			return t;
 		t = t->pPrev;
 	}
@@ -688,7 +704,7 @@ CXXToken * cxxTokenChainPreviousTokenNotOfType(
 	t = t->pPrev;
 	while(t)
 	{
-		if(!(t->eType & uTokenTypes))
+		if(!(cxxTokenTypeIsOneOf(t, uTokenTypes)))
 			return t;
 		t = t->pPrev;
 	}
@@ -705,7 +721,7 @@ CXXToken * cxxTokenChainLastTokenOfType(
 	CXXToken * t = tc->pTail;
 	while(t)
 	{
-		if(t->eType & uTokenTypes)
+		if(cxxTokenTypeIsOneOf(t, uTokenTypes))
 			return t;
 		t = t->pPrev;
 	}
@@ -723,13 +739,13 @@ CXXToken * cxxTokenChainLastPossiblyNestedTokenOfType(
 	CXXToken * t = tc->pTail;
 	while(t)
 	{
-		if(t->eType & uTokenTypes)
+		if(cxxTokenTypeIsOneOf(t, uTokenTypes))
 		{
 			if(ppParentChain)
 				*ppParentChain = tc;
 			return t;
 		}
-		if(t->eType == CXXTokenTypeParenthesisChain)
+		if(cxxTokenTypeIs(t, CXXTokenTypeParenthesisChain))
 		{
 			CXXToken * tmp = cxxTokenChainLastPossiblyNestedTokenOfType(
 					t->pChain,
@@ -756,13 +772,13 @@ CXXToken * cxxTokenChainFirstPossiblyNestedTokenOfType(
 	CXXToken * t = tc->pHead;
 	while(t)
 	{
-		if(t->eType & uTokenTypes)
+		if(cxxTokenTypeIsOneOf(t, uTokenTypes))
 		{
 			if(ppParentChain)
 				*ppParentChain = tc;
 			return t;
 		}
-		if(t->eType == CXXTokenTypeParenthesisChain)
+		if(cxxTokenTypeIs(t, CXXTokenTypeParenthesisChain))
 		{
 			CXXToken * tmp = cxxTokenChainFirstPossiblyNestedTokenOfType(
 					t->pChain,
@@ -789,7 +805,7 @@ CXXToken * cxxTokenChainFirstTokenNotOfType(
 	CXXToken * t = tc->pHead;
 	while(t)
 	{
-		if(!(t->eType & uTokenTypes))
+		if(!(cxxTokenTypeIsOneOf(t, uTokenTypes)))
 			return t;
 		t = t->pNext;
 	}
@@ -824,7 +840,7 @@ CXXToken * cxxTokenChainNextTokenNotOfType(
 	t = t->pNext;
 	while(t)
 	{
-		if(!(t->eType & uTokenTypes))
+		if(!(cxxTokenTypeIsOneOf(t, uTokenTypes)))
 			return t;
 		t = t->pNext;
 	}
@@ -841,7 +857,7 @@ CXXToken * cxxTokenChainLastTokenNotOfType(
 	CXXToken * t = tc->pTail;
 	while(t)
 	{
-		if(!(t->eType & uTokenTypes))
+		if(!(cxxTokenTypeIsOneOf(t, uTokenTypes)))
 			return t;
 		t = t->pPrev;
 	}

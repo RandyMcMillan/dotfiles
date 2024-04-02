@@ -26,7 +26,8 @@ typedef struct NestingLevels NestingLevels;
 struct NestingLevel
 {
 	int corkIndex;
-	char userData [];
+	/* user data is allocated at the end of this struct (possibly with some
+	 * offset for alignment), get it with nestingLevelGetUserData() */
 };
 
 struct NestingLevels
@@ -57,5 +58,7 @@ extern NestingLevel *nestingLevelsGetNthFromRoot(const NestingLevels *nls, int n
 extern NestingLevel *nestingLevelsGetNthParent(const NestingLevels *nls, int n);
 
 extern void *nestingLevelGetUserData (const NestingLevel *nl);
+
+extern vString* nestingLevelsToScopeNew (const NestingLevels* nls, const char infixSeparator);
 
 #endif  /* CTAGS_MAIN_NESTLEVEL_H */

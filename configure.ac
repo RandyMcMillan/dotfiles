@@ -9,7 +9,8 @@
 AC_PREREQ([2.64])
 
 dnl You must update PROGRAM_VERSION in main/ctags.h, too.
-AC_INIT([universal-ctags],[6.0.0])
+dnl --version option of readtags also prints this.
+AC_INIT([universal-ctags],[6.1.0])
 
 if ! test -e "${srcdir}/config.h.in"; then
    echo "---"
@@ -45,8 +46,10 @@ case $host in
         fi
         ;;
     *freebsd*|*openbsd*)
-        # https://github.com/universal-ctags/ctags/issues/3338
-        export LDFLAGS="$LDFLAGS -L/usr/local/lib"
+        if test "$cross_compiling" = "no" ; then
+            # https://github.com/universal-ctags/ctags/issues/3338
+            export LDFLAGS="$LDFLAGS -L/usr/local/lib"
+        fi
         ;;
 esac
 
@@ -179,10 +182,6 @@ AC_ARG_ENABLE(readcmd,
 		[do not include readtags command during install])],
 	[], [enable_readcmd=yes])
 
-# AC_ARG_WITH(perl-regex,
-# 	[AS_HELP_STRING([--with-perl-regex],
-# 	    [use Perl pcre interface, if available])])
-
 AC_ARG_ENABLE(etags,
 	[AS_HELP_STRING([--enable-etags],
 		[enable the installation of links for etags])])
@@ -220,6 +219,10 @@ AC_ARG_ENABLE([debugging],
 AC_ARG_ENABLE([static],
 	[AS_HELP_STRING([--enable-static],
 		[enable static linking (mainly for MinGW)])])
+
+AC_ARG_ENABLE([lto],
+	[AS_HELP_STRING([--enable-lto],
+		[enable link time optimization])])
 
 AC_ARG_PROGRAM
 
@@ -261,7 +264,9 @@ AC_PROG_CC_C99
 #  Typically, this is immediately after AC_PROG_CC, ...
 gl_EARLY
 
+AC_ARG_VAR(RANLIB,[ranlib command or path])
 AC_PROG_RANLIB
+PRETTY_ARG_VAR([AR], [ar command or path], [ar])
 AC_C_BIGENDIAN
 
 if test "$cross_compiling" = "yes"; then
@@ -295,7 +300,7 @@ if test "$cross_compiling" = "yes"; then
 
     BUILD_OBJEXT='o'
 
-    if [ -f "$TEMP_DIR_FOR_CHECKING/test.exe" ] ; then
+    if test -f "$TEMP_DIR_FOR_CHECKING/test.exe" ; then
         BUILD_EXEEXT='.exe'
     fi
 else
@@ -321,14 +326,8 @@ AC_SUBST([LDFLAGS_FOR_BUILD])
 AC_SUBST([BUILD_OBJEXT])
 AC_SUBST([BUILD_EXEEXT])
 
-AC_ARG_VAR(AR,[ar command or path])
-AC_ARG_VAR(RANLIB,[ranlib command or path])
 AC_ARG_VAR(WINDRES,[windres command or path, used with mingw-w64])
 AC_SUBST([WINDRES])
-
-if test "x${AR}" = "x" ; then
-    AR=ar
-fi
 
 if test "x${WINDRES}" = "x" ; then
     WINDRES=windres
@@ -443,11 +442,17 @@ elif test -d "c:/"; then
 else
 	tmpdir="/tmp"
 fi
-if test -d $tmpdir ; then
-	AC_MSG_RESULT($tmpdir)
-	AC_DEFINE_UNQUOTED(TMPDIR, "$tmpdir")
+
+if test "$cross_compiling" = yes ; then
+        AC_MSG_RESULT($tmpdir)
+        AC_DEFINE_UNQUOTED(TMPDIR, "$tmpdir")
 else
-	AC_MSG_ERROR($tmpdir does not exist)
+    if test -d $tmpdir ; then
+        AC_MSG_RESULT($tmpdir)
+        AC_DEFINE_UNQUOTED(TMPDIR, "$tmpdir")
+    else
+        AC_MSG_ERROR($tmpdir does not exist)
+    fi
 fi
 
 # Test for case-insensitive filenames
@@ -573,6 +578,56 @@ PRETTY_ARG_VAR([EXTRA_CFLAGS], [extra C compiler flags],
 PRETTY_ARG_VAR([WARNING_CFLAGS], [C compiler warning flags],
 	       [-Wall])
 
+PRETTY_ARG_VAR([EXTRA_LDFLAGS], [extra linker flags],
+	       [])
+
+dnl ref. https://stackoverflow.com/questions/40374061/autoconf-recipe-to-use-gcc-ar-and-gcc-ranlib
+use_lto=no
+
+AS_IF([test "x$cross_compiling" != "xyes" -a "x$enable_lto" != "xno"],[
+		AX_CHECK_COMPILE_FLAG(-flto,[use_lto=yes])])
+AS_VAR_IF([use_lto], [yes], [
+	AS_CASE($CC,
+		[gcc|*/gcc],     [AC_CHECK_PROGS([LTO_AR], [gcc-ar ar],   [:])],
+		[clang|*/clang], [AC_CHECK_PROGS([LTO_AR], [clang-ar ar], [:])],
+		[use_lto=no])
+	AC_MSG_CHECKING([the wrapper for ar working with $CC -flto])
+	AS_VAR_IF([LTO_AR], [:], AC_MSG_ERROR([could not find AR tool working with -flto.]))
+	AS_VAR_IF([use_lto], [yes],
+		[AS_CASE($LTO_AR,
+			[*-ar],[AC_MSG_RESULT([$LTO_AR])],
+			[use_lto=no
+			 AC_MSG_RESULT([no suitable AR tool is found; truning off LTO])])],
+		[AC_MSG_RESULT([no suitable AR tool is found; truning off LTO])])
+])
+AS_VAR_IF([use_lto], [yes], [
+	AS_CASE($CC,
+		[gcc|*/gcc],     [AC_CHECK_PROGS([LTO_RANLIB], [gcc-ranlib ranlib],  [:])],
+		[clang|*/clang], [AC_CHECK_PROGS([LTO_RANLIB], [clang-ranlib ranlib], [:])],
+		[use_lto=no])
+	AC_MSG_CHECKING([the wrapper for ranlib working with $CC -flto])
+	AS_VAR_IF([LTO_RANLIB], [:], AC_MSG_ERROR([could not find RANLIB tool working with -flto.]))
+	AS_VAR_IF([use_lto], [yes],
+		[AS_CASE($LTO_RANLIB,
+			[*-ranlib],[AC_MSG_RESULT([$LTO_RANLIB])],
+			[use_lto=no
+			 AC_MSG_RESULT([no suitable ranlib tool is found; truning off LTO])])],
+		[AC_MSG_RESULT([no suitable ranlib is found; truning off LTO])])
+])
+AS_VAR_IF([use_lto], [yes], [
+	AR="$LTO_AR"
+	RANLIB="$LTO_RANLIB"
+	EXTRA_CFLAGS="$EXTRA_CFLAGS -flto"
+	EXTRA_LDFLAGS="$EXTRA_LDFLAGS -flto"
+],[
+	AS_VAR_IF([enable_lto], [yes], [
+		AC_MSG_ERROR([though --enable-lto is specified, the fto feature is not available nor usable.])
+	])
+])
+
+# Checks for function availability
+# -----------------------------------
+
 # For gnulib.
 #   Place it further down in the file, typically where you normally check for
 #   header files or functions.
@@ -598,7 +653,7 @@ if test "$have_mkstemp" != yes -a "$have_tempnam" != yes; then
 fi
 
 AC_CHECK_FUNCS(opendir findfirst _findfirst, break)
-AC_CHECK_FUNCS(strerror)
+AC_CHECK_FUNCS(strerror strsignal)
 
 AC_CHECK_FUNCS(truncate, have_truncate=yes)
 # === Cannot nest AC_CHECK_FUNCS() calls
@@ -649,11 +704,61 @@ dnl About the condition of version
 dnl see https://mail.gnome.org/archives/xml/2010-February/msg00008.html
 AS_IF([test "x$enable_xml" != "xno"], [
 	PKG_CHECK_MODULES(LIBXML, [libxml-2.0 >= 2.7.7],
-			       [have_libxml=yes
-			       AC_DEFINE(HAVE_LIBXML)],
-			       [AS_IF([test "x$enable_xml" = "xyes"], [
-			           AC_MSG_ERROR([libxml2 not found])])])
+				[AC_MSG_CHECKING([libxml-2.0 CRLF handling bug])
+				 ORIGINAL_CFLAGS=$CFLAGS
+				 ORIGINAL_LIBS=$LIBS
+				 CFLAGS="$CFLAGS $LIBXML_CFLAGS"
+				 LIBS="$LIBS $LIBXML_LIBS"
+				 AC_RUN_IFELSE([AC_LANG_SOURCE([[
+				 #include <libxml/parser.h>
+				 #include <libxml/tree.h>
+				 #include <string.h>
+
+				 #define CRLF "\r\n"
+				 #define __LF  " \n"
+
+				 const char * crlf = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><root><!---->"CRLF CRLF"<target/></root>";
+				 const char * __lf = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><root><!---->"__LF __LF"<target/></root>";
+
+				 static int run(const char *input)
+				 {
+					xmlDocPtr doc = xmlParseMemory(input, strlen(input));
+					xmlNode *root = xmlDocGetRootElement(doc);
+					xmlNode *node = root->children->next->next;
+					return  node->line;
+				 }
+
+				 int main(void)
+				 {
+					xmlLineNumbersDefault (1);
+					return run(crlf) == run(__lf)? 0: 1;
+				 }]])],[AC_MSG_RESULT([good])
+					have_libxml=yes
+					CFLAGS=$ORIGINAL_CFLAGS
+					LIBS=$ORIGINAL_LIBS
+					AC_DEFINE(HAVE_LIBXML)],
+				    [AC_MSG_RESULT([bad])
+				    AC_MSG_WARN([Xpath feature is disabled because the way of handling CRLF in libxml2 is broken.
+See https://gitlab.gnome.org/GNOME/libxml2/-/commit/43b511fa714df875dc4f40d108061eede0d4d76b])],
+				    dnl In a context of cross-compiling: We can not do try-run.
+				    dnl Instead, we check the version number only.
+				    [PKG_CHECK_MODULES(LIBXML12d0, [libxml-2.0 = 2.12.0],
+								   [AC_MSG_WARN([Xpath feature is disabled because the way of handling CRLF in libxml2 2.12.0 may be broken.
+See https://gitlab.gnome.org/GNOME/libxml2/-/commit/43b511fa714df875dc4f40d108061eede0d4d76b])
+								    have_libxml=no],[
+				     PKG_CHECK_MODULES(LIBXML12d1, [libxml-2.0 = 2.12.1],
+								   [AC_MSG_WARN([Xpath feature is disabled because the way of handling CRLF in libxml2 2.12.1 may be broken.
+See https://gitlab.gnome.org/GNOME/libxml2/-/commit/43b511fa714df875dc4f40d108061eede0d4d76b])
+								    have_libxml=no],
+				     dnl The available libxml-2.0 is not 2.12.[01].
+								   [have_libxml=yes
+								    AC_DEFINE(HAVE_LIBXML)
+								   ])])]
+				)],
+				[AS_IF([test "x$enable_xml" = "xyes"], [
+				   AC_MSG_ERROR([libxml2 not found])])])
 ])
+
 AM_CONDITIONAL(HAVE_LIBXML, test "x$have_libxml" = xyes)
 
 if test "${enable_static}" = "yes"; then
@@ -844,6 +949,8 @@ fi
 
 # Output files
 # ------------
+
+AC_CHECK_LIB([m], [isnan])
 
 AC_CHECK_FUNCS(mblen)
 

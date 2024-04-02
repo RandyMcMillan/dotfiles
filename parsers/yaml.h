@@ -28,11 +28,27 @@ typedef struct sYamlSubparser yamlSubparser;
 struct sYamlSubparser {
 	subparser subparser;
 	void (* newTokenNotfify) (yamlSubparser *s, yaml_token_t *token);
+
+	void (* enterBlockNotify) (yamlSubparser *s, yaml_token_t *token);
+	void (* leaveBlockNotify) (yamlSubparser *s, yaml_token_t *token);
+	void (* makeTagEntryNotifyViaYpath) (yamlSubparser *s, int corkIndex);
+
+	struct sTagYpathTable *ypathTables;
+	size_t ypathTableCount;
+
+	bool compiled;
 	struct ypathTypeStack *ypathTypeStack;
+	enum ypathDetectingState {
+		YPATH_DSTAT_LAST_KEY,
+		YPATH_DSTAT_LAST_VALUE,
+		YPATH_DSTAT_INITIAL,
+	} detectionState;
 };
+
 #define YAML(S) ((yamlSubparser *)S)
 
 extern void attachYamlPosition (tagEntryInfo *tag, yaml_token_t *token, bool asEndPosition);
+extern size_t ypathGetTypeStackDepth (yamlSubparser *yaml);
 
 /*
  * Experimental Ypath code
@@ -44,21 +60,10 @@ typedef struct sTagYpathTable {
 	 * a tagEntry. If it is NULL, initializing the tagEntry in usual way:
 	 * call initTagEntry() defined in the main part with KIND. */
 	int kind;
-	bool (* initTagEntry) (tagEntryInfo *, char *, void *);
+	bool (* initTagEntry) (tagEntryInfo *, yamlSubparser *, char *, void *);
 	void *data;
 	void *code;					/* YAML base parser private */
 } tagYpathTable;
-
-extern int ypathCompileTable (langType language, tagYpathTable *table, int keywordId);
-extern void ypathCompileTables (langType language, tagYpathTable tables[], size_t count, int keywordId);
-extern void ypathCompiledCodeDelete (tagYpathTable tables[], size_t count);
-
-extern void ypathHandleToken (yamlSubparser *yaml, yaml_token_t *token, int state, tagYpathTable tables[], size_t count);
-
-extern void ypathPushType (yamlSubparser *yaml, yaml_token_t *token);
-extern void ypathPopType (yamlSubparser *yaml);
-extern void ypathPopAllTypes (yamlSubparser *yaml);
-extern void ypathFillKeywordOfTokenMaybe (yamlSubparser *yaml, yaml_token_t *token, langType lang);
 
 extern void ypathPrintTypeStack(yamlSubparser *yaml);
 #endif

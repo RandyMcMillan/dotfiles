@@ -216,11 +216,23 @@ static void endTargets (intArray *targets, unsigned long lnum)
 	for (unsigned int i = 0; i < intArrayCount (targets); i++)
 	{
 		int cork_index = intArrayItem (targets, i);
-		tagEntryInfo *e = getEntryInCorkQueue (cork_index);
-		if (e)
-			e->extensionFields.endLine = lnum;
+		setTagEndLineToCorkEntry (cork_index, lnum);
 	}
 	intArrayClear (targets);
+}
+
+static bool isTheLastTargetOnTheSameLine (intArray *current_targets,
+										  unsigned long line)
+{
+	if (!intArrayIsEmpty (current_targets))
+	{
+		int r = intArrayLast (current_targets);
+		tagEntryInfo *e = getEntryInCorkQueue (r);
+		if (e && e->lineNumber == line)
+			return true;
+	}
+
+	return false;
 }
 
 static void findMakeTags (void)
@@ -302,7 +314,10 @@ static void findMakeTags (void)
 			newMacro (stringListItem (identifiers, 0), false, appending);
 
 			in_value = true;
-			endTargets (current_targets, getInputLineNumber () - 1);
+			unsigned long curline = getInputLineNumber ();
+			unsigned long adj = isTheLastTargetOnTheSameLine (current_targets,
+															  curline)? 0: 1;
+			endTargets (current_targets, curline - adj);
 			appending = false;
 		}
 		else if (variable_possible && isIdentifier (c))
@@ -318,11 +333,8 @@ static void findMakeTags (void)
 			{
 				if ((current_macro != CORK_NIL) && ! strcmp (vStringValue (name), "endef"))
 				{
-					tagEntryInfo *e = getEntryInCorkQueue(current_macro);
-
+					setTagEndLineToCorkEntry (current_macro, getInputLineNumber ());
 					current_macro = CORK_NIL;
-					if (e)
-						e->extensionFields.endLine = getInputLineNumber ();
 				}
 				else if (current_macro != CORK_NIL)
 					skipLine ();

@@ -351,8 +351,7 @@ static void initPhpEntry (tagEntryInfo *const e, const tokenInfo *const token,
 
 	initTagEntry (e, vStringValue (token->string), kind);
 
-	e->lineNumber	= token->lineNumber;
-	e->filePosition	= token->filePosition;
+	updateTagLine (e, token->lineNumber, token->filePosition);
 
 	if (access != ACCESS_UNDEFINED)
 		e->extensionFields.access = accessToString (access);
@@ -443,8 +442,7 @@ static void makeNamespacePhpTag (const tokenInfo *const token, const vString *co
 
 		initTagEntry (&e, vStringValue (name), K_NAMESPACE);
 
-		e.lineNumber	= token->lineNumber;
-		e.filePosition	= token->filePosition;
+		updateTagLine (&e, token->lineNumber, token->filePosition);
 
 		makePhpTagEntry (&e);
 	}
@@ -1261,9 +1259,7 @@ static bool parseClassOrIface (tokenInfo *const token, const phpKind kind,
 			vString *qualifiedName = vStringNew ();
 
 			readQualifiedName (token, qualifiedName, NULL);
-			if (vStringLength (inheritance) > 0)
-				vStringPut (inheritance, ',');
-			vStringCat (inheritance, qualifiedName);
+			vStringJoin(inheritance, ',', qualifiedName);
 			if (istat == inheritance_extends && !parent)
 				parent = qualifiedName;
 			else

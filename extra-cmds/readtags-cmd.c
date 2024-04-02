@@ -152,7 +152,7 @@ struct tagEntryArray {
 	struct tagEntryHolder *a;
 };
 
-struct tagEntryArray *tagEntryArrayNew (void)
+static struct tagEntryArray *tagEntryArrayNew (void)
 {
 	struct tagEntryArray * a = eMalloc (sizeof (struct tagEntryArray));
 
@@ -163,7 +163,7 @@ struct tagEntryArray *tagEntryArrayNew (void)
 	return a;
 }
 
-void tagEntryArrayPush (struct tagEntryArray *a, tagEntry *e)
+static void tagEntryArrayPush (struct tagEntryArray *a, tagEntry *e)
 {
 	if (a->count + 1 == a->length)
 	{
@@ -180,7 +180,7 @@ void tagEntryArrayPush (struct tagEntryArray *a, tagEntry *e)
 	a->a[a->count++].e = e;
 }
 
-void tagEntryArrayFree (struct tagEntryArray *a, int freeTags)
+static void tagEntryArrayFree (struct tagEntryArray *a, int freeTags)
 {
 	if (freeTags)
 	{
@@ -567,6 +567,8 @@ static const char *const Usage =
 	"        Also include the line number field when -e option is given.\n"
 	"    -p | --prefix-match\n"
 	"        Perform prefix matching in the NAME action.\n"
+	"    -P | --with-pseudo-tags\n"
+	"        List pseudo tags as if -D option is specified but continues processing without exiting.\n"
 	"    -t TAGFILE | --tag-file TAGFILE\n"
 	"        Use specified tag file (default: \"tags\").\n"
 	"        \"-\" indicates taking tag file data from standard input.\n"
@@ -701,12 +703,14 @@ extern int main (int argc, char **argv)
 			const char *optname = arg + 2;
 			if (strcmp (optname, "debug") == 0)
 				debugMode++;
-			else if (strcmp (optname, "list-pseudo-tags") == 0)
+			else if (strcmp (optname, "list-pseudo-tags") == 0
+					 || strcmp (optname, "with-pseudo-tags") == 0)
 			{
 				if (canon)
 					canon->ptags = 1;
 				listTags (1, &printOpts, NULL);
-				actionSupplied = 1;
+				if (optname[0] == 'l')
+					actionSupplied = 1;
 			}
 			else if (strcmp (optname, "help") == 0)
 				printUsage (stdout, 0);
@@ -854,10 +858,12 @@ extern int main (int argc, char **argv)
 				{
 					case 'd': debugMode++; break;
 					case 'D':
+					case 'P':
 						if (canon)
 							canon->ptags = 1;
 						listTags (1, &printOpts, canon);
-						actionSupplied = 1;
+						if (arg  [j] == 'D')
+							actionSupplied = 1;
 						break;
 					case 'h': printUsage (stdout, 0); break;
 #ifdef READTAGS_DSL

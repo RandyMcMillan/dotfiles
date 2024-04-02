@@ -29,14 +29,22 @@ GEN_IN_MAN_FILES = \
 	\
 	ctags-lang-asm.7 \
 	ctags-lang-autoit.7 \
+	ctags-lang-automake.7 \
+	ctags-lang-c.7 \
+	ctags-lang-c++.7 \
+	ctags-lang-cuda.7 \
 	ctags-lang-elm.7 \
 	ctags-lang-fortran.7 \
 	ctags-lang-gdscript.7 \
 	ctags-lang-iPythonCell.7 \
+	ctags-lang-i18nrubygem.7 \
 	ctags-lang-inko.7 \
 	ctags-lang-javascript.7 \
 	ctags-lang-julia.7 \
 	ctags-lang-kconfig.7 \
+	ctags-lang-ldscript.7 \
+	ctags-lang-lex.7 \
+	ctags-lang-markdown.7 \
 	ctags-lang-python.7 \
 	ctags-lang-r.7 \
 	ctags-lang-rmarkdown.7 \
@@ -45,6 +53,7 @@ GEN_IN_MAN_FILES = \
 	ctags-lang-tcl.7 \
 	ctags-lang-terraform.7 \
 	ctags-lang-verilog.7 \
+	ctags-lang-vim.7 \
 	\
 	readtags.1 \
 	tags.5 \

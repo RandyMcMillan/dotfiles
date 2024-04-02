@@ -89,6 +89,9 @@ typedef struct _CXXToken
 	unsigned char uInternalScopeAccess;
 
 	int iCorkIndex;
+
+	// The member keeps tokens started from __attribute__ and __declspec.
+	CXXTokenChain * pSideChain;
 } CXXToken;
 
 CXXToken * cxxTokenCreate(void);
@@ -100,7 +103,8 @@ CXXToken * cxxTokenCopy(CXXToken *pToken);
 // A shortcut for quickly creating keyword tokens.
 CXXToken * cxxTokenCreateKeyword(int iLineNumber,MIOPos oFilePosition,CXXKeyword eKeyword);
 
-CXXToken * cxxTokenCreateAnonymousIdentifier(unsigned int uTagKind);
+CXXToken * cxxTokenCreateAnonymousIdentifier(unsigned int uTagKind,
+											 const char *szPrefix);
 
 #define cxxTokenTypeIsOneOf(_pToken,_uTypes) (_pToken->eType & (_uTypes))
 #define cxxTokenTypeIs(_pToken,_eType) (_pToken->eType == _eType)

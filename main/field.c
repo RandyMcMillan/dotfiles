@@ -223,7 +223,7 @@ static fieldDefinition fieldDefinitionsExuberant [] = {
 		.dataType           = FIELDTYPE_INTEGER,
 		.getterValueType    = "int",
 		.getValueObject     = getFieldValueForLineCommon,
-		.setterValueType    = "matchloc|int",
+		.setterValueType    = "matchloc|line:int", /* line <= getInputLineNumber(); */
 		.checkValueForSetter= checkFieldValueForLineCommon,
 		.setValueObject     = setFieldValueForLineCommon,
 	},
@@ -863,7 +863,7 @@ static const char* renderCompactInputLine (vString *b,  const char *const line)
 
 	/*  Write everything up to, but not including, the newline.
 	 */
-	for (const char *p = line; *p != NEWLINE && *p != '\0'; ++p)
+	for (const char *p = line; *p != '\n' && *p != '\0'; ++p)
 	{
 		int c = (unsigned char) *p;
 		if (lineStarted  || ! isspace (c))  /* ignore leading spaces */
@@ -875,11 +875,11 @@ static const char* renderCompactInputLine (vString *b,  const char *const line)
 
 				/*  Consume repeating white space.
 				 */
-				while (next = (unsigned char) *(p+1), isspace (next) && next != NEWLINE)
+				while (next = (unsigned char) *(p+1), isspace (next) && next != '\n')
 					++p;
 				c = ' ';  /* force space character for any white space */
 			}
-			if (c != CRETURN  ||  *(p + 1) != NEWLINE)
+			if (c != '\r'  ||  *(p + 1) != '\n')
 				vStringPut (b, c);
 		}
 	}
@@ -1123,9 +1123,9 @@ static const char *renderFieldEnd (const tagEntryInfo *const tag,
 {
 	static char buf[21];
 
-	if (tag->extensionFields.endLine != 0)
+	if (tag->extensionFields._endLine != 0)
 	{
-		sprintf (buf, "%lu", tag->extensionFields.endLine);
+		sprintf (buf, "%lu", tag->extensionFields._endLine);
 		return renderAsIs (b, buf);
 	}
 	else
@@ -1211,7 +1211,7 @@ static bool     isXpathFieldAvailable      (const tagEntryInfo *const tag)
 
 static bool     isEndFieldAvailable       (const tagEntryInfo *const tag)
 {
-	return (tag->extensionFields.endLine != 0)? true: false;
+	return (tag->extensionFields._endLine != 0)? true: false;
 }
 
 static bool isEpochAvailable (const tagEntryInfo *const tag)
@@ -1409,7 +1409,7 @@ static void  fieldColprintAddLine (struct colprintTable *table, int i)
 			 bmask < FIELDTYPE_END_MARKER;
 			 bmask <<= 1, offset++)
 			if (type & bmask)
-				typefields[offset] = fieldDataTypeFalgs[offset];
+				typefields[offset] = fieldDataTypeFlags[offset];
 	}
 	colprintLineAppendColumnCString (line, typefields);
 	colprintLineAppendColumnBool (line, writerDoesTreatFieldAsFixed (i));
@@ -1845,9 +1845,9 @@ static EsObject* getFieldValueForRoles (const tagEntryInfo *tag, const fieldDefi
 static EsObject* getFieldValueForLineCommon (const tagEntryInfo *tag, const fieldDefinition *fdef)
 {
 	if (fdef->ftype == FIELD_END_LINE)
-		return ((int)tag->extensionFields.endLine == 0)
+		return ((int)tag->extensionFields._endLine == 0)
 			? es_nil
-			: es_integer_new ((int)tag->extensionFields.endLine);
+			: es_integer_new ((int)tag->extensionFields._endLine);
 	else
 		return ((int)tag->lineNumber == 0)
 			? es_nil
@@ -1875,22 +1875,19 @@ static EsObject* setFieldValueForLineCommon (tagEntryInfo *tag, const fieldDefin
 
 		l = (unsigned int)l0;
 		/* If the new line number is too large,
-		   we cannot fill tag->filePosition wit
+		   we cannot fill tag->filePosition with
 		   getInputFilePositionForLine(); */
 		if (fdef->ftype == FIELD_LINE_NUMBER
-			&& l < getInputLineNumber())
+			&& l > getInputLineNumber())
 			return OPT_ERR_RANGECHECK;
 	}
 	else
 		return OPT_ERR_TYPECHECK;
 
 	if (fdef->ftype == FIELD_END_LINE)
-		tag->extensionFields.endLine = l;
+		setTagEndLine(tag, (unsigned long)l);
 	else
-	{
-		tag->lineNumber = l;
-		tag->filePosition = getInputFilePositionForLine (l);
-	}
+		updateTagLine (tag, l, getInputFilePositionForLine (l));
 
 	return es_false;
 }

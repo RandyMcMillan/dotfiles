@@ -11,7 +11,9 @@
  */
 #include "dsl.h"
 #include <assert.h>
+#include <errno.h>
 #include <stdlib.h>
+#include <limits.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -34,6 +36,9 @@ typedef struct sDSLEngine DSLEngine;
  * MACROS
  */
 
+/* dummy definition to allow/require an extra semicolon */
+#define END_DEF(sfx) typedef int ctags_dummy_int_type_ignore_me_##sfx
+
 #define DECLARE_VALUE_FN(N)									\
 static EsObject* value_##N (EsObject *args, DSLEnv *env)
 
@@ -41,7 +46,7 @@ static EsObject* value_##N (EsObject *args, DSLEnv *env)
 static EsObject* value_##N (EsObject *args, DSLEnv *env)	\
 {															\
 	return dsl_entry_##N (env->entry);						\
-}
+} END_DEF(value_##N)
 
 /*
  * FUNCTION DECLARATIONS
@@ -119,9 +124,13 @@ static DSLEngine engines [DSL_ENGINE_COUNT];
 
 static DSLProcBind pbinds_interanl_pseudo [] = {
 	{ "#/PATTERN/", NULL, NULL, 0, 0,
-	  .helpstr = "(#/patter/ <string>) -> <boolean>; regular expression matching" },
+	  .helpstr = "(#/patter/ <string>) -> <boolean>; regular expression matching\n"
+	  "(#/patter/ <string> <integer>) -> <string>|\"\"; extact a group matching to the pattern\n"
+	  "(#/patter/ <string> <integer> <any:default>) -> <string>|default; ...returning DEFAULT in case of no match"},
 	{ "#/PATTERN/i", NULL, NULL, 0, 0,
-	  .helpstr = "(#/patter/i <string>) -> <boolean>; in case insensitive way" },
+	  .helpstr = "(#/patter/i <string>) -> <boolean>; in case insensitive way\n"
+	  "(#/patter/i <string> <integer>) -> <string>|\"\"; extact a group matching to the pattern\n"
+	  "(#/patter/i <string> <integer> <any:default>) -> <string>|default; ...returning DEFAULT in case of no match"},
 };
 
 static DSLProcBind pbinds [] = {
@@ -312,7 +321,33 @@ static void dsl_help0 (DSLEngineType engine, FILE *fp)
 	for (int i = 0; i < e->pbinds_count; i++)
 	{
 		const char* hs = e->pbinds [i].helpstr;
-		fprintf(fp, "%15s: %s\n", e->pbinds [i].name, hs? hs: "");
+
+		if (!hs)
+		{
+			fprintf(fp, "%15s: \n", e->pbinds [i].name);
+			continue;
+		}
+
+		while (hs)
+		{
+			const char *hs0 = strchr (hs, '\n');
+
+			fprintf(fp, "%15s: ", (e->pbinds [i].helpstr == hs
+								   ? e->pbinds [i].name
+								   : ""));
+
+			if (hs0)
+			{
+				hs0++;
+				fwrite(hs, 1, hs0 - hs, fp);
+			}
+			else
+			{
+				fputs(hs, fp);
+				fputc('\n', fp);
+			}
+			hs = hs0;
+		}
 	}
 }
 
@@ -405,7 +440,8 @@ static EsObject *dsl_eval0 (EsObject *object, DSLEnv *env)
 
 		if (l < 1)
 			dsl_throw (TOO_FEW_ARGUMENTS, car);
-		else if (l > 1)
+
+		if (l > 3)
 			dsl_throw (TOO_MANY_ARGUMENTS, car);
 
 		cdr = eval0(cdr, env);
@@ -419,8 +455,30 @@ static EsObject *dsl_eval0 (EsObject *object, DSLEnv *env)
 		if (!es_string_p (cadr))
 			dsl_throw (WRONG_TYPE_ARGUMENT, object);
 
-		r = es_regex_exec (car, cadr);
-		return r;
+		if (l == 1)
+			return es_regex_exec (car, cadr);
+
+		EsObject *cddr = es_cdr (cdr);
+		EsObject *caddr = es_car (cddr);
+		if (!es_number_p (caddr))
+			dsl_throw (WRONG_TYPE_ARGUMENT, object);
+		int group = es_integer_get(caddr);
+		if (group < 1)
+			dsl_throw (WRONG_REGEX_GROUP, object);
+		EsObject *matched = es_regex_exec_extract_match_new (car, cadr, group);
+
+		if (es_string_p(matched))
+			return es_object_autounref(matched);
+		else if (es_null(matched))
+			dsl_throw (WRONG_REGEX_GROUP, object);
+
+		if (l == 3)
+		{
+			EsObject *cdddr = es_cdr (cddr);
+			return es_car (cdddr);
+		}
+
+		return es_object_autounref(es_string_new(""));
 	}
 	else if (es_error_p(car))
 		return car;
@@ -696,7 +754,7 @@ static EsObject* builtin_not  (EsObject *args, DSLEnv *env)
 			return es_true;					\
 		else							\
 			return es_false;				\
-	}
+	} END_DEF(builtin_##N)
 
 static EsObject* builtin_eq  (EsObject *args, DSLEnv *env)
 {
@@ -893,29 +951,29 @@ static EsObject* bulitin_debug_print (EsObject *args, DSLEnv *env)
 /*
  * Value functions
  */
-DEFINE_VALUE_FN(name)
-DEFINE_VALUE_FN(input)
-DEFINE_VALUE_FN(pattern)
-DEFINE_VALUE_FN(line)
+DEFINE_VALUE_FN(name);
+DEFINE_VALUE_FN(input);
+DEFINE_VALUE_FN(pattern);
+DEFINE_VALUE_FN(line);
 
-DEFINE_VALUE_FN(access)
-DEFINE_VALUE_FN(end)
-DEFINE_VALUE_FN(extras)
-DEFINE_VALUE_FN(file)
-DEFINE_VALUE_FN(inherits)
-DEFINE_VALUE_FN(implementation)
-DEFINE_VALUE_FN(kind)
-DEFINE_VALUE_FN(language)
-DEFINE_VALUE_FN(nth)
-DEFINE_VALUE_FN(scope)
-DEFINE_VALUE_FN(scope_kind)
-DEFINE_VALUE_FN(scope_name)
-DEFINE_VALUE_FN(signature)
-DEFINE_VALUE_FN(typeref)
-DEFINE_VALUE_FN(typeref_kind)
-DEFINE_VALUE_FN(typeref_name)
-DEFINE_VALUE_FN(roles)
-DEFINE_VALUE_FN(xpath)
+DEFINE_VALUE_FN(access);
+DEFINE_VALUE_FN(end);
+DEFINE_VALUE_FN(extras);
+DEFINE_VALUE_FN(file);
+DEFINE_VALUE_FN(inherits);
+DEFINE_VALUE_FN(implementation);
+DEFINE_VALUE_FN(kind);
+DEFINE_VALUE_FN(language);
+DEFINE_VALUE_FN(nth);
+DEFINE_VALUE_FN(scope);
+DEFINE_VALUE_FN(scope_kind);
+DEFINE_VALUE_FN(scope_name);
+DEFINE_VALUE_FN(signature);
+DEFINE_VALUE_FN(typeref);
+DEFINE_VALUE_FN(typeref_kind);
+DEFINE_VALUE_FN(typeref_name);
+DEFINE_VALUE_FN(roles);
+DEFINE_VALUE_FN(xpath);
 
 static const char*entry_xget (const tagEntry *entry, const char* name)
 {
@@ -943,14 +1001,22 @@ EsObject* dsl_entry_xget_string (const tagEntry *entry, const char* name)
 
 EsObject* dsl_entry_xget_integer (const tagEntry *entry, const char* name)
 {
-	const char *end_str = entry_xget(entry, name);
+	const char *str = entry_xget(entry, name);
 	EsObject *o;
 
-	if (end_str)
+	if (str)
 	{
-		o = es_read_from_string (end_str, NULL);
-		if (es_integer_p (o))
+		long value;
+		char *endstr;
+
+		errno = 0;
+		value = strtol (str, &endstr, 10);
+		if (*endstr == '\0' && str != endstr && errno == 0 &&
+			value <= INT_MAX  && value >= INT_MIN)
+		{
+			o = es_integer_new ((int)value);
 			return es_object_autounref (o);
+		}
 		else
 			return es_false;
 	}

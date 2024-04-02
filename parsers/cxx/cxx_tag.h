@@ -47,7 +47,9 @@ enum CXXTagCPPKind
 	CXXTagCPPKindALIAS,
 	CXXTagCPPKindNAME,
 	CXXTagCPPKindUSING,
-	CXXTagCPPKindTEMPLATEPARAM
+	CXXTagCPPKindTEMPLATEPARAM,
+	CXXTagCPPKindMODULE,
+	CXXTagCPPKindPARTITION,
 };
 
 // The fields common to all (sub)languages this parser supports.
@@ -55,6 +57,8 @@ enum CXXTagCommonField
 {
 	CXXTagFieldProperties,
 	CXXTagFieldMacrodef,
+	CXXTagFieldSection,
+	CXXTagFieldAlias,
 
 	CXXTagCommonFieldCount
 };
@@ -101,6 +105,7 @@ bool cxxTagRoleEnabled(unsigned int uTagKind, int iTagRole);
 // Must be followed by cxxTagCommit() if it returns a non-NULL value.
 // The pToken ownership is NOT transferred.
 tagEntryInfo * cxxTagBegin(unsigned int uKind,CXXToken * pToken);
+tagEntryInfo * cxxRefTagBegin(unsigned int uKind, int iRole, CXXToken * pToken);
 
 // Set the type of the current tag from the specified token sequence
 // (which must belong to the same chain!).
@@ -162,6 +167,8 @@ typedef enum _CXXTagProperty
 	CXXTagPropertyConstinit = (1 << 20),
 	// thread_local has been seen.
 	CXXTagPropertyThreadLocal = (1 << 21),
+	// export has been seen,
+	CXXTagPropertyExport = (1 << 22),
 } CXXTagProperty;
 
 // Set the modifiers field of the tag.
@@ -188,7 +195,7 @@ void cxxTagSetCorkQueueField(
 	);
 
 // Handle the template-related parts of the tag (class, function, variable)
-void cxxTagHandleTemplateFields();
+void cxxTagHandleTemplateFields(void);
 
 // Commit the composed tag. Must follow a successful cxxTagBegin() call.
 // Returns the index of the tag in the cork queue.
@@ -206,6 +213,28 @@ typedef enum {
 	CR_HEADER_SYSTEM,
 	CR_HEADER_LOCAL,
 } cHeaderRole;
+
+typedef enum {
+	CXXR_HEADER_IMPORTED = CR_HEADER_LOCAL + 1,
+	CXXR_HEADER_EXPORTED
+} cxxHeaderRole;
+
+typedef enum {
+	CXXTagFUNCTIONRoleFOREIGNDECL,
+} CXXTagCFunctionRole;
+
+typedef enum {
+	CXXTagSTRUCTRoleFOREIGNDECL,
+} CXXTagCStructRole;
+
+typedef enum {
+	CXXTagMODULERolePartOwner,
+	CXXTagMODULERoleImported,
+} cxxModuleRole;
+
+typedef enum {
+	CXXTagPARTITIONRoleImported,
+} cxxPartitionRole;
 
 // Initialize the parser state for the specified language.
 // Must be called before attempting to access the kind options.

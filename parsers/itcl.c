@@ -91,11 +91,7 @@ static void parseInherit (tokenInfo *token, int r)
 	do {
 		tokenRead (token);
 		if (tokenIsType (token, TCL_IDENTIFIER))
-		{
-			if (vStringLength(inherits) != 0)
-				vStringPut (inherits, ',');
-			vStringCat(inherits, token->string);
-		}
+			vStringJoin(inherits, ',', token->string);
 		else if (tokenIsType(token, TCL_EOL))
 			break;
 		else
@@ -150,9 +146,7 @@ static void parseSubobject (tokenInfo *token, int parent, enum ITclKind kind, ke
 	}
 
 	skipToEndOfTclCmdline (token);
-	tagEntryInfo *e = getEntryInCorkQueue (r);
-	if (e)
-		e->extensionFields.endLine = token->lineNumber;
+	setTagEndLineToCorkEntry (r, token->lineNumber);
 }
 
 

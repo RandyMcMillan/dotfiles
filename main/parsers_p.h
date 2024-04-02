@@ -20,6 +20,7 @@
 	PlistXMLParser, \
 	RelaxNGParser, \
 	SvgParser, \
+	XrcParser, \
 	XmlParser, \
 	XsltParser
 #else
@@ -30,6 +31,7 @@
 #define YAML_PARSER_LIST						\
 	YamlParser,									\
 	AnsiblePlaybookParser, \
+	I18nRubyGemParser, \
 	OpenAPIParser, \
 	YamlFrontMatter
 #else
@@ -47,8 +49,8 @@
 #endif
 
 #ifdef HAVE_PCRE2
-#define OPTLIB2C_PCRE2_PARSER_LIST             \
-   RDocParser
+#define OPTLIB2C_PCRE2_PARSER_LIST			\
+	RDocParser
 #else
 #define OPTLIB2C_PCRE2_PARSER_LIST
 #endif
@@ -69,7 +71,8 @@
 	BasicParser, \
 	BatsParser, \
 	BetaParser, \
-  	BibtexParser, \
+	BibLaTeXParser, \
+	BibtexParser, \
 	ClojureParser, \
 	CMakeParser, \
 	CParser, \
@@ -93,6 +96,7 @@
 	ErlangParser, \
 	FalconParser, \
 	FlexParser, \
+	ForthParser, \
 	FortranParser, \
 	FrontMatterParser, \
 	FunctionParametersParser, \
@@ -131,8 +135,6 @@
 	MyrddinParser, \
 	NsisParser, \
 	ObjcParser, \
-	OldCppParser, \
-	OldCParser, \
 	OcamlParser, \
 	OrgParser, \
 	PasswdParser, \
@@ -140,6 +142,7 @@
 	PerlParser, \
 	Perl6Parser, \
 	PhpParser, \
+	PkgConfigParser, \
 	PodParser, \
 	PowerShellParser, \
 	ProtobufParser, \
@@ -152,6 +155,7 @@
 	RMarkdownParser, \
 	RParser, \
 	RakeParser, \
+	RakuParser, \
 	R6ClassParser, \
 	RSpecParser, \
 	RexxParser, \
@@ -179,6 +183,7 @@
 	TTCNParser, \
 	Txt2tagsParser, \
 	TypeScriptParser, \
+	VParser, \
 	VeraParser, \
 	VerilogParser, \
 	SystemVerilogParser, \

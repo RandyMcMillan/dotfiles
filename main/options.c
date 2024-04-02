@@ -34,6 +34,7 @@
 #include "routines_p.h"
 #include "xtag_p.h"
 #include "param_p.h"
+#include "param.h"
 #include "error_p.h"
 #include "interactive_p.h"
 #include "writer_p.h"
@@ -2216,6 +2217,7 @@ static void processListKinddefFlagsOptions (
 	exit (0);
 }
 
+attr__noreturn
 static void processListRolesOptions (const char *const option CTAGS_ATTR_UNUSED,
 				     const char *const parameter)
 {
@@ -2800,7 +2802,7 @@ extern bool ptagMakePatternLengthLimit (ptagDesc *pdesc, langType language CTAGS
 
 static void setBooleanToXtagWithWarning(booleanOption *const option, bool value)
 {
-	/* WARNING/TODO: This function breaks capsulization. */
+	/* WARNING/TODO: This function breaks encapsulation. */
 
 	char x = 0;
 
@@ -3546,7 +3548,15 @@ extern void previewFirstOption (cookedArgs* const args)
 	{
 		if (strcmp (args->item, "V") == 0
 		    || strcmp (args->item, "verbose") == 0
-		    || strcmp (args->item, "quiet") == 0)
+		    || strcmp (args->item, "quiet") == 0
+			/* Make some fundamental options work even
+			 * if a bropen .ctags is given. */
+			|| (strcmp (args->item, "version") == 0 &&
+				(strcmp (args->parameter, RSV_NONE) == 0
+				 ||  (*args->parameter == '\0')))
+			|| strcmp (args->item, "help") == 0
+			|| strcmp (args->item, "help-full") == 0
+			|| strcmp (args->item, "license") == 0)
 			parseOption (args);
 		else if (strcmp (args->item, "options") == 0  &&
 				strcmp (args->parameter, RSV_NONE) == 0)
@@ -3664,7 +3674,6 @@ static char* prependEnvvar (const char *path, const char* envvar)
 	return full_path;
 }
 
-#ifndef WIN32
 static char *getConfigForXDG (const char *path CTAGS_ATTR_UNUSED,
 							  const char* extra CTAGS_ATTR_UNUSED)
 {
@@ -3674,7 +3683,6 @@ static char *getConfigForXDG (const char *path CTAGS_ATTR_UNUSED,
 
 	return prependEnvvar (".config/ctags", "HOME");
 }
-#endif
 
 #ifdef WIN32
 static char *getConfigAtHomeOnWindows (const char *path,
@@ -3750,14 +3758,12 @@ static struct preloadPathElt preload_path_list [] = {
 		.stage = OptionLoadingStageCustom,
 	},
 #endif
-#ifndef WIN32
 	{
 		.path = NULL,
 		.isDirectory = true,
 		.makePath = getConfigForXDG,
 		.stage = OptionLoadingStageXdg,
 	},
-#endif
 	{
 		.path = ".ctags.d",
 		.isDirectory = true,

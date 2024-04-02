@@ -16,7 +16,7 @@ PACKCC_FILES = misc/packcc/.gitignore   \
 	       \
 	       $(NULL)
 
-EXTRA_DIST   = README.md autogen.sh \
+EXTRA_DIST   = README.md NEWS.rst autogen.sh \
 	       misc/optlib2c \
 	       .ctags.d/exclusion.ctags .dir-locals.el .editorconfig .gdbinit .gitignore \
 	       .indent.pro .uncrustify.cfg \
@@ -62,6 +62,8 @@ noinst_LIBRARIES += libutil.a
 
 noinst_PROGRAMS = utiltest
 
+AM_LDFLAGS = $(EXTRA_LDFLAGS)
+
 # packcc always uses native compiler even when cross-compiling.
 # packcc cannot use the standard Automake rule.
 PACKCC_CPPFLAGS_FOR_BUILD  = -fsigned-char
@@ -84,7 +86,7 @@ readtags_CPPFLAGS = -I. -I$(srcdir) -I$(srcdir)/main -I$(srcdir)/libreadtags
 if ENABLE_DEBUGGING
 readtags_CPPFLAGS+= $(DEBUG_CPPFLAGS)
 endif
-readtags_CFLAGS = $(COVERAGE_CFLAGS) $(WARNING_CFLAGS)
+readtags_CFLAGS = $(EXTRA_CFLAGS) $(WARNING_CFLAGS) $(COVERAGE_CFLAGS)
 dist_readtags_SOURCES = $(READTAGS_SRCS) $(READTAGS_HEADS)
 readtags_CPPFLAGS += $(GNULIB_CPPFLAGS)
 readtags_CPPFLAGS += -DREADTAGS_DSL -I$(srcdir)/dsl

@@ -30,6 +30,7 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
+#include <math.h>
 
 #include <regex.h>
 
@@ -1351,6 +1352,29 @@ es_regex_exec    (const EsObject* regex,
 					0, NULL, 0)? es_false: es_true;
 }
 
+EsObject*
+es_regex_exec_extract_match_new (const EsObject* regex,
+								 const EsObject* str,
+								 unsigned int group)
+{
+	EsObject *r;
+	regmatch_t *pmatch = calloc(group + 1, sizeof(regmatch_t));
+	if (!pmatch)
+		return ES_ERROR_MEMORY;
+
+	const char *s = es_string_get (str);
+	if (regexec(((EsRegex*)regex)->code, s, group + 1, pmatch, 0))
+		r = es_false;
+	else
+		r = pmatch[group].rm_so == -1
+			? es_nil:
+			es_string_newL(s + pmatch[group].rm_so,
+						   pmatch[group].rm_eo - pmatch[group].rm_so);
+
+	free (pmatch);
+	return r;
+}
+
 /*
  * Error
  */
@@ -2561,8 +2585,8 @@ is_real      (const char* cstr,
 		return 0;
 	else if (*endptr != '\0')
 		return 0;
-
-	/* TODO: INF, NAN... */
+	else if (isinf(*d) || isnan(*d))
+		return 0;
 	return 1;
 }
 

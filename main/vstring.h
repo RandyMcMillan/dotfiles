@@ -79,6 +79,7 @@ extern void vStringCopy (vString *const string, const vString *const s);
 extern void vStringCopyS (vString *const string, const char *const s);
 extern void vStringNCopy (vString *const string, const vString *const s, const size_t length);
 extern void vStringNCopyS (vString *const string, const char *const s, const size_t length);
+extern void vStringNCopySUnsafe (vString *const string, const char *const s, const size_t length);
 extern void vStringCopyToLower (vString *const dest, const vString *const src);
 extern void vStringSetLength (vString *const string);
 extern void vStringTruncate (vString *const string, const size_t length);
@@ -137,4 +138,30 @@ CTAGS_INLINE bool vStringPutWithLimitImpl (vString *const string, const int c,
 	 ? vStringPutWithLimitImpl((s), (unsigned char) (c), (l)) \
 	 : vStringPutWithLimitImpl((s), (c), (l)))
 
+CTAGS_INLINE void vStringAccumulate (vString *accumulator, vString *string)
+{
+	vStringCat (accumulator, string);
+	vStringClear (string);
+}
+
+#define vStringPutUnlessEmpty(s, c)				\
+	do {										\
+		if (!vStringIsEmpty(s))					\
+			vStringPut ((s), (c));				\
+	} while (0)
+
+#define vStringJoin(string, c, s) do {			\
+		vStringPutUnlessEmpty ((string), (c));	\
+		vStringCat((string), (s));				\
+	} while (0)
+
+#define vStringJoinS(string, c, s) do {			\
+		vStringPutUnlessEmpty ((string), (c));	\
+		vStringCatS((string), (s));				\
+	} while (0)
+
+/* If cstrlit is a C string listeral and LTO is enabled,
+ * this macro is efficient */
+#define vStringEqC(vstr, cstrlit) ((vStringLength ((vstr)) == strlen ((cstrlit)) \
+									&& strncmp (vStringValue ((vstr)), (cstrlit), strlen ((cstrlit))) == 0))
 #endif  /* CTAGS_MAIN_VSTRING_H */

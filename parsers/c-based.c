@@ -1239,8 +1239,7 @@ static int makeTag (const tokenInfo *const token,
 		else
 			initRefTagEntry (&e, vStringValue (token->name), kind, role);
 
-		e.lineNumber	= token->lineNumber;
-		e.filePosition	= token->filePosition;
+		updateTagLine (&e, token->lineNumber,  token->filePosition);
 		e.isFileScope	= isFileScope;
 		if (e.isFileScope)
 			markTagExtraBit (&e, XTAG_FILE_SCOPE);
@@ -1486,22 +1485,8 @@ static void skipToMatch (const char *const pair)
 	while (matchLevel > 0  &&  (c = skipToNonWhite ()) != EOF)
 	{
 		if (CollectingSignature)
-		{
-			if (c <= 0xff)
-				vStringPut (Signature, c);
-			else
-			{
-				switch (c)
-				{
-					case CHAR_SYMBOL:
-					case STRING_SYMBOL:
-						vStringCat (Signature, cppGetLastCharOrStringContents ());
-						break;
-					default:
-						AssertNotReached();
-				}
-			}
-		}
+			cppVStringPut (Signature, c);
+
 		if (c == begin)
 		{
 			++matchLevel;
@@ -1586,11 +1571,11 @@ static void readIdentifier (tokenInfo *const token, const int firstChar)
 
 	do
 	{
-		vStringPut (name, c);
+		cppVStringPut (name, c);
 		if (CollectingSignature)
 		{
 			if (!first)
-				vStringPut (Signature, c);
+				cppVStringPut (Signature, c);
 			first = false;
 		}
 		c = cppGetc ();
@@ -1719,7 +1704,7 @@ static void readOperator (statementInfo *const st)
 					vStringPut (name, ' ');
 					whiteSpace = false;
 				}
-				vStringPut (name, c);
+				cppVStringPut (name, c);
 			}
 			c = cppGetc ();
 		} while (! isOneOf (c, "(;")  &&  c != EOF);
@@ -1729,7 +1714,7 @@ static void readOperator (statementInfo *const st)
 		vStringPut (name, ' ');  /* always separate operator from keyword */
 		do
 		{
-			vStringPut (name, c);
+			vStringPut (name, c);	/* acceptable are all ascii */
 			c = cppGetc ();
 		} while (isOneOf (c, acceptable));
 	}
@@ -2310,8 +2295,8 @@ static int parseParens (statementInfo *const st, parenInfo *const info)
 	do
 	{
 		int c = skipToNonWhite ();
-		vStringPut (Signature, c);
 
+		cppVStringPut (Signature, c);
 		switch (c)
 		{
 			case '^':
@@ -2522,11 +2507,7 @@ static void addContext (statementInfo *const st, const tokenInfo* const token)
 {
 	if (isType (token, TOKEN_NAME))
 	{
-		if (vStringLength (st->context->name) > 0)
-		{
-			vStringPut (st->context->name, '.');
-		}
-		vStringCat (st->context->name, token->name);
+		vStringJoin (st->context->name, '.', token->name);
 		st->context->type = TOKEN_NAME;
 	}
 }
@@ -2703,7 +2684,7 @@ static void parseGeneralToken (statementInfo *const st, const int c)
 	{
 		parseAtMarkStyleAnnotation (st);
 	}
-	else if (c == STRING_SYMBOL)
+	else if (c == CPP_STRING_SYMBOL)
 	{
 		setToken(st, TOKEN_NONE);
 	}
@@ -2816,9 +2797,7 @@ static void checkStatementEnd (statementInfo *const st, int corkIndex)
 {
 	const tokenInfo *const token = activeToken (st);
 
-	tagEntryInfo *e = getEntryInCorkQueue (corkIndex);
-	if (e)
-		e->extensionFields.endLine = token->lineNumber;
+	setTagEndLineToCorkEntry (corkIndex, token->lineNumber);
 
 	if (isType (token, TOKEN_COMMA))
 		reinitStatement (st, true);

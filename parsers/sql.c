@@ -365,7 +365,7 @@ static const keywordTable SqlKeywordTable [] = {
 	{ "without",						KEYWORD_without			      },
 };
 
-const static struct keywordGroup predefinedInquiryDirective = {
+static const struct keywordGroup predefinedInquiryDirective = {
 	.value = KEYWORD_inquiry_directive,
 	.addingUnlessExisting = false,
 	.keywords = {
@@ -622,8 +622,7 @@ static void makeSqlTag (tokenInfo *const token, const sqlKind kind)
 		tagEntryInfo e;
 		initTagEntry (&e, name, kind);
 
-		e.lineNumber   = token->lineNumber;
-		e.filePosition = token->filePosition;
+		updateTagLine (&e, token->lineNumber, token->filePosition);
 
 		if (vStringLength (token->scope) > 0)
 		{
@@ -1076,11 +1075,7 @@ static void readIdentifier (tokenInfo *const token)
 
 static void addToScope (tokenInfo* const token, vString* const extra, sqlKind kind)
 {
-	if (vStringLength (token->scope) > 0)
-	{
-		vStringPut (token->scope, '.');
-	}
-	vStringCat (token->scope, extra);
+	vStringJoin (token->scope, '.', extra);
 	token->scopeKind = kind;
 }
 
@@ -2752,10 +2747,15 @@ static void parseView (tokenInfo *const token)
 	 *     create view VIEW;
 	 *     create view VIEW as ...;
 	 *     create view VIEW (...) as ...;
+	 *     create view if not exists VIEW as ...;
+	 *       -- [SQLITE] https://www.sqlite.org/lang_createview.html
 	 */
 
 	readIdentifier (name);
 	readToken (token);
+
+	parseIdAfterIfNotExists(name, token, false);
+
 	if (isType (token, TOKEN_PERIOD))
 	{
 		readIdentifier (name);

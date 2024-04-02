@@ -6,7 +6,7 @@ readtags
 
 Find tag file entries matching specified names
 
-:Version: 6.0.0
+:Version: 6.1.0
 :Manual group: Universal Ctags
 :Manual section: 1
 
@@ -97,6 +97,9 @@ field. The Output can be tweaked using these options:
 
 ``-n``, ``--line-number``
 	Also include the line number field when ``-e`` option is give.
+
+``-P``, ``--with-pseudo-tags``
+	List pseudo tags as if ``-D`` option is specified but continues processing without exiting.
 
 About the ``-E`` option: certain characters are escaped in a tags file, to make
 it machine-readable. e.g., ensuring no tabs character appear in fields other

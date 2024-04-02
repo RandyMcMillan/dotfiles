@@ -115,7 +115,7 @@ static void baseFini(struct parserBaseCtx *auxil)
 }
 
 #ifdef DEBUG
-static void baseAddDebugRule (struct parserBaseCtx *auxil, char *rule)
+CTAGS_ATTR_UNUSED static void baseAddDebugRule (struct parserBaseCtx *auxil, char *rule)
 {
 	hashTablePutItem (auxil->debug_rules, rule, HT_INT_TO_PTR(1));
 }
@@ -130,7 +130,7 @@ static void baseDebug(struct parserBaseCtx *auxil, int event, const char *rule, 
 	if (!baseIsDebugRule(auxil, rule))
 		return;
 
-	fprintf(stderr, "<level:%2lu, len:%4lu>[%7s] %10s: ",
+	fprintf(stderr, "<level:%2zu, len:%4zu>[%7s] %10s: ",
 			level, len,
 			event == 0 /*PCC_DBG_EVALUATE*/ ? "eval" :
 			event == 1 /*PCC_DBG_MATCH*/    ? "match":

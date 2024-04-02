@@ -39,14 +39,15 @@
    For implementation changes like bug fixes, increment PATCH. */
 
 #if defined (HAVE_CONFIG_H)
-/* You must update PACKAGE_VERSION in configure.ac, too. */
+/* You must update PACKAGE_VERSION in configure.ac, too.
+ * The --version option of readtags also prints this. */
 # define PROGRAM_VERSION PACKAGE_VERSION
 #else
-# define PROGRAM_VERSION "6.0.0"
+# define PROGRAM_VERSION "6.1.0"
 #endif
 #define PROGRAM_NAME      "Universal Ctags"
 #define PROGRAM_URL       "https://ctags.io/"
-#define PROGRAM_COPYRIGHT "Copyright (C) 2015-2022"
+#define PROGRAM_COPYRIGHT "Copyright (C) 2015-2023"
 #define AUTHOR_NAME       "Universal Ctags Team"
 
 /* The concept of CURRENT and AGE is taken from libtool.

@@ -21,6 +21,7 @@ UTIL_PUBLIC_HEADS = \
 	main/gcc-attr.h		\
 	main/htable.h		\
 	main/inline.h		\
+	main/numarray.h		\
 	main/ptrarray.h		\
 	main/routines.h		\
 	main/trashbox.h 	\
@@ -42,6 +43,7 @@ UTIL_HEADS = \
 UTIL_SRCS = \
 	main/fname.c		\
 	main/htable.c		\
+	main/numarray.c		\
 	main/ptrarray.c		\
 	main/routines.c		\
 	main/trashbox.c		\
@@ -72,19 +74,20 @@ MAIN_PUBLIC_HEADS =		\
 	main/entry.h		\
 	main/field.h		\
 	main/gvars.h		\
+	main/interval_tree_generic.h \
 	main/keyword.h		\
 	main/kind.h		\
 	main/lregex.h		\
 	main/lxpath.h		\
 	main/mbcs.h		\
 	main/nestlevel.h	\
-	main/numarray.h		\
 	main/objpool.h		\
 	main/options.h		\
 	main/param.h		\
 	main/parse.h		\
 	main/promise.h		\
 	main/rbtree.h		\
+	main/rbtree_augmented.h	\
 	main/read.h		\
 	main/selectors.h	\
 	main/strlist.h		\
@@ -128,6 +131,7 @@ LIB_PRIVATE_HEADS =		\
 	main/stats_p.h		\
 	main/subparser_p.h	\
 	main/trashbox_p.h	\
+	main/utf8_str.h		\
 	main/writer_p.h		\
 	main/xtag_p.h		\
 	\
@@ -163,7 +167,6 @@ LIB_SRCS =			\
 	main/main.c			\
 	main/mbcs.c			\
 	main/nestlevel.c		\
-	main/numarray.c			\
 	main/objpool.c			\
 	main/options.c			\
 	main/param.c			\
@@ -182,6 +185,7 @@ LIB_SRCS =			\
 	main/trace.c			\
 	main/tokeninfo.c		\
 	main/unwindi.c			\
+	main/utf8_str.c			\
 	main/writer.c			\
 	main/writer-etags.c		\
 	main/writer-ctags.c		\
@@ -227,6 +231,7 @@ OPTLIB2C_INPUT = \
 	optlib/cmake.ctags			\
 	optlib/ctags-optlib.ctags		\
 	optlib/elixir.ctags			\
+	optlib/forth.ctags			\
 	optlib/gdbinit.ctags			\
 	optlib/gperf.ctags			\
 	optlib/inko.ctags			\
@@ -238,6 +243,7 @@ OPTLIB2C_INPUT = \
 	optlib/mesonOptions.ctags		\
 	optlib/org.ctags			\
 	optlib/passwd.ctags			\
+	optlib/pkgConfig.ctags			\
 	optlib/pod.ctags			\
 	optlib/puppetManifest.ctags		\
 	optlib/qemuhx.ctags			\
@@ -278,14 +284,17 @@ PARSER_HEADS = \
 	parsers/cxx/cxx_parser_internal.h \
 	parsers/cxx/cxx_parser.h \
 	parsers/cxx/cxx_scope.h \
+	parsers/cxx/cxx_side_chain.h \
 	parsers/cxx/cxx_subparser.h \
 	parsers/cxx/cxx_subparser_internal.h \
 	parsers/cxx/cxx_tag.h \
 	parsers/cxx/cxx_token.h \
 	parsers/cxx/cxx_token_chain.h \
 	\
+	parsers/bibtex.h \
 	parsers/frontmatter.h \
 	parsers/iniconf.h \
+	parsers/jscript.h \
 	parsers/m4.h \
 	parsers/make.h \
 	parsers/markdown.h \
@@ -313,9 +322,9 @@ PARSER_SRCS =				\
 	parsers/basic.c			\
 	parsers/bats.c			\
 	parsers/beta.c			\
+	parsers/biblatex.c		\
 	parsers/bibtex.c		\
 	parsers/c-based.c		\
-	parsers/c.c			\
 	parsers/clojure.c		\
 	parsers/css.c			\
 	parsers/cobol.c			\
@@ -328,6 +337,7 @@ PARSER_SRCS =				\
 	parsers/cxx/cxx_parser_block.c		\
 	parsers/cxx/cxx_parser_function.c	\
 	parsers/cxx/cxx_parser_lambda.c		\
+	parsers/cxx/cxx_parser_module.c		\
 	parsers/cxx/cxx_parser_namespace.c	\
 	parsers/cxx/cxx_parser_template.c	\
 	parsers/cxx/cxx_parser_tokenizer.c	\
@@ -336,6 +346,7 @@ PARSER_SRCS =				\
 	parsers/cxx/cxx_parser_variable.c	\
 	parsers/cxx/cxx_qtmoc.c		\
 	parsers/cxx/cxx_scope.c		\
+	parsers/cxx/cxx_side_chain.c	\
 	parsers/cxx/cxx_subparser.c	\
 	parsers/cxx/cxx_tag.c		\
 	parsers/cxx/cxx_token.c		\
@@ -378,7 +389,6 @@ PARSER_SRCS =				\
 	parsers/perl.c			\
 	parsers/perl-function-parameters.c \
 	parsers/perl-moose.c		\
-	parsers/perl6.c			\
 	parsers/php.c			\
 	parsers/powershell.c		\
 	parsers/protobuf.c		\
@@ -389,6 +399,7 @@ PARSER_SRCS =				\
 	parsers/r-s4class.c		\
 	parsers/r.c			\
 	parsers/rake.c			\
+	parsers/raku.c			\
 	parsers/rexx.c			\
 	parsers/rmarkdown.c		\
 	parsers/robot.c			\
@@ -410,6 +421,7 @@ PARSER_SRCS =				\
 	parsers/ttcn.c			\
 	parsers/txt2tags.c		\
 	parsers/typescript.c		\
+	parsers/v.c			\
 	parsers/vera.c			\
 	parsers/verilog.c		\
 	parsers/vhdl.c			\
@@ -430,6 +442,7 @@ XML_SRCS = \
 	parsers/plist.c			\
 	parsers/relaxng.c		\
 	parsers/xml.c			\
+	parsers/xrc.c			\
 	parsers/xslt.c			\
 	\
 	$(NULL)
@@ -443,6 +456,8 @@ YAML_SRCS = \
 	parsers/ansibleplaybook.c	\
 	\
 	parsers/yamlfrontmatter.c	\
+	\
+	parsers/i18nrubygem.c	\
 	\
 	$(NULL)
 

@@ -11,13 +11,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build-machine-os: [macos-12, macos-11]
+        build-machine-os: [macos-14, macos-13, macos-12, macos-11]
         target: [i686-w64-mingw32,x86_64-w64-mingw32]
 
     runs-on: ${{ matrix.build-machine-os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - run: brew install mingw-w64 gcc make automake autoconf file
 

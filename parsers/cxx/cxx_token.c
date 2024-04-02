@@ -32,11 +32,13 @@ static CXXToken *createToken(void *createArg CTAGS_ATTR_UNUSED)
 	// is being reused..well.. we always want it
 	t->pszWord = vStringNew();
 	t->iCorkIndex = CORK_NIL;
+	t->pSideChain = NULL;
 	return t;
 }
 
 static void deleteToken(CXXToken *token)
 {
+	cxxTokenChainDestroy(token->pSideChain);
 	vStringDelete(token->pszWord);
 	eFree(token);
 }
@@ -56,6 +58,12 @@ static void clearToken(CXXToken *t)
 	t->pPrev = NULL;
 
 	t->iCorkIndex = CORK_NIL;
+
+	if(t->pSideChain)
+	{
+		cxxTokenChainDestroy(t->pSideChain);
+		t->pSideChain = NULL;
+	}
 }
 
 void cxxTokenAPIInit(void)
@@ -141,11 +149,11 @@ CXXToken * cxxTokenCreateKeyword(int iLineNumber,MIOPos oFilePosition,CXXKeyword
 }
 
 
-CXXToken * cxxTokenCreateAnonymousIdentifier(unsigned int uTagKind)
+CXXToken * cxxTokenCreateAnonymousIdentifier(unsigned int uTagKind, const char *szPrefix)
 {
 	CXXToken * t = cxxTokenCreate();
 
-	anonGenerate (t->pszWord, "__anon", uTagKind);
+	anonGenerate (t->pszWord, szPrefix? szPrefix: "__anon", uTagKind);
 	t->eType = CXXTokenTypeIdentifier;
 	t->bFollowedBySpace = true;
 	t->iLineNumber = getInputLineNumber();

@@ -24,6 +24,7 @@
 #include "parse.h"
 #include "read.h"
 #include "routines.h"
+#include "selectors.h"
 #include "vstring.h"
 #include "xtag.h"
 
@@ -622,8 +623,7 @@ static void makeFortranTag (tokenInfo *const token, tagType tag)
 		if (token->anonymous)
 			markTagExtraBit (&e, XTAG_ANONYMOUS);
 
-		e.lineNumber	= token->lineNumber;
-		e.filePosition	= token->filePosition;
+		updateTagLine (&e, token->lineNumber, token->filePosition);
 		e.isFileScope	= isFileScope (token->tag);
 		if (e.isFileScope)
 			markTagExtraBit (&e, XTAG_FILE_SCOPE);
@@ -2771,6 +2771,9 @@ extern parserDefinition* FortranParser (void)
 #endif
 		NULL
 	};
+	static selectLanguage selectors[] = { selectFortranOrForthByForthMarker,
+					      NULL };
+
 	parserDefinition* def = parserNew ("Fortran");
 	def->kindTable      = FortranKinds;
 	def->kindCount  = ARRAY_SIZE (FortranKinds);
@@ -2784,6 +2787,7 @@ extern parserDefinition* FortranParser (void)
 
 	def->versionCurrent = 1;
 	def->versionAge = 1;
+	def->selectLanguage = selectors;
 
 	return def;
 }

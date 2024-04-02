@@ -195,6 +195,9 @@
     <ClCompile Include="..\main\unwindi.c">
       <Filter>Source Files\main</Filter>
     </ClCompile>
+    <ClCompile Include="..\main\utf8_str.c">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
     <ClCompile Include="..\main\vstring.c">
       <Filter>Source Files\main</Filter>
     </ClCompile>
@@ -223,6 +226,9 @@
       <Filter>Source Files\optlib</Filter>
     </ClCompile>
     <ClCompile Include="..\optlib\elixir.c">
+      <Filter>Source Files\optlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\optlib\forth.c">
       <Filter>Source Files\optlib</Filter>
     </ClCompile>
     <ClCompile Include="..\optlib\gdbinit.c">
@@ -256,6 +262,9 @@
       <Filter>Source Files\optlib</Filter>
     </ClCompile>
     <ClCompile Include="..\optlib\passwd.c">
+      <Filter>Source Files\optlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\optlib\pkgConfig.c">
       <Filter>Source Files\optlib</Filter>
     </ClCompile>
     <ClCompile Include="..\optlib\pod.c">
@@ -327,13 +336,13 @@
     <ClCompile Include="..\parsers\beta.c">
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
+    <ClCompile Include="..\parsers\biblatex.c">
+      <Filter>Source Files\parsers</Filter>
+    </ClCompile>
     <ClCompile Include="..\parsers\bibtex.c">
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
     <ClCompile Include="..\parsers\c-based.c">
-      <Filter>Source Files\parsers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\parsers\c.c">
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
     <ClCompile Include="..\parsers\clojure.c">
@@ -372,6 +381,9 @@
     <ClCompile Include="..\parsers\cxx\cxx_parser_lambda.c">
       <Filter>Source Files\parsers\cxx</Filter>
     </ClCompile>
+    <ClCompile Include="..\parsers\cxx\cxx_parser_module.c">
+      <Filter>Source Files\parsers\cxx</Filter>
+    </ClCompile>
     <ClCompile Include="..\parsers\cxx\cxx_parser_namespace.c">
       <Filter>Source Files\parsers\cxx</Filter>
     </ClCompile>
@@ -394,6 +406,9 @@
       <Filter>Source Files\parsers\cxx</Filter>
     </ClCompile>
     <ClCompile Include="..\parsers\cxx\cxx_scope.c">
+      <Filter>Source Files\parsers\cxx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parsers\cxx\cxx_side_chain.c">
       <Filter>Source Files\parsers\cxx</Filter>
     </ClCompile>
     <ClCompile Include="..\parsers\cxx\cxx_subparser.c">
@@ -522,9 +537,6 @@
     <ClCompile Include="..\parsers\perl.c">
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
-    <ClCompile Include="..\parsers\perl6.c">
-      <Filter>Source Files\parsers</Filter>
-    </ClCompile>
     <ClCompile Include="..\parsers\php.c">
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
@@ -553,6 +565,9 @@
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
     <ClCompile Include="..\parsers\rake.c">
+      <Filter>Source Files\parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parsers\raku.c">
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
     <ClCompile Include="..\parsers\rexx.c">
@@ -616,6 +631,9 @@
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
     <ClCompile Include="..\parsers\typescript.c">
+      <Filter>Source Files\parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\parsers\v.c">
       <Filter>Source Files\parsers</Filter>
     </ClCompile>
     <ClCompile Include="..\parsers\vera.c">
@@ -713,6 +731,9 @@
     <ClInclude Include="..\main\inline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\main\interval_tree_generic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\main\keyword.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -791,6 +812,9 @@
     <ClInclude Include="..\main\rbtree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\main\rbtree_augmented.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\main\read.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -839,6 +863,9 @@
     <ClInclude Include="..\main\unwindi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\main\utf8_str.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\main\vstring.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -852,6 +879,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\parsers\autoconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parsers\bibtex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\parsers\cpreprocessor.h">
@@ -870,6 +900,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\parsers\cxx\cxx_scope.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parsers\cxx\cxx_side_chain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\parsers\cxx\cxx_subparser.h">
@@ -891,6 +924,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\parsers\iniconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\parsers\jscript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\parsers\m4.h">

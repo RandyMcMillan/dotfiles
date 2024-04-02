@@ -69,6 +69,7 @@ typedef struct sComputPos {
 	long    offset;
 	bool open;
 	int crAdjustment;
+	size_t posInAllLines;
 } compoundPos;
 
 typedef struct sInputLineFposMap {
@@ -336,8 +337,14 @@ static void allocLineFposMap (inputLineFposMap *lineFposMap)
 	lineFposMap->count = 0;
 }
 
+static void resetLineFposMap (inputLineFposMap *lineFposMap)
+{
+	memset(lineFposMap->pos, 0, sizeof(compoundPos) * lineFposMap->size);
+	lineFposMap->count = 0;
+}
+
 static void appendLineFposMap (inputLineFposMap *lineFposMap, compoundPos *pos,
-							   bool crAdjustment)
+							   bool crAdjustment, size_t posInAllLines)
 {
 	int lastCrAdjustment = 0;
 
@@ -359,6 +366,7 @@ static void appendLineFposMap (inputLineFposMap *lineFposMap, compoundPos *pos,
 	lineFposMap->pos [lineFposMap->count].open = true;
 	lineFposMap->pos [lineFposMap->count].crAdjustment
 		= lastCrAdjustment + ((crAdjustment)? 1: 0);
+	lineFposMap->pos [lineFposMap->count].posInAllLines = posInAllLines;
 	lineFposMap->count++;
 }
 
@@ -456,7 +464,7 @@ static void resetLangOnStack (inputLangInfo *langInfo, langType lang)
 	langStackPush (& (langInfo->stack), lang);
 }
 
-extern langType baseLangOnStack (inputLangInfo *langInfo)
+static langType baseLangOnStack (inputLangInfo *langInfo)
 {
 	Assert (langInfo->stack.count > 0);
 	return langStackBotom (& (langInfo->stack));
@@ -787,7 +795,7 @@ extern time_t getInputFileMtime (void)
 	return File.mtime;
 }
 
-extern void resetInputFile (const langType language)
+extern void resetInputFile (const langType language, bool resetLineFposMap_)
 {
 	Assert (File.mio);
 
@@ -801,8 +809,12 @@ extern void resetInputFile (const langType language)
 	vStringClear (File.line);
 	File.ungetchIdx = 0;
 
-	if (hasLanguageMultilineRegexPatterns (language))
+	if (hasLanguageMultilineRegexPatterns (language)
+		|| hasLanguagePostRunRegexPatterns (language))
 		File.allLines = vStringNew ();
+
+	if (resetLineFposMap_)
+		resetLineFposMap(&File.lineFposMap);
 
 	resetLangOnStack (& inputLang, language);
 	File.input.lineNumber = File.input.lineNumberOrigin;
@@ -837,13 +849,13 @@ extern void *getInputFileUserData(void)
 
 /*  Action to take for each encountered input newline.
  */
-static void fileNewline (bool crAdjustment)
+static void fileNewline (bool crAdjustment, size_t posInAllLines)
 {
 	File.filePosition = StartOfLine;
 
 	if (BackupFile.mio == NULL)
 		appendLineFposMap (&File.lineFposMap, &File.filePosition,
-						   crAdjustment);
+						   crAdjustment, posInAllLines);
 
 	File.input.lineNumber++;
 	File.source.lineNumber++;
@@ -927,7 +939,7 @@ static vString *iFileGetLine (bool chop_newline)
 	if (vStringLength (File.line) > 0)
 	{
 		/* Use StartOfLine from previous iFileGetLine() call */
-		fileNewline (eol == eol_cr_nl);
+		fileNewline (eol == eol_cr_nl, File.allLines? vStringLength(File.allLines): 0);
 		/* Store StartOfLine for the next iFileGetLine() call */
 		mio_getpos (File.mio, &StartOfLine.pos);
 		StartOfLine.offset = mio_tell (File.mio);
@@ -940,7 +952,7 @@ static vString *iFileGetLine (bool chop_newline)
 
 		bool chopped = vStringStripNewline (File.line);
 
-		matchLanguageRegex (lang, File.line);
+		matchLanguageRegex (lang, File.line, false);
 
 		if (chopped && !chop_newline)
 			vStringPutNewlinAgainUnsafe (File.line);
@@ -953,6 +965,36 @@ static vString *iFileGetLine (bool chop_newline)
 		{
 			matchLanguageMultilineRegex (lang, File.allLines);
 			matchLanguageMultitableRegex (lang, File.allLines);
+
+			if (hasLanguagePostRunRegexPatterns (lang))
+			{
+
+				unsigned input_ln = File.input.lineNumber;
+				unsigned source_ln = File.source.lineNumber;
+				MIOPos pos = File.filePosition.pos;
+
+				vString *line = vStringNew();
+				for (size_t i = 0; i < File.lineFposMap.count; i++)
+				{
+					File.input.lineNumber = i + 1;
+					File.source.lineNumber = File.input.lineNumber;
+					File.filePosition.pos = File.lineFposMap.pos[i].pos;
+
+					vStringNCopySUnsafe(line,
+										vStringValue(File.allLines) +
+										File.lineFposMap.pos[i].posInAllLines,
+										(((i + 1) < File.lineFposMap.count)
+										 ? File.lineFposMap.pos[i+1].posInAllLines
+										 : vStringLength (File.allLines))
+										- File.lineFposMap.pos[i].posInAllLines);
+					matchLanguageRegex (lang, line, true);
+				}
+				vStringDelete(line);
+
+				File.filePosition.pos = pos;
+				File.input.lineNumber = input_ln;
+				File.source.lineNumber = source_ln;
+			}
 
 			/* To limit the execution of multiline/multitable parser(s) only
 			   ONCE, clear File.allLines field. */
@@ -1042,16 +1084,23 @@ extern int skipToCharacterInInputFile2 (int c0, int c1)
  *  the terminating newline. A NULL return value means that all lines in the
  *  file have been read and we are at the end of file.
  */
-extern const unsigned char *readLineFromInputFile (void)
+extern const unsigned char *readLineFromInputFileWithLength (size_t *length)
 {
 	vString* const line = iFileGetLine (true);
 	const unsigned char* result = NULL;
 	if (line != NULL)
 	{
 		result = (const unsigned char*) vStringValue (line);
+		*length = vStringLength (line);
 		DebugStatement ( debugPrintf (DEBUG_READ, "%s\n", result); )
 	}
 	return result;
+}
+
+extern const unsigned char *readLineFromInputFile (void)
+{
+	size_t dummy;
+	return readLineFromInputFileWithLength(&dummy);
 }
 
 /*

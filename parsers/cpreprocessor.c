@@ -39,6 +39,25 @@
 /*
 *   DATA DECLARATIONS
 */
+enum eCppCharacters {
+	/* white space characters */
+	SPACE         = ' ',
+	NEWLINE       = '\n',
+	CRETURN       = '\r',
+	FORMFEED      = '\f',
+	TAB           = '\t',
+	VTAB          = '\v',
+
+	/* some hard to read characters */
+	DOUBLE_QUOTE  = '"',
+	SINGLE_QUOTE  = '\'',
+	BACKSLASH     = '\\',
+
+	/* symbolic representations, above 0xFF not to conflict with any byte */
+	STRING_SYMBOL = CPP_STRING_SYMBOL,
+	CHAR_SYMBOL   = CPP_CHAR_SYMBOL
+};
+
 typedef enum { COMMENT_NONE, COMMENT_C, COMMENT_CPLUS, COMMENT_D } Comment;
 
 enum eCppLimits {
@@ -461,6 +480,20 @@ extern void cppEndStatement (void)
 /*  This puts a character back into the input queue for the input File. */
 extern void cppUngetc (const int c)
 {
+	if (c == STRING_SYMBOL || c == CHAR_SYMBOL)
+	{
+		Assert(Cpp.charOrStringContents != NULL);
+		cppUngetc(c == STRING_SYMBOL ? '"' : '\'');
+		cppUngetString(vStringValue(Cpp.charOrStringContents), vStringLength(Cpp.charOrStringContents));
+		cppUngetc(c == STRING_SYMBOL ? '"' : '\'');
+		vStringClear(Cpp.charOrStringContents);
+		return;
+	}
+	else if (c == EOF)
+	{
+		return;
+	}
+
 	if(!Cpp.ungetPointer)
 	{
 		// no unget data
@@ -498,7 +531,7 @@ extern void cppUngetc (const int c)
 	Cpp.ungetDataSize++;
 }
 
-int cppUngetBufferSize()
+int cppUngetBufferSize(void)
 {
 	return Cpp.ungetBufferSize;
 }
@@ -980,8 +1013,7 @@ static int directiveDefine (const int c, bool undef)
 				tagEntryInfo *e = getEntryInCorkQueue (r);
 				if (e)
 				{
-					e->lineNumber = lineNumber;
-					e->filePosition = filePosition;
+					updateTagLine (e, lineNumber, filePosition);
 					patchScopeFieldOfParameters (param_start, param_end, r);
 				}
 			}
@@ -1412,7 +1444,7 @@ static int skipToEndOfCxxRawLiteralString (void)
  *  special character to symbolically represent a generic character.
  *  Also detects Vera numbers that include a base specifier (ie. 'b1010).
  */
-static int skipToEndOfChar ()
+static int skipToEndOfChar (void)
 {
 	int c;
 	int count = 0, veraBase = '\0';
@@ -1469,12 +1501,12 @@ static int skipToEndOfChar ()
 static void attachFields (int macroCorkIndex, unsigned long endLine, const char *macrodef)
 {
 	tagEntryInfo *tag = getEntryInCorkQueue (macroCorkIndex);
-	if (!tag)
-		return;
-
-	tag->extensionFields.endLine = endLine;
-	if (macrodef)
-		attachParserFieldToCorkEntry (macroCorkIndex, Cpp.macrodefFieldIndex, macrodef);
+	if (tag)
+	{
+		setTagEndLine (tag, endLine);
+		if (macrodef)
+			attachParserField (tag, Cpp.macrodefFieldIndex, macrodef);
+	}
 }
 
 static vString * conditionMayFlush (vString* condition, bool del)
@@ -1518,6 +1550,29 @@ static void conditionMayPut (vString *condition, int c)
 	if (vStringLength (condition) > 0
 		|| (!isdigit(c)))
 		vStringPut(condition, c);
+}
+
+extern void cppVStringPut (vString* string, const int c)
+{
+	if (c <= 0xff)
+		vStringPut (string, c);
+	else
+	{
+		char marker = '"';
+		switch (c)
+		{
+			case CHAR_SYMBOL:
+				marker = '\'';
+				/* Fall through */
+			case STRING_SYMBOL:
+				vStringPut (string, marker);
+				vStringCat (string, cppGetLastCharOrStringContents ());
+				vStringPut (string, marker);
+				break;
+			default:
+				AssertNotReached();
+		}
+	}
 }
 
 /*  This function returns the next character, stripping out comments,
@@ -1917,7 +1972,7 @@ process:
 	if (condition)
 		vStringDelete (condition);
 
-	DebugStatement ( debugPutc (DEBUG_CPP, c); )
+	DebugStatement ( cppDebugPutc (DEBUG_CPP, c); )
 	DebugStatement ( if (c == NEWLINE)
 				debugPrintf (DEBUG_CPP, "%6ld: ", getInputLineNumber () + 1); )
 
@@ -1972,7 +2027,7 @@ static bool buildMacroInfoFromTagEntry (int corkIndex,
 	return true;
 }
 
-extern cppMacroInfo * cppFindMacroFromSymtab (const char *const name)
+static cppMacroInfo * cppFindMacroFromSymtab (const char *const name)
 {
 	cppMacroInfo *info = NULL;
 	foreachEntriesInScope (CORK_NIL, name, buildMacroInfoFromTagEntry, &info);
@@ -2599,3 +2654,17 @@ extern parserDefinition* CPreProParser (void)
 	def->useCork = CORK_QUEUE | CORK_SYMTAB;
 	return def;
 }
+
+#ifdef DEBUG
+extern void cppDebugPutc (const int level, const int c)
+{
+	if (debug (level)  &&  c != EOF)
+	{
+		     if (c == STRING_SYMBOL)  printf ("\"string\"");
+		else if (c == CHAR_SYMBOL)    printf ("'c'");
+		else                          putchar (c);
+
+		fflush (stdout);
+	}
+}
+#endif

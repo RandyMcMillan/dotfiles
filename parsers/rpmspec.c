@@ -6,6 +6,10 @@
 *   GNU General Public License version 2 or (at your option) any later version.
 *
 *   This module contains functions for generating tags for rpm spec files.
+*
+*   References:
+*   	- https://rpm-software-management.github.io/rpm/manual/macros.html
+*   	- https://rpm-software-management.github.io/rpm/manual/spec.html
 */
 
 /*
@@ -213,7 +217,7 @@ static bool found_macro_cb_full (const char *line,
 		if (!ctx->rejecting)
 		{
 			/* The line is not continued. Let's record the endLine now. */
-			tag.extensionFields.endLine = getInputLineNumber();
+			setTagEndLine (&tag, getInputLineNumber());
 		}
 
 		int cork_index = makeTagEntry (&tag);
@@ -335,7 +339,7 @@ static bool check_line_continuation (const char *line,
 	tagEntryInfo *e = getEntryInCorkQueue (ctx->macro_index);
 	if (rejecting && (!ctx->rejecting) && e)
 	{
-		e->extensionFields.endLine = getInputLineNumber();
+		setTagEndLine (e, getInputLineNumber());
 		ctx->macro_index = CORK_NIL;
 	}
 	else if (rejecting && ctx->in_configure)

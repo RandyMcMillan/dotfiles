@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/universal-ctags/ctags/badge.svg?branch=master&service=github)](https://coveralls.io/github/universal-ctags/ctags?branch=master)
 [![Build status](https://ci.appveyor.com/api/projects/status/6hk2p5lv6jsrd9o7/branch/master?svg=true)](https://ci.appveyor.com/project/universalctags/ctags/branch/master)
 [![RTD build status](https://readthedocs.org/projects/ctags/badge)](https://docs.ctags.io)
-[![CircleCI Build Status](https://circleci.com/gh/universal-ctags/ctags.svg?style=shield&circle-token=2e582261da84ebc6d21725b05381f410bc5de29d)](https://circleci.com/gh/universal-ctags)
+[![CircleCI Build Status](https://dl.circleci.com/status-badge/img/gh/universal-ctags/ctags/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/universal-ctags/ctags/tree/master)
 ![GitHub Actions/VALGRIND](https://github.com/universal-ctags/ctags/workflows/run%20units%20target%20under%20VALGRIND/badge.svg)
 
 [Universal Ctags](https://ctags.io/) (abbreviated as u-ctags) is a *maintained*
@@ -51,7 +51,7 @@ Nightly builds are available at the [ctags-nightly-build](https://github.com/uni
 Go to the [releases](https://github.com/universal-ctags/ctags-nightly-build/releases) page to download tarball archives.
 
 ### Mac
-See [Homebrew Tap for Universal Ctags](https://github.com/universal-ctags/homebrew-universal-ctags)
+Recent builds are available via the [`universal-ctags` Homebrew formula](https://formulae.brew.sh/formula/universal-ctags).
 
 ### Snap
 Go to [ctags-snap](https://github.com/universal-ctags/ctags-snap) and
@@ -66,7 +66,7 @@ To build with Autotools (Autoconf and Automake) on GNU/Linux, OSX, or Windows 10
     $ git clone https://github.com/universal-ctags/ctags.git
     $ cd ctags
     $ ./autogen.sh
-    $ ./configure --prefix=/where/you/want # defaults to /usr/local
+    $ ./configure  # use --prefix=/where/you/want to override installation directory, defaults to /usr/local
     $ make
     $ make install # may require extra privileges depending on where to install
 ```

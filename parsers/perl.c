@@ -73,7 +73,7 @@ struct hereDocMarkerManager {
 *   FUNCTION DEFINITIONS
 */
 
-static void notifyEnteringPod ()
+static void notifyEnteringPod (void)
 {
 	subparser *sub;
 
@@ -89,7 +89,7 @@ static void notifyEnteringPod ()
 	}
 }
 
-static void notifyLeavingPod ()
+static void notifyLeavingPod (void)
 {
 	subparser *sub;
 
@@ -625,9 +625,10 @@ static bool isInHereDoc (struct hereDocMarkerManager *mgr,
 		&& (cp [vStringLength (current->marker)] == '\0'
 			|| (!isIdentifier (cp [vStringLength (current->marker)]))))
 	{
-		tagEntryInfo *tag = getEntryInCorkQueue (current->corkIndex);
-		if (tag)
-			tag->extensionFields.endLine = getInputLineNumber();
+		setTagEndLineToCorkEntry (current->corkIndex, getInputLineNumber());
+
+		makeSimpleRefTag (current->marker, KIND_PERL_HEREDOCMARKER, R_HEREDOC_ENDLABEL);
+
 		mgr->current++;
 		if (mgr->current == ptrArrayCount (mgr->markers))
 		{

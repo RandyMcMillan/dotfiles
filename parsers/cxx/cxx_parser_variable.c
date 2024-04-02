@@ -14,6 +14,7 @@
 #include "cxx_token.h"
 #include "cxx_token_chain.h"
 #include "cxx_scope.h"
+#include "cxx_side_chain.h"
 
 #include "vstring.h"
 #include "read.h"
@@ -87,6 +88,8 @@ CXXToken * cxxParserFindFirstPossiblyNestedAndQualifiedIdentifier(
 //   type var: range declaration <-- (FIXME: this is only inside for!)
 //   very complex type with modifiers() namespace::namespace::var = ...;
 //   type<with template> namespace::var[] = {
+//   type var<T> = ...;
+//   type var<T>[] = ...;
 //   ...
 //
 // Assumptions:
@@ -162,8 +165,10 @@ bool cxxParserExtractVariableDeclarations(CXXTokenChain * pChain,unsigned int uF
 		return false;
 	}
 
-	bool bGotVariable = false;
 
+	// For tracking a specialization in a variable template
+	CXXToken * pTemplateSpecializationStart = NULL, * pTemplateSpecializationEnd = NULL;
+	bool bGotVariable = false;
 	// Loop over the whole statement.
 
 	while(t)
@@ -206,8 +211,9 @@ bool cxxParserExtractVariableDeclarations(CXXTokenChain * pChain,unsigned int uF
 				return bGotVariable;
 			}
 
-			if(t->eType == CXXTokenTypeSmallerThanSign)
+			if(cxxTokenTypeIs(t, CXXTokenTypeSmallerThanSign))
 			{
+				pTemplateSpecializationStart = t;
 				// Must be part of template type name (so properly balanced).
 				t = cxxTokenChainSkipToEndOfTemplateAngleBracket(t);
 				if(!t)
@@ -215,6 +221,7 @@ bool cxxParserExtractVariableDeclarations(CXXTokenChain * pChain,unsigned int uF
 					CXX_DEBUG_LEAVE_TEXT("Failed to skip past angle bracket chain");
 					return bGotVariable;
 				}
+				pTemplateSpecializationEnd = t;
 			}
 
 			t = t->pNext;
@@ -228,6 +235,7 @@ bool cxxParserExtractVariableDeclarations(CXXTokenChain * pChain,unsigned int uF
 			return bGotVariable;
 		}
 
+		CXXToken * pEndScanningAttrs = t;
 		CXX_DEBUG_PRINT(
 				"Found notable token '%s' of type 0x%02x(%s)",
 				vStringValue(t->pszWord),
@@ -245,6 +253,7 @@ bool cxxParserExtractVariableDeclarations(CXXTokenChain * pChain,unsigned int uF
 
 		CXXToken * pIdentifier = NULL;
 		CXXToken * pTokenBefore = NULL;
+		bool bSpecializedAsVarTemplate = false;
 
 		// If we have to continue scanning we'll remove the tokens from here
 		// so they don't end up being part of the type name.
@@ -424,7 +433,17 @@ bool cxxParserExtractVariableDeclarations(CXXTokenChain * pChain,unsigned int uF
 				// check for array
 				// Keep the array specifier as part of type
 
-				pIdentifier = t->pPrev;
+				//         pTemplateSpecializationStart
+				//         | pTemplateSpecializationEnd
+				// --------V-V
+				// type var<T>[] = ...
+				// -----------^------- t
+				if (t->pPrev && t->pPrev == pTemplateSpecializationEnd)
+					bSpecializedAsVarTemplate = true;
+
+				pIdentifier = bSpecializedAsVarTemplate
+					? pTemplateSpecializationStart->pPrev
+					: t->pPrev;
 				pTokenBefore = pIdentifier->pPrev;
 
 				while(t->pNext && cxxTokenTypeIs(t->pNext,CXXTokenTypeSquareParenthesisChain))
@@ -466,16 +485,66 @@ bool cxxParserExtractVariableDeclarations(CXXTokenChain * pChain,unsigned int uF
 				t = t->pNext;
 			break;
 			default:
+				//         pTemplateSpecializationStart
+				//         | pTemplateSpecializationEnd
+				// --------V-V
+				// type var<T> = ...
+				// ------------^------ t
+
+				if (t->pPrev && t->pPrev == pTemplateSpecializationEnd)
+					bSpecializedAsVarTemplate = true;
+
 				// Must be identifier
-				if(t->pPrev->eType != CXXTokenTypeIdentifier)
+				if (bSpecializedAsVarTemplate &&
+					!cxxTokenTypeIs(pTemplateSpecializationStart->pPrev, CXXTokenTypeIdentifier))
+				{
+					CXX_DEBUG_LEAVE_TEXT("No identifier before the <> specializer");
+					return bGotVariable;
+				}
+				else if (!bSpecializedAsVarTemplate &&
+						 !cxxTokenTypeIs(t->pPrev, CXXTokenTypeIdentifier))
 				{
 					CXX_DEBUG_LEAVE_TEXT("No identifier before the notable token");
 					return bGotVariable;
 				}
 
-				pIdentifier = t->pPrev;
+				pIdentifier = bSpecializedAsVarTemplate
+					? pTemplateSpecializationStart->pPrev
+					: t->pPrev;
 				pTokenBefore = pIdentifier->pPrev;
+
+				// Skip the specializer.
+				// When extracting the typeref for the variable, the specializer
+				// becomes noise.
+				if (bSpecializedAsVarTemplate)
+					t = pTemplateSpecializationEnd->pNext;
+
+				// The final states:
+				// pTokenBefore
+				// |    pIdentifier
+				// V    V
+				// type var ... =
+				// -------------^- t
 			break;
+		}
+
+		if (bSpecializedAsVarTemplate) {
+			pTemplateSpecializationEnd->bFollowedBySpace = false;
+			CXXToken * pTemplateSpecialization = cxxTokenChainExtractRange(
+				pTemplateSpecializationStart,
+				pTemplateSpecializationEnd,
+				0
+				);
+			if(g_cxx.pTemplateSpecializationTokenChain)
+				cxxTokenChainClear(g_cxx.pTemplateSpecializationTokenChain);
+			else
+				g_cxx.pTemplateSpecializationTokenChain = cxxTokenChainCreate();
+			cxxTokenChainAppend(g_cxx.pTemplateSpecializationTokenChain,
+								pTemplateSpecialization);
+			cxxTokenChainDestroyRange(pChain,
+									  pTemplateSpecializationStart,
+									  pTemplateSpecializationEnd);
+			pTemplateSpecializationStart = pTemplateSpecializationEnd = NULL;
 		}
 
 got_identifier:
@@ -509,7 +578,7 @@ got_identifier:
 		CXXToken * pScopeStart = NULL;
 
 		// Skip back to the beginning of the scope, if any
-		while(pTokenBefore->eType == CXXTokenTypeMultipleColons)
+		while(cxxTokenTypeIs(pTokenBefore, CXXTokenTypeMultipleColons))
 		{
 			if(!cxxParserCurrentLanguageIsCPP())
 			{
@@ -776,12 +845,20 @@ got_identifier:
 				// consteval is not here; it is for functions.
 				if(g_cxx.uKeywordState & CXXParserKeywordStateSeenThreadLocal)
 					uProperties |= CXXTagPropertyThreadLocal;
+				if(g_cxx.uKeywordState & CXXParserKeywordStateSeenExport)
+					uProperties |= CXXTagPropertyExport;
+				if(bSpecializedAsVarTemplate)
+					uProperties |= CXXTagPropertyTemplateSpecialization;
 
 				pszProperties = cxxTagSetProperties(uProperties);
 			}
 
 			if(bGotTemplate)
 				cxxTagHandleTemplateFields();
+
+			cxxSideChainCollectInRange(cxxTokenChainFirst(pChain), pEndScanningAttrs,
+									   pIdentifier);
+			cxxSideChainScan(pIdentifier->pSideChain);
 
 			iCorkIndex = cxxTagCommit(&iCorkIndexFQ);
 			cxxTagUseTokenAsPartOfDefTag(iCorkIndexFQ, pIdentifier);

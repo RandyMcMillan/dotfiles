@@ -88,6 +88,7 @@ typedef struct sParserObject {
 									  the subparser). */
 	unsigned int pseudoTagPrinted:1;   /* pseudo tags about this parser
 										  is emitted or not. */
+	unsigned int justRunForSchedulingBase:1;
 	unsigned int used;			/* Used for printing language specific statistics. */
 
 	unsigned int anonymousIdentiferId; /* managed by anon* functions */
@@ -119,6 +120,7 @@ static void anonResetMaybe (parserObject *parser);
 static void setupAnon (void);
 static void teardownAnon (void);
 static void uninstallTagXpathTable (const langType language);
+static bool hasLanguageAnyRegexPatterns (const langType language);
 
 /*
 *   DATA DEFINITIONS
@@ -2166,6 +2168,7 @@ static void pre_lang_def_flag_base_long (const char* const optflag, const char* 
 	langType cpreproc = getNamedLanguage ("CPreProcessor", 0);
 	if (base == cpreproc)
 	{
+		/* See Tmain/optscript-preludes-stack.d */
 		error (WARNING,
 			   "Because of an internal limitation, Making a sub parser based on the CPreProcessor parser is not allowed: %s",
 			   param);
@@ -4040,7 +4043,7 @@ static rescanReason createTagsForFile (const langType language,
 	parserDefinition *const lang = LanguageTable [language].def;
 	rescanReason rescan = RESCAN_NONE;
 
-	resetInputFile (language);
+	resetInputFile (language, passCount > 1);
 
 	Assert (lang->parser || lang->parser2);
 
@@ -4146,7 +4149,7 @@ static bool createTagsWithFallback1 (const langType language,
 									 langType *exclusive_subparser)
 {
 	bool tagFileResized = false;
-	unsigned long numTags	= numTagsAdded ();
+	unsigned long numTags;
 	MIOPos tagfpos;
 	int lastPromise = getLastPromise ();
 	unsigned int passCount = 0;
@@ -4168,9 +4171,11 @@ static bool createTagsWithFallback1 (const langType language,
 	if (isXtagEnabled (XTAG_PSEUDO_TAGS))
 		addParserPseudoTags (language);
 	initializeParserStats (parser);
+	numTags = numTagsAdded ();
 	tagFilePosition (&tagfpos);
 
 	anonResetMaybe (parser);
+	parser->justRunForSchedulingBase = 0;
 
 	while ( ( whyRescan =
 		  createTagsForFile (language, ++passCount) )
@@ -4201,8 +4206,9 @@ static bool createTagsWithFallback1 (const langType language,
 		}
 	}
 
-	/* Force filling allLines buffer and kick the multiline regex parser */
-	if (hasLanguageMultilineRegexPatterns (language))
+	if (!parser->justRunForSchedulingBase
+		/* Force applying regex patterns */
+		&& hasLanguageAnyRegexPatterns (language))
 		while (readLineFromInputFile () != NULL)
 			; /* Do nothing */
 
@@ -4580,11 +4586,20 @@ static bool lregexQueryParserAndSubparsers (const langType language, bool (* pre
 	return r;
 }
 
+extern bool hasLanguagePostRunRegexPatterns (const langType language)
+{
+	return lregexQueryParserAndSubparsers (language, regexIsPostRun);
+}
+
 extern bool hasLanguageMultilineRegexPatterns (const langType language)
 {
 	return lregexQueryParserAndSubparsers (language, regexNeedsMultilineBuffer);
 }
 
+static bool hasLanguageAnyRegexPatterns (const langType language)
+{
+	return lregexQueryParserAndSubparsers (language, lregexControlBlockHasAny);
+}
 
 extern void addLanguageCallbackRegex (const langType language, const char *const regex, const char *const flags,
 									  const regexCallback callback, bool *disabled, void *userData)
@@ -4603,16 +4618,16 @@ extern bool doesLanguageExpectCorkInRegex (const langType language)
 	return hasScopeAction;
 }
 
-extern void matchLanguageRegex (const langType language, const vString* const line)
+extern void matchLanguageRegex (const langType language, const vString* const line, bool postrun)
 {
 	subparser *tmp;
 
-	matchRegex ((LanguageTable + language)->lregexControlBlock, line);
+	matchRegex ((LanguageTable + language)->lregexControlBlock, line, postrun);
 	foreachSubparser(tmp, true)
 	{
 		langType t = getSubparserLanguage (tmp);
 		enterSubparser (tmp);
-		matchLanguageRegex (t, line);
+		matchLanguageRegex (t, line, postrun);
 		leaveSubparser ();
 	}
 }
@@ -5095,15 +5110,15 @@ extern void anonHashString (const char *filename, char buf[9])
 	sprintf(buf, "%08x", anonHash((const unsigned char *)filename));
 }
 
-
-extern void anonConcat (vString *buffer, int kind)
+extern void anonConcatFull (vString *buffer, langType lang, int kind)
 {
-	anonGenerate (buffer, NULL, kind);
+	anonGenerateFull (buffer, NULL, lang, kind);
 }
 
-extern void anonGenerate (vString *buffer, const char *prefix, int kind)
+extern void anonGenerateFull (vString *buffer, const char *prefix, langType lang, int kind)
 {
-	parserObject* parser = LanguageTable + getInputLanguage ();
+	Assert(lang != LANG_IGNORE);
+	parserObject* parser = LanguageTable + ((lang == LANG_AUTO)? getInputLanguage (): lang);
 	parser -> anonymousIdentiferId ++;
 
 	char szNum[32];
@@ -5117,14 +5132,13 @@ extern void anonGenerate (vString *buffer, const char *prefix, int kind)
 	vStringCatS(buffer,szNum);
 }
 
-extern vString *anonGenerateNew (const char *prefix, int kind)
+extern vString *anonGenerateNewFull (const char *prefix, langType lang, int kind)
 {
 	vString *buffer = vStringNew ();
 
-	anonGenerate (buffer, prefix, kind);
+	anonGenerateFull (buffer, prefix, lang, kind);
 	return buffer;
 }
-
 
 extern bool applyLanguageParam (const langType language, const char *name, const char *args)
 {
@@ -5176,8 +5190,11 @@ extern slaveParser *getNextSlaveParser(slaveParser *last)
 extern void scheduleRunningBaseparser (int dependencyIndex)
 {
 	langType current = getInputLanguage ();
-	parserDefinition *current_parser = LanguageTable [current].def;
+	parserObject *current_pobj = LanguageTable + current;
+	parserDefinition *current_parser = current_pobj->def;
 	parserDependency *dep = NULL;
+
+	current_pobj->justRunForSchedulingBase = 1;
 
 	if (dependencyIndex == RUN_DEFAULT_SUBPARSERS)
 	{
@@ -5489,6 +5506,7 @@ typedef enum {
 #if defined(DEBUG) && defined(HAVE_SECCOMP)
 	K_CALL_GETPPID,
 #endif
+	K_QUIT,
 	K_DISABLED,
 	K_ENABLED,
 	K_ROLES,
@@ -5565,6 +5583,7 @@ static kindDefinition CTST_Kinds[KIND_COUNT] = {
 #if defined(DEBUG) && defined(HAVE_SECCOMP)
 	{true, 'P', "callGetPPid", "trigger calling getppid(2) that seccomp sandbox disallows"},
 #endif
+	{true, 'Q', "quit", "stop the parsing"},
 	{false,'d', "disabled", "a kind disabled by default",
 	 .referenceOnly = false, ATTACH_ROLES (CTST_DisabledKindRoles)},
 	{true, 'e', "enabled", "a kind enabled by default",
@@ -5607,9 +5626,11 @@ static void createCTSTTags (void)
 
 	int found_enabled_disabled[2] = {0, 0};
 
+	bool quit = false;
+
 	TRACE_ENTER_TEXT("Parsing starts");
 
-	while ((line = readLineFromInputFile ()) != NULL)
+	while (!quit && (line = readLineFromInputFile ()) != NULL)
 	{
 		int c = line[0];
 
@@ -5667,6 +5688,9 @@ static void createCTSTTags (void)
 						getppid();
 						break;
 #endif
+					case K_QUIT:
+						quit = true;
+						break;
 				    case K_DISABLED:
 				    case K_ENABLED:
 						{
@@ -5760,6 +5784,9 @@ static void createCTSTTags (void)
 						notice ("notice output for testing: %s", CTST_Kinds [i].name);
 						break;
 				}
+
+				if (quit)
+					break;
 			}
 	}
 

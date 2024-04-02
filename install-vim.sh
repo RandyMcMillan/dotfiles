@@ -46,10 +46,10 @@ echo VIMRC_DESTINATION=$VIMRC_DESTINATION
 #if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [ -d "$VIMRC_DESTINATION" ]; then
       pushd $VIMRC_DESTINATION
-      git pull -f origin master
-      python3 -m pip install --user requests
+      git fetch --all
+      pipx install requests  --include-deps || brew install pipx
       if [ ! "$ARCH" = "x86_64" ]; then
-          python3 update_plugins.py
+          ./update_plugins.py
       else
           pushd $VIMRC_DESTINATION && git checkout $X86_64HASH
       fi

@@ -39,6 +39,7 @@ jobs:
           printenv
       - name: make
         run: |
+          type -P brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           make autoconf
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" || echo $(which brew)
 

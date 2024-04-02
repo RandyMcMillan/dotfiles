@@ -32,11 +32,15 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: '10'
       - name: printenv
         run: |
           printenv
       - name: make
         run: |
-          make
+          sudo apt-get install -y build-essential procps curl file git
+          type -P brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          make autoconf
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" || echo $(which brew)
 

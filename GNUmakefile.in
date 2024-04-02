@@ -52,8 +52,8 @@ GLIBTOOL								:=$(shell which glibtool)
 export GLIBTOOL
 GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
-#AUTOCONF                                :=$(shell which autoconf)
-#export AUTOCONF
+AUTOCONF                                :=$(shell which autoconf)
+export AUTOCONF
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
 THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
@@ -252,7 +252,7 @@ export PORTER_VERSION
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 autoconf:## ./autogen.sh && ./configure
-	$(PWD)/autogen.sh configure
+	./autogen.sh configure
 
 nodegit$(EXEEXT):
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build

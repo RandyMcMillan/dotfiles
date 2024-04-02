@@ -1,10 +1,4 @@
 #!/bin/sh
-#
-#
-#autoreconf -vif
-
-ln -s $(which glibtoolize) /usr/local/bin/libtoolize
-set -x
 
 # https://github.com/leleliu008/autogen.sh
 
@@ -1931,7 +1925,7 @@ __install_command_via_available_package_manager() {
     if command_exists_in_filesystem_and_version_matched $@ ; then
         return 0
     fi
-
+ 
     if [ -z "$AVAILABLE_PACKAGE_MANAGER_LIST" ] ; then
         AVAILABLE_PACKAGE_MANAGER_LIST=$(__get_available_package_manager_list)
         if [ -z "$AVAILABLE_PACKAGE_MANAGER_LIST" ] ; then

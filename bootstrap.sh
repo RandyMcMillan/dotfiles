@@ -12,6 +12,7 @@ function doIt() {
 		--exclude "AUTHORS" \
 		--exclude "B.sh" \
 		--exclude "Brewfile" \
+		--exclude "Cargo.*" \
 		--exclude "CNAME" \
 		--exclude "COPYING" \
 		--exclude "Casks" \

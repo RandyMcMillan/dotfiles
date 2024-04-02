@@ -259,7 +259,6 @@ AM_CONDITIONAL(ENABLE_DEBUGGING, [test "x$enable_debugging" = "xyes"])
 # -------------------
 
 AC_PROG_CC
-AC_PROG_CC_C99
 # For gnulib.
 #  Typically, this is immediately after AC_PROG_CC, ...
 gl_EARLY
@@ -950,11 +949,11 @@ fi
 # Output files
 # ------------
 
-AC_CHECK_LIB([m], [isnan])
+AC_CHECK_LIB([m], [isnan], [libtool])
 
 AC_CHECK_FUNCS(mblen)
 
-AC_CONFIG_FILES([Makefile gnulib/Makefile man/GNUmakefile])
+AC_CONFIG_FILES([Makefile gnulib/Makefile man/GNUmakefile GNUmakefile])
 
 AC_OUTPUT
 

@@ -365,7 +365,7 @@ adduser-git:
 
 ##	:	bootstrap		source bootstrap.sh
 .PHONY: bootstrap
-bootstrap: exec
+bootstrap: vim exec
 	@bash -c "$(PWD)/bootstrap.sh force"
 
 

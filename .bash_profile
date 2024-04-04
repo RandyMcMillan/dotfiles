@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 if [ -f ~/config-git ]; then
-	source ~/config-git 2> >(tee -a bash_profile.log) 2>/dev/null
+	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
 fi
 if [ -f "$HOME/.cargo/env" ]; then
-	source "$HOME/.cargo/env" 2> >(tee -a bash_profile.log) 2>/dev/null
+	source "$HOME/.cargo/env" 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
 fi
 
 if hash brew 2>/dev/null; then

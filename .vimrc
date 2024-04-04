@@ -88,7 +88,7 @@ else
 set background=dark
 let g:solarized_termcolors=256
     set termguicolors
-    colorscheme solarized
+    "colorscheme solarized
 endif
 let g:solarized_termtrans=1
 "

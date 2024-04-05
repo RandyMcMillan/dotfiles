@@ -141,6 +141,7 @@ function git-fetch-branches(){
 }
 function git-add-remote-bitcoin-devs(){
 
+    git remote add bitcoinknots         git@github.com:bitcoinknots/bitcoin.git     || true
     git remote add Hyunhum              git@github.com:Hyunhum/bitcoin.git          || true
     git remote add MarcoFalke           git@github.com:MarcoFalke/bitcoin           || true
     #git remote add bitcoincore-dev      git@github.com:bitcoincore-dev/bitcoin.git  || true

@@ -127,6 +127,9 @@ function bitcoin-dl-install-depends(){
     fi
 }
 
+function git-fetch--all(){
+    git fetch --all
+}
 function git-fetch-branches(){
 
     git stash && export STASH=true || echo "no stash"
@@ -138,6 +141,9 @@ function git-fetch-branches(){
     #if [[ $STASH == "true" ]];then echo $STASH; fi || echo nogo
     if [[ $STASH == "true" ]];then git stash list; fi || echo nogo
     #git stash pop || echo "no pop"
+}
+function git-push--tags(){
+    git push --tags
 }
 function git-add-remote-bitcoin-devs(){
 

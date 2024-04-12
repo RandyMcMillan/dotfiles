@@ -282,10 +282,14 @@ keymap:## install ./init/com.local.KeyRemapping.plist
 
 init:## chsh -s /bin/bash && ./scripts/initialize
 .ONESHELL:
+	chsh -s /bin/bash && ./scripts/initialize || true
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
+weeble:## weeble
 	install ./weeble /usr/local/bin/
+wobble:## wobble
 	install ./wobble /usr/local/bin/
+blockheight:## blockheight
 	install ./blockheight /usr/local/bin/
 	bash -c "source $(PWD)/scripts/initialize"
 brew:-## install or update/upgrade brew

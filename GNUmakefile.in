@@ -284,6 +284,9 @@ init:## chsh -s /bin/bash && ./scripts/initialize
 .ONESHELL:
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
+	install ./weeble /usr/local/bin/
+	install ./wobble /usr/local/bin/
+	install ./blockheight /usr/local/bin/
 	bash -c "source $(PWD)/scripts/initialize"
 brew:-## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1

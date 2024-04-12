@@ -363,10 +363,14 @@ adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 
 
-##	:	bootstrap		source bootstrap.sh
+##	:	bootstrap		./bootstrap.sh
 .PHONY: bootstrap
 bootstrap: vim exec
-	@bash -c "$(PWD)/bootstrap.sh force"
+	@$(PWD)/bootstrap.sh force
+##	:	boot-strap		./boot-strap.sh
+.PHONY: boot-strap
+boot-strap: vim exec
+	@$(PWD)/boot-strap.sh force
 
 
 .PHONY: install

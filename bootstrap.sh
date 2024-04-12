@@ -154,7 +154,6 @@ function doIt() {
 		--exclude "legit" \
 		--exclude "legit.mk" \
 		--exclude "logs" \
-		--exclude "ltmain.sh" \
 		--exclude "m4" \
 		--exclude "make-actions-runner.sh" \
 		--exclude "minsc" \

@@ -1,3 +1,5 @@
+Makefile.in
+
 *.tmp
 init/init
 *.dmg

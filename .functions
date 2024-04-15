@@ -272,6 +272,10 @@ git checkout -b $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git re
 
 }
 
+function git-fetch--all (){
+git fetch --all
+}
+
 
 function git-submodule-update--init--recursive (){
 

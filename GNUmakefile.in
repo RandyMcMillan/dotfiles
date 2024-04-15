@@ -734,6 +734,8 @@ clean-nvm: ## clean-nvm
 -include nostril.mk
 -include venv.mk
 -include act.mk
+-include cargo.mk
+-include gnostr.mk
 
 # vim: set noexpandtab:
 # vim: set setfiletype make

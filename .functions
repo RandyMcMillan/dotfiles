@@ -179,19 +179,32 @@ function git-add-remote-bitcoin-devs(){
     git remote add virtu                git@github.com:virtu/bitcoin.git            || true
 
 }
+function gpg-sync-keys-bitcoin-devs-test(){
+
+gpg --keyserver hkps://keys.openpgp.org --send-keys E616FA7221A1613E5B99206297966C06BB06757B
+
+}
+
 function gpg-sync-keys-bitcoin-devs(){
+
+gpg-sync-keys-bitcoin-devs-test
 
 gpg-recv-keys-bitcoin-devs
 
-#PGP_SERVERS="pgp.mit.edu"
+#PGP_SERVERS="hkps://keys.openpgp.org"
 #PGP_SERVERS="keys.openpgp.org"
 #PGP_SERVERS="keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
-PGP_SERVERS="pgpkeys.eu keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
+#PGP_SERVERS="hkps://pgpkeys.eu hkps://keyserver.ubuntu.com hkps://keys.openpgp.org hkps://pgp.mit.edu"
+PGP_SERVERS="hkps://pgpkeys.eu hkps://keys.openpgp.org"
 
+echo $PGP_SERVERS
 for server in $PGP_SERVERS; do
 
+echo $server
+
 #laanwj list
-	while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:41}; done < keys.txt
+	while read line; do echo $line && gpg  --keyserver $server --recv-key ${line:0:41}; done < keys.txt
+	#while read line; do echo $line && gpg  --keyserver hkps://keyserver.ubuntu.com  --send-key ${line:0:41}; done < keys.txt
     #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < keys.txt
 
 	#while read line; do gpg  --keyserver pgp.mit.edu           --recv-key ${line:0:41}; done < keys.txt
@@ -201,7 +214,7 @@ for server in $PGP_SERVERS; do
     #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < keys.txt
 
 #bitcoin-builder-list
-	while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:41}; done < builder-keys.txt
+	while read line; do gpg  --keyserver hkps://keyserver.ubuntu.com  --recv-key ${line:0:41}; done < builder-keys.txt
     #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < builder-keys.txt
 
 	#while read line; do gpg  --keyserver pgp.mit.edu           --recv-key ${line:0:41}; done < builder-keys.txt
@@ -217,24 +230,34 @@ done;
 function gpg-recv-keys-bitcoin-devs(){
 
 #laanwj list
+#LAANWJ_LIST="https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt" curl -fsSL $LAANWJ_LIST
+
+
+LAANWJ_LIST="https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt"
 curl  -fsSL \
-https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt  \
+$LAANWJ_LIST \
 -o  keys.txt && \
 shasum -a 256 keys.txt > keys.shasum.1.txt
+#echo
+#cat keys.txt && echo
+#cat keys.shasum.1.txt && echo
 
 sed '/A2FD494D0021AA9B4FA58F759102B7AE654A4A5A/d' keys.txt > tmpfile && mv tmpfile keys.txt
 shasum -a 256 keys.txt > keys.shasum.2.txt
+#echo
+#cat keys.txt
+#echo
+#cat keys.shasum.2.txt
 
 #bitcoin-builder-list
 curl  -fsSL  \
-https://raw.githubusercontent.com/bitcoin/bitcoin/master/contrib/builder-keys/keys.txt \
+https://raw.githubusercontent.com/bitcoin/bitcoin/3116ccd790e76de8f64d2ef9aa5a2641c15bbd8b/contrib/builder-keys/keys.txt \
 -o  builder-keys.txt && \
 shasum -a 256 builder-keys.txt > builder.keys.shasum.txt
 
 sed '/A2FD494D0021AA9B4FA58F759102B7AE654A4A5A/d' builder-keys.txt > tmpfile && mv tmpfile builder-keys.txt
 shasum -a 256 builder-keys.txt > builder.keys.shasum.2.txt
 
-gpg-sync-keys-bitcoin-devs
 rm -f tmpfile
 
 }

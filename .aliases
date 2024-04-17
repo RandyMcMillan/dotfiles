@@ -35,6 +35,9 @@ alias p="cd ~/projects"
 #make
 alias maek="make "
 #git
+alias gg="git "
+alias hit="git "
+alias gti="git "
 alias got="git "
 alias g="git "
 alias LOG="git log --pretty=oneline --abbrev-commit --graph"

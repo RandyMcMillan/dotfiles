@@ -169,6 +169,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add marco-falke-gui      git@github.com:MarcoFalke/bitcoin-core-gui.git  || true
     git remote add mempool-tab          git@github.com:RandyMcMillan/mempool-tab.git    || true
     git remote add mzumsande            git@github.com:mzumsande/bitcoin.git        || true
+    git remote add BrandonOdiwuor       git@github.com:BrandonOdiwuor/bitcoin.git || true
     #git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git    || true
     git remote add randymcmillan-gui	git@github.com:randymcmillan/gui.git        || true
     git remote add pinheadmz            git@github.com:pinheadmz/bitcoin.git        || true
@@ -187,6 +188,8 @@ gpg --keyserver hkps://keys.openpgp.org --send-keys E616FA7221A1613E5B9920629796
 
 function gpg-sync-keys-bitcoin-devs(){
 
+
+curl -fsS https://b10c.me/gpg.txt > 0xB10C.txt
 gpg-sync-keys-bitcoin-devs-test
 
 gpg-recv-keys-bitcoin-devs

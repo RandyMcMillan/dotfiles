@@ -157,6 +157,12 @@ rsync --exclude ".git/" \
       --exclude ".macos" \
       --exclude ".osx" \
       --exclude "logs" \
+      --exclude "Cargo.toml" \
+      --exclude "Cargo.lock" \
+      --exclude "target" \
+      --exclude "legit" \
+      --exclude "nostril" \
+      --exlcude "rsync-time-backup" \
       -avh --no-perms . ~;
 increment;
 done

@@ -35,6 +35,7 @@ alias p="cd ~/projects"
 #make
 alias maek="make "
 #git
+alias gi="git "
 alias gg="git "
 alias hit="git "
 alias gti="git "

@@ -1,3 +1,4 @@
+export HOMEBREW_NO_AUTO_UPDATE=1
 PATH+=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11
 [ -d .git ] 2>/dev/null || true [-f .git] && git config --global --add safe.directory $args[0] 2>/dev/null || true
 

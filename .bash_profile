@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-if [ -f ~/config-git ]; then
-	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
-fi
+#if [ -f ~/config-git ]; then
+#	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
+#fi
 if [ -f "$HOME/.cargo/env" ]; then
 	source "$HOME/.cargo/env" 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
 fi
@@ -97,13 +97,13 @@ export NVM_DIR="$HOME/.nvm"
 
 
 # NOTE: trying the config in .bashrc for now...
-#if [ -f $(PWD)/Makefile ]; then
-#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-#fi
+if [ -f $(PWD)/Makefile ]; then
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+fi
 ##
-#if [ -f $(PWD)/GNUMakefile ]; then
-#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-#fi
+if [ -f $(PWD)/GNUMakefile ]; then
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+fi
 ##
 #if [ -f $(PWD)/funcs.mk ]; then
 #complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' funks.mk | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make

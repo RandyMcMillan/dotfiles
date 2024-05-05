@@ -245,4 +245,6 @@ if [[ $HELP == "TRUE" ]]; then
     echo "checkbrew                   sudoless"
 fi
 }
-cat ./template.sh > ./template
+if [[ -f template.sh ]]; then
+    cat ./template.sh > ./template
+fi

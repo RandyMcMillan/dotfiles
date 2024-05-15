@@ -120,3 +120,6 @@ if ! hash brew 2>/dev/null; then
        eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
        eval "$(/opt/homebrew/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
 fi
+
+# Created by `pipx` on 2024-05-13 13:20:32
+export PATH="$PATH:/Users/randymcmillan/.local/bin"

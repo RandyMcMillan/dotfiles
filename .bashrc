@@ -1,4 +1,4 @@
-echo ".bashrc"
+#echo ".bashrc"
 export HOMEBREW_NO_AUTO_UPDATE=1
 PATH+=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11
 

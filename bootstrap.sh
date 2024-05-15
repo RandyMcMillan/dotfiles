@@ -9,9 +9,13 @@ touch ~/session.log
 
 function doIt() {
 	rsync --exclude ".git/" \
+		--exclude ".venv" \
 		--exclude "AUTHORS" \
+		--exclude "**.sh" \
 		--exclude "B.sh" \
 		--exclude "Brewfile" \
+		--exclude "Cargo.toml" \
+		--exclude "Cargo.lock" \
 		--exclude "CNAME" \
 		--exclude "COPYING" \
 		--exclude "Casks" \
@@ -23,7 +27,7 @@ function doIt() {
 		--exclude "INSTALL" \
 		--exclude "LICENSE-MIT.txt" \
 		--exclude "LittleSnitch-4.5.2.dmg" \
-		--exclude "Makefile.am" \
+		--exclude "Makefile.*" \
 		--exclude "NEWS" \
 		--exclude "README.md" \
 		--exclude "TIME" \
@@ -47,6 +51,7 @@ function doIt() {
 		--exclude "brew_install.sh" \
 		--exclude "brew_install_version.sh" \
 		--exclude "build" \
+		--exclude "build-*.sh" \
 		--exclude "build-bitcoincore-dev-bitcoin-core.sh" \
 		--exclude "build-bitcoincore-dev-bitcoin.org.sh" \
 		--exclude "build-bitcoincore-dev-bitcoin.sh" \
@@ -54,9 +59,11 @@ function doIt() {
 		--exclude "build-bitcoincore-dev-org-builder.sh" \
 		--exclude "build-bitcoincore.dev.grafana.sh" \
 		--exclude "build-randymcmillan-gui.sh" \
+		--exclude "builder-*.txt" \
 		--exclude "builder-keys.sha256.txt" \
 		--exclude "builder-keys.txt" \
 		--exclude "builder-keys.txt.gpg" \
+		--exclude "builder.keys.*.txt" \
 		--exclude "builder.keys.shasum.2.txt" \
 		--exclude "builder.keys.shasum.txt" \
 		--exclude "checkbrew" \
@@ -64,7 +71,10 @@ function doIt() {
 		--exclude "checkraspi.sh" \
 		--exclude "config-dock-prefs.sh" \
 		--exclude "config-hosts-file.sh" \
+		--exclude "*.h" \
 		--exclude "config.h" \
+		--exclude "*.h.*" \
+		--exclude "config**" \
 		--exclude "config.h.in~" \
 		--exclude "config.log" \
 		--exclude "config.status" \
@@ -86,6 +96,7 @@ function doIt() {
 		--exclude "index.html" \
 		--exclude "index.html.sig" \
 		--exclude "init" \
+		--exclude "install-*.sh" \
 		--exclude "install-Docker.sh" \
 		--exclude "install-FastLane.sh" \
 		--exclude "install-Miniconda3-latest-MacOSX-x86_64.bash" \

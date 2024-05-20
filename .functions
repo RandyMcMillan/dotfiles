@@ -143,8 +143,12 @@ function git-fetch-branches(){
     #git stash pop || echo "no pop"
 }
 function git-push--tags(){
-    git push --tags
+    git push $1 --tags
 }
+function git-push--refs(){
+    git push $1 --tags refs/remotes/origin/*:refs/heads/*
+}
+
 function git-add-remote-bitcoin-devs(){
 
     git remote add bitcoinknots         git@github.com:bitcoinknots/bitcoin.git     || true

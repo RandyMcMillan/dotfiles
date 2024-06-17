@@ -1,2 +1,2 @@
 ACLOCAL_AMFLAGS=-I m4
-SHELL=/bin/bash
+SHELL=$(which bash)

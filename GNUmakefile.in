@@ -252,7 +252,7 @@ export PORTER_VERSION
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 autoconf:## ./autogen.sh && ./configure
-	$(PWD)/autogen.sh configure
+	./autogen.sh configure
 
 nodegit$(EXEEXT):
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
@@ -291,7 +291,6 @@ wobble:## wobble
 	install ./wobble /usr/local/bin/
 blockheight:## blockheight
 	install ./blockheight /usr/local/bin/
-	bash -c "source $(PWD)/scripts/initialize"
 brew:-## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
@@ -501,7 +500,7 @@ texi2html:
 ffmpeg@2.8:
 	bash -c "source $(PWD)/template && checkbrew install ffmpeg@2.8"
 
-gnupg:- executable
+gnupg: - executable
 	bash -c "source $(PWD)/template && \
 		checkbrew install gettext gnutls \
 		libassuan libgcrypt libgpg-error \

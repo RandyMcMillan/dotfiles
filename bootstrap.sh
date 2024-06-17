@@ -8,12 +8,18 @@ touch ~/session.log
 #git pull origin main;
 
 function doIt() {
-	rsync --exclude ".git/" \
+	rsync \
+		--exclude ".DS_Store" \
+		--exclude ".gitconfig" \
+		--exclude ".nojekyll" \
+		--exclude ".osx" \
 		--exclude "AUTHORS" \
 		--exclude "B.sh" \
 		--exclude "Brewfile" \
 		--exclude "CNAME" \
 		--exclude "COPYING" \
+		--exclude "Cargo.lock" \
+		--exclude "Cargo.toml" \
 		--exclude "Casks" \
 		--exclude "ChangeLog" \
 		--exclude "ColorProfile.icc" \
@@ -23,11 +29,14 @@ function doIt() {
 		--exclude "INSTALL" \
 		--exclude "LICENSE-MIT.txt" \
 		--exclude "LittleSnitch-4.5.2.dmg" \
+		--exclude "Makefile" \
 		--exclude "Makefile.am" \
+		--exclude "Makefile.in" \
 		--exclude "NEWS" \
 		--exclude "README.md" \
 		--exclude "TIME" \
 		--exclude "aclocal.m4" \
+		--exclude "act.mk" \
 		--exclude "adduser-git.sh" \
 		--exclude "autogen.sh" \
 		--exclude "autom4te.cache" \
@@ -35,6 +44,7 @@ function doIt() {
 		--exclude "bitcoin-libs" \
 		--exclude "bitcoin-libs.sh" \
 		--exclude "bitcoin-test-battery.sh" \
+		--exclude "blockheight" \
 		--exclude "boot-reset-boot-mode.sh" \
 		--exclude "boot-safe-mode.sh" \
 		--exclude "boot-single-user-mode.sh" \
@@ -46,7 +56,6 @@ function doIt() {
 		--exclude "brew-list.sh" \
 		--exclude "brew_install.sh" \
 		--exclude "brew_install_version.sh" \
-		--exclude "build" \
 		--exclude "build-bitcoincore-dev-bitcoin-core.sh" \
 		--exclude "build-bitcoincore-dev-bitcoin.org.sh" \
 		--exclude "build-bitcoincore-dev-bitcoin.sh" \
@@ -59,10 +68,16 @@ function doIt() {
 		--exclude "builder-keys.txt.gpg" \
 		--exclude "builder.keys.shasum.2.txt" \
 		--exclude "builder.keys.shasum.txt" \
+		--exclude "cargo.mk" \
 		--exclude "checkbrew" \
 		--exclude "checkbrew.sh" \
 		--exclude "checkraspi.sh" \
+		--exclude "compile" \
 		--exclude "config-dock-prefs.sh" \
+		--exclude "config-git" \
+		--exclude "config-git.sh" \
+		--exclude "config-github" \
+		--exclude "config-github.sh" \
 		--exclude "config-hosts-file.sh" \
 		--exclude "config.h" \
 		--exclude "config.h.in~" \
@@ -76,11 +91,12 @@ function doIt() {
 		--exclude "disable.sh" \
 		--exclude "do-mount-volume.sh" \
 		--exclude "do-upgrade-agent.sh" \
-		--exclude "doc" \
 		--exclude "enable-macos-services.sh" \
 		--exclude "funcs.mk" \
 		--exclude "gen-keys.sh" \
 		--exclude "genKeys.sh" \
+		--exclude "get-forks.sh" \
+		--exclude "gnostr.mk" \
 		--exclude "hercules.cnf" \
 		--exclude "hooks" \
 		--exclude "index.html" \
@@ -104,7 +120,6 @@ function doIt() {
 		--exclude "install-clang-format.sh" \
 		--exclude "install-common-lisp.sh" \
 		--exclude "install-discord.sh" \
-		--exclude "install-dotfiles-on-remote.sh" \
 		--exclude "install-eq-mac.sh" \
 		--exclude "install-firefox.sh" \
 		--exclude "install-full-node.sh" \
@@ -131,18 +146,17 @@ function doIt() {
 		--exclude "install-qt5-creator.sh" \
 		--exclude "install-qt5.sh" \
 		--exclude "install-ruby-install.sh" \
+		--exclude "install-rustup" \
+		--exclude "install-rustup.sh" \
 		--exclude "install-sh" \
 		--exclude "install-sha256sum.sh" \
 		--exclude "install-shell.sh" \
+		--exclude "install-sh~" \
 		--exclude "install-specter-desktop.sh" \
 		--exclude "install-spotify.sh" \
 		--exclude "install-tree.sh" \
 		--exclude "install-umbrel-dev.sh" \
-		--exclude "install-valgrind-macos.sh" \
 		--exclude "install-vim.sh" \
-		--exclude "install-virtualbox-and-exts.sh" \
-		--exclude "install-vmware-fusion11.sh" \
-		--exclude "install-vypr-vpn.sh" \
 		--exclude "install-youtube-dl.sh" \
 		--exclude "install-ytop.sh" \
 		--exclude "installer-template.sh" \
@@ -151,24 +165,24 @@ function doIt() {
 		--exclude "keys.shasum.2.txt" \
 		--exclude "keys.shasum.txt" \
 		--exclude "keys.txt" \
+		--exclude "known_hosts" \
 		--exclude "legit" \
 		--exclude "legit.mk" \
+		--exclude "libtoolize" \
 		--exclude "logs" \
+		--exclude "ltmain.sh" \
 		--exclude "m4" \
 		--exclude "make-actions-runner.sh" \
-		--exclude "minsc" \
+		--exclude "missing" \
 		--exclude "nigiri.sh" \
-		--exclude "node_modules" \
 		--exclude "nostril" \
 		--exclude "nostril.mk" \
-		--exclude "out-c140e76.sh" \
 		--exclude "python@2.7.18" \
 		--exclude "report.sh" \
 		--exclude "requirements.lock" \
 		--exclude "requirements.txt" \
 		--exclude "rsync-time-backup" \
 		--exclude "runPiHoleDocker.sh" \
-		--exclude "rust" \
 		--exclude "scripts" \
 		--exclude "sources" \
 		--exclude "src" \
@@ -179,44 +193,14 @@ function doIt() {
 		--exclude "uninstall-brew-all.sh" \
 		--exclude "venv.mk" \
 		--exclude "vimrc" \
+		--exclude "weeble" \
 		--exclude "whatami.sh" \
-		--exclude "legit" \
-		--exclude "nostril" \
-		--exclude "rust" \
-		--exclude ".DS_Store" \
-		--exclude ".osx" \
-		--exclude "autom4te.cache" \
-		--exclude "bootstrap" \
-		--exclude "build" \
-		--exclude "build-aux" \
-		--exclude "checkbrew.sh" \
-		--exclude "README.md" \
-		--exclude "logs" \
-		--exclude "LICENSE-MIT.txt" \
-		--exclude "m4" \
-		--exclude "minsc" \
-		--exclude "node_modules" \
-		--exclude "nostril" \
-		--exclude "python@**" \
-		--exclude "rsync-time-backup" \
-		--exclude "*.sh" \
-		--exclude "*.mk" \
-		--exclude "*akefile" \
-		--exclude "autom4te.cache/" \
-		--exclude ".DS_Store" \
-		--exclude ".git" \
-		--exclude ".nojekyll" \
-		--exclude ".osx" \
-		--exclude "bootstrap*" \
-		--exclude "README.md" \
-		--exclude "LICENSE-MIT.txt" \
+		--exclude "wobble" \
+		--exclude ".git/" \
+		--exclude ".github/" \
 		--exclude "**.sh" \
 		--exclude "**.bash" \
 		--exclude "**akefile**" \
-		--exclude "autom4te.cache/" \
-		--exclude "legit" \
-		--exclude "nostril" \
-		--exclude "rust" \
 		-avh --no-perms . ~;
 	source $PWD/.bashrc;
 }

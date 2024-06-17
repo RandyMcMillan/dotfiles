@@ -96,23 +96,28 @@ export NVM_DIR="$HOME/.nvm"
 #eval "$(rbenv init -)"
 
 
+if test -f /path/to/file; then
+  echo "File exists."
+fi
+
+
 # NOTE: trying the config in .bashrc for now...
-if [ -f $(PWD)/Makefile ]; then
+if test Makefile; then
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 fi
-##
-if [ -f $(PWD)/GNUMakefile ]; then
+#
+if test GNUMakefile; then
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 fi
-##
-#if [ -f $(PWD)/funcs.mk ]; then
-#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' funks.mk | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-#fi
 #
-## for OUTPUT in $(ls -f *.mk)
-## do
-## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make -f $OUTPUT
-## done
+# if ! test funcs.mk; then
+# complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' funks.mk | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+# fi
+
+# for OUTPUT in $(ls -f *.mk)
+# do
+# complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make -f $OUTPUT
+# done
 
 #export GPG_TTY=$(tty)
 # Set PATH, MANPATH, etc., for Homebrew.

@@ -12,6 +12,7 @@ function doIt() {
 		--exclude ".DS_Store" \
 		--exclude ".gitconfig" \
 		--exclude ".nojekyll" \
+		--exclude ".venv" \
 		--exclude ".osx" \
 		--exclude "AUTHORS" \
 		--exclude "B.sh" \

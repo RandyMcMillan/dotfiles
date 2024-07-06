@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 if [ -f ~/config-git ]; then
-	source ~/config-git 2> >(tee -a bash_profile.log) 2>/dev/null
+	source ~/config-git 2> >(tee -a /tmp/bash_preofile.log) 2>/dev/null
 fi
 if [ -f "$HOME/.cargo/env" ]; then
-	source "$HOME/.cargo/env" 2> >(tee -a bash_profile.log) 2>/dev/null
+	source "$HOME/.cargo/env" 2> >(tee -a /tmp/bash_preofile.log) 2>/dev/null
 fi
 
 if hash brew 2>/dev/null; then
@@ -117,6 +117,6 @@ export NVM_DIR="$HOME/.nvm"
 #export GPG_TTY=$(tty)
 # Set PATH, MANPATH, etc., for Homebrew.
 if ! hash brew 2>/dev/null; then
-       eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
-       eval "$(/opt/homebrew/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
+       eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a /tmp/bash_preofile.log)
+       eval "$(/opt/homebrew/bin/brew shellenv)" 2> >(tee -a /tmp/bash_preofile.log)
 fi

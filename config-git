@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
-git config --global core.editor "vim"  2> >(tee -a bash_profile.log)
-git config --global commit.gpgsign true  2> >(tee -a bash_profile.log)
-git config --global core.ignorecase false  2> >(tee -a bash_profile.log)
-git config --global advice.addIgnoredFile false  2> >(tee -a bash_profile.log)
-git config --global pull.rebase true  2> >(tee -a bash_profile.log)
-git config --global core.autocrlf false  2> >(tee -a bash_profile.log)
-git config --global pull.rebase true  2> >(tee -a bash_profile.log)
-git config --global alias.prune-branches-force '!git remote prune origin && git branch -vv | grep '"'"': gone]'"'"' | awk '"'"'{print $1}'"'"' | xargs git branch -D'  2> >(tee -a bash_profile.log)
-git config --global alias.prune-branches       '!git remote prune origin && git branch -vv | grep '"'"': gone]'"'"' | awk '"'"'{print $1}'"'"' | xargs git branch -d'  2> >(tee -a bash_profile.log)
-pushd $(pwd) && cat .gitignore > ~/.gitignore && popd  2> >(tee -a bash_profile.log)
-git config --global core.excludesfile ~/.gitignore  2> >(tee -a bash_profile.log)
+git config --global core.editor "vim"  2> >(tee -a /tmp/bash_profile.log)
+git config --global commit.gpgsign true  2> >(tee -a /tmp/bash_profile.log)
+git config --global core.ignorecase false  2> >(tee -a /tmp/bash_profile.log)
+git config --global advice.addIgnoredFile false  2> >(tee -a /tmp/bash_profile.log)
+git config --global pull.rebase true  2> >(tee -a /tmp/bash_profile.log)
+git config --global core.autocrlf false  2> >(tee -a /tmp/bash_profile.log)
+git config --global pull.rebase true  2> >(tee -a /tmp/bash_profile.log)
+git config --global alias.prune-branches-force '!git remote prune origin && git branch -vv | grep '"'"': gone]'"'"' | awk '"'"'{print $1}'"'"' | xargs git branch -D'  2> >(tee -a /tmp/bash_profile.log)
+git config --global alias.prune-branches       '!git remote prune origin && git branch -vv | grep '"'"': gone]'"'"' | awk '"'"'{print $1}'"'"' | xargs git branch -d'  2> >(tee -a /tmp/bash_profile.log)
+pushd $(pwd) && cat .gitignore > ~/.gitignore && popd  2> >(tee -a /tmp/bash_profile.log)
+git config --global core.excludesfile  --replace-all  ~/.gitignore  2> >(tee -a /tmp/bash_profile.log)
 
-git config --global user.email "randy.lee.mcmillan@gmail.com"  2> >(tee -a bash_profile.log)
-git config --global user.name "@RandyMcMillan"  2> >(tee -a bash_profile.log)
+git config --global user.email "randy.lee.mcmillan@gmail.com"  2> >(tee -a /tmp/bash_profile.log)
+git config --global user.name "@RandyMcMillan"  2> >(tee -a /tmp/bash_profile.log)
 
 config-github() {
 
@@ -103,7 +103,7 @@ config-github() {
     #fi
 	#fi
 }
-rm -R /Users/git/.ssh/known_hosts 2> >(tee -a bash_profile.log) || true
+rm -R /Users/git/.ssh/known_hosts 2> >(tee -a /tmp/bash_profile.log) || true
 eval "$(ssh-agent -s)"
 config-github
 ssh-add

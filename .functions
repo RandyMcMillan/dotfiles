@@ -272,7 +272,16 @@ git checkout -b $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git re
 
 }
 
+function git-init (){
 
+WEEBLE=$(gnostr-weeble) || WEEBLE=0
+WOBBLE=$(gnostr-wobble) || WOBBLE=0
+BLOCK=$(gnostr-blockheight) || BLOCK=0
+
+MESSAGE=${1:-"$WEEBLE/$BLOCK/$WOBBLE"}
+GIT_AUTHOR_DATE="Thu, 01 Jan 1970 00:00:00 +0000" GIT_COMMITTER_DATE="Thu, 01 Jan 1970 00:00:00 +0000" git commit --allow-empty -m "$MESSAGE"
+
+}
 function git-submodule-update--init--recursive (){
 
     git submodule update --init --recursive

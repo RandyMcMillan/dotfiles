@@ -1,7 +1,7 @@
 PATH+=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11
+GH_TOKEN=$(cat ~/GH_TOKEN)
+export HOMEBREW_NO_AUTO_UPDATE=1
 [ -d .git ] || true [-f .git] && git config --global --add safe.directory $args[0] || echo
-
-[ -n "$PS1" ] && source ~/.bash_profile;
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -14,3 +14,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+[ -n "$PS1" ] && source ~/.bash_profile;

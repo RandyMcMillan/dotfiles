@@ -12,8 +12,7 @@ config-github() {
     echo Thankyou $GITHUB_USER_NAME
     read -p 'ENTER your Github.com user email: ' GITHUB_USER_EMAIL
     git config --global user.email $GITHUB_USER_EMAIL
-    # git config --global user.email randy.lee.mcmillan@gmail.com
-    echo Thankyou $GITHUB_USER_NAME for your email.
+    # git config --global user.email randy.lee.mcmillan@gmail.com echo Thankyou $GITHUB_USER_NAME for your email.
     #REF:https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
 
     mkdir -p ~/.ssh
@@ -85,7 +84,7 @@ config-github() {
     #else echo 'export GPG_TTY=$(tty)' >> ~/.zprofile; fi
     fi
 }
-rm  /Users/git/.ssh/known_hosts
+rm  /Users/$(whoami)/.ssh/known_hosts
 eval "$(ssh-agent -s)"
 ssh-add
 config-github

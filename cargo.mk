@@ -3,7 +3,8 @@ cargo-binstall:## 	cargo-binstall
 	cargo-quickinstall cargo-binstall
 cargo-binstall-gnostr-bins:## 	cargo-binstall-gnostr-bins
 	cargo install cargo-quickinstall && \
-	cargo-quickinstall gnostr-bins || \
+	cargo-quickinstall gnostr-bins
+brew-install-gnostr-bins:## 	brew-install-gnostr-bins
 	brew tap gnostr-org/homebrew-gnostr-org && \
 	brew install gnostr-bins
 cargo-install-all:

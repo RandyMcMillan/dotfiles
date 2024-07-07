@@ -291,7 +291,7 @@ wobble:## wobble
 	install ./wobble /usr/local/bin/
 blockheight:## blockheight
 	install ./blockheight /usr/local/bin/
-brew:-## install or update/upgrade brew
+brew: -## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
@@ -656,7 +656,7 @@ bitcoin-guix-sigs:
 .PHONY:depends
 depends-download:
 	$(MAKE) download -C depends
-depends:depends-download
+depends: depends-download
 	$(MAKE) -C depends
 .PHONY: push
 .ONESHELL:

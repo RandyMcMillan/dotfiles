@@ -81,17 +81,18 @@ complete -W "NSGlobalDomain" defaults;
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Dock Finder Mail Safari iTunes* SystemUIServer Terminal iTerm* Twitter bitcoind" killall;
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+## .bashrc
+## export NVM_DIR="$HOME/.nvm"
+## [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+## [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+##
 # Added by install_latest_perl_osx.pl
 #[ -r /Users/git/.bashrc ] && source /Users/git/.bashrc
 
 # REF: dotfiles/install-fastlane.sh
 # export PATH="$HOME/.fastlane/bin:$PATH"
 
-#USeing rbenv for stuff ruby 2.2.2 doent compile on macos
+#Using rbenv for stuff ruby 2.2.2 doent compile on macos
 
 #eval "$(rbenv init -)"
 
@@ -102,11 +103,11 @@ fi
 
 
 # NOTE: trying the config in .bashrc for now...
-if test Makefile; then
+if test Makefile 2>/dev/null; then
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 fi
 #
-if test GNUMakefile; then
+if test GNUMakefile 2>/dev/null; then
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make || true
 fi
 #

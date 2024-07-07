@@ -724,6 +724,14 @@ bitcoin-test-battery:
 funcs:
 	make -f funcs.mk
 
+remote-managment-enable:## 	remote-managment-enable
+	sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -off -restart -agent -privs -all -allowAccessFor -allUsers
+
+screen-sharing-enable:## 	    screen-sharing-enable
+	sudo defaults write /var/db/launchd.db/com.apple.launchd/overrides.plist com.apple.screensharing -dict Disabled -bool false
+
+
+
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 

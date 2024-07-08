@@ -1,1 +1,1 @@
-template.sh
+./scripts/checkbrew.sh

@@ -304,6 +304,15 @@ git checkout -b $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git re
     fi
 
 }
+function git-tag (){
+
+git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+    if [ ! -z "$1" ]
+    then
+        git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+    fi
+
+}
 
 function git-fetch--all (){
 git fetch --all

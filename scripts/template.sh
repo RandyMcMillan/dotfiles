@@ -9,8 +9,8 @@ if hash brew 2>/dev/null; then
 	PREFIX=$(brew --prefix)
 	export PREFIX
     # take ownership
-	sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node}
-	sudo chown -R $USER $PREFIX/{share/man,bin,sbin,lib/node,include/node}
+	sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node} >/dev/null
+	sudo chown -R $USER $PREFIX/{share/man,bin,sbin,lib/node,include/node} >/dev/null
 
 fi
 

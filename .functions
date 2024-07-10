@@ -127,6 +127,12 @@ function bitcoin-dl-install-depends(){
     fi
 }
 
+function cargo-clean-r () {
+
+for repo in $(ls --color=none -d */ );do cd $repo && cargo clean;cd ..;done
+
+}
+
 function git-fetch--all(){
     git fetch --all
 }
@@ -273,7 +279,7 @@ if [ -z "$1" ]
     git branch
     echo "try:"
     echo "git-branch-D *string*"
-    #git branch -D $(git branch --list "$1")
+    ##git branch -D $(git branch --list "$1")
 
 else
     git branch -D "$(git branch --list "$1*")"
@@ -311,6 +317,7 @@ git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse 
     then
         git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
     fi
+    git tags | grep $(gnostr-weeble)
 
 }
 

@@ -1,7 +1,7 @@
 export HOMEBREW_NO_AUTO_UPDATE=1
 export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
 PATH+=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11
-[ -d .git ] 2>/dev/null || true [-f .git] 2>/dev/null && git config --global --add safe.directory $args[0] 2>/dev/null || true
+[ -d .git ] >/dev/null || true [-f .git] >/dev/null && git config --global --add safe.directory $args[0] 2>/dev/null || true
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

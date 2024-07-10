@@ -244,9 +244,9 @@
 	defaultBranch = master
 
 [user]
-	signingkey = 97966C06BB06757B
+	signingkey = 048FBC4E
 	name = randymcmillan
-    email = randy.lee.mcmillan@gmail.com
+        email = randymcmillan@protonmail.com
 
 #git config --global gpg.program gpg  # perhaps you had this already? On linux maybe gpg2
 #git config --global commit.gpgsign true  # if you want to sign every commit

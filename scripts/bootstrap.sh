@@ -206,6 +206,8 @@ function doIt() {
 	source $PWD/.bashrc;
 }
 
+install ./bash_sessions /usr/local/bash_sessions
+
 if [ "$1" == "force" ]; then
 	doIt;
 elif [ "$2" == "force" ]; then

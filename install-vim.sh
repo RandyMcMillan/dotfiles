@@ -1,1 +1,1 @@
-./scripts/install-vim.sh
+.install-vim

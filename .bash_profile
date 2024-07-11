@@ -97,14 +97,14 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 #eval "$(rbenv init -)"
 
 
-if test -f /path/to/file; then
-  echo "File exists."
+if test -f /usr/bin/true; then
+  echo "/usr/bin/true exists" &>/dev/null
 fi
 
 
 # NOTE: trying the config in .bashrc for now...
 if test Makefile 2>/dev/null; then
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make 2>/dev/null
 fi
 #
 if test GNUMakefile 2>/dev/null; then

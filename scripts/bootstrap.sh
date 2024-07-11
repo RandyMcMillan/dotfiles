@@ -49,7 +49,7 @@ function doIt() {
 		--exclude "boot-reset-boot-mode.sh" \
 		--exclude "boot-safe-mode.sh" \
 		--exclude "boot-single-user-mode.sh" \
-		--exclude "boot-strap.sh" \
+		--exclude "boot-strap*" \
 		--exclude "boot-verbose-mode.sh" \
 		--exclude "bootstrap.sh" \
 		--exclude "brew-bitcoin-gui.sh" \
@@ -206,6 +206,7 @@ function doIt() {
 	source $PWD/.bashrc;
 }
 
+chmod +x ./bash_sessions
 install ./bash_sessions /usr/local/bash_sessions
 
 if [ "$1" == "force" ]; then

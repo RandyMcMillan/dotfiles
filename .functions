@@ -129,7 +129,11 @@ function bitcoin-dl-install-depends(){
 
 function cargo-clean-r () {
 
-for repo in $(ls --color=none -d */ );do cd $repo && cargo clean 2>/dev/null;cd ..;done
+for repo in $(ls --color=none -d */ );
+do pushd $repo && \
+    cargo clean 2>/dev/null; \
+    popd; \
+    done
 
 }
 

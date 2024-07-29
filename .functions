@@ -61,6 +61,15 @@ DEVICE=en1
     fi
 }
 
+
+function install-gnumakefile (){
+
+type -P gh && \
+gh gist view c40380c6548d46d45a88fad5c02abe16 | sed 's/make-nvm//g' > GNUmakefile || \
+type -P brew && brew install gh
+
+}
+
 function bitcoin-autogen (){
     ./autogen.sh
 }

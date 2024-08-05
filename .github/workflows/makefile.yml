@@ -16,13 +16,7 @@ jobs:
 
     - name: make-commands
       run: |
-          #sudo apt update && sudo apt upgrade -y
-          sudo apt install --fix-missing  automake bash
-          make autoconf
-          ./configure
-          make -f Makefile all
-
-    - name: autogen.sh && configure
-      run: |
-          ./autogen.sh && ./configure
-          make -f Makefile all
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install --fix-missing automake bash g++ pkg-config -y
+          ./autogen.sh env
+          make

@@ -16,7 +16,8 @@ install-vim() {
 
           pushd ~/.vim_runtime
           git pull -f origin master
-          sh ~/.vim_runtime/install_awesome_vimrc.sh
+          make
+          #sh ~/.vim_runtime/install_awesome_vimrc.sh
           #we exclude from ~/ because we link to here
           #ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
           popd
@@ -24,7 +25,8 @@ install-vim() {
         else
 
           git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
-          sh ~/.vim_runtime/install_awesome_vimrc.sh
+          pushd ~/.vim_runtime
+          make
           #ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
         fi
 

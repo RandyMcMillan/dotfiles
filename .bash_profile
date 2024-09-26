@@ -101,30 +101,13 @@ if test -f /usr/bin/true; then
   echo "/usr/bin/true exists" &>/dev/null
 fi
 
-
-# NOTE: trying the config in .bashrc for now...
-## if test GNUMakefile 2>/dev/null; then
-##     complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make 2>/dev/null
-## fi
-## if test Makefile 2>/dev/null; then
-##     complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make 2>/dev/null
-## fi
-#
-#if test GNUMakefile 2>/dev/null; then
-#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make || true
-#fi
-#
-# if ! test funcs.mk; then
-# complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' funks.mk | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-# fi
-
 for OUTPUT in $(ls -f *akefile)
 do
+
+echo $OUTPUT
+
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-for OUTPUT in $(ls -f GNUmakefile)
-do
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-done
+
 done
 
 #export GPG_TTY=$(tty)

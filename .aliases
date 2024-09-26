@@ -51,10 +51,10 @@ alias REFLOG="git reflog --pretty=oneline --abbrev-commit "
 alias GITS="git status "
 alias STAT="git status "
 alias STATT="git status --porcelain "
-alias TT=STAT
-alias tt=STAT
-alias TTT=STATT
-alias ttt=STATT
+alias TT="STAT"
+alias tt="STAT"
+alias TTT="STATT"
+alias ttt="STATT"
 alias CO="git  checkout "
 alias GPF="git push -f origin HEAD"
 alias GPFU="git push -f upstream HEAD"
@@ -235,6 +235,6 @@ alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resource
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"
-
-# Print each PATH entry on a separate line
+## 
+## # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'

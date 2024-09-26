@@ -35,7 +35,7 @@ install-vim() {
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
     if hash brew 2>/dev/null; then
-    read -p "Install MacVim? (y/n) " -n 2;
+    read -p "Install MacVim? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         if  ! hash mvim 2>/dev/null; then

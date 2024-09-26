@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-
-#if [ -f ~/config-git ]; then
-#	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
-#fi
+## 
+if [ -f ~/config-git ]; then
+	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
+fi
 if [ -f "$HOME/.cargo/env" ]; then
 	source "$HOME/.cargo/env" 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
 fi
-
+## 
 if hash brew 2>/dev/null; then
 	if [ -f /usr/local/bin/checkbrew ]; then
 	source /usr/local/bin/checkbrew
@@ -18,21 +18,10 @@ export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 # Add `~/init` to the `$PATH`
 export PATH="$HOME/init:$PATH";
-
-#if hash brew &> /dev/null; then
-#        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
-#       if [[ "$OSTYPE" == "linux"* ]]; then
-#               #CHECK APT
-#               if [[ "$OSTYPE" == "linux-gnu" ]]; then
-#                       echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.bash_profile
-#                       eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-#               fi
-#       fi
-#fi
 ## Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
+for file in ~/.{aliases,bash_prompt,exports,extra,functions,path}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -101,12 +90,23 @@ if test -f /usr/bin/true; then
   echo "/usr/bin/true exists" &>/dev/null
 fi
 
-for OUTPUT in $(ls -f *akefile)
+for OUTPUT in $(ls -f Makefile 2>/dev/null)
 do
 
-echo $OUTPUT
+#echo $OUTPUT
 
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
+
+## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+
+done
+for OUTPUT in $(ls -f GNUmakefile 2>/dev/null)
+do
+
+#echo $OUTPUT
+
+complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
+##complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 
 done
 

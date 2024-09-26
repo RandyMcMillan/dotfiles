@@ -207,8 +207,8 @@ function doIt() {
 }
 
 chmod +x ./bash_sessions
-install ./bash_sessions /usr/local/bash_sessions
-ln -s .bash_sessions ~ || true
+#install ./bash_sessions /usr/local/bash_sessions
+#ln -s .bash_sessions ~ || true
 if [ "$1" == "force" ]; then
 	doIt;
 elif [ "$2" == "force" ]; then

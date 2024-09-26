@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-pathappend() {
+function pathappend() {
   for ARG in "$@"
   do
     if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
@@ -9,7 +9,7 @@ pathappend() {
   done
 }
 
-pathprepend() {
+function pathprepend() {
   for ((i=$#; i>0; i--));
   do
     ARG=${!i}
@@ -145,12 +145,25 @@ do pushd $repo && \
     done
 
 }
+function cargo-sweep-r () {
 
-function git-fetch--all(){
-    git fetch --all
+TIME=${1:-1}
+
+for repo in $(ls --color=none -d */ );
+do pushd $repo && \
+    cargo sweep -t $TIME -r --hidden 2>/dev/null; \
+    popd; \
+    done
+
+}
+
+function git-fetch-all(){
+    git fetch --all 2>/dev/null
+}
+function git-fetch-all-tags(){
+    git fetch --all --tags 2>/dev/null
 }
 function git-fetch-branches(){
-
     git stash && export STASH=true || echo "no stash"
     git branch -q -r || grep -v '\->' || while read remote; \
     do git branch -q "${remote#origin/}" "$remote" || echo skip "$remote"; done
@@ -161,8 +174,8 @@ function git-fetch-branches(){
     if [[ $STASH == "true" ]];then git stash list; fi || echo nogo
     #git stash pop || echo "no pop"
 }
-function git-push--tags(){
-    git push --tags
+function git-push-tags(){
+    git push --tags 2>/dev/null
 }
 function git-add-remote-bitcoin-devs(){
 
@@ -206,7 +219,6 @@ gpg --keyserver hkps://keys.openpgp.org --send-keys E616FA7221A1613E5B9920629796
 }
 
 function gpg-sync-keys-bitcoin-devs(){
-
 
 curl -fsS https://b10c.me/gpg.txt > 0xB10C.txt
 gpg-sync-keys-bitcoin-devs-test
@@ -316,7 +328,11 @@ fi
 }
 function git-checkout-b (){
 
-git checkout -b $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+weeble=$(gnostr-weeble)
+blockheight=$(gnostr-blockheight)
+wobble=$(gnostr-wobble)
+
+git checkout -b ${weeble:-0}/${blockheight:-0}/${wobble:-0}/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
     if [ ! -z "$1" ]
     then
         git checkout -b $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1

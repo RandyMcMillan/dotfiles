@@ -188,6 +188,7 @@ function doIt() {
 		--exclude "sources" \
 		--exclude "src" \
 		--exclude "tags" \
+		--exclude "target" \
 		--exclude "template" \
 		--exclude "template.sh" \
 		--exclude "thread-sweep.sh" \

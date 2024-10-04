@@ -52,7 +52,7 @@ git rev-parse --is-inside-work-tree &>/dev/null || return;
 	fi;
 
 	[ -n "${s}" ] && s=" [${s}]";
-	echo -e "${1}${branchName}\n${2}\n${s}";
+	echo -e "${1}${branchName}${2}${s}";
 }
 
 if tput setaf 1 &> /dev/null; then

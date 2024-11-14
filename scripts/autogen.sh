@@ -1925,7 +1925,7 @@ __install_command_via_available_package_manager() {
     if command_exists_in_filesystem_and_version_matched $@ ; then
         return 0
     fi
- 
+
     if [ -z "$AVAILABLE_PACKAGE_MANAGER_LIST" ] ; then
         AVAILABLE_PACKAGE_MANAGER_LIST=$(__get_available_package_manager_list)
         if [ -z "$AVAILABLE_PACKAGE_MANAGER_LIST" ] ; then
@@ -2518,8 +2518,15 @@ __is_libtool_used() {
 # {{{ gen_config
 
 gen_config_pre() {
-    step "gen config pre"
-    warn "do nothing, you can overide this function to do whatever you want."
+    #step "gen config pre"
+    #warn "do nothing, you can overide this function to do whatever you want."
+    step "install rustup"
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --help
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile minimal --default-toolchain stable
+
 }
 
 gen_config() {

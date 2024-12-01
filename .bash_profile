@@ -12,6 +12,10 @@ if hash brew 2>/dev/null; then
 	source /usr/local/bin/checkbrew
 	fi
 fi
+
+##just completion
+complete -F _just -o bashdefault -o default j
+
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 export PATH="/usr/local/bin:$PATH"

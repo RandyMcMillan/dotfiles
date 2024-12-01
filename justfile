@@ -192,8 +192,15 @@ variadic $VAR1_1 VAR2 VAR3 VAR4=("a") +$FLAGS='-q': foo2 braces
 
 time:
   @-date +"%H:%S"
-  -cat /tmp/nonexistent_file.txt
-  @echo "finished"
+
+weeble:
+  @./weeble
+
+blockheight:
+  @./blockheight
+
+wobble:
+  @./wobble
 
 justwords:
   grep just \

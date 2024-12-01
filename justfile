@@ -150,6 +150,7 @@ shebang:
 
 @foo:
   echo bar
+  echo bar > foo
 
 @test5 *args='':
   bash -c 'while (( "$#" )); do echo - $1; shift; done' -- "$@"

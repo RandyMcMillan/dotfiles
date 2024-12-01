@@ -5,7 +5,7 @@ set positional-arguments
 set dotenv-load
 set export
 
-alias s := serve
+alias tmp := tmpdir
 
 bt := '0'
 
@@ -55,15 +55,15 @@ y := """
 """
 
 default:
-	@just --list
+  @just --list
 
 for:
   for file in `ls .`; do \
     echo $file; \
   done
 
-serve:
-  touch {{tmpdir}}/file
+tmpdir:
+  sh -c  TMPDIR=$(mktemp);export TMPDIR; echo $TMPDIR; touch $TMPDIR/file
 
 # This backtick evaluates the command `echo foo\necho bar\n`, which produces the value `foo\nbar\n`.
 stuff := ```

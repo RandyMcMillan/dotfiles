@@ -154,22 +154,22 @@ do pushd $repo && \
     echo $repo;
     rm -rf .deps;
     rm -rf .venv;
-    rm -rf node_modules;
     rm rust-toolchain.toml 2>/dev/null;
     cargo clean 2>/dev/null;
     cargo sweep -v -t $TIME 2>/dev/null;
     popd;
     done
 
+rm-rf-node_modules || true
 }
 function rm-rf-node_modules () {
 
 TIME=${1:-1}
 
-for repo in $(ls --color=none -d */node_modules );
+for repo in $(ls --color=none -d */node_modules 2>/dev/null || true );
 do pushd $repo && \
 echo $repo
-    rm -rf node_modules
+    rm -rf node_modules || true
     popd; \
     done
 

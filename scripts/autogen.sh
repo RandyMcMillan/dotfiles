@@ -2134,7 +2134,7 @@ __install_command_via_run_install_script() {
 
             handle_dependency required exe bash:zsh
 
-            fetch 'https://sh.rustup.rs' --pipe="$(command -v bash || command -v zsh || command -v dash || command -v ash || echo sh)"
+            type -P rustup || fetch 'https://sh.rustup.rs' --pipe="$(command -v bash || command -v zsh || command -v dash || command -v ash || echo sh)"
 
             export CARGO_HOME=$HOME/.cargo
             export PATH="$CARGO_HOME/bin:$PATH"
@@ -2145,7 +2145,7 @@ __install_command_via_run_install_script() {
 
             handle_dependency required exe bash:zsh
 
-	        fetch "$(github_user_content_base_url)/nvm-sh/nvm/master/install.sh" --pipe="$(command -v bash || command -v zsh || echo bash)"
+	        type -P nvm || fetch "$(github_user_content_base_url)/nvm-sh/nvm/master/install.sh" --pipe="$(command -v bash || command -v zsh || echo bash)"
 
 	        export NVM_DIR="${HOME}/.nvm"
 	        . "${HOME}/.nvm/nvm.sh"
@@ -2525,7 +2525,7 @@ gen_config_pre() {
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile minimal --default-toolchain stable
+type -P rustup || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile minimal --default-toolchain stable
 
 }
 

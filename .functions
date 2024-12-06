@@ -228,6 +228,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add upstream             git@github.com:bitcoin/bitcoin.git          || true
     git remote add upstream-gui         git@github.com:bitcoin-core/gui.git         || true
     git remote add virtu                git@github.com:virtu/bitcoin.git            || true
+    git remote add willcl-ark           git@github.com:willcl-ark/bitcoin.git       || true
 
 }
 function gpg-sync-keys-bitcoin-devs-test(){

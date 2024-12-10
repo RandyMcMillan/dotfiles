@@ -12,6 +12,9 @@ if has("autocmd")
     au BufRead,BufNewFile *.h           set list
     au BufRead,BufNewFile *.c           set list
     au BufRead,BufNewFile *.cpp         set list
+    "
+    au BufRead,BufNewFile *.rs          set list
+    au BufRead,BufNewFile *.rs          set noexpandtab
 endif
 "
 " GNUmakefile Makefile *.mk

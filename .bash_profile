@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-## 
+##
 if [ -f ~/config-git ]; then
 	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
 fi
 if [ -f "$HOME/.cargo/env" ]; then
 	source "$HOME/.cargo/env" 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
+else
+    type -P rustup && rustup default stable
 fi
-## 
+##
 if hash brew 2>/dev/null; then
 	if [ -f /usr/local/bin/checkbrew ]; then
 	source /usr/local/bin/checkbrew

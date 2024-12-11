@@ -214,12 +214,13 @@ function git-add-remote-bitcoin-devs(){
     git remote add kallewoof            git@github.com:kallewoof/bitcoin.git        || true
     git remote add kouloumos            git@github.com:kouloumos/bitcoin.git        || true
     git remote add laanwj               git@github.com:laanwj/bitcoin.git           || true
+    git remote add lnhance              git@github.com:lnhance/bitcoin.git          || true
     git remote add luke-jr              git@github.com:luke-jr/bitcoin-core-gui.git || true
     git remote add marco-falke          git@github.com:MarcoFalke/bitcoin.git       || true
     git remote add marco-falke-gui      git@github.com:MarcoFalke/bitcoin-core-gui.git  || true
     git remote add mempool-tab          git@github.com:RandyMcMillan/mempool-tab.git    || true
     git remote add mzumsande            git@github.com:mzumsande/bitcoin.git        || true
-    git remote add BrandonOdiwuor       git@github.com:BrandonOdiwuor/bitcoin.git || true
+    git remote add BrandonOdiwuor       git@github.com:BrandonOdiwuor/bitcoin.git   || true
     #git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git    || true
     git remote add randymcmillan-gui	git@github.com:randymcmillan/gui.git        || true
     git remote add pinheadmz            git@github.com:pinheadmz/bitcoin.git        || true

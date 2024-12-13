@@ -550,4 +550,9 @@ using ZmqPubHashBlockSetting = common::Setting<
     "Enable publish hash block in <address>">
     ::Category<OptionsCategory::ZMQ>;
 
+using ZmqPubHashTxSetting = common::Setting<
+    "-zmqpubhashtx=<address>", common::Unset, common::SettingOptions{.legacy = true},
+    "Enable publish hash transaction in <address>">
+    ::Category<OptionsCategory::ZMQ>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

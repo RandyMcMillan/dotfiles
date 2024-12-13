@@ -327,4 +327,9 @@ using CJdnsReachableSetting = common::Setting<
     "If set, then this host is configured for CJDNS (connecting to fc00::/8 addresses would lead us to the CJDNS network, see doc/cjdns.md) (default: 0)">
     ::Category<OptionsCategory::CONNECTION>;
 
+using ConnectSetting = common::Setting<
+    "-connect=<ip>", std::vector<std::string>, common::SettingOptions{.legacy = true, .network_only = true},
+    "Connect only to the specified node; -noconnect disables automatic connections (the rules for this peer are the same as for -addnode). This option can be specified multiple times to connect to multiple nodes.">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

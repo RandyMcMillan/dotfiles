@@ -691,13 +691,14 @@ std::string ArgsManager::GetHelpMessage() const
 
 bool HelpRequested(const ArgsManager& args)
 {
-    return args.IsArgSet("-?") || args.IsArgSet("-h") || !HelpSetting::Value(args).isNull() || args.IsArgSet("-help-debug");
+    return args.IsArgSet("-?") || !HSettingHidden::Value(args).isNull() || !HelpSetting::Value(args).isNull() || args.IsArgSet("-help-debug");
 }
 
 void SetupHelpOptions(ArgsManager& args)
 {
     HelpSetting::Register(args);
-    args.AddHiddenArgs({"-h", "-?"});
+    HSettingHidden::Register(args);
+    QSettingHidden::Register(args);
 }
 
 static const int screenWidth = 79;

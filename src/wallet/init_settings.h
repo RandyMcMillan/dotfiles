@@ -91,6 +91,11 @@ using PayTxFeeSetting = common::Setting<
     "Fee rate (in %s/kvB) to add to transactions you send (default: %s)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(CFeeRate{DEFAULT_PAY_TX_FEE}.GetFeePerK())); }>
     ::Category<OptionsCategory::WALLET>;
+
+using SignerSetting = common::Setting<
+    "-signer=<cmd>", std::string, common::SettingOptions{.legacy = true},
+    "External signing tool, see doc/external-signer.md">
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

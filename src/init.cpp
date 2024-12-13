@@ -452,7 +452,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     DbCrashRatioSettingHidden::Register(argsman);
     ForceCompactDbSettingHidden::Register(argsman);
     // GUI args. These will be overwritten by SetupUIArgs for the GUI
-    argsman.AddHiddenArgs({"-choosedatadir"});
+    ChooseDataDirSettingHidden::Register(argsman);
     argsman.AddHiddenArgs({"-lang=<lang>"});
     argsman.AddHiddenArgs({"-min"});
     argsman.AddHiddenArgs({"-resetguisettings"});

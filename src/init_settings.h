@@ -833,4 +833,8 @@ using ForceCompactDbSettingHidden = common::Setting<
     "-forcecompactdb", std::optional<bool>, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using ChooseDataDirSettingHidden = common::Setting<
+    "-choosedatadir", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

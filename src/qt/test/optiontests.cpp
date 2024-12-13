@@ -8,6 +8,7 @@
 #include <init.h>
 #include <qt/bitcoin.h>
 #include <qt/guiutil.h>
+#include <qt/test/optiontests_settings.h>
 #include <qt/test/optiontests.h>
 #include <test/util/setup_common.h>
 
@@ -113,7 +114,7 @@ void OptionTests::parametersInteraction()
         s.forced_settings.erase("listen");
         s.forced_settings.erase("listenonion");
     });
-    QVERIFY(!gArgs.IsArgSet("-listen"));
+    QVERIFY(ListenSetting::Value(gArgs).isNull());
     QVERIFY(!gArgs.IsArgSet("-listenonion"));
 
     QSettings settings;
@@ -124,8 +125,8 @@ void OptionTests::parametersInteraction()
 
     const bool expected{false};
 
-    QVERIFY(gArgs.IsArgSet("-listen"));
-    QCOMPARE(gArgs.GetBoolArg("-listen", !expected), expected);
+    QVERIFY(!ListenSetting::Value(gArgs).isNull());
+    QCOMPARE(ListenSetting::Get(gArgs, !expected), expected);
 
     QVERIFY(gArgs.IsArgSet("-listenonion"));
     QCOMPARE(gArgs.GetBoolArg("-listenonion", !expected), expected);

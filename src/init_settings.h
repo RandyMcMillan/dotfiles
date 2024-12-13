@@ -468,4 +468,9 @@ using ProxySetting = common::Setting<
     "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled). May be a local file path prefixed with 'unix:' if the proxy supports it.">
     ::Category<OptionsCategory::CONNECTION>;
 
+using ProxySetting2 = common::Setting<
+    "-proxy=<ip:port>", std::string, common::SettingOptions{.legacy = true, .disallow_elision = true},
+    "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled)">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -853,4 +853,8 @@ using SplashSettingHidden = common::Setting<
     "-splash", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using UiPlatformSettingHidden = common::Setting<
+    "-uiplatform", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

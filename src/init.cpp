@@ -457,7 +457,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     MinSettingHidden::Register(argsman);
     ResetGuiSettingsSettingHidden::Register(argsman);
     SplashSettingHidden::Register(argsman);
-    argsman.AddHiddenArgs({"-uiplatform"});
+    UiPlatformSettingHidden::Register(argsman);
 
     VersionSetting::Register(argsman);
 #if HAVE_SYSTEM

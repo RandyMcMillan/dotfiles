@@ -356,4 +356,10 @@ using ExternalIpSetting = common::Setting<
     "Specify your own public address">
     ::Category<OptionsCategory::CONNECTION>;
 
+using FixedSeedsSetting = common::Setting<
+    "-fixedseeds", bool, common::SettingOptions{.legacy = true},
+    "Allow fixed seeds if DNS seeds don't provide peers (default: %u)">
+    ::Default<DEFAULT_FIXEDSEEDS>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -177,7 +177,7 @@ bool CreateFromDump(const ArgsManager& args, const std::string& name, const fs::
         return false;
     }
     // Get the data file format with format_value as the default
-    std::string file_format = args.GetArg("-format", format_value);
+    std::string file_format = FormatSetting::Get(args, format_value);
     if (file_format.empty()) {
         error = _("No wallet file format provided. To use createfromdump, -format=<format> must be provided.");
         return false;

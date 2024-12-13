@@ -37,4 +37,8 @@ using LegacySetting = common::Setting<
     "-legacy", bool, common::SettingOptions{.legacy = true},
     "Create legacy wallet. Only for 'create'">;
 
+using FormatSetting = common::Setting<
+    "-format=<format>", std::string, common::SettingOptions{.legacy = true},
+    "The format of the wallet file to create. Either \"bdb\" or \"sqlite\". Only used with 'createfromdump'">;
+
 #endif // BITCOIN_BITCOIN_WALLET_SETTINGS_H

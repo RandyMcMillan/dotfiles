@@ -65,11 +65,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
     OutPubKeySetting::Register(argsman);
     OutScriptSetting::Register(argsman);
     ReplaceableSetting::Register(argsman);
-    argsman.AddArg("sign=SIGHASH-FLAGS", "Add zero or more signatures to transaction. "
-        "This command requires JSON registers:"
-        "prevtxs=JSON object, "
-        "privatekeys=JSON object. "
-        "See signrawtransactionwithkey docs for format of sighash flags, JSON objects.", ArgsManager::ALLOW_ANY, OptionsCategory::COMMANDS);
+    SignSetting::Register(argsman);
 
     argsman.AddArg("load=NAME:FILENAME", "Load JSON file FILENAME into register NAME", ArgsManager::ALLOW_ANY, OptionsCategory::REGISTER_COMMANDS);
     argsman.AddArg("set=NAME:JSON-STRING", "Set register NAME to given JSON-STRING", ArgsManager::ALLOW_ANY, OptionsCategory::REGISTER_COMMANDS);

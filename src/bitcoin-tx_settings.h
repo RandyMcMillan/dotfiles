@@ -85,4 +85,13 @@ using ReplaceableSetting = common::Setting<
         "If the transaction has no inputs, this option is ignored.">
     ::Category<OptionsCategory::COMMANDS>;
 
+using SignSetting = common::Setting<
+    "sign=SIGHASH-FLAGS", common::Unset, common::SettingOptions{.legacy = true},
+    "Add zero or more signatures to transaction. "
+        "This command requires JSON registers:"
+        "prevtxs=JSON object, "
+        "privatekeys=JSON object. "
+        "See signrawtransactionwithkey docs for format of sighash flags, JSON objects.">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

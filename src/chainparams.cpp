@@ -48,7 +48,7 @@ void ReadRegTestArgs(const ArgsManager& args, CChainParams::RegTestOptions& opti
     if (auto value = FastPruneSetting::Get(args)) options.fastprune = *value;
     if (HasTestOption(args, "bip94")) options.enforce_bip94 = true;
 
-    for (const std::string& arg : args.GetArgs("-testactivationheight")) {
+    for (const std::string& arg : TestActivationHeightSetting::Get(args)) {
         const auto found{arg.find('@')};
         if (found == std::string::npos) {
             throw std::runtime_error(strprintf("Invalid format (%s) for -testactivationheight=name@height.", arg));

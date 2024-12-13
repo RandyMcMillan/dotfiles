@@ -16,4 +16,9 @@ using SignetChallengeSetting = common::Setting<
     "Blocks must satisfy the given script to be considered valid (only for signet networks; defaults to the global default signet test network challenge)">
     ::Category<OptionsCategory::CHAINPARAMS>;
 
+using TestActivationHeightSetting = common::Setting<
+    "-testactivationheight=name@height.", std::vector<std::string>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Set the activation height of 'name' (segwit, bip34, dersig, cltv, csv). (regtest-only)">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_CHAINPARAMSBASE_SETTINGS_H

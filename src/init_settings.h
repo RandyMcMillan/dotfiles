@@ -614,4 +614,13 @@ using CheckLevelSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, util::Join(CHECKLEVEL_DOC, ", "), DEFAULT_CHECKLEVEL); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using CheckBlockIndexSetting = common::Setting<
+    "-checkblockindex", std::optional<std::string>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Do a consistency check for the block tree, chainstate, and other validation data structures every <n> operations. Use 0 to disable. (default: %u, regtest: %u)">
+    ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& regtestChainParams) { return strprintf(fmt, defaultChainParams->DefaultConsistencyChecks(), regtestChainParams->DefaultConsistencyChecks()); }>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
+using CheckBlockIndexSettingInt = common::Setting<
+    "-checkblockindex", std::optional<int64_t>, common::SettingOptions{.legacy = true, .debug_only = true}>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

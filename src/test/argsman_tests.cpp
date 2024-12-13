@@ -625,7 +625,7 @@ BOOST_AUTO_TEST_CASE(util_GetArg)
     testArgs.m_settings.command_line_options["pritest4"] = {"a","b"};
     testArgs.m_settings.ro_config[""]["pritest4"] = {"c","d"};
 
-    BOOST_CHECK_EQUAL(testArgs.GetArg("strtest1", "default"), "string...");
+    BOOST_CHECK_EQUAL(StrTest1Setting::Get(testArgs, "default"), "string...");
     BOOST_CHECK_EQUAL(testArgs.GetArg("strtest2", "default"), "default");
     BOOST_CHECK_EQUAL(testArgs.GetIntArg("inttest1", -1), 12345);
     BOOST_CHECK_EQUAL(testArgs.GetIntArg("inttest2", -1), 81985529216486895LL);

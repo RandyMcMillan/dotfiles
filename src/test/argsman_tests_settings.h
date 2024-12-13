@@ -154,4 +154,7 @@ using NofffSetting = common::Setting<
 using NogggSetting = common::Setting<
     "-noggg", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
 
+using NohSetting = common::Setting<
+    "-noh", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

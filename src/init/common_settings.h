@@ -47,4 +47,10 @@ using LogTimestampsSetting = common::Setting<
     ::Default<DEFAULT_LOGTIMESTAMPS>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LogThreadNamesSetting = common::Setting<
+    "-logthreadnames", bool, common::SettingOptions{.legacy = true},
+    "Prepend debug output with name of the originating thread (default: %u)">
+    ::Default<DEFAULT_LOGTHREADNAMES>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

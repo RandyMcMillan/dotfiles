@@ -43,4 +43,9 @@ using TestNetSetting = common::Setting<
     "Use the testnet3 chain. Equivalent to -chain=test. Support for testnet3 is deprecated and will be removed in an upcoming release. Consider moving to testnet4 now by using -testnet4.">
     ::Category<OptionsCategory::CHAINPARAMS>;
 
+using TestNet4Setting = common::Setting<
+    "-testnet4", common::Unset, common::SettingOptions{.legacy = true},
+    "Use the testnet4 chain. Equivalent to -chain=testnet4.">
+    ::Category<OptionsCategory::CHAINPARAMS>;
+
 #endif // BITCOIN_CHAINPARAMSBASE_SETTINGS_H

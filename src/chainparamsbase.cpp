@@ -18,7 +18,7 @@ void SetupChainParamsBaseOptions(ArgsManager& argsman)
     RegTestSetting::Register(argsman);
     TestActivationHeightSetting::Register(argsman);
     TestNetSetting::Register(argsman);
-    argsman.AddArg("-testnet4", "Use the testnet4 chain. Equivalent to -chain=testnet4.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
+    TestNet4Setting::Register(argsman);
     VbParamsSetting::Register(argsman);
     argsman.AddArg("-signet", "Use the signet chain. Equivalent to -chain=signet. Note that the network is defined by the -signetchallenge parameter", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
     SignetChallengeSetting::Register(argsman);

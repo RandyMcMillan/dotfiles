@@ -58,8 +58,7 @@ void WalletInit::AddWalletOptions(ArgsManager& argsman) const
     KeyPoolSetting::Register(argsman);
     MaxApsFeeSetting::Register(argsman);
     MaxTxFeeSetting::Register(argsman);
-    argsman.AddArg("-mintxfee=<amt>", strprintf("Fee rates (in %s/kvB) smaller than this are considered zero fee for transaction creation (default: %s)",
-                                                            CURRENCY_UNIT, FormatMoney(DEFAULT_TRANSACTION_MINFEE)), ArgsManager::ALLOW_ANY, OptionsCategory::WALLET);
+    MinTxFeeSetting::Register(argsman);
     argsman.AddArg("-paytxfee=<amt>", strprintf("Fee rate (in %s/kvB) to add to transactions you send (default: %s)",
                                                             CURRENCY_UNIT, FormatMoney(CFeeRate{DEFAULT_PAY_TX_FEE}.GetFeePerK())), ArgsManager::ALLOW_ANY, OptionsCategory::WALLET);
 #ifdef ENABLE_EXTERNAL_SIGNER

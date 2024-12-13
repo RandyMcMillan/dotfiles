@@ -3105,10 +3105,10 @@ std::shared_ptr<CWallet> CWallet::Create(WalletContext& context, const std::stri
         walletInstance->m_default_change_type = parsed.value();
     }
 
-    if (args.IsArgSet("-mintxfee")) {
-        std::optional<CAmount> min_tx_fee = ParseMoney(args.GetArg("-mintxfee", ""));
+    if (!MinTxFeeSetting::Value(args).isNull()) {
+        std::optional<CAmount> min_tx_fee = ParseMoney(MinTxFeeSetting::Get(args));
         if (!min_tx_fee) {
-            error = AmountErrMsg("mintxfee", args.GetArg("-mintxfee", ""));
+            error = AmountErrMsg("mintxfee", MinTxFeeSetting::Get(args));
             return nullptr;
         } else if (min_tx_fee.value() > HIGH_TX_FEE_PER_KB) {
             warnings.push_back(AmountHighWarn("-mintxfee") + Untranslated(" ") +

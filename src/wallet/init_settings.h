@@ -79,6 +79,12 @@ using MaxTxFeeSetting = common::Setting<
     "Maximum total fees (in %s) to use in a single wallet transaction; setting this too low may abort large transactions (default: %s)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_TRANSACTION_MAXFEE)); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
+
+using MinTxFeeSetting = common::Setting<
+    "-mintxfee=<amt>", std::string, common::SettingOptions{.legacy = true},
+    "Fee rates (in %s/kvB) smaller than this are considered zero fee for transaction creation (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_TRANSACTION_MINFEE)); }>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

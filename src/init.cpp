@@ -493,7 +493,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ReIndexChainstateSetting::Register(argsman);
     SettingsSetting::Register(argsman);
 #if HAVE_SYSTEM
-    argsman.AddArg("-startupnotify=<cmd>", "Execute command on startup.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    StartupNotifySetting::Register(argsman);
     argsman.AddArg("-shutdownnotify=<cmd>", "Execute command immediately before beginning shutdown. The need for shutdown may be urgent, so be careful not to delay it long (if the command doesn't require interaction with the server, consider having it fork into the background).", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
 #endif
     argsman.AddArg("-txindex", strprintf("Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)", DEFAULT_TXINDEX), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -664,7 +664,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 #if HAVE_SYSTEM
 static void StartupNotify(const ArgsManager& args)
 {
-    std::string cmd = args.GetArg("-startupnotify", "");
+    std::string cmd = StartupNotifySetting::Get(args);
     if (!cmd.empty()) {
         std::thread t(runCommand, cmd);
         t.detach(); // thread runs free

@@ -271,4 +271,8 @@ using ReIndexChainstateSetting = common::Setting<
     "-reindex-chainstate", bool, common::SettingOptions{.legacy = true},
     "If enabled, wipe chain state, and rebuild it from blk*.dat files on disk. If an assumeutxo snapshot was loaded, its chainstate will be wiped as well. The snapshot can then be reloaded via RPC.">;
 
+using StartupNotifySetting = common::Setting<
+    "-startupnotify=<cmd>", std::string, common::SettingOptions{.legacy = true},
+    "Execute command on startup.">;
+
 #endif // BITCOIN_INIT_SETTINGS_H

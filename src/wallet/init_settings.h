@@ -48,6 +48,13 @@ using DisableWalletSetting = common::Setting<
     ::Default<DEFAULT_DISABLE_WALLET>
     ::HelpArgs<>
     ::Category<OptionsCategory::WALLET>;
+
+using DiscardFeeSetting = common::Setting<
+    "-discardfee=<amt>", std::string, common::SettingOptions{.legacy = true},
+    "The fee rate (in %s/kvB) that indicates your tolerance for discarding change by adding it to the fee (default: %s). "
+                                                                "Note: An output is discarded if it is dust at this rate, but we will always discard up to the dust relay fee and a discard fee above that is limited by the fee estimate for the longest target">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_DISCARD_FEE)); }>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

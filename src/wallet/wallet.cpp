@@ -3149,10 +3149,10 @@ std::shared_ptr<CWallet> CWallet::Create(WalletContext& context, const std::stri
     // Disable fallback fee in case value was set to 0, enable if non-null value
     walletInstance->m_allow_fallback_fee = walletInstance->m_fallback_fee.GetFeePerK() != 0;
 
-    if (args.IsArgSet("-discardfee")) {
-        std::optional<CAmount> discard_fee = ParseMoney(args.GetArg("-discardfee", ""));
+    if (!DiscardFeeSetting::Value(args).isNull()) {
+        std::optional<CAmount> discard_fee = ParseMoney(DiscardFeeSetting::Get(args));
         if (!discard_fee) {
-            error = strprintf(_("Invalid amount for %s=<amount>: '%s'"), "-discardfee", args.GetArg("-discardfee", ""));
+            error = strprintf(_("Invalid amount for %s=<amount>: '%s'"), "-discardfee", DiscardFeeSetting::Get(args));
             return nullptr;
         } else if (discard_fee.value() > HIGH_TX_FEE_PER_KB) {
             warnings.push_back(AmountHighWarn("-discardfee") + Untranslated(" ") +

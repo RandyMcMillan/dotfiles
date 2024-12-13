@@ -607,7 +607,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     DataCarrierSizeSetting::Register(argsman);
     PermitBareMultiSigSetting::Register(argsman);
     MinRelayTxFeeSetting::Register(argsman);
-    argsman.AddArg("-whitelistforcerelay", strprintf("Add 'forcerelay' permission to whitelisted peers with default permissions. This will relay transactions even if the transactions were already in the mempool. (default: %d)", DEFAULT_WHITELISTFORCERELAY), ArgsManager::ALLOW_ANY, OptionsCategory::NODE_RELAY);
+    WhiteListForceRelaySetting::Register(argsman);
     argsman.AddArg("-whitelistrelay", strprintf("Add 'relay' permission to whitelisted peers with default permissions. This will accept relayed transactions even when not relaying transactions (default: %d)", DEFAULT_WHITELISTRELAY), ArgsManager::ALLOW_ANY, OptionsCategory::NODE_RELAY);
 
 
@@ -737,7 +737,7 @@ void InitParameterInteraction(ArgsManager& args)
     }
 
     // Forcing relay from whitelisted hosts implies we will accept relays from them in the first place.
-    if (args.GetBoolArg("-whitelistforcerelay", DEFAULT_WHITELISTFORCERELAY)) {
+    if (WhiteListForceRelaySetting::Get(args)) {
         if (args.SoftSetBoolArg("-whitelistrelay", true))
             LogInfo("parameter interaction: -whitelistforcerelay=1 -> setting -whitelistrelay=1\n");
     }
@@ -1802,7 +1802,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     connOptions.m_added_nodes = AddNodeSetting::Get(args);
     connOptions.nMaxOutboundLimit = *opt_max_upload;
     connOptions.m_peer_connect_timeout = peer_connect_timeout;
-    connOptions.whitelist_forcerelay = args.GetBoolArg("-whitelistforcerelay", DEFAULT_WHITELISTFORCERELAY);
+    connOptions.whitelist_forcerelay = WhiteListForceRelaySetting::Get(args);
     connOptions.whitelist_relay = args.GetBoolArg("-whitelistrelay", DEFAULT_WHITELISTRELAY);
 
     // Port to bind to if `-bind=addr` is provided without a `:port` suffix.

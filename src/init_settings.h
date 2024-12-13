@@ -774,4 +774,10 @@ using MinRelayTxFeeSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_MIN_RELAY_TX_FEE)); }>
     ::Category<OptionsCategory::NODE_RELAY>;
 
+using WhiteListForceRelaySetting = common::Setting<
+    "-whitelistforcerelay", bool, common::SettingOptions{.legacy = true},
+    "Add 'forcerelay' permission to whitelisted peers with default permissions. This will relay transactions even if the transactions were already in the mempool. (default: %d)">
+    ::Default<DEFAULT_WHITELISTFORCERELAY>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

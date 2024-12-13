@@ -570,7 +570,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ZmqPubSequenceSetting::Hidden::Register(argsman);
     ZmqPubHashBlockHwmSetting::Hidden::Register(argsman);
     ZmqPubHashTxHwmSetting::Hidden::Register(argsman);
-    argsman.AddHiddenArgs({"-zmqpubrawblockhwm=<n>"});
+    ZmqPubRawBlockHwmSetting::Hidden::Register(argsman);
     argsman.AddHiddenArgs({"-zmqpubrawtxhwm=<n>"});
     argsman.AddHiddenArgs({"-zmqpubsequencehwm=<n>"});
 #endif

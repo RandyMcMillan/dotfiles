@@ -22,6 +22,7 @@
 #include <torcontrol.h>
 #include <txdb.h>
 #include <util/string.h>
+#include <zmq/zmqabstractnotifier.h>
 
 #include <string>
 #include <vector>
@@ -568,6 +569,12 @@ using ZmqPubRawTxSetting = common::Setting<
 using ZmqPubSequenceSetting = common::Setting<
     "-zmqpubsequence=<address>", common::Unset, common::SettingOptions{.legacy = true},
     "Enable publish hash block and tx sequence in <address>">
+    ::Category<OptionsCategory::ZMQ>;
+
+using ZmqPubHashBlockHwmSetting = common::Setting<
+    "-zmqpubhashblockhwm=<n>", common::Unset, common::SettingOptions{.legacy = true},
+    "Set publish hash block outbound message high water mark (default: %d)">
+    ::HelpArgs<CZMQAbstractNotifier::DEFAULT_ZMQ_SNDHWM>
     ::Category<OptionsCategory::ZMQ>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

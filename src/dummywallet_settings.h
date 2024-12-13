@@ -86,4 +86,8 @@ using WalletRbfSettingHidden = common::Setting<
     "-walletrbf", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using DbLogSizeSettingHidden = common::Setting<
+    "-dblogsize=<n>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

@@ -613,7 +613,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 
     BlockMaxWeightSetting::Register(argsman);
     BlockMinTxFeeSetting::Register(argsman);
-    argsman.AddArg("-blockversion=<n>", "Override block version to test forking scenarios", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::BLOCK_CREATION);
+    BlockVersionSetting::Register(argsman);
 
     argsman.AddArg("-rest", strprintf("Accept public REST requests (default: %u)", DEFAULT_REST_ENABLE), ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     RpcAllowIpSetting::Register(argsman);

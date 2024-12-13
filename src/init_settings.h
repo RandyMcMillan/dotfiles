@@ -798,4 +798,9 @@ using BlockMinTxFeeSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_BLOCK_MIN_TX_FEE)); }>
     ::Category<OptionsCategory::BLOCK_CREATION>;
 
+using BlockVersionSetting = common::Setting<
+    "-blockversion=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Override block version to test forking scenarios">
+    ::Category<OptionsCategory::BLOCK_CREATION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

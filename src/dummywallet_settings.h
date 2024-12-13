@@ -58,4 +58,8 @@ using PayTxFeeSettingHidden = common::Setting<
     "-paytxfee=<amt>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using SignerSettingHidden = common::Setting<
+    "-signer=<cmd>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

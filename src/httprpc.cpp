@@ -316,7 +316,7 @@ static bool InitRPCAuthentication()
         }
     } else {
         LogPrintf("Config options rpcuser and rpcpassword will soon be deprecated. Locally-run instances may remove rpcuser to use cookie-based auth, or may be replaced with rpcauth. Please see share/rpcauth for rpcauth auth generation.\n");
-        strRPCUserColonPass = gArgs.GetArg("-rpcuser", "") + ":" + RpcPasswordSetting::Get(gArgs);
+        strRPCUserColonPass = RpcUserSetting::Get(gArgs) + ":" + RpcPasswordSetting::Get(gArgs);
     }
 
     if (!gArgs.GetArgs("-rpcauth").empty()) {

@@ -52,4 +52,9 @@ using RpcPortSetting = common::Setting<
     ::HelpFn<[](const auto& fmt, const auto& defaultBaseParams, const auto& testnetBaseParams, const auto& testnet4BaseParams, const auto& signetBaseParams, const auto& regtestBaseParams) { return strprintf(fmt, defaultBaseParams->RPCPort(), testnetBaseParams->RPCPort(), testnet4BaseParams->RPCPort(), signetBaseParams->RPCPort(), regtestBaseParams->RPCPort()); }>
     ::Category<OptionsCategory::RPC>;
 
+using RpcUserSetting = common::Setting<
+    "-rpcuser=<user>", std::string, common::SettingOptions{.legacy = true, .sensitive = true},
+    "Username for JSON-RPC connections">
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

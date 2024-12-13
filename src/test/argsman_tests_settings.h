@@ -151,4 +151,7 @@ using IiiSettingBool = common::Setting<
 using NofffSetting = common::Setting<
     "-nofff", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
 
+using NogggSetting = common::Setting<
+    "-noggg", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

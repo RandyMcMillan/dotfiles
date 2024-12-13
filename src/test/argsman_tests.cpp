@@ -520,7 +520,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(NofffSetting::Get(test_args).size() == 0);
     BOOST_CHECK(GggSetting::Get(test_args).size() == 1
                 && GggSetting::Get(test_args).front() == "1");
-    BOOST_CHECK(test_args.GetArgs("-noggg").size() == 0);
+    BOOST_CHECK(NogggSetting::Get(test_args).size() == 0);
     BOOST_CHECK(HSetting::Get(test_args).size() == 0);
     BOOST_CHECK(test_args.GetArgs("-noh").size() == 0);
     BOOST_CHECK(ISetting::Get(test_args).size() == 1

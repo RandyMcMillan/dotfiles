@@ -14,4 +14,9 @@ using DebugSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, LogInstance().LogCategoriesString()); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using PrintToConsoleSetting = common::Setting<
+    "-printtoconsole", bool, common::SettingOptions{.legacy = true},
+    "Send trace/debug info to console (default: 1 when no -daemon. To disable logging to file, set -nodebuglogfile)">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

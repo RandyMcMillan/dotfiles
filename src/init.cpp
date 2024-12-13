@@ -472,7 +472,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 #endif
     BlockReconstructionExtraTxnSetting::Register(argsman);
     BlocksOnlySetting::Register(argsman);
-    argsman.AddArg("-coinstatsindex", strprintf("Maintain coinstats index used by the gettxoutsetinfo RPC (default: %u)", DEFAULT_COINSTATSINDEX), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    CoinStatsIndexSetting::Register(argsman);
     ConfSetting::Register(argsman);
     DataDirSetting::Register(argsman);
     argsman.AddArg("-dbbatchsize", strprintf("Maximum database write batch size in bytes (default: %u)", nDefaultDbBatchSize), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::OPTIONS);
@@ -1666,7 +1666,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         node.indexes.emplace_back(GetBlockFilterIndex(filter_type));
     }
 
-    if (args.GetBoolArg("-coinstatsindex", DEFAULT_COINSTATSINDEX)) {
+    if (CoinStatsIndexSetting::Get(args)) {
         g_coin_stats_index = std::make_unique<CoinStatsIndex>(interfaces::MakeChain(node), /*cache_size=*/0, false, do_reindex);
         node.indexes.emplace_back(g_coin_stats_index.get());
     }

@@ -6,6 +6,7 @@
 #include <common/args.h>
 #include <common/setting.h>
 #include <httpserver.h>
+#include <index/coinstatsindex.h>
 #include <init.h>
 #include <kernel/blockmanager_opts.h>
 #include <net_processing.h>
@@ -184,5 +185,10 @@ using BlocksOnlySetting = common::Setting<
     "-blocksonly", std::optional<bool>, common::SettingOptions{.legacy = true},
     "Whether to reject transactions from network peers. Disables automatic broadcast and rebroadcast of transactions, unless the source peer has the 'forcerelay' permission. RPC transactions are not affected. (default: %u)">
     ::HelpArgs<DEFAULT_BLOCKSONLY>;
+
+using CoinStatsIndexSetting = common::Setting<
+    "-coinstatsindex", bool, common::SettingOptions{.legacy = true},
+    "Maintain coinstats index used by the gettxoutsetinfo RPC (default: %u)">
+    ::Default<DEFAULT_COINSTATSINDEX>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

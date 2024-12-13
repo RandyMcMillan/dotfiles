@@ -29,8 +29,8 @@ void ReadSigNetArgs(const ArgsManager& args, CChainParams::SigNetOptions& option
     if (!SignetSeedNodeSetting::Value(args).isNull()) {
         options.seeds.emplace(SignetSeedNodeSetting::Get(args));
     }
-    if (args.IsArgSet("-signetchallenge")) {
-        const auto signet_challenge = args.GetArgs("-signetchallenge");
+    if (!SignetChallengeSetting::Value(args).isNull()) {
+        const auto signet_challenge = SignetChallengeSetting::Get(args);
         if (signet_challenge.size() != 1) {
             throw std::runtime_error("-signetchallenge cannot be multiple values.");
         }

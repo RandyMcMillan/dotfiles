@@ -603,7 +603,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     DustRelayFeeSetting::Register(argsman);
     AcceptStaleFeeEstimatesSetting::Register(argsman);
     BytesPerSigOpSetting::Register(argsman);
-    argsman.AddArg("-datacarrier", strprintf("Relay and mine data carrier transactions (default: %u)", DEFAULT_ACCEPT_DATACARRIER), ArgsManager::ALLOW_ANY, OptionsCategory::NODE_RELAY);
+    DataCarrierSetting::Register(argsman);
     argsman.AddArg("-datacarriersize",
                    strprintf("Relay and mine transactions whose data-carrying raw scriptPubKey is of this size or less (default: %u)",
                              MAX_OP_RETURN_RELAY),

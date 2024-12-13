@@ -750,4 +750,10 @@ using BytesPerSigOpSetting = common::Setting<
     ::HelpArgs<DEFAULT_BYTES_PER_SIGOP>
     ::Category<OptionsCategory::NODE_RELAY>;
 
+using DataCarrierSetting = common::Setting<
+    "-datacarrier", bool, common::SettingOptions{.legacy = true},
+    "Relay and mine data carrier transactions (default: %u)">
+    ::Default<DEFAULT_ACCEPT_DATACARRIER>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

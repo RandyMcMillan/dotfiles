@@ -12,6 +12,7 @@
 #include <common/system.h>
 #include <compat/compat.h>
 #include <init.h>
+#include <init_settings.h>
 #include <interfaces/chain.h>
 #include <interfaces/init.h>
 #include <kernel/context.h>
@@ -135,10 +136,10 @@ static bool ParseArgs(NodeContext& node, int argc, char* argv[])
 static bool ProcessInitCommands(ArgsManager& args)
 {
     // Process help and version before taking care about datadir
-    if (HelpRequested(args) || args.GetBoolArg("-version", false)) {
+    if (HelpRequested(args) || VersionSetting::Get(args)) {
         std::string strUsage = CLIENT_NAME " daemon version " + FormatFullVersion() + "\n";
 
-        if (args.GetBoolArg("-version", false)) {
+        if (VersionSetting::Get(args)) {
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"

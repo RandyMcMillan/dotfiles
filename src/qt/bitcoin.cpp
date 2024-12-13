@@ -11,6 +11,7 @@
 #include <common/init.h>
 #include <common/system.h>
 #include <init.h>
+#include <init_settings.h>
 #include <interfaces/handler.h>
 #include <interfaces/init.h>
 #include <interfaces/node.h>
@@ -582,8 +583,8 @@ int GuiMain(int argc, char* argv[])
 
     // Show help message immediately after parsing command-line options (for "-lang") and setting locale,
     // but before showing splash screen.
-    if (HelpRequested(gArgs) || gArgs.GetBoolArg("-version", false)) {
-        HelpMessageDialog help(nullptr, gArgs.GetBoolArg("-version", false));
+    if (HelpRequested(gArgs) || VersionSetting::Get(gArgs)) {
+        HelpMessageDialog help(nullptr, VersionSetting::Get(gArgs));
         help.showOrPrint();
         return EXIT_SUCCESS;
     }

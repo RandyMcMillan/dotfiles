@@ -14,4 +14,8 @@ using AddressTypeSettingHidden = common::Setting<
     "-addresstype", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using AvoidPartialSpendsSettingHidden = common::Setting<
+    "-avoidpartialspends", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

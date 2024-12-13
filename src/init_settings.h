@@ -10,6 +10,7 @@
 #include <init.h>
 #include <kernel/blockmanager_opts.h>
 #include <net_processing.h>
+#include <txdb.h>
 #include <util/string.h>
 
 #include <string>
@@ -190,5 +191,10 @@ using CoinStatsIndexSetting = common::Setting<
     "-coinstatsindex", bool, common::SettingOptions{.legacy = true},
     "Maintain coinstats index used by the gettxoutsetinfo RPC (default: %u)">
     ::Default<DEFAULT_COINSTATSINDEX>;
+
+using DbBatchSizeSetting = common::Setting<
+    "-dbbatchsize", std::optional<int64_t>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Maximum database write batch size in bytes (default: %u)">
+    ::HelpArgs<nDefaultDbBatchSize>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

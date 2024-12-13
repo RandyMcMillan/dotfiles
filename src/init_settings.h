@@ -715,4 +715,10 @@ using UaCommentSetting = common::Setting<
     "Append comment to the user agent string">
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using AcceptNonstdTxnSetting = common::Setting<
+    "-acceptnonstdtxn", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Relay and mine \"non-standard\" transactions (test networks only; default: %u)">
+    ::Default<DEFAULT_ACCEPT_NON_STD_TXN>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

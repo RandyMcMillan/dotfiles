@@ -27,4 +27,10 @@ using DebugSetting = common::Setting<
     "Output debugging information (default: 0).">
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using DescriptorsSetting = common::Setting<
+    "-descriptors", bool, common::SettingOptions{.legacy = true},
+    "Create descriptors wallet. Only for 'create'">
+    ::Default<true>
+    ::HelpArgs<>;
+
 #endif // BITCOIN_BITCOIN_WALLET_SETTINGS_H

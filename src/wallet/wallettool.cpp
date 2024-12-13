@@ -121,7 +121,7 @@ bool ExecuteWalletToolFunc(const ArgsManager& args, const std::string& command)
         tfm::format(std::cerr, "The -dumpfile option can only be used with the \"dump\" and \"createfromdump\" commands.\n");
         return false;
     }
-    if (args.IsArgSet("-descriptors") && command != "create") {
+    if (!DescriptorsSetting::Value(args).isNull() && command != "create") {
         tfm::format(std::cerr, "The -descriptors option can only be used with the 'create' command.\n");
         return false;
     }
@@ -143,7 +143,7 @@ bool ExecuteWalletToolFunc(const ArgsManager& args, const std::string& command)
         // If -legacy is set, use it. Otherwise default to false.
         bool make_legacy = args.GetBoolArg("-legacy", false);
         // If neither -legacy nor -descriptors is set, default to true. If -descriptors is set, use its value.
-        bool make_descriptors = (!args.IsArgSet("-descriptors") && !args.IsArgSet("-legacy")) || (args.IsArgSet("-descriptors") && args.GetBoolArg("-descriptors", true));
+        bool make_descriptors = (DescriptorsSetting::Value(args).isNull() && !args.IsArgSet("-legacy")) || (!DescriptorsSetting::Value(args).isNull() && DescriptorsSetting::Get(args));
         if (make_legacy && make_descriptors) {
             tfm::format(std::cerr, "Only one of -legacy or -descriptors can be set to true, not both\n");
             return false;

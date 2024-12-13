@@ -607,4 +607,11 @@ using CheckBlocksSetting = common::Setting<
     ::Default<DEFAULT_CHECKBLOCKS>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using CheckLevelSetting = common::Setting<
+    "-checklevel=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "How thorough the block verification of -checkblocks is: %s (0-4, default: %u)">
+    ::Default<DEFAULT_CHECKLEVEL>
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, util::Join(CHECKLEVEL_DOC, ", "), DEFAULT_CHECKLEVEL); }>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

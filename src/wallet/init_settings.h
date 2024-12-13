@@ -73,6 +73,12 @@ using MaxApsFeeSetting = common::Setting<
     "Spend up to this amount in additional (absolute) fees (in %s) if it allows the use of partial spend avoidance (default: %s)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_MAX_AVOIDPARTIALSPEND_FEE)); }>
     ::Category<OptionsCategory::WALLET>;
+
+using MaxTxFeeSetting = common::Setting<
+    "-maxtxfee=<amt>", std::string, common::SettingOptions{.legacy = true},
+    "Maximum total fees (in %s) to use in a single wallet transaction; setting this too low may abort large transactions (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_TRANSACTION_MAXFEE)); }>
+    ::Category<OptionsCategory::DEBUG_TEST>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

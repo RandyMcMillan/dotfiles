@@ -445,4 +445,10 @@ using PeerBloomFiltersSetting = common::Setting<
     ::Default<DEFAULT_PEERBLOOMFILTERS>
     ::Category<OptionsCategory::CONNECTION>;
 
+using PeerBlockFiltersSetting = common::Setting<
+    "-peerblockfilters", bool, common::SettingOptions{.legacy = true},
+    "Serve compact block filters to peers per BIP 157 (default: %u)">
+    ::Default<DEFAULT_PEERBLOCKFILTERS>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -531,7 +531,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     TxReconciliationSetting::Register(argsman);
     PortSetting::Register(argsman, defaultChainParams, testnetChainParams, testnet4ChainParams, signetChainParams, regtestChainParams);
 #ifdef HAVE_SOCKADDR_UN
-    argsman.AddArg("-proxy=<ip:port|path>", "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled). May be a local file path prefixed with 'unix:' if the proxy supports it.", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_ELISION, OptionsCategory::CONNECTION);
+    ProxySetting::Register(argsman);
 #else
     argsman.AddArg("-proxy=<ip:port>", "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled)", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_ELISION, OptionsCategory::CONNECTION);
 #endif
@@ -706,7 +706,7 @@ void InitParameterInteraction(ArgsManager& args)
             LogInfo("parameter interaction: -connect or -maxconnections=0 set -> setting -listen=0\n");
     }
 
-    std::string proxy_arg = args.GetArg("-proxy", "");
+    std::string proxy_arg = ProxySetting::Get(args);
     if (proxy_arg != "" && proxy_arg != "0") {
         // to protect privacy, do not listen by default if a default proxy server is specified
         if (args.SoftSetBoolArg("-listen", false))
@@ -1484,7 +1484,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     bool proxyRandomize = args.GetBoolArg("-proxyrandomize", DEFAULT_PROXYRANDOMIZE);
     // -proxy sets a proxy for all outgoing network traffic
     // -noproxy (or -proxy=0) as well as the empty string can be used to not set a proxy, this is the default
-    std::string proxyArg = args.GetArg("-proxy", "");
+    std::string proxyArg = ProxySetting::Get(args);
     if (proxyArg != "" && proxyArg != "0") {
         Proxy addrProxy;
         if (IsUnixSocketPath(proxyArg)) {
@@ -1928,7 +1928,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
             LogPrintf("-seednode is ignored when -connect is used\n");
         }
 
-        if (!DnsSeedSetting::Value(args).isNull() && DnsSeedSetting::Get(args, DEFAULT_DNSSEED) && args.IsArgSet("-proxy")) {
+        if (!DnsSeedSetting::Value(args).isNull() && DnsSeedSetting::Get(args, DEFAULT_DNSSEED) && !ProxySetting::Value(args).isNull()) {
             LogPrintf("-dnsseed is ignored when -connect is used and -proxy is specified\n");
         }
     }

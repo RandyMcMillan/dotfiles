@@ -463,4 +463,9 @@ using PortSetting = common::Setting<
     ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& testnetChainParams, const auto& testnet4ChainParams, const auto& signetChainParams, const auto& regtestChainParams) { return strprintf(fmt, defaultChainParams->GetDefaultPort(), testnetChainParams->GetDefaultPort(), testnet4ChainParams->GetDefaultPort(), signetChainParams->GetDefaultPort(), regtestChainParams->GetDefaultPort()); }>
     ::Category<OptionsCategory::CONNECTION>;
 
+using ProxySetting = common::Setting<
+    "-proxy=<ip:port|path>", std::string, common::SettingOptions{.legacy = true, .disallow_elision = true},
+    "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled). May be a local file path prefixed with 'unix:' if the proxy supports it.">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

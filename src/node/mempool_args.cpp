@@ -72,11 +72,11 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& argsman, const CChainP
 
     // Feerate used to define dust.  Shouldn't be changed lightly as old
     // implementations may inadvertently create non-standard transactions
-    if (argsman.IsArgSet("-dustrelayfee")) {
-        if (std::optional<CAmount> parsed = ParseMoney(argsman.GetArg("-dustrelayfee", ""))) {
+    if (!DustRelayFeeSetting::Value(argsman).isNull()) {
+        if (std::optional<CAmount> parsed = ParseMoney(DustRelayFeeSetting::Get(argsman))) {
             mempool_opts.dust_relay_feerate = CFeeRate{parsed.value()};
         } else {
-            return util::Error{AmountErrMsg("dustrelayfee", argsman.GetArg("-dustrelayfee", ""))};
+            return util::Error{AmountErrMsg("dustrelayfee", DustRelayFeeSetting::Get(argsman))};
         }
     }
 

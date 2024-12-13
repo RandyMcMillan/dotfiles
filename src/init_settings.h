@@ -728,4 +728,10 @@ using IncrementalRelayFeeSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_INCREMENTAL_RELAY_FEE)); }>
     ::Category<OptionsCategory::NODE_RELAY>;
 
+using DustRelayFeeSetting = common::Setting<
+    "-dustrelayfee=<amt>", std::string, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Fee rate (in %s/kvB) used to define dust, the value of an output such that it will cost more than its value in fees at this fee rate to spend it. (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DUST_RELAY_TX_FEE)); }>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

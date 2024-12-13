@@ -35,4 +35,13 @@ using ValueSettingInt = common::Setting<
 using ValueSettingBool = common::Setting<
     "-value", bool, common::SettingOptions{.legacy = true}>;
 
+using ASetting = common::Setting<
+    "-a", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using ASettingStr = common::Setting<
+    "-a", std::string, common::SettingOptions{.legacy = true}>;
+
+using ASettingBool = common::Setting<
+    "-a", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

@@ -27,4 +27,7 @@ using FooSetting2Bool = common::Setting<
 using BarSetting = common::Setting<
     "-bar", int64_t, common::SettingOptions{.legacy = true}>;
 
+using FoSetting = common::Setting<
+    "-fo", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_GETARG_TESTS_SETTINGS_H

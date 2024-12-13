@@ -168,8 +168,8 @@ BOOST_AUTO_TEST_CASE(boolarg)
     BOOST_CHECK(FooSetting2Bool::Get(local_args, false));
     BOOST_CHECK(FooSetting2Bool::Get(local_args, true));
 
-    BOOST_CHECK(!local_args.GetBoolArg("-fo", false));
-    BOOST_CHECK(local_args.GetBoolArg("-fo", true));
+    BOOST_CHECK(!FoSetting::Get(local_args, false));
+    BOOST_CHECK(FoSetting::Get(local_args, true));
 
     BOOST_CHECK(!local_args.GetBoolArg("-fooo", false));
     BOOST_CHECK(local_args.GetBoolArg("-fooo", true));

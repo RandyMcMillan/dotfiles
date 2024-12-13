@@ -4,6 +4,7 @@
 
 #include <bitcoin-build-config.h> // IWYU pragma: keep
 
+#include <bitcoin-tx_settings.h>
 #include <chainparamsbase.h>
 #include <clientversion.h>
 #include <coins.h>
@@ -47,7 +48,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
 {
     SetupHelpOptions(argsman);
 
-    argsman.AddArg("-version", "Print version and exit", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    VersionSetting::Register(argsman);
     argsman.AddArg("-create", "Create new, empty TX.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-json", "Select JSON output", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-txid", "Output only the hex-encoded transaction id of the resultant transaction.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -105,11 +106,11 @@ static int AppInitRawTx(int argc, char* argv[])
 
     fCreateBlank = gArgs.GetBoolArg("-create", false);
 
-    if (argc < 2 || HelpRequested(gArgs) || gArgs.GetBoolArg("-version", false)) {
+    if (argc < 2 || HelpRequested(gArgs) || VersionSetting::Get(gArgs)) {
         // First part of help message is specific to this utility
         std::string strUsage = CLIENT_NAME " bitcoin-tx utility version " + FormatFullVersion() + "\n";
 
-        if (gArgs.GetBoolArg("-version", false)) {
+        if (VersionSetting::Get(gArgs)) {
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"

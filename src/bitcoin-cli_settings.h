@@ -82,4 +82,8 @@ using RpcConnectSetting = common::Setting<
     "Send commands to node running on <ip> (default: %s)">
     ::Default<DEFAULT_RPCCONNECT>;
 
+using RpcCookieFileSetting = common::Setting<
+    "-rpccookiefile=<loc>", common::Unset, common::SettingOptions{.legacy = true},
+    "Location of the auth cookie. Relative paths will be prefixed by a net-specific datadir location. (default: data dir)">;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

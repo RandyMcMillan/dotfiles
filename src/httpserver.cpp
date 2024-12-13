@@ -461,7 +461,7 @@ bool InitHTTPServer(const util::SignalInterrupt& interrupt)
         return false;
     }
 
-    evhttp_set_timeout(http, gArgs.GetIntArg("-rpcservertimeout", DEFAULT_HTTP_SERVER_TIMEOUT));
+    evhttp_set_timeout(http, RpcServerTimeoutSetting::Get(gArgs));
     evhttp_set_max_headers_size(http, MAX_HEADERS_SIZE);
     evhttp_set_max_body_size(http, MAX_SIZE);
     evhttp_set_gencb(http, http_request_cb, (void*)&interrupt);

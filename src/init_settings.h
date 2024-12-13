@@ -5,6 +5,7 @@
 #include <chainparamsbase.h>
 #include <common/args.h>
 #include <common/setting.h>
+#include <httpserver.h>
 #include <init.h>
 #include <util/string.h>
 
@@ -131,6 +132,12 @@ using RpcAllowIpSetting = common::Setting<
 using RpcBindSetting = common::Setting<
     "-rpcbind=<addr>[:port]", std::vector<std::string>, common::SettingOptions{.legacy = true, .network_only = true},
     "Bind to given address to listen for JSON-RPC connections. Do not expose the RPC server to untrusted networks such as the public internet! This option is ignored unless -rpcallowip is also passed. Port is optional and overrides -rpcport. Use [host]:port notation for IPv6. This option can be specified multiple times (default: 127.0.0.1 and ::1 i.e., localhost)">
+    ::Category<OptionsCategory::RPC>;
+
+using RpcServerTimeoutSetting = common::Setting<
+    "-rpcservertimeout=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Timeout during HTTP requests (default: %d)">
+    ::Default<DEFAULT_HTTP_SERVER_TIMEOUT>
     ::Category<OptionsCategory::RPC>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

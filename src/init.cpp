@@ -654,7 +654,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     RpcCookiePermsSetting::Register(argsman);
     RpcPasswordSetting::Register(argsman);
     RpcPortSetting::Register(argsman, defaultBaseParams, testnetBaseParams, testnet4BaseParams, signetBaseParams, regtestBaseParams);
-    argsman.AddArg("-rpcservertimeout=<n>", strprintf("Timeout during HTTP requests (default: %d)", DEFAULT_HTTP_SERVER_TIMEOUT), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::RPC);
+    RpcServerTimeoutSetting::Register(argsman);
     argsman.AddArg("-rpcthreads=<n>", strprintf("Set the number of threads to service RPC calls (default: %d)", DEFAULT_HTTP_THREADS), ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     RpcUserSetting::Register(argsman);
     RpcWhitelistSetting::Register(argsman);

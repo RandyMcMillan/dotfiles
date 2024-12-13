@@ -13,7 +13,7 @@ void ApplyArgsManOptions(const ArgsManager& argsman, PeerManager::Options& optio
 {
     if (auto value{argsman.GetBoolArg("-txreconciliation")}) options.reconcile_txs = *value;
 
-    if (auto value{argsman.GetIntArg("-maxorphantx")}) {
+    if (auto value{MaxOrphanTxSetting::Get(argsman)}) {
         options.max_orphan_txs = uint32_t((std::clamp<int64_t>(*value, 0, std::numeric_limits<uint32_t>::max())));
     }
 

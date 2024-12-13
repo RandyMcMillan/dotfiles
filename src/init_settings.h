@@ -217,4 +217,9 @@ using MaxMemPoolSetting = common::Setting<
     "Keep the transaction memory pool below <n> megabytes (default: %u)">
     ::HelpArgs<DEFAULT_MAX_MEMPOOL_SIZE_MB>;
 
+using MaxOrphanTxSetting = common::Setting<
+    "-maxorphantx=<n>", std::optional<int64_t>, common::SettingOptions{.legacy = true},
+    "Keep at most <n> unconnectable transactions in memory (default: %u)">
+    ::HelpArgs<DEFAULT_MAX_ORPHAN_TRANSACTIONS>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -82,7 +82,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     ColorSetting::Register(argsman);
     NamedSetting::Register(argsman);
     RpcClientTimeoutSetting::Register(argsman);
-    argsman.AddArg("-rpcconnect=<ip>", strprintf("Send commands to node running on <ip> (default: %s)", DEFAULT_RPCCONNECT), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    RpcConnectSetting::Register(argsman);
     argsman.AddArg("-rpccookiefile=<loc>", "Location of the auth cookie. Relative paths will be prefixed by a net-specific datadir location. (default: data dir)", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-rpcpassword=<pw>", "Password for JSON-RPC connections", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-rpcport=<port>", strprintf("Connect to JSON-RPC on <port> (default: %u, testnet: %u, testnet4: %u, signet: %u, regtest: %u)", defaultBaseParams->RPCPort(), testnetBaseParams->RPCPort(), testnet4BaseParams->RPCPort(), signetBaseParams->RPCPort(), regtestBaseParams->RPCPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::OPTIONS);
@@ -782,7 +782,7 @@ static UniValue CallRPC(BaseRequestHandler* rh, const std::string& strMethod, co
     uint16_t port{BaseParams().RPCPort()};
     {
         uint16_t rpcconnect_port{0};
-        const std::string rpcconnect_str = gArgs.GetArg("-rpcconnect", DEFAULT_RPCCONNECT);
+        const std::string rpcconnect_str = RpcConnectSetting::Get(gArgs);
         if (!SplitHostPort(rpcconnect_str, rpcconnect_port, host)) {
             // Uses argument provided as-is
             // (rather than value parsed)

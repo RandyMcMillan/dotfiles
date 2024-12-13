@@ -77,4 +77,9 @@ using RpcClientTimeoutSetting = common::Setting<
     "Timeout in seconds during HTTP requests, or 0 for no timeout. (default: %d)">
     ::Default<DEFAULT_HTTP_CLIENT_TIMEOUT>;
 
+using RpcConnectSetting = common::Setting<
+    "-rpcconnect=<ip>", std::string, common::SettingOptions{.legacy = true},
+    "Send commands to node running on <ip> (default: %s)">
+    ::Default<DEFAULT_RPCCONNECT>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

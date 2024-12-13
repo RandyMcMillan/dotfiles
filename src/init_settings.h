@@ -34,4 +34,9 @@ using DataDirSetting = common::Setting<
 using DataDirSettingPath = common::Setting<
     "-datadir=<dir>", fs::path, common::SettingOptions{.legacy = true, .disallow_negation = true}>;
 
+using RpcCookieFileSetting = common::Setting<
+    "-rpccookiefile=<loc>", fs::path, common::SettingOptions{.legacy = true},
+    "Location of the auth cookie. Relative paths will be prefixed by a net-specific datadir location. (default: data dir)">
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

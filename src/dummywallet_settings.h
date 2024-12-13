@@ -90,4 +90,8 @@ using DbLogSizeSettingHidden = common::Setting<
     "-dblogsize=<n>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using FlushWalletSettingHidden = common::Setting<
+    "-flushwallet", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

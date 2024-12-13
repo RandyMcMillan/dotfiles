@@ -14,6 +14,7 @@
 #include <crypto/sha256.h>
 #include <init.h>
 #include <init/common.h>
+#include <init_settings.h>
 #include <interfaces/chain.h>
 #include <kernel/mempool_entry.h>
 #include <logging.h>
@@ -321,7 +322,7 @@ TestingSetup::TestingSetup(
     m_node.netgroupman = std::make_unique<NetGroupManager>(/*asmap=*/std::vector<bool>());
     m_node.addrman = std::make_unique<AddrMan>(*m_node.netgroupman,
                                                /*deterministic=*/false,
-                                               m_node.args->GetIntArg("-checkaddrman", 0));
+                                               CheckAddrManSetting::Get(*m_node.args, 0));
     m_node.banman = std::make_unique<BanMan>(m_args.GetDataDirBase() / "banlist", nullptr, DEFAULT_MISBEHAVING_BANTIME);
     m_node.connman = std::make_unique<ConnmanTestMsg>(0x1337, 0x1337, *m_node.addrman, *m_node.netgroupman, Params()); // Deterministic randomness for tests.
     PeerManager::Options peerman_opts;

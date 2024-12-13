@@ -42,4 +42,9 @@ using LockTimeSetting = common::Setting<
     "Set TX lock time to N">
     ::Category<OptionsCategory::COMMANDS>;
 
+using NVersionSetting = common::Setting<
+    "nversion=N", common::Unset, common::SettingOptions{.legacy = true},
+    "Set TX version to N">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

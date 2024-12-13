@@ -543,7 +543,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     TorControlSetting::Register(argsman);
     TorPasswordSetting::Register(argsman);
     // UPnP support was dropped. We keep `-upnp` as a hidden arg to display a more user friendly error when set. TODO: remove (here and below) for 30.0. NOTE: removing this option may prevent the GUI from starting, see https://github.com/bitcoin-core/gui/issues/843.
-    argsman.AddArg("-upnp", "", ArgsManager::ALLOW_ANY, OptionsCategory::HIDDEN);
+    UpnpSetting::Register(argsman);
     argsman.AddArg("-natpmp", strprintf("Use PCP or NAT-PMP to map the listening port (default: %u)", DEFAULT_NATPMP), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-whitebind=<[permissions@]addr>", strprintf("Bind to the given address and add permission flags to the peers connecting to it. "
         "Use [host]:port notation for IPv6. Allowed permissions: %s. "
@@ -848,7 +848,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
 
     // We drop UPnP support but kept the arg as hidden for now to display a friendlier error to user who have the
     // option in their config. TODO: remove (here and above) for version 30.0.
-    if (args.IsArgSet("-upnp")) {
+    if (!UpnpSetting::Value(args).isNull()) {
         InitWarning(_("Option '-upnp' is set but UPnP support was dropped in version 29.0. Consider using '-natpmp' instead."));
     }
 

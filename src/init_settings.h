@@ -516,4 +516,9 @@ using TorPasswordSetting = common::Setting<
     "Tor control port password (default: empty)">
     ::Category<OptionsCategory::CONNECTION>;
 
+using UpnpSetting = common::Setting<
+    "-upnp", common::Unset, common::SettingOptions{.legacy = true},
+    "">
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

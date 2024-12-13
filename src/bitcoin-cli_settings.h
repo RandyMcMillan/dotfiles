@@ -99,4 +99,8 @@ using RpcUserSetting = common::Setting<
     "-rpcuser=<user>", std::string, common::SettingOptions{.legacy = true},
     "Username for JSON-RPC connections">;
 
+using RpcWaitSetting = common::Setting<
+    "-rpcwait", bool, common::SettingOptions{.legacy = true},
+    "Wait for RPC server to start">;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

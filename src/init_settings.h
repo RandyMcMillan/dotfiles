@@ -792,4 +792,10 @@ using BlockMaxWeightSetting = common::Setting<
     ::HelpArgs<DEFAULT_BLOCK_MAX_WEIGHT>
     ::Category<OptionsCategory::BLOCK_CREATION>;
 
+using BlockMinTxFeeSetting = common::Setting<
+    "-blockmintxfee=<amt>", std::optional<std::string>, common::SettingOptions{.legacy = true},
+    "Set lowest fee rate (in %s/kvB) for transactions to be included in block creation. (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_BLOCK_MIN_TX_FEE)); }>
+    ::Category<OptionsCategory::BLOCK_CREATION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -612,7 +612,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 
 
     BlockMaxWeightSetting::Register(argsman);
-    argsman.AddArg("-blockmintxfee=<amt>", strprintf("Set lowest fee rate (in %s/kvB) for transactions to be included in block creation. (default: %s)", CURRENCY_UNIT, FormatMoney(DEFAULT_BLOCK_MIN_TX_FEE)), ArgsManager::ALLOW_ANY, OptionsCategory::BLOCK_CREATION);
+    BlockMinTxFeeSetting::Register(argsman);
     argsman.AddArg("-blockversion=<n>", "Override block version to test forking scenarios", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::BLOCK_CREATION);
 
     argsman.AddArg("-rest", strprintf("Accept public REST requests (default: %u)", DEFAULT_REST_ENABLE), ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
@@ -970,9 +970,9 @@ bool AppInitParameterInteraction(const ArgsManager& args)
 
     // Sanity check argument for min fee for including tx in block
     // TODO: Harmonize which arguments need sanity checking and where that happens
-    if (args.IsArgSet("-blockmintxfee")) {
-        if (!ParseMoney(args.GetArg("-blockmintxfee", ""))) {
-            return InitError(AmountErrMsg("blockmintxfee", args.GetArg("-blockmintxfee", "")));
+    if (!BlockMinTxFeeSetting::Value(args).isNull()) {
+        if (!ParseMoney(BlockMinTxFeeSetting::Get(args, ""))) {
+            return InitError(AmountErrMsg("blockmintxfee", BlockMinTxFeeSetting::Get(args, "")));
         }
     }
 

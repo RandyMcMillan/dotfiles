@@ -88,7 +88,7 @@ void ApplyArgsManOptions(const ArgsManager& args, BlockAssembler::Options& optio
 {
     // Block resource limits
     options.nBlockMaxWeight = BlockMaxWeightSetting::Get(args, options.nBlockMaxWeight);
-    if (const auto blockmintxfee{args.GetArg("-blockmintxfee")}) {
+    if (const auto blockmintxfee{BlockMinTxFeeSetting::Get(args)}) {
         if (const auto parsed{ParseMoney(*blockmintxfee)}) options.blockMinFeeRate = CFeeRate{*parsed};
     }
     options.print_modified_fee = PrintPrioritySetting::Get(args, options.print_modified_fee);

@@ -374,8 +374,8 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArgEdgeCases)
     BOOST_CHECK(testArgs.ParseParameters(4, argv_test, error));
 
     // This was passed twice, second one overrides the negative setting.
-    BOOST_CHECK(!testArgs.IsArgNegated("-foo"));
-    BOOST_CHECK(testArgs.GetArg("-foo", "xxx") == "");
+    BOOST_CHECK(!FooSetting::Value(testArgs).isFalse());
+    BOOST_CHECK(FooSettingStr::Get(testArgs, "xxx") == "");
 
     // A double negative is a positive, and not marked as negated.
     BOOST_CHECK(!testArgs.IsArgNegated("-bar"));
@@ -388,8 +388,8 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArgEdgeCases)
 
     // This was passed twice, second one overrides the negative setting,
     // and the value.
-    BOOST_CHECK(!testArgs.IsArgNegated("-foo"));
-    BOOST_CHECK(testArgs.GetArg("-foo", "xxx") == "1");
+    BOOST_CHECK(!FooSetting::Value(testArgs).isFalse());
+    BOOST_CHECK(FooSettingStr::Get(testArgs, "xxx") == "1");
 
     // A double negative is a positive, and does not count as negated.
     BOOST_CHECK(!testArgs.IsArgNegated("-bar"));
@@ -402,9 +402,9 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArgEdgeCases)
     testArgs.ReadConfigString(combo_test_conf);
 
     // Command line overrides, but doesn't erase old setting
-    BOOST_CHECK(testArgs.IsArgNegated("-foo"));
-    BOOST_CHECK(testArgs.GetArg("-foo", "xxx") == "0");
-    BOOST_CHECK(testArgs.GetArgs("-foo").size() == 0);
+    BOOST_CHECK(FooSetting::Value(testArgs).isFalse());
+    BOOST_CHECK(FooSettingStr::Get(testArgs, "xxx") == "0");
+    BOOST_CHECK(FooSetting::Get(testArgs).size() == 0);
 
     // Command line overrides, but doesn't erase old setting
     BOOST_CHECK(!testArgs.IsArgNegated("-bar"));

@@ -94,4 +94,10 @@ using ESetting = common::Setting<
     ::Default<true>
     ::HelpArgs<>;
 
+using FooSetting = common::Setting<
+    "-foo", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using FooSettingStr = common::Setting<
+    "-foo", std::string, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

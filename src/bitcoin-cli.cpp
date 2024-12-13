@@ -92,7 +92,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     RpcWalletSetting::Register(argsman);
     StdinSetting::Register(argsman);
     StdinRpcPassSetting::Register(argsman);
-    argsman.AddArg("-stdinwalletpassphrase", "Read wallet passphrase from standard input as a single line. When combined with -stdin, the first line from standard input is used for the wallet passphrase.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    StdinWalletPassphraseSetting::Register(argsman);
 }
 
 /** libevent event log callback */
@@ -1216,7 +1216,7 @@ static int CommandLineRPC(int argc, char *argv[])
             gArgs.ForceSetArg("-rpcpassword", rpcPass);
         }
         std::vector<std::string> args = std::vector<std::string>(&argv[1], &argv[argc]);
-        if (gArgs.GetBoolArg("-stdinwalletpassphrase", false)) {
+        if (StdinWalletPassphraseSetting::Get(gArgs)) {
             NO_STDIN_ECHO();
             std::string walletPass;
             if (args.size() < 1 || args[0].substr(0, 16) != "walletpassphrase") {

@@ -5,6 +5,7 @@
 #include <chainparamsbase.h>
 #include <common/args.h>
 #include <common/setting.h>
+#include <init.h>
 
 #include <string>
 #include <vector>
@@ -56,5 +57,10 @@ using RpcUserSetting = common::Setting<
     "-rpcuser=<user>", std::string, common::SettingOptions{.legacy = true, .sensitive = true},
     "Username for JSON-RPC connections">
     ::Category<OptionsCategory::RPC>;
+
+using DaemonSetting = common::Setting<
+    "-daemon", bool, common::SettingOptions{.legacy = true},
+    "Run in the background as a daemon and accept commands (default: %d)">
+    ::HelpArgs<DEFAULT_DAEMON>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -200,7 +200,7 @@ static bool AppInit(NodeContext& node)
             return false;
         }
 
-        if (args.GetBoolArg("-daemon", DEFAULT_DAEMON) || args.GetBoolArg("-daemonwait", DEFAULT_DAEMONWAIT)) {
+        if (DaemonSetting::Get(args, DEFAULT_DAEMON) || args.GetBoolArg("-daemonwait", DEFAULT_DAEMONWAIT)) {
 #if HAVE_DECL_FORK
             tfm::format(std::cout, CLIENT_NAME " starting\n");
 

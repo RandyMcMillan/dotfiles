@@ -146,4 +146,10 @@ using RpcWorkQueueSetting = common::Setting<
     ::Default<DEFAULT_HTTP_WORKQUEUE>
     ::Category<OptionsCategory::RPC>;
 
+using RpcThreadsSetting = common::Setting<
+    "-rpcthreads=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Set the number of threads to service RPC calls (default: %d)">
+    ::Default<DEFAULT_HTTP_THREADS>
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

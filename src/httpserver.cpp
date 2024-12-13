@@ -495,7 +495,7 @@ static std::vector<std::thread> g_thread_http_workers;
 
 void StartHTTPServer()
 {
-    int rpcThreads = std::max((long)gArgs.GetIntArg("-rpcthreads", DEFAULT_HTTP_THREADS), 1L);
+    int rpcThreads = std::max((long)RpcThreadsSetting::Get(gArgs), 1L);
     LogInfo("Starting HTTP server with %d worker threads\n", rpcThreads);
     g_thread_http = std::thread(ThreadHTTP, eventBase);
 

@@ -89,4 +89,9 @@ using CSetting = common::Setting<
     ::Default<true>
     ::HelpArgs<>;
 
+using ESetting = common::Setting<
+    "-e", bool, common::SettingOptions{.legacy = true}>
+    ::Default<true>
+    ::HelpArgs<>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

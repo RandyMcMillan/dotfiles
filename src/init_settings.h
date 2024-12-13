@@ -394,4 +394,10 @@ using MaxReceiveBufferSetting = common::Setting<
     ::Default<DEFAULT_MAXRECEIVEBUFFER>
     ::Category<OptionsCategory::CONNECTION>;
 
+using MaxSendBufferSetting = common::Setting<
+    "-maxsendbuffer=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Maximum per-connection memory usage for the send buffer, <n>*1000 bytes (default: %u)">
+    ::Default<DEFAULT_MAXSENDBUFFER>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

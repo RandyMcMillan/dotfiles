@@ -515,7 +515,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ListenOnionSetting::Register(argsman);
     MaxConnectionsSetting::Register(argsman);
     MaxReceiveBufferSetting::Register(argsman);
-    argsman.AddArg("-maxsendbuffer=<n>", strprintf("Maximum per-connection memory usage for the send buffer, <n>*1000 bytes (default: %u)", DEFAULT_MAXSENDBUFFER), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    MaxSendBufferSetting::Register(argsman);
     argsman.AddArg("-maxuploadtarget=<n>", strprintf("Tries to keep outbound traffic under the given target per 24h. Limit does not apply to peers with 'download' permission or blocks created within past week. 0 = no limit (default: %s). Optional suffix units [k|K|m|M|g|G|t|T] (default: M). Lowercase is 1000 base while uppercase is 1024 base", DEFAULT_MAX_UPLOAD_TARGET), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
 #ifdef HAVE_SOCKADDR_UN
     argsman.AddArg("-onion=<ip:port|path>", "Use separate SOCKS5 proxy to reach peers via Tor onion services, set -noonion to disable (default: -proxy). May be a local file path prefixed with 'unix:'.", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -1811,7 +1811,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     connOptions.uiInterface = &uiInterface;
     connOptions.m_banman = node.banman.get();
     connOptions.m_msgproc = node.peerman.get();
-    connOptions.nSendBufferMaxSize = 1000 * args.GetIntArg("-maxsendbuffer", DEFAULT_MAXSENDBUFFER);
+    connOptions.nSendBufferMaxSize = 1000 * MaxSendBufferSetting::Get(args);
     connOptions.nReceiveFloodSize = 1000 * MaxReceiveBufferSetting::Get(args);
     connOptions.m_added_nodes = AddNodeSetting::Get(args);
     connOptions.nMaxOutboundLimit = *opt_max_upload;

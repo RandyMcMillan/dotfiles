@@ -6,12 +6,13 @@
 
 #include <common/args.h>
 #include <index/txindex.h>
+#include <init_settings.h>
 #include <txdb.h>
 
 namespace node {
 CacheSizes CalculateCacheSizes(const ArgsManager& args, size_t n_indexes)
 {
-    int64_t nTotalCache = (args.GetIntArg("-dbcache", nDefaultDbCache) << 20);
+    int64_t nTotalCache = (DbCacheSetting::Get(args) << 20);
     nTotalCache = std::max(nTotalCache, nMinDbCache << 20); // total cache cannot be less than nMinDbCache
     CacheSizes sizes;
     sizes.block_tree_db = std::min(nTotalCache / 8, nMaxBlockDBCache << 20);

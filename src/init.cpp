@@ -476,7 +476,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ConfSetting::Register(argsman);
     DataDirSetting::Register(argsman);
     DbBatchSizeSetting::Register(argsman);
-    argsman.AddArg("-dbcache=<n>", strprintf("Maximum database cache size <n> MiB (minimum %d, default: %d). Make sure you have enough RAM. In addition, unused memory allocated to the mempool is shared with this cache (see -maxmempool).", nMinDbCache, nDefaultDbCache), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    DbCacheSetting::Register(argsman);
     argsman.AddArg("-includeconf=<file>", "Specify additional configuration file, relative to the -datadir path (only useable from configuration file, not command line)", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     AllowIgnoredConfSetting::Register(argsman);
     argsman.AddArg("-loadblock=<file>", "Imports blocks from external file on startup", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);

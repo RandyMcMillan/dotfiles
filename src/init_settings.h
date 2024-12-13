@@ -197,4 +197,10 @@ using DbBatchSizeSetting = common::Setting<
     "Maximum database write batch size in bytes (default: %u)">
     ::HelpArgs<nDefaultDbBatchSize>;
 
+using DbCacheSetting = common::Setting<
+    "-dbcache=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Maximum database cache size <n> MiB (minimum %d, default: %d). Make sure you have enough RAM. In addition, unused memory allocated to the mempool is shared with this cache (see -maxmempool).">
+    ::Default<nDefaultDbCache>
+    ::HelpArgs<nMinDbCache, nDefaultDbCache>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

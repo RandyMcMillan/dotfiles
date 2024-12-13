@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(util_ParseParameters)
     // a non-option argument (non-GNU option parsing)
     BOOST_CHECK(testArgs.m_settings.command_line_options.size() == 3 && testArgs.m_settings.ro_config.empty());
     BOOST_CHECK(!ASetting::Value(testArgs).isNull() && !BSetting::Value(testArgs).isNull() && !CccSetting::Value(testArgs).isNull()
-                && !testArgs.IsArgSet("f") && !testArgs.IsArgSet("-d"));
+                && FSetting::Value(testArgs).isNull() && !testArgs.IsArgSet("-d"));
     BOOST_CHECK(testArgs.m_settings.command_line_options.count("a") && testArgs.m_settings.command_line_options.count("b") && testArgs.m_settings.command_line_options.count("ccc")
                 && !testArgs.m_settings.command_line_options.count("f") && !testArgs.m_settings.command_line_options.count("d"));
 

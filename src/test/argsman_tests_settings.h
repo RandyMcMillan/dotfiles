@@ -62,4 +62,9 @@ using CccSettingStr = common::Setting<
 using CccSettingBool = common::Setting<
     "-ccc", bool, common::SettingOptions{.legacy = true}>;
 
+using FSetting = common::Setting<
+    "f", bool, common::SettingOptions{.legacy = true}>
+    ::Default<true>
+    ::HelpArgs<>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

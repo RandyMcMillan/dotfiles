@@ -453,7 +453,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ForceCompactDbSettingHidden::Register(argsman);
     // GUI args. These will be overwritten by SetupUIArgs for the GUI
     ChooseDataDirSettingHidden::Register(argsman);
-    argsman.AddHiddenArgs({"-lang=<lang>"});
+    LangSettingHidden::Register(argsman);
     argsman.AddHiddenArgs({"-min"});
     argsman.AddHiddenArgs({"-resetguisettings"});
     argsman.AddHiddenArgs({"-splash"});

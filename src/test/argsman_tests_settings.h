@@ -187,4 +187,7 @@ using BoolTest1Setting = common::Setting<
 using BoolTest2Setting = common::Setting<
     "booltest2", bool, common::SettingOptions{.legacy = true}>;
 
+using BoolTest3Setting = common::Setting<
+    "booltest3", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

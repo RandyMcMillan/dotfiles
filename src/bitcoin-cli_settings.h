@@ -5,8 +5,11 @@
 #ifndef BITCOIN_BITCOIN_CLI_SETTINGS_H
 #define BITCOIN_BITCOIN_CLI_SETTINGS_H
 
+#include <common/setting.h>
+
 #include <cstdint>
 #include <string>
+#include <vector>
 
 static const char DEFAULT_RPCCONNECT[] = "127.0.0.1";
 static const int DEFAULT_HTTP_CLIENT_TIMEOUT=900;
@@ -19,5 +22,9 @@ static constexpr auto DEFAULT_NBLOCKS = "1";
 
 /** Default -color setting. */
 static constexpr auto DEFAULT_COLOR_SETTING{"auto"};
+
+using VersionSetting = common::Setting<
+    "-version", bool, common::SettingOptions{.legacy = true},
+    "Print version and exit">;
 
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

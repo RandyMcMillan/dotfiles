@@ -70,7 +70,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     const auto signetBaseParams = CreateBaseChainParams(ChainType::SIGNET);
     const auto regtestBaseParams = CreateBaseChainParams(ChainType::REGTEST);
 
-    argsman.AddArg("-version", "Print version and exit", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    VersionSetting::Register(argsman);
     argsman.AddArg("-conf=<file>", strprintf("Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)", BITCOIN_CONF_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-datadir=<dir>", "Specify data directory", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
     argsman.AddArg("-generate",
@@ -135,10 +135,10 @@ static int AppInitRPC(int argc, char* argv[])
         tfm::format(std::cerr, "Error parsing command line arguments: %s\n", error);
         return EXIT_FAILURE;
     }
-    if (argc < 2 || HelpRequested(gArgs) || gArgs.GetBoolArg("-version", false)) {
+    if (argc < 2 || HelpRequested(gArgs) || VersionSetting::Get(gArgs)) {
         std::string strUsage = CLIENT_NAME " RPC client version " + FormatFullVersion() + "\n";
 
-        if (gArgs.GetBoolArg("-version", false)) {
+        if (VersionSetting::Get(gArgs)) {
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"

@@ -64,6 +64,7 @@
 #include <wallet/crypter.h>
 #include <wallet/db.h>
 #include <wallet/external_signer_scriptpubkeyman.h>
+#include <wallet/init_settings.h>
 #include <wallet/scriptpubkeyman.h>
 #include <wallet/transaction.h>
 #include <wallet/types.h>
@@ -3086,10 +3087,10 @@ std::shared_ptr<CWallet> CWallet::Create(WalletContext& context, const std::stri
         }
     }
 
-    if (!args.GetArg("-addresstype", "").empty()) {
-        std::optional<OutputType> parsed = ParseOutputType(args.GetArg("-addresstype", ""));
+    if (!AddressTypeSetting::Get(args).empty()) {
+        std::optional<OutputType> parsed = ParseOutputType(AddressTypeSetting::Get(args));
         if (!parsed) {
-            error = strprintf(_("Unknown address type '%s'"), args.GetArg("-addresstype", ""));
+            error = strprintf(_("Unknown address type '%s'"), AddressTypeSetting::Get(args));
             return nullptr;
         }
         walletInstance->m_default_address_type = parsed.value();

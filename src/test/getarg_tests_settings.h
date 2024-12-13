@@ -15,4 +15,13 @@ using FooSettingInt = common::Setting<
 using FooSettingBool = common::Setting<
     "foo", bool, common::SettingOptions{.legacy = true}>;
 
+using FooSetting2 = common::Setting<
+    "-foo", std::string, common::SettingOptions{.legacy = true}>;
+
+using FooSetting2Int = common::Setting<
+    "-foo", int64_t, common::SettingOptions{.legacy = true}>;
+
+using FooSetting2Bool = common::Setting<
+    "-foo", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_GETARG_TESTS_SETTINGS_H

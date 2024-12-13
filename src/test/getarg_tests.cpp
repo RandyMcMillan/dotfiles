@@ -165,8 +165,8 @@ BOOST_AUTO_TEST_CASE(boolarg)
     const auto foo = std::make_pair("-foo", ArgsManager::ALLOW_ANY);
     SetupArgs(local_args, {foo});
     ResetArgs(local_args, "-foo");
-    BOOST_CHECK(local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, true));
 
     BOOST_CHECK(!local_args.GetBoolArg("-fo", false));
     BOOST_CHECK(local_args.GetBoolArg("-fo", true));
@@ -175,42 +175,42 @@ BOOST_AUTO_TEST_CASE(boolarg)
     BOOST_CHECK(local_args.GetBoolArg("-fooo", true));
 
     ResetArgs(local_args, "-foo=0");
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
 
     ResetArgs(local_args, "-foo=1");
-    BOOST_CHECK(local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, true));
 
     // New 0.6 feature: auto-map -nosomething to !-something:
     ResetArgs(local_args, "-nofoo");
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
 
     ResetArgs(local_args, "-nofoo=1");
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
 
     ResetArgs(local_args, "-foo -nofoo"); // -nofoo should win
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
 
     ResetArgs(local_args, "-foo=1 -nofoo=1"); // -nofoo should win
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
 
     ResetArgs(local_args, "-foo=0 -nofoo=0"); // -nofoo=0 should win
-    BOOST_CHECK(local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, true));
 
     // New 0.6 feature: treat -- same as -:
     ResetArgs(local_args, "--foo=1");
-    BOOST_CHECK(local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, true));
 
     ResetArgs(local_args, "--nofoo=1");
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
 }
 
 BOOST_AUTO_TEST_CASE(stringarg)
@@ -221,24 +221,24 @@ BOOST_AUTO_TEST_CASE(stringarg)
     const auto bar = std::make_pair("-bar", ArgsManager::ALLOW_ANY);
     SetupArgs(local_args, {foo, bar});
     ResetArgs(local_args, "");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", ""), "");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", "eleven"), "eleven");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, ""), "");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, "eleven"), "eleven");
 
     ResetArgs(local_args, "-foo -bar");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", ""), "");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", "eleven"), "");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, ""), "");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, "eleven"), "");
 
     ResetArgs(local_args, "-foo=");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", ""), "");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", "eleven"), "");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, ""), "");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, "eleven"), "");
 
     ResetArgs(local_args, "-foo=11");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", ""), "11");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", "eleven"), "11");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, ""), "11");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, "eleven"), "11");
 
     ResetArgs(local_args, "-foo=eleven");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", ""), "eleven");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", "eleven"), "eleven");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, ""), "eleven");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, "eleven"), "eleven");
 }
 
 BOOST_AUTO_TEST_CASE(intarg)
@@ -249,24 +249,24 @@ BOOST_AUTO_TEST_CASE(intarg)
     const auto bar = std::make_pair("-bar", ArgsManager::ALLOW_ANY);
     SetupArgs(local_args, {foo, bar});
     ResetArgs(local_args, "");
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-foo", 11), 11);
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-foo", 0), 0);
+    BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 11), 11);
+    BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 0), 0);
 
     ResetArgs(local_args, "-foo -bar");
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-foo", 11), 0);
+    BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 11), 0);
     BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 11), 0);
 
     // Check under-/overflow behavior.
     ResetArgs(local_args, "-foo=-9223372036854775809 -bar=9223372036854775808");
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-foo", 0), std::numeric_limits<int64_t>::min());
+    BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 0), std::numeric_limits<int64_t>::min());
     BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 0), std::numeric_limits<int64_t>::max());
 
     ResetArgs(local_args, "-foo=11 -bar=12");
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-foo", 0), 11);
+    BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 0), 11);
     BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 11), 12);
 
     ResetArgs(local_args, "-foo=NaN -bar=NotANumber");
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-foo", 1), 0);
+    BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 1), 0);
     BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 11), 0);
 }
 
@@ -390,10 +390,10 @@ BOOST_AUTO_TEST_CASE(doubledash)
     const auto bar = std::make_pair("-bar", ArgsManager::ALLOW_ANY);
     SetupArgs(local_args, {foo, bar});
     ResetArgs(local_args, "--foo");
-    BOOST_CHECK_EQUAL(local_args.GetBoolArg("-foo", false), true);
+    BOOST_CHECK_EQUAL(FooSetting2Bool::Get(local_args, false), true);
 
     ResetArgs(local_args, "--foo=verbose --bar=1");
-    BOOST_CHECK_EQUAL(local_args.GetArg("-foo", ""), "verbose");
+    BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, ""), "verbose");
     BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 0), 1);
 }
 
@@ -405,24 +405,24 @@ BOOST_AUTO_TEST_CASE(boolargno)
     const auto bar = std::make_pair("-bar", ArgsManager::ALLOW_ANY);
     SetupArgs(local_args, {foo, bar});
     ResetArgs(local_args, "-nofoo");
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
 
     ResetArgs(local_args, "-nofoo=1");
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
 
     ResetArgs(local_args, "-nofoo=0");
-    BOOST_CHECK(local_args.GetBoolArg("-foo", true));
-    BOOST_CHECK(local_args.GetBoolArg("-foo", false));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, true));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, false));
 
     ResetArgs(local_args, "-foo --nofoo"); // --nofoo should win
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", true));
-    BOOST_CHECK(!local_args.GetBoolArg("-foo", false));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, true));
+    BOOST_CHECK(!FooSetting2Bool::Get(local_args, false));
 
     ResetArgs(local_args, "-nofoo -foo"); // foo always wins:
-    BOOST_CHECK(local_args.GetBoolArg("-foo", true));
-    BOOST_CHECK(local_args.GetBoolArg("-foo", false));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, true));
+    BOOST_CHECK(FooSetting2Bool::Get(local_args, false));
 }
 
 BOOST_AUTO_TEST_CASE(logargs)

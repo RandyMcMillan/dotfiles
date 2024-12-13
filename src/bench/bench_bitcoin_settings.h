@@ -25,4 +25,8 @@ using FilterSetting = common::Setting<
     "Regular expression filter to select benchmark by name (default: %s)">
     ::DefaultFn<[] { return DEFAULT_BENCH_FILTER; }>;
 
+using ListSetting = common::Setting<
+    "-list", bool, common::SettingOptions{.legacy = true},
+    "List benchmarks without executing them">;
+
 #endif // BITCOIN_BENCH_BENCH_BITCOIN_SETTINGS_H

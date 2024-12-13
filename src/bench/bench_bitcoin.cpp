@@ -28,7 +28,7 @@ static void SetupBenchArgs(ArgsManager& argsman)
 
     AsymptoteSetting::Register(argsman);
     FilterSetting::Register(argsman);
-    argsman.AddArg("-list", "List benchmarks without executing them", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    ListSetting::Register(argsman);
     argsman.AddArg("-min-time=<milliseconds>", strprintf("Minimum runtime per benchmark, in milliseconds (default: %d)", DEFAULT_MIN_TIME_MS), ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
     argsman.AddArg("-output-csv=<output.csv>", "Generate CSV file with the most important benchmark results", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-output-json=<output.json>", "Generate JSON file with all benchmark results", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -134,7 +134,7 @@ int main(int argc, char** argv)
     try {
         benchmark::Args args;
         args.asymptote = parseAsymptote(AsymptoteSetting::Get(argsman));
-        args.is_list_only = argsman.GetBoolArg("-list", false);
+        args.is_list_only = ListSetting::Get(argsman);
         args.min_time = std::chrono::milliseconds(argsman.GetIntArg("-min-time", DEFAULT_MIN_TIME_MS));
         args.output_csv = argsman.GetPathArg("-output-csv");
         args.output_json = argsman.GetPathArg("-output-json");

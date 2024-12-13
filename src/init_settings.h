@@ -629,4 +629,10 @@ using CheckMempoolSetting = common::Setting<
     ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& regtestChainParams) { return strprintf(fmt, defaultChainParams->DefaultConsistencyChecks(), regtestChainParams->DefaultConsistencyChecks()); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using CheckPointsSetting = common::Setting<
+    "-checkpoints", std::optional<bool>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Enable rejection of any forks from the known historical chain until block %s (default: %u)">
+    ::HelpFn<[](const auto& fmt, const auto& defaultChainParams) { return strprintf(fmt, defaultChainParams->Checkpoints().GetHeight(), DEFAULT_CHECKPOINTS_ENABLED); }>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

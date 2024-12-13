@@ -30,7 +30,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& args, ChainstateManage
         opts.check_block_index = CheckBlockIndexSetting::Get(args)->empty() ? 1 : *value;
     }
 
-    if (auto value{args.GetBoolArg("-checkpoints")}) opts.checkpoints_enabled = *value;
+    if (auto value{CheckPointsSetting::Get(args)}) opts.checkpoints_enabled = *value;
 
     if (auto value{MinimumChainWorkSetting::Get(args)}) {
         if (auto min_work{uint256::FromUserHex(*value)}) {

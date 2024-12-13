@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE(util_ParseParameters)
     // -a, -b and -ccc end up in map, -d ignored because it is after
     // a non-option argument (non-GNU option parsing)
     BOOST_CHECK(testArgs.m_settings.command_line_options.size() == 3 && testArgs.m_settings.ro_config.empty());
-    BOOST_CHECK(!ASetting::Value(testArgs).isNull() && testArgs.IsArgSet("-b") && testArgs.IsArgSet("-ccc")
+    BOOST_CHECK(!ASetting::Value(testArgs).isNull() && !BSetting::Value(testArgs).isNull() && testArgs.IsArgSet("-ccc")
                 && !testArgs.IsArgSet("f") && !testArgs.IsArgSet("-d"));
     BOOST_CHECK(testArgs.m_settings.command_line_options.count("a") && testArgs.m_settings.command_line_options.count("b") && testArgs.m_settings.command_line_options.count("ccc")
                 && !testArgs.m_settings.command_line_options.count("f") && !testArgs.m_settings.command_line_options.count("d"));
@@ -348,12 +348,12 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArg)
     BOOST_CHECK(!testArgs.IsArgSet("-nob"));
 
     // The -b option is flagged as negated, and nothing else is
-    BOOST_CHECK(testArgs.IsArgNegated("-b"));
+    BOOST_CHECK(BSetting::Value(testArgs).isFalse());
     BOOST_CHECK(!ASetting::Value(testArgs).isFalse());
 
     // Check expected values.
     BOOST_CHECK(ASettingBool::Get(testArgs, false) == true);
-    BOOST_CHECK(testArgs.GetBoolArg("-b", true) == false);
+    BOOST_CHECK(BSettingBool::Get(testArgs, true) == false);
     BOOST_CHECK(testArgs.GetBoolArg("-c", true) == false);
     BOOST_CHECK(testArgs.GetBoolArg("-d", false) == true);
     BOOST_CHECK(testArgs.GetBoolArg("-e", true) == false);
@@ -475,7 +475,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(test_args.m_settings.ro_config["sec2"].count("iii"));
 
     BOOST_CHECK(!ASetting::Value(test_args).isNull());
-    BOOST_CHECK(test_args.IsArgSet("-b"));
+    BOOST_CHECK(!BSetting::Value(test_args).isNull());
     BOOST_CHECK(test_args.IsArgSet("-ccc"));
     BOOST_CHECK(test_args.IsArgSet("-d"));
     BOOST_CHECK(test_args.IsArgSet("-fff"));
@@ -486,7 +486,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(!test_args.IsArgSet("-iii"));
 
     BOOST_CHECK_EQUAL(ASettingStr::Get(test_args, "xxx"), "");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-b", "xxx"), "1");
+    BOOST_CHECK_EQUAL(BSettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(test_args.GetArg("-ccc", "xxx"), "argument");
     BOOST_CHECK_EQUAL(test_args.GetArg("-d", "xxx"), "e");
     BOOST_CHECK_EQUAL(test_args.GetArg("-fff", "xxx"), "0");
@@ -498,7 +498,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
 
     for (const bool def : {false, true}) {
         BOOST_CHECK(ASettingBool::Get(test_args, def));
-        BOOST_CHECK(test_args.GetBoolArg("-b", def));
+        BOOST_CHECK(BSettingBool::Get(test_args, def));
         BOOST_CHECK(!test_args.GetBoolArg("-ccc", def));
         BOOST_CHECK(!test_args.GetBoolArg("-d", def));
         BOOST_CHECK(!test_args.GetBoolArg("-fff", def));
@@ -511,8 +511,8 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
 
     BOOST_CHECK(ASetting::Get(test_args).size() == 1
                 && ASetting::Get(test_args).front() == "");
-    BOOST_CHECK(test_args.GetArgs("-b").size() == 1
-                && test_args.GetArgs("-b").front() == "1");
+    BOOST_CHECK(BSetting::Get(test_args).size() == 1
+                && BSetting::Get(test_args).front() == "1");
     BOOST_CHECK(test_args.GetArgs("-ccc").size() == 2
                 && test_args.GetArgs("-ccc").front() == "argument"
                 && test_args.GetArgs("-ccc").back() == "multiple");
@@ -529,7 +529,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(test_args.GetArgs("-zzz").size() == 0);
 
     BOOST_CHECK(!ASetting::Value(test_args).isFalse());
-    BOOST_CHECK(!test_args.IsArgNegated("-b"));
+    BOOST_CHECK(!BSetting::Value(test_args).isFalse());
     BOOST_CHECK(!test_args.IsArgNegated("-ccc"));
     BOOST_CHECK(!test_args.IsArgNegated("-d"));
     BOOST_CHECK(test_args.IsArgNegated("-fff"));
@@ -543,7 +543,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
 
     // same as original
     BOOST_CHECK_EQUAL(ASettingStr::Get(test_args, "xxx"), "");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-b", "xxx"), "1");
+    BOOST_CHECK_EQUAL(BSettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(test_args.GetArg("-fff", "xxx"), "0");
     BOOST_CHECK_EQUAL(test_args.GetArg("-ggg", "xxx"), "1");
     BOOST_CHECK_EQUAL(test_args.GetArg("-zzz", "xxx"), "xxx");
@@ -563,7 +563,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
 
     // same as original
     BOOST_CHECK(ASettingStr::Get(test_args, "xxx") == "");
-    BOOST_CHECK(test_args.GetArg("-b", "xxx") == "1");
+    BOOST_CHECK(BSettingStr::Get(test_args, "xxx") == "1");
     BOOST_CHECK(test_args.GetArg("-d", "xxx") == "e");
     BOOST_CHECK(test_args.GetArg("-fff", "xxx") == "0");
     BOOST_CHECK(test_args.GetArg("-ggg", "xxx") == "1");

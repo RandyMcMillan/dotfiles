@@ -44,4 +44,13 @@ using ASettingStr = common::Setting<
 using ASettingBool = common::Setting<
     "-a", bool, common::SettingOptions{.legacy = true}>;
 
+using BSetting = common::Setting<
+    "-b", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using BSettingStr = common::Setting<
+    "-b", std::string, common::SettingOptions{.legacy = true}>;
+
+using BSettingBool = common::Setting<
+    "-b", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

@@ -9,6 +9,7 @@
 #include <index/coinstatsindex.h>
 #include <init.h>
 #include <kernel/blockmanager_opts.h>
+#include <kernel/mempool_options.h>
 #include <net_processing.h>
 #include <txdb.h>
 #include <util/string.h>
@@ -210,5 +211,10 @@ using IncludeConfSetting = common::Setting<
 using LoadBlockSetting = common::Setting<
     "-loadblock=<file>", std::vector<std::string>, common::SettingOptions{.legacy = true},
     "Imports blocks from external file on startup">;
+
+using MaxMemPoolSetting = common::Setting<
+    "-maxmempool=<n>", std::optional<int64_t>, common::SettingOptions{.legacy = true},
+    "Keep the transaction memory pool below <n> megabytes (default: %u)">
+    ::HelpArgs<DEFAULT_MAX_MEMPOOL_SIZE_MB>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

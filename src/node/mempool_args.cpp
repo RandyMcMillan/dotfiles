@@ -4,6 +4,7 @@
 
 #include <node/mempool_args.h>
 
+#include <init_settings.h>
 #include <kernel/mempool_limits.h>
 #include <kernel/mempool_options.h>
 
@@ -42,7 +43,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& argsman, const CChainP
 {
     mempool_opts.check_ratio = argsman.GetIntArg("-checkmempool", mempool_opts.check_ratio);
 
-    if (auto mb = argsman.GetIntArg("-maxmempool")) mempool_opts.max_size_bytes = *mb * 1'000'000;
+    if (auto mb = MaxMemPoolSetting::Get(argsman)) mempool_opts.max_size_bytes = *mb * 1'000'000;
 
     if (auto hours = argsman.GetIntArg("-mempoolexpiry")) mempool_opts.expiry = std::chrono::hours{*hours};
 

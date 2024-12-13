@@ -149,6 +149,12 @@ using PrivDbSetting = common::Setting<
     "Sets the DB_PRIVATE flag in the wallet db environment (default: %u)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, !DatabaseOptions().use_shared_memory); }>
     ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
+
+using WalletRejectLongChainsSetting = common::Setting<
+    "-walletrejectlongchains", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Wallet will not create transactions that violate mempool chain limits (default: %u)">
+    ::Default<DEFAULT_WALLET_REJECT_LONG_CHAINS>
+    ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

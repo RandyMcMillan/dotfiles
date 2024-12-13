@@ -64,4 +64,11 @@ using OutMultiSigSetting = common::Setting<
         "Optionally add the \"S\" flag to wrap the output in a pay-to-script-hash.">
     ::Category<OptionsCategory::COMMANDS>;
 
+using OutPubKeySetting = common::Setting<
+    "outpubkey=VALUE:PUBKEY[:FLAGS]", common::Unset, common::SettingOptions{.legacy = true},
+    "Add pay-to-pubkey output to TX. "
+        "Optionally add the \"W\" flag to produce a pay-to-witness-pubkey-hash output. "
+        "Optionally add the \"S\" flag to wrap the output in a pay-to-script-hash.">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

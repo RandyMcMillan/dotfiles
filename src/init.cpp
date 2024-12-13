@@ -511,7 +511,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ExternalIpSetting::Register(argsman);
     FixedSeedsSetting::Register(argsman);
     ForceDnsSeedSetting::Register(argsman);
-    argsman.AddArg("-listen", strprintf("Accept connections from outside (default: %u if no -proxy, -connect or -maxconnections=0)", DEFAULT_LISTEN), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    ListenSetting::Register(argsman);
     argsman.AddArg("-listenonion", strprintf("Automatically create Tor onion service (default: %d)", DEFAULT_LISTEN_ONION), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-maxconnections=<n>", strprintf("Maintain at most <n> automatic connections to peers (default: %u). This limit does not apply to connections manually added via -addnode or the addnode RPC, which have a separate limit of %u.", DEFAULT_MAX_PEER_CONNECTIONS, MAX_ADDNODE_CONNECTIONS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-maxreceivebuffer=<n>", strprintf("Maximum per-connection receive buffer, <n>*1000 bytes (default: %u)", DEFAULT_MAXRECEIVEBUFFER), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -721,7 +721,7 @@ void InitParameterInteraction(ArgsManager& args)
             LogInfo("parameter interaction: -proxy set -> setting -discover=0\n");
     }
 
-    if (!args.GetBoolArg("-listen", DEFAULT_LISTEN)) {
+    if (!ListenSetting::Get(args)) {
         // do not map ports or try to retrieve public IP when not listening (pointless)
         if (args.SoftSetBoolArg("-natpmp", false)) {
             LogInfo("parameter interaction: -listen=0 -> setting -natpmp=0\n");
@@ -931,12 +931,12 @@ bool AppInitParameterInteraction(const ArgsManager& args)
 
     // -bind and -whitebind can't be set when not listening
     size_t nUserBind = BindSetting::Get(args).size() + args.GetArgs("-whitebind").size();
-    if (nUserBind != 0 && !args.GetBoolArg("-listen", DEFAULT_LISTEN)) {
+    if (nUserBind != 0 && !ListenSetting::Get(args)) {
         return InitError(Untranslated("Cannot set -bind or -whitebind together with -listen=0"));
     }
 
     // if listen=0, then disallow listenonion=1
-    if (!args.GetBoolArg("-listen", DEFAULT_LISTEN) && args.GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION)) {
+    if (!ListenSetting::Get(args) && args.GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION)) {
         return InitError(Untranslated("Cannot set -listen=0 together with -listenonion=1"));
     }
 
@@ -1358,7 +1358,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // is not yet setup and may end up being set up twice if we
     // need to reindex later.
 
-    fListen = args.GetBoolArg("-listen", DEFAULT_LISTEN);
+    fListen = ListenSetting::Get(args);
     fDiscover = DiscoverSetting::Get(args);
 
     PeerManager::Options peerman_opts{};

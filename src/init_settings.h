@@ -14,6 +14,7 @@
 #include <init.h>
 #include <kernel/blockmanager_opts.h>
 #include <kernel/mempool_options.h>
+#include <net.h>
 #include <net_processing.h>
 #include <node/chainstatemanager_args.h>
 #include <node/mempool_persist_args.h>
@@ -366,6 +367,12 @@ using ForceDnsSeedSetting = common::Setting<
     "-forcednsseed", bool, common::SettingOptions{.legacy = true},
     "Always query for peer addresses via DNS lookup (default: %u)">
     ::Default<DEFAULT_FORCEDNSSEED>
+    ::Category<OptionsCategory::CONNECTION>;
+
+using ListenSetting = common::Setting<
+    "-listen", bool, common::SettingOptions{.legacy = true},
+    "Accept connections from outside (default: %u if no -proxy, -connect or -maxconnections=0)">
+    ::Default<DEFAULT_LISTEN>
     ::Category<OptionsCategory::CONNECTION>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

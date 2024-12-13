@@ -640,4 +640,10 @@ using DeprecatedRpcSetting = common::Setting<
     "Allows deprecated RPC method(s) to be used">
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using StopAfterBlockImportSetting = common::Setting<
+    "-stopafterblockimport", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Stop running after importing blocks from disk (default: %u)">
+    ::Default<DEFAULT_STOPAFTERBLOCKIMPORT>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -582,7 +582,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     CheckMempoolSetting::Register(argsman, defaultChainParams, regtestChainParams);
     CheckPointsSetting::Register(argsman, defaultChainParams);
     DeprecatedRpcSetting::Register(argsman);
-    argsman.AddArg("-stopafterblockimport", strprintf("Stop running after importing blocks from disk (default: %u)", DEFAULT_STOPAFTERBLOCKIMPORT), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
+    StopAfterBlockImportSetting::Register(argsman);
     argsman.AddArg("-stopatheight", strprintf("Stop running after reaching the given height in the main chain (default: %u)", node::DEFAULT_STOPATHEIGHT), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-limitancestorcount=<n>", strprintf("Do not accept transactions if number of in-mempool ancestors is <n> or more (default: %u)", DEFAULT_ANCESTOR_LIMIT), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-limitancestorsize=<n>", strprintf("Do not accept transactions whose size with all in-mempool ancestors exceeds <n> kilobytes (default: %u)", DEFAULT_ANCESTOR_SIZE_LIMIT_KVB), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
@@ -1741,7 +1741,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         ScheduleBatchPriority();
         // Import blocks
         ImportBlocks(chainman, vImportFiles);
-        if (args.GetBoolArg("-stopafterblockimport", DEFAULT_STOPAFTERBLOCKIMPORT)) {
+        if (StopAfterBlockImportSetting::Get(args)) {
             LogPrintf("Stopping after block import\n");
             if (!(Assert(node.shutdown_request))()) {
                 LogError("Failed to send shutdown signal after finishing block import\n");

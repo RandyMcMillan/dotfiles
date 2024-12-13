@@ -176,4 +176,9 @@ using IntTest2Setting = common::Setting<
     ::Default<-1>
     ::HelpArgs<>;
 
+using IntTest3Setting = common::Setting<
+    "inttest3", int64_t, common::SettingOptions{.legacy = true}>
+    ::Default<-1>
+    ::HelpArgs<>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

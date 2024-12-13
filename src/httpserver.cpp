@@ -363,17 +363,17 @@ static bool HTTPBindAddresses(struct evhttp* http)
     std::vector<std::pair<std::string, uint16_t>> endpoints;
 
     // Determine what addresses to bind to
-    if (!(!RpcAllowIpSetting::Value(gArgs).isNull() && gArgs.IsArgSet("-rpcbind"))) { // Default to loopback if not allowing external IPs
+    if (!(!RpcAllowIpSetting::Value(gArgs).isNull() && !RpcBindSetting::Value(gArgs).isNull())) { // Default to loopback if not allowing external IPs
         endpoints.emplace_back("::1", http_port);
         endpoints.emplace_back("127.0.0.1", http_port);
         if (!RpcAllowIpSetting::Value(gArgs).isNull()) {
             LogPrintf("WARNING: option -rpcallowip was specified without -rpcbind; this doesn't usually make sense\n");
         }
-        if (gArgs.IsArgSet("-rpcbind")) {
+        if (!RpcBindSetting::Value(gArgs).isNull()) {
             LogPrintf("WARNING: option -rpcbind was ignored because -rpcallowip was not specified, refusing to allow everyone to connect\n");
         }
-    } else if (gArgs.IsArgSet("-rpcbind")) { // Specific bind address
-        for (const std::string& strRPCBind : gArgs.GetArgs("-rpcbind")) {
+    } else if (!RpcBindSetting::Value(gArgs).isNull()) { // Specific bind address
+        for (const std::string& strRPCBind : RpcBindSetting::Get(gArgs)) {
             uint16_t port{http_port};
             std::string host;
             if (!SplitHostPort(strRPCBind, port, host)) {

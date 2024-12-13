@@ -809,4 +809,10 @@ using RestSetting = common::Setting<
     ::Default<DEFAULT_REST_ENABLE>
     ::Category<OptionsCategory::RPC>;
 
+using RpcDocCheckSetting = common::Setting<
+    "-rpcdoccheck", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Throw a non-fatal error at runtime if the documentation for an RPC is incorrect (default: %u)">
+    ::Default<DEFAULT_RPC_DOC_CHECK>
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

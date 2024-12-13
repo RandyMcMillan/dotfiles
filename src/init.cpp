@@ -619,7 +619,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     RpcAllowIpSetting::Register(argsman);
     RpcAuthSetting::Register(argsman);
     RpcBindSetting::Register(argsman);
-    argsman.AddArg("-rpcdoccheck", strprintf("Throw a non-fatal error at runtime if the documentation for an RPC is incorrect (default: %u)", DEFAULT_RPC_DOC_CHECK), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::RPC);
+    RpcDocCheckSetting::Register(argsman);
     RpcCookieFileSetting::Register(argsman);
     RpcCookiePermsSetting::Register(argsman);
     RpcPasswordSetting::Register(argsman);

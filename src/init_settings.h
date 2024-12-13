@@ -251,4 +251,9 @@ using PersistMempoolV1Setting = common::Setting<
                              "(version 1) or the current format (version 2). This temporary option will be removed in the future. (default: %u)">
     ::HelpArgs<DEFAULT_PERSIST_V1_DAT>;
 
+using PidSetting = common::Setting<
+    "-pid=<file>", fs::path, common::SettingOptions{.legacy = true},
+    "Specify pid file. Relative paths will be prefixed by a net-specific datadir location. (default: %s)">
+    ::DefaultFn<[] { return BITCOIN_PID_FILENAME; }>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

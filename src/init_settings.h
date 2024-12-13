@@ -170,4 +170,8 @@ using BlocksXorSetting = common::Setting<
                              "(default: %u)">
     ::HelpArgs<kernel::DEFAULT_XOR_BLOCKSDIR>;
 
+using BlockNotifySetting = common::Setting<
+    "-blocknotify=<cmd>", std::string, common::SettingOptions{.legacy = true},
+    "Execute command when the best block changes (%s in cmd is replaced by block hash)">;
+
 #endif // BITCOIN_INIT_SETTINGS_H

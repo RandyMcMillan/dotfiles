@@ -468,7 +468,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     BlocksXorSetting::Register(argsman);
     FastPruneSetting::Register(argsman);
 #if HAVE_SYSTEM
-    argsman.AddArg("-blocknotify=<cmd>", "Execute command when the best block changes (%s in cmd is replaced by block hash)", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    BlockNotifySetting::Register(argsman);
 #endif
     argsman.AddArg("-blockreconstructionextratxn=<n>", strprintf("Extra transactions to keep in memory for compact block reconstructions (default: %u)", DEFAULT_BLOCK_RECONSTRUCTION_EXTRA_TXN), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-blocksonly", strprintf("Whether to reject transactions from network peers. Disables automatic broadcast and rebroadcast of transactions, unless the source peer has the 'forcerelay' permission. RPC transactions are not affected. (default: %u)", DEFAULT_BLOCKSONLY), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -1736,7 +1736,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
 
 #if HAVE_SYSTEM
-    const std::string block_notify = args.GetArg("-blocknotify", "");
+    const std::string block_notify = BlockNotifySetting::Get(args);
     if (!block_notify.empty()) {
         uiInterface.NotifyBlockTip_connect([block_notify](SynchronizationState sync_state, const CBlockIndex* pBlockIndex) {
             if (sync_state != SynchronizationState::POST_INIT || !pBlockIndex) return;

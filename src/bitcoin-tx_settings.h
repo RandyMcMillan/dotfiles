@@ -52,4 +52,9 @@ using OutAddrSetting = common::Setting<
     "Add address-based output to TX">
     ::Category<OptionsCategory::COMMANDS>;
 
+using OutDataSetting = common::Setting<
+    "outdata=[VALUE:]DATA", common::Unset, common::SettingOptions{.legacy = true},
+    "Add data-based output to TX">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

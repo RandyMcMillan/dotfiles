@@ -41,6 +41,13 @@ using ConsolidateFeeRateSetting = common::Setting<
     "The maximum feerate (in %s/kvB) at which transaction building may use more inputs than strictly necessary so that the wallet's UTXO pool can be reduced (default: %s).">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_CONSOLIDATE_FEERATE)); }>
     ::Category<OptionsCategory::WALLET>;
+
+using DisableWalletSetting = common::Setting<
+    "-disablewallet", bool, common::SettingOptions{.legacy = true},
+    "Do not load the wallet and disable wallet RPC calls">
+    ::Default<DEFAULT_DISABLE_WALLET>
+    ::HelpArgs<>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

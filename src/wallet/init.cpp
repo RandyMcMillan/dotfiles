@@ -51,7 +51,7 @@ void WalletInit::AddWalletOptions(ArgsManager& argsman) const
     AvoidPartialSpendsSetting::Register(argsman);
     ChangeTypeSetting::Register(argsman);
     ConsolidateFeeRateSetting::Register(argsman);
-    argsman.AddArg("-disablewallet", "Do not load the wallet and disable wallet RPC calls", ArgsManager::ALLOW_ANY, OptionsCategory::WALLET);
+    DisableWalletSetting::Register(argsman);
     argsman.AddArg("-discardfee=<amt>", strprintf("The fee rate (in %s/kvB) that indicates your tolerance for discarding change by adding it to the fee (default: %s). "
                                                                 "Note: An output is discarded if it is dust at this rate, but we will always discard up to the dust relay fee and a discard fee above that is limited by the fee estimate for the longest target",
                                                               CURRENCY_UNIT, FormatMoney(DEFAULT_DISCARD_FEE)), ArgsManager::ALLOW_ANY, OptionsCategory::WALLET);
@@ -105,7 +105,7 @@ bool WalletInit::ParameterInteraction() const
          return InitError(Untranslated("A version conflict was detected between the run-time BerkeleyDB library and the one used during compilation."));
      }
 #endif
-    if (gArgs.GetBoolArg("-disablewallet", DEFAULT_DISABLE_WALLET)) {
+    if (DisableWalletSetting::Get(gArgs)) {
         for (const std::string& wallet : WalletSetting::Get(gArgs)) {
             LogPrintf("%s: parameter interaction: -disablewallet -> ignoring -wallet=%s\n", __func__, wallet);
         }
@@ -123,7 +123,7 @@ bool WalletInit::ParameterInteraction() const
 void WalletInit::Construct(NodeContext& node) const
 {
     ArgsManager& args = *Assert(node.args);
-    if (args.GetBoolArg("-disablewallet", DEFAULT_DISABLE_WALLET)) {
+    if (DisableWalletSetting::Get(args)) {
         LogPrintf("Wallet disabled!\n");
         return;
     }

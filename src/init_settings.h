@@ -227,4 +227,9 @@ using MempoolExpirySetting = common::Setting<
     "Do not keep transactions in the mempool longer than <n> hours (default: %u)">
     ::HelpArgs<DEFAULT_MEMPOOL_EXPIRY_HOURS>;
 
+using MinimumChainWorkSetting = common::Setting<
+    "-minimumchainwork=<hex>", std::optional<std::string>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Minimum work assumed to exist on a valid chain in hex (default: %s, testnet3: %s, testnet4: %s, signet: %s)">
+    ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& testnetChainParams, const auto& testnet4ChainParams, const auto& signetChainParams) { return strprintf(fmt, defaultChainParams->GetConsensus().nMinimumChainWork.GetHex(), testnetChainParams->GetConsensus().nMinimumChainWork.GetHex(), testnet4ChainParams->GetConsensus().nMinimumChainWork.GetHex(), signetChainParams->GetConsensus().nMinimumChainWork.GetHex()); }>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

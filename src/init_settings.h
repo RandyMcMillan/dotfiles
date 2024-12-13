@@ -780,4 +780,10 @@ using WhiteListForceRelaySetting = common::Setting<
     ::Default<DEFAULT_WHITELISTFORCERELAY>
     ::Category<OptionsCategory::NODE_RELAY>;
 
+using WhiteListRelaySetting = common::Setting<
+    "-whitelistrelay", bool, common::SettingOptions{.legacy = true},
+    "Add 'relay' permission to whitelisted peers with default permissions. This will accept relayed transactions even when not relaying transactions (default: %d)">
+    ::Default<DEFAULT_WHITELISTRELAY>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -608,7 +608,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     PermitBareMultiSigSetting::Register(argsman);
     MinRelayTxFeeSetting::Register(argsman);
     WhiteListForceRelaySetting::Register(argsman);
-    argsman.AddArg("-whitelistrelay", strprintf("Add 'relay' permission to whitelisted peers with default permissions. This will accept relayed transactions even when not relaying transactions (default: %d)", DEFAULT_WHITELISTRELAY), ArgsManager::ALLOW_ANY, OptionsCategory::NODE_RELAY);
+    WhiteListRelaySetting::Register(argsman);
 
 
     argsman.AddArg("-blockmaxweight=<n>", strprintf("Set maximum BIP141 block weight (default: %d)", DEFAULT_BLOCK_MAX_WEIGHT), ArgsManager::ALLOW_ANY, OptionsCategory::BLOCK_CREATION);
@@ -1803,7 +1803,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     connOptions.nMaxOutboundLimit = *opt_max_upload;
     connOptions.m_peer_connect_timeout = peer_connect_timeout;
     connOptions.whitelist_forcerelay = WhiteListForceRelaySetting::Get(args);
-    connOptions.whitelist_relay = args.GetBoolArg("-whitelistrelay", DEFAULT_WHITELISTRELAY);
+    connOptions.whitelist_relay = WhiteListRelaySetting::Get(args);
 
     // Port to bind to if `-bind=addr` is provided without a `:port` suffix.
     const uint16_t default_bind_port =

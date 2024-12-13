@@ -166,4 +166,9 @@ using StrTest1Setting = common::Setting<
 using StrTest2Setting = common::Setting<
     "strtest2", std::string, common::SettingOptions{.legacy = true}>;
 
+using IntTest1Setting = common::Setting<
+    "inttest1", int64_t, common::SettingOptions{.legacy = true}>
+    ::Default<-1>
+    ::HelpArgs<>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

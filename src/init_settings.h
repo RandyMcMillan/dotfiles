@@ -439,4 +439,10 @@ using V2TransportSetting = common::Setting<
     ::Default<DEFAULT_V2_TRANSPORT>
     ::Category<OptionsCategory::CONNECTION>;
 
+using PeerBloomFiltersSetting = common::Setting<
+    "-peerbloomfilters", bool, common::SettingOptions{.legacy = true},
+    "Support filtering of blocks and transaction with bloom filters (default: %u)">
+    ::Default<DEFAULT_PEERBLOOMFILTERS>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

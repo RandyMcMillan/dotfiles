@@ -76,7 +76,7 @@ void WalletInit::AddWalletOptions(ArgsManager& argsman) const
 #ifdef USE_BDB
     DbLogSizeSetting::Register(argsman);
     FlushWalletSetting::Register(argsman);
-    argsman.AddArg("-privdb", strprintf("Sets the DB_PRIVATE flag in the wallet db environment (default: %u)", !DatabaseOptions().use_shared_memory), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::WALLET_DEBUG_TEST);
+    PrivDbSetting::Register(argsman);
     argsman.AddArg("-swapbdbendian", "Swaps the internal endianness of BDB wallet databases (default: false)", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::WALLET_DEBUG_TEST);
 #else
     DbLogSizeSetting::Hidden::Register(argsman);

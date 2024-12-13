@@ -143,6 +143,12 @@ using FlushWalletSetting = common::Setting<
     "Run a thread to flush wallet periodically (default: %u)">
     ::Default<DEFAULT_FLUSHWALLET>
     ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
+
+using PrivDbSetting = common::Setting<
+    "-privdb", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Sets the DB_PRIVATE flag in the wallet db environment (default: %u)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, !DatabaseOptions().use_shared_memory); }>
+    ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

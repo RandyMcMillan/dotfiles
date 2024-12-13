@@ -3096,10 +3096,10 @@ std::shared_ptr<CWallet> CWallet::Create(WalletContext& context, const std::stri
         walletInstance->m_default_address_type = parsed.value();
     }
 
-    if (!args.GetArg("-changetype", "").empty()) {
-        std::optional<OutputType> parsed = ParseOutputType(args.GetArg("-changetype", ""));
+    if (!ChangeTypeSetting::Get(args).empty()) {
+        std::optional<OutputType> parsed = ParseOutputType(ChangeTypeSetting::Get(args));
         if (!parsed) {
-            error = strprintf(_("Unknown change type '%s'"), args.GetArg("-changetype", ""));
+            error = strprintf(_("Unknown change type '%s'"), ChangeTypeSetting::Get(args));
             return nullptr;
         }
         walletInstance->m_default_change_type = parsed.value();

@@ -522,7 +522,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 #else
     OnionSetting2::Register(argsman);
 #endif
-    argsman.AddArg("-i2psam=<ip:port>", "I2P SAM proxy to reach I2P peers and accept I2P connections (default: none)", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    I2pSamSetting::Register(argsman);
     argsman.AddArg("-i2pacceptincoming", strprintf("Whether to accept inbound I2P connections (default: %i). Ignored if -i2psam is not set. Listening for inbound I2P connections is done through the SAM proxy, not by binding to a local address and port.", DEFAULT_I2P_ACCEPT_INCOMING), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-onlynet=<net>", strprintf("Make automatic outbound connections only to network <net> (%s). Inbound and manual connections are not affected by this option. It can be specified multiple times to allow multiple networks.", util::Join(GetNetworkNames(), ", ")), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-v2transport", strprintf("Support v2 transport (default: %u)", DEFAULT_V2_TRANSPORT), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -1933,7 +1933,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         }
     }
 
-    const std::string& i2psam_arg = args.GetArg("-i2psam", "");
+    const std::string& i2psam_arg = I2pSamSetting::Get(args);
     if (!i2psam_arg.empty()) {
         const std::optional<CService> addr{Lookup(i2psam_arg, 7656, fNameLookup)};
         if (!addr.has_value() || !addr->IsValid()) {

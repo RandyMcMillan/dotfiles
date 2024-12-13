@@ -416,4 +416,9 @@ using OnionSetting2 = common::Setting<
     "Use separate SOCKS5 proxy to reach peers via Tor onion services, set -noonion to disable (default: -proxy)">
     ::Category<OptionsCategory::CONNECTION>;
 
+using I2pSamSetting = common::Setting<
+    "-i2psam=<ip:port>", std::string, common::SettingOptions{.legacy = true},
+    "I2P SAM proxy to reach I2P peers and accept I2P connections (default: none)">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

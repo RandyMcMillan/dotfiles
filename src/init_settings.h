@@ -2,6 +2,7 @@
 #define BITCOIN_INIT_SETTINGS_H
 
 #include <addrman.h>
+#include <banman.h>
 #include <blockfilter.h>
 #include <chainparamsbase.h>
 #include <common/args.h>
@@ -307,6 +308,12 @@ using AsMapSetting = common::Setting<
     "-asmap=<file>", fs::path, common::SettingOptions{.legacy = true},
     "Specify asn mapping used for bucketing of the peers (default: %s). Relative paths will be prefixed by the net-specific datadir location.">
     ::DefaultFn<[] { return DEFAULT_ASMAP_FILENAME; }>
+    ::Category<OptionsCategory::CONNECTION>;
+
+using BanTimeSetting = common::Setting<
+    "-bantime=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Default duration (in seconds) of manually configured bans (default: %u)">
+    ::Default<DEFAULT_MISBEHAVING_BANTIME>
     ::Category<OptionsCategory::CONNECTION>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

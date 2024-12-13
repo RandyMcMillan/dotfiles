@@ -85,7 +85,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     RpcConnectSetting::Register(argsman);
     RpcCookieFileSetting::Register(argsman);
     RpcPasswordSetting::Register(argsman);
-    argsman.AddArg("-rpcport=<port>", strprintf("Connect to JSON-RPC on <port> (default: %u, testnet: %u, testnet4: %u, signet: %u, regtest: %u)", defaultBaseParams->RPCPort(), testnetBaseParams->RPCPort(), testnet4BaseParams->RPCPort(), signetBaseParams->RPCPort(), regtestBaseParams->RPCPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::OPTIONS);
+    RpcPortSetting::Register(argsman, defaultBaseParams, testnetBaseParams, testnet4BaseParams, signetBaseParams, regtestBaseParams);
     argsman.AddArg("-rpcuser=<user>", "Username for JSON-RPC connections", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-rpcwait", "Wait for RPC server to start", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-rpcwaittimeout=<n>", strprintf("Timeout in seconds to wait for the RPC server to start, or 0 for no timeout. (default: %d)", DEFAULT_WAIT_CLIENT_TIMEOUT), ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
@@ -795,7 +795,7 @@ static UniValue CallRPC(BaseRequestHandler* rh, const std::string& strMethod, co
             } // else, no port was provided in rpcconnect (continue using default one)
         }
 
-        if (std::optional<std::string> rpcport_arg = gArgs.GetArg("-rpcport")) {
+        if (std::optional<std::string> rpcport_arg = RpcPortSetting::Get(gArgs)) {
             // -rpcport was specified
             const uint16_t rpcport_int{ToIntegral<uint16_t>(rpcport_arg.value()).value_or(0)};
             if (rpcport_int == 0) {

@@ -90,4 +90,9 @@ using RpcPasswordSetting = common::Setting<
     "-rpcpassword=<pw>", std::string, common::SettingOptions{.legacy = true},
     "Password for JSON-RPC connections">;
 
+using RpcPortSetting = common::Setting<
+    "-rpcport=<port>", std::optional<std::string>, common::SettingOptions{.legacy = true, .network_only = true},
+    "Connect to JSON-RPC on <port> (default: %u, testnet: %u, testnet4: %u, signet: %u, regtest: %u)">
+    ::HelpFn<[](const auto& fmt, const auto& defaultBaseParams, const auto& testnetBaseParams, const auto& testnet4BaseParams, const auto& signetBaseParams, const auto& regtestBaseParams) { return strprintf(fmt, defaultBaseParams->RPCPort(), testnetBaseParams->RPCPort(), testnet4BaseParams->RPCPort(), signetBaseParams->RPCPort(), regtestBaseParams->RPCPort()); }>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

@@ -72,7 +72,7 @@ static void SetupCliArgs(ArgsManager& argsman)
 
     VersionSetting::Register(argsman);
     ConfSetting::Register(argsman);
-    argsman.AddArg("-datadir=<dir>", "Specify data directory", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
+    DataDirSetting::Register(argsman);
     argsman.AddArg("-generate",
                    strprintf("Generate blocks, equivalent to RPC getnewaddress followed by RPC generatetoaddress. Optional positional integer "
                              "arguments are number of blocks to generate (default: %s) and maximum iterations to try (default: %s), equivalent to "
@@ -163,7 +163,7 @@ static int AppInitRPC(int argc, char* argv[])
         return EXIT_SUCCESS;
     }
     if (!CheckDataDirOption(gArgs)) {
-        tfm::format(std::cerr, "Error: Specified data directory \"%s\" does not exist.\n", gArgs.GetArg("-datadir", ""));
+        tfm::format(std::cerr, "Error: Specified data directory \"%s\" does not exist.\n", DataDirSetting::Get(gArgs));
         return EXIT_FAILURE;
     }
     if (!gArgs.ReadConfigFiles(error, true)) {

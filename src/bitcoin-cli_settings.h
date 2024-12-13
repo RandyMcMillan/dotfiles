@@ -33,4 +33,8 @@ using ConfSetting = common::Setting<
     "Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, BITCOIN_CONF_FILENAME); }>;
 
+using DataDirSetting = common::Setting<
+    "-datadir=<dir>", std::string, common::SettingOptions{.legacy = true, .disallow_negation = true},
+    "Specify data directory">;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

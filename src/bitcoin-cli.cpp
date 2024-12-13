@@ -86,7 +86,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     RpcCookieFileSetting::Register(argsman);
     RpcPasswordSetting::Register(argsman);
     RpcPortSetting::Register(argsman, defaultBaseParams, testnetBaseParams, testnet4BaseParams, signetBaseParams, regtestBaseParams);
-    argsman.AddArg("-rpcuser=<user>", "Username for JSON-RPC connections", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    RpcUserSetting::Register(argsman);
     argsman.AddArg("-rpcwait", "Wait for RPC server to start", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-rpcwaittimeout=<n>", strprintf("Timeout in seconds to wait for the RPC server to start, or 0 for no timeout. (default: %d)", DEFAULT_WAIT_CLIENT_TIMEOUT), ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
     argsman.AddArg("-rpcwallet=<walletname>", "Send RPC for non-default wallet on RPC server (needs to exactly match corresponding -wallet option passed to bitcoind). This changes the RPC endpoint used, e.g. http://127.0.0.1:8332/wallet/<walletname>", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -853,7 +853,7 @@ static UniValue CallRPC(BaseRequestHandler* rh, const std::string& strMethod, co
             failedToGetAuthCookie = true;
         }
     } else {
-        strRPCUserColonPass = gArgs.GetArg("-rpcuser", "") + ":" + RpcPasswordSetting::Get(gArgs);
+        strRPCUserColonPass = RpcUserSetting::Get(gArgs) + ":" + RpcPasswordSetting::Get(gArgs);
     }
 
     struct evkeyvalq* output_headers = evhttp_request_get_output_headers(req.get());

@@ -335,8 +335,8 @@ static bool InitRPCAuthentication()
         }
     }
 
-    g_rpc_whitelist_default = RpcWhitelistDefaultSetting::Get(gArgs, gArgs.IsArgSet("-rpcwhitelist"));
-    for (const std::string& strRPCWhitelist : gArgs.GetArgs("-rpcwhitelist")) {
+    g_rpc_whitelist_default = RpcWhitelistDefaultSetting::Get(gArgs, !RpcWhitelistSetting::Value(gArgs).isNull());
+    for (const std::string& strRPCWhitelist : RpcWhitelistSetting::Get(gArgs)) {
         auto pos = strRPCWhitelist.find(':');
         std::string strUser = strRPCWhitelist.substr(0, pos);
         bool intersect = g_rpc_whitelist.count(strUser);

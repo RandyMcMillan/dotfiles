@@ -6,6 +6,7 @@
 #include <common/args.h>
 
 #include <chainparamsbase.h>
+#include <chainparamsbase_settings.h>
 #include <common/settings.h>
 #include <init_settings.h>
 #include <logging.h>
@@ -806,7 +807,7 @@ std::variant<ChainType, std::string> ArgsManager::GetChainArg() const
     const bool fSigNet  = get_net("-signet");
     const bool fTestNet = get_net("-testnet");
     const bool fTestNet4 = get_net("-testnet4");
-    const auto chain_arg = GetArg("-chain");
+    const auto chain_arg = ChainSetting::Get(*this);
 
     if ((int)chain_arg.has_value() + (int)fRegTest + (int)fSigNet + (int)fTestNet + (int)fTestNet4 > 1) {
         throw std::runtime_error("Invalid combination of -regtest, -signet, -testnet, -testnet4 and -chain. Can use at most one.");

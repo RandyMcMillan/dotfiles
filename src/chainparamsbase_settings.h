@@ -1,6 +1,7 @@
 #ifndef BITCOIN_CHAINPARAMSBASE_SETTINGS_H
 #define BITCOIN_CHAINPARAMSBASE_SETTINGS_H
 
+#include <chainparamsbase.h>
 #include <common/setting.h>
 
 #include <string>
@@ -24,6 +25,11 @@ using TestActivationHeightSetting = common::Setting<
 using VbParamsSetting = common::Setting<
     "-vbparams=deployment:start:end[:min_activation_height]", std::vector<std::string>, common::SettingOptions{.legacy = true, .debug_only = true},
     "Use given start/end times and min_activation_height for specified version bits deployment (regtest-only)">
+    ::Category<OptionsCategory::CHAINPARAMS>;
+
+using ChainSetting = common::Setting<
+    "-chain=<chain>", std::optional<std::string>, common::SettingOptions{.legacy = true},
+    "Use the chain <chain> (default: main). Allowed values: " LIST_CHAIN_NAMES>
     ::Category<OptionsCategory::CHAINPARAMS>;
 
 #endif // BITCOIN_CHAINPARAMSBASE_SETTINGS_H

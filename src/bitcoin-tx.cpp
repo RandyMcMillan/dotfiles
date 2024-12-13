@@ -49,7 +49,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
     SetupHelpOptions(argsman);
 
     VersionSetting::Register(argsman);
-    argsman.AddArg("-create", "Create new, empty TX.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    CreateSetting::Register(argsman);
     argsman.AddArg("-json", "Select JSON output", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-txid", "Output only the hex-encoded transaction id of the resultant transaction.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     SetupChainParamsBaseOptions(argsman);
@@ -104,7 +104,7 @@ static int AppInitRawTx(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    fCreateBlank = gArgs.GetBoolArg("-create", false);
+    fCreateBlank = CreateSetting::Get(gArgs);
 
     if (argc < 2 || HelpRequested(gArgs) || VersionSetting::Get(gArgs)) {
         // First part of help message is specific to this utility

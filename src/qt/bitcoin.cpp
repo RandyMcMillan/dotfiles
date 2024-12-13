@@ -222,7 +222,7 @@ void BitcoinApplication::setupPlatformStyle()
     // This must be done inside the BitcoinApplication constructor, or after it, because
     // PlatformStyle::instantiate requires a QApplication
     std::string platformName;
-    platformName = gArgs.GetArg("-uiplatform", BitcoinGUI::DEFAULT_UIPLATFORM);
+    platformName = UiPlatformSetting::Get(gArgs);
     platformStyle = PlatformStyle::instantiate(QString::fromStdString(platformName));
     if (!platformStyle) // Fall back to "other" if specified name not found
         platformStyle = PlatformStyle::instantiate("other");
@@ -484,7 +484,7 @@ static void SetupUIArgs(ArgsManager& argsman)
     MinSetting::Register(argsman);
     ResetGuiSettingsSetting::Register(argsman);
     SplashSetting::Register(argsman);
-    argsman.AddArg("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", BitcoinGUI::DEFAULT_UIPLATFORM), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::GUI);
+    UiPlatformSetting::Register(argsman);
 }
 
 int GuiMain(int argc, char* argv[])

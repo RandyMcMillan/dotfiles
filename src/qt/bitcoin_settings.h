@@ -2,6 +2,7 @@
 #define BITCOIN_QT_BITCOIN_SETTINGS_H
 
 #include <common/setting.h>
+#include <qt/bitcoingui.h>
 #include <qt/guiconstants.h>
 #include <qt/intro.h>
 
@@ -33,6 +34,12 @@ using SplashSetting = common::Setting<
     "-splash", bool, common::SettingOptions{.legacy = true},
     "Show splash screen on startup (default: %u)">
     ::Default<DEFAULT_SPLASHSCREEN>
+    ::Category<OptionsCategory::GUI>;
+
+using UiPlatformSetting = common::Setting<
+    "-uiplatform", std::string, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Select platform to customize UI for (one of windows, macosx, other; default: %s)">
+    ::DefaultFn<[] { return BitcoinGUI::DEFAULT_UIPLATFORM; }>
     ::Category<OptionsCategory::GUI>;
 
 #endif // BITCOIN_QT_BITCOIN_SETTINGS_H

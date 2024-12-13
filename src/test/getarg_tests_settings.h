@@ -30,4 +30,7 @@ using BarSetting = common::Setting<
 using FoSetting = common::Setting<
     "-fo", bool, common::SettingOptions{.legacy = true}>;
 
+using FooOSetting = common::Setting<
+    "-fooo", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_GETARG_TESTS_SETTINGS_H

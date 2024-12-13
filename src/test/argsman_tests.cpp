@@ -345,7 +345,7 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArg)
                 testArgs.m_settings.ro_config.empty());
 
     // The -no prefix should get stripped on the way in.
-    BOOST_CHECK(!testArgs.IsArgSet("-nob"));
+    BOOST_CHECK(NobSetting::Value(testArgs).isNull());
 
     // The -b option is flagged as negated, and nothing else is
     BOOST_CHECK(BSetting::Value(testArgs).isFalse());

@@ -653,4 +653,10 @@ using StopAtHeightSetting = common::Setting<
     ::HelpArgs<node::DEFAULT_STOPATHEIGHT>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LimitAncestorCountSetting = common::Setting<
+    "-limitancestorcount=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Do not accept transactions if number of in-mempool ancestors is <n> or more (default: %u)">
+    ::HelpArgs<DEFAULT_ANCESTOR_LIMIT>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

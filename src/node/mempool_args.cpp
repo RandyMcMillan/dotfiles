@@ -29,7 +29,7 @@ using kernel::MemPoolOptions;
 namespace {
 void ApplyArgsManOptions(const ArgsManager& argsman, MemPoolLimits& mempool_limits)
 {
-    mempool_limits.ancestor_count = argsman.GetIntArg("-limitancestorcount", mempool_limits.ancestor_count);
+    mempool_limits.ancestor_count = LimitAncestorCountSetting::Get(argsman, mempool_limits.ancestor_count);
 
     if (auto vkb = argsman.GetIntArg("-limitancestorsize")) mempool_limits.ancestor_size_vbytes = *vkb * 1'000;
 

@@ -98,4 +98,9 @@ using TestSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, util::Join(TEST_OPTIONS_DOC, ", ")); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using AllowIgnoredConfSetting = common::Setting<
+    "-allowignoredconf", bool, common::SettingOptions{.legacy = true},
+    "For backwards compatibility, treat an unused %s file in the datadir as a warning, not an error.">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, BITCOIN_CONF_FILENAME); }>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -3,6 +3,7 @@
 
 #include <common/setting.h>
 #include <outputtype.h>
+#include <wallet/coincontrol.h>
 #include <wallet/wallet.h>
 
 #include <string>
@@ -19,6 +20,12 @@ using AddressTypeSetting = common::Setting<
     "-addresstype", std::string, common::SettingOptions{.legacy = true},
     "What type of addresses to use (\"legacy\", \"p2sh-segwit\", \"bech32\", or \"bech32m\", default: \"%s\")">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, FormatOutputType(DEFAULT_ADDRESS_TYPE)); }>
+    ::Category<OptionsCategory::WALLET>;
+
+using AvoidPartialSpendsSetting = common::Setting<
+    "-avoidpartialspends", bool, common::SettingOptions{.legacy = true},
+    "Group outputs by address, selecting many (possibly all) or none, instead of selecting on a per-output basis. Privacy is improved as addresses are mostly swept with fewer transactions and outputs are aggregated in clean change addresses. It may result in higher fees due to less optimal coin selection caused by this added limitation and possibly a larger-than-necessary number of inputs being used. Always enabled for wallets with \"avoid_reuse\" enabled, otherwise default: %u.">
+    ::DefaultFn<[] { return DEFAULT_AVOIDPARTIALSPENDS; }>
     ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 

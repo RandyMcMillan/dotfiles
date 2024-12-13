@@ -66,4 +66,8 @@ using SpendZeroConfChangeSettingHidden = common::Setting<
     "-spendzeroconfchange", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using TxConfirmTargetSettingHidden = common::Setting<
+    "-txconfirmtarget=<n>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

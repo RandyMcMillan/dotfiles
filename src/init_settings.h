@@ -677,4 +677,9 @@ using LimitDescendantSizeSetting = common::Setting<
     ::HelpArgs<DEFAULT_DESCENDANT_SIZE_LIMIT_KVB>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using CaptureMessagesSetting = common::Setting<
+    "-capturemessages", std::optional<bool>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Capture all P2P messages to disk">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -21,7 +21,7 @@ void ApplyArgsManOptions(const ArgsManager& argsman, PeerManager::Options& optio
         options.max_extra_txs = uint32_t((std::clamp<int64_t>(*value, 0, std::numeric_limits<uint32_t>::max())));
     }
 
-    if (auto value{argsman.GetBoolArg("-capturemessages")}) options.capture_messages = *value;
+    if (auto value{CaptureMessagesSetting::Get(argsman)}) options.capture_messages = *value;
 
     if (auto value{BlocksOnlySetting::Get(argsman)}) options.ignore_incoming_txs = *value;
 }

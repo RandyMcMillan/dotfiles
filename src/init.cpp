@@ -589,7 +589,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     LimitDescendantCountSetting::Register(argsman);
     LimitDescendantSizeSetting::Register(argsman);
     TestSetting::Register(argsman);
-    argsman.AddArg("-capturemessages", "Capture all P2P messages to disk", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
+    CaptureMessagesSetting::Register(argsman);
     argsman.AddArg("-mocktime=<n>", strprintf("Replace actual time with %s (default: 0)", UNIX_EPOCH_TIME), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-maxsigcachesize=<n>", strprintf("Limit sum of signature cache and script execution cache sizes to <n> MiB (default: %u)", (DEFAULT_VALIDATION_CACHE_BYTES >> 20)), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-maxtipage=<n>",

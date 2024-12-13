@@ -67,4 +67,9 @@ using ColorSetting = common::Setting<
     "Color setting for CLI output (default: %s). Valid values: always, auto (add color codes when standard output is connected to a terminal and OS is not WIN32), never. Only applies to the output of -getinfo.">
     ::DefaultFn<[] { return DEFAULT_COLOR_SETTING; }>;
 
+using NamedSetting = common::Setting<
+    "-named", bool, common::SettingOptions{.legacy = true},
+    "Pass named instead of positional arguments (default: %s)">
+    ::Default<DEFAULT_NAMED>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

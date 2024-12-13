@@ -511,4 +511,9 @@ using TorControlSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DEFAULT_TOR_CONTROL, DEFAULT_TOR_CONTROL_PORT); }>
     ::Category<OptionsCategory::CONNECTION>;
 
+using TorPasswordSetting = common::Setting<
+    "-torpassword=<pass>", std::string, common::SettingOptions{.legacy = true, .sensitive = true},
+    "Tor control port password (default: empty)">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

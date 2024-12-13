@@ -576,7 +576,7 @@ void TorController::protocolinfo_cb(TorControlConnection& _conn, const TorContro
          *   cookie:   hex-encoded ~/.tor/control_auth_cookie
          *   password: "password"
          */
-        std::string torpassword = gArgs.GetArg("-torpassword", "");
+        std::string torpassword = TorPasswordSetting::Get(gArgs);
         if (!torpassword.empty()) {
             if (methods.count("HASHEDPASSWORD")) {
                 LogDebug(BCLog::TOR, "Using HASHEDPASSWORD authentication\n");

@@ -78,4 +78,8 @@ using WalletDirSettingHidden = common::Setting<
     "-walletdir=<dir>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using WalletNotifySettingHidden = common::Setting<
+    "-walletnotify=<cmd>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

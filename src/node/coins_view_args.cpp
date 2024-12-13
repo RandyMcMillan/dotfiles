@@ -12,6 +12,6 @@ namespace node {
 void ReadCoinsViewArgs(const ArgsManager& args, CoinsViewOptions& options)
 {
     if (auto value = DbBatchSizeSetting::Get(args)) options.batch_write_bytes = *value;
-    if (auto value = args.GetIntArg("-dbcrashratio")) options.simulate_crash_ratio = *value;
+    if (auto value = DbCrashRatioSettingHidden::Get(args)) options.simulate_crash_ratio = *value;
 }
 } // namespace node

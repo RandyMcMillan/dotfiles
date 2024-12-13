@@ -825,4 +825,8 @@ using IpcBindSetting = common::Setting<
     "Bind to Unix socket address and listen for incoming connections. Valid address values are \"unix\" to listen on the default path, <datadir>/node.sock, or \"unix:/custom/path\" to specify a custom path. Can be specified multiple times to listen on multiple paths. Default behavior is not to listen on any path. If relative paths are specified, they are interpreted relative to the network data directory. If paths include any parent directory components and the parent directories do not exist, they will be created.">
     ::Category<OptionsCategory::IPC>;
 
+using DbCrashRatioSettingHidden = common::Setting<
+    "-dbcrashratio", std::optional<int64_t>, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

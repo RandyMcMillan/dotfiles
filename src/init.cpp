@@ -449,7 +449,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     const auto regtestChainParams = CreateChainParams(argsman, ChainType::REGTEST);
 
     // Hidden Options
-    argsman.AddHiddenArgs({"-dbcrashratio"});
+    DbCrashRatioSettingHidden::Register(argsman);
     argsman.AddHiddenArgs({"-forcecompactdb"});
     // GUI args. These will be overwritten by SetupUIArgs for the GUI
     argsman.AddHiddenArgs({"-choosedatadir"});

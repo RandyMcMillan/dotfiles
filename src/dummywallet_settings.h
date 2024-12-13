@@ -30,4 +30,8 @@ using DisableWalletSettingHidden = common::Setting<
     "-disablewallet", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using DiscardFeeSettingHidden = common::Setting<
+    "-discardfee=<amt>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

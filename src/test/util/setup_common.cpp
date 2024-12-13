@@ -287,7 +287,7 @@ void ChainTestingSetup::LoadVerifyActivateChainstate()
     options.block_tree_db_in_memory = m_block_tree_db_in_memory;
     options.coins_db_in_memory = m_coins_db_in_memory;
     options.wipe_block_tree_db = ReIndexSetting::Get(m_args);
-    options.wipe_chainstate_db = ReIndexSetting::Get(m_args) || m_args.GetBoolArg("-reindex-chainstate", false);
+    options.wipe_chainstate_db = ReIndexSetting::Get(m_args) || ReIndexChainstateSetting::Get(m_args);
     options.prune = chainman.m_blockman.IsPruneMode();
     options.check_blocks = m_args.GetIntArg("-checkblocks", DEFAULT_CHECKBLOCKS);
     options.check_level = m_args.GetIntArg("-checklevel", DEFAULT_CHECKLEVEL);

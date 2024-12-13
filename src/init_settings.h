@@ -267,4 +267,8 @@ using ReIndexSetting = common::Setting<
     "-reindex", bool, common::SettingOptions{.legacy = true},
     "If enabled, wipe chain state and block index, and rebuild them from blk*.dat files on disk. Also wipe and rebuild other optional indexes that are active. If an assumeutxo snapshot was loaded, its chainstate will be wiped as well. The snapshot can then be reloaded via RPC.">;
 
+using ReIndexChainstateSetting = common::Setting<
+    "-reindex-chainstate", bool, common::SettingOptions{.legacy = true},
+    "If enabled, wipe chain state, and rebuild it from blk*.dat files on disk. If an assumeutxo snapshot was loaded, its chainstate will be wiped as well. The snapshot can then be reloaded via RPC.">;
+
 #endif // BITCOIN_INIT_SETTINGS_H

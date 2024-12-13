@@ -490,7 +490,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     PidSetting::Register(argsman);
     PruneSetting::Register(argsman);
     ReIndexSetting::Register(argsman);
-    argsman.AddArg("-reindex-chainstate", "If enabled, wipe chain state, and rebuild it from blk*.dat files on disk. If an assumeutxo snapshot was loaded, its chainstate will be wiped as well. The snapshot can then be reloaded via RPC.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    ReIndexChainstateSetting::Register(argsman);
     SettingsSetting::Register(argsman);
 #if HAVE_SYSTEM
     argsman.AddArg("-startupnotify=<cmd>", "Execute command on startup.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -922,7 +922,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
     if (PruneSetting::Get(args, 0)) {
         if (args.GetBoolArg("-txindex", DEFAULT_TXINDEX))
             return InitError(_("Prune mode is incompatible with -txindex."));
-        if (args.GetBoolArg("-reindex-chainstate", false)) {
+        if (ReIndexChainstateSetting::Get(args)) {
             return InitError(_("Prune mode is incompatible with -reindex-chainstate. Use full -reindex instead."));
         }
     }
@@ -1598,7 +1598,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     assert(!node.chainman);
 
     bool do_reindex{ReIndexSetting::Get(args)};
-    const bool do_reindex_chainstate{args.GetBoolArg("-reindex-chainstate", false)};
+    const bool do_reindex_chainstate{ReIndexChainstateSetting::Get(args)};
 
     // Chainstate initialization and loading may be retried once with reindexing by GUI users
     auto [status, error] = InitAndLoadChainstate(

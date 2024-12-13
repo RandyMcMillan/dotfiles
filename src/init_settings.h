@@ -381,4 +381,11 @@ using ListenOnionSetting = common::Setting<
     ::Default<DEFAULT_LISTEN_ONION>
     ::Category<OptionsCategory::CONNECTION>;
 
+using MaxConnectionsSetting = common::Setting<
+    "-maxconnections=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Maintain at most <n> automatic connections to peers (default: %u). This limit does not apply to connections manually added via -addnode or the addnode RPC, which have a separate limit of %u.">
+    ::Default<DEFAULT_MAX_PEER_CONNECTIONS>
+    ::HelpArgs<DEFAULT_MAX_PEER_CONNECTIONS, MAX_ADDNODE_CONNECTIONS>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

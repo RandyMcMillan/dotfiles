@@ -497,4 +497,10 @@ using TimeoutSetting = common::Setting<
     ::Default<DEFAULT_CONNECT_TIMEOUT>
     ::Category<OptionsCategory::CONNECTION>;
 
+using PeerTimeoutSetting = common::Setting<
+    "-peertimeout=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Specify a p2p connection timeout delay in seconds. After connecting to a peer, wait this amount of time before considering disconnection based on inactivity (minimum: 1, default: %d)">
+    ::Default<DEFAULT_PEER_CONNECT_TIMEOUT>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

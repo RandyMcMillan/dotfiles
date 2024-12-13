@@ -88,7 +88,7 @@ void WalletInit::AddWalletOptions(ArgsManager& argsman) const
 #ifdef USE_SQLITE
     UnsafeSqliteSyncSetting::Register(argsman);
 #else
-    argsman.AddHiddenArgs({"-unsafesqlitesync"});
+    UnsafeSqliteSyncSetting::Hidden::Register(argsman);
 #endif
 
     WalletRejectLongChainsSetting::Register(argsman);

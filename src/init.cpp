@@ -669,7 +669,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     DaemonSetting::Register(argsman);
     argsman.AddArg("-daemonwait", strprintf("Wait for initialization to be finished before exiting. This implies -daemon (default: %d)", DEFAULT_DAEMONWAIT), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
 #else
-    argsman.AddHiddenArgs({"-daemon"});
+    DaemonSetting::Hidden::Register(argsman);
     argsman.AddHiddenArgs({"-daemonwait"});
 #endif
 }

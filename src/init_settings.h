@@ -18,6 +18,7 @@
 #include <net.h>
 #include <net_processing.h>
 #include <node/chainstatemanager_args.h>
+#include <node/kernel_notifications.h>
 #include <node/mempool_persist_args.h>
 #include <torcontrol.h>
 #include <txdb.h>
@@ -644,6 +645,12 @@ using StopAfterBlockImportSetting = common::Setting<
     "-stopafterblockimport", bool, common::SettingOptions{.legacy = true, .debug_only = true},
     "Stop running after importing blocks from disk (default: %u)">
     ::Default<DEFAULT_STOPAFTERBLOCKIMPORT>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
+using StopAtHeightSetting = common::Setting<
+    "-stopatheight", std::optional<int64_t>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Stop running after reaching the given height in the main chain (default: %u)">
+    ::HelpArgs<node::DEFAULT_STOPATHEIGHT>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

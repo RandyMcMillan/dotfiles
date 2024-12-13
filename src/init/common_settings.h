@@ -53,4 +53,10 @@ using LogThreadNamesSetting = common::Setting<
     ::Default<DEFAULT_LOGTHREADNAMES>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LogSourceLocationsSetting = common::Setting<
+    "-logsourcelocations", bool, common::SettingOptions{.legacy = true},
+    "Prepend debug output with name of the originating source location (source file, line number and function name) (default: %u)">
+    ::Default<DEFAULT_LOGSOURCELOCATIONS>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

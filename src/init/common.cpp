@@ -35,7 +35,7 @@ void AddLoggingArgs(ArgsManager& argsman)
     LogLevelSetting::Register(argsman);
     LogTimestampsSetting::Register(argsman);
     LogThreadNamesSetting::Register(argsman);
-    argsman.AddArg("-logsourcelocations", strprintf("Prepend debug output with name of the originating source location (source file, line number and function name) (default: %u)", DEFAULT_LOGSOURCELOCATIONS), ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
+    LogSourceLocationsSetting::Register(argsman);
     argsman.AddArg("-logtimemicros", strprintf("Add microsecond precision to debug timestamps (default: %u)", DEFAULT_LOGTIMEMICROS), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-loglevelalways", strprintf("Always prepend a category and level (default: %u)", DEFAULT_LOGLEVELALWAYS), ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
     PrintToConsoleSetting::Register(argsman);
@@ -50,7 +50,7 @@ void SetLoggingOptions(const ArgsManager& args)
     LogInstance().m_log_timestamps = LogTimestampsSetting::Get(args);
     LogInstance().m_log_time_micros = args.GetBoolArg("-logtimemicros", DEFAULT_LOGTIMEMICROS);
     LogInstance().m_log_threadnames = LogThreadNamesSetting::Get(args);
-    LogInstance().m_log_sourcelocations = args.GetBoolArg("-logsourcelocations", DEFAULT_LOGSOURCELOCATIONS);
+    LogInstance().m_log_sourcelocations = LogSourceLocationsSetting::Get(args);
     LogInstance().m_always_print_category_level = args.GetBoolArg("-loglevelalways", DEFAULT_LOGLEVELALWAYS);
 
     fLogIPs = LogIpsSetting::Get(args);

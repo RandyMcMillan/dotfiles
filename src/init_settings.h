@@ -473,4 +473,10 @@ using ProxySetting2 = common::Setting<
     "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled)">
     ::Category<OptionsCategory::CONNECTION>;
 
+using ProxyRandomizeSetting = common::Setting<
+    "-proxyrandomize", bool, common::SettingOptions{.legacy = true},
+    "Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)">
+    ::Default<DEFAULT_PROXYRANDOMIZE>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

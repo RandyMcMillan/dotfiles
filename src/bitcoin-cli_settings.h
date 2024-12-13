@@ -51,4 +51,9 @@ using AddrInfoSetting = common::Setting<
     "Get the number of addresses known to the node, per network and total, after filtering for quality and recency. The total number of addresses known to the node may be higher.">
     ::Category<OptionsCategory::CLI_COMMANDS>;
 
+using GetInfoSetting = common::Setting<
+    "-getinfo", bool, common::SettingOptions{.legacy = true},
+    "Get general information from the remote server. Note that unlike server-side RPC calls, the output of -getinfo is the result of multiple non-atomic requests. Some entries in the output may represent results from different states (e.g. wallet balance may be as of a different block from the chain state reported)">
+    ::Category<OptionsCategory::CLI_COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

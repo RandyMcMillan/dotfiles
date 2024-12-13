@@ -75,7 +75,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     DataDirSetting::Register(argsman);
     GenerateSetting::Register(argsman);
     AddrInfoSetting::Register(argsman);
-    argsman.AddArg("-getinfo", "Get general information from the remote server. Note that unlike server-side RPC calls, the output of -getinfo is the result of multiple non-atomic requests. Some entries in the output may represent results from different states (e.g. wallet balance may be as of a different block from the chain state reported)", ArgsManager::ALLOW_ANY, OptionsCategory::CLI_COMMANDS);
+    GetInfoSetting::Register(argsman);
     argsman.AddArg("-netinfo", strprintf("Get network peer connection information from the remote server. An optional argument from 0 to %d can be passed for different peers listings (default: 0). If a non-zero value is passed, an additional \"outonly\" (or \"o\") argument can be passed to see outbound peers only. Pass \"help\" (or \"h\") for detailed help documentation.", NETINFO_MAX_LEVEL), ArgsManager::ALLOW_ANY, OptionsCategory::CLI_COMMANDS);
 
     SetupChainParamsBaseOptions(argsman);
@@ -1247,7 +1247,7 @@ static int CommandLineRPC(int argc, char *argv[])
         gArgs.CheckMultipleCLIArgs();
         std::unique_ptr<BaseRequestHandler> rh;
         std::string method;
-        if (gArgs.IsArgSet("-getinfo")) {
+        if (!GetInfoSetting::Value(gArgs).isNull()) {
             rh.reset(new GetinfoRequestHandler());
         } else if (gArgs.GetBoolArg("-netinfo", false)) {
             if (!args.empty() && (args.at(0) == "h" || args.at(0) == "help")) {
@@ -1284,7 +1284,7 @@ static int CommandLineRPC(int argc, char *argv[])
             UniValue result = reply.find_value("result");
             const UniValue& error = reply.find_value("error");
             if (error.isNull()) {
-                if (gArgs.GetBoolArg("-getinfo", false)) {
+                if (GetInfoSetting::Get(gArgs)) {
                     if (!gArgs.IsArgSet("-rpcwallet")) {
                         GetWalletBalances(result); // fetch multiwallet balances and append to result
                     }

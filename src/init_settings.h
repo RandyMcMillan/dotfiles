@@ -351,4 +351,9 @@ using DnsSeedSetting = common::Setting<
     ::HelpArgs<DEFAULT_DNSSEED>
     ::Category<OptionsCategory::CONNECTION>;
 
+using ExternalIpSetting = common::Setting<
+    "-externalip=<ip>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Specify your own public address">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

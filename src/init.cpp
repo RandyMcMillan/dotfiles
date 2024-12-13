@@ -590,7 +590,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     LimitDescendantSizeSetting::Register(argsman);
     TestSetting::Register(argsman);
     CaptureMessagesSetting::Register(argsman);
-    argsman.AddArg("-mocktime=<n>", strprintf("Replace actual time with %s (default: 0)", UNIX_EPOCH_TIME), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
+    MockTimeSetting::Register(argsman);
     argsman.AddArg("-maxsigcachesize=<n>", strprintf("Limit sum of signature cache and script execution cache sizes to <n> MiB (default: %u)", (DEFAULT_VALIDATION_CACHE_BYTES >> 20)), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-maxtipage=<n>",
                    strprintf("Maximum tip age in seconds to consider node in initial block download (default: %u)",
@@ -989,7 +989,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
     if (!g_wallet_init_interface.ParameterInteraction()) return false;
 
     // Option to startup with mocktime set (used for regression testing):
-    SetMockTime(args.GetIntArg("-mocktime", 0)); // SetMockTime(0) is a no-op
+    SetMockTime(MockTimeSetting::Get(args)); // SetMockTime(0) is a no-op
 
     if (PeerBloomFiltersSetting::Get(args))
         g_local_services = ServiceFlags(g_local_services | NODE_BLOOM);

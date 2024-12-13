@@ -2219,7 +2219,7 @@ void CConnman::ThreadDNSAddressSeed()
     std::shuffle(seeds.begin(), seeds.end(), rng);
     int seeds_right_now = 0; // Number of seeds left before testing if we have enough connections
 
-    if (gArgs.GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED)) {
+    if (ForceDnsSeedSetting::Get(gArgs)) {
         // When -forcednsseed is provided, query all.
         seeds_right_now = seeds.size();
     } else if (addrman.Size() == 0) {

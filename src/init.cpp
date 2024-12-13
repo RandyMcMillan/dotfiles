@@ -510,7 +510,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     DnsSeedSetting::Register(argsman);
     ExternalIpSetting::Register(argsman);
     FixedSeedsSetting::Register(argsman);
-    argsman.AddArg("-forcednsseed", strprintf("Always query for peer addresses via DNS lookup (default: %u)", DEFAULT_FORCEDNSSEED), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    ForceDnsSeedSetting::Register(argsman);
     argsman.AddArg("-listen", strprintf("Accept connections from outside (default: %u if no -proxy, -connect or -maxconnections=0)", DEFAULT_LISTEN), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-listenonion", strprintf("Automatically create Tor onion service (default: %d)", DEFAULT_LISTEN_ONION), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-maxconnections=<n>", strprintf("Maintain at most <n> automatic connections to peers (default: %u). This limit does not apply to connections manually added via -addnode or the addnode RPC, which have a separate limit of %u.", DEFAULT_MAX_PEER_CONNECTIONS, MAX_ADDNODE_CONNECTIONS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -925,7 +925,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
     }
 
     // If -forcednsseed is set to true, ensure -dnsseed has not been set to false
-    if (args.GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED) && !DnsSeedSetting::Get(args, DEFAULT_DNSSEED)){
+    if (ForceDnsSeedSetting::Get(args) && !DnsSeedSetting::Get(args, DEFAULT_DNSSEED)){
         return InitError(_("Cannot set -forcednsseed to true when setting -dnsseed to false."));
     }
 

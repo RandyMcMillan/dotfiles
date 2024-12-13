@@ -362,4 +362,10 @@ using FixedSeedsSetting = common::Setting<
     ::Default<DEFAULT_FIXEDSEEDS>
     ::Category<OptionsCategory::CONNECTION>;
 
+using ForceDnsSeedSetting = common::Setting<
+    "-forcednsseed", bool, common::SettingOptions{.legacy = true},
+    "Always query for peer addresses via DNS lookup (default: %u)">
+    ::Default<DEFAULT_FORCEDNSSEED>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

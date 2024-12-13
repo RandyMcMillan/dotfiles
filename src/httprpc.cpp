@@ -295,7 +295,7 @@ static bool InitRPCAuthentication()
     if (RpcPasswordSetting::Get(gArgs) == "")
     {
         std::optional<fs::perms> cookie_perms{std::nullopt};
-        auto cookie_perms_arg{gArgs.GetArg("-rpccookieperms")};
+        auto cookie_perms_arg{RpcCookiePermsSetting::Get(gArgs)};
         if (cookie_perms_arg) {
             auto perm_opt = InterpretPermString(*cookie_perms_arg);
             if (!perm_opt) {

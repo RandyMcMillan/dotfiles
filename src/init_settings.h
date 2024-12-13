@@ -103,4 +103,9 @@ using AllowIgnoredConfSetting = common::Setting<
     "For backwards compatibility, treat an unused %s file in the datadir as a warning, not an error.">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, BITCOIN_CONF_FILENAME); }>;
 
+using RpcCookiePermsSetting = common::Setting<
+    "-rpccookieperms=<readable-by>", std::optional<std::string>, common::SettingOptions{.legacy = true},
+    "Set permissions on the RPC auth cookie file so that it is readable by [owner|group|all] (default: owner [via umask 0077])">
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

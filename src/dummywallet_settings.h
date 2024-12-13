@@ -110,4 +110,8 @@ using UnsafeSqliteSyncSettingHidden = common::Setting<
     "-unsafesqlitesync", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using SwapBdbEndianSettingHidden = common::Setting<
+    "-swapbdbendian", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

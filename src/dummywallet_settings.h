@@ -54,4 +54,8 @@ using MinTxFeeSettingHidden = common::Setting<
     "-mintxfee=<amt>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using PayTxFeeSettingHidden = common::Setting<
+    "-paytxfee=<amt>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

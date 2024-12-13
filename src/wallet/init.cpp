@@ -71,7 +71,7 @@ void WalletInit::AddWalletOptions(ArgsManager& argsman) const
 #if HAVE_SYSTEM
     WalletNotifySetting::Register(argsman);
 #endif
-    argsman.AddArg("-walletrbf", strprintf("Send transactions with full-RBF opt-in enabled (RPC only, default: %u)", DEFAULT_WALLET_RBF), ArgsManager::ALLOW_ANY, OptionsCategory::WALLET);
+    WalletRbfSetting::Register(argsman);
 
 #ifdef USE_BDB
     argsman.AddArg("-dblogsize=<n>", strprintf("Flush wallet database activity from memory to disk log every <n> megabytes (default: %u)", DatabaseOptions().max_log_mb), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::WALLET_DEBUG_TEST);

@@ -124,6 +124,12 @@ using WalletNotifySetting = common::Setting<
     "-walletnotify=<cmd>", std::string, common::SettingOptions{.legacy = true},
     "Execute command when a wallet transaction changes. %s in cmd is replaced by TxID, %w is replaced by wallet name, %b is replaced by the hash of the block including the transaction (set to 'unconfirmed' if the transaction is not included) and %h is replaced by the block height (-1 if not included). %w is not currently implemented on windows. On systems where %w is supported, it should NOT be quoted because this would break shell escaping used to invoke the command.">
     ::Category<OptionsCategory::WALLET>;
+
+using WalletRbfSetting = common::Setting<
+    "-walletrbf", bool, common::SettingOptions{.legacy = true},
+    "Send transactions with full-RBF opt-in enabled (RPC only, default: %u)">
+    ::Default<DEFAULT_WALLET_RBF>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

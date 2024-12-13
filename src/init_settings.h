@@ -14,6 +14,7 @@
 #include <init.h>
 #include <kernel/blockmanager_opts.h>
 #include <kernel/mempool_options.h>
+#include <mapport.h>
 #include <net.h>
 #include <net_processing.h>
 #include <node/chainstatemanager_args.h>
@@ -520,5 +521,11 @@ using UpnpSetting = common::Setting<
     "-upnp", common::Unset, common::SettingOptions{.legacy = true},
     "">
     ::Category<OptionsCategory::HIDDEN>;
+
+using NatPmpSetting = common::Setting<
+    "-natpmp", bool, common::SettingOptions{.legacy = true},
+    "Use PCP or NAT-PMP to map the listening port (default: %u)">
+    ::Default<DEFAULT_NATPMP>
+    ::Category<OptionsCategory::CONNECTION>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

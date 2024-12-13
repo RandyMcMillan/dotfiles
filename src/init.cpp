@@ -544,7 +544,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     TorPasswordSetting::Register(argsman);
     // UPnP support was dropped. We keep `-upnp` as a hidden arg to display a more user friendly error when set. TODO: remove (here and below) for 30.0. NOTE: removing this option may prevent the GUI from starting, see https://github.com/bitcoin-core/gui/issues/843.
     UpnpSetting::Register(argsman);
-    argsman.AddArg("-natpmp", strprintf("Use PCP or NAT-PMP to map the listening port (default: %u)", DEFAULT_NATPMP), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    NatPmpSetting::Register(argsman);
     argsman.AddArg("-whitebind=<[permissions@]addr>", strprintf("Bind to the given address and add permission flags to the peers connecting to it. "
         "Use [host]:port notation for IPv6. Allowed permissions: %s. "
         "Specify multiple permissions separated by commas (default: download,noban,mempool,relay). Can be specified multiple times.", util::Join(NET_PERMISSIONS_DOC, ", ")), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -1803,7 +1803,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     if (node.peerman) node.peerman->SetBestBlock(chain_active_height, std::chrono::seconds{best_block_time});
 
     // Map ports with NAT-PMP
-    StartMapPort(args.GetBoolArg("-natpmp", DEFAULT_NATPMP));
+    StartMapPort(NatPmpSetting::Get(args));
 
     CConnman::Options connOptions;
     connOptions.m_local_services = g_local_services;

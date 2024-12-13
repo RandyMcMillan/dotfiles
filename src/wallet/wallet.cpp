@@ -389,7 +389,7 @@ std::shared_ptr<CWallet> CreateWallet(WalletContext& context, const std::string&
     ArgsManager& args = *Assert(context.args);
 
     if (wallet_creation_flags & WALLET_FLAG_DESCRIPTORS) options.require_format = DatabaseFormat::SQLITE;
-    else if (args.GetBoolArg("-swapbdbendian", false)) {
+    else if (SwapBdbEndianSetting::Get(args)) {
         options.require_format = DatabaseFormat::BERKELEY_SWAP;
     }
 

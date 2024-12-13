@@ -77,7 +77,7 @@ void WalletInit::AddWalletOptions(ArgsManager& argsman) const
     DbLogSizeSetting::Register(argsman);
     FlushWalletSetting::Register(argsman);
     PrivDbSetting::Register(argsman);
-    argsman.AddArg("-swapbdbendian", "Swaps the internal endianness of BDB wallet databases (default: false)", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::WALLET_DEBUG_TEST);
+    SwapBdbEndianSetting::Register(argsman);
 #else
     DbLogSizeSetting::Hidden::Register(argsman);
     FlushWalletSetting::Hidden::Register(argsman);

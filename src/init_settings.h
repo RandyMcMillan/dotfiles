@@ -601,4 +601,10 @@ using ZmqPubSequenceHwmSetting = common::Setting<
     ::HelpArgs<CZMQAbstractNotifier::DEFAULT_ZMQ_SNDHWM>
     ::Category<OptionsCategory::ZMQ>;
 
+using CheckBlocksSetting = common::Setting<
+    "-checkblocks=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "How many blocks to check at startup (default: %u, 0 = all)">
+    ::Default<DEFAULT_CHECKBLOCKS>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

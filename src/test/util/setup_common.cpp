@@ -289,9 +289,9 @@ void ChainTestingSetup::LoadVerifyActivateChainstate()
     options.wipe_block_tree_db = ReIndexSetting::Get(m_args);
     options.wipe_chainstate_db = ReIndexSetting::Get(m_args) || ReIndexChainstateSetting::Get(m_args);
     options.prune = chainman.m_blockman.IsPruneMode();
-    options.check_blocks = m_args.GetIntArg("-checkblocks", DEFAULT_CHECKBLOCKS);
+    options.check_blocks = CheckBlocksSetting::Get(m_args);
     options.check_level = m_args.GetIntArg("-checklevel", DEFAULT_CHECKLEVEL);
-    options.require_full_verification = m_args.IsArgSet("-checkblocks") || m_args.IsArgSet("-checklevel");
+    options.require_full_verification = !CheckBlocksSetting::Value(m_args).isNull() || m_args.IsArgSet("-checklevel");
     auto [status, error] = LoadChainstate(chainman, m_cache_sizes, options);
     assert(status == node::ChainstateLoadStatus::SUCCESS);
 

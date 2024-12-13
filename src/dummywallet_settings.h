@@ -10,4 +10,8 @@ using WalletSettingHidden = common::Setting<
     "-wallet=<path>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using AddressTypeSettingHidden = common::Setting<
+    "-addresstype", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

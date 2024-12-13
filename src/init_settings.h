@@ -756,4 +756,10 @@ using DataCarrierSetting = common::Setting<
     ::Default<DEFAULT_ACCEPT_DATACARRIER>
     ::Category<OptionsCategory::NODE_RELAY>;
 
+using DataCarrierSizeSetting = common::Setting<
+    "-datacarriersize", int64_t, common::SettingOptions{.legacy = true},
+    "Relay and mine transactions whose data-carrying raw scriptPubKey is of this size or less (default: %u)">
+    ::Default<MAX_OP_RETURN_RELAY>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

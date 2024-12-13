@@ -32,4 +32,9 @@ using DelOutSetting = common::Setting<
     "Delete output N from TX">
     ::Category<OptionsCategory::COMMANDS>;
 
+using InSetting = common::Setting<
+    "in=TXID:VOUT(:SEQUENCE_NUMBER)", common::Unset, common::SettingOptions{.legacy = true},
+    "Add input to TX">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

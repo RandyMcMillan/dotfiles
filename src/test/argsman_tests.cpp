@@ -480,7 +480,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(test_args.IsArgSet("-d"));
     BOOST_CHECK(test_args.IsArgSet("-fff"));
     BOOST_CHECK(test_args.IsArgSet("-ggg"));
-    BOOST_CHECK(test_args.IsArgSet("-h"));
+    BOOST_CHECK(!HSetting::Value(test_args).isNull());
     BOOST_CHECK(test_args.IsArgSet("-i"));
     BOOST_CHECK(!test_args.IsArgSet("-zzz"));
     BOOST_CHECK(!test_args.IsArgSet("-iii"));
@@ -491,7 +491,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK_EQUAL(test_args.GetArg("-d", "xxx"), "e");
     BOOST_CHECK_EQUAL(test_args.GetArg("-fff", "xxx"), "0");
     BOOST_CHECK_EQUAL(test_args.GetArg("-ggg", "xxx"), "1");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-h", "xxx"), "0");
+    BOOST_CHECK_EQUAL(HSettingStr::Get(test_args, "xxx"), "0");
     BOOST_CHECK_EQUAL(test_args.GetArg("-i", "xxx"), "1");
     BOOST_CHECK_EQUAL(test_args.GetArg("-zzz", "xxx"), "xxx");
     BOOST_CHECK_EQUAL(test_args.GetArg("-iii", "xxx"), "xxx");
@@ -503,7 +503,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
         BOOST_CHECK(!test_args.GetBoolArg("-d", def));
         BOOST_CHECK(!test_args.GetBoolArg("-fff", def));
         BOOST_CHECK(test_args.GetBoolArg("-ggg", def));
-        BOOST_CHECK(!test_args.GetBoolArg("-h", def));
+        BOOST_CHECK(!HSettingBool::Get(test_args, def));
         BOOST_CHECK(test_args.GetBoolArg("-i", def));
         BOOST_CHECK(test_args.GetBoolArg("-zzz", def) == def);
         BOOST_CHECK(test_args.GetBoolArg("-iii", def) == def);
@@ -521,7 +521,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(test_args.GetArgs("-ggg").size() == 1
                 && test_args.GetArgs("-ggg").front() == "1");
     BOOST_CHECK(test_args.GetArgs("-noggg").size() == 0);
-    BOOST_CHECK(test_args.GetArgs("-h").size() == 0);
+    BOOST_CHECK(HSetting::Get(test_args).size() == 0);
     BOOST_CHECK(test_args.GetArgs("-noh").size() == 0);
     BOOST_CHECK(test_args.GetArgs("-i").size() == 1
                 && test_args.GetArgs("-i").front() == "1");
@@ -534,7 +534,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(!test_args.IsArgNegated("-d"));
     BOOST_CHECK(test_args.IsArgNegated("-fff"));
     BOOST_CHECK(!test_args.IsArgNegated("-ggg"));
-    BOOST_CHECK(test_args.IsArgNegated("-h")); // last setting takes precedence
+    BOOST_CHECK(HSetting::Value(test_args).isFalse()); // last setting takes precedence
     BOOST_CHECK(!test_args.IsArgNegated("-i")); // last setting takes precedence
     BOOST_CHECK(!test_args.IsArgNegated("-zzz"));
 
@@ -551,7 +551,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     // d is overridden
     BOOST_CHECK(test_args.GetArg("-d", "xxx") == "eee");
     // section-specific setting
-    BOOST_CHECK(test_args.GetArg("-h", "xxx") == "1");
+    BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "1");
     // section takes priority for multiple values
     BOOST_CHECK(test_args.GetArg("-ccc", "xxx") == "extend1");
     // check multiple values works
@@ -568,7 +568,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(test_args.GetArg("-fff", "xxx") == "0");
     BOOST_CHECK(test_args.GetArg("-ggg", "xxx") == "1");
     BOOST_CHECK(test_args.GetArg("-zzz", "xxx") == "xxx");
-    BOOST_CHECK(test_args.GetArg("-h", "xxx") == "0");
+    BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "0");
     // section-specific setting
     BOOST_CHECK(test_args.GetArg("-iii", "xxx") == "2");
     // section takes priority for multiple values
@@ -587,19 +587,19 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     test_args.SelectConfigNetwork(ChainTypeToString(ChainType::MAIN));
     BOOST_CHECK(test_args.GetArg("-d", "xxx") == "e");
     BOOST_CHECK(test_args.GetArgs("-ccc").size() == 2);
-    BOOST_CHECK(test_args.GetArg("-h", "xxx") == "0");
+    BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "0");
 
     test_args.SelectConfigNetwork("sec1");
     BOOST_CHECK(test_args.GetArg("-d", "xxx") == "eee");
     BOOST_CHECK(test_args.GetArgs("-d").size() == 1);
     BOOST_CHECK(test_args.GetArgs("-ccc").size() == 2);
-    BOOST_CHECK(test_args.GetArg("-h", "xxx") == "1");
+    BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "1");
 
     test_args.SelectConfigNetwork("sec2");
     BOOST_CHECK(test_args.GetArg("-d", "xxx") == "xxx");
     BOOST_CHECK(test_args.GetArgs("-d").size() == 0);
     BOOST_CHECK(test_args.GetArgs("-ccc").size() == 1);
-    BOOST_CHECK(test_args.GetArg("-h", "xxx") == "0");
+    BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "0");
 }
 
 BOOST_AUTO_TEST_CASE(util_GetArg)

@@ -14,4 +14,13 @@ using TestNetSetting = common::Setting<
     "-testnet", common::Unset, common::SettingOptions{.legacy = true},
     "testnet">;
 
+using HSetting = common::Setting<
+    "-h", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using HSettingStr = common::Setting<
+    "-h", std::string, common::SettingOptions{.legacy = true}>;
+
+using HSettingBool = common::Setting<
+    "-h", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

@@ -22,4 +22,9 @@ using DumpFileSetting = common::Setting<
     "-dumpfile=<file name>", std::string, common::SettingOptions{.legacy = true, .disallow_negation = true},
     "When used with 'dump', writes out the records to this file. When used with 'createfromdump', loads the records into a new wallet.">;
 
+using DebugSetting = common::Setting<
+    "-debug=<category>", bool, common::SettingOptions{.legacy = true},
+    "Output debugging information (default: 0).">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_BITCOIN_WALLET_SETTINGS_H

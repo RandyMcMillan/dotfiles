@@ -38,7 +38,7 @@ static void SetupWalletToolArgs(ArgsManager& argsman)
     DataDirSetting::Register(argsman);
     WalletSetting::Register(argsman);
     DumpFileSetting::Register(argsman);
-    argsman.AddArg("-debug=<category>", "Output debugging information (default: 0).", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
+    DebugSetting::Register(argsman);
     argsman.AddArg("-descriptors", "Create descriptors wallet. Only for 'create'", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-legacy", "Create legacy wallet. Only for 'create'", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-format=<format>", "The format of the wallet file to create. Either \"bdb\" or \"sqlite\". Only used with 'createfromdump'", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -85,7 +85,7 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
     }
 
     // check for printtoconsole, allow -debug
-    LogInstance().m_print_to_console = args.GetBoolArg("-printtoconsole", args.GetBoolArg("-debug", false));
+    LogInstance().m_print_to_console = args.GetBoolArg("-printtoconsole", DebugSetting::Get(args));
 
     if (!CheckDataDirOption(args)) {
         tfm::format(std::cerr, "Error: Specified data directory \"%s\" does not exist.\n", DataDirSetting::Get(args));

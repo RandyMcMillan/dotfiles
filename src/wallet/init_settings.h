@@ -114,6 +114,11 @@ using WalletBroadcastSetting = common::Setting<
     "Make the wallet broadcast transactions (default: %u)">
     ::Default<DEFAULT_WALLETBROADCAST>
     ::Category<OptionsCategory::WALLET>;
+
+using WalletDirSetting = common::Setting<
+    "-walletdir=<dir>", fs::path, common::SettingOptions{.legacy = true, .network_only = true},
+    "Specify directory to hold wallets (default: <datadir>/wallets if it exists, otherwise <datadir>)">
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

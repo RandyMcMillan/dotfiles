@@ -7,6 +7,7 @@
 #include <arith_uint256.h>
 #include <common/args.h>
 #include <common/system.h>
+#include <init_settings.h>
 #include <logging.h>
 #include <node/coins_view_args.h>
 #include <node/database_args.h>
@@ -39,7 +40,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& args, ChainstateManage
         }
     }
 
-    if (auto value{args.GetArg("-assumevalid")}) {
+    if (auto value{AssumeValidSetting::Get(args)}) {
         if (auto block_hash{uint256::FromUserHex(*value)}) {
             opts.assumed_valid_block = *block_hash;
         } else {

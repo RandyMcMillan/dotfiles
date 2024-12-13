@@ -156,4 +156,9 @@ using AlertNotifySetting = common::Setting<
     "-alertnotify=<cmd>", std::string, common::SettingOptions{.legacy = true},
     "Execute command when an alert is raised (%s in cmd is replaced by message)">;
 
+using AssumeValidSetting = common::Setting<
+    "-assumevalid=<hex>", std::optional<std::string>, common::SettingOptions{.legacy = true},
+    "If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet3: %s, testnet4: %s, signet: %s)">
+    ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& testnetChainParams, const auto& testnet4ChainParams, const auto& signetChainParams) { return strprintf(fmt, defaultChainParams->GetConsensus().defaultAssumeValid.GetHex(), testnetChainParams->GetConsensus().defaultAssumeValid.GetHex(), testnet4ChainParams->GetConsensus().defaultAssumeValid.GetHex(), signetChainParams->GetConsensus().defaultAssumeValid.GetHex()); }>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

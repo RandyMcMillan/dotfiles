@@ -4,6 +4,7 @@
 
 #include <common/args.h>
 #include <sync.h>
+#include <test/argsman_tests_settings.h>
 #include <test/util/logging.h>
 #include <test/util/setup_common.h>
 #include <test/util/str.h>
@@ -955,7 +956,7 @@ BOOST_FIXTURE_TEST_CASE(util_ChainMerge, ChainMergeTestingSetup)
     ForEachMergeSetup([&](const ActionList& arg_actions, const ActionList& conf_actions) {
         TestArgsManager parser;
         LOCK(parser.cs_args);
-        parser.AddArg("-regtest", "regtest", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+        RegTestSetting::Register(parser);
         parser.AddArg("-testnet", "testnet", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
 
         auto arg = [](Action action) { return action == ENABLE_TEST  ? "-testnet=1"   :

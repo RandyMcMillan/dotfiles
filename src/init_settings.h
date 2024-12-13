@@ -80,4 +80,10 @@ using BlocksDirSetting = common::Setting<
 using BlocksDirSettingPath = common::Setting<
     "-blocksdir=<dir>", fs::path, common::SettingOptions{.legacy = true}>;
 
+using SettingsSetting = common::Setting<
+    "-settings=<file>", fs::path, common::SettingOptions{.legacy = true},
+    "Specify path to dynamic settings data file. Can be disabled with -nosettings. File is written at runtime and not meant to be edited by users (use %s instead for custom settings). Relative paths will be prefixed by datadir location. (default: %s)">
+    ::DefaultFn<[] { return BITCOIN_SETTINGS_FILENAME; }>
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, BITCOIN_CONF_FILENAME, BITCOIN_SETTINGS_FILENAME); }>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -152,4 +152,8 @@ using RpcThreadsSetting = common::Setting<
     ::Default<DEFAULT_HTTP_THREADS>
     ::Category<OptionsCategory::RPC>;
 
+using AlertNotifySetting = common::Setting<
+    "-alertnotify=<cmd>", std::string, common::SettingOptions{.legacy = true},
+    "Execute command when an alert is raised (%s in cmd is replaced by message)">;
+
 #endif // BITCOIN_INIT_SETTINGS_H

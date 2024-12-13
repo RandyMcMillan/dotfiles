@@ -2,14 +2,14 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <bench/bench_bitcoin_settings.h>
 #include <bench/bench.h>
+#include <bench/bench_bitcoin_settings.h>
 #include <common/args.h>
 #include <crypto/sha256.h>
+#include <test/util/setup_common.h>
 #include <tinyformat.h>
 #include <util/fs.h>
 #include <util/string.h>
-#include <test/util/setup_common.h>
 
 #include <chrono>
 #include <cstdint>
@@ -26,7 +26,7 @@ static void SetupBenchArgs(ArgsManager& argsman)
     SetupHelpOptions(argsman);
     SetupCommonTestArgs(argsman);
 
-    argsman.AddArg("-asymptote=<n1,n2,n3,...>", "Test asymptotic growth of the runtime of an algorithm, if supported by the benchmark", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    AsymptoteSetting::Register(argsman);
     argsman.AddArg("-filter=<regex>", strprintf("Regular expression filter to select benchmark by name (default: %s)", DEFAULT_BENCH_FILTER), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-list", "List benchmarks without executing them", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-min-time=<milliseconds>", strprintf("Minimum runtime per benchmark, in milliseconds (default: %d)", DEFAULT_MIN_TIME_MS), ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
@@ -133,7 +133,7 @@ int main(int argc, char** argv)
 
     try {
         benchmark::Args args;
-        args.asymptote = parseAsymptote(argsman.GetArg("-asymptote", ""));
+        args.asymptote = parseAsymptote(AsymptoteSetting::Get(argsman));
         args.is_list_only = argsman.GetBoolArg("-list", false);
         args.min_time = std::chrono::milliseconds(argsman.GetIntArg("-min-time", DEFAULT_MIN_TIME_MS));
         args.output_csv = argsman.GetPathArg("-output-csv");

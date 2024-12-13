@@ -345,4 +345,10 @@ using DnsSetting = common::Setting<
     ::Default<DEFAULT_NAME_LOOKUP>
     ::Category<OptionsCategory::CONNECTION>;
 
+using DnsSeedSetting = common::Setting<
+    "-dnsseed", std::optional<bool>, common::SettingOptions{.legacy = true},
+    "Query for peer addresses via DNS lookup, if low on addresses (default: %u unless -connect used or -maxconnections=0)">
+    ::HelpArgs<DEFAULT_DNSSEED>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

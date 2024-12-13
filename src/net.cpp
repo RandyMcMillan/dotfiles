@@ -2492,7 +2492,7 @@ void CConnman::ThreadOpenConnections(const std::vector<std::string> connect, Spa
     auto next_feeler = start + rng.rand_exp_duration(FEELER_INTERVAL);
     auto next_extra_block_relay = start + rng.rand_exp_duration(EXTRA_BLOCK_RELAY_ONLY_PEER_INTERVAL);
     auto next_extra_network_peer{start + rng.rand_exp_duration(EXTRA_NETWORK_PEER_INTERVAL)};
-    const bool dnsseed = gArgs.GetBoolArg("-dnsseed", DEFAULT_DNSSEED);
+    const bool dnsseed = DnsSeedSetting::Get(gArgs, DEFAULT_DNSSEED);
     bool add_fixed_seeds = gArgs.GetBoolArg("-fixedseeds", DEFAULT_FIXEDSEEDS);
     const bool use_seednodes{gArgs.IsArgSet("-seednode")};
 
@@ -3294,7 +3294,7 @@ bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
     // Send and receive from sockets, accept connections
     threadSocketHandler = std::thread(&util::TraceThread, "net", [this] { ThreadSocketHandler(); });
 
-    if (!gArgs.GetBoolArg("-dnsseed", DEFAULT_DNSSEED))
+    if (!DnsSeedSetting::Get(gArgs, DEFAULT_DNSSEED))
         LogPrintf("DNS seeding disabled\n");
     else
         threadDNSAddressSeed = std::thread(&util::TraceThread, "dnsseed", [this] { ThreadDNSAddressSeed(); });

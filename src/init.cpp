@@ -507,7 +507,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ConnectSetting::Register(argsman);
     DiscoverSetting::Register(argsman);
     DnsSetting::Register(argsman);
-    argsman.AddArg("-dnsseed", strprintf("Query for peer addresses via DNS lookup, if low on addresses (default: %u unless -connect used or -maxconnections=0)", DEFAULT_DNSSEED), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    DnsSeedSetting::Register(argsman);
     argsman.AddArg("-externalip=<ip>", "Specify your own public address", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-fixedseeds", strprintf("Allow fixed seeds if DNS seeds don't provide peers (default: %u)", DEFAULT_FIXEDSEEDS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-forcednsseed", strprintf("Always query for peer addresses via DNS lookup (default: %u)", DEFAULT_FORCEDNSSEED), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -925,7 +925,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
     }
 
     // If -forcednsseed is set to true, ensure -dnsseed has not been set to false
-    if (args.GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED) && !args.GetBoolArg("-dnsseed", DEFAULT_DNSSEED)){
+    if (args.GetBoolArg("-forcednsseed", DEFAULT_FORCEDNSSEED) && !DnsSeedSetting::Get(args, DEFAULT_DNSSEED)){
         return InitError(_("Cannot set -forcednsseed to true when setting -dnsseed to false."));
     }
 
@@ -1472,7 +1472,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // Requesting DNS seeds entails connecting to IPv4/IPv6, which -onlynet options may prohibit:
     // If -dnsseed=1 is explicitly specified, abort. If it's left unspecified by the user, we skip
     // the DNS seeds by adjusting -dnsseed in InitParameterInteraction.
-    if (args.GetBoolArg("-dnsseed") == true && !g_reachable_nets.Contains(NET_IPV4) && !g_reachable_nets.Contains(NET_IPV6)) {
+    if (DnsSeedSetting::Get(args) == true && !g_reachable_nets.Contains(NET_IPV4) && !g_reachable_nets.Contains(NET_IPV6)) {
         return InitError(strprintf(_("Incompatible options: -dnsseed=1 was explicitly specified, but -onlynet forbids connections to IPv4/IPv6")));
     };
 
@@ -1928,7 +1928,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
             LogPrintf("-seednode is ignored when -connect is used\n");
         }
 
-        if (args.IsArgSet("-dnsseed") && args.GetBoolArg("-dnsseed", DEFAULT_DNSSEED) && args.IsArgSet("-proxy")) {
+        if (!DnsSeedSetting::Value(args).isNull() && DnsSeedSetting::Get(args, DEFAULT_DNSSEED) && args.IsArgSet("-proxy")) {
             LogPrintf("-dnsseed is ignored when -connect is used and -proxy is specified\n");
         }
     }

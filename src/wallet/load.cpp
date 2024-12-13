@@ -13,6 +13,7 @@
 #include <util/string.h>
 #include <util/translation.h>
 #include <wallet/context.h>
+#include <wallet/init_settings.h>
 #include <wallet/spend.h>
 #include <wallet/wallet.h>
 #include <wallet/walletdb.h>
@@ -56,7 +57,7 @@ bool VerifyWallets(WalletContext& context)
 
     // For backwards compatibility if an unnamed top level wallet exists in the
     // wallets directory, include it in the default list of wallets to load.
-    if (!args.IsArgSet("wallet")) {
+    if (WalletSetting::Value(args).isNull()) {
         DatabaseOptions options;
         DatabaseStatus status;
         ReadDatabaseArgs(args, options);

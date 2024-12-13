@@ -457,4 +457,10 @@ using TxReconciliationSetting = common::Setting<
     ::HelpArgs<DEFAULT_TXRECONCILIATION_ENABLE>
     ::Category<OptionsCategory::CONNECTION>;
 
+using PortSetting = common::Setting<
+    "-port=<port>", int64_t, common::SettingOptions{.legacy = true, .network_only = true},
+    "Listen for connections on <port> (default: %u, testnet3: %u, testnet4: %u, signet: %u, regtest: %u). Not relevant for I2P (see doc/i2p.md).">
+    ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& testnetChainParams, const auto& testnet4ChainParams, const auto& signetChainParams, const auto& regtestChainParams) { return strprintf(fmt, defaultChainParams->GetDefaultPort(), testnetChainParams->GetDefaultPort(), testnet4ChainParams->GetDefaultPort(), signetChainParams->GetDefaultPort(), regtestChainParams->GetDefaultPort()); }>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

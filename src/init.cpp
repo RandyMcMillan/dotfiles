@@ -529,7 +529,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     PeerBloomFiltersSetting::Register(argsman);
     PeerBlockFiltersSetting::Register(argsman);
     TxReconciliationSetting::Register(argsman);
-    argsman.AddArg("-port=<port>", strprintf("Listen for connections on <port> (default: %u, testnet3: %u, testnet4: %u, signet: %u, regtest: %u). Not relevant for I2P (see doc/i2p.md).", defaultChainParams->GetDefaultPort(), testnetChainParams->GetDefaultPort(), testnet4ChainParams->GetDefaultPort(), signetChainParams->GetDefaultPort(), regtestChainParams->GetDefaultPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
+    PortSetting::Register(argsman, defaultChainParams, testnetChainParams, testnet4ChainParams, signetChainParams, regtestChainParams);
 #ifdef HAVE_SOCKADDR_UN
     argsman.AddArg("-proxy=<ip:port|path>", "Connect through SOCKS5 proxy, set -noproxy to disable (default: disabled). May be a local file path prefixed with 'unix:' if the proxy supports it.", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_ELISION, OptionsCategory::CONNECTION);
 #else
@@ -1821,7 +1821,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     // Port to bind to if `-bind=addr` is provided without a `:port` suffix.
     const uint16_t default_bind_port =
-        static_cast<uint16_t>(args.GetIntArg("-port", Params().GetDefaultPort()));
+        static_cast<uint16_t>(PortSetting::Get(args, Params().GetDefaultPort()));
 
     const auto BadPortWarning = [](const char* prefix, uint16_t port) {
         return strprintf(_("%s request to listen on port %u. This port is considered \"bad\" and "
@@ -1870,8 +1870,8 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     // Emit a warning if a bad port is given to -port= but only if -bind and -whitebind are not
     // given, because if they are, then -port= is ignored.
-    if (connOptions.bind_on_any && args.IsArgSet("-port")) {
-        const uint16_t port_arg = args.GetIntArg("-port", 0);
+    if (connOptions.bind_on_any && !PortSetting::Value(args).isNull()) {
+        const uint16_t port_arg = PortSetting::Get(args, 0);
         if (IsBadPort(port_arg)) {
             InitWarning(BadPortWarning("-port", port_arg));
         }

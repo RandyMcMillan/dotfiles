@@ -5,6 +5,7 @@
 #include <bitcoin-build-config.h> // IWYU pragma: keep
 
 #include <chainparams.h>
+#include <init_settings.h>
 #include <qt/intro.h>
 #include <qt/forms/ui_intro.h>
 #include <util/chaintype.h>
@@ -209,7 +210,7 @@ bool Intro::showIfNeeded(bool& did_show_intro, int64_t& prune_MiB)
     QSettings settings;
     /* If data directory provided on command line, no need to look at settings
        or show a picking dialog */
-    if(!gArgs.GetArg("-datadir", "").empty())
+    if(!DataDirSetting::Get(gArgs).empty())
         return true;
     /* 1) Default data directory for operating system */
     QString dataDir = GUIUtil::getDefaultDataDirectory();

@@ -20,7 +20,7 @@ std::optional<ConfigError> InitConfig(ArgsManager& args, SettingsAbortFn setting
 {
     try {
         if (!CheckDataDirOption(args)) {
-            return ConfigError{ConfigStatus::FAILED, strprintf(_("Specified data directory \"%s\" does not exist."), args.GetArg("-datadir", ""))};
+            return ConfigError{ConfigStatus::FAILED, strprintf(_("Specified data directory \"%s\" does not exist."), DataDirSetting::Get(args))};
         }
 
         // Record original datadir and config paths before parsing the config

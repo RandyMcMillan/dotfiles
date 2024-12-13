@@ -218,7 +218,7 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
     // If datadir is changed in .conf file:
     ClearPathCache();
     if (!CheckDataDirOption(*this)) {
-        error = strprintf("specified data directory \"%s\" does not exist.", GetArg("-datadir", ""));
+        error = strprintf("specified data directory \"%s\" does not exist.", DataDirSetting::Get(*this));
         return false;
     }
     return true;

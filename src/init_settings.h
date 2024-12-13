@@ -27,4 +27,11 @@ using ConfSettingPath = common::Setting<
     "-conf=<file>", fs::path, common::SettingOptions{.legacy = true}>
     ::DefaultFn<[] { return BITCOIN_CONF_FILENAME; }>;
 
+using DataDirSetting = common::Setting<
+    "-datadir=<dir>", std::string, common::SettingOptions{.legacy = true, .disallow_negation = true},
+    "Specify data directory">;
+
+using DataDirSettingPath = common::Setting<
+    "-datadir=<dir>", fs::path, common::SettingOptions{.legacy = true, .disallow_negation = true}>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

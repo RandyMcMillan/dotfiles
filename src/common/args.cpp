@@ -7,6 +7,7 @@
 
 #include <chainparamsbase.h>
 #include <common/settings.h>
+#include <init_settings.h>
 #include <logging.h>
 #include <sync.h>
 #include <tinyformat.h>
@@ -317,7 +318,7 @@ fs::path ArgsManager::GetDataDir(bool net_specific) const
     // Used cached path if available
     if (!path.empty()) return path;
 
-    const fs::path datadir{GetPathArg("-datadir")};
+    const fs::path datadir{DataDirSettingPath::Get(*this)};
     if (!datadir.empty()) {
         path = fs::absolute(datadir);
         if (!fs::is_directory(path)) {
@@ -759,7 +760,7 @@ fs::path GetDefaultDataDir()
 
 bool CheckDataDirOption(const ArgsManager& args)
 {
-    const fs::path datadir{args.GetPathArg("-datadir")};
+    const fs::path datadir{DataDirSettingPath::Get(args)};
     return datadir.empty() || fs::is_directory(fs::absolute(datadir));
 }
 

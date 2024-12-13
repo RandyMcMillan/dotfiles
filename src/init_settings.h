@@ -63,4 +63,9 @@ using DaemonSetting = common::Setting<
     "Run in the background as a daemon and accept commands (default: %d)">
     ::HelpArgs<DEFAULT_DAEMON>;
 
+using DaemonWaitSetting = common::Setting<
+    "-daemonwait", bool, common::SettingOptions{.legacy = true},
+    "Wait for initialization to be finished before exiting. This implies -daemon (default: %d)">
+    ::Default<DEFAULT_DAEMONWAIT>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -200,7 +200,7 @@ static bool AppInit(NodeContext& node)
             return false;
         }
 
-        if (DaemonSetting::Get(args, DEFAULT_DAEMON) || args.GetBoolArg("-daemonwait", DEFAULT_DAEMONWAIT)) {
+        if (DaemonSetting::Get(args, DEFAULT_DAEMON) || DaemonWaitSetting::Get(args)) {
 #if HAVE_DECL_FORK
             tfm::format(std::cout, CLIENT_NAME " starting\n");
 
@@ -208,7 +208,7 @@ static bool AppInit(NodeContext& node)
             switch (fork_daemon(1, 0, daemon_ep)) { // don't chdir (1), do close FDs (0)
             case 0: // Child: continue.
                 // If -daemonwait is not enabled, immediately send a success token the parent.
-                if (!args.GetBoolArg("-daemonwait", DEFAULT_DAEMONWAIT)) {
+                if (!DaemonWaitSetting::Get(args)) {
                     daemon_ep.TokenWrite(1);
                     daemon_ep.Close();
                 }

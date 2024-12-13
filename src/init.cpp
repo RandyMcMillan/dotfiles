@@ -485,7 +485,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     MempoolExpirySetting::Register(argsman);
     MinimumChainWorkSetting::Register(argsman, defaultChainParams, testnetChainParams, testnet4ChainParams, signetChainParams);
     ParSetting::Register(argsman);
-    argsman.AddArg("-persistmempool", strprintf("Whether to save the mempool on shutdown and load on restart (default: %u)", node::DEFAULT_PERSIST_MEMPOOL), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    PersistMempoolSetting::Register(argsman);
     argsman.AddArg("-persistmempoolv1",
                    strprintf("Whether a mempool.dat file created by -persistmempool or the savemempool RPC will be written in the legacy format "
                              "(version 1) or the current format (version 2). This temporary option will be removed in the future. (default: %u)",

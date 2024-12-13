@@ -12,6 +12,7 @@
 #include <kernel/mempool_options.h>
 #include <net_processing.h>
 #include <node/chainstatemanager_args.h>
+#include <node/mempool_persist_args.h>
 #include <txdb.h>
 #include <util/string.h>
 
@@ -238,5 +239,10 @@ using ParSetting = common::Setting<
     "Set the number of script verification threads (0 = auto, up to %d, <0 = leave that many cores free, default: %d)">
     ::Default<DEFAULT_SCRIPTCHECK_THREADS>
     ::HelpArgs<MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS>;
+
+using PersistMempoolSetting = common::Setting<
+    "-persistmempool", bool, common::SettingOptions{.legacy = true},
+    "Whether to save the mempool on shutdown and load on restart (default: %u)">
+    ::Default<node::DEFAULT_PERSIST_MEMPOOL>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

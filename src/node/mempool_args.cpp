@@ -35,7 +35,7 @@ void ApplyArgsManOptions(const ArgsManager& argsman, MemPoolLimits& mempool_limi
 
     mempool_limits.descendant_count = LimitDescendantCountSetting::Get(argsman, mempool_limits.descendant_count);
 
-    if (auto vkb = argsman.GetIntArg("-limitdescendantsize")) mempool_limits.descendant_size_vbytes = *vkb * 1'000;
+    if (auto vkb = LimitDescendantSizeSetting::Get(argsman)) mempool_limits.descendant_size_vbytes = *vkb * 1'000;
 }
 }
 

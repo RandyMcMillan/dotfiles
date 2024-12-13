@@ -94,4 +94,8 @@ using FlushWalletSettingHidden = common::Setting<
     "-flushwallet", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using PrivDbSettingHidden = common::Setting<
+    "-privdb", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

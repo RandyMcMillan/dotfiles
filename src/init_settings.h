@@ -222,4 +222,9 @@ using MaxOrphanTxSetting = common::Setting<
     "Keep at most <n> unconnectable transactions in memory (default: %u)">
     ::HelpArgs<DEFAULT_MAX_ORPHAN_TRANSACTIONS>;
 
+using MempoolExpirySetting = common::Setting<
+    "-mempoolexpiry=<n>", std::optional<int64_t>, common::SettingOptions{.legacy = true},
+    "Do not keep transactions in the mempool longer than <n> hours (default: %u)">
+    ::HelpArgs<DEFAULT_MEMPOOL_EXPIRY_HOURS>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

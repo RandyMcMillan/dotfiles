@@ -33,4 +33,7 @@ using FoSetting = common::Setting<
 using FooOSetting = common::Setting<
     "-fooo", bool, common::SettingOptions{.legacy = true}>;
 
+using DirSetting = common::Setting<
+    "-dir", fs::path, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_GETARG_TESTS_SETTINGS_H

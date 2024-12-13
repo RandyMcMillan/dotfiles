@@ -768,4 +768,10 @@ using PermitBareMultiSigSetting = common::Setting<
     ::Default<DEFAULT_PERMIT_BAREMULTISIG>
     ::Category<OptionsCategory::NODE_RELAY>;
 
+using MinRelayTxFeeSetting = common::Setting<
+    "-minrelaytxfee=<amt>", std::string, common::SettingOptions{.legacy = true},
+    "Fees (in %s/kvB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_MIN_RELAY_TX_FEE)); }>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

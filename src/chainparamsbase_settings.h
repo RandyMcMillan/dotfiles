@@ -32,4 +32,10 @@ using ChainSetting = common::Setting<
     "Use the chain <chain> (default: main). Allowed values: " LIST_CHAIN_NAMES>
     ::Category<OptionsCategory::CHAINPARAMS>;
 
+using RegTestSetting = common::Setting<
+    "-regtest", common::Unset, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Enter regression test mode, which uses a special chain in which blocks can be solved instantly. "
+                 "This is intended for regression testing tools and app development. Equivalent to -chain=regtest.">
+    ::Category<OptionsCategory::CHAINPARAMS>;
+
 #endif // BITCOIN_CHAINPARAMSBASE_SETTINGS_H

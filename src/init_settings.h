@@ -479,4 +479,9 @@ using ProxyRandomizeSetting = common::Setting<
     ::Default<DEFAULT_PROXYRANDOMIZE>
     ::Category<OptionsCategory::CONNECTION>;
 
+using SeedNodeSetting = common::Setting<
+    "-seednode=<ip>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Connect to a node to retrieve peer addresses, and disconnect. This option can be specified multiple times to connect to multiple nodes. During startup, seednodes will be tried before dnsseeds.">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

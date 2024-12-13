@@ -659,4 +659,10 @@ using LimitAncestorCountSetting = common::Setting<
     ::HelpArgs<DEFAULT_ANCESTOR_LIMIT>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LimitAncestorSizeSetting = common::Setting<
+    "-limitancestorsize=<n>", std::optional<int64_t>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Do not accept transactions whose size with all in-mempool ancestors exceeds <n> kilobytes (default: %u)">
+    ::HelpArgs<DEFAULT_ANCESTOR_SIZE_LIMIT_KVB>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

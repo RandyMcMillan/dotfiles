@@ -496,7 +496,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     StartupNotifySetting::Register(argsman);
     ShutdownNotifySetting::Register(argsman);
 #endif
-    argsman.AddArg("-txindex", strprintf("Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)", DEFAULT_TXINDEX), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    TxIndexSetting::Register(argsman);
     argsman.AddArg("-blockfilterindex=<type>",
                  strprintf("Maintain an index of compact filters by block (default: %s, values: %s).", DEFAULT_BLOCKFILTERINDEX, ListBlockFilterTypes()) +
                  " If <type> is not supplied or if <type> = 1, indexes for all known types are enabled.",
@@ -920,7 +920,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
     }
 
     if (PruneSetting::Get(args, 0)) {
-        if (args.GetBoolArg("-txindex", DEFAULT_TXINDEX))
+        if (TxIndexSetting::Get(args))
             return InitError(_("Prune mode is incompatible with -txindex."));
         if (ReIndexChainstateSetting::Get(args)) {
             return InitError(_("Prune mode is incompatible with -reindex-chainstate. Use full -reindex instead."));
@@ -1585,7 +1585,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     LogPrintf("Cache configuration:\n");
     LogPrintf("* Using %.1f MiB for block index database\n", cache_sizes.block_tree_db * (1.0 / 1024 / 1024));
-    if (args.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
+    if (TxIndexSetting::Get(args)) {
         LogPrintf("* Using %.1f MiB for transaction index database\n", cache_sizes.tx_index * (1.0 / 1024 / 1024));
     }
     for (BlockFilterType filter_type : g_enabled_filter_types) {
@@ -1649,7 +1649,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     // ********************************************************* Step 8: start indexers
 
-    if (args.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
+    if (TxIndexSetting::Get(args)) {
         g_txindex = std::make_unique<TxIndex>(interfaces::MakeChain(node), cache_sizes.tx_index, false, do_reindex);
         node.indexes.emplace_back(g_txindex.get());
     }

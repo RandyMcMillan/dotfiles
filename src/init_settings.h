@@ -7,6 +7,7 @@
 #include <common/setting.h>
 #include <httpserver.h>
 #include <index/coinstatsindex.h>
+#include <index/txindex.h>
 #include <init.h>
 #include <kernel/blockmanager_opts.h>
 #include <kernel/mempool_options.h>
@@ -278,5 +279,10 @@ using StartupNotifySetting = common::Setting<
 using ShutdownNotifySetting = common::Setting<
     "-shutdownnotify=<cmd>", std::vector<std::string>, common::SettingOptions{.legacy = true},
     "Execute command immediately before beginning shutdown. The need for shutdown may be urgent, so be careful not to delay it long (if the command doesn't require interaction with the server, consider having it fork into the background).">;
+
+using TxIndexSetting = common::Setting<
+    "-txindex", bool, common::SettingOptions{.legacy = true},
+    "Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)">
+    ::Default<DEFAULT_TXINDEX>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

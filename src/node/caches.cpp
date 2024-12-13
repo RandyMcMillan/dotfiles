@@ -17,7 +17,7 @@ CacheSizes CalculateCacheSizes(const ArgsManager& args, size_t n_indexes)
     CacheSizes sizes;
     sizes.block_tree_db = std::min(nTotalCache / 8, nMaxBlockDBCache << 20);
     nTotalCache -= sizes.block_tree_db;
-    sizes.tx_index = std::min(nTotalCache / 8, args.GetBoolArg("-txindex", DEFAULT_TXINDEX) ? nMaxTxIndexCache << 20 : 0);
+    sizes.tx_index = std::min(nTotalCache / 8, TxIndexSetting::Get(args) ? nMaxTxIndexCache << 20 : 0);
     nTotalCache -= sizes.tx_index;
     sizes.filter_index = 0;
     if (n_indexes > 0) {

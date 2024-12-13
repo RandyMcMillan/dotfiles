@@ -479,7 +479,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     DbCacheSetting::Register(argsman);
     IncludeConfSetting::Register(argsman);
     AllowIgnoredConfSetting::Register(argsman);
-    argsman.AddArg("-loadblock=<file>", "Imports blocks from external file on startup", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    LoadBlockSetting::Register(argsman);
     argsman.AddArg("-maxmempool=<n>", strprintf("Keep the transaction memory pool below <n> megabytes (default: %u)", DEFAULT_MAX_MEMPOOL_SIZE_MB), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-maxorphantx=<n>", strprintf("Keep at most <n> unconnectable transactions in memory (default: %u)", DEFAULT_MAX_ORPHAN_TRANSACTIONS), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-mempoolexpiry=<n>", strprintf("Do not keep transactions in the mempool longer than <n> hours (default: %u)", DEFAULT_MEMPOOL_EXPIRY_HOURS), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -1749,7 +1749,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 #endif
 
     std::vector<fs::path> vImportFiles;
-    for (const std::string& strFile : args.GetArgs("-loadblock")) {
+    for (const std::string& strFile : LoadBlockSetting::Get(args)) {
         vImportFiles.push_back(fs::PathFromString(strFile));
     }
 

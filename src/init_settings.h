@@ -207,4 +207,8 @@ using IncludeConfSetting = common::Setting<
     "-includeconf=<file>", common::Unset, common::SettingOptions{.legacy = true},
     "Specify additional configuration file, relative to the -datadir path (only useable from configuration file, not command line)">;
 
+using LoadBlockSetting = common::Setting<
+    "-loadblock=<file>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Imports blocks from external file on startup">;
+
 #endif // BITCOIN_INIT_SETTINGS_H

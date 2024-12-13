@@ -254,20 +254,20 @@ BOOST_AUTO_TEST_CASE(intarg)
 
     ResetArgs(local_args, "-foo -bar");
     BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 11), 0);
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 11), 0);
+    BOOST_CHECK_EQUAL(BarSetting::Get(local_args, 11), 0);
 
     // Check under-/overflow behavior.
     ResetArgs(local_args, "-foo=-9223372036854775809 -bar=9223372036854775808");
     BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 0), std::numeric_limits<int64_t>::min());
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 0), std::numeric_limits<int64_t>::max());
+    BOOST_CHECK_EQUAL(BarSetting::Get(local_args, 0), std::numeric_limits<int64_t>::max());
 
     ResetArgs(local_args, "-foo=11 -bar=12");
     BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 0), 11);
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 11), 12);
+    BOOST_CHECK_EQUAL(BarSetting::Get(local_args, 11), 12);
 
     ResetArgs(local_args, "-foo=NaN -bar=NotANumber");
     BOOST_CHECK_EQUAL(FooSetting2Int::Get(local_args, 1), 0);
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 11), 0);
+    BOOST_CHECK_EQUAL(BarSetting::Get(local_args, 11), 0);
 }
 
 BOOST_AUTO_TEST_CASE(patharg)
@@ -394,7 +394,7 @@ BOOST_AUTO_TEST_CASE(doubledash)
 
     ResetArgs(local_args, "--foo=verbose --bar=1");
     BOOST_CHECK_EQUAL(FooSetting2::Get(local_args, ""), "verbose");
-    BOOST_CHECK_EQUAL(local_args.GetIntArg("-bar", 0), 1);
+    BOOST_CHECK_EQUAL(BarSetting::Get(local_args, 0), 1);
 }
 
 BOOST_AUTO_TEST_CASE(boolargno)

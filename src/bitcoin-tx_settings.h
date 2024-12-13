@@ -22,4 +22,9 @@ using TxIdSetting = common::Setting<
     "-txid", bool, common::SettingOptions{.legacy = true},
     "Output only the hex-encoded transaction id of the resultant transaction.">;
 
+using DelInSetting = common::Setting<
+    "delin=N", common::Unset, common::SettingOptions{.legacy = true},
+    "Delete input N from TX">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

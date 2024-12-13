@@ -481,7 +481,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(!FffSetting::Value(test_args).isNull());
     BOOST_CHECK(!GggSetting::Value(test_args).isNull());
     BOOST_CHECK(!HSetting::Value(test_args).isNull());
-    BOOST_CHECK(test_args.IsArgSet("-i"));
+    BOOST_CHECK(!ISetting::Value(test_args).isNull());
     BOOST_CHECK(!test_args.IsArgSet("-zzz"));
     BOOST_CHECK(!test_args.IsArgSet("-iii"));
 
@@ -492,7 +492,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK_EQUAL(FffSettingStr::Get(test_args, "xxx"), "0");
     BOOST_CHECK_EQUAL(GggSettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(HSettingStr::Get(test_args, "xxx"), "0");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-i", "xxx"), "1");
+    BOOST_CHECK_EQUAL(ISettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(test_args.GetArg("-zzz", "xxx"), "xxx");
     BOOST_CHECK_EQUAL(test_args.GetArg("-iii", "xxx"), "xxx");
 
@@ -504,7 +504,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
         BOOST_CHECK(!FffSettingBool::Get(test_args, def));
         BOOST_CHECK(GggSettingBool::Get(test_args, def));
         BOOST_CHECK(!HSettingBool::Get(test_args, def));
-        BOOST_CHECK(test_args.GetBoolArg("-i", def));
+        BOOST_CHECK(ISettingBool::Get(test_args, def));
         BOOST_CHECK(test_args.GetBoolArg("-zzz", def) == def);
         BOOST_CHECK(test_args.GetBoolArg("-iii", def) == def);
     }
@@ -523,8 +523,8 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(test_args.GetArgs("-noggg").size() == 0);
     BOOST_CHECK(HSetting::Get(test_args).size() == 0);
     BOOST_CHECK(test_args.GetArgs("-noh").size() == 0);
-    BOOST_CHECK(test_args.GetArgs("-i").size() == 1
-                && test_args.GetArgs("-i").front() == "1");
+    BOOST_CHECK(ISetting::Get(test_args).size() == 1
+                && ISetting::Get(test_args).front() == "1");
     BOOST_CHECK(test_args.GetArgs("-noi").size() == 0);
     BOOST_CHECK(test_args.GetArgs("-zzz").size() == 0);
 
@@ -535,7 +535,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(FffSetting::Value(test_args).isFalse());
     BOOST_CHECK(!GggSetting::Value(test_args).isFalse());
     BOOST_CHECK(HSetting::Value(test_args).isFalse()); // last setting takes precedence
-    BOOST_CHECK(!test_args.IsArgNegated("-i")); // last setting takes precedence
+    BOOST_CHECK(!ISetting::Value(test_args).isFalse()); // last setting takes precedence
     BOOST_CHECK(!test_args.IsArgNegated("-zzz"));
 
     // Test sections work

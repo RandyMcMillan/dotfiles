@@ -124,4 +124,13 @@ using GggSettingStr = common::Setting<
 using GggSettingBool = common::Setting<
     "-ggg", bool, common::SettingOptions{.legacy = true}>;
 
+using ISetting = common::Setting<
+    "-i", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using ISettingStr = common::Setting<
+    "-i", std::string, common::SettingOptions{.legacy = true}>;
+
+using ISettingBool = common::Setting<
+    "-i", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

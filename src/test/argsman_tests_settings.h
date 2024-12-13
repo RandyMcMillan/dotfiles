@@ -53,4 +53,13 @@ using BSettingStr = common::Setting<
 using BSettingBool = common::Setting<
     "-b", bool, common::SettingOptions{.legacy = true}>;
 
+using CccSetting = common::Setting<
+    "-ccc", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using CccSettingStr = common::Setting<
+    "-ccc", std::string, common::SettingOptions{.legacy = true}>;
+
+using CccSettingBool = common::Setting<
+    "-ccc", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

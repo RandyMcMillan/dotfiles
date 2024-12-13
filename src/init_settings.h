@@ -577,4 +577,10 @@ using ZmqPubHashBlockHwmSetting = common::Setting<
     ::HelpArgs<CZMQAbstractNotifier::DEFAULT_ZMQ_SNDHWM>
     ::Category<OptionsCategory::ZMQ>;
 
+using ZmqPubHashTxHwmSetting = common::Setting<
+    "-zmqpubhashtxhwm=<n>", common::Unset, common::SettingOptions{.legacy = true},
+    "Set publish hash transaction outbound message high water mark (default: %d)">
+    ::HelpArgs<CZMQAbstractNotifier::DEFAULT_ZMQ_SNDHWM>
+    ::Category<OptionsCategory::ZMQ>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

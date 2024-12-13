@@ -96,6 +96,12 @@ using SignerSetting = common::Setting<
     "-signer=<cmd>", std::string, common::SettingOptions{.legacy = true},
     "External signing tool, see doc/external-signer.md">
     ::Category<OptionsCategory::WALLET>;
+
+using SpendZeroConfChangeSetting = common::Setting<
+    "-spendzeroconfchange", bool, common::SettingOptions{.legacy = true},
+    "Spend unconfirmed change when sending transactions (default: %u)">
+    ::Default<DEFAULT_SPEND_ZEROCONF_CHANGE>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

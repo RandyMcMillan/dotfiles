@@ -33,8 +33,7 @@ static void SetupBenchArgs(ArgsManager& argsman)
     OutputCsvSetting::Register(argsman);
     OutputJsonSetting::Register(argsman);
     SanityCheckSetting::Register(argsman);
-    argsman.AddArg("-priority-level=<l1,l2,l3>", strprintf("Run benchmarks of one or multiple priority level(s) (%s), default: '%s'",
-                                                           benchmark::ListPriorities(), DEFAULT_PRIORITY), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    PriorityLevelSetting::Register(argsman);
 }
 
 // parses a comma separated list like "10,20,30,50"
@@ -140,7 +139,7 @@ int main(int argc, char** argv)
         args.output_json = OutputJsonSetting::Get(argsman);
         args.regex_filter = FilterSetting::Get(argsman);
         args.sanity_check = SanityCheckSetting::Get(argsman);
-        args.priority = parsePriorityLevel(argsman.GetArg("-priority-level", DEFAULT_PRIORITY));
+        args.priority = parsePriorityLevel(PriorityLevelSetting::Get(argsman));
         args.setup_args = parseTestSetupArgs(argsman);
 
         benchmark::BenchRunner::RunAll(args);

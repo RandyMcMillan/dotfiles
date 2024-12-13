@@ -46,4 +46,10 @@ using SanityCheckSetting = common::Setting<
     "-sanity-check", bool, common::SettingOptions{.legacy = true},
     "Run benchmarks for only one iteration with no output">;
 
+using PriorityLevelSetting = common::Setting<
+    "-priority-level=<l1,l2,l3>", std::string, common::SettingOptions{.legacy = true},
+    "Run benchmarks of one or multiple priority level(s) (%s), default: '%s'">
+    ::DefaultFn<[] { return DEFAULT_PRIORITY; }>
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, benchmark::ListPriorities(), DEFAULT_PRIORITY); }>;
+
 #endif // BITCOIN_BENCH_BENCH_BITCOIN_SETTINGS_H

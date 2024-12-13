@@ -67,7 +67,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
     ReplaceableSetting::Register(argsman);
     SignSetting::Register(argsman);
 
-    argsman.AddArg("load=NAME:FILENAME", "Load JSON file FILENAME into register NAME", ArgsManager::ALLOW_ANY, OptionsCategory::REGISTER_COMMANDS);
+    LoadSetting::Register(argsman);
     argsman.AddArg("set=NAME:JSON-STRING", "Set register NAME to given JSON-STRING", ArgsManager::ALLOW_ANY, OptionsCategory::REGISTER_COMMANDS);
 }
 

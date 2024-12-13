@@ -94,4 +94,9 @@ using SignSetting = common::Setting<
         "See signrawtransactionwithkey docs for format of sighash flags, JSON objects.">
     ::Category<OptionsCategory::COMMANDS>;
 
+using LoadSetting = common::Setting<
+    "load=NAME:FILENAME", common::Unset, common::SettingOptions{.legacy = true},
+    "Load JSON file FILENAME into register NAME">
+    ::Category<OptionsCategory::REGISTER_COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

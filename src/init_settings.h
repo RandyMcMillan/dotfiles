@@ -803,4 +803,10 @@ using BlockVersionSetting = common::Setting<
     "Override block version to test forking scenarios">
     ::Category<OptionsCategory::BLOCK_CREATION>;
 
+using RestSetting = common::Setting<
+    "-rest", bool, common::SettingOptions{.legacy = true},
+    "Accept public REST requests (default: %u)">
+    ::Default<DEFAULT_REST_ENABLE>
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

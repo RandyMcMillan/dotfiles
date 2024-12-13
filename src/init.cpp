@@ -615,7 +615,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     BlockMinTxFeeSetting::Register(argsman);
     BlockVersionSetting::Register(argsman);
 
-    argsman.AddArg("-rest", strprintf("Accept public REST requests (default: %u)", DEFAULT_REST_ENABLE), ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
+    RestSetting::Register(argsman);
     RpcAllowIpSetting::Register(argsman);
     RpcAuthSetting::Register(argsman);
     RpcBindSetting::Register(argsman);
@@ -665,7 +665,7 @@ static bool AppInitServers(NodeContext& node)
     node.rpc_interruption_point = RpcInterruptionPoint;
     if (!StartHTTPRPC(&node))
         return false;
-    if (args.GetBoolArg("-rest", DEFAULT_REST_ENABLE)) StartREST(&node);
+    if (RestSetting::Get(args)) StartREST(&node);
     StartHTTPServer();
     return true;
 }

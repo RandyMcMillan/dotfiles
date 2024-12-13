@@ -38,4 +38,8 @@ using FallbackFeeSettingHidden = common::Setting<
     "-fallbackfee=<amt>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using KeyPoolSettingHidden = common::Setting<
+    "-keypool=<n>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

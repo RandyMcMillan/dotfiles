@@ -61,6 +61,12 @@ using FallbackFeeSetting = common::Setting<
     "A fee rate (in %s/kvB) that will be used when fee estimation has insufficient data. 0 to entirely disable the fallbackfee feature. (default: %s)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_FALLBACK_FEE)); }>
     ::Category<OptionsCategory::WALLET>;
+
+using KeyPoolSetting = common::Setting<
+    "-keypool=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Set key pool size to <n> (default: %u). Warning: Smaller sizes may increase the risk of losing funds when restoring from an old backup, if none of the addresses in the original keypool have been used.">
+    ::Default<DEFAULT_KEYPOOL_SIZE>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

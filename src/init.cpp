@@ -454,7 +454,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     // GUI args. These will be overwritten by SetupUIArgs for the GUI
     ChooseDataDirSettingHidden::Register(argsman);
     LangSettingHidden::Register(argsman);
-    argsman.AddHiddenArgs({"-min"});
+    MinSettingHidden::Register(argsman);
     argsman.AddHiddenArgs({"-resetguisettings"});
     argsman.AddHiddenArgs({"-splash"});
     argsman.AddHiddenArgs({"-uiplatform"});

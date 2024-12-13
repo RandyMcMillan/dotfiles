@@ -841,4 +841,8 @@ using LangSettingHidden = common::Setting<
     "-lang=<lang>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using MinSettingHidden = common::Setting<
+    "-min", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

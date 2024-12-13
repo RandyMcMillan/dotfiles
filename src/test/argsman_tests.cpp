@@ -517,7 +517,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
                 && CccSetting::Get(test_args).front() == "argument"
                 && CccSetting::Get(test_args).back() == "multiple");
     BOOST_CHECK(FffSetting::Get(test_args).size() == 0);
-    BOOST_CHECK(test_args.GetArgs("-nofff").size() == 0);
+    BOOST_CHECK(NofffSetting::Get(test_args).size() == 0);
     BOOST_CHECK(GggSetting::Get(test_args).size() == 1
                 && GggSetting::Get(test_args).front() == "1");
     BOOST_CHECK(test_args.GetArgs("-noggg").size() == 0);

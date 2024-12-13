@@ -148,4 +148,7 @@ using IiiSetting = common::Setting<
 using IiiSettingBool = common::Setting<
     "-iii", bool, common::SettingOptions{.legacy = true}>;
 
+using NofffSetting = common::Setting<
+    "-nofff", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

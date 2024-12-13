@@ -48,4 +48,9 @@ using TestNet4Setting = common::Setting<
     "Use the testnet4 chain. Equivalent to -chain=testnet4.">
     ::Category<OptionsCategory::CHAINPARAMS>;
 
+using SignetSetting = common::Setting<
+    "-signet", common::Unset, common::SettingOptions{.legacy = true},
+    "Use the signet chain. Equivalent to -chain=signet. Note that the network is defined by the -signetchallenge parameter">
+    ::Category<OptionsCategory::CHAINPARAMS>;
+
 #endif // BITCOIN_CHAINPARAMSBASE_SETTINGS_H

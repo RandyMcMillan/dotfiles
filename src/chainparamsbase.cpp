@@ -20,7 +20,7 @@ void SetupChainParamsBaseOptions(ArgsManager& argsman)
     TestNetSetting::Register(argsman);
     TestNet4Setting::Register(argsman);
     VbParamsSetting::Register(argsman);
-    argsman.AddArg("-signet", "Use the signet chain. Equivalent to -chain=signet. Note that the network is defined by the -signetchallenge parameter", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
+    SignetSetting::Register(argsman);
     SignetChallengeSetting::Register(argsman);
     SignetSeedNodeSetting::Register(argsman);
 }

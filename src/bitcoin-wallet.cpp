@@ -35,7 +35,7 @@ static void SetupWalletToolArgs(ArgsManager& argsman)
     SetupChainParamsBaseOptions(argsman);
 
     VersionSetting::Register(argsman);
-    argsman.AddArg("-datadir=<dir>", "Specify data directory", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
+    DataDirSetting::Register(argsman);
     argsman.AddArg("-wallet=<wallet-name>", "Specify wallet name", ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::OPTIONS);
     argsman.AddArg("-dumpfile=<file name>", "When used with 'dump', writes out the records to this file. When used with 'createfromdump', loads the records into a new wallet.", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
     argsman.AddArg("-debug=<category>", "Output debugging information (default: 0).", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
@@ -88,7 +88,7 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
     LogInstance().m_print_to_console = args.GetBoolArg("-printtoconsole", args.GetBoolArg("-debug", false));
 
     if (!CheckDataDirOption(args)) {
-        tfm::format(std::cerr, "Error: Specified data directory \"%s\" does not exist.\n", args.GetArg("-datadir", ""));
+        tfm::format(std::cerr, "Error: Specified data directory \"%s\" does not exist.\n", DataDirSetting::Get(args));
         return EXIT_FAILURE;
     }
     // Check for chain settings (Params() calls are only valid after this clause)

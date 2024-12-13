@@ -602,7 +602,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     IncrementalRelayFeeSetting::Register(argsman);
     DustRelayFeeSetting::Register(argsman);
     AcceptStaleFeeEstimatesSetting::Register(argsman);
-    argsman.AddArg("-bytespersigop", strprintf("Equivalent bytes per sigop in transactions for relay and mining (default: %u)", DEFAULT_BYTES_PER_SIGOP), ArgsManager::ALLOW_ANY, OptionsCategory::NODE_RELAY);
+    BytesPerSigOpSetting::Register(argsman);
     argsman.AddArg("-datacarrier", strprintf("Relay and mine data carrier transactions (default: %u)", DEFAULT_ACCEPT_DATACARRIER), ArgsManager::ALLOW_ANY, OptionsCategory::NODE_RELAY);
     argsman.AddArg("-datacarriersize",
                    strprintf("Relay and mine transactions whose data-carrying raw scriptPubKey is of this size or less (default: %u)",
@@ -981,7 +981,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
         }
     }
 
-    nBytesPerSigOp = args.GetIntArg("-bytespersigop", nBytesPerSigOp);
+    nBytesPerSigOp = BytesPerSigOpSetting::Get(args);
 
     if (!g_wallet_init_interface.ParameterInteraction()) return false;
 

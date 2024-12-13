@@ -23,6 +23,7 @@
 #include <node/miner.h>
 #include <policy/feerate.h>
 #include <policy/fees.h>
+#include <policy/settings.h>
 #include <rpc/util.h>
 #include <script/sigcache.h>
 #include <torcontrol.h>
@@ -741,5 +742,12 @@ using AcceptStaleFeeEstimatesSetting = common::Setting<
     ::Default<DEFAULT_ACCEPT_STALE_FEE_ESTIMATES>
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, "regtest only; ", DEFAULT_ACCEPT_STALE_FEE_ESTIMATES, Ticks<std::chrono::hours>(MAX_FILE_AGE)); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
+
+using BytesPerSigOpSetting = common::Setting<
+    "-bytespersigop", int64_t, common::SettingOptions{.legacy = true},
+    "Equivalent bytes per sigop in transactions for relay and mining (default: %u)">
+    ::DefaultFn<[] { return nBytesPerSigOp; }>
+    ::HelpArgs<DEFAULT_BYTES_PER_SIGOP>
+    ::Category<OptionsCategory::NODE_RELAY>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

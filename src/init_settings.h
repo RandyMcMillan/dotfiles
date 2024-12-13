@@ -297,4 +297,10 @@ using BlockFilterIndexSettingStr = common::Setting<
     ::DefaultFn<[] { return DEFAULT_BLOCKFILTERINDEX; }>
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DEFAULT_BLOCKFILTERINDEX, ListBlockFilterTypes()); }>;
 
+using AddNodeSetting = common::Setting<
+    "-addnode=<ip>", std::vector<std::string>, common::SettingOptions{.legacy = true, .network_only = true},
+    "Add a node to connect to and attempt to keep the connection open (see the addnode RPC help for more info). This option can be specified multiple times to add multiple nodes; connections are limited to %u at a time and are counted separately from the -maxconnections limit.">
+    ::HelpArgs<MAX_ADDNODE_CONNECTIONS>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

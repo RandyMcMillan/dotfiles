@@ -24,4 +24,9 @@ using DebugLogFileSetting = common::Setting<
     "Specify location of debug log file (default: %s). Relative paths will be prefixed by a net-specific datadir location. Pass -nodebuglogfile to disable writing the log to a file.">
     ::DefaultFn<[] { return DEFAULT_DEBUGLOGFILE; }>;
 
+using DebugExcludeSetting = common::Setting<
+    "-debugexclude=<category>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Exclude debug and trace logging for a category. Can be used in conjunction with -debug=1 to output debug and trace logging for all categories except the specified category. This option can be specified multiple times to exclude multiple categories. This takes priority over \"-debug\"">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

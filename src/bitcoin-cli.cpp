@@ -91,7 +91,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     RpcWaitTimeoutSetting::Register(argsman);
     RpcWalletSetting::Register(argsman);
     StdinSetting::Register(argsman);
-    argsman.AddArg("-stdinrpcpass", "Read RPC password from standard input as a single line. When combined with -stdin, the first line from standard input is used for the RPC password. When combined with -stdinwalletpassphrase, -stdinrpcpass consumes the first line, and -stdinwalletpassphrase consumes the second.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    StdinRpcPassSetting::Register(argsman);
     argsman.AddArg("-stdinwalletpassphrase", "Read wallet passphrase from standard input as a single line. When combined with -stdin, the first line from standard input is used for the wallet passphrase.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
 }
 
@@ -1201,7 +1201,7 @@ static int CommandLineRPC(int argc, char *argv[])
             argv++;
         }
         std::string rpcPass;
-        if (gArgs.GetBoolArg("-stdinrpcpass", false)) {
+        if (StdinRpcPassSetting::Get(gArgs)) {
             NO_STDIN_ECHO();
             if (!StdinReady()) {
                 fputs("RPC password> ", stderr);

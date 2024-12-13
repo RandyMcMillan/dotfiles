@@ -116,4 +116,8 @@ using StdinSetting = common::Setting<
     "-stdin", bool, common::SettingOptions{.legacy = true},
     "Read extra arguments from standard input, one per line until EOF/Ctrl-D (recommended for sensitive information such as passphrases). When combined with -stdinrpcpass, the first line from standard input is used for the RPC password.">;
 
+using StdinRpcPassSetting = common::Setting<
+    "-stdinrpcpass", bool, common::SettingOptions{.legacy = true},
+    "Read RPC password from standard input as a single line. When combined with -stdin, the first line from standard input is used for the RPC password. When combined with -stdinwalletpassphrase, -stdinrpcpass consumes the first line, and -stdinwalletpassphrase consumes the second.">;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

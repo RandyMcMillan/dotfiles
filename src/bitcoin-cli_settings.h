@@ -103,4 +103,9 @@ using RpcWaitSetting = common::Setting<
     "-rpcwait", bool, common::SettingOptions{.legacy = true},
     "Wait for RPC server to start">;
 
+using RpcWaitTimeoutSetting = common::Setting<
+    "-rpcwaittimeout=<n>", int64_t, common::SettingOptions{.legacy = true, .disallow_negation = true},
+    "Timeout in seconds to wait for the RPC server to start, or 0 for no timeout. (default: %d)">
+    ::Default<DEFAULT_WAIT_CLIENT_TIMEOUT>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

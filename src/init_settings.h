@@ -696,4 +696,10 @@ using MaxSigCacheSizeSetting = common::Setting<
     ::HelpArgs<(DEFAULT_VALIDATION_CACHE_BYTES >> 20)>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using MaxTipAgeSetting = common::Setting<
+    "-maxtipage=<n>", std::optional<int64_t>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Maximum tip age in seconds to consider node in initial block download (default: %u)">
+    ::HelpArgs<Ticks<std::chrono::seconds>(DEFAULT_MAX_TIP_AGE)>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

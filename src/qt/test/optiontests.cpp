@@ -115,7 +115,7 @@ void OptionTests::parametersInteraction()
         s.forced_settings.erase("listenonion");
     });
     QVERIFY(ListenSetting::Value(gArgs).isNull());
-    QVERIFY(!gArgs.IsArgSet("-listenonion"));
+    QVERIFY(ListenOnionSetting::Value(gArgs).isNull());
 
     QSettings settings;
     settings.setValue("fListen", false);
@@ -128,8 +128,8 @@ void OptionTests::parametersInteraction()
     QVERIFY(!ListenSetting::Value(gArgs).isNull());
     QCOMPARE(ListenSetting::Get(gArgs, !expected), expected);
 
-    QVERIFY(gArgs.IsArgSet("-listenonion"));
-    QCOMPARE(gArgs.GetBoolArg("-listenonion", !expected), expected);
+    QVERIFY(!ListenOnionSetting::Value(gArgs).isNull());
+    QCOMPARE(ListenOnionSetting::Get(gArgs, !expected), expected);
 
     QVERIFY(AppInitParameterInteraction(gArgs));
 

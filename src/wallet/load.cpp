@@ -161,7 +161,7 @@ void StartWallets(WalletContext& context)
     }
 
     // Schedule periodic wallet flushes and tx rebroadcasts
-    if (context.args->GetBoolArg("-flushwallet", DEFAULT_FLUSHWALLET)) {
+    if (FlushWalletSetting::Get(*context.args)) {
         context.scheduler->scheduleEvery([&context] { MaybeCompactWalletDB(context); }, 500ms);
     }
     context.scheduler->scheduleEvery([&context] { MaybeResendWalletTxs(context); }, 1min);

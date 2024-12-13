@@ -137,6 +137,12 @@ using DbLogSizeSetting = common::Setting<
     "Flush wallet database activity from memory to disk log every <n> megabytes (default: %u)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DatabaseOptions().max_log_mb); }>
     ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
+
+using FlushWalletSetting = common::Setting<
+    "-flushwallet", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Run a thread to flush wallet periodically (default: %u)">
+    ::Default<DEFAULT_FLUSHWALLET>
+    ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

@@ -411,4 +411,9 @@ using OnionSetting = common::Setting<
     "Use separate SOCKS5 proxy to reach peers via Tor onion services, set -noonion to disable (default: -proxy). May be a local file path prefixed with 'unix:'.">
     ::Category<OptionsCategory::CONNECTION>;
 
+using OnionSetting2 = common::Setting<
+    "-onion=<ip:port>", std::string, common::SettingOptions{.legacy = true},
+    "Use separate SOCKS5 proxy to reach peers via Tor onion services, set -noonion to disable (default: -proxy)">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

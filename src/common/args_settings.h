@@ -14,4 +14,8 @@ using HSettingHidden = common::Setting<
     "-h", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using QSettingHidden = common::Setting<
+    "-?", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_COMMON_ARGS_SETTINGS_H

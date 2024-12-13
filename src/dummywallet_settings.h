@@ -62,4 +62,8 @@ using SignerSettingHidden = common::Setting<
     "-signer=<cmd>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using SpendZeroConfChangeSettingHidden = common::Setting<
+    "-spendzeroconfchange", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

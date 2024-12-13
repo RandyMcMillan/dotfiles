@@ -565,4 +565,9 @@ using ZmqPubRawTxSetting = common::Setting<
     "Enable publish raw transaction in <address>">
     ::Category<OptionsCategory::ZMQ>;
 
+using ZmqPubSequenceSetting = common::Setting<
+    "-zmqpubsequence=<address>", common::Unset, common::SettingOptions{.legacy = true},
+    "Enable publish hash block and tx sequence in <address>">
+    ::Category<OptionsCategory::ZMQ>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

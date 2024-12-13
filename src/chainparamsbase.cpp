@@ -17,7 +17,7 @@ void SetupChainParamsBaseOptions(ArgsManager& argsman)
     ChainSetting::Register(argsman);
     RegTestSetting::Register(argsman);
     TestActivationHeightSetting::Register(argsman);
-    argsman.AddArg("-testnet", "Use the testnet3 chain. Equivalent to -chain=test. Support for testnet3 is deprecated and will be removed in an upcoming release. Consider moving to testnet4 now by using -testnet4.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
+    TestNetSetting::Register(argsman);
     argsman.AddArg("-testnet4", "Use the testnet4 chain. Equivalent to -chain=testnet4.", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);
     VbParamsSetting::Register(argsman);
     argsman.AddArg("-signet", "Use the signet chain. Equivalent to -chain=signet. Note that the network is defined by the -signetchallenge parameter", ArgsManager::ALLOW_ANY, OptionsCategory::CHAINPARAMS);

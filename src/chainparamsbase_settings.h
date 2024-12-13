@@ -38,4 +38,9 @@ using RegTestSetting = common::Setting<
                  "This is intended for regression testing tools and app development. Equivalent to -chain=regtest.">
     ::Category<OptionsCategory::CHAINPARAMS>;
 
+using TestNetSetting = common::Setting<
+    "-testnet", common::Unset, common::SettingOptions{.legacy = true},
+    "Use the testnet3 chain. Equivalent to -chain=test. Support for testnet3 is deprecated and will be removed in an upcoming release. Consider moving to testnet4 now by using -testnet4.">
+    ::Category<OptionsCategory::CHAINPARAMS>;
+
 #endif // BITCOIN_CHAINPARAMSBASE_SETTINGS_H

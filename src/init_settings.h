@@ -433,4 +433,10 @@ using OnlyNetSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, util::Join(GetNetworkNames(), ", ")); }>
     ::Category<OptionsCategory::CONNECTION>;
 
+using V2TransportSetting = common::Setting<
+    "-v2transport", bool, common::SettingOptions{.legacy = true},
+    "Support v2 transport (default: %u)">
+    ::Default<DEFAULT_V2_TRANSPORT>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

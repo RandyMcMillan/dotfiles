@@ -19,7 +19,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& args, BlockManager::Op
 {
     if (auto value{BlocksXorSetting::Get(args)}) opts.use_xor = *value;
     // block pruning; get the amount of disk space (in MiB) to allot for block & undo files
-    int64_t nPruneArg{args.GetIntArg("-prune", opts.prune_target)};
+    int64_t nPruneArg{PruneSetting::Get(args, opts.prune_target)};
     if (nPruneArg < 0) {
         return util::Error{_("Prune cannot be configured with a negative value.")};
     }

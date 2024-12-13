@@ -72,4 +72,13 @@ using FSetting2 = common::Setting<
     ::Default<true>
     ::HelpArgs<>;
 
+using DSetting = common::Setting<
+    "-d", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using DSettingStr = common::Setting<
+    "-d", std::string, common::SettingOptions{.legacy = true}>;
+
+using DSettingBool = common::Setting<
+    "-d", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

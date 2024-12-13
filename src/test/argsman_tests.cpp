@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(util_ParseParameters)
     // a non-option argument (non-GNU option parsing)
     BOOST_CHECK(testArgs.m_settings.command_line_options.size() == 3 && testArgs.m_settings.ro_config.empty());
     BOOST_CHECK(!ASetting::Value(testArgs).isNull() && !BSetting::Value(testArgs).isNull() && !CccSetting::Value(testArgs).isNull()
-                && FSetting::Value(testArgs).isNull() && !testArgs.IsArgSet("-d"));
+                && FSetting::Value(testArgs).isNull() && DSetting::Value(testArgs).isNull());
     BOOST_CHECK(testArgs.m_settings.command_line_options.count("a") && testArgs.m_settings.command_line_options.count("b") && testArgs.m_settings.command_line_options.count("ccc")
                 && !testArgs.m_settings.command_line_options.count("f") && !testArgs.m_settings.command_line_options.count("d"));
 
@@ -355,7 +355,7 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArg)
     BOOST_CHECK(ASettingBool::Get(testArgs, false) == true);
     BOOST_CHECK(BSettingBool::Get(testArgs, true) == false);
     BOOST_CHECK(testArgs.GetBoolArg("-c", true) == false);
-    BOOST_CHECK(testArgs.GetBoolArg("-d", false) == true);
+    BOOST_CHECK(DSettingBool::Get(testArgs, false) == true);
     BOOST_CHECK(testArgs.GetBoolArg("-e", true) == false);
     BOOST_CHECK(FSetting2::Get(testArgs) == false);
 }
@@ -477,7 +477,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(!ASetting::Value(test_args).isNull());
     BOOST_CHECK(!BSetting::Value(test_args).isNull());
     BOOST_CHECK(!CccSetting::Value(test_args).isNull());
-    BOOST_CHECK(test_args.IsArgSet("-d"));
+    BOOST_CHECK(!DSetting::Value(test_args).isNull());
     BOOST_CHECK(test_args.IsArgSet("-fff"));
     BOOST_CHECK(test_args.IsArgSet("-ggg"));
     BOOST_CHECK(!HSetting::Value(test_args).isNull());
@@ -488,7 +488,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK_EQUAL(ASettingStr::Get(test_args, "xxx"), "");
     BOOST_CHECK_EQUAL(BSettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(CccSettingStr::Get(test_args, "xxx"), "argument");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-d", "xxx"), "e");
+    BOOST_CHECK_EQUAL(DSettingStr::Get(test_args, "xxx"), "e");
     BOOST_CHECK_EQUAL(test_args.GetArg("-fff", "xxx"), "0");
     BOOST_CHECK_EQUAL(test_args.GetArg("-ggg", "xxx"), "1");
     BOOST_CHECK_EQUAL(HSettingStr::Get(test_args, "xxx"), "0");
@@ -500,7 +500,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
         BOOST_CHECK(ASettingBool::Get(test_args, def));
         BOOST_CHECK(BSettingBool::Get(test_args, def));
         BOOST_CHECK(!CccSettingBool::Get(test_args, def));
-        BOOST_CHECK(!test_args.GetBoolArg("-d", def));
+        BOOST_CHECK(!DSettingBool::Get(test_args, def));
         BOOST_CHECK(!test_args.GetBoolArg("-fff", def));
         BOOST_CHECK(test_args.GetBoolArg("-ggg", def));
         BOOST_CHECK(!HSettingBool::Get(test_args, def));
@@ -531,7 +531,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(!ASetting::Value(test_args).isFalse());
     BOOST_CHECK(!BSetting::Value(test_args).isFalse());
     BOOST_CHECK(!CccSetting::Value(test_args).isFalse());
-    BOOST_CHECK(!test_args.IsArgNegated("-d"));
+    BOOST_CHECK(!DSetting::Value(test_args).isFalse());
     BOOST_CHECK(test_args.IsArgNegated("-fff"));
     BOOST_CHECK(!test_args.IsArgNegated("-ggg"));
     BOOST_CHECK(HSetting::Value(test_args).isFalse()); // last setting takes precedence
@@ -549,7 +549,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK_EQUAL(test_args.GetArg("-zzz", "xxx"), "xxx");
     BOOST_CHECK_EQUAL(test_args.GetArg("-iii", "xxx"), "xxx");
     // d is overridden
-    BOOST_CHECK(test_args.GetArg("-d", "xxx") == "eee");
+    BOOST_CHECK(DSettingStr::Get(test_args, "xxx") == "eee");
     // section-specific setting
     BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "1");
     // section takes priority for multiple values
@@ -564,7 +564,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     // same as original
     BOOST_CHECK(ASettingStr::Get(test_args, "xxx") == "");
     BOOST_CHECK(BSettingStr::Get(test_args, "xxx") == "1");
-    BOOST_CHECK(test_args.GetArg("-d", "xxx") == "e");
+    BOOST_CHECK(DSettingStr::Get(test_args, "xxx") == "e");
     BOOST_CHECK(test_args.GetArg("-fff", "xxx") == "0");
     BOOST_CHECK(test_args.GetArg("-ggg", "xxx") == "1");
     BOOST_CHECK(test_args.GetArg("-zzz", "xxx") == "xxx");
@@ -585,19 +585,19 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     test_args.SetNetworkOnlyArg("-h");
 
     test_args.SelectConfigNetwork(ChainTypeToString(ChainType::MAIN));
-    BOOST_CHECK(test_args.GetArg("-d", "xxx") == "e");
+    BOOST_CHECK(DSettingStr::Get(test_args, "xxx") == "e");
     BOOST_CHECK(CccSetting::Get(test_args).size() == 2);
     BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "0");
 
     test_args.SelectConfigNetwork("sec1");
-    BOOST_CHECK(test_args.GetArg("-d", "xxx") == "eee");
-    BOOST_CHECK(test_args.GetArgs("-d").size() == 1);
+    BOOST_CHECK(DSettingStr::Get(test_args, "xxx") == "eee");
+    BOOST_CHECK(DSetting::Get(test_args).size() == 1);
     BOOST_CHECK(CccSetting::Get(test_args).size() == 2);
     BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "1");
 
     test_args.SelectConfigNetwork("sec2");
-    BOOST_CHECK(test_args.GetArg("-d", "xxx") == "xxx");
-    BOOST_CHECK(test_args.GetArgs("-d").size() == 0);
+    BOOST_CHECK(DSettingStr::Get(test_args, "xxx") == "xxx");
+    BOOST_CHECK(DSetting::Get(test_args).size() == 0);
     BOOST_CHECK(CccSetting::Get(test_args).size() == 1);
     BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "0");
 }

@@ -375,4 +375,10 @@ using ListenSetting = common::Setting<
     ::Default<DEFAULT_LISTEN>
     ::Category<OptionsCategory::CONNECTION>;
 
+using ListenOnionSetting = common::Setting<
+    "-listenonion", bool, common::SettingOptions{.legacy = true},
+    "Automatically create Tor onion service (default: %d)">
+    ::Default<DEFAULT_LISTEN_ONION>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

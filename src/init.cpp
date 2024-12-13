@@ -512,7 +512,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     FixedSeedsSetting::Register(argsman);
     ForceDnsSeedSetting::Register(argsman);
     ListenSetting::Register(argsman);
-    argsman.AddArg("-listenonion", strprintf("Automatically create Tor onion service (default: %d)", DEFAULT_LISTEN_ONION), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    ListenOnionSetting::Register(argsman);
     argsman.AddArg("-maxconnections=<n>", strprintf("Maintain at most <n> automatic connections to peers (default: %u). This limit does not apply to connections manually added via -addnode or the addnode RPC, which have a separate limit of %u.", DEFAULT_MAX_PEER_CONNECTIONS, MAX_ADDNODE_CONNECTIONS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-maxreceivebuffer=<n>", strprintf("Maximum per-connection receive buffer, <n>*1000 bytes (default: %u)", DEFAULT_MAXRECEIVEBUFFER), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-maxsendbuffer=<n>", strprintf("Maximum per-connection memory usage for the send buffer, <n>*1000 bytes (default: %u)", DEFAULT_MAXSENDBUFFER), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -936,7 +936,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
     }
 
     // if listen=0, then disallow listenonion=1
-    if (!ListenSetting::Get(args) && args.GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION)) {
+    if (!ListenSetting::Get(args) && ListenOnionSetting::Get(args)) {
         return InitError(Untranslated("Cannot set -listen=0 together with -listenonion=1"));
     }
 
@@ -1541,7 +1541,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     } else {
         // If -listenonion is set, then we will (try to) connect to the Tor control port
         // later from the torcontrol thread and may retrieve the onion proxy from there.
-        const bool listenonion_disabled{!args.GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION)};
+        const bool listenonion_disabled{!ListenOnionSetting::Get(args)};
         if (onlynet_used_with_onion && listenonion_disabled) {
             return InitError(
                 _("Outbound connections restricted to Tor (-onlynet=onion) but the proxy for "
@@ -1887,7 +1887,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         connOptions.onion_binds.push_back(onion_service_target);
     }
 
-    if (args.GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION)) {
+    if (ListenOnionSetting::Get(args)) {
         if (connOptions.onion_binds.size() > 1) {
             InitWarning(strprintf(_("More than one onion bind address is provided. Using %s "
                                     "for the automatically created Tor onion service."),

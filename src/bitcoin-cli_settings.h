@@ -112,4 +112,8 @@ using RpcWalletSetting = common::Setting<
     "-rpcwallet=<walletname>", std::string, common::SettingOptions{.legacy = true},
     "Send RPC for non-default wallet on RPC server (needs to exactly match corresponding -wallet option passed to bitcoind). This changes the RPC endpoint used, e.g. http://127.0.0.1:8332/wallet/<walletname>">;
 
+using StdinSetting = common::Setting<
+    "-stdin", bool, common::SettingOptions{.legacy = true},
+    "Read extra arguments from standard input, one per line until EOF/Ctrl-D (recommended for sensitive information such as passphrases). When combined with -stdinrpcpass, the first line from standard input is used for the RPC password.">;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

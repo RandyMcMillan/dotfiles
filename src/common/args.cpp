@@ -7,6 +7,7 @@
 
 #include <chainparamsbase.h>
 #include <chainparamsbase_settings.h>
+#include <common/args_settings.h>
 #include <common/settings.h>
 #include <init_settings.h>
 #include <logging.h>
@@ -690,12 +691,12 @@ std::string ArgsManager::GetHelpMessage() const
 
 bool HelpRequested(const ArgsManager& args)
 {
-    return args.IsArgSet("-?") || args.IsArgSet("-h") || args.IsArgSet("-help") || args.IsArgSet("-help-debug");
+    return args.IsArgSet("-?") || args.IsArgSet("-h") || !HelpSetting::Value(args).isNull() || args.IsArgSet("-help-debug");
 }
 
 void SetupHelpOptions(ArgsManager& args)
 {
-    args.AddArg("-help", "Print this help message and exit (also -h or -?)", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    HelpSetting::Register(args);
     args.AddHiddenArgs({"-h", "-?"});
 }
 

@@ -113,4 +113,9 @@ using RpcAuthSetting = common::Setting<
     "Username and HMAC-SHA-256 hashed password for JSON-RPC connections. The field <userpw> comes in the format: <USERNAME>:<SALT>$<HASH>. A canonical python script is included in share/rpcauth. The client then connects normally using the rpcuser=<USERNAME>/rpcpassword=<PASSWORD> pair of arguments. This option can be specified multiple times">
     ::Category<OptionsCategory::RPC>;
 
+using RpcWhitelistDefaultSetting = common::Setting<
+    "-rpcwhitelistdefault", bool, common::SettingOptions{.legacy = true},
+    "Sets default behavior for rpc whitelisting. Unless rpcwhitelistdefault is set to 0, if any -rpcwhitelist is set, the rpc server acts as if all rpc users are subject to empty-unless-otherwise-specified whitelists. If rpcwhitelistdefault is set to 1 and no -rpcwhitelist is set, rpc server acts as if all rpc users are subject to empty whitelists.">
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

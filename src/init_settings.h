@@ -536,4 +536,13 @@ using WhiteBindSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, util::Join(NET_PERMISSIONS_DOC, ", ")); }>
     ::Category<OptionsCategory::CONNECTION>;
 
+using WhiteListSetting = common::Setting<
+    "-whitelist=<[permissions@]IP address or network>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Add permission flags to the peers using the given IP address (e.g. 1.2.3.4) or "
+        "CIDR-notated network (e.g. 1.2.3.0/24). Uses the same permissions as "
+        "-whitebind. "
+        "Additional flags \"in\" and \"out\" control whether permissions apply to incoming connections and/or manual (default: incoming only). "
+        "Can be specified multiple times.">
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

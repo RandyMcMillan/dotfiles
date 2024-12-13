@@ -547,11 +547,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     NatPmpSetting::Register(argsman);
     WhiteBindSetting::Register(argsman);
 
-    argsman.AddArg("-whitelist=<[permissions@]IP address or network>", "Add permission flags to the peers using the given IP address (e.g. 1.2.3.4) or "
-        "CIDR-notated network (e.g. 1.2.3.0/24). Uses the same permissions as "
-        "-whitebind. "
-        "Additional flags \"in\" and \"out\" control whether permissions apply to incoming connections and/or manual (default: incoming only). "
-        "Can be specified multiple times.", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    WhiteListSetting::Register(argsman);
 
     g_wallet_init_interface.AddWalletOptions(argsman);
 
@@ -1900,7 +1896,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         Discover();
     }
 
-    for (const auto& net : args.GetArgs("-whitelist")) {
+    for (const auto& net : WhiteListSetting::Get(args)) {
         NetWhitelistPermissions subnet;
         ConnectionDirection connection_direction;
         bilingual_str error;

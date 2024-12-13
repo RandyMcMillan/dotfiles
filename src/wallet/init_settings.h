@@ -3,6 +3,8 @@
 
 #include <common/setting.h>
 #include <outputtype.h>
+#include <policy/feerate.h>
+#include <util/moneystr.h>
 #include <wallet/coincontrol.h>
 #include <wallet/wallet.h>
 
@@ -32,6 +34,12 @@ using ChangeTypeSetting = common::Setting<
     "-changetype", std::string, common::SettingOptions{.legacy = true},
     "What type of change to use (\"legacy\", \"p2sh-segwit\", \"bech32\", or \"bech32m\"). Default is \"legacy\" when "
                    "-addresstype=legacy, else it is an implementation detail.">
+    ::Category<OptionsCategory::WALLET>;
+
+using ConsolidateFeeRateSetting = common::Setting<
+    "-consolidatefeerate=<amt>", std::string, common::SettingOptions{.legacy = true},
+    "The maximum feerate (in %s/kvB) at which transaction building may use more inputs than strictly necessary so that the wallet's UTXO pool can be reduced (default: %s).">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_CONSOLIDATE_FEERATE)); }>
     ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 

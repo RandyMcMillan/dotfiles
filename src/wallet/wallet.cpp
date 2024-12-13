@@ -3198,11 +3198,11 @@ std::shared_ptr<CWallet> CWallet::Create(WalletContext& context, const std::stri
         walletInstance->m_default_max_tx_fee = max_fee.value();
     }
 
-    if (args.IsArgSet("-consolidatefeerate")) {
-        if (std::optional<CAmount> consolidate_feerate = ParseMoney(args.GetArg("-consolidatefeerate", ""))) {
+    if (!ConsolidateFeeRateSetting::Value(args).isNull()) {
+        if (std::optional<CAmount> consolidate_feerate = ParseMoney(ConsolidateFeeRateSetting::Get(args))) {
             walletInstance->m_consolidate_feerate = CFeeRate(*consolidate_feerate);
         } else {
-            error = AmountErrMsg("consolidatefeerate", args.GetArg("-consolidatefeerate", ""));
+            error = AmountErrMsg("consolidatefeerate", ConsolidateFeeRateSetting::Get(args));
             return nullptr;
         }
     }

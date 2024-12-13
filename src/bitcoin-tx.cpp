@@ -64,9 +64,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
     OutMultiSigSetting::Register(argsman);
     OutPubKeySetting::Register(argsman);
     OutScriptSetting::Register(argsman);
-    argsman.AddArg("replaceable(=N)", "Sets Replace-By-Fee (RBF) opt-in sequence number for input N. "
-        "If N is not provided, the command attempts to opt-in all available inputs for RBF. "
-        "If the transaction has no inputs, this option is ignored.", ArgsManager::ALLOW_ANY, OptionsCategory::COMMANDS);
+    ReplaceableSetting::Register(argsman);
     argsman.AddArg("sign=SIGHASH-FLAGS", "Add zero or more signatures to transaction. "
         "This command requires JSON registers:"
         "prevtxs=JSON object, "

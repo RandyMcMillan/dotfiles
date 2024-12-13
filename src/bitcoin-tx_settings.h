@@ -78,4 +78,11 @@ using OutScriptSetting = common::Setting<
         "Optionally add the \"S\" flag to wrap the output in a pay-to-script-hash.">
     ::Category<OptionsCategory::COMMANDS>;
 
+using ReplaceableSetting = common::Setting<
+    "replaceable(=N)", common::Unset, common::SettingOptions{.legacy = true},
+    "Sets Replace-By-Fee (RBF) opt-in sequence number for input N. "
+        "If N is not provided, the command attempts to opt-in all available inputs for RBF. "
+        "If the transaction has no inputs, this option is ignored.">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

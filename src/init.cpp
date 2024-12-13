@@ -505,7 +505,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     BindSetting::Register(argsman, defaultBaseParams, testnetBaseParams, testnet4BaseParams, signetBaseParams, regtestBaseParams);
     CJdnsReachableSetting::Register(argsman);
     ConnectSetting::Register(argsman);
-    argsman.AddArg("-discover", "Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    DiscoverSetting::Register(argsman);
     argsman.AddArg("-dns", strprintf("Allow DNS lookups for -addnode, -seednode and -connect (default: %u)", DEFAULT_NAME_LOOKUP), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-dnsseed", strprintf("Query for peer addresses via DNS lookup, if low on addresses (default: %u unless -connect used or -maxconnections=0)", DEFAULT_DNSSEED), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-externalip=<ip>", "Specify your own public address", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -1359,7 +1359,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // need to reindex later.
 
     fListen = args.GetBoolArg("-listen", DEFAULT_LISTEN);
-    fDiscover = args.GetBoolArg("-discover", true);
+    fDiscover = DiscoverSetting::Get(args);
 
     PeerManager::Options peerman_opts{};
     ApplyArgsManOptions(args, peerman_opts);

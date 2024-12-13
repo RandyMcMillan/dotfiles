@@ -332,4 +332,11 @@ using ConnectSetting = common::Setting<
     "Connect only to the specified node; -noconnect disables automatic connections (the rules for this peer are the same as for -addnode). This option can be specified multiple times to connect to multiple nodes.">
     ::Category<OptionsCategory::CONNECTION>;
 
+using DiscoverSetting = common::Setting<
+    "-discover", bool, common::SettingOptions{.legacy = true},
+    "Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)">
+    ::Default<true>
+    ::HelpArgs<>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

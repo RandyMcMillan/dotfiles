@@ -427,4 +427,10 @@ using I2pAcceptIncomingSetting = common::Setting<
     ::Default<DEFAULT_I2P_ACCEPT_INCOMING>
     ::Category<OptionsCategory::CONNECTION>;
 
+using OnlyNetSetting = common::Setting<
+    "-onlynet=<net>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Make automatic outbound connections only to network <net> (%s). Inbound and manual connections are not affected by this option. It can be specified multiple times to allow multiple networks.">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, util::Join(GetNetworkNames(), ", ")); }>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

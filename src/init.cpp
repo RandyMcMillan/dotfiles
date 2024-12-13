@@ -524,7 +524,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 #endif
     I2pSamSetting::Register(argsman);
     I2pAcceptIncomingSetting::Register(argsman);
-    argsman.AddArg("-onlynet=<net>", strprintf("Make automatic outbound connections only to network <net> (%s). Inbound and manual connections are not affected by this option. It can be specified multiple times to allow multiple networks.", util::Join(GetNetworkNames(), ", ")), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    OnlyNetSetting::Register(argsman);
     argsman.AddArg("-v2transport", strprintf("Support v2 transport (default: %u)", DEFAULT_V2_TRANSPORT), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-peerbloomfilters", strprintf("Support filtering of blocks and transaction with bloom filters (default: %u)", DEFAULT_PEERBLOOMFILTERS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-peerblockfilters", strprintf("Serve compact block filters to peers per BIP 157 (default: %u)", DEFAULT_PEERBLOCKFILTERS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -755,8 +755,8 @@ void InitParameterInteraction(ArgsManager& args)
         if (args.SoftSetBoolArg("-whitelistrelay", true))
             LogInfo("parameter interaction: -whitelistforcerelay=1 -> setting -whitelistrelay=1\n");
     }
-    if (args.IsArgSet("-onlynet")) {
-        const auto onlynets = args.GetArgs("-onlynet");
+    if (!OnlyNetSetting::Value(args).isNull()) {
+        const auto onlynets = OnlyNetSetting::Get(args);
         bool clearnet_reachable = std::any_of(onlynets.begin(), onlynets.end(), [](const auto& net) {
             const auto n = ParseNetwork(net);
             return n == NET_IPV4 || n == NET_IPV6;
@@ -1446,9 +1446,9 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
             strSubVersion.size(), MAX_SUBVERSION_LENGTH));
     }
 
-    if (args.IsArgSet("-onlynet")) {
+    if (!OnlyNetSetting::Value(args).isNull()) {
         g_reachable_nets.RemoveAll();
-        for (const std::string& snet : args.GetArgs("-onlynet")) {
+        for (const std::string& snet : OnlyNetSetting::Get(args)) {
             enum Network net = ParseNetwork(snet);
             if (net == NET_UNROUTABLE)
                 return InitError(strprintf(_("Unknown network specified in -onlynet: '%s'"), snet));
@@ -1457,7 +1457,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
 
     if (CJdnsReachableSetting::Value(args).isNull()) {
-        if (args.IsArgSet("-onlynet") && g_reachable_nets.Contains(NET_CJDNS)) {
+        if (!OnlyNetSetting::Value(args).isNull() && g_reachable_nets.Contains(NET_CJDNS)) {
             return InitError(
                 _("Outbound connections restricted to CJDNS (-onlynet=cjdns) but "
                   "-cjdnsreachable is not provided"));
@@ -1508,7 +1508,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         onion_proxy = addrProxy;
     }
 
-    const bool onlynet_used_with_onion{args.IsArgSet("-onlynet") && g_reachable_nets.Contains(NET_ONION)};
+    const bool onlynet_used_with_onion{!OnlyNetSetting::Value(args).isNull() && g_reachable_nets.Contains(NET_ONION)};
 
     // -onion can be used to set only a proxy for .onion, or override normal proxy for .onion addresses
     // -noonion (or -onion=0) disables connecting to .onion entirely
@@ -1941,7 +1941,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         }
         SetProxy(NET_I2P, Proxy{addr.value()});
     } else {
-        if (args.IsArgSet("-onlynet") && g_reachable_nets.Contains(NET_I2P)) {
+        if (!OnlyNetSetting::Value(args).isNull() && g_reachable_nets.Contains(NET_I2P)) {
             return InitError(
                 _("Outbound connections restricted to i2p (-onlynet=i2p) but "
                   "-i2psam is not provided"));

@@ -401,10 +401,10 @@ void TorController::get_socks_cb(TorControlConnection& _conn, const TorControlRe
     Proxy addrOnion = Proxy(resolved, true);
     SetProxy(NET_ONION, addrOnion);
 
-    const auto onlynets = gArgs.GetArgs("-onlynet");
+    const auto onlynets = OnlyNetSetting::Get(gArgs);
 
     const bool onion_allowed_by_onlynet{
-        !gArgs.IsArgSet("-onlynet") ||
+        OnlyNetSetting::Value(gArgs).isNull() ||
         std::any_of(onlynets.begin(), onlynets.end(), [](const auto& n) {
             return ParseNetwork(n) == NET_ONION;
         })};

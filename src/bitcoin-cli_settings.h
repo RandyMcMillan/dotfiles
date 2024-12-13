@@ -46,4 +46,9 @@ using GenerateSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DEFAULT_NBLOCKS, DEFAULT_MAX_TRIES); }>
     ::Category<OptionsCategory::CLI_COMMANDS>;
 
+using AddrInfoSetting = common::Setting<
+    "-addrinfo", bool, common::SettingOptions{.legacy = true},
+    "Get the number of addresses known to the node, per network and total, after filtering for quality and recency. The total number of addresses known to the node may be higher.">
+    ::Category<OptionsCategory::CLI_COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

@@ -86,4 +86,8 @@ using RpcCookieFileSetting = common::Setting<
     "-rpccookiefile=<loc>", common::Unset, common::SettingOptions{.legacy = true},
     "Location of the auth cookie. Relative paths will be prefixed by a net-specific datadir location. (default: data dir)">;
 
+using RpcPasswordSetting = common::Setting<
+    "-rpcpassword=<pw>", std::string, common::SettingOptions{.legacy = true},
+    "Password for JSON-RPC connections">;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

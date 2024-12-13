@@ -84,7 +84,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     RpcClientTimeoutSetting::Register(argsman);
     RpcConnectSetting::Register(argsman);
     RpcCookieFileSetting::Register(argsman);
-    argsman.AddArg("-rpcpassword=<pw>", "Password for JSON-RPC connections", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    RpcPasswordSetting::Register(argsman);
     argsman.AddArg("-rpcport=<port>", strprintf("Connect to JSON-RPC on <port> (default: %u, testnet: %u, testnet4: %u, signet: %u, regtest: %u)", defaultBaseParams->RPCPort(), testnetBaseParams->RPCPort(), testnet4BaseParams->RPCPort(), signetBaseParams->RPCPort(), regtestBaseParams->RPCPort()), ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::OPTIONS);
     argsman.AddArg("-rpcuser=<user>", "Username for JSON-RPC connections", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-rpcwait", "Wait for RPC server to start", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -847,13 +847,13 @@ static UniValue CallRPC(BaseRequestHandler* rh, const std::string& strMethod, co
     // Get credentials
     std::string strRPCUserColonPass;
     bool failedToGetAuthCookie = false;
-    if (gArgs.GetArg("-rpcpassword", "") == "") {
+    if (RpcPasswordSetting::Get(gArgs) == "") {
         // Try fall back to cookie-based authentication if no password is provided
         if (!GetAuthCookie(&strRPCUserColonPass)) {
             failedToGetAuthCookie = true;
         }
     } else {
-        strRPCUserColonPass = gArgs.GetArg("-rpcuser", "") + ":" + gArgs.GetArg("-rpcpassword", "");
+        strRPCUserColonPass = gArgs.GetArg("-rpcuser", "") + ":" + RpcPasswordSetting::Get(gArgs);
     }
 
     struct evkeyvalq* output_headers = evhttp_request_get_output_headers(req.get());

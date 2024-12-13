@@ -2992,7 +2992,7 @@ std::shared_ptr<CWallet> CWallet::Create(WalletContext& context, const std::stri
     // should be possible to use std::allocate_shared.
     std::shared_ptr<CWallet> walletInstance(new CWallet(chain, name, std::move(database)), FlushAndDeleteWallet);
     walletInstance->m_keypool_size = std::max(KeyPoolSetting::Get(args), int64_t{1});
-    walletInstance->m_notify_tx_changed_script = args.GetArg("-walletnotify", "");
+    walletInstance->m_notify_tx_changed_script = WalletNotifySetting::Get(args);
 
     // Load wallet
     bool rescan_required = false;

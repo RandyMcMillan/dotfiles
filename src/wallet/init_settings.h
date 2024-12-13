@@ -119,6 +119,11 @@ using WalletDirSetting = common::Setting<
     "-walletdir=<dir>", fs::path, common::SettingOptions{.legacy = true, .network_only = true},
     "Specify directory to hold wallets (default: <datadir>/wallets if it exists, otherwise <datadir>)">
     ::Category<OptionsCategory::WALLET>;
+
+using WalletNotifySetting = common::Setting<
+    "-walletnotify=<cmd>", std::string, common::SettingOptions{.legacy = true},
+    "Execute command when a wallet transaction changes. %s in cmd is replaced by TxID, %w is replaced by wallet name, %b is replaced by the hash of the block including the transaction (set to 'unconfirmed' if the transaction is not included) and %h is replaced by the block height (-1 if not included). %w is not currently implemented on windows. On systems where %w is supported, it should NOT be quoted because this would break shell escaping used to invoke the command.">
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

@@ -108,4 +108,8 @@ using RpcWaitTimeoutSetting = common::Setting<
     "Timeout in seconds to wait for the RPC server to start, or 0 for no timeout. (default: %d)">
     ::Default<DEFAULT_WAIT_CLIENT_TIMEOUT>;
 
+using RpcWalletSetting = common::Setting<
+    "-rpcwallet=<walletname>", std::string, common::SettingOptions{.legacy = true},
+    "Send RPC for non-default wallet on RPC server (needs to exactly match corresponding -wallet option passed to bitcoind). This changes the RPC endpoint used, e.g. http://127.0.0.1:8332/wallet/<walletname>">;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

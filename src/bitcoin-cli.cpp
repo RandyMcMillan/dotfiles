@@ -89,7 +89,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     RpcUserSetting::Register(argsman);
     RpcWaitSetting::Register(argsman);
     RpcWaitTimeoutSetting::Register(argsman);
-    argsman.AddArg("-rpcwallet=<walletname>", "Send RPC for non-default wallet on RPC server (needs to exactly match corresponding -wallet option passed to bitcoind). This changes the RPC endpoint used, e.g. http://127.0.0.1:8332/wallet/<walletname>", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    RpcWalletSetting::Register(argsman);
     argsman.AddArg("-stdin", "Read extra arguments from standard input, one per line until EOF/Ctrl-D (recommended for sensitive information such as passphrases). When combined with -stdinrpcpass, the first line from standard input is used for the RPC password.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-stdinrpcpass", "Read RPC password from standard input as a single line. When combined with -stdin, the first line from standard input is used for the RPC password. When combined with -stdinwalletpassphrase, -stdinrpcpass consumes the first line, and -stdinwalletpassphrase consumes the second.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-stdinwalletpassphrase", "Read wallet passphrase from standard input as a single line. When combined with -stdin, the first line from standard input is used for the wallet passphrase.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -1169,7 +1169,7 @@ static void ParseGetInfoResult(UniValue& result)
 static UniValue GetNewAddress()
 {
     std::optional<std::string> wallet_name{};
-    if (gArgs.IsArgSet("-rpcwallet")) wallet_name = gArgs.GetArg("-rpcwallet", "");
+    if (!RpcWalletSetting::Value(gArgs).isNull()) wallet_name = RpcWalletSetting::Get(gArgs);
     DefaultRequestHandler rh;
     return ConnectAndCallRPC(&rh, "getnewaddress", /* args=*/{}, wallet_name);
 }
@@ -1277,7 +1277,7 @@ static int CommandLineRPC(int argc, char *argv[])
         if (nRet == 0) {
             // Perform RPC call
             std::optional<std::string> wallet_name{};
-            if (gArgs.IsArgSet("-rpcwallet")) wallet_name = gArgs.GetArg("-rpcwallet", "");
+            if (!RpcWalletSetting::Value(gArgs).isNull()) wallet_name = RpcWalletSetting::Get(gArgs);
             const UniValue reply = ConnectAndCallRPC(rh.get(), method, args, wallet_name);
 
             // Parse reply
@@ -1285,7 +1285,7 @@ static int CommandLineRPC(int argc, char *argv[])
             const UniValue& error = reply.find_value("error");
             if (error.isNull()) {
                 if (GetInfoSetting::Get(gArgs)) {
-                    if (!gArgs.IsArgSet("-rpcwallet")) {
+                    if (RpcWalletSetting::Value(gArgs).isNull()) {
                         GetWalletBalances(result); // fetch multiwallet balances and append to result
                     }
                     ParseGetInfoResult(result);

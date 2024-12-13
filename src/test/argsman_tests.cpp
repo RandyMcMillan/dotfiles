@@ -483,7 +483,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(!HSetting::Value(test_args).isNull());
     BOOST_CHECK(!ISetting::Value(test_args).isNull());
     BOOST_CHECK(ZzzSetting::Value(test_args).isNull());
-    BOOST_CHECK(!test_args.IsArgSet("-iii"));
+    BOOST_CHECK(IiiSetting::Value(test_args).isNull());
 
     BOOST_CHECK_EQUAL(ASettingStr::Get(test_args, "xxx"), "");
     BOOST_CHECK_EQUAL(BSettingStr::Get(test_args, "xxx"), "1");
@@ -494,7 +494,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK_EQUAL(HSettingStr::Get(test_args, "xxx"), "0");
     BOOST_CHECK_EQUAL(ISettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(ZzzSettingStr::Get(test_args, "xxx"), "xxx");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-iii", "xxx"), "xxx");
+    BOOST_CHECK_EQUAL(IiiSetting::Get(test_args, "xxx"), "xxx");
 
     for (const bool def : {false, true}) {
         BOOST_CHECK(ASettingBool::Get(test_args, def));
@@ -506,7 +506,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
         BOOST_CHECK(!HSettingBool::Get(test_args, def));
         BOOST_CHECK(ISettingBool::Get(test_args, def));
         BOOST_CHECK(ZzzSettingBool::Get(test_args, def) == def);
-        BOOST_CHECK(test_args.GetBoolArg("-iii", def) == def);
+        BOOST_CHECK(IiiSettingBool::Get(test_args, def) == def);
     }
 
     BOOST_CHECK(ASetting::Get(test_args).size() == 1
@@ -547,7 +547,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK_EQUAL(FffSettingStr::Get(test_args, "xxx"), "0");
     BOOST_CHECK_EQUAL(GggSettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(ZzzSettingStr::Get(test_args, "xxx"), "xxx");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-iii", "xxx"), "xxx");
+    BOOST_CHECK_EQUAL(IiiSetting::Get(test_args, "xxx"), "xxx");
     // d is overridden
     BOOST_CHECK(DSettingStr::Get(test_args, "xxx") == "eee");
     // section-specific setting
@@ -570,7 +570,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(ZzzSettingStr::Get(test_args, "xxx") == "xxx");
     BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "0");
     // section-specific setting
-    BOOST_CHECK(test_args.GetArg("-iii", "xxx") == "2");
+    BOOST_CHECK(IiiSetting::Get(test_args, "xxx") == "2");
     // section takes priority for multiple values
     BOOST_CHECK(CccSettingStr::Get(test_args, "xxx") == "extend3");
     // check multiple values works

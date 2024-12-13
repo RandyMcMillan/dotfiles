@@ -142,4 +142,10 @@ using ZzzSettingStr = common::Setting<
 using ZzzSettingBool = common::Setting<
     "-zzz", bool, common::SettingOptions{.legacy = true}>;
 
+using IiiSetting = common::Setting<
+    "-iii", std::string, common::SettingOptions{.legacy = true}>;
+
+using IiiSettingBool = common::Setting<
+    "-iii", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

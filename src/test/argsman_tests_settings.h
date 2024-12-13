@@ -23,4 +23,16 @@ using HSettingStr = common::Setting<
 using HSettingBool = common::Setting<
     "-h", bool, common::SettingOptions{.legacy = true}>;
 
+using ValueSetting = common::Setting<
+    "-value", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using ValueSettingStr = common::Setting<
+    "-value", std::string, common::SettingOptions{.legacy = true}>;
+
+using ValueSettingInt = common::Setting<
+    "-value", int64_t, common::SettingOptions{.legacy = true}>;
+
+using ValueSettingBool = common::Setting<
+    "-value", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

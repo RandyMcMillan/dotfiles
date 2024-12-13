@@ -135,33 +135,33 @@ public:
         }
 
         if (expect.default_string) {
-            BOOST_CHECK_EQUAL(test.GetArg("-value", "zzzzz"), "zzzzz");
+            BOOST_CHECK_EQUAL(ValueSettingStr::Get(test, "zzzzz"), "zzzzz");
         } else if (expect.string_value) {
-            BOOST_CHECK_EQUAL(test.GetArg("-value", "zzzzz"), expect.string_value);
+            BOOST_CHECK_EQUAL(ValueSettingStr::Get(test, "zzzzz"), expect.string_value);
         } else {
             BOOST_CHECK(!success);
         }
 
         if (expect.default_int) {
-            BOOST_CHECK_EQUAL(test.GetIntArg("-value", 99999), 99999);
+            BOOST_CHECK_EQUAL(ValueSettingInt::Get(test, 99999), 99999);
         } else if (expect.int_value) {
-            BOOST_CHECK_EQUAL(test.GetIntArg("-value", 99999), *expect.int_value);
+            BOOST_CHECK_EQUAL(ValueSettingInt::Get(test, 99999), *expect.int_value);
         } else {
             BOOST_CHECK(!success);
         }
 
         if (expect.default_bool) {
-            BOOST_CHECK_EQUAL(test.GetBoolArg("-value", false), false);
-            BOOST_CHECK_EQUAL(test.GetBoolArg("-value", true), true);
+            BOOST_CHECK_EQUAL(ValueSettingBool::Get(test, false), false);
+            BOOST_CHECK_EQUAL(ValueSettingBool::Get(test, true), true);
         } else if (expect.bool_value) {
-            BOOST_CHECK_EQUAL(test.GetBoolArg("-value", false), *expect.bool_value);
-            BOOST_CHECK_EQUAL(test.GetBoolArg("-value", true), *expect.bool_value);
+            BOOST_CHECK_EQUAL(ValueSettingBool::Get(test, false), *expect.bool_value);
+            BOOST_CHECK_EQUAL(ValueSettingBool::Get(test, true), *expect.bool_value);
         } else {
             BOOST_CHECK(!success);
         }
 
         if (expect.list_value) {
-            auto l = test.GetArgs("-value");
+            auto l = ValueSetting::Get(test);
             BOOST_CHECK_EQUAL_COLLECTIONS(l.begin(), l.end(), expect.list_value->begin(), expect.list_value->end());
         } else {
             BOOST_CHECK(!success);
@@ -273,10 +273,10 @@ static void TestParse(const std::string& str, bool expected_bool, int64_t expect
     const char* argv[] = {"ignored", arg.c_str()};
     std::string error;
     BOOST_CHECK(test.ParseParameters(2, argv, error));
-    BOOST_CHECK_EQUAL(test.GetBoolArg("-value", false), expected_bool);
-    BOOST_CHECK_EQUAL(test.GetBoolArg("-value", true), expected_bool);
-    BOOST_CHECK_EQUAL(test.GetIntArg("-value", 99998), expected_int);
-    BOOST_CHECK_EQUAL(test.GetIntArg("-value", 99999), expected_int);
+    BOOST_CHECK_EQUAL(ValueSettingBool::Get(test, false), expected_bool);
+    BOOST_CHECK_EQUAL(ValueSettingBool::Get(test, true), expected_bool);
+    BOOST_CHECK_EQUAL(ValueSettingInt::Get(test, 99998), expected_int);
+    BOOST_CHECK_EQUAL(ValueSettingInt::Get(test, 99999), expected_int);
 }
 
 // Test bool and int parsing.

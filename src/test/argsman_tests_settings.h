@@ -100,4 +100,10 @@ using FooSetting = common::Setting<
 using FooSettingStr = common::Setting<
     "-foo", std::string, common::SettingOptions{.legacy = true}>;
 
+using BarSetting = common::Setting<
+    "-bar", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using BarSettingStr = common::Setting<
+    "-bar", std::string, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

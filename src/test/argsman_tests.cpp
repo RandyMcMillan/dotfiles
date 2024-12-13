@@ -378,8 +378,8 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArgEdgeCases)
     BOOST_CHECK(FooSettingStr::Get(testArgs, "xxx") == "");
 
     // A double negative is a positive, and not marked as negated.
-    BOOST_CHECK(!testArgs.IsArgNegated("-bar"));
-    BOOST_CHECK(testArgs.GetArg("-bar", "xxx") == "1");
+    BOOST_CHECK(!BarSetting::Value(testArgs).isFalse());
+    BOOST_CHECK(BarSettingStr::Get(testArgs, "xxx") == "1");
 
     // Config test
     const char *conf_test = "nofoo=1\nfoo=1\nnobar=0\n";
@@ -392,8 +392,8 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArgEdgeCases)
     BOOST_CHECK(FooSettingStr::Get(testArgs, "xxx") == "1");
 
     // A double negative is a positive, and does not count as negated.
-    BOOST_CHECK(!testArgs.IsArgNegated("-bar"));
-    BOOST_CHECK(testArgs.GetArg("-bar", "xxx") == "1");
+    BOOST_CHECK(!BarSetting::Value(testArgs).isFalse());
+    BOOST_CHECK(BarSettingStr::Get(testArgs, "xxx") == "1");
 
     // Combined test
     const char *combo_test_args[] = {"ignored", "-nofoo", "-bar"};
@@ -407,10 +407,10 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArgEdgeCases)
     BOOST_CHECK(FooSetting::Get(testArgs).size() == 0);
 
     // Command line overrides, but doesn't erase old setting
-    BOOST_CHECK(!testArgs.IsArgNegated("-bar"));
-    BOOST_CHECK(testArgs.GetArg("-bar", "xxx") == "");
-    BOOST_CHECK(testArgs.GetArgs("-bar").size() == 1
-                && testArgs.GetArgs("-bar").front() == "");
+    BOOST_CHECK(!BarSetting::Value(testArgs).isFalse());
+    BOOST_CHECK(BarSettingStr::Get(testArgs, "xxx") == "");
+    BOOST_CHECK(BarSetting::Get(testArgs).size() == 1
+                && BarSetting::Get(testArgs).front() == "");
 }
 
 BOOST_AUTO_TEST_CASE(util_ReadConfigStream)

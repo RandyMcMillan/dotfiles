@@ -133,4 +133,13 @@ using ISettingStr = common::Setting<
 using ISettingBool = common::Setting<
     "-i", bool, common::SettingOptions{.legacy = true}>;
 
+using ZzzSetting = common::Setting<
+    "-zzz", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using ZzzSettingStr = common::Setting<
+    "-zzz", std::string, common::SettingOptions{.legacy = true}>;
+
+using ZzzSettingBool = common::Setting<
+    "-zzz", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

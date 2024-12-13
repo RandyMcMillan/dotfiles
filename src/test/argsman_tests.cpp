@@ -482,7 +482,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(!GggSetting::Value(test_args).isNull());
     BOOST_CHECK(!HSetting::Value(test_args).isNull());
     BOOST_CHECK(!ISetting::Value(test_args).isNull());
-    BOOST_CHECK(!test_args.IsArgSet("-zzz"));
+    BOOST_CHECK(ZzzSetting::Value(test_args).isNull());
     BOOST_CHECK(!test_args.IsArgSet("-iii"));
 
     BOOST_CHECK_EQUAL(ASettingStr::Get(test_args, "xxx"), "");
@@ -493,7 +493,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK_EQUAL(GggSettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(HSettingStr::Get(test_args, "xxx"), "0");
     BOOST_CHECK_EQUAL(ISettingStr::Get(test_args, "xxx"), "1");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-zzz", "xxx"), "xxx");
+    BOOST_CHECK_EQUAL(ZzzSettingStr::Get(test_args, "xxx"), "xxx");
     BOOST_CHECK_EQUAL(test_args.GetArg("-iii", "xxx"), "xxx");
 
     for (const bool def : {false, true}) {
@@ -505,7 +505,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
         BOOST_CHECK(GggSettingBool::Get(test_args, def));
         BOOST_CHECK(!HSettingBool::Get(test_args, def));
         BOOST_CHECK(ISettingBool::Get(test_args, def));
-        BOOST_CHECK(test_args.GetBoolArg("-zzz", def) == def);
+        BOOST_CHECK(ZzzSettingBool::Get(test_args, def) == def);
         BOOST_CHECK(test_args.GetBoolArg("-iii", def) == def);
     }
 
@@ -526,7 +526,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(ISetting::Get(test_args).size() == 1
                 && ISetting::Get(test_args).front() == "1");
     BOOST_CHECK(test_args.GetArgs("-noi").size() == 0);
-    BOOST_CHECK(test_args.GetArgs("-zzz").size() == 0);
+    BOOST_CHECK(ZzzSetting::Get(test_args).size() == 0);
 
     BOOST_CHECK(!ASetting::Value(test_args).isFalse());
     BOOST_CHECK(!BSetting::Value(test_args).isFalse());
@@ -536,7 +536,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(!GggSetting::Value(test_args).isFalse());
     BOOST_CHECK(HSetting::Value(test_args).isFalse()); // last setting takes precedence
     BOOST_CHECK(!ISetting::Value(test_args).isFalse()); // last setting takes precedence
-    BOOST_CHECK(!test_args.IsArgNegated("-zzz"));
+    BOOST_CHECK(!ZzzSetting::Value(test_args).isFalse());
 
     // Test sections work
     test_args.SelectConfigNetwork("sec1");
@@ -546,7 +546,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK_EQUAL(BSettingStr::Get(test_args, "xxx"), "1");
     BOOST_CHECK_EQUAL(FffSettingStr::Get(test_args, "xxx"), "0");
     BOOST_CHECK_EQUAL(GggSettingStr::Get(test_args, "xxx"), "1");
-    BOOST_CHECK_EQUAL(test_args.GetArg("-zzz", "xxx"), "xxx");
+    BOOST_CHECK_EQUAL(ZzzSettingStr::Get(test_args, "xxx"), "xxx");
     BOOST_CHECK_EQUAL(test_args.GetArg("-iii", "xxx"), "xxx");
     // d is overridden
     BOOST_CHECK(DSettingStr::Get(test_args, "xxx") == "eee");
@@ -567,7 +567,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(DSettingStr::Get(test_args, "xxx") == "e");
     BOOST_CHECK(FffSettingStr::Get(test_args, "xxx") == "0");
     BOOST_CHECK(GggSettingStr::Get(test_args, "xxx") == "1");
-    BOOST_CHECK(test_args.GetArg("-zzz", "xxx") == "xxx");
+    BOOST_CHECK(ZzzSettingStr::Get(test_args, "xxx") == "xxx");
     BOOST_CHECK(HSettingStr::Get(test_args, "xxx") == "0");
     // section-specific setting
     BOOST_CHECK(test_args.GetArg("-iii", "xxx") == "2");

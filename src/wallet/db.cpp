@@ -155,7 +155,7 @@ bool IsSQLiteFile(const fs::path& path)
 void ReadDatabaseArgs(const ArgsManager& args, DatabaseOptions& options)
 {
     // Override current options with args values, if any were specified
-    options.use_unsafe_sync = args.GetBoolArg("-unsafesqlitesync", options.use_unsafe_sync);
+    options.use_unsafe_sync = UnsafeSqliteSyncSetting::Get(args, options.use_unsafe_sync);
     options.use_shared_memory = !PrivDbSetting::Get(args, !options.use_shared_memory);
     options.max_log_mb = DbLogSizeSetting::Get(args, options.max_log_mb);
 }

@@ -161,6 +161,11 @@ using WalletCrossChainSetting = common::Setting<
     "Allow reusing wallet files across chains (default: %u)">
     ::Default<DEFAULT_WALLETCROSSCHAIN>
     ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
+
+using UnsafeSqliteSyncSetting = common::Setting<
+    "-unsafesqlitesync", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Set SQLite synchronous=OFF to disable waiting for the database to sync to disk. This is unsafe and can cause data loss and corruption. This option is only used by tests to improve their performance (default: false)">
+    ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

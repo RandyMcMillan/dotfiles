@@ -455,7 +455,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ChooseDataDirSettingHidden::Register(argsman);
     LangSettingHidden::Register(argsman);
     MinSettingHidden::Register(argsman);
-    argsman.AddHiddenArgs({"-resetguisettings"});
+    ResetGuiSettingsSettingHidden::Register(argsman);
     argsman.AddHiddenArgs({"-splash"});
     argsman.AddHiddenArgs({"-uiplatform"});
 

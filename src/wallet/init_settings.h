@@ -67,6 +67,12 @@ using KeyPoolSetting = common::Setting<
     "Set key pool size to <n> (default: %u). Warning: Smaller sizes may increase the risk of losing funds when restoring from an old backup, if none of the addresses in the original keypool have been used.">
     ::Default<DEFAULT_KEYPOOL_SIZE>
     ::Category<OptionsCategory::WALLET>;
+
+using MaxApsFeeSetting = common::Setting<
+    "-maxapsfee=<n>", std::string, common::SettingOptions{.legacy = true},
+    "Spend up to this amount in additional (absolute) fees (in %s) if it allows the use of partial spend avoidance (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_MAX_AVOIDPARTIALSPEND_FEE)); }>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

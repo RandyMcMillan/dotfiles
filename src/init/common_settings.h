@@ -29,4 +29,10 @@ using DebugExcludeSetting = common::Setting<
     "Exclude debug and trace logging for a category. Can be used in conjunction with -debug=1 to output debug and trace logging for all categories except the specified category. This option can be specified multiple times to exclude multiple categories. This takes priority over \"-debug\"">
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LogIpsSetting = common::Setting<
+    "-logips", bool, common::SettingOptions{.legacy = true},
+    "Include IP addresses in debug output (default: %u)">
+    ::Default<DEFAULT_LOGIPS>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

@@ -7,6 +7,7 @@
 #include <common/args.h>
 #include <crypto/hmac_sha256.h>
 #include <httpserver.h>
+#include <init_settings.h>
 #include <logging.h>
 #include <netaddress.h>
 #include <rpc/protocol.h>
@@ -291,7 +292,7 @@ static bool HTTPReq_JSONRPC(const std::any& context, HTTPRequest* req)
 
 static bool InitRPCAuthentication()
 {
-    if (gArgs.GetArg("-rpcpassword", "") == "")
+    if (RpcPasswordSetting::Get(gArgs) == "")
     {
         std::optional<fs::perms> cookie_perms{std::nullopt};
         auto cookie_perms_arg{gArgs.GetArg("-rpccookieperms")};
@@ -315,7 +316,7 @@ static bool InitRPCAuthentication()
         }
     } else {
         LogPrintf("Config options rpcuser and rpcpassword will soon be deprecated. Locally-run instances may remove rpcuser to use cookie-based auth, or may be replaced with rpcauth. Please see share/rpcauth for rpcauth auth generation.\n");
-        strRPCUserColonPass = gArgs.GetArg("-rpcuser", "") + ":" + gArgs.GetArg("-rpcpassword", "");
+        strRPCUserColonPass = gArgs.GetArg("-rpcuser", "") + ":" + RpcPasswordSetting::Get(gArgs);
     }
 
     if (!gArgs.GetArgs("-rpcauth").empty()) {

@@ -6,6 +6,7 @@
 
 #include <wallet/wallettool.h>
 
+#include <bitcoin-wallet_settings.h>
 #include <common/args.h>
 #include <util/fs.h>
 #include <util/translation.h>
@@ -128,11 +129,11 @@ bool ExecuteWalletToolFunc(const ArgsManager& args, const std::string& command)
         tfm::format(std::cerr, "The -legacy option can only be used with the 'create' command.\n");
         return false;
     }
-    if (command == "create" && !args.IsArgSet("-wallet")) {
+    if (command == "create" && WalletSetting::Value(args).isNull()) {
         tfm::format(std::cerr, "Wallet name must be provided when creating a new wallet.\n");
         return false;
     }
-    const std::string name = args.GetArg("-wallet", "");
+    const std::string name = WalletSetting::Get(args);
     const fs::path path = fsbridge::AbsPathJoin(GetWalletDir(), fs::PathFromString(name));
 
     if (command == "create") {

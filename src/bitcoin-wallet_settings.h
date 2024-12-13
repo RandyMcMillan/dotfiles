@@ -14,4 +14,8 @@ using DataDirSetting = common::Setting<
     "-datadir=<dir>", std::string, common::SettingOptions{.legacy = true, .disallow_negation = true},
     "Specify data directory">;
 
+using WalletSetting = common::Setting<
+    "-wallet=<wallet-name>", std::string, common::SettingOptions{.legacy = true, .network_only = true},
+    "Specify wallet name">;
+
 #endif // BITCOIN_BITCOIN_WALLET_SETTINGS_H

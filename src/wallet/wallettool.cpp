@@ -117,7 +117,7 @@ bool ExecuteWalletToolFunc(const ArgsManager& args, const std::string& command)
         tfm::format(std::cerr, "The -format option can only be used with the \"createfromdump\" command.\n");
         return false;
     }
-    if (args.IsArgSet("-dumpfile") && command != "dump" && command != "createfromdump") {
+    if (!DumpFileSetting::Value(args).isNull() && command != "dump" && command != "createfromdump") {
         tfm::format(std::cerr, "The -dumpfile option can only be used with the \"dump\" and \"createfromdump\" commands.\n");
         return false;
     }

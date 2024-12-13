@@ -762,4 +762,10 @@ using DataCarrierSizeSetting = common::Setting<
     ::Default<MAX_OP_RETURN_RELAY>
     ::Category<OptionsCategory::NODE_RELAY>;
 
+using PermitBareMultiSigSetting = common::Setting<
+    "-permitbaremultisig", bool, common::SettingOptions{.legacy = true},
+    "Relay transactions creating non-P2SH multisig outputs (default: %u)">
+    ::Default<DEFAULT_PERMIT_BAREMULTISIG>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

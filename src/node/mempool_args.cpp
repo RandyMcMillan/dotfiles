@@ -80,7 +80,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& argsman, const CChainP
         }
     }
 
-    mempool_opts.permit_bare_multisig = argsman.GetBoolArg("-permitbaremultisig", DEFAULT_PERMIT_BAREMULTISIG);
+    mempool_opts.permit_bare_multisig = PermitBareMultiSigSetting::Get(argsman);
 
     if (DataCarrierSetting::Get(argsman)) {
         mempool_opts.max_datacarrier_bytes = DataCarrierSizeSetting::Get(argsman);

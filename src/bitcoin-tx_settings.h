@@ -37,4 +37,9 @@ using InSetting = common::Setting<
     "Add input to TX">
     ::Category<OptionsCategory::COMMANDS>;
 
+using LockTimeSetting = common::Setting<
+    "locktime=N", common::Unset, common::SettingOptions{.legacy = true},
+    "Set TX lock time to N">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

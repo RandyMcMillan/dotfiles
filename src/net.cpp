@@ -17,6 +17,7 @@
 #include <consensus/consensus.h>
 #include <crypto/sha256.h>
 #include <i2p.h>
+#include <init_settings.h>
 #include <key.h>
 #include <logging.h>
 #include <memusage.h>
@@ -140,7 +141,7 @@ void CConnman::AddAddrFetch(const std::string& strDest)
 uint16_t GetListenPort()
 {
     // If -bind= is provided with ":port" part, use that (first one if multiple are provided).
-    for (const std::string& bind_arg : gArgs.GetArgs("-bind")) {
+    for (const std::string& bind_arg : BindSetting::Get(gArgs)) {
         constexpr uint16_t dummy_port = 0;
 
         const std::optional<CService> bind_addr{Lookup(bind_arg, dummy_port, /*fAllowLookup=*/false)};

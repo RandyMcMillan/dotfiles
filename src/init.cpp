@@ -572,7 +572,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ZmqPubHashTxHwmSetting::Hidden::Register(argsman);
     ZmqPubRawBlockHwmSetting::Hidden::Register(argsman);
     ZmqPubRawTxHwmSetting::Hidden::Register(argsman);
-    argsman.AddHiddenArgs({"-zmqpubsequencehwm=<n>"});
+    ZmqPubSequenceHwmSetting::Hidden::Register(argsman);
 #endif
 
     argsman.AddArg("-checkblocks=<n>", strprintf("How many blocks to check at startup (default: %u, 0 = all)", DEFAULT_CHECKBLOCKS), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);

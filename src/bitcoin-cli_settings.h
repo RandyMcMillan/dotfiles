@@ -56,4 +56,10 @@ using GetInfoSetting = common::Setting<
     "Get general information from the remote server. Note that unlike server-side RPC calls, the output of -getinfo is the result of multiple non-atomic requests. Some entries in the output may represent results from different states (e.g. wallet balance may be as of a different block from the chain state reported)">
     ::Category<OptionsCategory::CLI_COMMANDS>;
 
+using NetInfoSetting = common::Setting<
+    "-netinfo", bool, common::SettingOptions{.legacy = true},
+    "Get network peer connection information from the remote server. An optional argument from 0 to %d can be passed for different peers listings (default: 0). If a non-zero value is passed, an additional \"outonly\" (or \"o\") argument can be passed to see outbound peers only. Pass \"help\" (or \"h\") for detailed help documentation.">
+    ::HelpArgs<NETINFO_MAX_LEVEL>
+    ::Category<OptionsCategory::CLI_COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

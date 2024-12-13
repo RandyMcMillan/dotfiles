@@ -76,7 +76,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     GenerateSetting::Register(argsman);
     AddrInfoSetting::Register(argsman);
     GetInfoSetting::Register(argsman);
-    argsman.AddArg("-netinfo", strprintf("Get network peer connection information from the remote server. An optional argument from 0 to %d can be passed for different peers listings (default: 0). If a non-zero value is passed, an additional \"outonly\" (or \"o\") argument can be passed to see outbound peers only. Pass \"help\" (or \"h\") for detailed help documentation.", NETINFO_MAX_LEVEL), ArgsManager::ALLOW_ANY, OptionsCategory::CLI_COMMANDS);
+    NetInfoSetting::Register(argsman);
 
     SetupChainParamsBaseOptions(argsman);
     argsman.AddArg("-color=<when>", strprintf("Color setting for CLI output (default: %s). Valid values: always, auto (add color codes when standard output is connected to a terminal and OS is not WIN32), never. Only applies to the output of -getinfo.", DEFAULT_COLOR_SETTING), ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
@@ -1249,7 +1249,7 @@ static int CommandLineRPC(int argc, char *argv[])
         std::string method;
         if (!GetInfoSetting::Value(gArgs).isNull()) {
             rh.reset(new GetinfoRequestHandler());
-        } else if (gArgs.GetBoolArg("-netinfo", false)) {
+        } else if (NetInfoSetting::Get(gArgs)) {
             if (!args.empty() && (args.at(0) == "h" || args.at(0) == "help")) {
                 tfm::format(std::cout, "%s\n", NetinfoRequestHandler().m_help_doc);
                 return 0;

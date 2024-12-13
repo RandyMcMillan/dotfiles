@@ -560,7 +560,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     ZmqPubHashBlockHwmSetting::Register(argsman);
     ZmqPubHashTxHwmSetting::Register(argsman);
     ZmqPubRawBlockHwmSetting::Register(argsman);
-    argsman.AddArg("-zmqpubrawtxhwm=<n>", strprintf("Set publish raw transaction outbound message high water mark (default: %d)", CZMQAbstractNotifier::DEFAULT_ZMQ_SNDHWM), ArgsManager::ALLOW_ANY, OptionsCategory::ZMQ);
+    ZmqPubRawTxHwmSetting::Register(argsman);
     argsman.AddArg("-zmqpubsequencehwm=<n>", strprintf("Set publish hash sequence message high water mark (default: %d)", CZMQAbstractNotifier::DEFAULT_ZMQ_SNDHWM), ArgsManager::ALLOW_ANY, OptionsCategory::ZMQ);
 #else
     ZmqPubHashBlockSetting::Hidden::Register(argsman);

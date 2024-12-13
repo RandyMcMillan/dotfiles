@@ -218,7 +218,7 @@ bool Intro::showIfNeeded(bool& did_show_intro, int64_t& prune_MiB)
     /* 2) Allow QSettings to override default dir */
     dataDir = settings.value("strDataDir", dataDir).toString();
 
-    if(!fs::exists(GUIUtil::QStringToPath(dataDir)) || ChooseDataDirSetting::Get(gArgs) || settings.value("fReset", false).toBool() || gArgs.GetBoolArg("-resetguisettings", false))
+    if(!fs::exists(GUIUtil::QStringToPath(dataDir)) || ChooseDataDirSetting::Get(gArgs) || settings.value("fReset", false).toBool() || ResetGuiSettingsSetting::Get(gArgs))
     {
         /* Use selectParams here to guarantee Params() can be used by node interface */
         try {

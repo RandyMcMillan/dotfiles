@@ -23,4 +23,9 @@ using MinSetting = common::Setting<
     "Start minimized">
     ::Category<OptionsCategory::GUI>;
 
+using ResetGuiSettingsSetting = common::Setting<
+    "-resetguisettings", bool, common::SettingOptions{.legacy = true},
+    "Reset all settings changed in the GUI">
+    ::Category<OptionsCategory::GUI>;
+
 #endif // BITCOIN_QT_BITCOIN_SETTINGS_H

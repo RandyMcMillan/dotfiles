@@ -482,7 +482,7 @@ static void SetupUIArgs(ArgsManager& argsman)
     ChooseDataDirSetting::Register(argsman);
     LangSetting::Register(argsman);
     MinSetting::Register(argsman);
-    argsman.AddArg("-resetguisettings", "Reset all settings changed in the GUI", ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
+    ResetGuiSettingsSetting::Register(argsman);
     argsman.AddArg("-splash", strprintf("Show splash screen on startup (default: %u)", DEFAULT_SPLASHSCREEN), ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
     argsman.AddArg("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", BitcoinGUI::DEFAULT_UIPLATFORM), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::GUI);
 }
@@ -670,7 +670,7 @@ int GuiMain(int argc, char* argv[])
     app.createNode(*init);
 
     // Load GUI settings from QSettings
-    if (!app.createOptionsModel(gArgs.GetBoolArg("-resetguisettings", false))) {
+    if (!app.createOptionsModel(ResetGuiSettingsSetting::Get(gArgs))) {
         return EXIT_FAILURE;
     }
 

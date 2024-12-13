@@ -665,4 +665,10 @@ using LimitAncestorSizeSetting = common::Setting<
     ::HelpArgs<DEFAULT_ANCESTOR_SIZE_LIMIT_KVB>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LimitDescendantCountSetting = common::Setting<
+    "-limitdescendantcount=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Do not accept transactions if any ancestor would have <n> or more in-mempool descendants (default: %u)">
+    ::HelpArgs<DEFAULT_DESCENDANT_LIMIT>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

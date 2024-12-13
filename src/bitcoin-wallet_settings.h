@@ -46,4 +46,9 @@ using PrintToConsoleSetting = common::Setting<
     "Send trace/debug info to console (default: 1 when no -debug is true, 0 otherwise).">
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using WithInternalBdbSetting = common::Setting<
+    "-withinternalbdb", bool, common::SettingOptions{.legacy = true},
+    "Use the internal Berkeley DB parser when dumping a Berkeley DB wallet file (default: false)">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_BITCOIN_WALLET_SETTINGS_H

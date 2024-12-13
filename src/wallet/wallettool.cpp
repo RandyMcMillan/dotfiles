@@ -194,7 +194,7 @@ bool ExecuteWalletToolFunc(const ArgsManager& args, const std::string& command)
         options.require_existing = true;
         DatabaseStatus status;
 
-        if (args.GetBoolArg("-withinternalbdb", false) && IsBDBFile(BDBDataFile(path))) {
+        if (WithInternalBdbSetting::Get(args) && IsBDBFile(BDBDataFile(path))) {
             options.require_format = DatabaseFormat::BERKELEY_RO;
         }
 

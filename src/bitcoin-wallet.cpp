@@ -43,7 +43,7 @@ static void SetupWalletToolArgs(ArgsManager& argsman)
     LegacySetting::Register(argsman);
     FormatSetting::Register(argsman);
     PrintToConsoleSetting::Register(argsman);
-    argsman.AddArg("-withinternalbdb", "Use the internal Berkeley DB parser when dumping a Berkeley DB wallet file (default: false)", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
+    WithInternalBdbSetting::Register(argsman);
 
     argsman.AddCommand("info", "Get wallet info");
     argsman.AddCommand("create", "Create new wallet file");

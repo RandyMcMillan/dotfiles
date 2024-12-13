@@ -525,7 +525,7 @@ BOOST_AUTO_TEST_CASE(util_ReadConfigStream)
     BOOST_CHECK(NohSetting::Get(test_args).size() == 0);
     BOOST_CHECK(ISetting::Get(test_args).size() == 1
                 && ISetting::Get(test_args).front() == "1");
-    BOOST_CHECK(test_args.GetArgs("-noi").size() == 0);
+    BOOST_CHECK(NoiSetting::Get(test_args).size() == 0);
     BOOST_CHECK(ZzzSetting::Get(test_args).size() == 0);
 
     BOOST_CHECK(!ASetting::Value(test_args).isFalse());

@@ -157,4 +157,7 @@ using NogggSetting = common::Setting<
 using NohSetting = common::Setting<
     "-noh", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
 
+using NoiSetting = common::Setting<
+    "-noi", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

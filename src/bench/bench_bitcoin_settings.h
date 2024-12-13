@@ -20,4 +20,9 @@ using AsymptoteSetting = common::Setting<
     "-asymptote=<n1,n2,n3,...>", std::string, common::SettingOptions{.legacy = true},
     "Test asymptotic growth of the runtime of an algorithm, if supported by the benchmark">;
 
+using FilterSetting = common::Setting<
+    "-filter=<regex>", std::string, common::SettingOptions{.legacy = true},
+    "Regular expression filter to select benchmark by name (default: %s)">
+    ::DefaultFn<[] { return DEFAULT_BENCH_FILTER; }>;
+
 #endif // BITCOIN_BENCH_BENCH_BITCOIN_SETTINGS_H

@@ -27,7 +27,7 @@ static void SetupBenchArgs(ArgsManager& argsman)
     SetupCommonTestArgs(argsman);
 
     AsymptoteSetting::Register(argsman);
-    argsman.AddArg("-filter=<regex>", strprintf("Regular expression filter to select benchmark by name (default: %s)", DEFAULT_BENCH_FILTER), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    FilterSetting::Register(argsman);
     argsman.AddArg("-list", "List benchmarks without executing them", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-min-time=<milliseconds>", strprintf("Minimum runtime per benchmark, in milliseconds (default: %d)", DEFAULT_MIN_TIME_MS), ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
     argsman.AddArg("-output-csv=<output.csv>", "Generate CSV file with the most important benchmark results", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -138,7 +138,7 @@ int main(int argc, char** argv)
         args.min_time = std::chrono::milliseconds(argsman.GetIntArg("-min-time", DEFAULT_MIN_TIME_MS));
         args.output_csv = argsman.GetPathArg("-output-csv");
         args.output_json = argsman.GetPathArg("-output-json");
-        args.regex_filter = argsman.GetArg("-filter", DEFAULT_BENCH_FILTER);
+        args.regex_filter = FilterSetting::Get(argsman);
         args.sanity_check = argsman.GetBoolArg("-sanity-check", false);
         args.priority = parsePriorityLevel(argsman.GetArg("-priority-level", DEFAULT_PRIORITY));
         args.setup_args = parseTestSetupArgs(argsman);

@@ -18,4 +18,8 @@ using JsonSetting = common::Setting<
     "-json", bool, common::SettingOptions{.legacy = true},
     "Select JSON output">;
 
+using TxIdSetting = common::Setting<
+    "-txid", bool, common::SettingOptions{.legacy = true},
+    "Output only the hex-encoded transaction id of the resultant transaction.">;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

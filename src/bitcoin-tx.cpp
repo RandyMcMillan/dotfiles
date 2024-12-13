@@ -51,7 +51,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
     VersionSetting::Register(argsman);
     CreateSetting::Register(argsman);
     JsonSetting::Register(argsman);
-    argsman.AddArg("-txid", "Output only the hex-encoded transaction id of the resultant transaction.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    TxIdSetting::Register(argsman);
     SetupChainParamsBaseOptions(argsman);
 
     argsman.AddArg("delin=N", "Delete input N from TX", ArgsManager::ALLOW_ANY, OptionsCategory::COMMANDS);
@@ -776,7 +776,7 @@ static void OutputTx(const CTransaction& tx)
 {
     if (JsonSetting::Get(gArgs))
         OutputTxJSON(tx);
-    else if (gArgs.GetBoolArg("-txid", false))
+    else if (TxIdSetting::Get(gArgs))
         OutputTxHash(tx);
     else
         OutputTxHex(tx);

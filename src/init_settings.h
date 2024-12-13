@@ -339,4 +339,10 @@ using DiscoverSetting = common::Setting<
     ::HelpArgs<>
     ::Category<OptionsCategory::CONNECTION>;
 
+using DnsSetting = common::Setting<
+    "-dns", bool, common::SettingOptions{.legacy = true},
+    "Allow DNS lookups for -addnode, -seednode and -connect (default: %u)">
+    ::Default<DEFAULT_NAME_LOOKUP>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -18,4 +18,9 @@ using LangSetting = common::Setting<
     "Set language, for example \"de_DE\" (default: system locale)">
     ::Category<OptionsCategory::GUI>;
 
+using MinSetting = common::Setting<
+    "-min", bool, common::SettingOptions{.legacy = true},
+    "Start minimized">
+    ::Category<OptionsCategory::GUI>;
+
 #endif // BITCOIN_QT_BITCOIN_SETTINGS_H

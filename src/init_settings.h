@@ -623,4 +623,10 @@ using CheckBlockIndexSetting = common::Setting<
 using CheckBlockIndexSettingInt = common::Setting<
     "-checkblockindex", std::optional<int64_t>, common::SettingOptions{.legacy = true, .debug_only = true}>;
 
+using CheckMempoolSetting = common::Setting<
+    "-checkmempool=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Run mempool consistency checks every <n> transactions. Use 0 to disable. (default: %u, regtest: %u)">
+    ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& regtestChainParams) { return strprintf(fmt, defaultChainParams->DefaultConsistencyChecks(), regtestChainParams->DefaultConsistencyChecks()); }>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

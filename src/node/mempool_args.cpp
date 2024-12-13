@@ -41,7 +41,7 @@ void ApplyArgsManOptions(const ArgsManager& argsman, MemPoolLimits& mempool_limi
 
 util::Result<void> ApplyArgsManOptions(const ArgsManager& argsman, const CChainParams& chainparams, MemPoolOptions& mempool_opts)
 {
-    mempool_opts.check_ratio = argsman.GetIntArg("-checkmempool", mempool_opts.check_ratio);
+    mempool_opts.check_ratio = CheckMempoolSetting::Get(argsman, mempool_opts.check_ratio);
 
     if (auto mb = MaxMemPoolSetting::Get(argsman)) mempool_opts.max_size_bytes = *mb * 1'000'000;
 

@@ -616,7 +616,7 @@ void ArgsManager::CheckMultipleCLIArgs() const
 
 std::string ArgsManager::GetHelpMessage() const
 {
-    const bool show_debug = GetBoolArg("-help-debug", false);
+    const bool show_debug = HelpDebugSetting::Get(*this);
 
     std::string usage;
     LOCK(cs_args);
@@ -691,7 +691,7 @@ std::string ArgsManager::GetHelpMessage() const
 
 bool HelpRequested(const ArgsManager& args)
 {
-    return !QSettingHidden::Value(args).isNull() || !HSettingHidden::Value(args).isNull() || !HelpSetting::Value(args).isNull() || args.IsArgSet("-help-debug");
+    return !QSettingHidden::Value(args).isNull() || !HSettingHidden::Value(args).isNull() || !HelpSetting::Value(args).isNull() || !HelpDebugSetting::Value(args).isNull();
 }
 
 void SetupHelpOptions(ArgsManager& args)

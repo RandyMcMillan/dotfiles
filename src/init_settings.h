@@ -86,4 +86,9 @@ using SettingsSetting = common::Setting<
     ::DefaultFn<[] { return BITCOIN_SETTINGS_FILENAME; }>
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, BITCOIN_CONF_FILENAME, BITCOIN_SETTINGS_FILENAME); }>;
 
+using HelpDebugSetting = common::Setting<
+    "-help-debug", bool, common::SettingOptions{.legacy = true},
+    "Print help message with debugging options and exit">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

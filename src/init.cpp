@@ -433,7 +433,7 @@ static void registerSignalHandler(int signal, void(*handler)(int))
 void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 {
     SetupHelpOptions(argsman);
-    argsman.AddArg("-help-debug", "Print help message with debugging options and exit", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST); // server-only for now
+    HelpDebugSetting::Register(argsman); // server-only for now
 
     init::AddLoggingArgs(argsman);
 

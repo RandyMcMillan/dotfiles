@@ -102,6 +102,12 @@ using SpendZeroConfChangeSetting = common::Setting<
     "Spend unconfirmed change when sending transactions (default: %u)">
     ::Default<DEFAULT_SPEND_ZEROCONF_CHANGE>
     ::Category<OptionsCategory::WALLET>;
+
+using TxConfirmTargetSetting = common::Setting<
+    "-txconfirmtarget=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)">
+    ::Default<DEFAULT_TX_CONFIRM_TARGET>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

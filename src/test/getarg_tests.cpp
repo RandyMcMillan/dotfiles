@@ -5,6 +5,7 @@
 #include <common/args.h>
 #include <common/settings.h>
 #include <logging.h>
+#include <test/getarg_tests_settings.h>
 #include <test/util/setup_common.h>
 #include <univalue.h>
 #include <util/strencodings.h>
@@ -67,94 +68,94 @@ BOOST_AUTO_TEST_CASE(setting_args)
 
     set_foo("str");
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "\"str\"");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "str");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 0);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", true), false);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", false), false);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "str");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 0);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, true), false);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, false), false);
 
     set_foo("99");
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "\"99\"");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "99");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 99);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", true), true);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", false), true);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "99");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 99);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, true), true);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, false), true);
 
     set_foo("3.25");
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "\"3.25\"");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "3.25");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 3);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", true), true);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", false), true);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "3.25");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 3);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, true), true);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, false), true);
 
     set_foo("0");
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "\"0\"");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "0");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 0);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", true), false);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", false), false);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "0");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 0);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, true), false);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, false), false);
 
     set_foo("");
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "\"\"");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 0);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", true), true);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", false), true);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 0);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, true), true);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, false), true);
 
     set_foo(99);
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "99");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "99");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 99);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", true), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", false), std::runtime_error);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "99");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 99);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, true), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, false), std::runtime_error);
 
     set_foo(3.25);
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "3.25");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "3.25");
-    BOOST_CHECK_THROW(args.GetIntArg("foo", 100), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", true), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", false), std::runtime_error);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "3.25");
+    BOOST_CHECK_THROW(FooSettingInt::Get(args, 100), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, true), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, false), std::runtime_error);
 
     set_foo(0);
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "0");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "0");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 0);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", true), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", false), std::runtime_error);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "0");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 0);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, true), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, false), std::runtime_error);
 
     set_foo(true);
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "true");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "1");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 1);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", true), true);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", false), true);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "1");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 1);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, true), true);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, false), true);
 
     set_foo(false);
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "false");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "0");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 0);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", true), false);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", false), false);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "0");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 0);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, true), false);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, false), false);
 
     set_foo(UniValue::VOBJ);
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "{}");
-    BOOST_CHECK_THROW(args.GetArg("foo", "default"), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetIntArg("foo", 100), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", true), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", false), std::runtime_error);
+    BOOST_CHECK_THROW(FooSetting::Get(args, "default"), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingInt::Get(args, 100), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, true), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, false), std::runtime_error);
 
     set_foo(UniValue::VARR);
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "[]");
-    BOOST_CHECK_THROW(args.GetArg("foo", "default"), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetIntArg("foo", 100), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", true), std::runtime_error);
-    BOOST_CHECK_THROW(args.GetBoolArg("foo", false), std::runtime_error);
+    BOOST_CHECK_THROW(FooSetting::Get(args, "default"), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingInt::Get(args, 100), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, true), std::runtime_error);
+    BOOST_CHECK_THROW(FooSettingBool::Get(args, false), std::runtime_error);
 
     set_foo(UniValue::VNULL);
     BOOST_CHECK_EQUAL(args.GetSetting("foo").write(), "null");
-    BOOST_CHECK_EQUAL(args.GetArg("foo", "default"), "default");
-    BOOST_CHECK_EQUAL(args.GetIntArg("foo", 100), 100);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", true), true);
-    BOOST_CHECK_EQUAL(args.GetBoolArg("foo", false), false);
+    BOOST_CHECK_EQUAL(FooSetting::Get(args, "default"), "default");
+    BOOST_CHECK_EQUAL(FooSettingInt::Get(args, 100), 100);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, true), true);
+    BOOST_CHECK_EQUAL(FooSettingBool::Get(args, false), false);
 }
 
 BOOST_AUTO_TEST_CASE(boolarg)

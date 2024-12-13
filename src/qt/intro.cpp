@@ -6,6 +6,7 @@
 
 #include <chainparams.h>
 #include <init_settings.h>
+#include <qt/bitcoin_settings.h>
 #include <qt/intro.h>
 #include <qt/forms/ui_intro.h>
 #include <util/chaintype.h>
@@ -217,7 +218,7 @@ bool Intro::showIfNeeded(bool& did_show_intro, int64_t& prune_MiB)
     /* 2) Allow QSettings to override default dir */
     dataDir = settings.value("strDataDir", dataDir).toString();
 
-    if(!fs::exists(GUIUtil::QStringToPath(dataDir)) || gArgs.GetBoolArg("-choosedatadir", DEFAULT_CHOOSE_DATADIR) || settings.value("fReset", false).toBool() || gArgs.GetBoolArg("-resetguisettings", false))
+    if(!fs::exists(GUIUtil::QStringToPath(dataDir)) || ChooseDataDirSetting::Get(gArgs) || settings.value("fReset", false).toBool() || gArgs.GetBoolArg("-resetguisettings", false))
     {
         /* Use selectParams here to guarantee Params() can be used by node interface */
         try {

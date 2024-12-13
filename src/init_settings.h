@@ -786,4 +786,10 @@ using WhiteListRelaySetting = common::Setting<
     ::Default<DEFAULT_WHITELISTRELAY>
     ::Category<OptionsCategory::NODE_RELAY>;
 
+using BlockMaxWeightSetting = common::Setting<
+    "-blockmaxweight=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Set maximum BIP141 block weight (default: %d)">
+    ::HelpArgs<DEFAULT_BLOCK_MAX_WEIGHT>
+    ::Category<OptionsCategory::BLOCK_CREATION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

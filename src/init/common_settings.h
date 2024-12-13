@@ -59,4 +59,10 @@ using LogSourceLocationsSetting = common::Setting<
     ::Default<DEFAULT_LOGSOURCELOCATIONS>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LogTimeMicrosSetting = common::Setting<
+    "-logtimemicros", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Add microsecond precision to debug timestamps (default: %u)">
+    ::Default<DEFAULT_LOGTIMEMICROS>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

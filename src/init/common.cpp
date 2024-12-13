@@ -36,7 +36,7 @@ void AddLoggingArgs(ArgsManager& argsman)
     LogTimestampsSetting::Register(argsman);
     LogThreadNamesSetting::Register(argsman);
     LogSourceLocationsSetting::Register(argsman);
-    argsman.AddArg("-logtimemicros", strprintf("Add microsecond precision to debug timestamps (default: %u)", DEFAULT_LOGTIMEMICROS), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
+    LogTimeMicrosSetting::Register(argsman);
     argsman.AddArg("-loglevelalways", strprintf("Always prepend a category and level (default: %u)", DEFAULT_LOGLEVELALWAYS), ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
     PrintToConsoleSetting::Register(argsman);
     argsman.AddArg("-shrinkdebugfile", "Shrink debug.log file on client startup (default: 1 when no -debug)", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
@@ -48,7 +48,7 @@ void SetLoggingOptions(const ArgsManager& args)
     LogInstance().m_file_path = AbsPathForConfigVal(args, DebugLogFileSetting::Get(args));
     LogInstance().m_print_to_console = PrintToConsoleSetting::Get(args, !DaemonSetting::Get(args, false));
     LogInstance().m_log_timestamps = LogTimestampsSetting::Get(args);
-    LogInstance().m_log_time_micros = args.GetBoolArg("-logtimemicros", DEFAULT_LOGTIMEMICROS);
+    LogInstance().m_log_time_micros = LogTimeMicrosSetting::Get(args);
     LogInstance().m_log_threadnames = LogThreadNamesSetting::Get(args);
     LogInstance().m_log_sourcelocations = LogSourceLocationsSetting::Get(args);
     LogInstance().m_always_print_category_level = args.GetBoolArg("-loglevelalways", DEFAULT_LOGLEVELALWAYS);

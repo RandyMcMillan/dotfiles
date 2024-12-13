@@ -7,6 +7,7 @@
 #include <common/setting.h>
 #include <httpserver.h>
 #include <init.h>
+#include <kernel/blockmanager_opts.h>
 #include <util/string.h>
 
 #include <string>
@@ -160,5 +161,13 @@ using AssumeValidSetting = common::Setting<
     "-assumevalid=<hex>", std::optional<std::string>, common::SettingOptions{.legacy = true},
     "If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet3: %s, testnet4: %s, signet: %s)">
     ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& testnetChainParams, const auto& testnet4ChainParams, const auto& signetChainParams) { return strprintf(fmt, defaultChainParams->GetConsensus().defaultAssumeValid.GetHex(), testnetChainParams->GetConsensus().defaultAssumeValid.GetHex(), testnet4ChainParams->GetConsensus().defaultAssumeValid.GetHex(), signetChainParams->GetConsensus().defaultAssumeValid.GetHex()); }>;
+
+using BlocksXorSetting = common::Setting<
+    "-blocksxor", std::optional<bool>, common::SettingOptions{.legacy = true},
+    "Whether an XOR-key applies to blocksdir *.dat files. "
+                             "The created XOR-key will be zeros for an existing blocksdir or when `-blocksxor=0` is "
+                             "set, and random for a freshly initialized blocksdir. "
+                             "(default: %u)">
+    ::HelpArgs<kernel::DEFAULT_XOR_BLOCKSDIR>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

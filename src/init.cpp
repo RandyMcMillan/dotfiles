@@ -465,13 +465,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
 #endif
     AssumeValidSetting::Register(argsman, defaultChainParams, testnetChainParams, testnet4ChainParams, signetChainParams);
     BlocksDirSetting::Register(argsman);
-    argsman.AddArg("-blocksxor",
-                   strprintf("Whether an XOR-key applies to blocksdir *.dat files. "
-                             "The created XOR-key will be zeros for an existing blocksdir or when `-blocksxor=0` is "
-                             "set, and random for a freshly initialized blocksdir. "
-                             "(default: %u)",
-                             kernel::DEFAULT_XOR_BLOCKSDIR),
-                   ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    BlocksXorSetting::Register(argsman);
     FastPruneSetting::Register(argsman);
 #if HAVE_SYSTEM
     argsman.AddArg("-blocknotify=<cmd>", "Execute command when the best block changes (%s in cmd is replaced by block hash)", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);

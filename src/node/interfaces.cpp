@@ -14,6 +14,7 @@
 #include <external_signer.h>
 #include <index/blockfilterindex.h>
 #include <init.h>
+#include <init_settings.h>
 #include <interfaces/chain.h>
 #include <interfaces/handler.h>
 #include <interfaces/mining.h>
@@ -142,7 +143,7 @@ public:
         }
 
         // Stop RPC for clean shutdown if any of waitfor* commands is executed.
-        if (args().GetBoolArg("-server", false)) {
+        if (ServerSetting::Get(args())) {
             InterruptRPC();
             StopRPC();
         }

@@ -815,4 +815,9 @@ using RpcDocCheckSetting = common::Setting<
     ::Default<DEFAULT_RPC_DOC_CHECK>
     ::Category<OptionsCategory::RPC>;
 
+using ServerSetting = common::Setting<
+    "-server", bool, common::SettingOptions{.legacy = true},
+    "Accept command line and JSON-RPC commands">
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

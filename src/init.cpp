@@ -630,7 +630,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     RpcWhitelistSetting::Register(argsman);
     RpcWhitelistDefaultSetting::Register(argsman);
     RpcWorkQueueSetting::Register(argsman);
-    argsman.AddArg("-server", "Accept command line and JSON-RPC commands", ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
+    ServerSetting::Register(argsman);
     if (can_listen_ipc) {
         argsman.AddArg("-ipcbind=<address>", "Bind to Unix socket address and listen for incoming connections. Valid address values are \"unix\" to listen on the default path, <datadir>/node.sock, or \"unix:/custom/path\" to specify a custom path. Can be specified multiple times to listen on multiple paths. Default behavior is not to listen on any path. If relative paths are specified, they are interpreted relative to the network data directory. If paths include any parent directory components and the parent directories do not exist, they will be created.", ArgsManager::ALLOW_ANY, OptionsCategory::IPC);
     }
@@ -1325,7 +1325,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
      * that the server is there and will be ready later).  Warmup mode will
      * be disabled when initialisation is finished.
      */
-    if (args.GetBoolArg("-server", false)) {
+    if (ServerSetting::Get(args)) {
         uiInterface.InitMessage_connect(SetRPCWarmupStatus);
         if (!AppInitServers(node))
             return InitError(_("Unable to start HTTP server. See debug log for details."));

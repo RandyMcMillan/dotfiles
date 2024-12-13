@@ -483,7 +483,7 @@ static void SetupUIArgs(ArgsManager& argsman)
     LangSetting::Register(argsman);
     MinSetting::Register(argsman);
     ResetGuiSettingsSetting::Register(argsman);
-    argsman.AddArg("-splash", strprintf("Show splash screen on startup (default: %u)", DEFAULT_SPLASHSCREEN), ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
+    SplashSetting::Register(argsman);
     argsman.AddArg("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", BitcoinGUI::DEFAULT_UIPLATFORM), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::GUI);
 }
 
@@ -664,7 +664,7 @@ int GuiMain(int argc, char* argv[])
     app.parameterSetup();
     GUIUtil::LogQtInfo();
 
-    if (gArgs.GetBoolArg("-splash", DEFAULT_SPLASHSCREEN) && !MinSetting::Get(gArgs))
+    if (SplashSetting::Get(gArgs) && !MinSetting::Get(gArgs))
         app.createSplashScreen(networkStyle.data());
 
     app.createNode(*init);

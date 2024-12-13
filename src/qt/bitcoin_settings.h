@@ -2,6 +2,7 @@
 #define BITCOIN_QT_BITCOIN_SETTINGS_H
 
 #include <common/setting.h>
+#include <qt/guiconstants.h>
 #include <qt/intro.h>
 
 #include <string>
@@ -26,6 +27,12 @@ using MinSetting = common::Setting<
 using ResetGuiSettingsSetting = common::Setting<
     "-resetguisettings", bool, common::SettingOptions{.legacy = true},
     "Reset all settings changed in the GUI">
+    ::Category<OptionsCategory::GUI>;
+
+using SplashSetting = common::Setting<
+    "-splash", bool, common::SettingOptions{.legacy = true},
+    "Show splash screen on startup (default: %u)">
+    ::Default<DEFAULT_SPLASHSCREEN>
     ::Category<OptionsCategory::GUI>;
 
 #endif // BITCOIN_QT_BITCOIN_SETTINGS_H

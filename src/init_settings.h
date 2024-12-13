@@ -491,4 +491,10 @@ using NetworkActiveSetting = common::Setting<
     ::HelpArgs<>
     ::Category<OptionsCategory::CONNECTION>;
 
+using TimeoutSetting = common::Setting<
+    "-timeout=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Specify socket connection timeout in milliseconds. If an initial attempt to connect is unsuccessful after this amount of time, drop it (minimum: 1, default: %d)">
+    ::Default<DEFAULT_CONNECT_TIMEOUT>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

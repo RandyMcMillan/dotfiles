@@ -95,8 +95,7 @@ static NetworkSetup g_networksetup_instance;
 
 void SetupCommonTestArgs(ArgsManager& argsman)
 {
-    argsman.AddArg("-testdatadir", strprintf("Custom data directory (default: %s<random_string>)", fs::PathToString(fs::temp_directory_path() / TEST_DIR_PATH_ELEMENT / "")),
-                   ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
+    TestDataDirSetting::Register(argsman);
 }
 
 /** Test setup failure */
@@ -143,7 +142,7 @@ BasicTestingSetup::BasicTestingSetup(const ChainType chainType, TestOpts opts)
     SeedRandomForTest(SeedRand::FIXED_SEED);
 
     const std::string test_name{G_TEST_GET_FULL_NAME ? G_TEST_GET_FULL_NAME() : ""};
-    if (!m_node.args->IsArgSet("-testdatadir")) {
+    if (TestDataDirSetting::Value(*m_node.args).isNull()) {
         // To avoid colliding with a leftover prior datadir, and to allow
         // tests, such as the fuzz tests to run in several processes at the
         // same time, add a random element to the path. Keep it small enough to
@@ -154,7 +153,7 @@ BasicTestingSetup::BasicTestingSetup(const ChainType chainType, TestOpts opts)
     } else {
         // Custom data directory
         m_has_custom_datadir = true;
-        fs::path root_dir{m_node.args->GetPathArg("-testdatadir")};
+        fs::path root_dir{TestDataDirSetting::Get(*m_node.args)};
         if (root_dir.empty()) ExitFailure("-testdatadir argument is empty, please specify a path");
 
         root_dir = fs::absolute(root_dir);

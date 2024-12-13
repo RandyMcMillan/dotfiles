@@ -6,6 +6,7 @@
 #include <policy/feerate.h>
 #include <util/moneystr.h>
 #include <wallet/coincontrol.h>
+#include <wallet/db.h>
 #include <wallet/wallet.h>
 
 #include <string>
@@ -130,6 +131,12 @@ using WalletRbfSetting = common::Setting<
     "Send transactions with full-RBF opt-in enabled (RPC only, default: %u)">
     ::Default<DEFAULT_WALLET_RBF>
     ::Category<OptionsCategory::WALLET>;
+
+using DbLogSizeSetting = common::Setting<
+    "-dblogsize=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Flush wallet database activity from memory to disk log every <n> megabytes (default: %u)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DatabaseOptions().max_log_mb); }>
+    ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

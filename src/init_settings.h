@@ -140,4 +140,10 @@ using RpcServerTimeoutSetting = common::Setting<
     ::Default<DEFAULT_HTTP_SERVER_TIMEOUT>
     ::Category<OptionsCategory::RPC>;
 
+using RpcWorkQueueSetting = common::Setting<
+    "-rpcworkqueue=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Set the depth of the work queue to service RPC calls (default: %d)">
+    ::Default<DEFAULT_HTTP_WORKQUEUE>
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

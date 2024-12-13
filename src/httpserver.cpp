@@ -472,7 +472,7 @@ bool InitHTTPServer(const util::SignalInterrupt& interrupt)
     }
 
     LogDebug(BCLog::HTTP, "Initialized HTTP server\n");
-    int workQueueDepth = std::max((long)gArgs.GetIntArg("-rpcworkqueue", DEFAULT_HTTP_WORKQUEUE), 1L);
+    int workQueueDepth = std::max((long)RpcWorkQueueSetting::Get(gArgs), 1L);
     LogDebug(BCLog::HTTP, "creating work queue of depth %d\n", workQueueDepth);
 
     g_work_queue = std::make_unique<WorkQueue<HTTPClosure>>(workQueueDepth);

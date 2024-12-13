@@ -98,4 +98,8 @@ using PrivDbSettingHidden = common::Setting<
     "-privdb", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using WalletRejectLongChainsSettingHidden = common::Setting<
+    "-walletrejectlongchains", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

@@ -18,4 +18,8 @@ using AvoidPartialSpendsSettingHidden = common::Setting<
     "-avoidpartialspends", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using ChangeTypeSettingHidden = common::Setting<
+    "-changetype", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

@@ -71,7 +71,7 @@ static void SetupCliArgs(ArgsManager& argsman)
     const auto regtestBaseParams = CreateBaseChainParams(ChainType::REGTEST);
 
     VersionSetting::Register(argsman);
-    argsman.AddArg("-conf=<file>", strprintf("Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)", BITCOIN_CONF_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    ConfSetting::Register(argsman);
     argsman.AddArg("-datadir=<dir>", "Specify data directory", ArgsManager::ALLOW_ANY | ArgsManager::DISALLOW_NEGATION, OptionsCategory::OPTIONS);
     argsman.AddArg("-generate",
                    strprintf("Generate blocks, equivalent to RPC getnewaddress followed by RPC generatetoaddress. Optional positional integer "

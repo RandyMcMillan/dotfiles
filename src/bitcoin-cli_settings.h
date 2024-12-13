@@ -5,6 +5,7 @@
 #ifndef BITCOIN_BITCOIN_CLI_SETTINGS_H
 #define BITCOIN_BITCOIN_CLI_SETTINGS_H
 
+#include <common/args.h>
 #include <common/setting.h>
 
 #include <cstdint>
@@ -26,5 +27,10 @@ static constexpr auto DEFAULT_COLOR_SETTING{"auto"};
 using VersionSetting = common::Setting<
     "-version", bool, common::SettingOptions{.legacy = true},
     "Print version and exit">;
+
+using ConfSetting = common::Setting<
+    "-conf=<file>", common::Unset, common::SettingOptions{.legacy = true},
+    "Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, BITCOIN_CONF_FILENAME); }>;
 
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

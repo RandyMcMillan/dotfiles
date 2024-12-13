@@ -41,4 +41,10 @@ using LogLevelSetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, LogInstance().LogLevelsString(), LogInstance().LogLevelToStr(BCLog::DEFAULT_LOG_LEVEL), LogInstance().LogCategoriesString()); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LogTimestampsSetting = common::Setting<
+    "-logtimestamps", bool, common::SettingOptions{.legacy = true},
+    "Prepend debug output with timestamp (default: %u)">
+    ::Default<DEFAULT_LOGTIMESTAMPS>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

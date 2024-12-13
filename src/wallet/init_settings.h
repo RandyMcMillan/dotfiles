@@ -55,6 +55,12 @@ using DiscardFeeSetting = common::Setting<
                                                                 "Note: An output is discarded if it is dust at this rate, but we will always discard up to the dust relay fee and a discard fee above that is limited by the fee estimate for the longest target">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_DISCARD_FEE)); }>
     ::Category<OptionsCategory::WALLET>;
+
+using FallbackFeeSetting = common::Setting<
+    "-fallbackfee=<amt>", std::string, common::SettingOptions{.legacy = true},
+    "A fee rate (in %s/kvB) that will be used when fee estimation has insufficient data. 0 to entirely disable the fallbackfee feature. (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_FALLBACK_FEE)); }>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

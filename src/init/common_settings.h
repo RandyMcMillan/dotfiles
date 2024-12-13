@@ -19,4 +19,9 @@ using PrintToConsoleSetting = common::Setting<
     "Send trace/debug info to console (default: 1 when no -daemon. To disable logging to file, set -nodebuglogfile)">
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using DebugLogFileSetting = common::Setting<
+    "-debuglogfile=<file>", fs::path, common::SettingOptions{.legacy = true},
+    "Specify location of debug log file (default: %s). Relative paths will be prefixed by a net-specific datadir location. Pass -nodebuglogfile to disable writing the log to a file.">
+    ::DefaultFn<[] { return DEFAULT_DEBUGLOGFILE; }>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

@@ -28,7 +28,7 @@ using util::SplitString;
 namespace init {
 void AddLoggingArgs(ArgsManager& argsman)
 {
-    argsman.AddArg("-debuglogfile=<file>", strprintf("Specify location of debug log file (default: %s). Relative paths will be prefixed by a net-specific datadir location. Pass -nodebuglogfile to disable writing the log to a file.", DEFAULT_DEBUGLOGFILE), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    DebugLogFileSetting::Register(argsman);
     DebugSetting::Register(argsman);
     argsman.AddArg("-debugexclude=<category>", "Exclude debug and trace logging for a category. Can be used in conjunction with -debug=1 to output debug and trace logging for all categories except the specified category. This option can be specified multiple times to exclude multiple categories. This takes priority over \"-debug\"", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-logips", strprintf("Include IP addresses in debug output (default: %u)", DEFAULT_LOGIPS), ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
@@ -44,8 +44,8 @@ void AddLoggingArgs(ArgsManager& argsman)
 
 void SetLoggingOptions(const ArgsManager& args)
 {
-    LogInstance().m_print_to_file = !args.IsArgNegated("-debuglogfile");
-    LogInstance().m_file_path = AbsPathForConfigVal(args, args.GetPathArg("-debuglogfile", DEFAULT_DEBUGLOGFILE));
+    LogInstance().m_print_to_file = !DebugLogFileSetting::Value(args).isFalse();
+    LogInstance().m_file_path = AbsPathForConfigVal(args, DebugLogFileSetting::Get(args));
     LogInstance().m_print_to_console = PrintToConsoleSetting::Get(args, !DaemonSetting::Get(args, false));
     LogInstance().m_log_timestamps = args.GetBoolArg("-logtimestamps", DEFAULT_LOGTIMESTAMPS);
     LogInstance().m_log_time_micros = args.GetBoolArg("-logtimemicros", DEFAULT_LOGTIMEMICROS);

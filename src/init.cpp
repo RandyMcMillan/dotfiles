@@ -241,7 +241,7 @@ bool ShutdownRequested(node::NodeContext& node)
 static void ShutdownNotify(const ArgsManager& args)
 {
     std::vector<std::thread> threads;
-    for (const auto& cmd : args.GetArgs("-shutdownnotify")) {
+    for (const auto& cmd : ShutdownNotifySetting::Get(args)) {
         threads.emplace_back(runCommand, cmd);
     }
     for (auto& t : threads) {
@@ -494,7 +494,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     SettingsSetting::Register(argsman);
 #if HAVE_SYSTEM
     StartupNotifySetting::Register(argsman);
-    argsman.AddArg("-shutdownnotify=<cmd>", "Execute command immediately before beginning shutdown. The need for shutdown may be urgent, so be careful not to delay it long (if the command doesn't require interaction with the server, consider having it fork into the background).", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    ShutdownNotifySetting::Register(argsman);
 #endif
     argsman.AddArg("-txindex", strprintf("Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)", DEFAULT_TXINDEX), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-blockfilterindex=<type>",

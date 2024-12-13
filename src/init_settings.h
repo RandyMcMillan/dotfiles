@@ -275,4 +275,8 @@ using StartupNotifySetting = common::Setting<
     "-startupnotify=<cmd>", std::string, common::SettingOptions{.legacy = true},
     "Execute command on startup.">;
 
+using ShutdownNotifySetting = common::Setting<
+    "-shutdownnotify=<cmd>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Execute command immediately before beginning shutdown. The need for shutdown may be urgent, so be careful not to delay it long (if the command doesn't require interaction with the server, consider having it fork into the background).">;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -6,6 +6,7 @@
 #include <common/args.h>
 #include <common/setting.h>
 #include <init.h>
+#include <util/string.h>
 
 #include <string>
 #include <vector>
@@ -89,6 +90,12 @@ using SettingsSetting = common::Setting<
 using HelpDebugSetting = common::Setting<
     "-help-debug", bool, common::SettingOptions{.legacy = true},
     "Print help message with debugging options and exit">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
+using TestSetting = common::Setting<
+    "-test=<option>", std::vector<std::string>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Pass a test-only option. Options include : %s.">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, util::Join(TEST_OPTIONS_DOC, ", ")); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

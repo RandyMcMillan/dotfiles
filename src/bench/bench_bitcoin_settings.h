@@ -29,4 +29,9 @@ using ListSetting = common::Setting<
     "-list", bool, common::SettingOptions{.legacy = true},
     "List benchmarks without executing them">;
 
+using MinTimeSetting = common::Setting<
+    "-min-time=<milliseconds>", int64_t, common::SettingOptions{.legacy = true, .disallow_negation = true},
+    "Minimum runtime per benchmark, in milliseconds (default: %d)">
+    ::Default<DEFAULT_MIN_TIME_MS>;
+
 #endif // BITCOIN_BENCH_BENCH_BITCOIN_SETTINGS_H

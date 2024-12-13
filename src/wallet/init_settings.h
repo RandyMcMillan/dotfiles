@@ -155,6 +155,12 @@ using WalletRejectLongChainsSetting = common::Setting<
     "Wallet will not create transactions that violate mempool chain limits (default: %u)">
     ::Default<DEFAULT_WALLET_REJECT_LONG_CHAINS>
     ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
+
+using WalletCrossChainSetting = common::Setting<
+    "-walletcrosschain", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Allow reusing wallet files across chains (default: %u)">
+    ::Default<DEFAULT_WALLETCROSSCHAIN>
+    ::Category<OptionsCategory::WALLET_DEBUG_TEST>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

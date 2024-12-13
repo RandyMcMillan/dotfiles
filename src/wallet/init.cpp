@@ -92,7 +92,7 @@ void WalletInit::AddWalletOptions(ArgsManager& argsman) const
 #endif
 
     WalletRejectLongChainsSetting::Register(argsman);
-    argsman.AddArg("-walletcrosschain", strprintf("Allow reusing wallet files across chains (default: %u)", DEFAULT_WALLETCROSSCHAIN), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::WALLET_DEBUG_TEST);
+    WalletCrossChainSetting::Register(argsman);
 }
 
 bool WalletInit::ParameterInteraction() const

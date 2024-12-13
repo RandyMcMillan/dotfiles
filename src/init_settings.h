@@ -11,6 +11,7 @@
 #include <kernel/blockmanager_opts.h>
 #include <kernel/mempool_options.h>
 #include <net_processing.h>
+#include <node/chainstatemanager_args.h>
 #include <txdb.h>
 #include <util/string.h>
 
@@ -231,5 +232,11 @@ using MinimumChainWorkSetting = common::Setting<
     "-minimumchainwork=<hex>", std::optional<std::string>, common::SettingOptions{.legacy = true, .debug_only = true},
     "Minimum work assumed to exist on a valid chain in hex (default: %s, testnet3: %s, testnet4: %s, signet: %s)">
     ::HelpFn<[](const auto& fmt, const auto& defaultChainParams, const auto& testnetChainParams, const auto& testnet4ChainParams, const auto& signetChainParams) { return strprintf(fmt, defaultChainParams->GetConsensus().nMinimumChainWork.GetHex(), testnetChainParams->GetConsensus().nMinimumChainWork.GetHex(), testnet4ChainParams->GetConsensus().nMinimumChainWork.GetHex(), signetChainParams->GetConsensus().nMinimumChainWork.GetHex()); }>;
+
+using ParSetting = common::Setting<
+    "-par=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Set the number of script verification threads (0 = auto, up to %d, <0 = leave that many cores free, default: %d)">
+    ::Default<DEFAULT_SCRIPTCHECK_THREADS>
+    ::HelpArgs<MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

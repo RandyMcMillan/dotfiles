@@ -47,4 +47,9 @@ using NVersionSetting = common::Setting<
     "Set TX version to N">
     ::Category<OptionsCategory::COMMANDS>;
 
+using OutAddrSetting = common::Setting<
+    "outaddr=VALUE:ADDRESS", common::Unset, common::SettingOptions{.legacy = true},
+    "Add address-based output to TX">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

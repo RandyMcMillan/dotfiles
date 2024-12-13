@@ -59,7 +59,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
     InSetting::Register(argsman);
     LockTimeSetting::Register(argsman);
     NVersionSetting::Register(argsman);
-    argsman.AddArg("outaddr=VALUE:ADDRESS", "Add address-based output to TX", ArgsManager::ALLOW_ANY, OptionsCategory::COMMANDS);
+    OutAddrSetting::Register(argsman);
     argsman.AddArg("outdata=[VALUE:]DATA", "Add data-based output to TX", ArgsManager::ALLOW_ANY, OptionsCategory::COMMANDS);
     argsman.AddArg("outmultisig=VALUE:REQUIRED:PUBKEYS:PUBKEY1:PUBKEY2:....[:FLAGS]", "Add Pay To n-of-m Multi-sig output to TX. n = REQUIRED, m = PUBKEYS. "
         "Optionally add the \"W\" flag to produce a pay-to-witness-script-hash output. "

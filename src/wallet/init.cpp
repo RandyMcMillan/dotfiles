@@ -7,6 +7,7 @@
 
 #include <common/args.h>
 #include <init.h>
+#include <init_settings.h>
 #include <interfaces/chain.h>
 #include <interfaces/init.h>
 #include <interfaces/wallet.h>
@@ -110,7 +111,7 @@ bool WalletInit::ParameterInteraction() const
         return true;
     }
 
-    if (gArgs.GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY) && gArgs.SoftSetBoolArg("-walletbroadcast", false)) {
+    if (BlocksOnlySetting::Get(gArgs, DEFAULT_BLOCKSONLY) && gArgs.SoftSetBoolArg("-walletbroadcast", false)) {
         LogPrintf("%s: parameter interaction: -blocksonly=1 -> setting -walletbroadcast=0\n", __func__);
     }
 

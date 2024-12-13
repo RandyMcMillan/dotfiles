@@ -180,4 +180,9 @@ using BlockReconstructionExtraTxnSetting = common::Setting<
     "Extra transactions to keep in memory for compact block reconstructions (default: %u)">
     ::HelpArgs<DEFAULT_BLOCK_RECONSTRUCTION_EXTRA_TXN>;
 
+using BlocksOnlySetting = common::Setting<
+    "-blocksonly", std::optional<bool>, common::SettingOptions{.legacy = true},
+    "Whether to reject transactions from network peers. Disables automatic broadcast and rebroadcast of transactions, unless the source peer has the 'forcerelay' permission. RPC transactions are not affected. (default: %u)">
+    ::HelpArgs<DEFAULT_BLOCKSONLY>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -471,7 +471,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     BlockNotifySetting::Register(argsman);
 #endif
     BlockReconstructionExtraTxnSetting::Register(argsman);
-    argsman.AddArg("-blocksonly", strprintf("Whether to reject transactions from network peers. Disables automatic broadcast and rebroadcast of transactions, unless the source peer has the 'forcerelay' permission. RPC transactions are not affected. (default: %u)", DEFAULT_BLOCKSONLY), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    BlocksOnlySetting::Register(argsman);
     argsman.AddArg("-coinstatsindex", strprintf("Maintain coinstats index used by the gettxoutsetinfo RPC (default: %u)", DEFAULT_COINSTATSINDEX), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     ConfSetting::Register(argsman);
     DataDirSetting::Register(argsman);
@@ -751,7 +751,7 @@ void InitParameterInteraction(ArgsManager& args)
             LogInfo("parameter interaction: -externalip set -> setting -discover=0\n");
     }
 
-    if (args.GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY)) {
+    if (BlocksOnlySetting::Get(args, DEFAULT_BLOCKSONLY)) {
         // disable whitelistrelay in blocksonly mode
         if (args.SoftSetBoolArg("-whitelistrelay", false))
             LogInfo("parameter interaction: -blocksonly=1 -> setting -whitelistrelay=0\n");

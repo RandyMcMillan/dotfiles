@@ -456,7 +456,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     LangSettingHidden::Register(argsman);
     MinSettingHidden::Register(argsman);
     ResetGuiSettingsSettingHidden::Register(argsman);
-    argsman.AddHiddenArgs({"-splash"});
+    SplashSettingHidden::Register(argsman);
     argsman.AddHiddenArgs({"-uiplatform"});
 
     VersionSetting::Register(argsman);

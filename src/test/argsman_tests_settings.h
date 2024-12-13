@@ -10,4 +10,8 @@ using RegTestSetting = common::Setting<
     "-regtest", common::Unset, common::SettingOptions{.legacy = true},
     "regtest">;
 
+using TestNetSetting = common::Setting<
+    "-testnet", common::Unset, common::SettingOptions{.legacy = true},
+    "testnet">;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

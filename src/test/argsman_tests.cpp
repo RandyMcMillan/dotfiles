@@ -957,7 +957,7 @@ BOOST_FIXTURE_TEST_CASE(util_ChainMerge, ChainMergeTestingSetup)
         TestArgsManager parser;
         LOCK(parser.cs_args);
         RegTestSetting::Register(parser);
-        parser.AddArg("-testnet", "testnet", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+        TestNetSetting::Register(parser);
 
         auto arg = [](Action action) { return action == ENABLE_TEST  ? "-testnet=1"   :
                                               action == DISABLE_TEST ? "-testnet=0"   :

@@ -2,6 +2,7 @@
 #define BITCOIN_INIT_SETTINGS_H
 
 #include <addrman.h>
+#include <chainparamsbase.h>
 #include <common/args.h>
 #include <common/setting.h>
 
@@ -42,6 +43,13 @@ using RpcCookieFileSetting = common::Setting<
 using RpcPasswordSetting = common::Setting<
     "-rpcpassword=<pw>", std::string, common::SettingOptions{.legacy = true, .sensitive = true},
     "Password for JSON-RPC connections">
+    ::Category<OptionsCategory::RPC>;
+
+using RpcPortSetting = common::Setting<
+    "-rpcport=<port>", int64_t, common::SettingOptions{.legacy = true, .network_only = true},
+    "Listen for JSON-RPC connections on <port> (default: %u, testnet3: %u, testnet4: %u, signet: %u, regtest: %u)">
+    ::DefaultFn<[] { return BaseParams().RPCPort(); }>
+    ::HelpFn<[](const auto& fmt, const auto& defaultBaseParams, const auto& testnetBaseParams, const auto& testnet4BaseParams, const auto& signetBaseParams, const auto& regtestBaseParams) { return strprintf(fmt, defaultBaseParams->RPCPort(), testnetBaseParams->RPCPort(), testnet4BaseParams->RPCPort(), signetBaseParams->RPCPort(), regtestBaseParams->RPCPort()); }>
     ::Category<OptionsCategory::RPC>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

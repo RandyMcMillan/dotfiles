@@ -8,6 +8,7 @@
 #include <common/args.h>
 #include <common/messages.h>
 #include <compat/compat.h>
+#include <init_settings.h>
 #include <logging.h>
 #include <netbase.h>
 #include <node/interface_ui.h>
@@ -358,7 +359,7 @@ static void ThreadHTTP(struct event_base* base)
 /** Bind HTTP server to specified addresses */
 static bool HTTPBindAddresses(struct evhttp* http)
 {
-    uint16_t http_port{static_cast<uint16_t>(gArgs.GetIntArg("-rpcport", BaseParams().RPCPort()))};
+    uint16_t http_port{static_cast<uint16_t>(RpcPortSetting::Get(gArgs))};
     std::vector<std::pair<std::string, uint16_t>> endpoints;
 
     // Determine what addresses to bind to

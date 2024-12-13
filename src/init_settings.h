@@ -451,4 +451,10 @@ using PeerBlockFiltersSetting = common::Setting<
     ::Default<DEFAULT_PEERBLOCKFILTERS>
     ::Category<OptionsCategory::CONNECTION>;
 
+using TxReconciliationSetting = common::Setting<
+    "-txreconciliation", std::optional<bool>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Enable transaction reconciliations per BIP 330 (default: %d)">
+    ::HelpArgs<DEFAULT_TXRECONCILIATION_ENABLE>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -31,7 +31,7 @@ static void SetupBenchArgs(ArgsManager& argsman)
     ListSetting::Register(argsman);
     MinTimeSetting::Register(argsman);
     OutputCsvSetting::Register(argsman);
-    argsman.AddArg("-output-json=<output.json>", "Generate JSON file with all benchmark results", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    OutputJsonSetting::Register(argsman);
     argsman.AddArg("-sanity-check", "Run benchmarks for only one iteration with no output", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-priority-level=<l1,l2,l3>", strprintf("Run benchmarks of one or multiple priority level(s) (%s), default: '%s'",
                                                            benchmark::ListPriorities(), DEFAULT_PRIORITY), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
@@ -137,7 +137,7 @@ int main(int argc, char** argv)
         args.is_list_only = ListSetting::Get(argsman);
         args.min_time = std::chrono::milliseconds(MinTimeSetting::Get(argsman));
         args.output_csv = OutputCsvSetting::Get(argsman);
-        args.output_json = argsman.GetPathArg("-output-json");
+        args.output_json = OutputJsonSetting::Get(argsman);
         args.regex_filter = FilterSetting::Get(argsman);
         args.sanity_check = argsman.GetBoolArg("-sanity-check", false);
         args.priority = parsePriorityLevel(argsman.GetArg("-priority-level", DEFAULT_PRIORITY));

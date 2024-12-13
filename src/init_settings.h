@@ -20,6 +20,8 @@
 #include <node/chainstatemanager_args.h>
 #include <node/kernel_notifications.h>
 #include <node/mempool_persist_args.h>
+#include <node/miner.h>
+#include <policy/feerate.h>
 #include <rpc/util.h>
 #include <script/sigcache.h>
 #include <torcontrol.h>
@@ -700,6 +702,12 @@ using MaxTipAgeSetting = common::Setting<
     "-maxtipage=<n>", std::optional<int64_t>, common::SettingOptions{.legacy = true, .debug_only = true},
     "Maximum tip age in seconds to consider node in initial block download (default: %u)">
     ::HelpArgs<Ticks<std::chrono::seconds>(DEFAULT_MAX_TIP_AGE)>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
+using PrintPrioritySetting = common::Setting<
+    "-printpriority", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Log transaction fee rate in %s/kvB when mining blocks (default: %u)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, node::DEFAULT_PRINT_MODIFIED_FEE); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

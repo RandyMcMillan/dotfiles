@@ -15,6 +15,7 @@
 #include <consensus/tx_verify.h>
 #include <consensus/validation.h>
 #include <deploymentstatus.h>
+#include <init_settings.h>
 #include <logging.h>
 #include <policy/feerate.h>
 #include <policy/policy.h>
@@ -90,7 +91,7 @@ void ApplyArgsManOptions(const ArgsManager& args, BlockAssembler::Options& optio
     if (const auto blockmintxfee{args.GetArg("-blockmintxfee")}) {
         if (const auto parsed{ParseMoney(*blockmintxfee)}) options.blockMinFeeRate = CFeeRate{*parsed};
     }
-    options.print_modified_fee = args.GetBoolArg("-printpriority", options.print_modified_fee);
+    options.print_modified_fee = PrintPrioritySetting::Get(args, options.print_modified_fee);
 }
 
 void BlockAssembler::resetBlock()

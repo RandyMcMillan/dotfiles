@@ -593,7 +593,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     MockTimeSetting::Register(argsman);
     MaxSigCacheSizeSetting::Register(argsman);
     MaxTipAgeSetting::Register(argsman);
-    argsman.AddArg("-printpriority", strprintf("Log transaction fee rate in %s/kvB when mining blocks (default: %u)", CURRENCY_UNIT, node::DEFAULT_PRINT_MODIFIED_FEE), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
+    PrintPrioritySetting::Register(argsman);
     argsman.AddArg("-uacomment=<cmt>", "Append comment to the user agent string", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
 
     SetupChainParamsBaseOptions(argsman);

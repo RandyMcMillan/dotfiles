@@ -2,10 +2,12 @@
 #define BITCOIN_INIT_SETTINGS_H
 
 #include <addrman.h>
+#include <blockfilter.h>
 #include <chainparamsbase.h>
 #include <common/args.h>
 #include <common/setting.h>
 #include <httpserver.h>
+#include <index/blockfilterindex.h>
 #include <index/coinstatsindex.h>
 #include <index/txindex.h>
 #include <init.h>
@@ -284,5 +286,15 @@ using TxIndexSetting = common::Setting<
     "-txindex", bool, common::SettingOptions{.legacy = true},
     "Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)">
     ::Default<DEFAULT_TXINDEX>;
+
+using BlockFilterIndexSetting = common::Setting<
+    "-blockfilterindex=<type>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Maintain an index of compact filters by block (default: %s, values: %s).">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DEFAULT_BLOCKFILTERINDEX, ListBlockFilterTypes()); }>;
+
+using BlockFilterIndexSettingStr = common::Setting<
+    "-blockfilterindex=<type>", std::string, common::SettingOptions{.legacy = true}>
+    ::DefaultFn<[] { return DEFAULT_BLOCKFILTERINDEX; }>
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DEFAULT_BLOCKFILTERINDEX, ListBlockFilterTypes()); }>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

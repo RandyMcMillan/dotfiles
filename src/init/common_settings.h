@@ -71,4 +71,11 @@ using LogLevelAlwaysSetting = common::Setting<
     ::Default<DEFAULT_LOGLEVELALWAYS>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using ShrinkDebugFileSetting = common::Setting<
+    "-shrinkdebugfile", bool, common::SettingOptions{.legacy = true},
+    "Shrink debug.log file on client startup (default: 1 when no -debug)">
+    ::DefaultFn<[] { return LogInstance().DefaultShrinkDebugFile(); }>
+    ::HelpArgs<>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

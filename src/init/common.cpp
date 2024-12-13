@@ -39,7 +39,7 @@ void AddLoggingArgs(ArgsManager& argsman)
     LogTimeMicrosSetting::Register(argsman);
     LogLevelAlwaysSetting::Register(argsman);
     PrintToConsoleSetting::Register(argsman);
-    argsman.AddArg("-shrinkdebugfile", "Shrink debug.log file on client startup (default: 1 when no -debug)", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
+    ShrinkDebugFileSetting::Register(argsman);
 }
 
 void SetLoggingOptions(const ArgsManager& args)
@@ -105,7 +105,7 @@ util::Result<void> SetLoggingCategories(const ArgsManager& args)
 bool StartLogging(const ArgsManager& args)
 {
     if (LogInstance().m_print_to_file) {
-        if (args.GetBoolArg("-shrinkdebugfile", LogInstance().DefaultShrinkDebugFile())) {
+        if (ShrinkDebugFileSetting::Get(args)) {
             // Do this first since it both loads a bunch of debug.log into memory,
             // and because this needs to happen before any other debug.log printing
             LogInstance().ShrinkDebugFile();

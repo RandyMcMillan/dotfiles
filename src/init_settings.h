@@ -710,4 +710,9 @@ using PrintPrioritySetting = common::Setting<
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, node::DEFAULT_PRINT_MODIFIED_FEE); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using UaCommentSetting = common::Setting<
+    "-uacomment=<cmt>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Append comment to the user agent string">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

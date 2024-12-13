@@ -594,7 +594,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     MaxSigCacheSizeSetting::Register(argsman);
     MaxTipAgeSetting::Register(argsman);
     PrintPrioritySetting::Register(argsman);
-    argsman.AddArg("-uacomment=<cmt>", "Append comment to the user agent string", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
+    UaCommentSetting::Register(argsman);
 
     SetupChainParamsBaseOptions(argsman);
 
@@ -1426,7 +1426,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     // sanitize comments per BIP-0014, format user agent and check total size
     std::vector<std::string> uacomments;
-    for (const std::string& cmt : args.GetArgs("-uacomment")) {
+    for (const std::string& cmt : UaCommentSetting::Get(args)) {
         if (cmt != SanitizeString(cmt, SAFE_CHARS_UA_COMMENT))
             return InitError(strprintf(_("User Agent comment (%s) contains unsafe characters."), cmt));
         uacomments.push_back(cmt);

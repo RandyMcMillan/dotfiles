@@ -62,4 +62,9 @@ using NetInfoSetting = common::Setting<
     ::HelpArgs<NETINFO_MAX_LEVEL>
     ::Category<OptionsCategory::CLI_COMMANDS>;
 
+using ColorSetting = common::Setting<
+    "-color=<when>", std::string, common::SettingOptions{.legacy = true, .disallow_negation = true},
+    "Color setting for CLI output (default: %s). Valid values: always, auto (add color codes when standard output is connected to a terminal and OS is not WIN32), never. Only applies to the output of -getinfo.">
+    ::DefaultFn<[] { return DEFAULT_COLOR_SETTING; }>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

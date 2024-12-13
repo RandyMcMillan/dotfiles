@@ -7,6 +7,7 @@
 
 #include <common/args.h>
 #include <common/setting.h>
+#include <rpc/mining.h>
 
 #include <cstdint>
 #include <string>
@@ -36,5 +37,13 @@ using ConfSetting = common::Setting<
 using DataDirSetting = common::Setting<
     "-datadir=<dir>", std::string, common::SettingOptions{.legacy = true, .disallow_negation = true},
     "Specify data directory">;
+
+using GenerateSetting = common::Setting<
+    "-generate", bool, common::SettingOptions{.legacy = true},
+    "Generate blocks, equivalent to RPC getnewaddress followed by RPC generatetoaddress. Optional positional integer "
+                             "arguments are number of blocks to generate (default: %s) and maximum iterations to try (default: %s), equivalent to "
+                             "RPC generatetoaddress nblocks and maxtries arguments. Example: bitcoin-cli -generate 4 1000">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DEFAULT_NBLOCKS, DEFAULT_MAX_TRIES); }>
+    ::Category<OptionsCategory::CLI_COMMANDS>;
 
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

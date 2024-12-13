@@ -99,4 +99,9 @@ using LoadSetting = common::Setting<
     "Load JSON file FILENAME into register NAME">
     ::Category<OptionsCategory::REGISTER_COMMANDS>;
 
+using SetSetting = common::Setting<
+    "set=NAME:JSON-STRING", common::Unset, common::SettingOptions{.legacy = true},
+    "Set register NAME to given JSON-STRING">
+    ::Category<OptionsCategory::REGISTER_COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

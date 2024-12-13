@@ -21,4 +21,9 @@ using TestActivationHeightSetting = common::Setting<
     "Set the activation height of 'name' (segwit, bip34, dersig, cltv, csv). (regtest-only)">
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using VbParamsSetting = common::Setting<
+    "-vbparams=deployment:start:end[:min_activation_height]", std::vector<std::string>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Use given start/end times and min_activation_height for specified version bits deployment (regtest-only)">
+    ::Category<OptionsCategory::CHAINPARAMS>;
+
 #endif // BITCOIN_CHAINPARAMSBASE_SETTINGS_H

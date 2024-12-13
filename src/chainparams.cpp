@@ -68,9 +68,9 @@ void ReadRegTestArgs(const ArgsManager& args, CChainParams::RegTestOptions& opti
         }
     }
 
-    if (!args.IsArgSet("-vbparams")) return;
+    if (VbParamsSetting::Value(args).isNull()) return;
 
-    for (const std::string& strDeployment : args.GetArgs("-vbparams")) {
+    for (const std::string& strDeployment : VbParamsSetting::Get(args)) {
         std::vector<std::string> vDeploymentParams = SplitString(strDeployment, ':');
         if (vDeploymentParams.size() < 3 || 4 < vDeploymentParams.size()) {
             throw std::runtime_error("Version bits parameters malformed, expecting deployment:start:end[:min_activation_height]");

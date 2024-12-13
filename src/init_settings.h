@@ -263,4 +263,8 @@ using PruneSetting = common::Setting<
             "(default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, >=%u = automatically prune block files to stay under the specified target size in MiB)">
     ::HelpArgs<MIN_DISK_SPACE_FOR_BLOCK_FILES / 1024 / 1024>;
 
+using ReIndexSetting = common::Setting<
+    "-reindex", bool, common::SettingOptions{.legacy = true},
+    "If enabled, wipe chain state and block index, and rebuild them from blk*.dat files on disk. Also wipe and rebuild other optional indexes that are active. If an assumeutxo snapshot was loaded, its chainstate will be wiped as well. The snapshot can then be reloaded via RPC.">;
+
 #endif // BITCOIN_INIT_SETTINGS_H

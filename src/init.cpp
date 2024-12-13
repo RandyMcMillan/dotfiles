@@ -489,7 +489,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     PersistMempoolV1Setting::Register(argsman);
     PidSetting::Register(argsman);
     PruneSetting::Register(argsman);
-    argsman.AddArg("-reindex", "If enabled, wipe chain state and block index, and rebuild them from blk*.dat files on disk. Also wipe and rebuild other optional indexes that are active. If an assumeutxo snapshot was loaded, its chainstate will be wiped as well. The snapshot can then be reloaded via RPC.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    ReIndexSetting::Register(argsman);
     argsman.AddArg("-reindex-chainstate", "If enabled, wipe chain state, and rebuild it from blk*.dat files on disk. If an assumeutxo snapshot was loaded, its chainstate will be wiped as well. The snapshot can then be reloaded via RPC.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     SettingsSetting::Register(argsman);
 #if HAVE_SYSTEM
@@ -1597,7 +1597,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     assert(!node.mempool);
     assert(!node.chainman);
 
-    bool do_reindex{args.GetBoolArg("-reindex", false)};
+    bool do_reindex{ReIndexSetting::Get(args)};
     const bool do_reindex_chainstate{args.GetBoolArg("-reindex-chainstate", false)};
 
     // Chainstate initialization and loading may be retried once with reindexing by GUI users

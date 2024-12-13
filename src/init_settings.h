@@ -245,4 +245,10 @@ using PersistMempoolSetting = common::Setting<
     "Whether to save the mempool on shutdown and load on restart (default: %u)">
     ::Default<node::DEFAULT_PERSIST_MEMPOOL>;
 
+using PersistMempoolV1Setting = common::Setting<
+    "-persistmempoolv1", bool, common::SettingOptions{.legacy = true},
+    "Whether a mempool.dat file created by -persistmempool or the savemempool RPC will be written in the legacy format "
+                             "(version 1) or the current format (version 2). This temporary option will be removed in the future. (default: %u)">
+    ::HelpArgs<DEFAULT_PERSIST_V1_DAT>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

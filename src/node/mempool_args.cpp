@@ -93,7 +93,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& argsman, const CChainP
         return util::Error{strprintf(Untranslated("acceptnonstdtxn is not currently supported for %s chain"), chainparams.GetChainTypeString())};
     }
 
-    mempool_opts.persist_v1_dat = argsman.GetBoolArg("-persistmempoolv1", mempool_opts.persist_v1_dat);
+    mempool_opts.persist_v1_dat = PersistMempoolV1Setting::Get(argsman, mempool_opts.persist_v1_dat);
 
     ApplyArgsManOptions(argsman, mempool_opts.limits);
 

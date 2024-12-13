@@ -486,11 +486,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     MinimumChainWorkSetting::Register(argsman, defaultChainParams, testnetChainParams, testnet4ChainParams, signetChainParams);
     ParSetting::Register(argsman);
     PersistMempoolSetting::Register(argsman);
-    argsman.AddArg("-persistmempoolv1",
-                   strprintf("Whether a mempool.dat file created by -persistmempool or the savemempool RPC will be written in the legacy format "
-                             "(version 1) or the current format (version 2). This temporary option will be removed in the future. (default: %u)",
-                             DEFAULT_PERSIST_V1_DAT),
-                   ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    PersistMempoolV1Setting::Register(argsman);
     argsman.AddArg("-pid=<file>", strprintf("Specify pid file. Relative paths will be prefixed by a net-specific datadir location. (default: %s)", BITCOIN_PID_FILENAME), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-prune=<n>", strprintf("Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex. "
             "Warning: Reverting this setting requires re-downloading the entire blockchain. "

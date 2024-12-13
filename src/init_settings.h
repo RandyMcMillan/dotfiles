@@ -21,6 +21,7 @@
 #include <node/kernel_notifications.h>
 #include <node/mempool_persist_args.h>
 #include <rpc/util.h>
+#include <script/sigcache.h>
 #include <torcontrol.h>
 #include <txdb.h>
 #include <util/string.h>
@@ -687,6 +688,12 @@ using MockTimeSetting = common::Setting<
     "-mocktime=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
     "Replace actual time with %s (default: 0)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, UNIX_EPOCH_TIME); }>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
+using MaxSigCacheSizeSetting = common::Setting<
+    "-maxsigcachesize=<n>", std::optional<int64_t>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Limit sum of signature cache and script execution cache sizes to <n> MiB (default: %u)">
+    ::HelpArgs<(DEFAULT_VALIDATION_CACHE_BYTES >> 20)>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

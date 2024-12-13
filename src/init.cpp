@@ -591,7 +591,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     TestSetting::Register(argsman);
     CaptureMessagesSetting::Register(argsman);
     MockTimeSetting::Register(argsman);
-    argsman.AddArg("-maxsigcachesize=<n>", strprintf("Limit sum of signature cache and script execution cache sizes to <n> MiB (default: %u)", (DEFAULT_VALIDATION_CACHE_BYTES >> 20)), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
+    MaxSigCacheSizeSetting::Register(argsman);
     argsman.AddArg("-maxtipage=<n>",
                    strprintf("Maximum tip age in seconds to consider node in initial block download (default: %u)",
                              Ticks<std::chrono::seconds>(DEFAULT_MAX_TIP_AGE)),

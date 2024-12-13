@@ -63,7 +63,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& args, ChainstateManage
     // Subtract 1 because the main thread counts towards the par threads.
     opts.worker_threads_num = script_threads - 1;
 
-    if (auto max_size = args.GetIntArg("-maxsigcachesize")) {
+    if (auto max_size = MaxSigCacheSizeSetting::Get(args)) {
         // 1. When supplied with a max_size of 0, both the signature cache and
         //    script execution cache create the minimum possible cache (2
         //    elements). Therefore, we can use 0 as a floor here.

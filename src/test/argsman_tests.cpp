@@ -635,7 +635,7 @@ BOOST_AUTO_TEST_CASE(util_GetArg)
     BOOST_CHECK_EQUAL(BoolTest3Setting::Get(testArgs), false);
     BOOST_CHECK_EQUAL(BoolTest4Setting::Get(testArgs), true);
 
-    BOOST_CHECK_EQUAL(testArgs.GetArg("pritest1", "default"), "b");
+    BOOST_CHECK_EQUAL(PriTest1Setting::Get(testArgs, "default"), "b");
     BOOST_CHECK_EQUAL(testArgs.GetArg("pritest2", "default"), "a");
     BOOST_CHECK_EQUAL(testArgs.GetArg("pritest3", "default"), "a");
     BOOST_CHECK_EQUAL(testArgs.GetArg("pritest4", "default"), "b");

@@ -1,6 +1,7 @@
 #include <node/peerman_args.h>
 
 #include <common/args.h>
+#include <init_settings.h>
 #include <net_processing.h>
 
 #include <algorithm>
@@ -16,7 +17,7 @@ void ApplyArgsManOptions(const ArgsManager& argsman, PeerManager::Options& optio
         options.max_orphan_txs = uint32_t((std::clamp<int64_t>(*value, 0, std::numeric_limits<uint32_t>::max())));
     }
 
-    if (auto value{argsman.GetIntArg("-blockreconstructionextratxn")}) {
+    if (auto value{BlockReconstructionExtraTxnSetting::Get(argsman)}) {
         options.max_extra_txs = uint32_t((std::clamp<int64_t>(*value, 0, std::numeric_limits<uint32_t>::max())));
     }
 

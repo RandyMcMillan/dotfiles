@@ -8,6 +8,7 @@
 #include <httpserver.h>
 #include <init.h>
 #include <kernel/blockmanager_opts.h>
+#include <net_processing.h>
 #include <util/string.h>
 
 #include <string>
@@ -173,5 +174,10 @@ using BlocksXorSetting = common::Setting<
 using BlockNotifySetting = common::Setting<
     "-blocknotify=<cmd>", std::string, common::SettingOptions{.legacy = true},
     "Execute command when the best block changes (%s in cmd is replaced by block hash)">;
+
+using BlockReconstructionExtraTxnSetting = common::Setting<
+    "-blockreconstructionextratxn=<n>", std::optional<int64_t>, common::SettingOptions{.legacy = true},
+    "Extra transactions to keep in memory for compact block reconstructions (default: %u)">
+    ::HelpArgs<DEFAULT_BLOCK_RECONSTRUCTION_EXTRA_TXN>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

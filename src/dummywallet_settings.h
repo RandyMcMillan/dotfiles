@@ -1,0 +1,13 @@
+#ifndef BITCOIN_DUMMYWALLET_SETTINGS_H
+#define BITCOIN_DUMMYWALLET_SETTINGS_H
+
+#include <common/setting.h>
+
+#include <string>
+#include <vector>
+
+using WalletSettingHidden = common::Setting<
+    "-wallet=<path>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
+#endif // BITCOIN_DUMMYWALLET_SETTINGS_H

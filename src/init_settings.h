@@ -400,4 +400,10 @@ using MaxSendBufferSetting = common::Setting<
     ::Default<DEFAULT_MAXSENDBUFFER>
     ::Category<OptionsCategory::CONNECTION>;
 
+using MaxUploadTargetSetting = common::Setting<
+    "-maxuploadtarget=<n>", std::string, common::SettingOptions{.legacy = true},
+    "Tries to keep outbound traffic under the given target per 24h. Limit does not apply to peers with 'download' permission or blocks created within past week. 0 = no limit (default: %s). Optional suffix units [k|K|m|M|g|G|t|T] (default: M). Lowercase is 1000 base while uppercase is 1024 base">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DEFAULT_MAX_UPLOAD_TARGET); }>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -516,7 +516,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     MaxConnectionsSetting::Register(argsman);
     MaxReceiveBufferSetting::Register(argsman);
     MaxSendBufferSetting::Register(argsman);
-    argsman.AddArg("-maxuploadtarget=<n>", strprintf("Tries to keep outbound traffic under the given target per 24h. Limit does not apply to peers with 'download' permission or blocks created within past week. 0 = no limit (default: %s). Optional suffix units [k|K|m|M|g|G|t|T] (default: M). Lowercase is 1000 base while uppercase is 1024 base", DEFAULT_MAX_UPLOAD_TARGET), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    MaxUploadTargetSetting::Register(argsman);
 #ifdef HAVE_SOCKADDR_UN
     argsman.AddArg("-onion=<ip:port|path>", "Use separate SOCKS5 proxy to reach peers via Tor onion services, set -noonion to disable (default: -proxy). May be a local file path prefixed with 'unix:'.", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
 #else
@@ -1249,9 +1249,9 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     const ArgsManager& args = *Assert(node.args);
     const CChainParams& chainparams = Params();
 
-    auto opt_max_upload = ParseByteUnits(args.GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET), ByteUnit::M);
+    auto opt_max_upload = ParseByteUnits(MaxUploadTargetSetting::Get(args, DEFAULT_MAX_UPLOAD_TARGET), ByteUnit::M);
     if (!opt_max_upload) {
-        return InitError(strprintf(_("Unable to parse -maxuploadtarget: '%s'"), args.GetArg("-maxuploadtarget", "")));
+        return InitError(strprintf(_("Unable to parse -maxuploadtarget: '%s'"), MaxUploadTargetSetting::Get(args, "")));
     }
 
     // ********************************************************* Step 4a: application initialization

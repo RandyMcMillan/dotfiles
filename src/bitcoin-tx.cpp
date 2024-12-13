@@ -50,7 +50,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
 
     VersionSetting::Register(argsman);
     CreateSetting::Register(argsman);
-    argsman.AddArg("-json", "Select JSON output", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    JsonSetting::Register(argsman);
     argsman.AddArg("-txid", "Output only the hex-encoded transaction id of the resultant transaction.", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     SetupChainParamsBaseOptions(argsman);
 
@@ -774,7 +774,7 @@ static void OutputTxHex(const CTransaction& tx)
 
 static void OutputTx(const CTransaction& tx)
 {
-    if (gArgs.GetBoolArg("-json", false))
+    if (JsonSetting::Get(gArgs))
         OutputTxJSON(tx);
     else if (gArgs.GetBoolArg("-txid", false))
         OutputTxHash(tx);

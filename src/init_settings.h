@@ -22,6 +22,7 @@
 #include <node/mempool_persist_args.h>
 #include <node/miner.h>
 #include <policy/feerate.h>
+#include <policy/fees.h>
 #include <rpc/util.h>
 #include <script/sigcache.h>
 #include <torcontrol.h>
@@ -733,5 +734,12 @@ using DustRelayFeeSetting = common::Setting<
     "Fee rate (in %s/kvB) used to define dust, the value of an output such that it will cost more than its value in fees at this fee rate to spend it. (default: %s)">
     ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DUST_RELAY_TX_FEE)); }>
     ::Category<OptionsCategory::NODE_RELAY>;
+
+using AcceptStaleFeeEstimatesSetting = common::Setting<
+    "-acceptstalefeeestimates", bool, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Read fee estimates even if they are stale (%sdefault: %u) fee estimates are considered stale if they are %s hours old">
+    ::Default<DEFAULT_ACCEPT_STALE_FEE_ESTIMATES>
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, "regtest only; ", DEFAULT_ACCEPT_STALE_FEE_ESTIMATES, Ticks<std::chrono::hours>(MAX_FILE_AGE)); }>
+    ::Category<OptionsCategory::DEBUG_TEST>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

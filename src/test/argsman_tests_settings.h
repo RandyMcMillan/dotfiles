@@ -106,4 +106,13 @@ using BarSetting = common::Setting<
 using BarSettingStr = common::Setting<
     "-bar", std::string, common::SettingOptions{.legacy = true}>;
 
+using FffSetting = common::Setting<
+    "-fff", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using FffSettingStr = common::Setting<
+    "-fff", std::string, common::SettingOptions{.legacy = true}>;
+
+using FffSettingBool = common::Setting<
+    "-fff", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

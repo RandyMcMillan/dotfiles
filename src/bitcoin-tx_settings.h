@@ -57,4 +57,11 @@ using OutDataSetting = common::Setting<
     "Add data-based output to TX">
     ::Category<OptionsCategory::COMMANDS>;
 
+using OutMultiSigSetting = common::Setting<
+    "outmultisig=VALUE:REQUIRED:PUBKEYS:PUBKEY1:PUBKEY2:....[:FLAGS]", common::Unset, common::SettingOptions{.legacy = true},
+    "Add Pay To n-of-m Multi-sig output to TX. n = REQUIRED, m = PUBKEYS. "
+        "Optionally add the \"W\" flag to produce a pay-to-witness-script-hash output. "
+        "Optionally add the \"S\" flag to wrap the output in a pay-to-script-hash.">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

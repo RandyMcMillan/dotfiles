@@ -635,4 +635,9 @@ using CheckPointsSetting = common::Setting<
     ::HelpFn<[](const auto& fmt, const auto& defaultChainParams) { return strprintf(fmt, defaultChainParams->Checkpoints().GetHeight(), DEFAULT_CHECKPOINTS_ENABLED); }>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using DeprecatedRpcSetting = common::Setting<
+    "-deprecatedrpc=<method>", std::vector<std::string>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Allows deprecated RPC method(s) to be used">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

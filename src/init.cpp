@@ -632,7 +632,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     RpcWorkQueueSetting::Register(argsman);
     ServerSetting::Register(argsman);
     if (can_listen_ipc) {
-        argsman.AddArg("-ipcbind=<address>", "Bind to Unix socket address and listen for incoming connections. Valid address values are \"unix\" to listen on the default path, <datadir>/node.sock, or \"unix:/custom/path\" to specify a custom path. Can be specified multiple times to listen on multiple paths. Default behavior is not to listen on any path. If relative paths are specified, they are interpreted relative to the network data directory. If paths include any parent directory components and the parent directories do not exist, they will be created.", ArgsManager::ALLOW_ANY, OptionsCategory::IPC);
+        IpcBindSetting::Register(argsman);
     }
 
 #if HAVE_DECL_FORK
@@ -1296,7 +1296,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     uiInterface.InitWallet();
 
     if (interfaces::Ipc* ipc = node.init->ipc()) {
-        for (std::string address : gArgs.GetArgs("-ipcbind")) {
+        for (std::string address : IpcBindSetting::Get(gArgs)) {
             try {
                 ipc->listenAddress(address);
             } catch (const std::exception& e) {

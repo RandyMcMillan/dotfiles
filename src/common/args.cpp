@@ -296,8 +296,8 @@ fs::path ArgsManager::GetBlocksDirPath() const
     // this function
     if (!path.empty()) return path;
 
-    if (IsArgSet("-blocksdir")) {
-        path = fs::absolute(GetPathArg("-blocksdir"));
+    if (!BlocksDirSetting::Value(*this).isNull()) {
+        path = fs::absolute(BlocksDirSettingPath::Get(*this));
         if (!fs::is_directory(path)) {
             path = "";
             return path;

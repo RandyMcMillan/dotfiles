@@ -73,4 +73,11 @@ using FastPruneSetting = common::Setting<
     "Use smaller block files and lower minimum prune height for testing purposes">
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using BlocksDirSetting = common::Setting<
+    "-blocksdir=<dir>", std::string, common::SettingOptions{.legacy = true},
+    "Specify directory to hold blocks subdirectory for *.dat files (default: <datadir>)">;
+
+using BlocksDirSettingPath = common::Setting<
+    "-blocksdir=<dir>", fs::path, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

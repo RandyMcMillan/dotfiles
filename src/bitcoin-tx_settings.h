@@ -27,4 +27,9 @@ using DelInSetting = common::Setting<
     "Delete input N from TX">
     ::Category<OptionsCategory::COMMANDS>;
 
+using DelOutSetting = common::Setting<
+    "delout=N", common::Unset, common::SettingOptions{.legacy = true},
+    "Delete output N from TX">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

@@ -670,7 +670,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     DaemonWaitSetting::Register(argsman);
 #else
     DaemonSetting::Hidden::Register(argsman);
-    argsman.AddHiddenArgs({"-daemonwait"});
+    DaemonWaitSetting::Hidden::Register(argsman);
 #endif
 }
 

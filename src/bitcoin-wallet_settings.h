@@ -41,4 +41,9 @@ using FormatSetting = common::Setting<
     "-format=<format>", std::string, common::SettingOptions{.legacy = true},
     "The format of the wallet file to create. Either \"bdb\" or \"sqlite\". Only used with 'createfromdump'">;
 
+using PrintToConsoleSetting = common::Setting<
+    "-printtoconsole", bool, common::SettingOptions{.legacy = true},
+    "Send trace/debug info to console (default: 1 when no -debug is true, 0 otherwise).">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_BITCOIN_WALLET_SETTINGS_H

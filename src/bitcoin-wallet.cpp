@@ -42,7 +42,7 @@ static void SetupWalletToolArgs(ArgsManager& argsman)
     DescriptorsSetting::Register(argsman);
     LegacySetting::Register(argsman);
     FormatSetting::Register(argsman);
-    argsman.AddArg("-printtoconsole", "Send trace/debug info to console (default: 1 when no -debug is true, 0 otherwise).", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
+    PrintToConsoleSetting::Register(argsman);
     argsman.AddArg("-withinternalbdb", "Use the internal Berkeley DB parser when dumping a Berkeley DB wallet file (default: false)", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
 
     argsman.AddCommand("info", "Get wallet info");
@@ -85,7 +85,7 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
     }
 
     // check for printtoconsole, allow -debug
-    LogInstance().m_print_to_console = args.GetBoolArg("-printtoconsole", DebugSetting::Get(args));
+    LogInstance().m_print_to_console = PrintToConsoleSetting::Get(args, DebugSetting::Get(args));
 
     if (!CheckDataDirOption(args)) {
         tfm::format(std::cerr, "Error: Specified data directory \"%s\" does not exist.\n", DataDirSetting::Get(args));

@@ -638,7 +638,7 @@ BOOST_AUTO_TEST_CASE(util_GetArg)
     BOOST_CHECK_EQUAL(PriTest1Setting::Get(testArgs, "default"), "b");
     BOOST_CHECK_EQUAL(PriTest2Setting::Get(testArgs, "default"), "a");
     BOOST_CHECK_EQUAL(PriTest3Setting::Get(testArgs, "default"), "a");
-    BOOST_CHECK_EQUAL(testArgs.GetArg("pritest4", "default"), "b");
+    BOOST_CHECK_EQUAL(PriTest4Setting::Get(testArgs, "default"), "b");
 }
 
 BOOST_AUTO_TEST_CASE(util_GetChainTypeString)

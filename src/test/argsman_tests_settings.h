@@ -202,4 +202,7 @@ using PriTest2Setting = common::Setting<
 using PriTest3Setting = common::Setting<
     "pritest3", std::string, common::SettingOptions{.legacy = true}>;
 
+using PriTest4Setting = common::Setting<
+    "pritest4", std::string, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

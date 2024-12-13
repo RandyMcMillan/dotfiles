@@ -477,7 +477,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     DataDirSetting::Register(argsman);
     DbBatchSizeSetting::Register(argsman);
     DbCacheSetting::Register(argsman);
-    argsman.AddArg("-includeconf=<file>", "Specify additional configuration file, relative to the -datadir path (only useable from configuration file, not command line)", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    IncludeConfSetting::Register(argsman);
     AllowIgnoredConfSetting::Register(argsman);
     argsman.AddArg("-loadblock=<file>", "Imports blocks from external file on startup", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-maxmempool=<n>", strprintf("Keep the transaction memory pool below <n> megabytes (default: %u)", DEFAULT_MAX_MEMPOOL_SIZE_MB), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);

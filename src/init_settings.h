@@ -203,4 +203,8 @@ using DbCacheSetting = common::Setting<
     ::Default<nDefaultDbCache>
     ::HelpArgs<nMinDbCache, nDefaultDbCache>;
 
+using IncludeConfSetting = common::Setting<
+    "-includeconf=<file>", common::Unset, common::SettingOptions{.legacy = true},
+    "Specify additional configuration file, relative to the -datadir path (only useable from configuration file, not command line)">;
+
 #endif // BITCOIN_INIT_SETTINGS_H

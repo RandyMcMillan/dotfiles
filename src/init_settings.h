@@ -108,4 +108,9 @@ using RpcCookiePermsSetting = common::Setting<
     "Set permissions on the RPC auth cookie file so that it is readable by [owner|group|all] (default: owner [via umask 0077])">
     ::Category<OptionsCategory::RPC>;
 
+using RpcAuthSetting = common::Setting<
+    "-rpcauth=<userpw>", std::vector<std::string>, common::SettingOptions{.legacy = true, .sensitive = true},
+    "Username and HMAC-SHA-256 hashed password for JSON-RPC connections. The field <userpw> comes in the format: <USERNAME>:<SALT>$<HASH>. A canonical python script is included in share/rpcauth. The client then connects normally using the rpcuser=<USERNAME>/rpcpassword=<PASSWORD> pair of arguments. This option can be specified multiple times">
+    ::Category<OptionsCategory::RPC>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

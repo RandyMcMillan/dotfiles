@@ -319,9 +319,9 @@ static bool InitRPCAuthentication()
         strRPCUserColonPass = RpcUserSetting::Get(gArgs) + ":" + RpcPasswordSetting::Get(gArgs);
     }
 
-    if (!gArgs.GetArgs("-rpcauth").empty()) {
+    if (!RpcAuthSetting::Get(gArgs).empty()) {
         LogInfo("Using rpcauth authentication.\n");
-        for (const std::string& rpcauth : gArgs.GetArgs("-rpcauth")) {
+        for (const std::string& rpcauth : RpcAuthSetting::Get(gArgs)) {
             std::vector<std::string> fields{SplitString(rpcauth, ':')};
             const std::vector<std::string> salt_hmac{SplitString(fields.back(), '$')};
             if (fields.size() == 2 && salt_hmac.size() == 2) {

@@ -26,6 +26,7 @@
 #include <script/sigcache.h>
 #include <torcontrol.h>
 #include <txdb.h>
+#include <util/moneystr.h>
 #include <util/string.h>
 #include <zmq/zmqabstractnotifier.h>
 
@@ -719,6 +720,12 @@ using AcceptNonstdTxnSetting = common::Setting<
     "-acceptnonstdtxn", bool, common::SettingOptions{.legacy = true, .debug_only = true},
     "Relay and mine \"non-standard\" transactions (test networks only; default: %u)">
     ::Default<DEFAULT_ACCEPT_NON_STD_TXN>
+    ::Category<OptionsCategory::NODE_RELAY>;
+
+using IncrementalRelayFeeSetting = common::Setting<
+    "-incrementalrelayfee=<amt>", std::string, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Fee rate (in %s/kvB) used to define cost of relay, used for mempool limiting and replacement policy. (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, CURRENCY_UNIT, FormatMoney(DEFAULT_INCREMENTAL_RELAY_FEE)); }>
     ::Category<OptionsCategory::NODE_RELAY>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

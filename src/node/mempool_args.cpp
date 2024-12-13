@@ -49,11 +49,11 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& argsman, const CChainP
 
     // incremental relay fee sets the minimum feerate increase necessary for replacement in the mempool
     // and the amount the mempool min fee increases above the feerate of txs evicted due to mempool limiting.
-    if (argsman.IsArgSet("-incrementalrelayfee")) {
-        if (std::optional<CAmount> inc_relay_fee = ParseMoney(argsman.GetArg("-incrementalrelayfee", ""))) {
+    if (!IncrementalRelayFeeSetting::Value(argsman).isNull()) {
+        if (std::optional<CAmount> inc_relay_fee = ParseMoney(IncrementalRelayFeeSetting::Get(argsman))) {
             mempool_opts.incremental_relay_feerate = CFeeRate{inc_relay_fee.value()};
         } else {
-            return util::Error{AmountErrMsg("incrementalrelayfee", argsman.GetArg("-incrementalrelayfee", ""))};
+            return util::Error{AmountErrMsg("incrementalrelayfee", IncrementalRelayFeeSetting::Get(argsman))};
         }
     }
 

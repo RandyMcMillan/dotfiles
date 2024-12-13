@@ -71,4 +71,11 @@ using OutPubKeySetting = common::Setting<
         "Optionally add the \"S\" flag to wrap the output in a pay-to-script-hash.">
     ::Category<OptionsCategory::COMMANDS>;
 
+using OutScriptSetting = common::Setting<
+    "outscript=VALUE:SCRIPT[:FLAGS]", common::Unset, common::SettingOptions{.legacy = true},
+    "Add raw script output to TX. "
+        "Optionally add the \"W\" flag to produce a pay-to-witness-script-hash output. "
+        "Optionally add the \"S\" flag to wrap the output in a pay-to-script-hash.">
+    ::Category<OptionsCategory::COMMANDS>;
+
 #endif // BITCOIN_BITCOIN_TX_SETTINGS_H

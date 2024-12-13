@@ -63,9 +63,7 @@ static void SetupBitcoinTxArgs(ArgsManager &argsman)
     OutDataSetting::Register(argsman);
     OutMultiSigSetting::Register(argsman);
     OutPubKeySetting::Register(argsman);
-    argsman.AddArg("outscript=VALUE:SCRIPT[:FLAGS]", "Add raw script output to TX. "
-        "Optionally add the \"W\" flag to produce a pay-to-witness-script-hash output. "
-        "Optionally add the \"S\" flag to wrap the output in a pay-to-script-hash.", ArgsManager::ALLOW_ANY, OptionsCategory::COMMANDS);
+    OutScriptSetting::Register(argsman);
     argsman.AddArg("replaceable(=N)", "Sets Replace-By-Fee (RBF) opt-in sequence number for input N. "
         "If N is not provided, the command attempts to opt-in all available inputs for RBF. "
         "If the transaction has no inputs, this option is ignored.", ArgsManager::ALLOW_ANY, OptionsCategory::COMMANDS);

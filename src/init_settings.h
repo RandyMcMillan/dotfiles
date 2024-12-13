@@ -2,6 +2,7 @@
 #define BITCOIN_INIT_SETTINGS_H
 
 #include <addrman.h>
+#include <common/args.h>
 #include <common/setting.h>
 
 #include <string>
@@ -16,5 +17,14 @@ using CheckAddrManSetting = common::Setting<
 using VersionSetting = common::Setting<
     "-version", bool, common::SettingOptions{.legacy = true},
     "Print version and exit">;
+
+using ConfSetting = common::Setting<
+    "-conf=<file>", std::string, common::SettingOptions{.legacy = true},
+    "Specify path to read-only configuration file. Relative paths will be prefixed by datadir location (only useable from command line, not configuration file) (default: %s)">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, BITCOIN_CONF_FILENAME); }>;
+
+using ConfSettingPath = common::Setting<
+    "-conf=<file>", fs::path, common::SettingOptions{.legacy = true}>
+    ::DefaultFn<[] { return BITCOIN_CONF_FILENAME; }>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -6,6 +6,7 @@
 
 #include <clientversion.h>
 #include <common/args.h>
+#include <init_settings.h>
 #include <logging.h>
 #include <node/interface_ui.h>
 #include <tinyformat.h>
@@ -123,13 +124,13 @@ bool StartLogging(const ArgsManager& args)
 
     // Only log conf file usage message if conf file actually exists.
     fs::path config_file_path = args.GetConfigFilePath();
-    if (args.IsArgNegated("-conf")) {
+    if (ConfSetting::Value(args).isFalse()) {
         LogInfo("Config file: <disabled>");
     } else if (fs::is_directory(config_file_path)) {
         LogWarning("Config file: %s (is directory, not file)", fs::PathToString(config_file_path));
     } else if (fs::exists(config_file_path)) {
         LogPrintf("Config file: %s\n", fs::PathToString(config_file_path));
-    } else if (args.IsArgSet("-conf")) {
+    } else if (!ConfSetting::Value(args).isNull()) {
         InitWarning(strprintf(_("The specified config file %s does not exist"), fs::PathToString(config_file_path)));
     } else {
         // Not categorizing as "Warning" because it's the default behavior

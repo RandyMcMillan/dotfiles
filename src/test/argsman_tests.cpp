@@ -357,7 +357,7 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArg)
     BOOST_CHECK(testArgs.GetBoolArg("-c", true) == false);
     BOOST_CHECK(testArgs.GetBoolArg("-d", false) == true);
     BOOST_CHECK(testArgs.GetBoolArg("-e", true) == false);
-    BOOST_CHECK(testArgs.GetBoolArg("-f", true) == false);
+    BOOST_CHECK(FSetting2::Get(testArgs) == false);
 }
 
 BOOST_AUTO_TEST_CASE(util_GetBoolArgEdgeCases)

@@ -67,4 +67,9 @@ using FSetting = common::Setting<
     ::Default<true>
     ::HelpArgs<>;
 
+using FSetting2 = common::Setting<
+    "-f", bool, common::SettingOptions{.legacy = true}>
+    ::Default<true>
+    ::HelpArgs<>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

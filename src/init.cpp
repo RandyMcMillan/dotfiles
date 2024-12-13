@@ -545,9 +545,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     // UPnP support was dropped. We keep `-upnp` as a hidden arg to display a more user friendly error when set. TODO: remove (here and below) for 30.0. NOTE: removing this option may prevent the GUI from starting, see https://github.com/bitcoin-core/gui/issues/843.
     UpnpSetting::Register(argsman);
     NatPmpSetting::Register(argsman);
-    argsman.AddArg("-whitebind=<[permissions@]addr>", strprintf("Bind to the given address and add permission flags to the peers connecting to it. "
-        "Use [host]:port notation for IPv6. Allowed permissions: %s. "
-        "Specify multiple permissions separated by commas (default: download,noban,mempool,relay). Can be specified multiple times.", util::Join(NET_PERMISSIONS_DOC, ", ")), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    WhiteBindSetting::Register(argsman);
 
     argsman.AddArg("-whitelist=<[permissions@]IP address or network>", "Add permission flags to the peers using the given IP address (e.g. 1.2.3.4) or "
         "CIDR-notated network (e.g. 1.2.3.0/24). Uses the same permissions as "
@@ -693,7 +691,7 @@ void InitParameterInteraction(ArgsManager& args)
         if (args.SoftSetBoolArg("-listen", true))
             LogInfo("parameter interaction: -bind set -> setting -listen=1\n");
     }
-    if (args.IsArgSet("-whitebind")) {
+    if (!WhiteBindSetting::Value(args).isNull()) {
         if (args.SoftSetBoolArg("-listen", true))
             LogInfo("parameter interaction: -whitebind set -> setting -listen=1\n");
     }
@@ -930,7 +928,7 @@ bool AppInitParameterInteraction(const ArgsManager& args)
     }
 
     // -bind and -whitebind can't be set when not listening
-    size_t nUserBind = BindSetting::Get(args).size() + args.GetArgs("-whitebind").size();
+    size_t nUserBind = BindSetting::Get(args).size() + WhiteBindSetting::Get(args).size();
     if (nUserBind != 0 && !ListenSetting::Get(args)) {
         return InitError(Untranslated("Cannot set -bind or -whitebind together with -listen=0"));
     }
@@ -1857,7 +1855,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         return InitError(ResolveErrMsg("bind", bind_arg));
     }
 
-    for (const std::string& strBind : args.GetArgs("-whitebind")) {
+    for (const std::string& strBind : WhiteBindSetting::Get(args)) {
         NetWhitebindPermissions whitebind;
         bilingual_str error;
         if (!NetWhitebindPermissions::TryParse(strBind, whitebind, error)) return InitError(error);
@@ -1866,7 +1864,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     // If the user did not specify -bind= or -whitebind= then we bind
     // on any address - 0.0.0.0 (IPv4) and :: (IPv6).
-    connOptions.bind_on_any = BindSetting::Get(args).empty() && args.GetArgs("-whitebind").empty();
+    connOptions.bind_on_any = BindSetting::Get(args).empty() && WhiteBindSetting::Get(args).empty();
 
     // Emit a warning if a bad port is given to -port= but only if -bind and -whitebind are not
     // given, because if they are, then -port= is ignored.

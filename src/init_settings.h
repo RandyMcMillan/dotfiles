@@ -528,4 +528,12 @@ using NatPmpSetting = common::Setting<
     ::Default<DEFAULT_NATPMP>
     ::Category<OptionsCategory::CONNECTION>;
 
+using WhiteBindSetting = common::Setting<
+    "-whitebind=<[permissions@]addr>", std::vector<std::string>, common::SettingOptions{.legacy = true},
+    "Bind to the given address and add permission flags to the peers connecting to it. "
+        "Use [host]:port notation for IPv6. Allowed permissions: %s. "
+        "Specify multiple permissions separated by commas (default: download,noban,mempool,relay). Can be specified multiple times.">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, util::Join(NET_PERMISSIONS_DOC, ", ")); }>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

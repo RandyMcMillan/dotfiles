@@ -150,7 +150,7 @@ uint16_t GetListenPort()
 
     // Otherwise, if -whitebind= without NetPermissionFlags::NoBan is provided, use that
     // (-whitebind= is required to have ":port").
-    for (const std::string& whitebind_arg : gArgs.GetArgs("-whitebind")) {
+    for (const std::string& whitebind_arg : WhiteBindSetting::Get(gArgs)) {
         NetWhitebindPermissions whitebind;
         bilingual_str error;
         if (NetWhitebindPermissions::TryParse(whitebind_arg, whitebind, error)) {

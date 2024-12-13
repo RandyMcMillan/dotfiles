@@ -32,7 +32,7 @@ void AddLoggingArgs(ArgsManager& argsman)
     DebugSetting::Register(argsman);
     DebugExcludeSetting::Register(argsman);
     LogIpsSetting::Register(argsman);
-    argsman.AddArg("-loglevel=<level>|<category>:<level>", strprintf("Set the global or per-category severity level for logging categories enabled with the -debug configuration option or the logging RPC. Possible values are %s (default=%s). The following levels are always logged: error, warning, info. If <category>:<level> is supplied, the setting will override the global one and may be specified multiple times to set multiple category-specific levels. <category> can be: %s.", LogInstance().LogLevelsString(), LogInstance().LogLevelToStr(BCLog::DEFAULT_LOG_LEVEL), LogInstance().LogCategoriesString()), ArgsManager::DISALLOW_NEGATION | ArgsManager::DISALLOW_ELISION | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
+    LogLevelSetting::Register(argsman);
     argsman.AddArg("-logtimestamps", strprintf("Prepend debug output with timestamp (default: %u)", DEFAULT_LOGTIMESTAMPS), ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-logthreadnames", strprintf("Prepend debug output with name of the originating thread (default: %u)", DEFAULT_LOGTHREADNAMES), ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
     argsman.AddArg("-logsourcelocations", strprintf("Prepend debug output with name of the originating source location (source file, line number and function name) (default: %u)", DEFAULT_LOGSOURCELOCATIONS), ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
@@ -58,8 +58,8 @@ void SetLoggingOptions(const ArgsManager& args)
 
 util::Result<void> SetLoggingLevel(const ArgsManager& args)
 {
-    if (args.IsArgSet("-loglevel")) {
-        for (const std::string& level_str : args.GetArgs("-loglevel")) {
+    if (!LogLevelSetting::Value(args).isNull()) {
+        for (const std::string& level_str : LogLevelSetting::Get(args)) {
             if (level_str.find_first_of(':', 3) == std::string::npos) {
                 // user passed a global log level, i.e. -loglevel=<level>
                 if (!LogInstance().SetLogLevel(level_str)) {

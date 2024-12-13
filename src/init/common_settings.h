@@ -35,4 +35,10 @@ using LogIpsSetting = common::Setting<
     ::Default<DEFAULT_LOGIPS>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LogLevelSetting = common::Setting<
+    "-loglevel=<level>|<category>:<level>", std::vector<std::string>, common::SettingOptions{.legacy = true, .debug_only = true, .disallow_negation = true, .disallow_elision = true},
+    "Set the global or per-category severity level for logging categories enabled with the -debug configuration option or the logging RPC. Possible values are %s (default=%s). The following levels are always logged: error, warning, info. If <category>:<level> is supplied, the setting will override the global one and may be specified multiple times to set multiple category-specific levels. <category> can be: %s.">
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, LogInstance().LogLevelsString(), LogInstance().LogLevelToStr(BCLog::DEFAULT_LOG_LEVEL), LogInstance().LogCategoriesString()); }>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

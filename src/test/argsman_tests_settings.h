@@ -115,4 +115,13 @@ using FffSettingStr = common::Setting<
 using FffSettingBool = common::Setting<
     "-fff", bool, common::SettingOptions{.legacy = true}>;
 
+using GggSetting = common::Setting<
+    "-ggg", std::vector<std::string>, common::SettingOptions{.legacy = true}>;
+
+using GggSettingStr = common::Setting<
+    "-ggg", std::string, common::SettingOptions{.legacy = true}>;
+
+using GggSettingBool = common::Setting<
+    "-ggg", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

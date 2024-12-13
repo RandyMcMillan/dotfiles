@@ -6,6 +6,7 @@
 #include <chainparams.h>
 
 #include <chainparamsbase.h>
+#include <chainparamsbase_settings.h>
 #include <common/args.h>
 #include <consensus/params.h>
 #include <deploymentinfo.h>
@@ -25,8 +26,8 @@ using util::SplitString;
 
 void ReadSigNetArgs(const ArgsManager& args, CChainParams::SigNetOptions& options)
 {
-    if (args.IsArgSet("-signetseednode")) {
-        options.seeds.emplace(args.GetArgs("-signetseednode"));
+    if (!SignetSeedNodeSetting::Value(args).isNull()) {
+        options.seeds.emplace(SignetSeedNodeSetting::Get(args));
     }
     if (args.IsArgSet("-signetchallenge")) {
         const auto signet_challenge = args.GetArgs("-signetchallenge");

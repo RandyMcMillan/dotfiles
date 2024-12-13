@@ -72,4 +72,9 @@ using NamedSetting = common::Setting<
     "Pass named instead of positional arguments (default: %s)">
     ::Default<DEFAULT_NAMED>;
 
+using RpcClientTimeoutSetting = common::Setting<
+    "-rpcclienttimeout=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Timeout in seconds during HTTP requests, or 0 for no timeout. (default: %d)">
+    ::Default<DEFAULT_HTTP_CLIENT_TIMEOUT>;
+
 #endif // BITCOIN_BITCOIN_CLI_SETTINGS_H

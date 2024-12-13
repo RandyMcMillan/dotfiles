@@ -518,7 +518,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     MaxSendBufferSetting::Register(argsman);
     MaxUploadTargetSetting::Register(argsman);
 #ifdef HAVE_SOCKADDR_UN
-    argsman.AddArg("-onion=<ip:port|path>", "Use separate SOCKS5 proxy to reach peers via Tor onion services, set -noonion to disable (default: -proxy). May be a local file path prefixed with 'unix:'.", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    OnionSetting::Register(argsman);
 #else
     argsman.AddArg("-onion=<ip:port>", "Use separate SOCKS5 proxy to reach peers via Tor onion services, set -noonion to disable (default: -proxy)", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
 #endif
@@ -1513,7 +1513,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // -onion can be used to set only a proxy for .onion, or override normal proxy for .onion addresses
     // -noonion (or -onion=0) disables connecting to .onion entirely
     // An empty string is used to not override the onion proxy (in which case it defaults to -proxy set above, or none)
-    std::string onionArg = args.GetArg("-onion", "");
+    std::string onionArg = OnionSetting::Get(args);
     if (onionArg != "") {
         if (onionArg == "0") { // Handle -noonion/-onion=0
             onion_proxy = Proxy{};

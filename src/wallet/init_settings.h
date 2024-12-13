@@ -108,6 +108,12 @@ using TxConfirmTargetSetting = common::Setting<
     "If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)">
     ::Default<DEFAULT_TX_CONFIRM_TARGET>
     ::Category<OptionsCategory::WALLET>;
+
+using WalletBroadcastSetting = common::Setting<
+    "-walletbroadcast", bool, common::SettingOptions{.legacy = true},
+    "Make the wallet broadcast transactions (default: %u)">
+    ::Default<DEFAULT_WALLETBROADCAST>
+    ::Category<OptionsCategory::WALLET>;
 } // namespace wallet
 
 #endif // BITCOIN_WALLET_INIT_SETTINGS_H

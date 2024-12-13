@@ -181,4 +181,7 @@ using IntTest3Setting = common::Setting<
     ::Default<-1>
     ::HelpArgs<>;
 
+using BoolTest1Setting = common::Setting<
+    "booltest1", bool, common::SettingOptions{.legacy = true}>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

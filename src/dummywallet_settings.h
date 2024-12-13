@@ -42,4 +42,8 @@ using KeyPoolSettingHidden = common::Setting<
     "-keypool=<n>", common::Unset, common::SettingOptions{.legacy = true}>
     ::Category<OptionsCategory::HIDDEN>;
 
+using MaxApsFeeSettingHidden = common::Setting<
+    "-maxapsfee=<n>", common::Unset, common::SettingOptions{.legacy = true}>
+    ::Category<OptionsCategory::HIDDEN>;
+
 #endif // BITCOIN_DUMMYWALLET_SETTINGS_H

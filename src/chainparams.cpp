@@ -10,6 +10,7 @@
 #include <common/args.h>
 #include <consensus/params.h>
 #include <deploymentinfo.h>
+#include <init_settings.h>
 #include <logging.h>
 #include <tinyformat.h>
 #include <util/chaintype.h>
@@ -44,7 +45,7 @@ void ReadSigNetArgs(const ArgsManager& args, CChainParams::SigNetOptions& option
 
 void ReadRegTestArgs(const ArgsManager& args, CChainParams::RegTestOptions& options)
 {
-    if (auto value = args.GetBoolArg("-fastprune")) options.fastprune = *value;
+    if (auto value = FastPruneSetting::Get(args)) options.fastprune = *value;
     if (HasTestOption(args, "bip94")) options.enforce_bip94 = true;
 
     for (const std::string& arg : args.GetArgs("-testactivationheight")) {

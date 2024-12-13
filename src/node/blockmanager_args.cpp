@@ -5,6 +5,7 @@
 #include <node/blockmanager_args.h>
 
 #include <common/args.h>
+#include <init_settings.h>
 #include <node/blockstorage.h>
 #include <tinyformat.h>
 #include <util/result.h>
@@ -32,7 +33,7 @@ util::Result<void> ApplyArgsManOptions(const ArgsManager& args, BlockManager::Op
     }
     opts.prune_target = nPruneTarget;
 
-    if (auto value{args.GetBoolArg("-fastprune")}) opts.fast_prune = *value;
+    if (auto value{FastPruneSetting::Get(args)}) opts.fast_prune = *value;
 
     return {};
 }

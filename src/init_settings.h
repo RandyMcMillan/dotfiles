@@ -68,4 +68,9 @@ using DaemonWaitSetting = common::Setting<
     "Wait for initialization to be finished before exiting. This implies -daemon (default: %d)">
     ::Default<DEFAULT_DAEMONWAIT>;
 
+using FastPruneSetting = common::Setting<
+    "-fastprune", std::optional<bool>, common::SettingOptions{.legacy = true, .debug_only = true},
+    "Use smaller block files and lower minimum prune height for testing purposes">
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

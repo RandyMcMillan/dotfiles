@@ -65,4 +65,10 @@ using LogTimeMicrosSetting = common::Setting<
     ::Default<DEFAULT_LOGTIMEMICROS>
     ::Category<OptionsCategory::DEBUG_TEST>;
 
+using LogLevelAlwaysSetting = common::Setting<
+    "-loglevelalways", bool, common::SettingOptions{.legacy = true},
+    "Always prepend a category and level (default: %u)">
+    ::Default<DEFAULT_LOGLEVELALWAYS>
+    ::Category<OptionsCategory::DEBUG_TEST>;
+
 #endif // BITCOIN_INIT_COMMON_SETTINGS_H

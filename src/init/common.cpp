@@ -37,7 +37,7 @@ void AddLoggingArgs(ArgsManager& argsman)
     LogThreadNamesSetting::Register(argsman);
     LogSourceLocationsSetting::Register(argsman);
     LogTimeMicrosSetting::Register(argsman);
-    argsman.AddArg("-loglevelalways", strprintf("Always prepend a category and level (default: %u)", DEFAULT_LOGLEVELALWAYS), ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
+    LogLevelAlwaysSetting::Register(argsman);
     PrintToConsoleSetting::Register(argsman);
     argsman.AddArg("-shrinkdebugfile", "Shrink debug.log file on client startup (default: 1 when no -debug)", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
 }
@@ -51,7 +51,7 @@ void SetLoggingOptions(const ArgsManager& args)
     LogInstance().m_log_time_micros = LogTimeMicrosSetting::Get(args);
     LogInstance().m_log_threadnames = LogThreadNamesSetting::Get(args);
     LogInstance().m_log_sourcelocations = LogSourceLocationsSetting::Get(args);
-    LogInstance().m_always_print_category_level = args.GetBoolArg("-loglevelalways", DEFAULT_LOGLEVELALWAYS);
+    LogInstance().m_always_print_category_level = LogLevelAlwaysSetting::Get(args);
 
     fLogIPs = LogIpsSetting::Get(args);
 }

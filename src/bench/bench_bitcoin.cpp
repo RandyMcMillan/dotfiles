@@ -32,7 +32,7 @@ static void SetupBenchArgs(ArgsManager& argsman)
     MinTimeSetting::Register(argsman);
     OutputCsvSetting::Register(argsman);
     OutputJsonSetting::Register(argsman);
-    argsman.AddArg("-sanity-check", "Run benchmarks for only one iteration with no output", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    SanityCheckSetting::Register(argsman);
     argsman.AddArg("-priority-level=<l1,l2,l3>", strprintf("Run benchmarks of one or multiple priority level(s) (%s), default: '%s'",
                                                            benchmark::ListPriorities(), DEFAULT_PRIORITY), ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
 }
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
         args.output_csv = OutputCsvSetting::Get(argsman);
         args.output_json = OutputJsonSetting::Get(argsman);
         args.regex_filter = FilterSetting::Get(argsman);
-        args.sanity_check = argsman.GetBoolArg("-sanity-check", false);
+        args.sanity_check = SanityCheckSetting::Get(argsman);
         args.priority = parsePriorityLevel(argsman.GetArg("-priority-level", DEFAULT_PRIORITY));
         args.setup_args = parseTestSetupArgs(argsman);
 

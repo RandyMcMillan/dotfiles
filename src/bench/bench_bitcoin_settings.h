@@ -42,4 +42,8 @@ using OutputJsonSetting = common::Setting<
     "-output-json=<output.json>", fs::path, common::SettingOptions{.legacy = true},
     "Generate JSON file with all benchmark results">;
 
+using SanityCheckSetting = common::Setting<
+    "-sanity-check", bool, common::SettingOptions{.legacy = true},
+    "Run benchmarks for only one iteration with no output">;
+
 #endif // BITCOIN_BENCH_BENCH_BITCOIN_SETTINGS_H

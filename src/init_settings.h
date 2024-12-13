@@ -388,4 +388,10 @@ using MaxConnectionsSetting = common::Setting<
     ::HelpArgs<DEFAULT_MAX_PEER_CONNECTIONS, MAX_ADDNODE_CONNECTIONS>
     ::Category<OptionsCategory::CONNECTION>;
 
+using MaxReceiveBufferSetting = common::Setting<
+    "-maxreceivebuffer=<n>", int64_t, common::SettingOptions{.legacy = true},
+    "Maximum per-connection receive buffer, <n>*1000 bytes (default: %u)">
+    ::Default<DEFAULT_MAXRECEIVEBUFFER>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

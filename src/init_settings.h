@@ -484,4 +484,11 @@ using SeedNodeSetting = common::Setting<
     "Connect to a node to retrieve peer addresses, and disconnect. This option can be specified multiple times to connect to multiple nodes. During startup, seednodes will be tried before dnsseeds.">
     ::Category<OptionsCategory::CONNECTION>;
 
+using NetworkActiveSetting = common::Setting<
+    "-networkactive", bool, common::SettingOptions{.legacy = true},
+    "Enable all P2P network activity (default: 1). Can be changed by the setnetworkactive RPC command">
+    ::Default<true>
+    ::HelpArgs<>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

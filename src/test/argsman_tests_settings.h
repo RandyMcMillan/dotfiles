@@ -84,4 +84,9 @@ using DSettingBool = common::Setting<
 using NobSetting = common::Setting<
     "-nob", common::Unset, common::SettingOptions{.legacy = true}>;
 
+using CSetting = common::Setting<
+    "-c", bool, common::SettingOptions{.legacy = true}>
+    ::Default<true>
+    ::HelpArgs<>;
+
 #endif // BITCOIN_TEST_ARGSMAN_TESTS_SETTINGS_H

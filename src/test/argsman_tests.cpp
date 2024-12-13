@@ -354,7 +354,7 @@ BOOST_AUTO_TEST_CASE(util_GetBoolArg)
     // Check expected values.
     BOOST_CHECK(ASettingBool::Get(testArgs, false) == true);
     BOOST_CHECK(BSettingBool::Get(testArgs, true) == false);
-    BOOST_CHECK(testArgs.GetBoolArg("-c", true) == false);
+    BOOST_CHECK(CSetting::Get(testArgs) == false);
     BOOST_CHECK(DSettingBool::Get(testArgs, false) == true);
     BOOST_CHECK(testArgs.GetBoolArg("-e", true) == false);
     BOOST_CHECK(FSetting2::Get(testArgs) == false);

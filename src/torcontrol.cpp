@@ -669,7 +669,7 @@ static std::thread torControlThread;
 
 static void TorControlThread(CService onion_service_target)
 {
-    TorController ctrl(gBase, gArgs.GetArg("-torcontrol", DEFAULT_TOR_CONTROL), onion_service_target);
+    TorController ctrl(gBase, TorControlSetting::Get(gArgs), onion_service_target);
 
     event_base_dispatch(gBase);
 }

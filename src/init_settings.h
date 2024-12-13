@@ -18,6 +18,7 @@
 #include <net_processing.h>
 #include <node/chainstatemanager_args.h>
 #include <node/mempool_persist_args.h>
+#include <torcontrol.h>
 #include <txdb.h>
 #include <util/string.h>
 
@@ -501,6 +502,13 @@ using PeerTimeoutSetting = common::Setting<
     "-peertimeout=<n>", int64_t, common::SettingOptions{.legacy = true, .debug_only = true},
     "Specify a p2p connection timeout delay in seconds. After connecting to a peer, wait this amount of time before considering disconnection based on inactivity (minimum: 1, default: %d)">
     ::Default<DEFAULT_PEER_CONNECT_TIMEOUT>
+    ::Category<OptionsCategory::CONNECTION>;
+
+using TorControlSetting = common::Setting<
+    "-torcontrol=<ip>:<port>", std::string, common::SettingOptions{.legacy = true},
+    "Tor control host and port to use if onion listening enabled (default: %s). If no port is specified, the default port of %i will be used.">
+    ::DefaultFn<[] { return DEFAULT_TOR_CONTROL; }>
+    ::HelpFn<[](const auto& fmt) { return strprintf(fmt, DEFAULT_TOR_CONTROL, DEFAULT_TOR_CONTROL_PORT); }>
     ::Category<OptionsCategory::CONNECTION>;
 
 #endif // BITCOIN_INIT_SETTINGS_H

@@ -421,4 +421,10 @@ using I2pSamSetting = common::Setting<
     "I2P SAM proxy to reach I2P peers and accept I2P connections (default: none)">
     ::Category<OptionsCategory::CONNECTION>;
 
+using I2pAcceptIncomingSetting = common::Setting<
+    "-i2pacceptincoming", bool, common::SettingOptions{.legacy = true},
+    "Whether to accept inbound I2P connections (default: %i). Ignored if -i2psam is not set. Listening for inbound I2P connections is done through the SAM proxy, not by binding to a local address and port.">
+    ::Default<DEFAULT_I2P_ACCEPT_INCOMING>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

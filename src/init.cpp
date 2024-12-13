@@ -523,7 +523,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     OnionSetting2::Register(argsman);
 #endif
     I2pSamSetting::Register(argsman);
-    argsman.AddArg("-i2pacceptincoming", strprintf("Whether to accept inbound I2P connections (default: %i). Ignored if -i2psam is not set. Listening for inbound I2P connections is done through the SAM proxy, not by binding to a local address and port.", DEFAULT_I2P_ACCEPT_INCOMING), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    I2pAcceptIncomingSetting::Register(argsman);
     argsman.AddArg("-onlynet=<net>", strprintf("Make automatic outbound connections only to network <net> (%s). Inbound and manual connections are not affected by this option. It can be specified multiple times to allow multiple networks.", util::Join(GetNetworkNames(), ", ")), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-v2transport", strprintf("Support v2 transport (default: %u)", DEFAULT_V2_TRANSPORT), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-peerbloomfilters", strprintf("Support filtering of blocks and transaction with bloom filters (default: %u)", DEFAULT_PEERBLOOMFILTERS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -1949,7 +1949,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         g_reachable_nets.Remove(NET_I2P);
     }
 
-    connOptions.m_i2p_accept_incoming = args.GetBoolArg("-i2pacceptincoming", DEFAULT_I2P_ACCEPT_INCOMING);
+    connOptions.m_i2p_accept_incoming = I2pAcceptIncomingSetting::Get(args);
 
     if (!node.connman->Start(scheduler, connOptions)) {
         return false;

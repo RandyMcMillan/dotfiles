@@ -34,4 +34,8 @@ using MinTimeSetting = common::Setting<
     "Minimum runtime per benchmark, in milliseconds (default: %d)">
     ::Default<DEFAULT_MIN_TIME_MS>;
 
+using OutputCsvSetting = common::Setting<
+    "-output-csv=<output.csv>", fs::path, common::SettingOptions{.legacy = true},
+    "Generate CSV file with the most important benchmark results">;
+
 #endif // BITCOIN_BENCH_BENCH_BITCOIN_SETTINGS_H

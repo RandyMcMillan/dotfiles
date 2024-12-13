@@ -30,7 +30,7 @@ static void SetupBenchArgs(ArgsManager& argsman)
     FilterSetting::Register(argsman);
     ListSetting::Register(argsman);
     MinTimeSetting::Register(argsman);
-    argsman.AddArg("-output-csv=<output.csv>", "Generate CSV file with the most important benchmark results", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
+    OutputCsvSetting::Register(argsman);
     argsman.AddArg("-output-json=<output.json>", "Generate JSON file with all benchmark results", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-sanity-check", "Run benchmarks for only one iteration with no output", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-priority-level=<l1,l2,l3>", strprintf("Run benchmarks of one or multiple priority level(s) (%s), default: '%s'",
@@ -136,7 +136,7 @@ int main(int argc, char** argv)
         args.asymptote = parseAsymptote(AsymptoteSetting::Get(argsman));
         args.is_list_only = ListSetting::Get(argsman);
         args.min_time = std::chrono::milliseconds(MinTimeSetting::Get(argsman));
-        args.output_csv = argsman.GetPathArg("-output-csv");
+        args.output_csv = OutputCsvSetting::Get(argsman);
         args.output_json = argsman.GetPathArg("-output-json");
         args.regex_filter = FilterSetting::Get(argsman);
         args.sanity_check = argsman.GetBoolArg("-sanity-check", false);

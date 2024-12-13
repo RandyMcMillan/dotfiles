@@ -552,7 +552,7 @@ void SetupServerArgs(ArgsManager& argsman, bool can_listen_ipc)
     g_wallet_init_interface.AddWalletOptions(argsman);
 
 #ifdef ENABLE_ZMQ
-    argsman.AddArg("-zmqpubhashblock=<address>", "Enable publish hash block in <address>", ArgsManager::ALLOW_ANY, OptionsCategory::ZMQ);
+    ZmqPubHashBlockSetting::Register(argsman);
     argsman.AddArg("-zmqpubhashtx=<address>", "Enable publish hash transaction in <address>", ArgsManager::ALLOW_ANY, OptionsCategory::ZMQ);
     argsman.AddArg("-zmqpubrawblock=<address>", "Enable publish raw block in <address>", ArgsManager::ALLOW_ANY, OptionsCategory::ZMQ);
     argsman.AddArg("-zmqpubrawtx=<address>", "Enable publish raw transaction in <address>", ArgsManager::ALLOW_ANY, OptionsCategory::ZMQ);

@@ -33,4 +33,8 @@ using DescriptorsSetting = common::Setting<
     ::Default<true>
     ::HelpArgs<>;
 
+using LegacySetting = common::Setting<
+    "-legacy", bool, common::SettingOptions{.legacy = true},
+    "Create legacy wallet. Only for 'create'">;
+
 #endif // BITCOIN_BITCOIN_WALLET_SETTINGS_H

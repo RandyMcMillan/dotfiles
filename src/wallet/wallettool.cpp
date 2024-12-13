@@ -125,7 +125,7 @@ bool ExecuteWalletToolFunc(const ArgsManager& args, const std::string& command)
         tfm::format(std::cerr, "The -descriptors option can only be used with the 'create' command.\n");
         return false;
     }
-    if (args.IsArgSet("-legacy") && command != "create") {
+    if (!LegacySetting::Value(args).isNull() && command != "create") {
         tfm::format(std::cerr, "The -legacy option can only be used with the 'create' command.\n");
         return false;
     }
@@ -141,9 +141,9 @@ bool ExecuteWalletToolFunc(const ArgsManager& args, const std::string& command)
         ReadDatabaseArgs(args, options);
         options.require_create = true;
         // If -legacy is set, use it. Otherwise default to false.
-        bool make_legacy = args.GetBoolArg("-legacy", false);
+        bool make_legacy = LegacySetting::Get(args);
         // If neither -legacy nor -descriptors is set, default to true. If -descriptors is set, use its value.
-        bool make_descriptors = (DescriptorsSetting::Value(args).isNull() && !args.IsArgSet("-legacy")) || (!DescriptorsSetting::Value(args).isNull() && DescriptorsSetting::Get(args));
+        bool make_descriptors = (DescriptorsSetting::Value(args).isNull() && LegacySetting::Value(args).isNull()) || (!DescriptorsSetting::Value(args).isNull() && DescriptorsSetting::Get(args));
         if (make_legacy && make_descriptors) {
             tfm::format(std::cerr, "Only one of -legacy or -descriptors can be set to true, not both\n");
             return false;

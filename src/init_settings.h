@@ -303,4 +303,10 @@ using AddNodeSetting = common::Setting<
     ::HelpArgs<MAX_ADDNODE_CONNECTIONS>
     ::Category<OptionsCategory::CONNECTION>;
 
+using AsMapSetting = common::Setting<
+    "-asmap=<file>", fs::path, common::SettingOptions{.legacy = true},
+    "Specify asn mapping used for bucketing of the peers (default: %s). Relative paths will be prefixed by the net-specific datadir location.">
+    ::DefaultFn<[] { return DEFAULT_ASMAP_FILENAME; }>
+    ::Category<OptionsCategory::CONNECTION>;
+
 #endif // BITCOIN_INIT_SETTINGS_H

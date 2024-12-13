@@ -13,4 +13,9 @@ using ChooseDataDirSetting = common::Setting<
     ::Default<DEFAULT_CHOOSE_DATADIR>
     ::Category<OptionsCategory::GUI>;
 
+using LangSetting = common::Setting<
+    "-lang=<lang>", std::string, common::SettingOptions{.legacy = true},
+    "Set language, for example \"de_DE\" (default: system locale)">
+    ::Category<OptionsCategory::GUI>;
+
 #endif // BITCOIN_QT_BITCOIN_SETTINGS_H

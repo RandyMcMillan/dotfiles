@@ -111,7 +111,7 @@ static QString GetLangTerritory()
     if(!lang_territory_qsettings.isEmpty())
         lang_territory = lang_territory_qsettings;
     // 3) -lang command line argument
-    lang_territory = QString::fromStdString(gArgs.GetArg("-lang", lang_territory.toStdString()));
+    lang_territory = QString::fromStdString(LangSetting::Get(gArgs, lang_territory.toStdString()));
     return lang_territory;
 }
 
@@ -480,7 +480,7 @@ bool BitcoinApplication::event(QEvent* e)
 static void SetupUIArgs(ArgsManager& argsman)
 {
     ChooseDataDirSetting::Register(argsman);
-    argsman.AddArg("-lang=<lang>", "Set language, for example \"de_DE\" (default: system locale)", ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
+    LangSetting::Register(argsman);
     argsman.AddArg("-min", "Start minimized", ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
     argsman.AddArg("-resetguisettings", "Reset all settings changed in the GUI", ArgsManager::ALLOW_ANY, OptionsCategory::GUI);
     argsman.AddArg("-splash", strprintf("Show splash screen on startup (default: %u)", DEFAULT_SPLASHSCREEN), ArgsManager::ALLOW_ANY, OptionsCategory::GUI);

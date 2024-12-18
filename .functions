@@ -360,6 +360,19 @@ git checkout -b ${weeble:-0}/${blockheight:-0}/${wobble:-0}/$(git rev-parse --sh
     fi
 
 }
+function git-checkout-pr (){
+
+weeble=$(gnostr-weeble)
+blockheight=$(gnostr-blockheight)
+wobble=$(gnostr-wobble)
+
+git checkout -b pr/${weeble:-0}/${blockheight:-0}/${wobble:-0}/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+    if [ ! -z "$1" ]
+    then
+        git checkout -b pr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+    fi
+
+}
 function git-tag (){
 
 git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
@@ -368,6 +381,16 @@ git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse 
         git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
     fi
     git tags | grep $(gnostr-weeble)
+
+}
+function git-tag-pr (){
+
+git tag pr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+    if [ ! -z "$1" ]
+    then
+        git tag pr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+    fi
+    git tags | grep pr/$(gnostr-weeble)
 
 }
 

@@ -8,6 +8,7 @@ export OS
 export OS_VERSION
 export UNAME_M
 export ARCH
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 report() {
 echo OS:
 echo "$OS" | awk '{print tolower($0)}'
@@ -103,22 +104,21 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 	#REF:https://github.com/sindresorhus/quick-look-plugins
 
         rm -rf /Applications/Suspicious\ Package.app/
-        brew install --cask suspicious-package | echo
-        brew install --cask glance | echo
-        open /Applications/Glance.app
-        bash -c "if pgrep Glance; then pkill Glance; fi"
-        brew install --cask qladdict | echo
-        brew install --cask qlcolorcode | echo
-        brew install --cask qldds | echo
-        brew install --cask qlstephen | echo
-        brew install --cask qlmarkdown | echo
-        brew install --cask qlplayground | echo
-        brew install --cask qlprettypatch | echo
-        brew install --cask qlcommonmark | echo
-        brew install --cask quicklook-json | echo
-        brew install --cask qlimagesize | echo
-        brew install --cask quicklookase | echo
-        brew install --cask qlvideo | echo
+        brew install --cask suspicious-package
+        #brew install --cask glance
+        #open /Applications/Glance.app
+        #bash -c "if pgrep Glance; then pkill Glance; fi"
+        brew install --cask qladdict
+        brew install --cask qlcolorcode
+        brew install --cask qldds
+        brew install --cask qlstephen
+        brew install --cask qlmarkdown
+        brew install --cask qlplayground
+        brew install --cask qlprettypatch
+        brew install --cask qlcommonmark
+        brew install --cask quicklook-json
+        brew install --cask quicklookase
+        brew install --cask qlvideo
         export AWK
         checkbrew
 elif [[ "$OSTYPE" == "cygwin" ]]; then

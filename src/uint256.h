@@ -78,10 +78,10 @@ public:
      * bytes.fromhex().
      *
      * The nice thing about the reverse-byte representation, even though it is
-     * unusual, is that if a blob contains an arithmetic number in little endian
-     * format (with least significant bytes first, and most significant bytes
+     * unusual, is that if a blob contains an arithmetic number in little-endian
+     * format (with least-significant bytes first, and most-significant bytes
      * last), the GetHex() output will match the way the number would normally
-     * be written in base-16 (with most significant digits first and least
+     * be written in base-16 (with most-significant digits first and least-
      * significant digits last).
      *
      * This means, for example, that ArithToUint256(num).GetHex() can be used to

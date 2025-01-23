@@ -994,6 +994,14 @@ public:
         return std::make_unique<BlockTemplateImpl>(BlockAssembler{chainman().ActiveChainstate(), context()->mempool.get(), assemble_options}.CreateNewBlock(), m_node);
     }
 
+    bool checkBlock(const CBlock& block, const node::BlockCheckOptions& options, std::string& reason) override
+    {
+        LOCK(::cs_main);
+        BlockValidationState state{TestBlockValidity(chainman().ActiveChainstate(), block, options.check_pow, options.check_merkle_root)};
+        reason = state.GetRejectReason();
+        return state.IsValid();
+    }
+
     NodeContext* context() override { return &m_node; }
     ChainstateManager& chainman() { return *Assert(m_node.chainman); }
     KernelNotifications& notifications() { return *Assert(m_node.notifications); }

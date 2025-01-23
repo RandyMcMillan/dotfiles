@@ -383,14 +383,22 @@ public:
 /** Context-independent validity checks */
 bool CheckBlock(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true, bool fCheckMerkleRoot = true);
 
-/** Check a block is completely valid from start to finish (only works on top of our current best block) */
-bool TestBlockValidity(BlockValidationState& state,
-                       const CChainParams& chainparams,
-                       Chainstate& chainstate,
-                       const CBlock& block,
-                       CBlockIndex* pindexPrev,
-                       bool fCheckPOW = true,
-                       bool fCheckMerkleRoot = true) EXCLUSIVE_LOCKS_REQUIRED(cs_main);
+/**
+ * Check a block is completely valid from start to finish, including
+ * transactions. Only works on top of our current best block.
+ *
+ * @param[in]   chainstate  Chainstate to validate with.
+ * @param[in]   block       The block we want to process. Must connect to the
+ *                          current chainstate tip.
+ * @param[in]   check_pow   perform proof-of-work check, nBits in the header
+ *                          is always checked
+ * @param[in]   check_merkle_root check the merkle root
+ *
+ * @return Result of validation (valid, invalid, or error)
+ *
+ * For signets the challenge verification is skipped when check_pow is false.
+ */
+BlockValidationState TestBlockValidity(Chainstate& chainstate, const CBlock& block, const bool check_pow, const bool check_merkle_root) EXCLUSIVE_LOCKS_REQUIRED(cs_main);
 
 /** Check with the proof of work on each blockheader matches the value in nBits */
 bool HasValidProofOfWork(const std::vector<CBlockHeader>& headers, const Consensus::Params& consensusParams);

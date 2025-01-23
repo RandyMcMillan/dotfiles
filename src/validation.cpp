@@ -4653,42 +4653,81 @@ MempoolAcceptResult ChainstateManager::ProcessTransaction(const CTransactionRef&
     return result;
 }
 
-bool TestBlockValidity(BlockValidationState& state,
-                       const CChainParams& chainparams,
-                       Chainstate& chainstate,
-                       const CBlock& block,
-                       CBlockIndex* pindexPrev,
-                       bool fCheckPOW,
-                       bool fCheckMerkleRoot)
+BlockValidationState TestBlockValidity(Chainstate& chainstate, const CBlock& block, const bool check_pow, const bool check_merkle_root)
 {
+    // Lock must be held throughout this function for two reasons:
+    // 1. We don't want the tip to change during several of the validation steps
+    // 2. To prevent a CheckBlock() race condition for fChecked, see ProcessNewBlock()
     AssertLockHeld(cs_main);
-    assert(pindexPrev && pindexPrev == chainstate.m_chain.Tip());
-    CCoinsViewCache viewNew(&chainstate.CoinsTip());
+    BlockValidationState state;
+    ChainstateManager& chainman{chainstate.m_chainman};
+    CBlockIndex* prev_block{chainman.m_blockman.LookupBlockIndex(block.hashPrevBlock)};
+    // TestBlockValidity only supports blocks built on the current Tip
+    if (prev_block != chainstate.m_chain.Tip()) {
+        state.Invalid(BlockValidationResult::BLOCK_MISSING_PREV, "inconclusive-not-best-prevblk");
+        return state;
+    }
+
+    // Sanity check
+    Assert(!block.fChecked);
+    // For signets CheckBlock() verifies the challenge iif fCheckPow is set.
+    if (!CheckBlock(block, state, chainman.GetConsensus(), /*fCheckPow=*/check_pow, /*fCheckMerkleRoot=*/check_merkle_root)) {
+        Assert(!state.IsValid());
+        Assert(!state.GetRejectReason().empty());
+        return state;
+    } else {
+        // Sanity check
+        Assert(check_pow || !block.fChecked);
+    }
+
+    /**
+     * At this point ProcessNewBlock would call AcceptBlock(), but we
+     * don't want to store the block or its header. Run individual checks
+     * instead:
+     * - skip AcceptBlockHeader() because:
+     *   - we don't want to update the block index
+     *   - we do not care about duplicates
+     *   - we already ran CheckBlockHeader() via CheckBlock()
+     *   - we already checked for prev-blk-not-found
+     *   - we know the tip is valid, so no need to check bad-prevblk
+     * - we already ran CheckBlock()
+     * - do run ContextualCheckBlockHeader()
+     * - do run ContextualCheckBlock()
+     */
+    if (!ContextualCheckBlockHeader(block, state, chainstate.m_blockman, chainman, chainstate.m_chain.Tip())) {
+        Assert(!state.IsValid());
+        Assert(!state.GetRejectReason().empty());
+        return state;
+    }
+    Assert(state.IsValid());
+
+    if (!ContextualCheckBlock(block, state, chainman, chainstate.m_chain.Tip())) {
+        Assert(!state.IsValid());
+        Assert(!state.GetRejectReason().empty());
+        return state;
+    }
+    Assert(state.IsValid());
+
+    // We don't want ConnectBlock to update the actual chainstate, so create
+    // a cache on top of it, along with a dummy block index.
+    CBlockIndex index_dummy{block};
     uint256 block_hash(block.GetHash());
-    CBlockIndex indexDummy(block);
-    indexDummy.pprev = pindexPrev;
-    indexDummy.nHeight = pindexPrev->nHeight + 1;
-    indexDummy.phashBlock = &block_hash;
+    index_dummy.pprev = chainstate.m_chain.Tip();
+    index_dummy.nHeight = chainstate.m_chain.Height() + 1;
+    index_dummy.phashBlock = &block_hash;
+    CCoinsViewCache tip_view(&chainstate.CoinsTip());
+    CCoinsView blockCoins;
+    CCoinsViewCache view(&blockCoins);
+    view.SetBackend(tip_view);
 
-    // NOTE: CheckBlockHeader is called by CheckBlock
-    if (!ContextualCheckBlockHeader(block, state, chainstate.m_blockman, chainstate.m_chainman, pindexPrev)) {
-        LogError("%s: Consensus::ContextualCheckBlockHeader: %s\n", __func__, state.ToString());
-        return false;
+    // Set fJustCheck to true in order to update, and not clear, validation caches.
+    if(!chainstate.ConnectBlock(block, state, &index_dummy, view, /*fJustCheck=*/true)) {
+        Assert(!state.IsValid());
+        Assert(!state.GetRejectReason().empty());
+        return state;
     }
-    if (!CheckBlock(block, state, chainparams.GetConsensus(), fCheckPOW, fCheckMerkleRoot)) {
-        LogError("%s: Consensus::CheckBlock: %s\n", __func__, state.ToString());
-        return false;
-    }
-    if (!ContextualCheckBlock(block, state, chainstate.m_chainman, pindexPrev)) {
-        LogError("%s: Consensus::ContextualCheckBlock: %s\n", __func__, state.ToString());
-        return false;
-    }
-    if (!chainstate.ConnectBlock(block, state, &indexDummy, viewNew, true)) {
-        return false;
-    }
-    assert(state.IsValid());
-
-    return true;
+    Assert(state.IsValid());
+    return state;
 }
 
 /* This function is called from the RPC code for pruneblockchain */

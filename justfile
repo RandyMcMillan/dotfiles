@@ -57,6 +57,10 @@ y := """
 default:
   @just --list
 
+
+@exec *args='':
+  bash -c 'while (( "$#" )); do $1; shift; done' -- "$@"
+
 for:
   for file in `ls .`; do \
     echo $file; \

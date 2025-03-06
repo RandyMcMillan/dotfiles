@@ -1,0 +1,5 @@
+[terminal]
+tick_delay = 30
+
+[frontend]
+margin = 1

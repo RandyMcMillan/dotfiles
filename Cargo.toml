@@ -1,12 +1,12 @@
 [package]
-name = "climake"
+name = "randymcmillan-dotfiles"
 description = "The simplistic, dependency-free cli library ✨"
-repository = "https://github.com/rust-cli/climake"
+repository = "https://github.com/randymcmillan/dotfiles"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 version = "3.0.0-pre.1"
 keywords = ["parser", "cli", "parse", "arg", "argument"]
-authors = ["Owez <root@ogriffiths.com>"]
+authors = ["RandyMcMillan <randy.lee.mcmillan@gmail.com>", "Owez <root@ogriffiths.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

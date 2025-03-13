@@ -12,6 +12,9 @@ if has("autocmd")
     au BufRead,BufNewFile *.h           set list
     au BufRead,BufNewFile *.c           set list
     au BufRead,BufNewFile *.cpp         set list
+    "
+    au BufRead,BufNewFile *.rs          set list
+    au BufRead,BufNewFile *.rs          set noexpandtab
 endif
 "
 " GNUmakefile Makefile *.mk
@@ -88,7 +91,7 @@ else
 set background=dark
 let g:solarized_termcolors=256
     set termguicolors
-    colorscheme solarized
+    "colorscheme solarized
 endif
 let g:solarized_termtrans=1
 "
@@ -139,12 +142,12 @@ let g:NERDTreeFileExtensionHighlightFullName = 1
 let NERDTreeWinPos=0
 let NERDTreeShowHidden=1
 "
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 "
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && v:this_session == "" | NERDTree | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && v:this_session == "" | NERDTree | endif
 "
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 "

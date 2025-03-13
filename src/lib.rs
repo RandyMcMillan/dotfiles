@@ -1,90 +1,80 @@
-//! climake is a minimal-dependancies library for making simple arguments. This
-//! libraries aim is not features but to provide a simple way to parse arguments
-//! well enough with not much more processing used than the provided [std::env]
-//! from the standard library.
-//! 
-//! For more infomation, please see the [CLIMake] object and [Argument] to get
-//! started parsing arguments using this library.
+//! The simplistic, dependency-free cli library ✨
+//!
+//! - **[Documentation](https://docs.rs/climake)**
+//! - [Crates.io](https://crates.io/crates/climake)
+//!
+//! # Example 📚
+//!
+//! Demo of a simple package manager:
+//!
+//! ```rust
+//! use climake::prelude::*;
+//!
+//! fn main() {
+//!     let package = Argument::new(
+//!         "The package name",
+//!         vec!['p', 'i'],
+//!         vec!["pkg, package"],
+//!         Input::Text,
+//!     );
+//!
+//!     let add = Subcommand::new("add", vec![&package], vec![], "Adds a package");
+//!     let rem = Subcommand::new("rem", vec![&package], vec![], "Removes a package");
+//!
+//!     let cli = CliMake::new(
+//!         "MyPkg",
+//!         vec![],
+//!         vec![&add, &rem],
+//!         "A simple package manager demo",
+//!         "1.0.0",
+//!     );
+//!
+//!     let parsed = cli.parse();
+//!
+//!     for subcommand in parsed.subcommands {
+//!         if subcommand.inner == &add {
+//!             println!("Adding package {:?}..", subcommand.arguments[0]);
+//!         } else if subcommand.inner == &rem {
+//!             println!("Removing package {:?}..", subcommand.arguments[0]);
+//!         }
+//!     }
+//! }
+//! ```
+//!
+//! ## Installation 🚀
+//!
+//! Simply add the following to your `Cargo.toml` file:
+//!
+//! ```toml
+//! [dependencies]
+//! climake = "3.0.0-pre.1" # rewrite isn't out just yet!
+//! ```
+//!
+//! # License
+//!
+//! This library is duel-licensed under both the [MIT License](https://opensource.org/licenses/MIT)
+//! ([`LICENSE-MIT`](https://github.com/rust-cli/climake/blob/master/LICENSE-MIT))
+//! and [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
+//! ([`LICENSE-APACHE`](https://github.com/rust-cli/climake/blob/master/LICENSE-APACHE)),
+//! you may choose at your discretion.
 
-/// Main structure for climake, the [CLIMake] object. An instance of this is
-/// made with the standard rust structure initialsation and further arguments
-/// can easily be added using [CLIMake::add_existing_arg].
-pub struct CLIMake {
-    /// Name of overall CLI
-    pub name: String,
+#![forbid(unsafe_code)]
+#![doc(
+    html_logo_url = "https://github.com/rust-cli/climake/raw/master/logo.png",
+    html_favicon_url = "https://github.com/rust-cli/climake/raw/master/logo.png"
+)]
 
-    /// Description of CLI (if any)
-    pub description: Option<String>,
+/// Default help message for [Argument]s without help added
+const HELP_DEFAULT: &str = "No help provided";
 
-    /// Arguments included
-    pub args: Vec<Argument>,
-}
+/// Tabs to render for cli arguments. This will be subtracted from 80 char width
+/// of terminals allowed so spaces are reccomended
+const CLI_TABBING: &str = "  ";
 
-impl CLIMake {
-    /// Adds a new argument to parser.
-    pub fn add_existing_arg(&mut self, new_arg: Argument) {
-        self.args.push(new_arg)
-    }
+mod core;
 
-    /// Displays help message in `stdout` using added arguments.
-    fn help_msg(&self) {
-        let header_text = self.header_text();
-        let mut generated_help = format!("{}Options:", header_text);
+pub mod io;
+pub mod parsed;
+pub mod prelude;
 
-        if self.args.len() == 0 {
-            return println!("{}No arguments made!", header_text);
-        }
-
-        for arg in self.args.iter() {
-            let ensured_arg_help = match &arg.help {
-                Some(help) => String::clone(help),
-                None => String::from("Help not provided."),
-            };
-
-            let info_help = match &arg.long_call {
-                Some(long_call) => format!(
-                    "  -{} / -{} ({})",
-                    arg.short_call, long_call, ensured_arg_help
-                ),
-                None => format!("  -{} ({})", arg.short_call, ensured_arg_help),
-            };
-
-            generated_help.push_str(&info_help);
-        }
-
-        println!("{}", generated_help);
-    }
-
-    /// Returns nicely formatted header text that is used for each stdout pass
-    /// involving [CLIMaker].
-    fn header_text(&self) -> String {
-        let usage_info = "Usage: ./pleasepm [OPTIONS]";
-
-        if self.description.is_some() {
-            format!(
-                "{}\n\n\t{}\n\t{}\n\n",
-                usage_info,
-                self.name,
-                self.description.clone().unwrap()
-            )
-        } else {
-            format!("{}\n\n\t{}\n\n", usage_info, self.name)
-        }
-    }
-}
-
-/// A single argument used inside of [CLIMaker].
-pub struct Argument {
-    /// A short call parameter that should be 1-3 chars lowercase.
-    pub short_call: String,
-
-    /// A long call parameter. NOTE: Spaces cannot be used.
-    pub long_call: Option<String>,
-
-    /// Help message (highly reccomended).
-    pub help: Option<String>,
-
-    /// Item to run when asked to execute, this should be the main usage of
-    /// the argument.
-    pub run: Box<dyn Fn()>,
-}
+pub use crate::core::*;

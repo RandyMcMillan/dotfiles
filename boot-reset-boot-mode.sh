@@ -1,5 +1,1 @@
-#!/usr/bin/env bash
-
-boot-reset-boot-mode(){
-sudo nvram -d boot-args
-}
+./scripts/boot-reset-boot-mode.sh

@@ -1,3 +1,8 @@
+/target
+Cargo.lock
+.DS_Store
+Makefile.in
+
 *.tmp
 init/init
 *.dmg
@@ -126,3 +131,6 @@ bash_profile.log
 /target
 
 install-sh~
+
+#justfile
+foo

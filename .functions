@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-pathappend() {
+function pathappend() {
   for ARG in "$@"
   do
     if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
@@ -9,7 +9,7 @@ pathappend() {
   done
 }
 
-pathprepend() {
+function pathprepend() {
   for ((i=$#; i>0; i--));
   do
     ARG=${!i}
@@ -59,6 +59,15 @@ DEVICE=en1
     else
         ./install-iftop.sh
     fi
+}
+
+
+function install-gnumakefile (){
+
+type -P gh && \
+gh gist view c40380c6548d46d45a88fad5c02abe16 | sed 's/make-nvm//g' > GNUmakefile || \
+type -P brew && brew install gh
+
 }
 
 function bitcoin-autogen (){
@@ -127,8 +136,52 @@ function bitcoin-dl-install-depends(){
     fi
 }
 
-function git-fetch-branches(){
+function cargo-clean-r () {
 
+for repo in $(ls --color=none -d */ );
+do pushd $repo && \
+    cargo clean 2>/dev/null; \
+    popd; \
+    done
+
+}
+function cargo-sweep-r () {
+
+TIME=${1:-1}
+
+for repo in $(ls --color=none -d */ );
+do pushd $repo && \
+    echo $repo;
+    rm -rf .deps;
+    rm -rf .venv;
+    rm rust-toolchain.toml 2>/dev/null;
+    cargo clean 2>/dev/null;
+    cargo sweep -v -t $TIME 2>/dev/null;
+    popd;
+    done
+
+rm-rf-node_modules || true
+}
+function rm-rf-node_modules () {
+
+TIME=${1:-1}
+
+for repo in $(ls --color=none -d */node_modules 2>/dev/null || true );
+do pushd $repo && \
+echo $repo
+    rm -rf node_modules || true
+    popd; \
+    done
+
+}
+
+function git-fetch-all(){
+    git fetch --all 2>/dev/null
+}
+function git-fetch-all-tags(){
+    git fetch --all --tags 2>/dev/null
+}
+function git-fetch-branches(){
     git stash && export STASH=true || echo "no stash"
     git branch -q -r || grep -v '\->' || while read remote; \
     do git branch -q "${remote#origin/}" "$remote" || echo skip "$remote"; done
@@ -139,52 +192,74 @@ function git-fetch-branches(){
     if [[ $STASH == "true" ]];then git stash list; fi || echo nogo
     #git stash pop || echo "no pop"
 }
+function git-push-tags(){
+    git push --tags 2>/dev/null
+}
 function git-add-remote-bitcoin-devs(){
 
-    git remote add Hyunhum              git@github.com:Hyunhum/bitcoin.git          || true
-    git remote add MarcoFalke           git@github.com:MarcoFalke/bitcoin           || true
-    git remote add bitcoincore-dev      git@github.com:bitcoincore-dev/bitcoin.git  || true
-    git remote add bitcoincore-dev-gui	git@github.com:bitcoincore-dev/gui.git      || true
-    git remote add fanquake	            git@github.com:fanquake/bitcoin.git         || true
-    git remote add fjahr	            git@github.com:fjahr/bitcoin.git            || true
-    git remote add hebasto              git@github.com:hebasto/bitcoin.git          || true
-    git remote add hebasto-gui          git@github.com:hebasto/gui.git              || true
-    git remote add jonas                git@github.com:jonasschnelli/bitcoin.git    || true
-    git remote add jonas-gui            git@github.com:jonasschnelli/gui.git        || true
-    git remote add jonatack             git@github.com:jonatack/bitcoin.git         || true
-    git remote add jonatack-gui         git@github.com:jonatack/gui.git             || true
-    git remote add jamesob              git@github.com:jamesob/bitcoin.git          || true
-    git remote add kallewoof            git@github.com:kallewoof/bitcoin.git        || true
-    git remote add kouloumos            git@github.com:kouloumos/bitcoin.git        || true
-    git remote add laanwj               git@github.com:laanwj/bitcoin.git           || true
-    git remote add luke-jr              git@github.com:luke-jr/bitcoin-core-gui.git || true
-    git remote add marco-falke          git@github.com:MarcoFalke/bitcoin.git       || true
+    git remote add bitcoinknots         git@github.com:bitcoinknots/bitcoin.git         || true
+    git remote add Hyunhum              git@github.com:Hyunhum/bitcoin.git              || true
+    git remote add MarcoFalke           git@github.com:MarcoFalke/bitcoin               || true
+    #git remote add bitcoincore-dev      git@github.com:bitcoincore-dev/bitcoin.git     || true
+    git remote add bitcoincore-dev-gui	git@github.com:bitcoincore-dev/gui.git          || true
+    git remote add fanquake	            git@github.com:fanquake/bitcoin.git             || true
+    git remote add fjahr	            git@github.com:fjahr/bitcoin.git                || true
+    git remote add hebasto              git@github.com:hebasto/bitcoin.git              || true
+    git remote add hebasto-gui          git@github.com:hebasto/gui.git                  || true
+    git remote add jonas                git@github.com:jonasschnelli/bitcoin.git        || true
+    git remote add jonas-gui            git@github.com:jonasschnelli/gui.git            || true
+    git remote add jonatack             git@github.com:jonatack/bitcoin.git             || true
+    git remote add jonatack-gui         git@github.com:jonatack/gui.git                 || true
+    git remote add jamesob              git@github.com:jamesob/bitcoin.git              || true
+    git remote add kallewoof            git@github.com:kallewoof/bitcoin.git            || true
+    git remote add kouloumos            git@github.com:kouloumos/bitcoin.git            || true
+    git remote add laanwj               git@github.com:laanwj/bitcoin.git               || true
+    git remote add lnhance              git@github.com:lnhance/bitcoin.git              || true
+    git remote add luke-jr              git@github.com:luke-jr/bitcoin-core-gui.git     || true
+    git remote add marco-falke          git@github.com:MarcoFalke/bitcoin.git           || true
     git remote add marco-falke-gui      git@github.com:MarcoFalke/bitcoin-core-gui.git  || true
     git remote add mempool-tab          git@github.com:RandyMcMillan/mempool-tab.git    || true
-    git remote add mzumsande            git@github.com:mzumsande/bitcoin.git        || true
-    git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git    || true
-    git remote add randymcmillan-gui	git@github.com:randymcmillan/gui.git        || true
-    git remote add pinheadmz            git@github.com:pinheadmz/bitcoin.git        || true
-    git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git    || true
-    git remote add russeree             git@github.com:russeree/bitcoin             || true
-    git remote add upstream             git@github.com:bitcoin/bitcoin.git          || true
-    git remote add upstream-gui         git@github.com:bitcoin-core/gui.git         || true
-    git remote add virtu                git@github.com:virtu/bitcoin.git            || true
+    git remote add mzumsande            git@github.com:mzumsande/bitcoin.git            || true
+    git remote add BrandonOdiwuor       git@github.com:BrandonOdiwuor/bitcoin.git       || true
+    #git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git       || true
+    git remote add randymcmillan-gui	git@github.com:randymcmillan/gui.git            || true
+    git remote add pinheadmz            git@github.com:pinheadmz/bitcoin.git            || true
+    git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git        || true
+    git remote add russeree             git@github.com:russeree/bitcoin                 || true
+    git remote add statoshi             git@github.com:jlopp/statoshi.git               || true
+    git remote add upstream             git@github.com:bitcoin/bitcoin.git              || true
+    git remote add upstream-gui         git@github.com:bitcoin-core/gui.git             || true
+    git remote add virtu                git@github.com:virtu/bitcoin.git                || true
+    git remote add willcl-ark           git@github.com:willcl-ark/bitcoin.git           || true
 
 }
+function gpg-sync-keys-bitcoin-devs-test(){
+
+gpg --keyserver hkps://keys.openpgp.org --send-keys E616FA7221A1613E5B99206297966C06BB06757B
+
+}
+
 function gpg-sync-keys-bitcoin-devs(){
+
+curl -fsS https://b10c.me/gpg.txt > 0xB10C.txt
+gpg-sync-keys-bitcoin-devs-test
 
 gpg-recv-keys-bitcoin-devs
 
-#PGP_SERVERS="pgp.mit.edu"
+#PGP_SERVERS="hkps://keys.openpgp.org"
 #PGP_SERVERS="keys.openpgp.org"
 #PGP_SERVERS="keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
-PGP_SERVERS="pgpkeys.eu keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu"
+#PGP_SERVERS="hkps://pgpkeys.eu hkps://keyserver.ubuntu.com hkps://keys.openpgp.org hkps://pgp.mit.edu"
+PGP_SERVERS="hkps://pgpkeys.eu hkps://keys.openpgp.org"
 
+echo $PGP_SERVERS
 for server in $PGP_SERVERS; do
 
+echo $server
+
 #laanwj list
-	while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:41}; done < keys.txt
+	while read line; do echo $line && gpg  --keyserver $server --recv-key ${line:0:41}; done < keys.txt
+	#while read line; do echo $line && gpg  --keyserver hkps://keyserver.ubuntu.com  --send-key ${line:0:41}; done < keys.txt
     #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < keys.txt
 
 	#while read line; do gpg  --keyserver pgp.mit.edu           --recv-key ${line:0:41}; done < keys.txt
@@ -194,7 +269,7 @@ for server in $PGP_SERVERS; do
     #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < keys.txt
 
 #bitcoin-builder-list
-	while read line; do gpg  --keyserver keyserver.ubuntu.com  --recv-key ${line:0:41}; done < builder-keys.txt
+	while read line; do gpg  --keyserver hkps://keyserver.ubuntu.com  --recv-key ${line:0:41}; done < builder-keys.txt
     #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < builder-keys.txt
 
 	#while read line; do gpg  --keyserver pgp.mit.edu           --recv-key ${line:0:41}; done < builder-keys.txt
@@ -210,24 +285,34 @@ done;
 function gpg-recv-keys-bitcoin-devs(){
 
 #laanwj list
+#LAANWJ_LIST="https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt" curl -fsSL $LAANWJ_LIST
+
+
+LAANWJ_LIST="https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt"
 curl  -fsSL \
-https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt  \
+$LAANWJ_LIST \
 -o  keys.txt && \
 shasum -a 256 keys.txt > keys.shasum.1.txt
+#echo
+#cat keys.txt && echo
+#cat keys.shasum.1.txt && echo
 
 sed '/A2FD494D0021AA9B4FA58F759102B7AE654A4A5A/d' keys.txt > tmpfile && mv tmpfile keys.txt
 shasum -a 256 keys.txt > keys.shasum.2.txt
+#echo
+#cat keys.txt
+#echo
+#cat keys.shasum.2.txt
 
 #bitcoin-builder-list
 curl  -fsSL  \
-https://raw.githubusercontent.com/bitcoin/bitcoin/master/contrib/builder-keys/keys.txt \
+https://raw.githubusercontent.com/bitcoin/bitcoin/3116ccd790e76de8f64d2ef9aa5a2641c15bbd8b/contrib/builder-keys/keys.txt \
 -o  builder-keys.txt && \
 shasum -a 256 builder-keys.txt > builder.keys.shasum.txt
 
 sed '/A2FD494D0021AA9B4FA58F759102B7AE654A4A5A/d' builder-keys.txt > tmpfile && mv tmpfile builder-keys.txt
 shasum -a 256 builder-keys.txt > builder.keys.shasum.2.txt
 
-gpg-sync-keys-bitcoin-devs
 rm -f tmpfile
 
 }
@@ -240,7 +325,7 @@ if [ -z "$1" ]
     git branch
     echo "try:"
     echo "git-branch-D *string*"
-    #git branch -D $(git branch --list "$1")
+    ##git branch -D $(git branch --list "$1")
 
 else
     git branch -D "$(git branch --list "$1*")"
@@ -264,12 +349,53 @@ fi
 }
 function git-checkout-b (){
 
-git checkout -b $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+weeble=$(gnostr-weeble)
+blockheight=$(gnostr-blockheight)
+wobble=$(gnostr-wobble)
+
+git checkout -b ${weeble:-0}/${blockheight:-0}/${wobble:-0}/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
     if [ ! -z "$1" ]
     then
         git checkout -b $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
     fi
 
+}
+function git-checkout-pr (){
+
+weeble=$(gnostr-weeble)
+blockheight=$(gnostr-blockheight)
+wobble=$(gnostr-wobble)
+
+git checkout -b pr/${weeble:-0}/${blockheight:-0}/${wobble:-0}/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+    if [ ! -z "$1" ]
+    then
+        git checkout -b pr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+    fi
+
+}
+function git-tag (){
+
+git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+    if [ ! -z "$1" ]
+    then
+        git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+    fi
+    git tags | grep $(gnostr-weeble)
+
+}
+function git-tag-pr (){
+
+git tag pr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+    if [ ! -z "$1" ]
+    then
+        git tag pr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+    fi
+    git tags | grep pr/$(gnostr-weeble)
+
+}
+
+function git-fetch--all (){
+git fetch --all
 }
 
 
@@ -386,7 +512,8 @@ function server() {
 	sleep 1 && open "http://localhost:${port}/" &
 	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
 	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
+	##python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
+    python3 -m http.server $port
 }
 
 # Start a PHP server from a directory, optionally specifying the port

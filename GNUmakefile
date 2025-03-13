@@ -246,13 +246,15 @@ export PORTER_VERSION
 ##	:
 -:## - default - try 'make submodules'
 -:
+	./autogen.sh configure
+	./configure
 	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	eval "$(/opt/homebrew/bin/brew shellenv)" #&
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 autoconf:## ./autogen.sh && ./configure
-	$(PWD)/autogen.sh configure
+	./autogen.sh configure
 
 nodegit$(EXEEXT):
 	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
@@ -282,10 +284,16 @@ keymap:## install ./init/com.local.KeyRemapping.plist
 
 init:## chsh -s /bin/bash && ./scripts/initialize
 .ONESHELL:
+	chsh -s /bin/bash && ./scripts/initialize || true
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
-	bash -c "source $(PWD)/scripts/initialize"
-brew:-## install or update/upgrade brew
+weeble:## weeble
+	install ./weeble /usr/local/bin/
+wobble:## wobble
+	install ./wobble /usr/local/bin/
+blockheight:## blockheight
+	install ./blockheight /usr/local/bin/
+brew: -## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
@@ -363,10 +371,14 @@ adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 
 
-##	:	bootstrap		source bootstrap.sh
+##	:	bootstrap		./bootstrap.sh
 .PHONY: bootstrap
-bootstrap: exec
-	@bash -c "$(PWD)/bootstrap.sh force"
+bootstrap: vim exec
+	@$(PWD)/bootstrap force
+##	:	boot-strap		./boot-strap.sh
+.PHONY: boot-strap
+boot-strap: vim exec
+	@$(PWD)/boot-strap.sh force
 
 
 .PHONY: install
@@ -490,7 +502,7 @@ texi2html:
 ffmpeg@2.8:
 	bash -c "source $(PWD)/template && checkbrew install ffmpeg@2.8"
 
-gnupg:- executable
+gnupg: - executable
 	bash -c "source $(PWD)/template && \
 		checkbrew install gettext gnutls \
 		libassuan libgcrypt libgpg-error \
@@ -530,10 +542,9 @@ gpg-recv-keys-bitcoin-devs:
 #######################
 .ONESHELL:
 docker-start:## 	start docker
-	test -d .venv || $(PYTHON3) -m virtualenv .venv
+	test -d .venv || pipx install virtualenv && virtualenv .venv
 	( \
 	   source .venv/bin/activate; pip install -q -r requirements.txt; \
-	   python3 -m pip install -q omegaconf \
 	   pip install -q --upgrade pip; \
 	);
 	( \
@@ -543,7 +554,7 @@ docker-start:## 	start docker
 	     systemctl restart docker.service;\
 	    fi;\
 	    if [[ '$(OS)' == 'Darwin' ]]; then\
-	     open --background -a /./Applications/Docker.app/Contents/MacOS/Docker;\
+	     open --background -a /./Applications/Docker.app/Contents/MacOS/Docker\ Desktop.app/Contents/MacOS/Docker\ Desktop;\
 	    fi;\
 	sleep 1;\
 	done\
@@ -557,9 +568,9 @@ docker-install:## 	Download Docker.amd64.93002.dmg for MacOS Intel Compatibility
 	@[[ '$(shell uname -s)' == 'Darwin' ]] && [[ '$(shell uname -m)' == 'x86_64' ]]   && echo "is Darwin AND x86_64"     || echo "not Darwin AND x86_64";
 	@[[ '$(shell uname -s)' == 'Darwin' ]] && [[ ! '$(shell uname -m)' == 'x86_64' ]] && echo "is Darwin AND NOT x86_64" || echo "is NOT (Darwin AND NOT x86_64)";
 
-	#@[[ '$(shell uname -s)' != 'Darwin' ]] && echo "not Darwin" || echo "is Darwin";
-	#@[[ '$(shell uname -m)' != 'x86_64' ]] && echo "not x86_64" || echo "is x86_64";
-	#@[[ '$(shell uname -p)' != 'i386' ]]   && echo "not i386" || echo "is i386";
+	@[[ '$(shell uname -s)' != 'Darwin' ]] && echo "not Darwin" || echo "is Darwin";
+	@[[ '$(shell uname -m)' != 'x86_64' ]] && echo "not x86_64" || echo "is x86_64";
+	@[[ '$(shell uname -p)' != 'i386' ]]   && echo "not i386" || echo "is i386";
 
 	@[[ '$(shell uname -s)' == 'Darwin'* ]] && sudo -S chown -R $(shell whoami):admin /Users/$(shell whoami)/.docker/buildx/current || echo
 	@[[ '$(shell uname -s)' == 'Darwin'* ]] && echo "Install Docker.amd64.93002.dmg if MacOS Catalina - known compatible version!"
@@ -646,7 +657,7 @@ bitcoin-guix-sigs:
 .PHONY:depends
 depends-download:
 	$(MAKE) download -C depends
-depends:depends-download
+depends: depends-download
 	$(MAKE) -C depends
 .PHONY: push
 .ONESHELL:
@@ -714,6 +725,14 @@ bitcoin-test-battery:
 funcs:
 	make -f funcs.mk
 
+remote-managment-enable:## 	remote-managment-enable
+	sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -off -restart -agent -privs -all -allowAccessFor -allUsers
+
+screen-sharing-enable:## 	    screen-sharing-enable
+	sudo defaults write /var/db/launchd.db/com.apple.launchd/overrides.plist com.apple.screensharing -dict Disabled -bool false
+
+
+
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 
@@ -723,6 +742,8 @@ clean-nvm: ## clean-nvm
 -include nostril.mk
 -include venv.mk
 -include act.mk
+-include cargo.mk
+-include gnostr.mk
 
 # vim: set noexpandtab:
 # vim: set setfiletype make

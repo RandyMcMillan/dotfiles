@@ -1,10 +1,10 @@
 .PHONY:nostril
 nostril:
-	@git submodule update --init --reference $@ --recursive
-	@pushd nostril && $(MAKE) nostril && popd
-	#@pushd nostril && $(MAKE) nostril install && popd
+	@pushd nostril && $(MAKE) clean all && popd
+	@mkdir -p /usr/local/bin
+	install nostril/nostril /usr/local/bin/ #&& $(shell which nostril)
 nostril-clean:
-	@make clean -C nostril/
+	@rm nostril/nostril
 
 # vim: set noexpandtab:
 # vim: set setfiletype make

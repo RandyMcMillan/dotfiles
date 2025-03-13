@@ -14,6 +14,6 @@ macos-make-legit:docker-start## 	macos-make-legit
 macos-pre-release:docker-start## 	macos-pre-release
 	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml
 makefile:docker-start## 	makefile
-	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vb  -W $(PWD)/.github/workflows/$@.yml
+	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vr  -W $(PWD)/.github/workflows/$@.yml
 ubuntu-matrix:docker-start## 	ubuntu-matrix
 	@export $(cat ~/GH_TOKEN.txt) && act -C $(PWD) -vbr -W $(PWD)/.github/workflows/$@.yml

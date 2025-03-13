@@ -1,38 +1,33 @@
 #!/usr/bin/env bash
-
+##
 if [ -f ~/config-git ]; then
-	source ~/config-git 2> >(tee -a bash_profile.log) 2>/dev/null
+	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
 fi
 if [ -f "$HOME/.cargo/env" ]; then
-	source "$HOME/.cargo/env" 2> >(tee -a bash_profile.log) 2>/dev/null
+	source "$HOME/.cargo/env" 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
+else
+    type -P rustup && rustup default stable
 fi
-
+##
 if hash brew 2>/dev/null; then
 	if [ -f /usr/local/bin/checkbrew ]; then
 	source /usr/local/bin/checkbrew
 	fi
 fi
+
+##just completion
+complete -F _just -o bashdefault -o default j
+
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 # Add `~/init` to the `$PATH`
 export PATH="$HOME/init:$PATH";
-
-#if hash brew &> /dev/null; then
-#        echo 'export PATH="/usr/local/sbin:$PATH"' >> $HOME/.bash_profile
-#       if [[ "$OSTYPE" == "linux"* ]]; then
-#               #CHECK APT
-#               if [[ "$OSTYPE" == "linux-gnu" ]]; then
-#                       echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.bash_profile
-#                       eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-#               fi
-#       fi
-#fi
 ## Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
+for file in ~/.{aliases,bash_prompt,exports,extra,functions,path}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -67,9 +62,9 @@ elif [ -f /etc/bash_completion ]; then
 fi;
 
 ## Enable tab completion for `g` by marking it as an alias for `git`
-if type _git &> /dev/null; then
-	complete -o default -o nospace -F _git g;
-fi;
+## if type _git &> /dev/null; then
+## 	complete -o default -o nospace -F _git g;
+## fi;
 #
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
@@ -81,38 +76,45 @@ complete -W "NSGlobalDomain" defaults;
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter Siri Wi-Fi Preview Adobe* Little* Contacts Calendar Dock Finder Mail Safari iTunes* SystemUIServer Terminal iTerm* Twitter bitcoind" killall;
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+## .bashrc
+## export NVM_DIR="$HOME/.nvm"
+## [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+## [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+##
 # Added by install_latest_perl_osx.pl
 #[ -r /Users/git/.bashrc ] && source /Users/git/.bashrc
 
 # REF: dotfiles/install-fastlane.sh
 # export PATH="$HOME/.fastlane/bin:$PATH"
 
-#USeing rbenv for stuff ruby 2.2.2 doent compile on macos
+#Using rbenv for stuff ruby 2.2.2 doent compile on macos
 
 #eval "$(rbenv init -)"
 
 
-# NOTE: trying the config in .bashrc for now...
-#if [ -f $(PWD)/Makefile ]; then
-#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-#fi
-##
-#if [ -f $(PWD)/GNUMakefile ]; then
-#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' GNUmakefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-#fi
-##
-#if [ -f $(PWD)/funcs.mk ]; then
-#complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' funks.mk | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-#fi
-#
-## for OUTPUT in $(ls -f *.mk)
-## do
-## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make -f $OUTPUT
-## done
+if test -f /usr/bin/true; then
+  echo "/usr/bin/true exists" &>/dev/null
+fi
+
+for OUTPUT in $(ls -f Makefile 2>/dev/null)
+do
+
+#echo $OUTPUT
+
+complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
+
+## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+
+done
+for OUTPUT in $(ls -f GNUmakefile 2>/dev/null)
+do
+
+#echo $OUTPUT
+
+complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
+##complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+
+done
 
 #export GPG_TTY=$(tty)
 # Set PATH, MANPATH, etc., for Homebrew.

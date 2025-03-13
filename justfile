@@ -198,13 +198,13 @@ time:
   @-date +"%H:%S"
 
 weeble:
-  @./weeble
+  @./weeble 2>/dev/null || weeble
 
 blockheight:
-  @./blockheight
+  @./blockheight 2>/dev/null || blockheight
 
 wobble:
-  @./wobble
+  @./wobble 2>/dev/null || wobble
 
 justwords:
   grep just \

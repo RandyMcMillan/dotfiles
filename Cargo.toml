@@ -13,3 +13,8 @@ edition = "2018"
 
 [dependencies]
 clap = "4.5.18"
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"

@@ -234,3 +234,7 @@ cargo-binstall:
 cargo-dist:
     @just cargo-binstall
     @cargo binstall cargo-dist@0.25.1
+
+gnostr-bins:
+    @just cargo-binstall
+    @cargo binstall gnostr-bins

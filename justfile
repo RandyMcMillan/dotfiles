@@ -227,3 +227,10 @@ c:
 
 d:
   echo 'D!'
+
+cargo-binstall:
+    @curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
+cargo-dist:
+    @just cargo-binstall
+    @cargo binstall cargo-dist@0.25.1

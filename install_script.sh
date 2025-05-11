@@ -21,7 +21,7 @@ fi
 #!/usr/bin/env bash
 
 # Name of the Makefile to be converted
-MAKEFILE="GNUmakefile"
+MAKEFILE="Makefile"
 rm $MAKEFILE 2>/dev/null || true
 touch $MAKEFILE
 

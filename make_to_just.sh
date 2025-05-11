@@ -17,7 +17,7 @@ fi
 
 # Add in the default recipe to Justfile
 echo "default:" >> "$JUSTFILE"
-echo -e "  just --list\n" >> "$JUSTFILE"
+echo -e "  just --choose\n" >> "$JUSTFILE"
 
 # Read each line in the Makefile
 while IFS= read -r line
@@ -29,7 +29,7 @@ do
 
         # Write the corresponding recipe to Justfile
         echo "$target_name:" >> "$JUSTFILE"
-        echo -e "  make $target_name\n" >> "$JUSTFILE"
+        echo -e "  @make $target_name\n" >> "$JUSTFILE"
     fi
 done < "$MAKEFILE"
 

@@ -1,64 +1,288 @@
 default:
   just --choose
 
-help:
-  @make help
+RESET:
+  @make RESET
 
-all:
-  @make all
+autoconf:
+  @make autoconf
 
-bin:
-  @make bin
+clean-local:
+  @make clean-local
 
-cargo-help:
-  @make cargo-help
+keymap:
+  @make keymap
 
-cargo-release-all:
-  @make cargo-release-all
+init:
+  @make init
 
-cargo-clean-release:
-  @make cargo-clean-release
+weeble:
+  @make weeble
 
-cargo-publish-all:
-  @make cargo-publish-all
+wobble:
+  @make wobble
 
-cargo-install-bins:
-  @make cargo-install-bins
+blockheight:
+  @make blockheight
 
-cargo-build:
-  @make cargo-build
+blockhash:
+  @make blockhash
 
-cargo-install:
-  @make cargo-install
+brew:
+  @make brew
 
-cargo-build-release:
-  @make cargo-build-release
+iterm:
+  @make iterm
 
-cargo-check:
-  @make cargo-check
+report:
+  @make report
 
-cargo-bench:
-  @make cargo-bench
+whatami:
+  @make whatami
 
-cargo-test:
-  @make cargo-test
+adduser-git:
+  @make adduser-git
 
-cargo-test-nightly:
-  @make cargo-test-nightly
+bootstrap:
+  @make bootstrap
 
-cargo-report:
-  @make cargo-report
+install:
+  @make install
 
-cargo-run:
-  @make cargo-run
+github:
+  @make github
 
-cargo-dist:
-  @make cargo-dist
+executable:
+  @make executable
 
-cargo-dist-build:
-  @make cargo-dist-build
+exec:
+  @make exec
 
-cargo-dist-manifest:
-  @make cargo-dist-manifest
+template:
+  @make template
 
-import? 'justfile.extension'
+nvm:
+  @make nvm
+
+cirrus:
+  @make cirrus
+
+config-dock:
+  @make config-dock
+
+macvim:
+  @make macvim
+
+vim:
+  @make vim
+
+rustup-rs:
+  @make rustup-rs
+
+macdown:
+  @make macdown
+
+glow:
+  @make glow
+
+coreutils:
+  @make coreutils
+
+gettext:
+  @make gettext
+
+texinfo:
+  @make texinfo
+
+help2man:
+  @make help2man
+
+gnutls:
+  @make gnutls
+
+keepingyouawake:
+  @make keepingyouawake
+
+moom:
+  @make moom
+
+wasm-pack:
+  @make wasm-pack
+
+brew-libs:
+  @make brew-libs
+
+libassuan:
+  @make libassuan
+
+libgcrypt:
+  @make libgcrypt
+
+libgpg-error:
+  @make libgpg-error
+
+libksba:
+  @make libksba
+
+libusb:
+  @make libusb
+
+htmlcleaner:
+  @make htmlcleaner
+
+npth:
+  @make npth
+
+pinentry:
+  @make pinentry
+
+gdbm:
+  @make gdbm
+
+mpdecimal:
+  @make mpdecimal
+
+readline:
+  @make readline
+
+sqlite:
+  @make sqlite
+
+xz:
+  @make xz
+
+node:
+  @make node
+
+yarn:
+  @make yarn
+
+powershell:
+  @make powershell
+
+meson:
+  @make meson
+
+texi2html:
+  @make texi2html
+
+gnupg:
+  @make gnupg
+
+gpg-recv-keys-bitcoin-devs:
+  @make gpg-recv-keys-bitcoin-devs
+
+docker-start:
+  @make docker-start
+
+docker-install:
+  @make docker-install
+
+shell:
+  @make shell
+
+alpine-shell:
+  @make alpine-shell
+
+alpine:
+  @make alpine
+
+alpine-build:
+  @make alpine-build
+
+d-shell:
+  @make d-shell
+
+debian-shell:
+  @make debian-shell
+
+debian:
+  @make debian
+
+porter:
+  @make porter
+
+install-vim:
+  @make install-vim
+
+protonvpn:
+  @make protonvpn
+
+config-git:
+  @make config-git
+
+qt5:
+  @make qt5
+
+hub:
+  @make hub
+
+config-github:
+  @make config-github
+
+bitcoin-libs:
+  @make bitcoin-libs
+
+bitcoin-depends:
+  @make bitcoin-depends
+
+bitcoin-guix-sigs:
+  @make bitcoin-guix-sigs
+
+depends-download:
+  @make depends-download
+
+depends:
+  @make depends
+
+push:
+  @make push
+
+tag:
+  @make tag
+
+index:
+  @make index
+
+readme:
+  @make readme
+
+docs:
+  @make docs
+
+docs-docker:
+  @make docs-docker
+
+touch-time:
+  @make touch-time
+
+BITCOIN_VERSION:
+  @make BITCOIN_VERSION
+
+bitcoin-test-battery:
+  @make bitcoin-test-battery
+
+funcs:
+  @make funcs
+
+remote-managment-enable:
+  @make remote-managment-enable
+
+screen-sharing-enable:
+  @make screen-sharing-enable
+
+gemini:
+  @make gemini
+
+binstall:
+  @make binstall
+
+legit:
+  @make legit
+
+gnostr:
+  @make gnostr
+
+clean-nvm:
+  @make clean-nvm
+

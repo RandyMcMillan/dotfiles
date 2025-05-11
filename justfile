@@ -96,7 +96,7 @@ camera := join('tmp', 'dir1', 'dir2', path_2)
 cleaned := clean('/tmp/blah/..///thing.txt')
 id__path := '/tmp' / sha256('blah') / sha256_file(justfile())
 _another_var := env_var_or_default("HOME", justfile_directory())
-python := `which python`
+python := `which python3`
 
 exists := if path_exists(just_executable()) =~ '^/User' { uuid() } else { 'yeah' }
 

@@ -1,7 +1,6 @@
 #[cfg_attr(nightly, feature(nightly))]
 #[cfg(feature = "nightly")]
 use lazy_static::lazy_static;
-//#[cfg(feature = "nightly")]
 use std::env;
 #[cfg(feature = "nightly")]
 lazy_static! {
@@ -17,7 +16,7 @@ lazy_static! {
 #[cfg(not(feature = "nightly"))]
 pub static BINARY_NAME: &str = "default";
 
-fn _get_binary_name() -> String {
+fn get_binary_name() -> String {
     match env::var("CARGO_BIN_NAME") {
         Ok(name) => name,
         Err(_) => "rust-project-template-default".to_string(), // Provide a default value
@@ -33,7 +32,12 @@ pub fn config_path(file: &str) -> String {
             "project-template-".to_owned() + &BINARY_NAME.clone() + "-bin_name",
             file
         ),
-        "windows" => format!("{}\\{}", std::env::var("APPDATA").unwrap(), file),
+        "windows" => format!(
+            "{}\\{}\\{}",
+            std::env::var("APPDATA").unwrap(),
+            get_binary_name(),
+            file
+        ),
         _ => unimplemented!(),
     }
     #[cfg(not(feature = "nightly"))]
@@ -44,7 +48,12 @@ pub fn config_path(file: &str) -> String {
             "project-template-".to_owned() + BINARY_NAME + "-bin_name",
             file
         ),
-        "windows" => format!("{}\\{}", std::env::var("APPDATA").unwrap(), file),
+        "windows" => format!(
+            "{}\\{}\\{}",
+            std::env::var("APPDATA").unwrap(),
+            get_binary_name(),
+            file
+        ),
         _ => unimplemented!(),
     }
 }
@@ -61,8 +70,9 @@ mod tests {
         assert_eq!(
             config_path("config.toml"),
             format!(
-                "{}\\config.toml",
+                "{}\\{}\\config.toml",
                 std::env::var("APPDATA").unwrap(),
+                &BINARY_NAME.clone()
             )
         );
     }
@@ -108,8 +118,9 @@ mod tests {
         assert_eq!(
             config_path("config.toml"),
             format!(
-                "{}\\config.toml",
+                "{}\\{}\\config.toml",
                 std::env::var("APPDATA").unwrap(),
+                &BINARY_NAME.clone()
             )
         );
     }

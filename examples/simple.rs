@@ -1,6 +1,9 @@
 //! Demo of a simple package manager
-
-use climake::prelude::*;
+use randymcmillan_dotfiles::prelude::Input;
+use randymcmillan_dotfiles::prelude::*;
+use randymcmillan_dotfiles::Argument;
+use randymcmillan_dotfiles::CliMake;
+use randymcmillan_dotfiles::Subcommand;
 
 fn main() {
     let package = Argument::new(

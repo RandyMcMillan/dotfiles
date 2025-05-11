@@ -302,21 +302,6 @@ iterm:## brew install --cask iterm2
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
-.PHONY: help
-help:## print verbose help
-	@echo 'make [COMMAND] [EXTRA_ARGUMENTS]	'
-	@echo ''
-	@sed -n 's/^##ARGS//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	# @sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-	@echo ""
-	@echo "Useful Commands:"
-	@echo ""
-	@echo "git-\<TAB>";
-	@echo "gpg-\<TAB>";
-	@echo "bitcoin-\<TAB>";
-	@echo ""
-
 report:
 	@echo ''
 	@echo ' CMAKE=${CMAKE}	'
@@ -737,13 +722,6 @@ clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 
 -include Makefile
--include funcs.mk
--include legit.mk
--include nostril.mk
--include venv.mk
--include act.mk
--include cargo.mk
--include gnostr.mk
 
 # vim: set noexpandtab:
 # vim: set setfiletype make

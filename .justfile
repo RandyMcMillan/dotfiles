@@ -1,5 +1,4 @@
 import? 'justfile.extention'
-
 default:
   just --choose
 

@@ -92,7 +92,7 @@ impl<'a> CliMake<'a> {
     /// Parses all arguments from a custom iterator, see [CliMake::parse] for
     /// default parsing from [env::args]
     pub fn parse_custom(&'a self, inputs: impl IntoIterator<Item = String>) -> ParsedCli<'a> {
-        unimplemented!()
+        self.parse_custom(inputs)
     }
 
     /// Parses default arguments coming from [env::args]

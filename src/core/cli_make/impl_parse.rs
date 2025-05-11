@@ -56,7 +56,10 @@ fn match_next_subcommand<'a>(
 }
 
 /// Finds `name`'d argument(s) in the passed vector of [Argument]s
-fn find_argument<'a>(call: impl AsRef<str>, arguments: Vec<&'a Argument<'a>>) -> Vec<&'a Argument<'a>> {
+fn find_argument<'a>(
+    call: impl AsRef<str>,
+    arguments: Vec<&'a Argument<'a>>,
+) -> Vec<&'a Argument<'a>> {
     let mut found_arguments = vec![]; // arg output vec
 
     if &call.as_ref()[..2] == "--" {
@@ -72,7 +75,10 @@ fn find_argument<'a>(call: impl AsRef<str>, arguments: Vec<&'a Argument<'a>>) ->
 }
 
 /// Finds `name`'d subcommand in the passed vector of `subcommands`
-fn find_subcommand<'a>(name: impl AsRef<str>, subcommands: &Vec<&'a Subcommand>) -> Option<&'a Subcommand<'a>> {
+fn find_subcommand<'a>(
+    name: impl AsRef<str>,
+    subcommands: &Vec<&'a Subcommand>,
+) -> Option<&'a Subcommand<'a>> {
     for subcommand in subcommands.iter() {
         if name.as_ref() == subcommand.name {
             return Some(subcommand);

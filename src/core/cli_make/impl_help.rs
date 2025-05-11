@@ -3,8 +3,8 @@
 use super::CliMake;
 use crate::core::utils::writeln_term;
 
-use std::io::Write;
 use std::env;
+use std::io::Write;
 
 impl<'a> CliMake<'a> {
     /// Generates header and streams to given [Write] buffer for displaying info

@@ -197,6 +197,7 @@ function git-push-tags(){
 }
 function git-add-remote-bitcoin-devs(){
 
+    git remote add darosior             git@github.com:darosior/bitcoin.git             || true
     git remote add bitcoinknots         git@github.com:bitcoinknots/bitcoin.git         || true
     git remote add Hyunhum              git@github.com:Hyunhum/bitcoin.git              || true
     git remote add MarcoFalke           git@github.com:MarcoFalke/bitcoin               || true

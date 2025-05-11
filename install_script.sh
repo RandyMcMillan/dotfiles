@@ -21,7 +21,7 @@ fi
 #!/usr/bin/env bash
 
 # Name of the Makefile to be converted
-MAKEFILE="Makefile"
+MAKEFILE="GNUmakefile"
 rm $MAKEFILE 2>/dev/null || true
 touch $MAKEFILE
 
@@ -126,6 +126,7 @@ fi
 > "$JUSTFILE"
 
 # Add in the default recipe to Justfile
+echo "import? 'justfile.extention'" >> "$JUSTFILE"
 echo "default:" >> "$JUSTFILE"
 echo -e "  just --choose\n" >> "$JUSTFILE"
 

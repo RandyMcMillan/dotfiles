@@ -64,6 +64,8 @@
     html_favicon_url = "https://github.com/rust-cli/climake/raw/master/logo.png"
 )]
 
+pub use crate::core::Subcommand;
+
 /// Default help message for [Argument]s without help added
 const HELP_DEFAULT: &str = "No help provided";
 

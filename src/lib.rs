@@ -8,7 +8,7 @@
 //! Demo of a simple package manager:
 //!
 //! ```rust
-//! use climake::prelude::*;
+//! use randymcmillan_dotfiles::prelude::*;
 //!
 //! fn main() {
 //!     let package = Argument::new(
@@ -68,13 +68,13 @@ pub use crate::core::CliMake;
 pub use crate::core::Subcommand;
 
 /// Default help message for [Argument]s without help added
-const HELP_DEFAULT: &str = "No help provided";
+pub const HELP_DEFAULT: &str = "No help provided";
 
 /// Tabs to render for cli arguments. This will be subtracted from 80 char width
 /// of terminals allowed so spaces are reccomended
-const CLI_TABBING: &str = "  ";
+pub const CLI_TABBING: &str = "  ";
 
-mod core;
+pub mod core;
 
 pub mod io;
 pub mod parsed;

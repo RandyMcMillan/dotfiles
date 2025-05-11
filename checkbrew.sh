@@ -1,0 +1,1 @@
+./scripts/checkbrew.sh

@@ -1,0 +1,1 @@
+./scripts/install-sha256sum.sh

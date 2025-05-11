@@ -1,0 +1,1 @@
+./scripts/build-bitcoincore-dev-gui.sh

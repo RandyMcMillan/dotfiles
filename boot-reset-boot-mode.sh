@@ -1,0 +1,1 @@
+./scripts/boot-reset-boot-mode.sh

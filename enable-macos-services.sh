@@ -1,0 +1,1 @@
+./scripts/enable-macos-services.sh

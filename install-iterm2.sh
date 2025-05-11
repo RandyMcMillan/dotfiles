@@ -1,0 +1,1 @@
+./scripts/install-iterm2.sh

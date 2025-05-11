@@ -1,0 +1,1 @@
+./scripts/install-keeping-you-awake.sh

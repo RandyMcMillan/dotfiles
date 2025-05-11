@@ -1,0 +1,1 @@
+./scripts/brew-list.sh

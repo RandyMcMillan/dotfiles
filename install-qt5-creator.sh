@@ -1,0 +1,1 @@
+./scripts/install-qt5-creator.sh

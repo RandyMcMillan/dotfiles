@@ -1,0 +1,1 @@
+./scripts/disable-macos-services.sh

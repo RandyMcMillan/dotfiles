@@ -1,0 +1,19 @@
+name: Test Docker Build
+
+on:
+  schedule:
+    - cron: '20 7 * * 4'
+  workflow_dispatch:
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Build
+      uses: docker/build-push-action@v6
+      with:
+        context: .

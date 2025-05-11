@@ -1,0 +1,1 @@
+./scripts/install-umbrel-dev.sh

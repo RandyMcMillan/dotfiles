@@ -1,0 +1,1 @@
+./scripts/install-bdk-cli.sh

@@ -1,0 +1,1 @@
+./scripts/install-vmware-fusion11.sh

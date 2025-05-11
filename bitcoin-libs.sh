@@ -1,0 +1,1 @@
+./scripts/bitcoin-libs.sh

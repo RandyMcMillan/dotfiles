@@ -1,0 +1,1 @@
+./scripts/install-common-lisp.sh

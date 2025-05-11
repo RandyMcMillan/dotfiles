@@ -1,0 +1,1 @@
+./scripts/install-full-node.sh

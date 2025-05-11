@@ -1,0 +1,1 @@
+./scripts/uninstall-brew-all.sh

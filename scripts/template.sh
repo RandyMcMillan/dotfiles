@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-HOMEBREW_NO_INSTALL_CLEANUP=false
+HOMEBREW_NO_INSTALL_CLEANUP=
 export  HOMEBREW_NO_INSTALL_CLEANUP
 
 function checkbrew-sudoless () {

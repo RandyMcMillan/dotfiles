@@ -1,2 +1,6 @@
+.github/gnostr-core/
+.github/nostr-rs/
+.github/rgit/
+
 /target
 Cargo.lock

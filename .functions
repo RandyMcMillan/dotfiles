@@ -19,6 +19,11 @@ function pathprepend() {
   done
 }
 
+function rustup-clean() {
+ for toolchain in $(rustup toolchain list | sed 's/(active,//g' | sed 's/default)//g');do rustup toolchain uninstall $toolchain;done
+
+}
+
 #We agreed to the Qt open source license for you.
 #If this is unacceptable you should uninstall.
 #

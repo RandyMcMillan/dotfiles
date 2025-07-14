@@ -16,3 +16,4 @@
 [submodule "vimrc"]
 	path = .vim_runtime
 	url = https://github.com/randymcmillan/vimrc.git
+	ignore = dirty

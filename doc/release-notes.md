@@ -1,8 +1,8 @@
-Bitcoin Core version 29.0 is now available from:
+Bitcoin Core version 29.1rc1 is now available from:
 
-  <https://bitcoincore.org/bin/bitcoin-core-29.0/>
+  <https://bitcoincore.org/bin/bitcoin-core-29.1/test.rc1/>
 
-This release includes new features, various bug fixes and performance
+This release includes various bug fixes and performance
 improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at GitHub:
@@ -37,226 +37,142 @@ unsupported systems.
 Notable changes
 ===============
 
-### P2P and Network Changes
+### Mempool Policy
 
-- Support for UPnP was dropped. If you want to open a port automatically, consider using the `-natpmp`
-option instead, which uses PCP or NAT-PMP depending on router support. (#31130)
+- The maximum number of potentially executed legacy signature operations in a
+  single standard transaction is now limited to 2500. Signature operations in all
+  previous output scripts, in all input scripts, as well as all P2SH redeem
+  scripts (if there are any) are counted toward the limit. The new limit is
+  assumed to not affect any known typically formed standard transactions. The
+  change was done to prepare for a possible BIP54 deployment in the future.
 
-- libnatpmp was replaced with a built-in implementation of PCP and NAT-PMP (still enabled using the `-natpmp` option). This supports automatic IPv4 port forwarding as well as IPv6 pinholing. (#30043)
-
-- When the `-port` configuration option is used, the default onion listening port will now
-be derived to be that port + 1 instead of being set to a fixed value (8334 on mainnet).
-This re-allows setups with multiple local nodes using different `-port` and not using `-bind`,
-which would lead to a startup failure in v28.0 due to a port collision.
-Note that a `HiddenServicePort` manually configured in `torrc` may need adjustment if used in
-connection with the `-port` option.
-For example, if you are using `-port=5555` with a non-standard value and not using `-bind=...=onion`,
-previously Bitcoin Core would listen for incoming Tor connections on `127.0.0.1:8334`.
-Now it would listen on `127.0.0.1:5556` (`-port` plus one). If you configured the hidden service manually
-in torrc now you have to change it from `HiddenServicePort 8333 127.0.0.1:8334` to `HiddenServicePort 8333
-127.0.0.1:5556`, or configure bitcoind with `-bind=127.0.0.1:8334=onion` to get the previous behavior.
-(#31223)
-
-- Upon receiving an orphan transaction (an unconfirmed transaction that spends unknown inputs), the node will attempt to download missing parents from all peers who announced the orphan. This change may increase bandwidth usage but make orphan-handling more reliable. (#31397)
-
-### Mempool Policy and Mining Changes
-
-- Ephemeral dust is a new concept that allows a single
-dust output in a transaction, provided the transaction
-is zero fee. In order to spend any unconfirmed outputs
-from this transaction, the spender must also spend
-this dust in addition to any other desired outputs.
-In other words, this type of transaction
-should be created in a transaction package where
-the dust is both created and spent simultaneously. (#30239)
-
-- Due to a bug, the default block reserved weight (`4,000 WU`) for fixed-size block header, transactions count, and coinbase transaction was reserved twice and could not be lowered. As a result the total reserved weight was always `8,000 WU`, meaning that even when specifying a `-blockmaxweight` higher than the default (even to the max of `4,000,000 WU`), the actual block size will never exceed `3,992,000 WU`.
-The fix consolidates the reservation into a single place and introduces a new startup option, `-blockreservedweight` which specifies the reserved weight directly. The default value of `-blockreservedweight` is set to `8,000 WU` to ensure backward compatibility for users who relied on the previous behavior of `-blockmaxweight`.
-The minimum value of `-blockreservedweight` is set to `2,000 WU`. Users setting `-blockreservedweight` below the default should ensure that the total weight of their block header, transaction count, and coinbase transaction does not exceed the reduced value or they may risk mining an invalid block. (#31384)
-
-### Updated RPCs
-
-- The RPC `testmempoolaccept` response now includes a `reject-details` field in some cases,
-similar to the complete error messages returned by `sendrawtransaction` (#28121)
-
-- Duplicate blocks submitted with `submitblock` will now persist their block data
-even if it was previously pruned. If pruning is activated, the data will be
-pruned again eventually once the block file it is persisted in is selected for
-pruning. This is consistent with the behaviour of `getblockfrompeer` where the
-block is persisted as well even when pruning. (#31175)
-
-- `getmininginfo` now returns `nBits` and the current target in the `target` field. It also returns a `next` object which specifies the `height`, `nBits`, `difficulty`, and `target` for the next block. (#31583)
-
-- `getblock` and `getblockheader` now return the current target in the `target` field (#31583)
-
-- `getblockchaininfo` and `getchainstates` now return `nBits` and the current target in the `target` field (#31583)
-
-- the `getblocktemplate` RPC `curtime` (BIP22) and `mintime` (BIP23) fields now
-  account for the timewarp fix proposed in BIP94 on all networks. This ensures
-  that, in the event a timewarp fix softfork activates on mainnet, un-upgraded
-  miners will not accidentally violate the timewarp rule. (#31376, #31600)
-As a reminder, it's important that any software which uses the `getblocktemplate`
-RPC takes these values into account (either `curtime` or `mintime` is fine).
-Relying only on a clock can lead to invalid blocks under some circumstances,
-especially once a timewarp fix is deployed. (#31600)
-
-### New RPCs
-
-- `getdescriptoractivity` can be used to find all spend/receive activity relevant to
-  a given set of descriptors within a set of specified blocks. This call can be used with
-  `scanblocks` to lessen the need for additional indexing programs. (#30708)
-
-
-### Updated REST APIs
-
-- `GET /rest/block/<BLOCK-HASH>.json` and `GET /rest/headers/<BLOCK-HASH>.json` now return the current target in the `target` field
+- #32521 policy: make pathological transactions packed with legacy sigops non-standard
 
 ### Updated Settings
 
-- The maximum allowed value for the `-dbcache` configuration option has been
-  dropped due to recent UTXO set growth. Note that before this change, large `-dbcache`
-  values were automatically reduced to 16 GiB (1 GiB on 32 bit systems). (#28358)
+- The `-maxmempool` and `-dbcache` startup parameters are now capped on
+  32-bit systems to 500MB and 1GiB respectively.
 
-- Handling of negated `-noseednode`, `-nobind`, `-nowhitebind`, `-norpcbind`, `-norpcallowip`, `-norpcwhitelist`, `-notest`, `-noasmap`, `-norpcwallet`, `-noonlynet`, and `-noexternalip` options has changed. Previously negating these options had various confusing and undocumented side effects. Now negating them just resets the settings and restores default behaviors, as if the options were not specified.
+- #32530 node: cap -maxmempool and -dbcache values for 32-bit
 
-- Starting with v28.0, the `-mempoolfullrbf` startup option was set to
-default to `1`. With widespread adoption of this policy, users no longer
-benefit from disabling it, so the option has been removed, making full
-replace-by-fee the standard behavior. (#30592)
+### Wallet
 
-- Setting `-upnp` will now log a warning and be interpreted as `-natpmp`. Consider using `-natpmp` directly instead. (#31130, #31916)
+- #31757 wallet: fix crash on double block disconnection
+- #32553 wallet: Fix logging of wallet version
 
-- As a safety check, Bitcoin core will **fail to start** when `-blockreservedweight` init parameter value is lower than `2000` weight units. Bitcoin Core will also **fail to start** if the `-blockmaxweight` or `-blockreservedweight` init parameter exceeds consensus limit of `4,000,000 WU`.
+### P2P
 
-- Passing `-debug=0` or `-debug=none` now behaves like `-nodebug`: previously set debug categories will be cleared, but subsequent `-debug` options will still be applied.
+- #32826 p2p: add more bad ports
 
-- The default for `-rpcthreads` has been changed from 4 to 16, and the default for `-rpcworkqueue` has been changed from 16 to 64. (#31215).
+### Test
 
-### Build System
+- #32069 test: fix intermittent failure in wallet_reorgsrestore.py
+- #32286 test: Handle empty string returned by CLI as None in RPC tests
+- #32312 test: Fix feature_pruning test after nTime typo fix
+- #32336 test: Suppress upstream -Wduplicate-decl-specifier in bpfcc
+- #32463 test: fix an incorrect feature_fee_estimation.py subtest
+- #32483 test: fix two intermittent failures in wallet_basic.py
+- #32630 test: fix sync function in rpc_psbt.py
+- #32765 test: Fix list index out of range error in feature_bip68_sequence.py
+- #32742 test: fix catchup loop in outbound eviction functional test
+- #32823 test: Fix wait_for_getheaders() call in test_outbound_eviction_blocks_relay_only()
+- #32833 test: Add msgtype to msg_generic slots
+- #32841 feature_taproot: sample tx version border values more
+- #32850 test: check P2SH sigop count for coinbase tx
+- #32859 test: correctly detect nonstd TRUC tx vsize in feature_taproot
+- #33001 test: Do not pass tests on unhandled exceptions
 
-The build system has been migrated from Autotools to CMake:
+### Util
 
-1. The minimum required CMake version is 3.22.
-2. In-source builds are not allowed. When using a subdirectory within the root source tree as a build directory, it is recommended that its name includes the substring "build".
-3. CMake variables may be used to configure the build system. See [Autotools to CMake Options Mapping](https://github.com/bitcoin-core/bitcoin-devwiki/wiki/Autotools-to-CMake-Options-Mapping) for details.
-4. For single-configuration generators, the default build configuration (`CMAKE_BUILD_TYPE`) is "RelWithDebInfo". However, for the "Release" configuration, CMake defaults to the compiler optimization flag `-O3`, which has not been extensively tested with Bitcoin Core. Therefore, the build system replaces it with `-O2`.
-5. By default, the built executables and libraries are located in the `bin/` and `lib/` subdirectories of the build directory.
-6. The build system supports component‐based installation. The names of the installable components coincide with the build target names. For example:
-```
-cmake -B build
-cmake --build build --target bitcoind
-cmake --install build --component bitcoind
-```
+- #32248 Remove support for RNDR/RNDRRS for aarch64
 
-7. If any of the `CPPFLAGS`, `CFLAGS`, `CXXFLAGS` or `LDFLAGS` environment variables were used in your Autotools-based build process, you should instead use the corresponding CMake variables (`APPEND_CPPFLAGS`, `APPEND_CFLAGS`, `APPEND_CXXFLAGS` and `APPEND_LDFLAGS`). Alternatively, if you opt to use the dedicated `CMAKE_<...>_FLAGS` variables, you must ensure that the resulting compiler or linker invocations are as expected.
+### Build
 
-For more detailed guidance on configuring and using CMake, please refer to the official [CMake documentation](https://cmake.org/cmake/help/latest/) and [CMake’s User Interaction Guide](https://cmake.org/cmake/help/latest/guide/user-interaction/index.html). Additionally, consult platform-specific `doc/build-*.md` build guides for instructions tailored to your operating system.
+- #32356 cmake: Respect user-provided configuration-specific flags
+- #32437 crypto: disable ASan for sha256_sse4 with Clang
+- #32469 cmake: Allow WITH_DBUS on all Unix-like systems
+- #32439 guix: accomodate migration to codeberg
+- #32551 cmake: Add missed SSE41_CXXFLAGS
+- #32568 depends: use "mkdir -p" when installing xproto
+- #32678 guix: warn and abort when SOURCE_DATE_EPOCH is set
+- #32690 depends: fix SHA256SUM command on OpenBSD (use GNU mode output)
+- #32716 depends: Override host compilers for FreeBSD and OpenBSD
+- #32760 depends: capnp 1.2.0
+- #32798 build: add root dir to CMAKE_PREFIX_PATH in toolchain
+- #32805 cmake: Use HINTS instead of PATHS in find_* commands
+- #32814 cmake: Explicitly specify Boost_ROOT for Homebrew's package
+- #32837 depends: fix libevent _WIN32_WINNT usage
+- #32943 depends: Force CMAKE_EXPORT_NO_PACKAGE_REGISTRY=TRUE
+- #32954 cmake: Drop no longer necessary "cmakeMinimumRequired" object
 
-## Low-Level Changes
+### Gui
 
-### Tools and Utilities
+- #864 Crash fix, disconnect numBlocksChanged() signal during shutdown
+- #868 Replace stray tfm::format to cerr with qWarning
 
-- A new tool [`utxo_to_sqlite.py`](/contrib/utxo-tools/utxo_to_sqlite.py)
-  converts a compact-serialized UTXO snapshot (as created with the
-  `dumptxoutset` RPC) to a SQLite3 database. Refer to the script's `--help`
-  output for more details. (#27432)
+### Doc
 
-### Tests
+- #32333 doc: Add missing top-level description to pruneblockchain RPC
+- #32353 doc: Fix fuzz test_runner.py path
+- #32389 doc: Fix test_bitcoin path
+- #32607 rpc: Note in fundrawtransaction doc, fee rate is for package
+- #32679 doc: update tor docs to use bitcoind binary from path
+- #32693 depends: fix cmake compatibility error for freetype
+- #32696 doc: make -DWITH_ZMQ=ON explicit on build-unix.md
+- #32708 rpc, doc: update listdescriptors RCP help
+- #32711 doc: add missing packages for BSDs (cmake, gmake, curl) to depends/README.md
+- #32719 doc, windows: CompanyName "Bitcoin" => "Bitcoin Core project"
+- #32776 doc: taproot became always active in v24.0
+- #32777 doc: fix Transifex 404s
+- #32846 doc: clarify that the "-j N" goes after the "--build build" part
+- #32858 doc: Add workaround for vcpkg issue with paths with embedded spaces
 
-- The BIP94 timewarp attack mitigation (designed for testnet4) is no longer active on the regtest network. (#31156)
+### CI
 
-### Dependencies
+- #32184 ci: Add workaround for vcpkg's libevent package
 
-- MiniUPnPc and libnatpmp have been removed as dependencies (#31130, #30043).
+### Misc
+
+- #32187 refactor: Remove spurious virtual from final ~CZMQNotificationInterface
+- #32454 tracing: fix invalid argument in mempool_monitor
+- #32771 contrib: tracing: Fix read of pmsg_type in p2p_monitor.py
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
-- 0xb10c
-- Adlai Chandrasekhar
-- Afanti
-- Alfonso Roman Zubeldia
-- am-sq
-- Andre
-- Andre Alves
-- Anthony Towns
+- achow101
 - Antoine Poinsot
-- Ash Manning
-- Ava Chow
-- Boris Nagaev
+- benthecarman
+- bigspider
 - Brandon Odiwuor
 - brunoerg
-- Chris Stewart
-- Cory Fields
-- costcould
-- Daniel Pfeifer
-- Daniela Brozzoni
-- David Gumberg
+- davidgumberg
 - dergoegge
-- epysqyli
-- espi3
-- Eval EXEC
-- Fabian Jahr
+- enirox001
 - fanquake
 - furszy
-- Gabriele Bocchi
-- glozow
-- Greg Sanders
-- Gutflo
+- instagibbs
 - Hennadii Stepanov
-- Hodlinator
-- i-am-yuvi
-- ion-
+- hodlinator
 - ismaelsadeeq
-- Jadi
-- James O'Beirne
-- Jeremy Rand
-- Jon Atack
-- jurraca
-- Kay
-- kevkevinpal
-- l0rinc
+- jb55
+- jlopp
+- josibake
 - laanwj
-- Larry Ruane
-- Lőrinc
-- Maciej S. Szmigiero
-- Mackain
+- luisschwab
 - MarcoFalke
-- marcofleon
-- Marnix
-- Martin Leitner-Ankerl
-- Martin Saposnic
 - Martin Zumsande
-- Matthew Zipkin
-- Max Edwards
-- Michael Dietz
-- naiyoma
-- Nicola Leonardo Susca
-- omahs
+- monlovesmango
+- nervana21
 - pablomartin4btc
-- Pieter Wuille
-- Randall Naar
-- RiceChuan
 - rkrux
-- Roman Zeyde
-- Ryan Ofsky
-- Sebastian Falbesoner
-- secp512k2
-- Sergi Delgado Segura
-- Simon
-- Sjors Provoost
-- stickies-v
-- Suhas Daftuar
-- tdb3
-- TheCharlatan
-- tianzedavid
-- Torkel Rogstad
-- Vasil Dimov
-- wgyt
+- ryanofsky
+- Sjors
+- theStack
 - willcl-ark
-- yancy
+- zaidmstrr
 
 As well as to everyone that helped with translations on
-[Transifex](https://www.transifex.com/bitcoin/bitcoin/).
+[Transifex](https://explore.transifex.com/bitcoin/bitcoin/).

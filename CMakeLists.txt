@@ -19,14 +19,18 @@ if(POLICY CMP0171)
   cmake_policy(SET CMP0171 NEW)
 endif()
 
+# When adjusting CMake flag variables, we must not override those explicitly
+# set by the user. These are a subset of the CACHE_VARIABLES property.
+get_directory_property(precious_variables CACHE_VARIABLES)
+
 #=============================
 # Project / Package metadata
 #=============================
 set(CLIENT_NAME "Bitcoin Core")
 set(CLIENT_VERSION_MAJOR 29)
-set(CLIENT_VERSION_MINOR 0)
+set(CLIENT_VERSION_MINOR 1)
 set(CLIENT_VERSION_BUILD 0)
-set(CLIENT_VERSION_RC 0)
+set(CLIENT_VERSION_RC 1)
 set(CLIENT_VERSION_IS_RELEASE "true")
 set(COPYRIGHT_YEAR "2025")
 
@@ -153,7 +157,7 @@ if(WITH_QRENCODE)
   set(USE_QRCODE TRUE)
 endif()
 
-cmake_dependent_option(WITH_DBUS "Enable DBus support." ON "CMAKE_SYSTEM_NAME STREQUAL \"Linux\" AND BUILD_GUI" OFF)
+cmake_dependent_option(WITH_DBUS "Enable DBus support." ON "NOT CMAKE_SYSTEM_NAME MATCHES \"(Windows|Darwin)\" AND BUILD_GUI" OFF)
 
 option(WITH_MULTIPROCESS "Build multiprocess bitcoin-node and bitcoin-gui executables in addition to monolithic bitcoind and bitcoin-qt executables. Requires libmultiprocess library. Experimental." OFF)
 if(WITH_MULTIPROCESS)
@@ -660,7 +664,7 @@ message("  external signer ..................... ${ENABLE_EXTERNAL_SIGNER}")
 message("  ZeroMQ .............................. ${WITH_ZMQ}")
 message("  USDT tracing ........................ ${WITH_USDT}")
 message("  QR code (GUI) ....................... ${WITH_QRENCODE}")
-message("  DBus (GUI, Linux only) .............. ${WITH_DBUS}")
+message("  DBus (GUI) .......................... ${WITH_DBUS}")
 message("Tests:")
 message("  test_bitcoin ........................ ${BUILD_TESTS}")
 message("  test_bitcoin-qt ..................... ${BUILD_GUI_TESTS}")

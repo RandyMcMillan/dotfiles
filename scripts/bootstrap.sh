@@ -10,7 +10,6 @@ touch ~/session.log
 function doIt() {
 	rsync \
 		--exclude ".DS_Store" \
-		--exclude ".gitconfig" \
 		--exclude ".nojekyll" \
 		--exclude ".venv" \
 		--exclude ".osx" \

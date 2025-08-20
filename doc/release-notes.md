@@ -1,6 +1,6 @@
-Bitcoin Core version 29.1rc1 is now available from:
+Bitcoin Core version 29.1rc2 is now available from:
 
-  <https://bitcoincore.org/bin/bitcoin-core-29.1/test.rc1/>
+  <https://bitcoincore.org/bin/bitcoin-core-29.1/test.rc2/>
 
 This release includes various bug fixes and performance
 improvements, as well as updated translations.
@@ -47,6 +47,37 @@ Notable changes
   change was done to prepare for a possible BIP54 deployment in the future.
 
 - #32521 policy: make pathological transactions packed with legacy sigops non-standard
+
+- The minimum block feerate (`-blockmintxfee`) has been changed to 1 satoshi per kvB. It can still be changed using the
+configuration option.
+
+- The default minimum relay feerate (`-minrelaytxfee`) and incremental relay feerate (`-incrementalrelayfee`) have been
+changed to 100 satoshis per kvB. They can still be changed using their respective configuration options, but it is
+recommended to change both together if you decide to do so.
+  - Other minimum feerates (e.g. the dust feerate, the minimum returned by the fee estimator, and all feerates used by
+  the wallet) remain unchanged. The mempool minimum feerate still changes in response to high volume.
+  - Note that unless these lower defaults are widely adopted across the network, transactions created with lower fee
+  rates are not guaranteed to propagate or confirm. The wallet feerates remain unchanged; `-mintxfee` must be changed
+  before attempting to create transactions with lower feerates using the wallet.
+
+- #33106 policy: lower the default blockmintxfee, incrementalrelayfee, minrelaytxfee
+
+### Logging
+
+Unconditional logging to disk is now rate limited by giving each source location
+a quota of 1MiB per hour. Unconditional logging is any logging with a log level
+higher than debug, that is `info`, `warning`, and `error`. All logs will be
+prefixed with `[*]` if there is at least one source location that is currently
+being suppressed. (#32604)
+
+When `-logsourcelocations` is enabled, the log output now contains the entire
+function signature instead of just the function name. (#32604)
+
+### RPC
+
+- The `dumptxoutset` RPC now requires a `type` parameter to be specified. To maintain pre
+  v29.0 behavior, use the `latest` parameter. Documenting this change was missed in the v29.0
+  release notes. (#30808)
 
 ### Updated Settings
 
@@ -104,6 +135,7 @@ Notable changes
 - #32837 depends: fix libevent _WIN32_WINNT usage
 - #32943 depends: Force CMAKE_EXPORT_NO_PACKAGE_REGISTRY=TRUE
 - #32954 cmake: Drop no longer necessary "cmakeMinimumRequired" object
+- #33073 guix: warn SOURCE_DATE_EPOCH set in guix-codesign
 
 ### Gui
 
@@ -126,6 +158,10 @@ Notable changes
 - #32777 doc: fix Transifex 404s
 - #32846 doc: clarify that the "-j N" goes after the "--build build" part
 - #32858 doc: Add workaround for vcpkg issue with paths with embedded spaces
+- #33070 doc/zmq: fix unix socket path example
+- #33088 doc: move cmake -B build -LH up in Unix build docs
+- #33133 rpc: fix getpeerinfo ping duration unit docs
+- #33119 rpc: Fix 'getdescriptoractivity' RPCHelpMan, add test to verify fix
 
 ### CI
 
@@ -136,23 +172,30 @@ Notable changes
 - #32187 refactor: Remove spurious virtual from final ~CZMQNotificationInterface
 - #32454 tracing: fix invalid argument in mempool_monitor
 - #32771 contrib: tracing: Fix read of pmsg_type in p2p_monitor.py
+- #33086 contrib: [tracing] fix pointer argument handling in mempool_monitor.py
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
+- 0xB10C
 - achow101
 - Antoine Poinsot
 - benthecarman
 - bigspider
 - Brandon Odiwuor
 - brunoerg
+- Bufo
+- Christewart
+- Crypt-iQ
 - davidgumberg
+- deadmanoz
 - dergoegge
 - enirox001
 - fanquake
 - furszy
+- glozow
 - instagibbs
 - Hennadii Stepanov
 - hodlinator
@@ -168,6 +211,7 @@ Thanks to everyone who directly contributed to this release:
 - nervana21
 - pablomartin4btc
 - rkrux
+- romanz
 - ryanofsky
 - Sjors
 - theStack

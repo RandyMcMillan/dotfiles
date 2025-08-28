@@ -39,14 +39,16 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         if  ! hash mvim 2>/dev/null; then
-            brew install -f macvim
-            brew link --overwrite macvim
+            brew install -f --cask macvim-app
+            brew link --overwrite macvim-app
+            sudo ln -s "$(brew --caskroom)/macvim-app/$(brew info --cask macvim-app | grep "MacVim.app" | awk -F'/' '{print $NF}')" /Applications/MacVim.app
         elif
             hash mvim 2>/dev/null; then
             echo MacVim already installed.
             echo Usage:
             echo mvim .
             echo
+            sudo ln -s "$(brew --caskroom)/macvim-app/$(brew info --cask macvim-app | grep "MacVim.app" | awk -F'/' '{print $NF}')" /Applications/MacVim.app
         fi
     fi
 

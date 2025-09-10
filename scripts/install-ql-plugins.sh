@@ -108,6 +108,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
         #brew install --cask glance
         #open /Applications/Glance.app
         #bash -c "if pgrep Glance; then pkill Glance; fi"
+        brew install --cask apparency
         brew install --cask qladdict
         brew install --cask qlcolorcode
         brew install --cask qldds
@@ -133,3 +134,7 @@ else
     echo TODO add support for $OSTYPE
 fi
 
+brew install qlcolorcode qlstephen qlmarkdown quicklook-json suspicious-package apparency quicklookase qlvideo
+
+xattr -r ~/Library/QuickLook
+xattr -d -r com.apple.quarantine ~/Library/QuickLook

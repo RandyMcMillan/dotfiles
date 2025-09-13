@@ -72,7 +72,7 @@ std::optional<std::string> GetEntriesForConflicts(const CTransaction& tx, CTxMem
     EXCLUSIVE_LOCKS_REQUIRED(pool.cs);
 
 /** The replacement transaction may only include an unconfirmed input if that input was included in
- * one of the original transactions.
+ * one of the original transactions, and that is the only transaction being replaced.
  * @returns error message if tx spends unconfirmed inputs not also spent by iters_conflicting,
  * otherwise std::nullopt. */
 std::optional<std::string> HasNoNewUnconfirmed(const CTransaction& tx, const CTxMemPool& pool,
@@ -99,6 +99,15 @@ std::optional<std::string> EntriesAndTxidsDisjoint(const CTxMemPool::setEntries&
  */
 std::optional<std::string> PaysMoreThanConflicts(const CTxMemPool::setEntries& iters_conflicting,
                                                  CFeeRate replacement_feerate, const Txid& txid);
+
+/** Check that the feerate of the replacement transaction(s) is at least 2x
+ * higher than the feerate of each of the transactions in iters_conflicting.
+ * AKA, a replace-by-fee-rate replacement.
+ * @param[in]   iters_conflicting  The set of mempool entries.
+ * @returns error message if fees insufficient, otherwise std::nullopt.
+ */
+std::optional<std::string> IncreasesFeeRate(const CTxMemPool::setEntries& iters_conflicting,
+                                            CFeeRate replacement_feerate, const Txid& txid);
 
 /** The replacement transaction must pay more fees than the original transactions. The additional
  * fees must pay for the replacement's bandwidth at or above the incremental relay feerate.

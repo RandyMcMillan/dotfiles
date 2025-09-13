@@ -1131,9 +1131,12 @@ bool MemPoolAccept::ReplacementChecks(Workspace& ws)
     }
     if (const auto err_string{PaysForRBF(m_subpackage.m_conflicting_fees, ws.m_modified_fees, ws.m_vsize,
                                          m_pool.m_opts.incremental_relay_feerate, hash)}) {
-        // Result may change in a package context
-        return state.Invalid(TxValidationResult::TX_RECONSIDERABLE,
-                             strprintf("insufficient fee%s", ws.m_sibling_eviction ? " (including sibling eviction)" : ""), *err_string);
+        // Check if the fee-rate is increased sufficiently to qualify for replace-by-fee-rate
+        if (const auto err_string{IncreasesFeeRate(ws.m_iters_conflicting, newFeeRate, hash)}) {
+            // Result may change in a package context
+            return state.Invalid(TxValidationResult::TX_RECONSIDERABLE,
+                                 strprintf("insufficient fee%s", ws.m_sibling_eviction ? " (including sibling eviction)" : ""), *err_string);
+        }
     }
 
     // Add all the to-be-removed transactions to the changeset.

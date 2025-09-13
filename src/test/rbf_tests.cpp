@@ -297,7 +297,7 @@ BOOST_FIXTURE_TEST_CASE(rbf_helper_functions, TestChain100Setup)
     }
     BOOST_CHECK(HasNoNewUnconfirmed(/*tx=*/ *spends_unconfirmed.get(),
                                     /*pool=*/ pool,
-                                    /*iters_conflicting=*/ all_entries) == std::nullopt);
+                                    /*iters_conflicting=*/ all_entries).has_value());
     BOOST_CHECK(HasNoNewUnconfirmed(*spends_unconfirmed.get(), pool, {entry2_normal}) == std::nullopt);
     BOOST_CHECK(HasNoNewUnconfirmed(*spends_unconfirmed.get(), pool, empty_set).has_value());
 

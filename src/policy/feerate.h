@@ -77,6 +77,10 @@ public:
     friend CFeeRate operator*(const CFeeRate& f, int a) { return CFeeRate(a * f.m_feerate.fee, f.m_feerate.size); }
     friend CFeeRate operator*(int a, const CFeeRate& f) { return CFeeRate(a * f.m_feerate.fee, f.m_feerate.size); }
 
+    // For RBFR. A bit of a hack to have this. But does the job.
+    friend CFeeRate operator*(const CFeeRate& f, double a) { return CFeeRate(int(a * f.m_feerate.fee), f.m_feerate.size); }
+    friend CFeeRate operator*(double a, const CFeeRate& f) { return CFeeRate(int(a * f.m_feerate.fee), f.m_feerate.size); }
+
     SERIALIZE_METHODS(CFeeRate, obj) { READWRITE(obj.m_feerate.fee, obj.m_feerate.size); }
 };
 

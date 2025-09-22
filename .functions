@@ -235,6 +235,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add reardencode          git@github.com:reardencode/bitcoin.git          || true
     git remote add russeree             git@github.com:russeree/bitcoin                 || true
     git remote add statoshi             git@github.com:jlopp/statoshi.git               || true
+    git remote add TheStack             git@github.com:TheStack/bitcoin.git             || true
     git remote add upstream             git@github.com:bitcoin/bitcoin.git              || true
     git remote add upstream-gui         git@github.com:bitcoin-core/gui.git             || true
     git remote add virtu                git@github.com:virtu/bitcoin.git                || true

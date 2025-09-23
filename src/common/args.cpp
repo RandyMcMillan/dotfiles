@@ -286,7 +286,7 @@ fs::path ArgsManager::GetSignetDataDir() const
     const std::string signet_challenge_str = GetArg("-signetchallenge", "");
     if (!signet_challenge_str.empty()) {
         std::vector<uint8_t> signet_challenge = ParseHex(signet_challenge_str);
-        const auto data_dir_suffix = HexStr(Hash160(signet_challenge)).substr(0, 8);
+        const auto data_dir_suffix = HexStr(signet_challenge).substr(0, 8);
         return fs::PathFromString(base_data_dir + "_" + data_dir_suffix);
     }
     return fs::PathFromString(base_data_dir);

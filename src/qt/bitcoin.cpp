@@ -589,6 +589,11 @@ int GuiMain(int argc, char* argv[])
     // - Do not call Params() before this step
     // - QSettings() will use the new application name after this, resulting in network-specific settings
     // - Needs to be done before createOptionsModel
+
+    QSettings settings;
+    std::string chain = settings.value("chain", "main").toString().toStdString();
+    gArgs.SoftSetArg("-chain", chain);
+
     if (auto error = common::InitConfig(gArgs, ErrorSettingsRead)) {
         InitError(error->message, error->details);
         if (error->status == common::ConfigStatus::FAILED_WRITE) {

@@ -533,22 +533,21 @@ void BitcoinGUI::createMenuBar()
     settings->addAction(optionsAction);
 
     // Add chain selection submenu
-    QAction* chain_selection_action{nullptr};
-    QMenu* chain_selection_menu{nullptr};
-    chain_selection_action = new QAction(tr("&Switch chain"), this);
+    QAction* chain_selection_action = new QAction(tr("&Switch chain"), this);
     chain_selection_action->setStatusTip(tr("Restart application using a different (test) network"));
-    chain_selection_menu = new QMenu(this);
+    QMenu* chain_selection_menu = new QMenu(this);
+    chain_selection_action->setMenu(chain_selection_menu);
 
     connect(chain_selection_menu, &QMenu::aboutToShow, [this, chain_selection_menu] {
         chain_selection_menu->clear();
         const std::vector<std::pair<QString, QString>> chains = {{"main", "&Bitcoin"}, {"test", "&Testnet"}, {"regtest", "&Regtest"}, {"signet", "&Signet"}};
-        for (auto chain : chains) {
-            const bool is_current = Params().GetConsensus().signet_challenge == chain.first.toStdString();
+        const std::string current_chain = Params().GetChainTypeString();
+        for (const auto& chain : chains) {
+        const bool is_current = current_chain == chain.first.toStdString();
             QAction* action = chain_selection_menu->addAction(chain.second);
             action->setCheckable(true);
             action->setChecked(is_current);
             action->setEnabled(!is_current);
-
             connect(action, &QAction::triggered, [this, chain] {
                 //: Switch to the mainnet, testnet, signet or regtest chain.
                 QMessageBox::StandardButton btn_ret_val = QMessageBox::question(this, tr("Switch chain"),
@@ -560,7 +559,7 @@ void BitcoinGUI::createMenuBar()
 
                 // QSettings are stored seperately for each network. Switch application name
                 // to mainnet before storing the selected chain.
-                QScopedPointer<const NetworkStyle> networkStyle(NetworkStyle::instantiate("main"));
+                QScopedPointer<const NetworkStyle> networkStyle(NetworkStyle::instantiate(ChainType::MAIN));
                 assert(!networkStyle.isNull());
                 QApplication::setApplicationName(networkStyle->getAppName());
 
@@ -570,7 +569,6 @@ void BitcoinGUI::createMenuBar()
             });
         }
     });
-    chain_selection_action->setMenu(chain_selection_menu);
 
     settings->addAction(chain_selection_action);
 

@@ -213,6 +213,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add fjahr	            git@github.com:fjahr/bitcoin.git                || true
     git remote add hebasto              git@github.com:hebasto/bitcoin.git              || true
     git remote add hebasto-gui          git@github.com:hebasto/gui.git                  || true
+    git remote add InsanityMatrix       git@github.com:InsanityMatrix/bitcoin.git       || true
     git remote add jonas                git@github.com:jonasschnelli/bitcoin.git        || true
     git remote add jonas-gui            git@github.com:jonasschnelli/gui.git            || true
     git remote add jonatack             git@github.com:jonatack/bitcoin.git             || true
@@ -234,8 +235,10 @@ function git-add-remote-bitcoin-devs(){
     git remote add petertodd            git@github.com:petertodd/bitcoin.git            || true
     git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git        || true
     git remote add reardencode          git@github.com:reardencode/bitcoin.git          || true
+    git remote add rsafier-gui          git@github.com:rsafier/gui.git                  || true
     git remote add russeree             git@github.com:russeree/bitcoin                 || true
     git remote add statoshi             git@github.com:jlopp/statoshi.git               || true
+    git remote add sjors-gui            git@github.com:Sjors/gui.git                    || true
     git remote add TheStack             git@github.com:TheStack/bitcoin.git             || true
     git remote add upstream             git@github.com:bitcoin/bitcoin.git              || true
     git remote add upstream-gui         git@github.com:bitcoin-core/gui.git             || true

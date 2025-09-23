@@ -540,7 +540,7 @@ void BitcoinGUI::createMenuBar()
 
     connect(chain_selection_menu, &QMenu::aboutToShow, [this, chain_selection_menu] {
         chain_selection_menu->clear();
-        const std::vector<std::pair<QString, QString>> chains = {{"main", "&Bitcoin"}, {"test", "&Testnet"}, {"regtest", "&Regtest"}, {"signet", "&Signet"}};
+        const std::vector<std::pair<QString, QString>> chains = {{"main", "&Bitcoin"}, {"testnet4", "&Testnet4"}, {"regtest", "&Regtest"}, {"signet", "&Signet"}};
         const std::string current_chain = Params().GetChainTypeString();
         for (const auto& chain : chains) {
         const bool is_current = current_chain == chain.first.toStdString();

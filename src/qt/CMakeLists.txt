@@ -216,6 +216,7 @@ if(ENABLE_WALLET)
     PRIVATE
       bitcoin_wallet
       Qt6::Network
+      Qt6::Network
   )
 endif()
 

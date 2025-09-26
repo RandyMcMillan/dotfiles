@@ -43,12 +43,18 @@
 
 #include <functional>
 
+
+#include <QTcpSocket>
+#include <QHostAddress>
+#include <QTimer>
+
 #include <QAction>
 #include <QActionGroup>
 #include <QApplication>
 #include <QComboBox>
 #include <QCursor>
 #include <QDateTime>
+#include <QDebug>
 #include <QDragEnterEvent>
 #include <QInputDialog>
 #include <QKeySequence>
@@ -57,6 +63,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QProcess>
 #include <QProgressDialog>
 #include <QScreen>
 #include <QSettings>
@@ -243,6 +250,60 @@ BitcoinGUI::~BitcoinGUI()
 
     delete rpcConsole;
 }
+
+bool BitcoinGUI::isPortAvailable(const QHostAddress& address, quint16 port, int timeoutMs = 100) {
+    QTcpSocket socket;
+
+    // Attempt to connect to the port with a short timeout
+    socket.connectToHost(address, port);
+
+    // Wait for the connection attempt to complete
+    if (socket.waitForConnected(timeoutMs)) {
+        // If connected, a service is listening, so the port is NOT AVAILABLE for use by a new service
+        socket.disconnectFromHost();
+        socket.close();
+        return false; // Port is in use
+    }
+
+    // Check for the specific error indicating refusal or timeout
+    // QAbstractSocket::ConnectionRefusedError usually means nothing is listening.
+    // QAbstractSocket::RemoteHostClosedError or QAbstractSocket::SocketTimeoutError
+    // often means the port is available (or blocked by a firewall).
+    if (socket.state() == QAbstractSocket::UnconnectedState ||
+        socket.error() == QAbstractSocket::ConnectionRefusedError ||
+        socket.error() == QAbstractSocket::SocketTimeoutError) {
+
+        return true; // Port is available/free
+    }
+
+    return false; // Assume unavailable/error otherwise
+}
+
+void BitcoinGUI::addChainProcess()
+{
+
+    //QString program = QApplication::applicationFilePath();
+
+    //QStringList arguments = QApplication::arguments();
+    //bool success = QProcess::startDetached(program, arguments); //add -listen?
+
+    bool success = QProcess::startDetached(QApplication::applicationFilePath());
+
+    if (success)
+    {
+        //QApplication::quit();
+        //Q_EMIT quitRequested();
+        Q_EMIT detectShutdown();
+    }
+    else
+    {
+        qDebug() << "Failed to restart Bitcoin-Gui. Could not launch new process.";
+        //Q_EMIT quitRequested();
+        QApplication::quit();
+
+    }
+}
+
 
 void BitcoinGUI::createActions()
 {
@@ -495,6 +556,15 @@ void BitcoinGUI::createActions()
     connect(new QShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_D), this), &QShortcut::activated, this, &BitcoinGUI::showDebugWindow);
 }
 
+
+quint16 get_default_port(const QString& chain_id) {
+    if (chain_id == "main") return 8333;
+    if (chain_id == "testnet4") return 48334; // Actual port may vary
+    if (chain_id == "regtest") return 18444;
+    if (chain_id == "signet") return 38333;
+    return 0; // Default or error
+}
+
 void BitcoinGUI::createMenuBar()
 {
     appMenuBar = menuBar();
@@ -533,29 +603,92 @@ void BitcoinGUI::createMenuBar()
     settings->addAction(optionsAction);
 
     // Add chain selection submenu
-    QAction* chain_selection_action = new QAction(tr("&Switch chain"), this);
-    chain_selection_action->setStatusTip(tr("Restart application using a different (test) network"));
+    QAction* chain_selection_action = new QAction(tr("&Add Chain Process"), this);
+    chain_selection_action->setStatusTip(tr("Start process using a different network"));
     QMenu* chain_selection_menu = new QMenu(this);
     chain_selection_action->setMenu(chain_selection_menu);
+
+
+
+
+
+
 
     connect(chain_selection_menu, &QMenu::aboutToShow, [this, chain_selection_menu] {
         chain_selection_menu->clear();
         const std::vector<std::pair<QString, QString>> chains = {{"main", "&Bitcoin"}, {"testnet4", "&Testnet4"}, {"regtest", "&Regtest"}, {"signet", "&Signet"}};
         const std::string current_chain = Params().GetChainTypeString();
         for (const auto& chain : chains) {
+        //add port detection here?
         const bool is_current = current_chain == chain.first.toStdString();
-            QAction* action = chain_selection_menu->addAction(chain.second);
+
+
+            // 🔑 NEW LOGIC STARTS HERE 🔑
+
+            // 1. Get the port for the chain
+            quint16 chain_port = get_default_port(chain.first);
+
+            // 2. Check if the port is already in use by another process
+            // The check for 'isPortAvailable' returns TRUE if it's free/NOT in use.
+            // We want to disable the action if the port is IN USE.
+            // We check the local host address.
+            bool port_in_use = !isPortAvailable(QHostAddress::LocalHost, chain_port);
+
+            // The action should be disabled if:
+            // a) It's the current chain (line 612 handles this already)
+            // b) Another program is using the port (port_in_use is true)
+
+            // 🔑 NEW LOGIC ENDS HERE 🔑
+
+
+        QAction* action = chain_selection_menu->addAction(chain.second);
             action->setCheckable(true);
             action->setChecked(is_current);
-            action->setEnabled(!is_current);
-            connect(action, &QAction::triggered, [this, chain] {
-                //: Switch to the mainnet, testnet, signet or regtest chain.
-                QMessageBox::StandardButton btn_ret_val = QMessageBox::question(this, tr("Switch chain"),
-                    //: Switching between mainnet, testnet, signet or regtest chain requires a restart.
-                    tr("Client restart required to switch chain.\n\nClient will be shut down. Do you want to proceed?"),
-                    QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
 
-                if (btn_ret_val == QMessageBox::Cancel) return;
+
+            bool should_be_disabled = is_current || port_in_use;
+            action->setEnabled(!should_be_disabled); // Enable if NOT disabled
+            //action->setEnabled(!is_current);
+
+
+           if (port_in_use && !is_current) {
+                // Set a tooltip to explain *why* it's disabled if another program is using the port
+                action->setToolTip(tr("Cannot switch to this chain; its default port (%1) is in use by another application.").arg(chain_port));
+            } else if (is_current) {
+                action->setToolTip(tr("Currently running on this chain."));
+            } else {
+                action->setToolTip(tr("Switch to %1. Requires application restart.").arg(QString(chain.second).remove('&')));
+            }
+
+            connect(action, &QAction::triggered, [this, chain] {
+
+
+                    QMessageBox msgBox;
+
+// 2. Set the text and title using the translated string
+msgBox.setWindowTitle(tr("Add chain process?"));
+msgBox.setText(tr("Do you want to proceed?"));
+
+// 3. Set the icon explicitly on the QMessageBox object
+msgBox.setIcon(QMessageBox::Question);
+
+// 4. Set the buttons (e.g., Yes and Cancel)
+msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+
+
+                ////: Switch to the mainnet, testnet, signet or regtest chain.
+                //QMessageBox::StandardButton btn_ret_val = QMessageBox::question(this, tr("Switch chain"),
+                //    //: Switching between mainnet, testnet, signet or regtest chain requires a restart.
+                //    tr("Add chain process?\n\nDo you want to proceed?").setIcon(QMessageBox::Question),
+                //    QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
+
+
+int clickedButton = msgBox.exec();
+
+// 2. Check the stored variable instead of the non-existent member.
+if (clickedButton == QMessageBox::Cancel) {
+    return;
+}
 
                 // QSettings are stored seperately for each network. Switch application name
                 // to mainnet before storing the selected chain.
@@ -565,7 +698,8 @@ void BitcoinGUI::createMenuBar()
 
                 QSettings settings;
                 settings.setValue("chain", chain.first);
-                Q_EMIT quitRequested();
+                //Q_EMIT quitRequested();
+                Q_EMIT addChainProcess();
             });
         }
     });

@@ -21,6 +21,7 @@ target_link_libraries(test_bitcoin-qt
   bitcoin_node
   Boost::headers
   Qt6::Test
+  Qt6::Network
 )
 
 import_plugins(test_bitcoin-qt)

@@ -14,6 +14,7 @@
 
 #include <consensus/amount.h>
 
+#include <QHostAddress>
 #include <QLabel>
 #include <QMainWindow>
 #include <QMap>
@@ -74,6 +75,8 @@ public:
     explicit BitcoinGUI(interfaces::Node& node, const PlatformStyle *platformStyle, const NetworkStyle *networkStyle, QWidget *parent = nullptr);
     ~BitcoinGUI();
 
+    void addChainProcess();
+    bool isPortAvailable(const QHostAddress& address, quint16 port, int timeoutMs);
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
     */

@@ -44,8 +44,8 @@
 #include <functional>
 
 
-#include <QTcpSocket>
 #include <QHostAddress>
+#include <QTcpSocket>
 #include <QTimer>
 
 #include <QAction>
@@ -251,7 +251,8 @@ BitcoinGUI::~BitcoinGUI()
     delete rpcConsole;
 }
 
-bool BitcoinGUI::isPortAvailable(const QHostAddress& address, quint16 port, int timeoutMs = 100) {
+bool BitcoinGUI::isPortAvailable(const QHostAddress& address, quint16 port, int timeoutMs = 100)
+{
     QTcpSocket socket;
 
     // Attempt to connect to the port with a short timeout
@@ -272,7 +273,6 @@ bool BitcoinGUI::isPortAvailable(const QHostAddress& address, quint16 port, int 
     if (socket.state() == QAbstractSocket::UnconnectedState ||
         socket.error() == QAbstractSocket::ConnectionRefusedError ||
         socket.error() == QAbstractSocket::SocketTimeoutError) {
-
         return true; // Port is available/free
     }
 
@@ -557,7 +557,8 @@ void BitcoinGUI::createActions()
 }
 
 
-quint16 get_default_port(const QString& chain_id) {
+quint16 get_default_port(const QString& chain_id)
+{
     if (chain_id == "main") return 8333;
     if (chain_id == "testnet4") return 48334; // Actual port may vary
     if (chain_id == "regtest") return 18444;
@@ -609,18 +610,13 @@ void BitcoinGUI::createMenuBar()
     chain_selection_action->setMenu(chain_selection_menu);
 
 
-
-
-
-
-
     connect(chain_selection_menu, &QMenu::aboutToShow, [this, chain_selection_menu] {
         chain_selection_menu->clear();
         const std::vector<std::pair<QString, QString>> chains = {{"main", "&Bitcoin"}, {"testnet4", "&Testnet4"}, {"regtest", "&Regtest"}, {"signet", "&Signet"}};
         const std::string current_chain = Params().GetChainTypeString();
         for (const auto& chain : chains) {
-        //add port detection here?
-        const bool is_current = current_chain == chain.first.toStdString();
+            // add port detection here?
+            const bool is_current = current_chain == chain.first.toStdString();
 
 
             // 🔑 NEW LOGIC STARTS HERE 🔑
@@ -641,17 +637,17 @@ void BitcoinGUI::createMenuBar()
             // 🔑 NEW LOGIC ENDS HERE 🔑
 
 
-        QAction* action = chain_selection_menu->addAction(chain.second);
+            QAction* action = chain_selection_menu->addAction(chain.second);
             action->setCheckable(true);
             action->setChecked(is_current);
 
 
             bool should_be_disabled = is_current || port_in_use;
             action->setEnabled(!should_be_disabled); // Enable if NOT disabled
-            //action->setEnabled(!is_current);
+                                                     // action->setEnabled(!is_current);
 
 
-           if (port_in_use && !is_current) {
+            if (port_in_use && !is_current) {
                 // Set a tooltip to explain *why* it's disabled if another program is using the port
                 action->setToolTip(tr("Cannot switch to this chain; its default port (%1) is in use by another application.").arg(chain_port));
             } else if (is_current) {
@@ -661,34 +657,32 @@ void BitcoinGUI::createMenuBar()
             }
 
             connect(action, &QAction::triggered, [this, chain] {
+                QMessageBox msgBox;
 
+                // 2. Set the text and title using the translated string
+                msgBox.setWindowTitle(tr("Add chain process?"));
+                msgBox.setText(tr("Do you want to proceed?"));
 
-                    QMessageBox msgBox;
+                // 3. Set the icon explicitly on the QMessageBox object
+                msgBox.setIcon(QMessageBox::Question);
 
-// 2. Set the text and title using the translated string
-msgBox.setWindowTitle(tr("Add chain process?"));
-msgBox.setText(tr("Do you want to proceed?"));
-
-// 3. Set the icon explicitly on the QMessageBox object
-msgBox.setIcon(QMessageBox::Question);
-
-// 4. Set the buttons (e.g., Yes and Cancel)
-msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+                // 4. Set the buttons (e.g., Yes and Cancel)
+                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
 
 
                 ////: Switch to the mainnet, testnet, signet or regtest chain.
-                //QMessageBox::StandardButton btn_ret_val = QMessageBox::question(this, tr("Switch chain"),
-                //    //: Switching between mainnet, testnet, signet or regtest chain requires a restart.
-                //    tr("Add chain process?\n\nDo you want to proceed?").setIcon(QMessageBox::Question),
-                //    QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
+                // QMessageBox::StandardButton btn_ret_val = QMessageBox::question(this, tr("Switch chain"),
+                //     //: Switching between mainnet, testnet, signet or regtest chain requires a restart.
+                //     tr("Add chain process?\n\nDo you want to proceed?").setIcon(QMessageBox::Question),
+                //     QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
 
 
-int clickedButton = msgBox.exec();
+                int clickedButton = msgBox.exec();
 
-// 2. Check the stored variable instead of the non-existent member.
-if (clickedButton == QMessageBox::Cancel) {
-    return;
-}
+                // 2. Check the stored variable instead of the non-existent member.
+                if (clickedButton == QMessageBox::Cancel) {
+                    return;
+                }
 
                 // QSettings are stored seperately for each network. Switch application name
                 // to mainnet before storing the selected chain.
@@ -698,7 +692,7 @@ if (clickedButton == QMessageBox::Cancel) {
 
                 QSettings settings;
                 settings.setValue("chain", chain.first);
-                //Q_EMIT quitRequested();
+                // Q_EMIT quitRequested();
                 Q_EMIT addChainProcess();
             });
         }
@@ -713,7 +707,7 @@ if (clickedButton == QMessageBox::Cancel) {
     connect(minimize_action, &QAction::triggered, [] {
         QApplication::activeWindow()->showMinimized();
     });
-    connect(qApp, &QApplication::focusWindowChanged, this, [minimize_action] (QWindow* window) {
+    connect(qApp, &QApplication::focusWindowChanged, this, [minimize_action](QWindow* window) {
         minimize_action->setEnabled(window != nullptr && (window->flags() & Qt::Dialog) != Qt::Dialog && window->windowState() != Qt::WindowMinimized);
     });
 
@@ -728,7 +722,7 @@ if (clickedButton == QMessageBox::Cancel) {
         }
     });
 
-    connect(qApp, &QApplication::focusWindowChanged, this, [zoom_action] (QWindow* window) {
+    connect(qApp, &QApplication::focusWindowChanged, this, [zoom_action](QWindow* window) {
         zoom_action->setEnabled(window != nullptr);
     });
 #endif

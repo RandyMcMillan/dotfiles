@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
-##
-if [ -f ~/config-git ]; then
-	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
+#
+if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "This is a Git repository."
+else
+    echo "This is NOT a Git repository."
 fi
+#if [ -f ~/config-git ]; then
+#	source ~/config-git 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
+#fi
 if [ -f "$HOME/.cargo/env" ]; then
 	source "$HOME/.cargo/env" 2> >(tee -a /tmp/bash_profile.log) 2>/dev/null
 else

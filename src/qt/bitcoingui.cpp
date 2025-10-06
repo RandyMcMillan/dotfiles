@@ -560,10 +560,9 @@ void BitcoinGUI::createActions()
 quint16 get_default_port(const QString& chain_id)
 {
     if (chain_id == "main") return 8333;
-    if (chain_id == "testnet4") return 48334; // Actual port may vary
     if (chain_id == "regtest") return 18444;
     if (chain_id == "signet") return 38333;
-    return 0; // Default or error
+    if (chain_id.contains("testnet", Qt::CaseInsensitive)) { return 48334; } else { return 0; }
 }
 
 void BitcoinGUI::createMenuBar()
@@ -612,7 +611,7 @@ void BitcoinGUI::createMenuBar()
 
     connect(chain_selection_menu, &QMenu::aboutToShow, [this, chain_selection_menu] {
         chain_selection_menu->clear();
-        const std::vector<std::pair<QString, QString>> chains = {{"main", "&Bitcoin"}, {"testnet4", "&Testnet4"}, {"regtest", "&Regtest"}, {"signet", "&Signet"}};
+        const std::vector<std::pair<QString, QString>> chains = {{"main", "&Bitcoin"}, {"testnet", "&Testnet"}, {"testnet4", "&Testnet4"}, {"regtest", "&Regtest"}, {"signet", "&Signet"}};
         const std::string current_chain = Params().GetChainTypeString();
         for (const auto& chain : chains) {
             // add port detection here?
@@ -660,29 +659,29 @@ void BitcoinGUI::createMenuBar()
                 QMessageBox msgBox;
 
                 // 2. Set the text and title using the translated string
-                msgBox.setWindowTitle(tr("Add chain process?"));
-                msgBox.setText(tr("Do you want to proceed?"));
+                //msgBox.setWindowTitle(tr("Add chain process?"));
+                //msgBox.setText(tr("Do you want to proceed?"));
 
-                // 3. Set the icon explicitly on the QMessageBox object
-                msgBox.setIcon(QMessageBox::Question);
+                //// 3. Set the icon explicitly on the QMessageBox object
+                //msgBox.setIcon(QMessageBox::Question);
 
-                // 4. Set the buttons (e.g., Yes and Cancel)
-                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-
-
-                ////: Switch to the mainnet, testnet, signet or regtest chain.
-                // QMessageBox::StandardButton btn_ret_val = QMessageBox::question(this, tr("Switch chain"),
-                //     //: Switching between mainnet, testnet, signet or regtest chain requires a restart.
-                //     tr("Add chain process?\n\nDo you want to proceed?").setIcon(QMessageBox::Question),
-                //     QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
+                //// 4. Set the buttons (e.g., Yes and Cancel)
+                //msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
 
 
-                int clickedButton = msgBox.exec();
+                //////: Switch to the mainnet, testnet, signet or regtest chain.
+                //// QMessageBox::StandardButton btn_ret_val = QMessageBox::question(this, tr("Switch chain"),
+                ////     //: Switching between mainnet, testnet, signet or regtest chain requires a restart.
+                ////     tr("Add chain process?\n\nDo you want to proceed?").setIcon(QMessageBox::Question),
+                ////     QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
 
-                // 2. Check the stored variable instead of the non-existent member.
-                if (clickedButton == QMessageBox::Cancel) {
-                    return;
-                }
+
+                //int clickedButton = msgBox.exec();
+
+                //// 2. Check the stored variable instead of the non-existent member.
+                //if (clickedButton == QMessageBox::Cancel) {
+                //    return;
+                //}
 
                 // QSettings are stored seperately for each network. Switch application name
                 // to mainnet before storing the selected chain.

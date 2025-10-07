@@ -178,8 +178,6 @@ void MempoolStats::drawChart()
         QPointF current_x_bottom = QPointF(current_x,bottom);
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
-        //drawFeeRanges(bottom, gridFont);
-        //drawFeeRects(bottom, maxwidth, display_up_to_range, ADD_TEXT, gridFont);
 
         // draw the paths
         bool first = true;

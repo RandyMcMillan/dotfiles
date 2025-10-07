@@ -134,7 +134,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             if (m_selected_range >= 0 && m_selected_range != i) {
                 // if one item is selected, hide out the other ones
                 // fee range boxes
-                brush_color.setAlpha(200);//not pressed
+                brush_color.setAlpha(100);//not pressed
                 //
             }
 

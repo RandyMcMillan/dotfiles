@@ -117,7 +117,8 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             ClickableRectItem *fee_rect_detail = new ClickableRectItem();
             if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
-                fee_rect_detail->setRect(C_X, c_y-7, C_W+100, C_H);
+                //fee_rect_detail->setRect(C_X, c_y-7, C_W+100, C_H);
+                fee_rect_detail->setRect(C_X, c_y-7, maxwidth, C_H);
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());

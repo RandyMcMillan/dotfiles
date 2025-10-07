@@ -170,7 +170,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
 			fee_subtotal_txcount.resize(m_clientmodel->m_mempool_feehist[0].second.size());
             LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
-			QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
+			//QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
 
             if(ADD_TOTAL_TEXT){
 

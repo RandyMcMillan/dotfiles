@@ -45,7 +45,7 @@ public:
     void setClientModel(ClientModel *model);
 
 public Q_SLOTS:
-    void drawChart();
+    void drawFeeRects();
     void drawHorzLines(
     const qreal x_increment,
     QPointF current_x_bottom,

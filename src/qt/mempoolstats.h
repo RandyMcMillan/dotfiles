@@ -55,19 +55,11 @@ public Q_SLOTS:
     size_t max_txcount_graph,
     QFont LABELFONT
 );
-    void drawFeeRanges(qreal bottom, QFont LABELFONT);
-    void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, bool ADD_TEXT, QFont LABELFONT);
 
     void mousePressEvent(QMouseEvent        *event) override;
     void mouseReleaseEvent(QMouseEvent      *event) override;
     void mouseDoubleClickEvent(QMouseEvent  *event) override;
     void mouseMoveEvent(QMouseEvent         *event) override;
-
-    void showFeeRects (QEvent *event);
-    void showFeeRanges(QEvent *event);
-
-    void hideFeeRects (QEvent *event);
-    void hideFeeRanges(QEvent *event);
 
 Q_SIGNALS:
     void objectClicked(QWidget*);

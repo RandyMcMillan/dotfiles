@@ -5,6 +5,7 @@
 #ifndef BITCOIN_QT_CLIENTMODEL_H
 #define BITCOIN_QT_CLIENTMODEL_H
 
+#include <QMutex>
 #include <QObject>
 #include <QDateTime>
 
@@ -14,6 +15,7 @@
 #include <uint256.h>
 
 #include <netaddress.h>
+#include <interfaces/node.h>
 
 class BanTableModel;
 class CBlockIndex;
@@ -99,8 +101,23 @@ public:
     Mutex m_cached_tip_mutex;
     uint256 m_cached_tip_blocks GUARDED_BY(m_cached_tip_mutex){};
 
+    typedef std::pair<int64_t, std::vector<interfaces::mempool_feeinfo>> mempool_feehist_sample; //!< sample plus timestamp
+    mutable QMutex m_mempool_locker;
+    const static size_t m_mempool_max_samples{540};
+    const static size_t m_mempool_collect_intervall{20}; // 540*20 = 3h of sample window
+    std::vector<mempool_feehist_sample> m_mempool_feehist;
+    std::atomic<int64_t> m_mempool_feehist_last_sample_timestamp{0};
+
 private:
     interfaces::Node& m_node;
+    std::unique_ptr<interfaces::Handler> m_handler_show_progress;
+    std::unique_ptr<interfaces::Handler> m_handler_notify_num_connections_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_notify_network_active_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_notify_alert_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_banned_list_changed;
+    std::unique_ptr<interfaces::Handler> m_handler_notify_block_tip;
+    std::unique_ptr<interfaces::Handler> m_handler_notify_header_tip;
+
     std::vector<std::unique_ptr<interfaces::Handler>> m_event_handlers;
     OptionsModel *optionsModel;
     PeerTableModel* peerTableModel{nullptr};
@@ -117,7 +134,8 @@ private:
 Q_SIGNALS:
     void numConnectionsChanged(int count);
     void numBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, SyncType header, SynchronizationState sync_state);
-    void mempoolSizeChanged(long count, size_t mempoolSizeInBytes, size_t mempoolMaxSizeInBytes);
+    void mempoolSizeChanged(long count, size_t mempoolSizeInBytes, size_t maxUsageInBytes);
+    void mempoolFeeHistChanged();
     void networkActiveChanged(bool networkActive);
     void alertsChanged(const QString &warnings);
     void bytesChanged(quint64 totalBytesIn, quint64 totalBytesOut);

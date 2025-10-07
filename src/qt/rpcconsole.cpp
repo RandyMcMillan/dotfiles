@@ -626,7 +626,12 @@ void RPCConsole::setClientModel(ClientModel *model, int bestblock_height, int64_
         updateAlerts(model->getStatusBarWarnings());
     }
 
+    ui->mempool_detail->setClientModel(model);
+    ui->mempool_left->resize(ui->mempool_right->height(), ui->mempool_right->height());//left panel square right panel remainder
+    ui->mempool_graph->setClientModel(model);
+
     ui->trafficGraph->setClientModel(model);
+
     if (model && clientModel->getPeerTableModel() && clientModel->getBanTableModel()) {
         // Keep up to date with client
         setNumConnections(model->getNumConnections());
@@ -1350,10 +1355,11 @@ QString RPCConsole::tabTitle(TabTypes tab_type) const
 QKeySequence RPCConsole::tabShortcut(TabTypes tab_type) const
 {
     switch (tab_type) {
-    case TabTypes::INFO: return QKeySequence(tr("Ctrl+I"));
-    case TabTypes::CONSOLE: return QKeySequence(tr("Ctrl+T"));
-    case TabTypes::GRAPH: return QKeySequence(tr("Ctrl+N"));
-    case TabTypes::PEERS: return QKeySequence(tr("Ctrl+P"));
+    case TabTypes::INFO: return QKeySequence(Qt::CTRL + Qt::Key_I);
+    case TabTypes::CONSOLE: return QKeySequence(Qt::CTRL + Qt::Key_T);
+    case TabTypes::GRAPH: return QKeySequence(Qt::CTRL + Qt::Key_N);
+    case TabTypes::MEMPOOL: return QKeySequence(Qt::CTRL + Qt::Key_M);
+    case TabTypes::PEERS: return QKeySequence(Qt::CTRL + Qt::Key_P);
     } // no default case, so the compiler can warn about missing cases
 
     assert(false);

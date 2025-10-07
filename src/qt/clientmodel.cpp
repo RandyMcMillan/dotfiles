@@ -17,6 +17,7 @@
 #include <common/system.h>
 #include <interfaces/handler.h>
 #include <interfaces/node.h>
+#include <memusage.h>
 #include <net.h>
 #include <netbase.h>
 #include <util/threadnames.h>
@@ -27,6 +28,7 @@
 
 #include <QDebug>
 #include <QMetaObject>
+#include <QMutexLocker>
 #include <QThread>
 #include <QTimer>
 
@@ -54,6 +56,19 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
         // no locking required at this point
         // the following calls will acquire the required lock
         Q_EMIT mempoolSizeChanged(m_node.getMempoolSize(), m_node.getMempoolDynamicUsage(), m_node.getMempoolMaxUsage());
+
+        int64_t now = GetTime();
+        if (m_mempool_feehist_last_sample_timestamp == 0 || static_cast<uint64_t>(m_mempool_feehist_last_sample_timestamp)+static_cast<uint64_t>(m_mempool_collect_intervall) < static_cast<uint64_t>(now)) {
+            QMutexLocker locker(&m_mempool_locker);
+            interfaces::mempool_feehistogram fee_histogram = m_node.getMempoolFeeHistogram();
+            m_mempool_feehist.push_back({now, fee_histogram});
+            if (m_mempool_feehist.size() > m_mempool_max_samples) {
+                m_mempool_feehist.erase(m_mempool_feehist.begin(), m_mempool_feehist.begin()+1);
+            }
+            m_mempool_feehist_last_sample_timestamp = now;
+            Q_EMIT mempoolFeeHistChanged();
+        }
+
         Q_EMIT bytesChanged(m_node.getTotalBytesRecv(), m_node.getTotalBytesSent());
     });
     connect(m_thread, &QThread::finished, timer, &QObject::deleteLater);

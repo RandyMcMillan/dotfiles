@@ -84,6 +84,7 @@
         <file alias="spinner-035">res/animation/spinner-035.png</file>
     </qresource>
     <qresource prefix="/fonts">
-        <file alias="monospace">res/fonts/RobotoMono-Bold.ttf</file>
+        <file alias="monospace">res/fonts/RobotoMono-Regular.ttf</file>
+        <file alias="monospace-bold">res/fonts/RobotoMono-Bold.ttf</file>
     </qresource>
 </RCC>

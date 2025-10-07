@@ -417,7 +417,7 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(thi
     }
 }
 
-void MempoolStats::enterEvent(QEvent *event) { Q_EMIT objectClicked(this);
+void MempoolStats::enterEvent(QEnterEvent *event) { Q_EMIT objectClicked(this);
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){

@@ -82,7 +82,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             //Stack of rects on in side panel
             QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
-            brush_color.setAlpha(0);
+            brush_color.setAlpha(255);
             if (m_selected_range >= 0 && m_selected_range != i) {
                 brush_color.setAlpha(100); // white text dimmed
             }
@@ -154,7 +154,7 @@ void MempoolDetail::drawFeeRects()
     if (!m_clientmodel)
         return;
 
-    m_scene->clear();
+//    m_scene->clear();
 
     //
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
@@ -248,10 +248,6 @@ void MempoolDetail::drawFeeRects()
         const qreal x_increment = 1.0 * (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT) ) / m_clientmodel->m_mempool_max_samples; //samples.size();
         QPointF current_x_bottom = QPointF(current_x,bottom);
 
-        //drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
-        //drawFeeRanges(bottom, gridFont);
-        //drawFeeRects(bottom, maxwidth, display_up_to_range, fee_subtotal_txcount ,ADD_TEXT, gridFont);
-
         // draw the paths
         bool first = true;
         for (const ClientModel::mempool_feehist_sample& sample : m_clientmodel->m_mempool_feehist) {
@@ -284,14 +280,14 @@ void MempoolDetail::drawFeeRects()
     //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall));//10800 units
     for (auto feepath : fee_paths) {
         // close paths
-        if (i > 0) {
-            feepath.lineTo(fee_paths[i-1].currentPosition());
-            feepath.connectPath(fee_paths[i-1].toReversed());
-            //
-        } else {
-            feepath.lineTo(current_x, bottom);
-            feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
-        }
+        //if (i > 0) {
+        //    feepath.lineTo(fee_paths[i-1].currentPosition());
+        //    feepath.connectPath(fee_paths[i-1].toReversed());
+        //    //
+        //} else {
+        //    feepath.lineTo(current_x, bottom);
+        //    feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
+        //}
 
 
         QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
@@ -364,7 +360,6 @@ void MempoolDetail::setClientModel(ClientModel *model)
 {
     m_clientmodel = model;
     if (model) {
-        //connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::drawFeeRects);
         drawFeeRects();
     }
 }

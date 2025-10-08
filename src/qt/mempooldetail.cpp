@@ -135,11 +135,11 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             }
 
-//            if (ADD_FEE_RECTS){
+            if (ADD_FEE_RECTS){
 
                 m_scene->addItem(fee_rect_detail);
 
-//            }
+            }
 
             c_y-=C_H+C_MARGIN;
             LogPrintf("\nc_y = %s",c_y);

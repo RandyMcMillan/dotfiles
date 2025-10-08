@@ -41,52 +41,6 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
         drawFeeRects();
 }
 
-//repurpose to calculate vertical fee rect height
-void MempoolDetail::drawHorzLines(
-        const qreal x_increment,
-        QPointF current_x_bottom,
-        const int amount_of_h_lines,
-        qreal maxheight_g,
-        qreal maxwidth,
-        qreal bottom,
-        size_t max_txcount_graph,
-        QFont LABELFONT){
-
-    QPainterPath tx_count_grid_path(current_x_bottom);
-    int bottomTxCount = 0;
-    for (int i=0; i < amount_of_h_lines; i++)
-    {
-        qreal lY = bottom-i*(maxheight_g/(amount_of_h_lines-1));
-        //TODO: use text rect width to adjust
-        tx_count_grid_path.moveTo(GRAPH_PADDING_LEFT-0, lY);
-        tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT+maxwidth, lY);
-        //tx_count_grid_path.lineTo(GRAPH_PADDING_LEFT, lY);
-
-        size_t grid_tx_count =
-            (float)i*(max_txcount_graph-bottomTxCount)/(amount_of_h_lines-1) + bottomTxCount;
-
-        if (MEMPOOL_GRAPH_LOGGING){
-            LogPrintf("i = %s\n",i);
-            LogPrintf("lY = %s\n",lY);
-        }
-        //Add text ornament
-        if (ADD_TEXT) {
-
-            QGraphicsTextItem *item_tx_count =
-                m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
-            //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
-            //TODO: use text rect width to adjust
-            item_tx_count->setDefaultTextColor(Qt::white);
-            item_tx_count->setPos(GRAPH_PADDING_LEFT-60, lY-(item_tx_count->boundingRect().height()/2));
-
-        }
-    }
-
-QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-m_scene->addPath(tx_count_grid_path, gridPen);
-
-}
-
 void MempoolDetail::drawFeeRanges( qreal bottom, QFont LABELFONT){
 
     if (ADD_FEE_RANGES) {

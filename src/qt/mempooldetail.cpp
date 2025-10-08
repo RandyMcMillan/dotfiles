@@ -73,7 +73,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             ClickableRectItem *fee_rect_detail = new ClickableRectItem();
             if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
                 //fee_rect_detail->setRect(C_X, c_y-7, C_W+100, C_H);
-                fee_rect_detail->setRect(C_X, c_y-7, maxwidth, C_H);
+                fee_rect_detail->setRect(C_X, bottom-c_y-7, maxwidth, C_H);
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
@@ -113,7 +113,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
                 fee_text->setDefaultTextColor(Qt::white);
                 fee_text->setFont(LABELFONT);
-                fee_text->setPos(4+C_W-7, c_y-7);
+                fee_text->setPos(4+C_W-7, bottom-c_y-7);
                 QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
                 std::vector<size_t> fee_subtotal_txcount;
                 fee_subtotal_txcount.resize(m_clientmodel->m_mempool_feehist[0].second.size());
@@ -154,7 +154,7 @@ void MempoolDetail::drawFeeRects()
     if (!m_clientmodel)
         return;
 
-//    m_scene->clear();
+    m_scene->clear();
 
     //
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
@@ -263,11 +263,11 @@ void MempoolDetail::drawFeeRects()
                 if (first) {
                     // first sample, initiate the path with first point
                     //                        TODO:dynamic scalar
-                    fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR*current_x, y));//affects scale height draw
+                    fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR*current_x, y)); // affects scale height draw
                 }
                 else {
                     //              TODO:dynamic scalar
-                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR*current_x, y);//affects scale height draw
+                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR*current_x, y); // affects scale height draw
                 }
                 i++;
             }

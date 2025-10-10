@@ -52,6 +52,7 @@ void MempoolDetail::drawFeeRanges( qreal bottom, QFont LABELFONT){
 
 void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_txcount, bool ADD_TEXT, QFont LABELFONT){
 
+    //m_selected_range = 0;
     double bottom_display_ratio = (bottom/display_up_to_range);
 
     if (MEMPOOL_GRAPH_LOGGING){
@@ -73,7 +74,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             ClickableRectItem *fee_rect_detail = new ClickableRectItem();
             if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
                 //fee_rect_detail->setRect(C_X, c_y-7, C_W+100, C_H);
-                fee_rect_detail->setRect(C_X, bottom-c_y-7, maxwidth, C_H);
+                fee_rect_detail->setRect(C_X, c_y-7, maxwidth, C_H);
 
             if (MEMPOOL_GRAPH_LOGGING){
                 LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
@@ -88,17 +89,24 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             }
 
             fee_rect_detail->setBrush(QBrush(brush_color));
-            fee_rect_detail->setPen(Qt::NoPen);//no outline only fill with QBrush
+            //fee_rect_detail->setPen(Qt::NoPen); // no outline only fill with QBrush
             fee_rect_detail->setCursor(Qt::PointingHandCursor);
             connect(fee_rect_detail, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
                 // if clicked, we select or deselect if selected
                 if (m_selected_range == i) {
-                    m_selected_range = -1;
+                    //m_selected_range = -1;
                 } else {
                     m_selected_range = i;
                 }
                 drawFeeRects();
             });
+
+            if (ADD_FEE_RECTS){//order matter!
+
+                m_scene->addItem(fee_rect_detail);
+
+            }
+
 
             if (ADD_FEE_RANGES){
 
@@ -110,11 +118,12 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                     fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
 
                 }
+                //fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
 
                 fee_text->setDefaultTextColor(Qt::white);
                 fee_text->setFont(LABELFONT);
-                fee_text->setPos(4+C_W-7, bottom-c_y-7);
-                QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
+                fee_text->setPos(4+C_W-7, c_y-7);
+                QString total_text = tr("---").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
                 std::vector<size_t> fee_subtotal_txcount;
                 fee_subtotal_txcount.resize(m_clientmodel->m_mempool_feehist[0].second.size());
 
@@ -135,13 +144,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
             }
 
-            if (ADD_FEE_RECTS){
-
-                m_scene->addItem(fee_rect_detail);
-
-            }
-
-            c_y-=C_H+C_MARGIN;
+            c_y-=C_H+C_MARGIN+C_MARGIN;
             LogPrintf("\nc_y = %s",c_y);
             i++;
             LogPrintf("\ni = %s\n",i);
@@ -301,7 +304,7 @@ void MempoolDetail::drawFeeRects()
             brush_color.setAlpha(100);
         }
         if (m_selected_range >= 0 && m_selected_range == i) {
-            total_text = "TXs in this range: "+QString::number(fee_subtotal_txcount[i]);
+            total_text = ">>>TXs in this range: "+QString::number(fee_subtotal_txcount[i]);
             LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
         }
 
@@ -311,6 +314,7 @@ void MempoolDetail::drawFeeRects()
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         //m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
         i++;
+        LogPrintf("\ni=%s",i);
     }
 
     if(ADD_TOTAL_TEXT){

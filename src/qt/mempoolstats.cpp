@@ -310,11 +310,7 @@ void MempoolStats::onMempoolRangeSelected(int selectedRange)
 
 void MempoolStats::drawWalletTxIndicators()
 {
-    // Clear existing wallet transaction indicator items
-    for (QGraphicsItem* item : m_wallet_indicator_items) {
-        m_scene->removeItem(item);
-        delete item;
-    }
+    // The wallet transaction indicator items are cleared when the scene is cleared
     m_wallet_indicator_items.clear();
 
     if (!m_clientmodel)

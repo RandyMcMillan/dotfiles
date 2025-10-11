@@ -358,7 +358,16 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
                 (0.1 * rect().width() ),
                 (0.9 * rect().height())
         ));
-    m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    // Position the fee table
+    m_fee_table->setGeometry(
+        rect().width() / 2, // Start from the middle of the window
+        rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
+        rect().width() / 2 - GRAPH_PADDING_RIGHT, // Half the width, minus right padding
+        rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM // Full height minus top/bottom padding
+    );
+
+m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     drawFeeRects();
 }

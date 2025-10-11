@@ -15,6 +15,12 @@
 
 #include <policy/fees.h>
 #include <qt/mempooldetail.h>
+#include <interfaces/wallet.h>
+
+#include <set>
+#include <vector>
+#include <memory>
+#include <interfaces/handler.h>
 
 class ClickableTextItem : public QObject, public QGraphicsSimpleTextItem
 {
@@ -62,6 +68,11 @@ protected:
     void leaveEvent(QEvent *event) override;
 
     int m_selected_range = -1;
+    std::set<interfaces::WalletTx> m_wallet_transactions;
+    std::vector<std::unique_ptr<interfaces::Handler>> m_wallet_handlers;
+
+public Q_SLOTS:
+    void onWalletTxChanged();
 };
 
 #endif // BITCOIN_QT_MEMPOOLSTATS_H

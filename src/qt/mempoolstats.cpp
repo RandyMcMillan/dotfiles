@@ -96,6 +96,10 @@ void MempoolStats::drawChart()
     if (!m_clientmodel)
         return;
 
+    if (MEMPOOL_GRAPH_LOGGING) {
+        LogPrintf("Active wallet transactions: %s\n", m_wallet_transactions.size());
+    }
+
     m_scene->clear();
 
     //
@@ -282,6 +286,13 @@ void MempoolStats::setClientModel(ClientModel *model)
     if (model) {
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
+
+        // Connect to wallet transaction changes
+        m_wallet_handlers.clear();
+        for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : model->node().walletLoader().getWallets()) {
+            m_wallet_handlers.emplace_back(wallet_ptr->handleTransactionChanged(std::bind(&MempoolStats::onWalletTxChanged, this)));
+        }
+        onWalletTxChanged();
         drawChart();
     }
 }
@@ -294,6 +305,19 @@ void MempoolStats::onMempoolRangeSelected(int selectedRange)
 
 void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
+
+void MempoolStats::onWalletTxChanged()
+{
+    m_wallet_transactions.clear();
+    if (m_clientmodel) {
+        for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
+            for (const interfaces::WalletTx& wtx : wallet_ptr->getWalletTxs()) {
+                m_wallet_transactions.insert(wtx);
+            }
+        }
+    }
+    drawChart();
+}
 
 void MempoolStats::mousePressEvent(QMouseEvent *event) {
 

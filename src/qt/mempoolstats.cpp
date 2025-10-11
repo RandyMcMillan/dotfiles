@@ -42,17 +42,17 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
-    m_fee_table_model = new MempoolFeeTableModel(this);
-    m_fee_table = new QTableView(this);
-    m_fee_table->setModel(m_fee_table_model);
-    m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
-    m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
-    m_fee_table->setAlternatingRowColors(true);
-    m_fee_table->setSortingEnabled(true);
-    m_fee_table->horizontalHeader()->setStretchLastSection(true);
-    m_fee_table->verticalHeader()->setVisible(false);
-    m_fee_table->setStyleSheet("QTableView { background-color: #10121F; color: white; border: none; } QHeaderView::section { background-color: #10121F; color: white; border: none; } QTableView::item { padding: 5px; } ");
+    //m_fee_table_model = new MempoolFeeTableModel(this);
+    //m_fee_table = new QTableView(this);
+    //m_fee_table->setModel(m_fee_table_model);
+    //m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
+    //m_fee_table->setAlternatingRowColors(true);
+    //m_fee_table->setSortingEnabled(true);
+    //m_fee_table->horizontalHeader()->setStretchLastSection(true);
+    //m_fee_table->verticalHeader()->setVisible(false);
+    //m_fee_table->setStyleSheet("QTableView { background-color: #10121F; color: white; border: none; } QHeaderView::section { background-color: #10121F; color: white; border: none; } QTableView::item { padding: 5px; } ");
 
     if (m_clientmodel)
         drawChart();
@@ -290,12 +290,12 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
     m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     // Position the fee table
-    m_fee_table->setGeometry(
-        rect().width() / 2, // Start from the middle of the window
-        rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
-        rect().width() / 2 - GRAPH_PADDING_RIGHT, // Half the width, minus right padding
-        rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM // Full height minus top/bottom padding
-    );
+    //m_fee_table->setGeometry(
+    //    rect().width() / 2, // Start from the middle of the window
+    //    rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
+    //    rect().width() / 2 - GRAPH_PADDING_RIGHT, // Half the width, minus right padding
+    //    rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM // Full height minus top/bottom padding
+    //);
 
     drawChart();
 }
@@ -313,7 +313,7 @@ void MempoolStats::setClientModel(ClientModel *model)
     if (model) {
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
-        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::updateFeeTable);
+        //connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::updateFeeTable);
 
         // Connect to wallet transaction changes
         m_wallet_handlers.clear();
@@ -325,15 +325,15 @@ void MempoolStats::setClientModel(ClientModel *model)
     }
 }
 
-void MempoolStats::updateFeeTable()
-{
-    if (m_clientmodel) {
-        QMutexLocker locker(&m_clientmodel->m_mempool_locker);
-        if (!m_clientmodel->m_mempool_feehist.empty()) {
-            m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
-        }
-    }
-}
+//void MempoolStats::updateFeeTable()
+//{
+//    if (m_clientmodel) {
+//        QMutexLocker locker(&m_clientmodel->m_mempool_locker);
+//        if (!m_clientmodel->m_mempool_feehist.empty()) {
+//            m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
+//        }
+//    }
+//}
 
 void MempoolStats::onMempoolRangeSelected(int selectedRange)
 {

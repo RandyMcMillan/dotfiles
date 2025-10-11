@@ -54,6 +54,7 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
     m_fee_table->verticalHeader()->setVisible(false);
     m_fee_table->setStyleSheet("QTableView { background-color: #10121F; color: white; border: none; } QHeaderView::section { background-color: #10121F; color: white; border: none; } QTableView::item { padding: 5px; } ");
+    m_fee_table->sortByColumn(MempoolFeeTableModel::FeeRange, Qt::DescendingOrder);
 
     if (m_clientmodel)
         drawFeeRects();

@@ -7,6 +7,8 @@
 #include <qt/guiutil.h>
 #include <qt/clientmodel.h>
 #include <qt/mempoolstats.h>
+#include <qt/mempoolfeetables.h>
+#include <QTableView>
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempoolstats.h>
 #include <interfaces/wallet.h>
@@ -39,6 +41,18 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_gfx_view->setScene(m_scene);
     m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+
+    m_fee_table_model = new MempoolFeeTableModel(this);
+    m_fee_table = new QTableView(this);
+    m_fee_table->setModel(m_fee_table_model);
+    m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_fee_table->setAlternatingRowColors(true);
+    m_fee_table->setSortingEnabled(true);
+    m_fee_table->horizontalHeader()->setStretchLastSection(true);
+    m_fee_table->verticalHeader()->setVisible(false);
+    m_fee_table->setStyleSheet("QTableView { background-color: #10121F; color: white; border: none; } QHeaderView::section { background-color: #10121F; color: white; border: none; } QTableView::item { padding: 5px; } ");
 
     if (m_clientmodel)
         drawChart();
@@ -246,10 +260,108 @@ void MempoolStats::drawChart()
     }
 
     // Draw wallet transaction indicators
+    drawWalletTxIndicators();
+
+    if(ADD_TOTAL_TEXT){
+
+        QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
+        item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);
+
+    }
+
+}//end drawChart()
+
+// We override the virtual resizeEvent of the QWidget to adjust tables column
+// sizes as the tables width is proportional to the dialogs width.
+void MempoolStats::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    m_gfx_view->resize(size());
+
+    m_gfx_view->scene()->setSceneRect(
+            rect().left()/1.618,
+            rect().top()/1.618,
+            rect().width()-GRAPH_PADDING_RIGHT,
+            std::max(
+                (0.1 * rect().width() ),
+                (0.9 * rect().height())
+        ));
+    m_gfx_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    // Position the fee table
+    m_fee_table->setGeometry(
+        rect().width() / 2, // Start from the middle of the window
+        rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
+        rect().width() / 2 - GRAPH_PADDING_RIGHT, // Half the width, minus right padding
+        rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM // Full height minus top/bottom padding
+    );
+
+    drawChart();
+}
+
+void MempoolStats::showEvent(QShowEvent *event)
+{
+    QWidget::showEvent(event);
+    if (m_clientmodel)
+        drawChart();
+}
+
+void MempoolStats::setClientModel(ClientModel *model)
+{
+    m_clientmodel = model;
+    if (model) {
+        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
+        connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
+        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::updateFeeTable);
+
+        // Connect to wallet transaction changes
+        m_wallet_handlers.clear();
+        for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : model->node().walletLoader().getWallets()) {
+            m_wallet_handlers.emplace_back(wallet_ptr->handleTransactionChanged(std::bind(&MempoolStats::onWalletTxChanged, this)));
+        }
+        onWalletTxChanged();
+        drawChart();
+    }
+}
+
+void MempoolStats::updateFeeTable()
+{
+    if (m_clientmodel) {
+        QMutexLocker locker(&m_clientmodel->m_mempool_locker);
+        if (!m_clientmodel->m_mempool_feehist.empty()) {
+            m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
+        }
+    }
+}
+
+void MempoolStats::onMempoolRangeSelected(int selectedRange)
+{
+    m_selected_range = selectedRange;
+    drawChart();
+}
+
+void MempoolStats::drawWalletTxIndicators()
+{
+    // Clear existing wallet transaction indicator items
+    for (QGraphicsItem* item : m_wallet_indicator_items) {
+        m_scene->removeItem(item);
+        delete item;
+    }
+    m_wallet_indicator_items.clear();
+
+    if (!m_clientmodel)
+        return;
+
+    // Draw wallet transaction indicators
     if (!m_wallet_transactions.empty()) {
         qreal indicator_x = m_gfx_view->scene()->sceneRect().width() - GRAPH_PADDING_RIGHT - 50; // Adjust position as needed
         qreal indicator_y = GRAPH_PADDING_TOP; // Adjust position as needed
         qreal y_offset = 20; // Vertical spacing between indicators
+
+        QFont gridFont;
+        gridFont.setPointSize(12);
+        gridFont.setWeight(QFont::Bold);
 
         for (const interfaces::WalletTx& wtx : m_wallet_transactions) {
             bool in_mempool = false;
@@ -284,69 +396,12 @@ void MempoolStats::drawChart()
                 if (sign_item) {
                     sign_item->setDefaultTextColor(sign_color);
                     sign_item->setPos(indicator_x, indicator_y);
+                    m_wallet_indicator_items.append(sign_item); // Store the item
                     indicator_y += y_offset; // Move down for the next indicator
                 }
             }
         }
     }
-
-    if(ADD_TOTAL_TEXT){
-
-        QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
-        item_tx_count->setPos(GRAPH_PADDING_LEFT+(maxwidth/2), bottom);
-
-    }
-
-}//end drawChart()
-
-// We override the virtual resizeEvent of the QWidget to adjust tables column
-// sizes as the tables width is proportional to the dialogs width.
-void MempoolStats::resizeEvent(QResizeEvent *event)
-{
-    QWidget::resizeEvent(event);
-    m_gfx_view->resize(size());
-
-    m_gfx_view->scene()->setSceneRect(
-            rect().left()/1.618,
-            rect().top()/1.618,
-            rect().width()-GRAPH_PADDING_RIGHT,
-            std::max(
-                (0.1 * rect().width() ),
-                (0.9 * rect().height())
-        ));
-    m_gfx_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    drawChart();
-}
-
-void MempoolStats::showEvent(QShowEvent *event)
-{
-    QWidget::showEvent(event);
-    if (m_clientmodel)
-        drawChart();
-}
-
-void MempoolStats::setClientModel(ClientModel *model)
-{
-    m_clientmodel = model;
-    if (model) {
-        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
-        connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
-
-        // Connect to wallet transaction changes
-        m_wallet_handlers.clear();
-        for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : model->node().walletLoader().getWallets()) {
-            m_wallet_handlers.emplace_back(wallet_ptr->handleTransactionChanged(std::bind(&MempoolStats::onWalletTxChanged, this)));
-        }
-        onWalletTxChanged();
-        drawChart();
-    }
-}
-
-void MempoolStats::onMempoolRangeSelected(int selectedRange)
-{
-    m_selected_range = selectedRange;
-    drawChart();
 }
 
 void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
@@ -354,6 +409,10 @@ void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMI
 
 void MempoolStats::onWalletTxChanged()
 {
+    //GEMINI avoid repainting entire scene
+    //if send and recieve transactions are mined/confirmed
+    //the scene should continue to display the mempool
+    //and only the send/recieve +/- should disappear
     m_wallet_transactions.clear();
     if (m_clientmodel) {
         for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
@@ -362,7 +421,7 @@ void MempoolStats::onWalletTxChanged()
             }
         }
     }
-    drawChart();
+    drawWalletTxIndicators();
 }
 
 void MempoolStats::mousePressEvent(QMouseEvent *event) {

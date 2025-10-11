@@ -7,6 +7,7 @@
 #include <qt/guiutil.h>
 #include <qt/clientmodel.h>
 #include <qt/mempooldetail.h>
+#include <qt/clickableitems.h>
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempooldetail.h>
 

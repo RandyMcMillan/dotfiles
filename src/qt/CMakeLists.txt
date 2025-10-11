@@ -89,8 +89,12 @@ add_library(bitcoinqt STATIC EXCLUDE_FROM_ALL
   $<$<PLATFORM_ID:Darwin>:macnotificationhandler.mm>
   $<$<PLATFORM_ID:Darwin>:macos_appnap.h>
   $<$<PLATFORM_ID:Darwin>:macos_appnap.mm>
+  clickableitems.cpp
+  clickableitems.h
   mempooldetail.h
   mempooldetail.cpp
+  mempoolfeetables.cpp
+  mempoolfeetables.h
   mempoolstats.h
   mempoolstats.cpp
   modaloverlay.cpp

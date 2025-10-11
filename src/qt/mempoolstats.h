@@ -15,31 +15,18 @@
 
 #include <policy/fees.h>
 #include <qt/mempooldetail.h>
+#include <qt/mempoolfeetables.h>
 #include <interfaces/wallet.h>
+#include <qt/clickableitems.h>
 
 #include <set>
 #include <vector>
 #include <memory>
 #include <interfaces/handler.h>
 
-class ClickableTextItem : public QObject, public QGraphicsSimpleTextItem
-{
-    Q_OBJECT
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-Q_SIGNALS:
-    void objectClicked(QGraphicsItem*);
-};
-
-class ClickableRectItem : public QObject, public QGraphicsRectItem
-{
-    Q_OBJECT
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-Q_SIGNALS:
-    void objectClicked(QGraphicsItem*);
-};
-
+QT_BEGIN_NAMESPACE
+class QTableView;
+QT_END_NAMESPACE
 
 class MempoolStats : public QWidget
 {
@@ -53,9 +40,11 @@ public:
     void setClientModel(ClientModel *model);
     void drawChart();
     void drawHorzLines(const qreal x_increment, QPointF current_x_bottom, const int amount_of_h_lines, qreal maxheight_g, qreal maxwidth, qreal bottom, size_t max_txcount_graph, QFont LABELFONT);
+    void drawWalletTxIndicators();
 
 public Q_SLOTS:
     void onMempoolRangeSelected(int selectedRange);
+    void updateFeeTable();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -70,6 +59,11 @@ protected:
     int m_selected_range = -1;
     std::set<interfaces::WalletTx> m_wallet_transactions;
     std::vector<std::unique_ptr<interfaces::Handler>> m_wallet_handlers;
+    QList<QGraphicsItem*> m_wallet_indicator_items;
+
+private:
+    QTableView *m_fee_table{nullptr};
+    MempoolFeeTableModel *m_fee_table_model{nullptr};
 
 public Q_SLOTS:
     void onWalletTxChanged();

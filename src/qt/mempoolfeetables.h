@@ -48,11 +48,11 @@ private:
     QList<interfaces::mempool_feeinfo> m_fee_data;
     const QStringList columns{
         /*: Title of Mempool Fee Table column which contains the fee range. */
-        tr("Fee Range (sat/vB)"),
+        tr("Fee Range (sat/vB)   "),
         /*: Title of Mempool Fee Table column which contains the number of transactions in the fee range. */
-        tr("Transactions"),
+        tr("Transactions   "),
         /*: Title of Mempool Fee Table column which contains the total size of transactions in the fee range. */
-        tr("Total Size")};
+        tr("   Total Size")};
 
     static const std::vector<QString> FEE_RANGE_STRINGS;
 };

@@ -10,10 +10,12 @@
 #include <QDebug>
 
 const std::vector<QString> MempoolFeeTableModel::FEE_RANGE_STRINGS = {
-    "0-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-8", "8-10", "10-12",
-    "12-15", "15-20", "20-30", "30-40", "40-50", "60-70", "70-80",
-    "80-90", "100-125", "125-150", "175-200", "200-250", "250-300",
-    "300-350", "350-400", "450-500", "500-550", "600-650", "700-750"
+    "   0-1",   "   1-2",   "   2-3",    "   3-4",    "   4-5",    "   5-6",
+    "   6-8",   "   8-10",  "  10-12",   "  12-15",   "  15-20",   "  20-30",
+    "  30-40",  "  40-50",  "  60-70",   "  70-80",   "  80-90",   " 100-125",
+    " 125-150", " 175-200", " 200-250",  " 250-300",  " 300-350",  " 350-400",
+    " 450-500", " 500-550", " 600-650",  " 700-750",  " 800-850",  " 850-900",
+    " 950-1000", "1000-1050", // 32 ranges?
 };
 
 MempoolFeeTableModel::MempoolFeeTableModel(QObject* parent)
@@ -51,7 +53,7 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
         switch (column) {
         case FeeRange:
             if (index.row() < FEE_RANGE_STRINGS.size()) {
-                return QString(FEE_RANGE_STRINGS.at(index.row()) + " sat/vB");
+                return QString("" + FEE_RANGE_STRINGS.at(index.row()) /*+ " sat/vB"*/);
             } else {
                 return QString("N/A");
             }
@@ -65,6 +67,7 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
         case FeeRange:
             return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
         case TxCount:
+            return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
         case TotalSize:
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
         }

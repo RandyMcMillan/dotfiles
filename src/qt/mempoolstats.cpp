@@ -9,6 +9,7 @@
 #include <qt/mempoolstats.h>
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempoolstats.h>
+#include <interfaces/wallet.h>
 
 MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
 {
@@ -242,6 +243,51 @@ void MempoolStats::drawChart()
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
         i++;
+    }
+
+    // Draw wallet transaction indicators
+    if (!m_wallet_transactions.empty()) {
+        qreal indicator_x = m_gfx_view->scene()->sceneRect().width() - GRAPH_PADDING_RIGHT - 50; // Adjust position as needed
+        qreal indicator_y = GRAPH_PADDING_TOP; // Adjust position as needed
+        qreal y_offset = 20; // Vertical spacing between indicators
+
+        for (const interfaces::WalletTx& wtx : m_wallet_transactions) {
+            bool in_mempool = false;
+            CAmount net_amount = 0;
+
+            for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
+                interfaces::WalletTxStatus tx_status;
+                int num_blocks;
+                int64_t block_time;
+
+                if (wallet_ptr->tryGetTxStatus(wtx.tx->GetHash(), tx_status, num_blocks, block_time)) {
+                    if (tx_status.depth_in_main_chain == 0 && !tx_status.is_abandoned) {
+                        in_mempool = true;
+                        net_amount = wtx.credit - wtx.debit;
+                        break; // Found status for this transaction, no need to check other wallets
+                    }
+                }
+            }
+
+            if (in_mempool) {
+                QGraphicsTextItem *sign_item = nullptr;
+                QColor sign_color;
+
+                if (net_amount > 0) { // Receive transaction
+                    sign_item = m_scene->addText("+", gridFont);
+                    sign_color = QColor(0, 255, 0); // Green
+                } else if (net_amount < 0) { // Send transaction
+                    sign_item = m_scene->addText("-", gridFont);
+                    sign_color = QColor(255, 0, 0); // Red
+                }
+
+                if (sign_item) {
+                    sign_item->setDefaultTextColor(sign_color);
+                    sign_item->setPos(indicator_x, indicator_y);
+                    indicator_y += y_offset; // Move down for the next indicator
+                }
+            }
+        }
     }
 
     if(ADD_TOTAL_TEXT){

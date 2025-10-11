@@ -365,9 +365,9 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
 
     // Position the fee table
     m_fee_table->setGeometry(
-        rect().width() / 2, // Start from the middle of the window
+        0 + GRAPH_PADDING_LEFT/3 + 2, // Start from the left edge of the window
         rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
-        rect().width() / 2 - GRAPH_PADDING_RIGHT, // Half the width, minus right padding
+        rect().width() - GRAPH_PADDING_RIGHT, // Full width, minus right padding
         rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM // Full height minus top/bottom padding
     );
 

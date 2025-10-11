@@ -39,6 +39,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
     /*@}*/
 
 public Q_SLOTS:

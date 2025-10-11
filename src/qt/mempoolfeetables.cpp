@@ -106,6 +106,35 @@ QModelIndex MempoolFeeTableModel::index(int row, int column, const QModelIndex& 
     return QModelIndex();
 }
 
+void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
+{
+    beginResetModel();
+    std::sort(m_fee_data.begin(), m_fee_data.end(),
+        [&](const interfaces::mempool_feeinfo& a, const interfaces::mempool_feeinfo& b) {
+            if (order == Qt::AscendingOrder) {
+                switch (static_cast<ColumnIndex>(column)) {
+                case FeeRange:
+                    return a.fee_from < b.fee_from;
+                case TxCount:
+                    return a.tx_count < b.tx_count;
+                case TotalSize:
+                    return a.total_size < b.total_size;
+                }
+            } else { // DescendingOrder
+                switch (static_cast<ColumnIndex>(column)) {
+                case FeeRange:
+                    return a.fee_from > b.fee_from;
+                case TxCount:
+                    return a.tx_count > b.tx_count;
+                case TotalSize:
+                    return a.total_size > b.total_size;
+                }
+            }
+            return false; // Should not be reached
+        });
+    endResetModel();
+}
+
 void MempoolFeeTableModel::updateModel(const std::vector<interfaces::mempool_feeinfo>& fee_info)
 {
     beginResetModel();

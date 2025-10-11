@@ -42,6 +42,10 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_fee_table_model = new MempoolFeeTableModel(this);
     m_fee_table = new QTableView(this);
     m_fee_table->setModel(m_fee_table_model);
+
+    m_fee_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_fee_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);

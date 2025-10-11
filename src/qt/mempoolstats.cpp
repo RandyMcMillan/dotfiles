@@ -281,14 +281,21 @@ void MempoolStats::setClientModel(ClientModel *model)
     m_clientmodel = model;
     if (model) {
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
+        connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
         drawChart();
     }
+}
+
+void MempoolStats::onMempoolRangeSelected(int selectedRange)
+{
+    m_selected_range = selectedRange;
+    drawChart();
 }
 
 void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 
-void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+void MempoolStats::mousePressEvent(QMouseEvent *event) {
 
     QWidget::mousePressEvent(event);
 
@@ -298,7 +305,7 @@ void MempoolStats::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(th
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
 }
-void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+void MempoolStats::mouseReleaseEvent(QMouseEvent *event) {
 
     QWidget::mouseReleaseEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
@@ -307,7 +314,7 @@ void MempoolStats::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
 }
-void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) {
 
     QWidget::mouseDoubleClickEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
@@ -317,7 +324,7 @@ void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClic
     }
     //mempool_right->show();
 }
-void MempoolStats::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
+void MempoolStats::mouseMoveEvent(QMouseEvent *event) {
 
     QWidget::mouseMoveEvent(event);
     if (MEMPOOL_GRAPH_LOGGING){
@@ -327,7 +334,7 @@ void MempoolStats::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(thi
     }
 }
 
-void MempoolStats::enterEvent(QEnterEvent *event) { Q_EMIT objectClicked(this);
+void MempoolStats::enterEvent(QEnterEvent *event) { 
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){
@@ -336,7 +343,7 @@ void MempoolStats::enterEvent(QEnterEvent *event) { Q_EMIT objectClicked(this);
     }
 }
 
-void MempoolStats::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
+void MempoolStats::leaveEvent(QEvent *event) {
 
     QEvent *this_event = event;
     if (MEMPOOL_GRAPH_LOGGING){

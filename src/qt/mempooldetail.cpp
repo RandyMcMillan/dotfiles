@@ -98,6 +98,9 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 } else {
                     m_selected_range = i;
                 }
+                if (m_clientmodel) {
+                    Q_EMIT m_clientmodel->mempoolRangeSelected(m_selected_range);
+                }
                 drawFeeRects();
             });
 

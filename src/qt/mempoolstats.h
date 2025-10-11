@@ -41,39 +41,25 @@ class MempoolStats : public QWidget
 
 public:
     explicit MempoolStats(QWidget *parent = Q_NULLPTR);
-    void setClientModel(ClientModel *model);
-
-public Q_SLOTS:
-    void drawChart();
-    void drawHorzLines(
-    const qreal x_increment,
-    QPointF current_x_bottom,
-    const int amount_of_h_lines,
-    qreal maxheight_g,
-    qreal maxwidth,
-    qreal bottom,
-    size_t max_txcount_graph,
-    QFont LABELFONT
-);
-
-    void mousePressEvent(QMouseEvent        *event) override;
-    void mouseReleaseEvent(QMouseEvent      *event) override;
-    void mouseDoubleClickEvent(QMouseEvent  *event) override;
-    void mouseMoveEvent(QMouseEvent         *event) override;
-
-Q_SIGNALS:
-    void objectClicked(QWidget*);
-
-private:
-    ClientModel* m_clientmodel = Q_NULLPTR;
-
     QGraphicsView *m_gfx_view;
     QGraphicsScene *m_scene;
+    ClientModel *m_clientmodel;
+    void setClientModel(ClientModel *model);
+    void drawChart();
+    void drawHorzLines(const qreal x_increment, QPointF current_x_bottom, const int amount_of_h_lines, qreal maxheight_g, qreal maxwidth, qreal bottom, size_t max_txcount_graph, QFont LABELFONT);
 
-    virtual void enterEvent(QEnterEvent      *event) override;
-    virtual void leaveEvent(QEvent           *event) override;
-    virtual void resizeEvent(QResizeEvent*    event) override;
-    virtual void showEvent(QShowEvent*        event) override;
+public Q_SLOTS:
+    void onMempoolRangeSelected(int selectedRange);
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void enterEvent(QEnterEvent *event) override;
+    void leaveEvent(QEvent *event) override;
 
     int m_selected_range = -1;
 };

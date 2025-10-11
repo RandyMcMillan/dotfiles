@@ -297,7 +297,7 @@ void MempoolStats::setClientModel(ClientModel *model)
         for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : model->node().walletLoader().getWallets()) {
             m_wallet_handlers.emplace_back(wallet_ptr->handleTransactionChanged(std::bind(&MempoolStats::onWalletTxChanged, this)));
         }
-        //onWalletTxChanged();
+        onWalletTxChanged();
         drawChart();
     }
 }
@@ -320,8 +320,14 @@ void MempoolStats::drawWalletTxIndicators()
     if (!m_clientmodel)
         return;
 
+    std::set<interfaces::WalletTx> wallet_transactions_copy;
+    {
+        QMutexLocker locker(&m_wallet_tx_mutex);
+        wallet_transactions_copy = m_wallet_transactions;
+    }
+
     // Draw wallet transaction indicators
-    if (!m_wallet_transactions.empty()) {
+    if (!wallet_transactions_copy.empty()) {
         qreal indicator_x = m_gfx_view->scene()->sceneRect().width() - GRAPH_PADDING_RIGHT - 50; // Adjust position as needed
         qreal indicator_y = GRAPH_PADDING_TOP; // Adjust position as needed
         qreal y_offset = 20; // Vertical spacing between indicators
@@ -330,12 +336,13 @@ void MempoolStats::drawWalletTxIndicators()
         gridFont.setPointSize(12);
         gridFont.setWeight(QFont::Bold);
 
-        for (const interfaces::WalletTx& wtx : m_wallet_transactions) {
+        for (const interfaces::WalletTx& wtx : wallet_transactions_copy) {
             if (!wtx.tx) continue;
             bool in_mempool = false;
             CAmount net_amount = 0;
 
             for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
+                if (!wallet_ptr) continue;
                 interfaces::WalletTxStatus tx_status;
                 int num_blocks;
                 int64_t block_time;
@@ -377,15 +384,19 @@ void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMI
 
 void MempoolStats::onWalletTxChanged()
 {
-    m_wallet_transactions.clear();
-    if (m_clientmodel) {
-        for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
-            for (const interfaces::WalletTx& wtx : wallet_ptr->getWalletTxs()) {
-                m_wallet_transactions.insert(wtx);
+    {
+        QMutexLocker locker(&m_wallet_tx_mutex);
+        m_wallet_transactions.clear();
+        if (m_clientmodel) {
+            for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
+                if (!wallet_ptr) continue;
+                for (const interfaces::WalletTx& wtx : wallet_ptr->getWalletTxs()) {
+                    m_wallet_transactions.insert(wtx);
+                }
             }
         }
     }
-    drawWalletTxIndicators();
+    QMetaObject::invokeMethod(this, "drawChart", Qt::QueuedConnection);
 }
 
 void MempoolStats::mousePressEvent(QMouseEvent *event) {

@@ -12,6 +12,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsView>
+#include <QMutex>
 
 #include <policy/fees.h>
 #include <qt/mempooldetail.h>
@@ -56,6 +57,7 @@ protected:
     void leaveEvent(QEvent *event) override;
 
     int m_selected_range = -1;
+    QMutex m_wallet_tx_mutex;
     std::set<interfaces::WalletTx> m_wallet_transactions;
     std::vector<std::unique_ptr<interfaces::Handler>> m_wallet_handlers;
     QList<QGraphicsItem*> m_wallet_indicator_items;

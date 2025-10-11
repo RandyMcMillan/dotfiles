@@ -42,18 +42,6 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
-    //m_fee_table_model = new MempoolFeeTableModel(this);
-    //m_fee_table = new QTableView(this);
-    //m_fee_table->setModel(m_fee_table_model);
-    //m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    //m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
-    //m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
-    //m_fee_table->setAlternatingRowColors(true);
-    //m_fee_table->setSortingEnabled(true);
-    //m_fee_table->horizontalHeader()->setStretchLastSection(true);
-    //m_fee_table->verticalHeader()->setVisible(false);
-    //m_fee_table->setStyleSheet("QTableView { background-color: #10121F; color: white; border: none; } QHeaderView::section { background-color: #10121F; color: white; border: none; } QTableView::item { padding: 5px; } ");
-
     if (m_clientmodel)
         drawChart();
 }
@@ -117,7 +105,6 @@ void MempoolStats::drawChart()
 
     m_scene->clear();
 
-    //
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
     // TODO: calc dynamic GRAPH_PADDING_BOTTOM
     const qreal bottom = (m_gfx_view->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
@@ -136,7 +123,6 @@ void MempoolStats::drawChart()
     gridFont.setPointSize(12);
     gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
-    //let view touch boths sides//we will place an over lay of boxes 
     qreal maxwidth = m_gfx_view->scene()->sceneRect().width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);
     {
         // we are going to access the clientmodel feehistogram directly avoding a copy
@@ -289,14 +275,6 @@ void MempoolStats::resizeEvent(QResizeEvent *event)
     m_gfx_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_gfx_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    // Position the fee table
-    //m_fee_table->setGeometry(
-    //    rect().width() / 2, // Start from the middle of the window
-    //    rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
-    //    rect().width() / 2 - GRAPH_PADDING_RIGHT, // Half the width, minus right padding
-    //    rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM // Full height minus top/bottom padding
-    //);
-
     drawChart();
 }
 
@@ -313,27 +291,16 @@ void MempoolStats::setClientModel(ClientModel *model)
     if (model) {
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
-        //connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::updateFeeTable);
 
         // Connect to wallet transaction changes
         m_wallet_handlers.clear();
         for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : model->node().walletLoader().getWallets()) {
             m_wallet_handlers.emplace_back(wallet_ptr->handleTransactionChanged(std::bind(&MempoolStats::onWalletTxChanged, this)));
         }
-        onWalletTxChanged();
+        //onWalletTxChanged();
         drawChart();
     }
 }
-
-//void MempoolStats::updateFeeTable()
-//{
-//    if (m_clientmodel) {
-//        QMutexLocker locker(&m_clientmodel->m_mempool_locker);
-//        if (!m_clientmodel->m_mempool_feehist.empty()) {
-//            m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
-//        }
-//    }
-//}
 
 void MempoolStats::onMempoolRangeSelected(int selectedRange)
 {
@@ -364,6 +331,7 @@ void MempoolStats::drawWalletTxIndicators()
         gridFont.setWeight(QFont::Bold);
 
         for (const interfaces::WalletTx& wtx : m_wallet_transactions) {
+            if (!wtx.tx) continue;
             bool in_mempool = false;
             CAmount net_amount = 0;
 
@@ -409,10 +377,6 @@ void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMI
 
 void MempoolStats::onWalletTxChanged()
 {
-    //GEMINI avoid repainting entire scene
-    //if send and recieve transactions are mined/confirmed
-    //the scene should continue to display the mempool
-    //and only the send/recieve +/- should disappear
     m_wallet_transactions.clear();
     if (m_clientmodel) {
         for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {

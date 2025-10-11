@@ -44,7 +44,6 @@ public:
 
 public Q_SLOTS:
     void onMempoolRangeSelected(int selectedRange);
-    //void updateFeeTable();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -60,10 +59,6 @@ protected:
     std::set<interfaces::WalletTx> m_wallet_transactions;
     std::vector<std::unique_ptr<interfaces::Handler>> m_wallet_handlers;
     QList<QGraphicsItem*> m_wallet_indicator_items;
-
-//private:
-//    QTableView *m_fee_table{nullptr};
-//    MempoolFeeTableModel *m_fee_table_model{nullptr};
 
 public Q_SLOTS:
     void onWalletTxChanged();

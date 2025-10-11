@@ -64,6 +64,9 @@ protected:
 
 public Q_SLOTS:
     void onWalletTxChanged();
+
+Q_SIGNALS:
+    void walletTxChanged();
 };
 
 #endif // BITCOIN_QT_MEMPOOLSTATS_H

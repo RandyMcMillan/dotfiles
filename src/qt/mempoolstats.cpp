@@ -393,6 +393,7 @@ void MempoolStats::onWalletTxChanged()
         }
     }
     QMetaObject::invokeMethod(this, "drawChart", Qt::QueuedConnection);
+    Q_EMIT walletTxChanged();
 }
 
 void MempoolStats::mousePressEvent(QMouseEvent *event) {

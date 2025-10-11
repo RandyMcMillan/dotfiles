@@ -10,6 +10,7 @@
 #include <qt/clickableitems.h>
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempooldetail.h>
+#include <interfaces/wallet.h>
 
 MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 {
@@ -37,6 +38,18 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_gfx_detail->setScene(m_scene);
     m_gfx_detail->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+
+    m_fee_table_model = new MempoolFeeTableModel(this);
+    m_fee_table = new QTableView(this);
+    m_fee_table->setModel(m_fee_table_model);
+    m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_fee_table->setAlternatingRowColors(true);
+    m_fee_table->setSortingEnabled(true);
+    m_fee_table->horizontalHeader()->setStretchLastSection(true);
+    m_fee_table->verticalHeader()->setVisible(false);
+    m_fee_table->setStyleSheet("QTableView { background-color: #10121F; color: white; border: none; } QHeaderView::section { background-color: #10121F; color: white; border: none; } QTableView::item { padding: 5px; } ");
 
     if (m_clientmodel)
         drawFeeRects();
@@ -369,8 +382,23 @@ void MempoolDetail::setClientModel(ClientModel *model)
     m_clientmodel = model;
     if (model) {
         drawFeeRects();
+
+        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::updateFeeTable);
+
+
     }
 }
+
+void MempoolDetail::updateFeeTable()
+{
+    if (m_clientmodel) {
+        QMutexLocker locker(&m_clientmodel->m_mempool_locker);
+        if (!m_clientmodel->m_mempool_feehist.empty()) {
+            m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
+        }
+    }
+}
+
 
 void ClickableTextItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 void ClickableRectItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }

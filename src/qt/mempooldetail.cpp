@@ -12,6 +12,8 @@
 #include <qt/forms/ui_mempooldetail.h>
 #include <interfaces/wallet.h>
 #include <QSettings>
+#include <qt/platformstyle.h>
+
 
 const qreal FONT_SIZE_STEP = 1.0;
 const QSize FONT_RANGE(8, 24);
@@ -50,6 +52,32 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_gfx_detail->setScene(m_scene);
     m_gfx_detail->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+}
+
+void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
+{
+    m_platform_style = platform_style;
+
+    m_font_bigger_button = new QToolButton(this);
+    m_font_bigger_button->setToolTip(tr("Increase font size"));
+    m_font_bigger_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontbigger"));
+    m_font_smaller_button = new QToolButton(this);
+    m_font_smaller_button->setToolTip(tr("Decrease font size"));
+    m_font_smaller_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontsmaller"));
+
+    m_button_layout = new QHBoxLayout();
+    m_button_layout->addStretch();
+    m_button_layout->addWidget(m_font_smaller_button);
+    m_button_layout->addWidget(m_font_bigger_button);
+
+    QVBoxLayout* main_layout = new QVBoxLayout(this);
+    main_layout->addLayout(m_button_layout);
+    main_layout->addWidget(m_gfx_detail);
+    setLayout(main_layout);
+
+    connect(m_font_bigger_button, &QToolButton::clicked, this, &MempoolDetail::fontBigger);
+    connect(m_font_smaller_button, &QToolButton::clicked, this, &MempoolDetail::fontSmaller);
+
 
     m_fee_table_model = new MempoolFeeTableModel(this);
     m_fee_table = new QTableView(this);

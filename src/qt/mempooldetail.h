@@ -12,6 +12,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsView>
+#include <QToolButton>
+#include <QHBoxLayout>
 
 #include <policy/fees.h>
 
@@ -20,6 +22,7 @@
 #include <qt/clickableitems.h>
 
 class ClientModel;
+class PlatformStyle;
 
 class ClickableTextItemDetail : public QObject, public QGraphicsSimpleTextItem
 {
@@ -47,6 +50,7 @@ class MempoolDetail : public QWidget
 public:
     explicit MempoolDetail(QWidget *parent = Q_NULLPTR);
     void setClientModel(ClientModel *model);
+    void setPlatformStyle(const PlatformStyle* platform_style);
 
 public Q_SLOTS:
     void fontBigger();
@@ -72,6 +76,7 @@ Q_SIGNALS:
 
 private:
     ClientModel* m_clientmodel = Q_NULLPTR;
+    const PlatformStyle* m_platform_style{nullptr};
 
     QGraphicsView *m_gfx_detail;
     QGraphicsScene *m_scene;
@@ -88,6 +93,10 @@ private:
     int m_selected_range = -1;
     qreal m_font_size;
     void setFontSize(qreal newSize);
+
+    QToolButton* m_font_bigger_button;
+    QToolButton* m_font_smaller_button;
+    QHBoxLayout* m_button_layout;
 };
 
 #endif // BITCOIN_QT_MEMPOOLDETAIL_H

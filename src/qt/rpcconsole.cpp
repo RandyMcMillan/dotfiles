@@ -438,6 +438,7 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
     platformStyle(_platformStyle)
 {
     ui->setupUi(this);
+    ui->mempool_detail->setPlatformStyle(platformStyle);
     QSettings settings;
 #ifdef ENABLE_WALLET
     if (WalletModel::isWalletEnabled()) {

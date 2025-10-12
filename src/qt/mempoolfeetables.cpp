@@ -37,17 +37,17 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
     if(!index.isValid())
         return QVariant();
 
-    const interfaces::mempool_feeinfo& fee_info = m_fee_data.at(index.row());
+    const interfaces::mempool_feeinfo* fee_info = static_cast<const interfaces::mempool_feeinfo*>(index.internalPointer());
 
     const auto column = static_cast<ColumnIndex>(index.column());
     if (role == Qt::DisplayRole) {
         switch (column) {
         case FeeRange:
-            return QString("%1-%2").arg(fee_info.fee_from - 1).arg(fee_info.fee_to - 1);
+            return QString("%1-%2").arg(fee_info->fee_from - 1).arg(fee_info->fee_to - 1);
         case TxCount:
-            return (qint64)fee_info.tx_count;
+            return (qint64)fee_info->tx_count;
         case TotalSize:
-            return GUIUtil::formatBytes(fee_info.total_size);
+            return GUIUtil::formatBytes(fee_info->total_size);
         }
     } else if (role == Qt::TextAlignmentRole) {
         switch (column) {
@@ -87,11 +87,13 @@ QModelIndex MempoolFeeTableModel::index(int row, int column, const QModelIndex& 
     Q_UNUSED(parent);
 
     if (0 <= row && row < rowCount() && 0 <= column && column < columnCount()) {
-        return createIndex(row, column);
+        return createIndex(row, column, const_cast<interfaces::mempool_feeinfo*>(&m_fee_data[row]));
     }
 
     return QModelIndex();
 }
+
+
 
 void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
 {
@@ -124,10 +126,43 @@ void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
 
 void MempoolFeeTableModel::updateModel(const std::vector<interfaces::mempool_feeinfo>& fee_info)
 {
-    beginResetModel();
-    m_fee_data.clear();
+    QList<interfaces::mempool_feeinfo> new_fee_data;
+    new_fee_data.reserve(fee_info.size());
     for (const auto& entry : fee_info) {
-        m_fee_data.append(entry);
+        new_fee_data.append(entry);
     }
-    endResetModel();
+
+    // Handle row addition or removal as suggested in Qt Docs. See:
+    // - https://doc.qt.io/qt-5/model-view-programming.html#inserting-and-removing-rows
+    // - https://doc.qt.io/qt-5/model-view-programming.html#resizable-models
+    // We assume that the fee_info vector is sorted by fee_from.
+    for (int i = 0; i < m_fee_data.size();) {
+        if (i < new_fee_data.size() && m_fee_data.at(i).fee_from == new_fee_data.at(i).fee_from) {
+            // Check for modifications in existing rows
+            if (m_fee_data.at(i).tx_count != new_fee_data.at(i).tx_count ||
+                m_fee_data.at(i).total_size != new_fee_data.at(i).total_size) {
+                m_fee_data[i] = new_fee_data[i];
+                Q_EMIT dataChanged(index(i, 0), index(i, columnCount() - 1));
+            }
+            ++i;
+            continue;
+        }
+        // A row has been removed from the table.
+        beginRemoveRows(QModelIndex(), i, i);
+        m_fee_data.erase(m_fee_data.begin() + i);
+        endRemoveRows();
+    }
+
+    if (m_fee_data.size() < new_fee_data.size()) {
+        // Some rows have been added to the end of the table.
+        beginInsertRows(QModelIndex(), m_fee_data.size(), new_fee_data.size() - 1);
+        m_fee_data.swap(new_fee_data);
+        endInsertRows();
+    } else {
+        m_fee_data.swap(new_fee_data);
+    }
+
+    const auto top_left = index(0, 0);
+    const auto bottom_right = index(rowCount() - 1, columnCount() - 1);
+    Q_EMIT dataChanged(top_left, bottom_right);
 }

@@ -372,6 +372,7 @@ void MempoolStats::drawWalletTxIndicators()
                 if (sign_item) {
                     sign_item->setDefaultTextColor(sign_color);
                     sign_item->setPos(indicator_x, indicator_y);
+                    sign_item->setToolTip(QString::fromStdString(wtx.tx->GetHash().ToString()));
                     m_wallet_indicator_items.append(sign_item); // Store the item
                     indicator_y += y_offset; // Move down for the next indicator
                 }

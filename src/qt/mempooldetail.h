@@ -55,6 +55,7 @@ public:
 public Q_SLOTS:
     void fontBigger();
     void fontSmaller();
+    void resetFontSize();
     void drawFeeRects();
     void drawFeeRanges(qreal bottom, QFont LABELFONT);
     void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx, bool ADD_TEXT, QFont LABELFONT);
@@ -96,6 +97,7 @@ private:
 
     QToolButton* m_font_bigger_button;
     QToolButton* m_font_smaller_button;
+    QToolButton* m_font_reset_button;
     QHBoxLayout* m_button_layout;
 };
 

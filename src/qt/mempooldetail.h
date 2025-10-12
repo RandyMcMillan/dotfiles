@@ -49,6 +49,8 @@ public:
     void setClientModel(ClientModel *model);
 
 public Q_SLOTS:
+    void fontBigger();
+    void fontSmaller();
     void drawFeeRects();
     void drawFeeRanges(qreal bottom, QFont LABELFONT);
     void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx, bool ADD_TEXT, QFont LABELFONT);
@@ -84,6 +86,8 @@ private:
     virtual void hideEvent(QHideEvent        *event) override;
 
     int m_selected_range = -1;
+    qreal m_font_size;
+    void setFontSize(qreal newSize);
 };
 
 #endif // BITCOIN_QT_MEMPOOLDETAIL_H

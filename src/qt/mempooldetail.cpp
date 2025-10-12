@@ -11,6 +11,12 @@
 #include <qt/mempoolconstants.h>
 #include <qt/forms/ui_mempooldetail.h>
 #include <interfaces/wallet.h>
+#include <QSettings>
+
+const qreal FONT_SIZE_STEP = 1.0;
+const QSize FONT_RANGE(8, 24);
+const char mempoolDetailFontSizeKey[] = "mempoolDetailFontSize";
+
 
 MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 {
@@ -19,6 +25,12 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
         raise();
     }
     //setMouseTracking(true);
+
+    QSettings settings;
+    m_font_size = settings.value(mempoolDetailFontSizeKey, 12).toReal();
+    if (m_font_size < FONT_RANGE.width() || m_font_size > FONT_RANGE.height()) {
+        m_font_size = 12;
+    }
 
     // autoadjust font size
     QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
@@ -134,12 +146,10 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
                 QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
                 ///
-                fee_text->setPlainText(QString::number(list_entry.fee_from-1)+"<<->>"+QString::number(list_entry.fee_to-1));
-
-                if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
-
-                    fee_text->setPlainText(QString::number(list_entry.fee_from)+"+++++");
-
+                if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size() - 1)) {
+                    fee_text->setHtml(QString::number(list_entry.fee_from) + "<span style='font-size:36pt;'>+</span>");
+                } else {
+                    fee_text->setHtml(QString::number(list_entry.fee_from - 1) + "<span style='font-size:36pt;'> &ndash; </span>" + QString::number(list_entry.fee_to - 1));
                 }
                 //fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
 
@@ -152,11 +162,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
                 if(ADD_TOTAL_TEXT){
 
-                    QFont gridFont;
-                    gridFont.setPointSize(12);
-                    gridFont.setWeight(QFont::Bold);
-
-                    QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
+                    QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, LABELFONT);
                     item_tx_count->setPos(C_W+10, c_y-40);
 
                 }
@@ -205,7 +211,7 @@ void MempoolDetail::drawFeeRects()
     std::vector<size_t> fee_subtotal_txcount;
     size_t max_txcount=0;
     QFont gridFont;
-    gridFont.setPointSize(12);
+    gridFont.setPointSize(m_font_size);
 	gridFont.setWeight(QFont::Bold);
     int display_up_to_range = 0;
     //let view touch boths sides//we will place an over lay of boxes 
@@ -410,6 +416,31 @@ void MempoolDetail::updateFeeTable()
         if (!m_clientmodel->m_mempool_feehist.empty()) {
             m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
         }
+    }
+}
+
+void MempoolDetail::fontBigger()
+{
+    setFontSize(m_font_size + FONT_SIZE_STEP);
+}
+
+void MempoolDetail::fontSmaller()
+{
+    setFontSize(m_font_size - FONT_SIZE_STEP);
+}
+
+void MempoolDetail::setFontSize(qreal newSize)
+{
+    if (newSize < FONT_RANGE.width() || newSize > FONT_RANGE.height())
+        return;
+
+    m_font_size = newSize;
+
+    QSettings settings;
+    settings.setValue(mempoolDetailFontSizeKey, m_font_size);
+
+    if (m_clientmodel) {
+        drawFeeRects();
     }
 }
 

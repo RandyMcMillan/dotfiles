@@ -120,7 +120,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 if (m_clientmodel) {
                     Q_EMIT m_clientmodel->mempoolRangeSelected(m_selected_range);
                 }
-                //drawFeeRects();
+                drawFeeRects();
             });
 
             if (ADD_FEE_RECTS){//order matters!

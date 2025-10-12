@@ -305,7 +305,6 @@ void MempoolStats::setClientModel(ClientModel *model)
 
 void MempoolStats::setMempoolDetailView(MempoolDetail* mempool_detail)
 {
-    connect(this, &MempoolStats::walletTxChanged, mempool_detail, &MempoolDetail::updateFeeTable);
 }
 
 void MempoolStats::onMempoolRangeSelected(int selectedRange)

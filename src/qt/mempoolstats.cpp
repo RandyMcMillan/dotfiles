@@ -40,8 +40,8 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_gfx_view = new QGraphicsView(this);
     m_scene = new QGraphicsScene(m_gfx_view);
     m_gfx_view->setScene(m_scene);
-    m_gfx_view->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    m_gfx_view->setBackgroundBrush(m_gfx_view->palette().base());
 
     if (m_clientmodel)
         drawChart();
@@ -80,17 +80,14 @@ void MempoolStats::drawHorzLines(
         if (ADD_TEXT) {
 
             QGraphicsTextItem *item_tx_count =
-                //m_scene->addText(QString::number(grid_tx_count/100).rightJustified(4, ' ')+QString("MvB"), LABELFONT);
                 m_scene->addText(QString::number(grid_tx_count/1).rightJustified(4, ' ')+QString("vB"), LABELFONT);
-            //item_tx_count->setPos(GRAPH_PADDING_LEFT+maxwidth, lY-(item_tx_count->boundingRect().height()/2));
-            //TODO: use text rect width to adjust
-            item_tx_count->setDefaultTextColor(Qt::white);
+            item_tx_count->setDefaultTextColor(m_gfx_view->palette().color(QPalette::WindowText));
             item_tx_count->setPos(GRAPH_PADDING_LEFT-60, lY-(item_tx_count->boundingRect().height()/2));
 
         }
     }
 
-QPen gridPen(QColor(57,59,69, 200), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+QPen gridPen(m_gfx_view->palette().color(QPalette::Dark), 0.75, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 m_scene->addPath(tx_count_grid_path, gridPen);
 
 }

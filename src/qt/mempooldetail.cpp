@@ -50,8 +50,8 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_gfx_detail = new QGraphicsView(this);
     m_scene = new QGraphicsScene(m_gfx_detail);
     m_gfx_detail->setScene(m_scene);
-    m_gfx_detail->setBackgroundBrush(QColor(16, 18, 31, 127));
     m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    m_gfx_detail->setBackgroundBrush(m_gfx_detail->palette().base());
 }
 
 void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
@@ -101,7 +101,6 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setSortingEnabled(true);
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
     m_fee_table->verticalHeader()->setVisible(true);
-    m_fee_table->setStyleSheet("QTableView { background-color: #10121F; color: white; border: none; } QHeaderView::section { background-color: #10121F; color: white; border: none; } QTableView::item { padding: 5px; } ");
     //m_fee_table->sortByColumn(MempoolFeeTableModel::FeeRange, Qt::DescendingOrder);
 
     //if (m_clientmodel)

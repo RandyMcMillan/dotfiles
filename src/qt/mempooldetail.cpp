@@ -98,7 +98,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
     m_fee_table->setAlternatingRowColors(true);
-    m_fee_table->setStyleSheet("QTableView { alternate-background-color: #f0f0f0; background-color: #e0e0e0; }");
+    m_fee_table->setStyleSheet("QTableView { alternate-background-color: #f0f0f0; background-color: #e0e0e0; } QHeaderView::section { background-color: #d0d0d0; }");
     m_fee_table->setSortingEnabled(true);
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
     m_fee_table->verticalHeader()->setVisible(true);

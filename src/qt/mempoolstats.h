@@ -39,6 +39,7 @@ public:
     QGraphicsScene *m_scene;
     ClientModel *m_clientmodel;
     void setClientModel(ClientModel *model);
+    void setMempoolDetailView(MempoolDetail* mempool_detail);
     void drawChart();
     void drawHorzLines(const qreal x_increment, QPointF current_x_bottom, const int amount_of_h_lines, qreal maxheight_g, qreal maxwidth, qreal bottom, size_t max_txcount_graph, QFont LABELFONT);
     void drawWalletTxIndicators();

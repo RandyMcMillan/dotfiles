@@ -7,6 +7,7 @@
 #include <qt/guiutil.h>
 #include <qt/clientmodel.h>
 #include <qt/mempoolstats.h>
+#include <qt/mempooldetail.h>
 #include <qt/mempoolfeetables.h>
 #include <QTableView>
 #include <qt/mempoolconstants.h>
@@ -300,6 +301,11 @@ void MempoolStats::setClientModel(ClientModel *model)
         onWalletTxChanged();
         drawChart();
     }
+}
+
+void MempoolStats::setMempoolDetailView(MempoolDetail* mempool_detail)
+{
+    connect(this, &MempoolStats::walletTxChanged, mempool_detail, &MempoolDetail::updateFeeTable);
 }
 
 void MempoolStats::onMempoolRangeSelected(int selectedRange)

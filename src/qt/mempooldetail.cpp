@@ -52,12 +52,12 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_fee_table->setAlternatingRowColors(true);
     m_fee_table->setSortingEnabled(true);
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
-    m_fee_table->verticalHeader()->setVisible(false);
+    m_fee_table->verticalHeader()->setVisible(true);
     m_fee_table->setStyleSheet("QTableView { background-color: #10121F; color: white; border: none; } QHeaderView::section { background-color: #10121F; color: white; border: none; } QTableView::item { padding: 5px; } ");
-    m_fee_table->sortByColumn(MempoolFeeTableModel::FeeRange, Qt::DescendingOrder);
+    //m_fee_table->sortByColumn(MempoolFeeTableModel::FeeRange, Qt::DescendingOrder);
 
-    if (m_clientmodel)
-        drawFeeRects();
+    //if (m_clientmodel)
+        //drawFeeRects();
 }
 
 void MempoolDetail::drawFeeRanges( qreal bottom, QFont LABELFONT){
@@ -120,12 +120,12 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 if (m_clientmodel) {
                     Q_EMIT m_clientmodel->mempoolRangeSelected(m_selected_range);
                 }
-                drawFeeRects();
+                //drawFeeRects();
             });
 
-            if (ADD_FEE_RECTS){//order matter!
+            if (ADD_FEE_RECTS){//order matters!
 
-                m_scene->addItem(fee_rect_detail);
+                if (fee_subtotal_txcount > 0){ m_scene->addItem(fee_rect_detail); }
 
             }
 
@@ -133,11 +133,12 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
             if (ADD_FEE_RANGES){
 
                 QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
-                fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
+                ///
+                fee_text->setPlainText(QString::number(list_entry.fee_from-1)+"<<->>"+QString::number(list_entry.fee_to-1));
 
                 if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size())) {
 
-                    fee_text->setPlainText(QString::number(list_entry.fee_from)+"+");
+                    fee_text->setPlainText(QString::number(list_entry.fee_from)+"+++++");
 
                 }
                 //fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
@@ -145,9 +146,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
                 fee_text->setDefaultTextColor(Qt::white);
                 fee_text->setFont(LABELFONT);
                 fee_text->setPos(4+C_W-7, c_y-7);
-                QString total_text = tr("---").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
-                std::vector<size_t> fee_subtotal_txcount;
-                fee_subtotal_txcount.resize(m_clientmodel->m_mempool_feehist[0].second.size());
+                QString total_text = tr(">>>--->").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
 
                 LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
 
@@ -162,7 +161,7 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
                 }
 
-                m_scene->addItem(fee_text);
+                if (fee_subtotal_txcount > 0){ m_scene->addItem(fee_text); }
 
             }
 
@@ -185,7 +184,7 @@ void MempoolDetail::drawFeeRects()
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
     // TODO: calc dynamic GRAPH_PADDING_BOTTOM
     const qreal bottom = (m_gfx_detail->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
-    const qreal maxheight_g = (m_gfx_detail->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM) );
+    const qreal maxheight_g = (m_gfx_detail->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM)*3 );
     if (MEMPOOL_GRAPH_LOGGING){
 
         LogPrintf("\n");
@@ -250,23 +249,24 @@ void MempoolDetail::drawFeeRects()
             }
         }
 
-        // make a nice y-axis scale
-        const int amount_of_h_lines = 5;
-        if (max_txcount > 0) {
-            int val = qFloor(log10(1.0*max_txcount/amount_of_h_lines));
-            int stepbase = qPow(10.0f, val);
-            int step = qCeil((1.0*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
-            max_txcount_graph = step*amount_of_h_lines;
-            if (MEMPOOL_GRAPH_LOGGING){
-                LogPrintf("\n");
-                LogPrintf("\n");
-                LogPrintf("\n");
-                LogPrintf("max_txcount_graph = %s\n",max_txcount_graph);
-                LogPrintf("\n");
-                LogPrintf("\n");
-                LogPrintf("\n");
-            }
-        }
+        //draw wallet txs here
+        //// make a nice y-axis scale
+        //const int amount_of_h_lines = 5;
+        //if (max_txcount > 0) {
+        //    int val = qFloor(log10(1.0*max_txcount/amount_of_h_lines));
+        //    int stepbase = qPow(10.0f, val);
+        //    int step = qCeil((1.0*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
+        //    max_txcount_graph = step*amount_of_h_lines;
+        //    if (MEMPOOL_GRAPH_LOGGING){
+        //        LogPrintf("\n");
+        //        LogPrintf("\n");
+        //        LogPrintf("\n");
+        //        LogPrintf("max_txcount_graph = %s\n",max_txcount_graph);
+        //        LogPrintf("\n");
+        //        LogPrintf("\n");
+        //        LogPrintf("\n");
+        //    }
+        //}
 
         // calculate the x axis step per sample
         // we ignore the time difference of collected samples due to locking issues
@@ -330,8 +330,10 @@ void MempoolDetail::drawFeeRects()
             LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
         }
 
-        LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
-        drawFeeRects(bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i], ADD_TEXT, gridFont);
+        //LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
+        
+        LogPrintf("bottom=%s, maxwidth=%s, display_up_to_range=%s, fee_subtotal_txcount=%s, ADD_TEXT=%s", bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i], ADD_TEXT);
+        if (fee_subtotal_txcount[i] > 0) { drawFeeRects(bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i], ADD_TEXT, gridFont); }
 
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         //m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
@@ -369,10 +371,10 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
         0 + GRAPH_PADDING_LEFT/3 + 2, // Start from the left edge of the window
         rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
         rect().width() - GRAPH_PADDING_RIGHT, // Full width, minus right padding
-        rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM // Full height minus top/bottom padding
+        rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM*10 // Full height minus top/bottom padding
     );
 
-m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     drawFeeRects();
 }
@@ -396,10 +398,8 @@ void MempoolDetail::setClientModel(ClientModel *model)
     m_clientmodel = model;
     if (model) {
         drawFeeRects();
-
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::updateFeeTable);
-
-
+        MempoolDetail::updateFeeTable();
     }
 }
 
@@ -412,7 +412,6 @@ void MempoolDetail::updateFeeTable()
         }
     }
 }
-
 
 void ClickableTextItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 void ClickableRectItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
@@ -427,6 +426,7 @@ void MempoolDetail::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(t
         LogPrintf("event->type() %s\n",event->type());
         LogPrintf("event->type() %s\n",event->type());
     }
+    updateFeeTable();
 }
 void MempoolDetail::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
@@ -447,6 +447,7 @@ void MempoolDetail::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectCli
         LogPrintf("event->pos().x() %s\n",event->pos().x());
         LogPrintf("event->pos().y() %s\n",event->pos().y());
     }
+    updateFeeTable();
 }
 void MempoolDetail::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
@@ -467,6 +468,7 @@ void MempoolDetail::enterEvent(QEnterEvent *event) { Q_EMIT objectClicked(this);
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
 
+    updateFeeTable();
     showFeeRanges(this_event);
     showFeeRects(this_event);
 
@@ -494,6 +496,7 @@ void MempoolDetail::showFeeRanges(QEvent *event){
         LogPrintf("this_event->type() %s\n",this_event->type());
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
+    updateFeeTable();
 
 };
 void MempoolDetail::hideFeeRanges(QEvent *event){
@@ -504,6 +507,7 @@ void MempoolDetail::hideFeeRanges(QEvent *event){
         LogPrintf("this_event->type() %s\n",this_event->type());
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
+    updateFeeTable();
 
 };
 
@@ -515,6 +519,7 @@ void MempoolDetail::showFeeRects(QEvent *event){
         LogPrintf("this_event->type() %s\n",this_event->type());
         LogPrintf("this_event->type() %s\n",this_event->type());
     }
+    updateFeeTable();
 
 };
 void MempoolDetail::hideFeeRects(QEvent *event){
@@ -527,4 +532,3 @@ void MempoolDetail::hideFeeRects(QEvent *event){
     }
 
 };
-

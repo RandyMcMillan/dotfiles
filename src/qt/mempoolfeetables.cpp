@@ -4,6 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/mempoolfeetables.h>
+#include <qt/mempoolconstants.h>
 
 #include <qt/guiutil.h>
 
@@ -48,8 +49,20 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
             return (qint64)fee_info->tx_count;
         case TotalSize:
             return GUIUtil::formatBytes(fee_info->total_size);
+        case TotalWeight:
+            return (qint64)fee_info->total_weight;
         case TotalVBytes:
             return (qint64)fee_info->total_vbytes;
+        }
+    } else if (role == Qt::DecorationRole) {
+        if (column == FeeRange) {
+            int row = index.row();
+            if (row >= 0 && row < static_cast<int>(colors.size())) {
+                return colors[row];
+            } else if (row >= static_cast<int>(colors.size())) {
+                // If row index exceeds available colors, use the last color
+                return colors[static_cast<int>(colors.size()) - 1];
+            }
         }
     } else if (role == Qt::TextAlignmentRole) {
         switch (column) {
@@ -58,6 +71,8 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
         case TxCount:
             return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
         case TotalSize:
+            return QVariant(Qt::AlignRight | Qt::AlignVCenter);
+        case TotalWeight:
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
         case TotalVBytes:
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
@@ -112,6 +127,8 @@ void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
                     return a.tx_count < b.tx_count;
                 case TotalSize:
                     return a.total_size < b.total_size;
+                case TotalWeight:
+                    return a.total_weight < b.total_weight;
                 case TotalVBytes:
                     return a.total_vbytes < b.total_vbytes;
                 }
@@ -123,6 +140,8 @@ void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
                     return a.tx_count > b.tx_count;
                 case TotalSize:
                     return a.total_size > b.total_size;
+                case TotalWeight:
+                    return a.total_weight > b.total_weight;
                 case TotalVBytes:
                     return a.total_vbytes > b.total_vbytes;
                 }

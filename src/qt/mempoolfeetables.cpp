@@ -103,6 +103,10 @@ QVariant MempoolFeeTableModel::headerData(int section, Qt::Orientation orientati
         } else if (role == Qt::BackgroundRole) {
             return QApplication::palette().window().color();
         }
+    } else if (orientation == Qt::Vertical) {
+        if (role == Qt::BackgroundRole) {
+            return QApplication::palette().window().color();
+        }
     }
     return QVariant();
 }

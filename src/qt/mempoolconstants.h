@@ -29,34 +29,32 @@ bool const MEMPOOL_GRAPH_LOGGING                 = true;
 bool const ADD_TOTAL_TEXT                        = true;
 
 const static std::vector<QColor> colors = {
-
-QColor(212,29, 97,255), //0-1
-QColor(140,43,168,255), //1-2
-QColor(93, 58,175,255), //2-3
-QColor(57, 76,169,255), //3-4
-QColor(40,138,226,255), //4-5
-QColor(30,157,227,255), //5-6
-QColor(34,172,192,255), //6-8
-QColor(25,137,123,255), //8-10
-QColor(74,159, 75,255), //10-12
-QColor(127,178,72,255), //12-15
-QColor(192,201,64,255), //15-20
-QColor(252,214,69,255), //20-30
-QColor(253,178,39,255), //30-40
-QColor(248,139,33,255), //40-50
-QColor(240,80, 42,255), //60-70
-QColor(108,76, 66,255), //70-80
-QColor(117,117,117,255),//80-90
-QColor(85,110,121,255), //100-125
-QColor(180,28, 34,255), //125-150
-QColor(134,17, 79,255), //175-200
-QColor(73, 27,138,255), //200-250
-QColor(48, 33,144,255), //250-300
-QColor(26, 39,124,255), //300-350
-QColor(18, 74,159,255), //350-400
-QColor(12, 89,153,255), //450-500
-QColor(14, 96,99,255),  //500-550
-QColor(10, 77,64,255),  //600-650
-QColor(33, 93,35,255),  //700-750
-
+QColor(100, 149, 237, 255), // Cornflower Blue (very low fee)
+QColor(65, 105, 225, 255),  // Royal Blue
+QColor(0, 0, 205, 255),     // Medium Blue
+QColor(0, 191, 255, 255),   // Deep Sky Blue
+QColor(0, 128, 128, 255),   // Teal
+QColor(0, 139, 139, 255),   // Dark Cyan
+QColor(0, 255, 127, 255),   // Spring Green
+QColor(50, 205, 50, 255),   // Lime Green
+QColor(34, 139, 34, 255),   // Forest Green
+QColor(124, 252, 0, 255),   // Lawn Green
+QColor(173, 255, 47, 255),  // Green Yellow
+QColor(255, 255, 0, 255),   // Yellow
+QColor(255, 215, 0, 255),   // Gold
+QColor(255, 165, 0, 255),   // Orange
+QColor(255, 140, 0, 255),   // Dark Orange
+QColor(255, 99, 71, 255),   // Tomato
+QColor(255, 69, 0, 255),    // Orange Red
+QColor(255, 0, 0, 255),     // Red
+QColor(220, 20, 60, 255),   // Crimson
+QColor(178, 34, 34, 255),   // Firebrick
+QColor(139, 0, 0, 255),     // Dark Red
+QColor(128, 0, 0, 255),     // Maroon
+QColor(160, 82, 45, 255),   // Sienna
+QColor(139, 69, 19, 255),   // Saddle Brown
+QColor(105, 105, 105, 255), // Dim Gray
+QColor(70, 130, 180, 255),  // Steel Blue
+QColor(112, 128, 144, 255), // Slate Gray
+QColor(47, 79, 79, 255)     // Dark Slate Gray (very high fee, almost black)
 };

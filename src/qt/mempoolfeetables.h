@@ -47,7 +47,7 @@ public Q_SLOTS:
     void updateModel(const std::vector<interfaces::mempool_feeinfo>& fee_info);
     void setSelectedRange(int range);
 
-private:
+public:
     QList<interfaces::mempool_feeinfo> m_fee_data;
     int m_selected_range = -1;
     int m_sort_column = TxCount;

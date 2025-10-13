@@ -90,6 +90,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setSortingEnabled(true);
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
     m_fee_table->verticalHeader()->setVisible(true);
+    m_fee_table->sortByColumn(m_fee_table_model->m_sort_column, m_fee_table_model->m_sort_order);
 
     QVBoxLayout* main_layout = new QVBoxLayout(this);
     main_layout->addLayout(m_button_layout);

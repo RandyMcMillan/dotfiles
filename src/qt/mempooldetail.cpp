@@ -99,6 +99,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     connect(m_font_bigger_button, &QToolButton::clicked, this, &MempoolDetail::fontBigger);
     connect(m_font_smaller_button, &QToolButton::clicked, this, &MempoolDetail::fontSmaller);
     connect(m_font_reset_button, &QToolButton::clicked, this, &MempoolDetail::resetFontSize);
+    connect(m_fee_table, &QTableView::clicked, this, &MempoolDetail::updateFeeTable);
 
     connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModelIndex &previous) {
         if (!current.isValid()) {
@@ -168,6 +169,8 @@ void MempoolDetail::setFontSize(qreal newSize)
 
 void MempoolDetail::onRangeSelected(int range)
 {
+    updateFeeTable();
+    QSignalBlocker blocker(m_fee_table->selectionModel());
     if (range >= 0 && range < m_fee_table->model()->rowCount()) {
         m_fee_table->selectRow(range);
     } else {

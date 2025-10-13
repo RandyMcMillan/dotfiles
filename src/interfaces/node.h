@@ -70,6 +70,8 @@ class mempool_feeinfo {
 public:
     uint64_t total_size;
     uint64_t total_fee;
+    uint64_t total_weight;
+    uint64_t total_vbytes;
     uint64_t tx_count;
     CAmount fee_from;
     CAmount fee_to;
@@ -78,7 +80,7 @@ public:
     // added for storing and loading a mempool set during development to avoid waiting hours for collecting enought samples
     SERIALIZE_METHODS(mempool_feeinfo, obj)
     {
-        READWRITE(obj.total_size, obj.total_fee, obj.tx_count, obj.fee_from, obj.fee_to);
+        READWRITE(obj.total_size, obj.total_fee, obj.total_weight, obj.total_vbytes, obj.tx_count, obj.fee_from, obj.fee_to);
     }
 };
 

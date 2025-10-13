@@ -305,11 +305,13 @@ public:
          std::vector<uint64_t> sizes(feelimits.size(), 0);
          std::vector<uint64_t> count(feelimits.size(), 0);
          std::vector<uint64_t> fees(feelimits.size(), 0);
+         std::vector<uint64_t> weights(feelimits.size(), 0);
 
          {
              LOCK(m_context->mempool->cs);
              for (const CTxMemPoolEntry& e : m_context->mempool->mapTx) {
                  int size = (int)e.GetTxSize();
+                 int weight = (int)e.GetTxWeight();
                  CAmount fee = e.GetFee();
                  uint64_t asize = e.GetSizeWithAncestors();
                  CAmount afees = e.GetModFeesWithAncestors();
@@ -328,6 +330,7 @@ public:
                          sizes[i] += size;
                          count[i]++;
                          fees[i] += fee;
+                         weights[i] += weight;
                          break;
                      }
                  }
@@ -335,7 +338,7 @@ public:
          }
          interfaces::mempool_feehistogram feeinfo;
          for (size_t i = 0; i < feelimits.size(); i++) {
-             feeinfo.push_back({sizes[i], fees[i], count[i], feelimits[i], (i == feelimits.size() - 1 ? std::numeric_limits<int64_t>::max() : feelimits[i + 1])});
+             feeinfo.push_back({sizes[i], fees[i], weights[i], 0 /* total_vbytes */, count[i], static_cast<CAmount>(feelimits[i]), (i == feelimits.size() - 1 ? std::numeric_limits<int64_t>::max() : static_cast<CAmount>(feelimits[i + 1]))});
          }
 
          return feeinfo;

@@ -28,7 +28,9 @@ public:
     enum ColumnIndex {
         FeeRange = 0,
         TxCount,
-        TotalSize
+        TotalSize,
+        TotalWeight,
+        TotalVBytes
     };
 
     /** @name Methods overridden from QAbstractTableModel
@@ -53,7 +55,9 @@ private:
         /*: Title of Mempool Fee Table column which contains the number of transactions in the fee range. */
         tr("Transactions   "),
         /*: Title of Mempool Fee Table column which contains the total size of transactions in the fee range. */
-        tr("   Total Size")};
+        tr("   Total Size"),
+        tr("   Total Weight (WU)"),
+        tr("   Total vB")};
 
     static const std::vector<QString> FEE_RANGE_STRINGS;
 };

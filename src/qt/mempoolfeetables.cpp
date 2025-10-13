@@ -131,6 +131,8 @@ QModelIndex MempoolFeeTableModel::index(int row, int column, const QModelIndex& 
 
 void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
 {
+    m_sort_column = column;
+    m_sort_order = order;
     beginResetModel();
     std::sort(m_fee_data.begin(), m_fee_data.end(),
         [&](const interfaces::mempool_feeinfo& a, const interfaces::mempool_feeinfo& b) {
@@ -173,6 +175,9 @@ void MempoolFeeTableModel::updateModel(const std::vector<interfaces::mempool_fee
     m_fee_data.reserve(fee_info.size());
     for (const auto& entry : fee_info) {
         m_fee_data.append(entry);
+    }
+    if (m_sort_column != -1) {
+        sort(m_sort_column, m_sort_order);
     }
     endResetModel();
 }

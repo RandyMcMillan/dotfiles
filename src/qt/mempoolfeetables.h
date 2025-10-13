@@ -51,6 +51,8 @@ public Q_SLOTS:
 private:
     QList<interfaces::mempool_feeinfo> m_fee_data;
     int m_selected_range = -1;
+    int m_sort_column = -1;
+    Qt::SortOrder m_sort_order = Qt::AscendingOrder;
     const QStringList columns{
         /*: Title of Mempool Fee Table column which contains the fee range. */
         tr("Fee Range (sat/vB)   "),

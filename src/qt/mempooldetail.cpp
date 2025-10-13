@@ -175,7 +175,7 @@ void MempoolDetail::onRangeSelected(int range)
     if (range >= 0 && range < m_fee_table->model()->rowCount()) {
         m_fee_table->selectRow(range);
     } else {
-        m_fee_table->clearSelection();
+        //m_fee_table->clearSelection();
     }
     m_fee_table_model->setSelectedRange(range);
 }

@@ -60,8 +60,6 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
             return GUIUtil::formatBytes(fee_info->total_size);
         case TotalWeight:
             return (qint64)fee_info->total_weight;
-        case TotalVBytes:
-            return (qint64)fee_info->total_vbytes;
         }
     } else if (role == Qt::BackgroundRole) {
         int row = index.row();
@@ -82,8 +80,6 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
         case TotalSize:
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
         case TotalWeight:
-            return QVariant(Qt::AlignRight | Qt::AlignVCenter);
-        case TotalVBytes:
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
         }
     }
@@ -146,8 +142,6 @@ void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
                     return a.total_size < b.total_size;
                 case TotalWeight:
                     return a.total_weight < b.total_weight;
-                case TotalVBytes:
-                    return a.total_vbytes < b.total_vbytes;
                 }
             } else { // DescendingOrder
                 switch (static_cast<ColumnIndex>(column)) {
@@ -159,8 +153,6 @@ void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
                     return a.total_size > b.total_size;
                 case TotalWeight:
                     return a.total_weight > b.total_weight;
-                case TotalVBytes:
-                    return a.total_vbytes > b.total_vbytes;
                 }
             }
             return false; // Should not be reached

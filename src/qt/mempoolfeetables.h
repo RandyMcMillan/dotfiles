@@ -29,8 +29,7 @@ public:
         FeeRange = 0,
         TxCount,
         TotalSize,
-        TotalWeight,
-        TotalVBytes
+        TotalWeight
     };
 
     /** @name Methods overridden from QAbstractTableModel
@@ -60,8 +59,7 @@ private:
         tr("Transactions   "),
         /*: Title of Mempool Fee Table column which contains the total size of transactions in the fee range. */
         tr("   Total Size"),
-        tr("   Total Weight (WU)"),
-        tr("   Total vB")};
+        tr("   Total Weight (WU)")};
 
     static const std::vector<QString> FEE_RANGE_STRINGS;
 };

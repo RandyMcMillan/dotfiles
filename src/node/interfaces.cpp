@@ -338,7 +338,7 @@ public:
          }
          interfaces::mempool_feehistogram feeinfo;
          for (size_t i = 0; i < feelimits.size(); i++) {
-             feeinfo.push_back({sizes[i], fees[i], weights[i], 0 /* total_vbytes */, count[i], static_cast<CAmount>(feelimits[i]), (i == feelimits.size() - 1 ? std::numeric_limits<int64_t>::max() : static_cast<CAmount>(feelimits[i + 1]))});
+             feeinfo.push_back({sizes[i], fees[i], weights[i], count[i], static_cast<CAmount>(feelimits[i]), (i == feelimits.size() - 1 ? std::numeric_limits<int64_t>::max() : static_cast<CAmount>(feelimits[i + 1]))});
          }
 
          return feeinfo;

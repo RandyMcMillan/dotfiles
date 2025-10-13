@@ -236,7 +236,9 @@ void MempoolStats::drawChart()
             brush_color.setAlpha(100);
         }
         if (m_selected_range >= 0 && m_selected_range == i) {
-            total_text = "transactions in selected fee range: "+QString::number(fee_subtotal_txcount[i]);
+            if (static_cast<size_t>(m_selected_range) < m_clientmodel->m_mempool_feehist[0].second.size()) {
+                total_text = "transactions in selected fee range: "+QString::number(m_clientmodel->m_mempool_feehist[0].second[m_selected_range].tx_count);
+            }
         }
         QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         m_scene->addPath(feepath, pen_blue, QBrush(brush_color));

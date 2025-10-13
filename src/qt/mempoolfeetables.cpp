@@ -61,7 +61,6 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
         case TotalWeight:
             return (qint64)fee_info->total_weight;
         }
-    //GEMINI - i want the decoration role - do not remove
     } else if (role == Qt::DecorationRole) {
         if (column == FeeRange) {
             int row = index.row();
@@ -72,7 +71,14 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
                 return colors[static_cast<int>(colors.size()) - 1];
             }
         }
-    //GEMINI - add a background role that sets the background color of the row to system light/dark
+    } else if (role == Qt::BackgroundRole) {
+        return QApplication::palette().window().color();
+    } else if (role == Qt::ForegroundRole) {
+        if (m_selected_range == index.row()) {
+            return QVariant(QApplication::palette().highlightedText().color());
+        } else {
+            return QVariant(QApplication::palette().windowText().color());
+        }
     } else if (role == Qt::TextAlignmentRole) {
         switch (column) {
         case FeeRange:

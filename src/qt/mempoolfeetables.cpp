@@ -61,15 +61,15 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
         case TotalWeight:
             return (qint64)fee_info->total_weight;
         }
-    } else if (role == Qt::BackgroundRole) {
-        int row = index.row();
-        QColor background_color = colors[(row < static_cast<int>(colors.size()) ? row : static_cast<int>(colors.size()) - 1)];
-        return background_color;
-    } else if (role == Qt::ForegroundRole) {
-        if (m_selected_range == index.row()) {
-            return QVariant(QApplication::palette().highlightedText().color());
-        } else {
-            return QVariant(QApplication::palette().windowText().color());
+    } else if (role == Qt::DecorationRole) {
+        if (column == FeeRange) {
+            int row = index.row();
+            if (row >= 0 && row < static_cast<int>(colors.size())) {
+                return colors[row];
+            } else if (row >= static_cast<int>(colors.size())) {
+                // If row index exceeds available colors, use the last color
+                return colors[static_cast<int>(colors.size()) - 1];
+            }
         }
     } else if (role == Qt::TextAlignmentRole) {
         switch (column) {

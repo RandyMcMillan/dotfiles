@@ -98,8 +98,9 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
     m_fee_table->setAlternatingRowColors(true);
-    m_fee_table->setStyleSheet("QTableView { alternate-background-color: #f0f0f0; background-color: #e0e0e0; } QHeaderView::section { background-color: #d0d0d0; }");
-    m_fee_table->setSortingEnabled(true);
+    //m_fee_table->setStyleSheet("QTableView { alternate-background-color: #f0f0f0; background-color: #e0e0e0; } QHeaderView::section { background-color: #d0d0d0; }");
+    m_fee_table->setStyleSheet("");
+m_fee_table->setSortingEnabled(true);
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
     m_fee_table->verticalHeader()->setVisible(true);
     //m_fee_table->sortByColumn(MempoolFeeTableModel::FeeRange, Qt::DescendingOrder);
@@ -412,7 +413,7 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
     m_fee_table->setGeometry(
         0 + GRAPH_PADDING_LEFT/3 + 2, // Start from the left edge of the window
         rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
-        rect().width() - GRAPH_PADDING_RIGHT, // Full width, minus right padding
+        rect().width() - (0 + GRAPH_PADDING_LEFT/3 + 2) - GRAPH_PADDING_RIGHT, // Table width, considering paddings
         rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM*10 // Full height minus top/bottom padding
     );
 

@@ -50,16 +50,16 @@ public Q_SLOTS:
 private:
     QList<interfaces::mempool_feeinfo> m_fee_data;
     int m_selected_range = -1;
-    int m_sort_column = -1;
-    Qt::SortOrder m_sort_order = Qt::AscendingOrder;
+    int m_sort_column = TxCount;
+    Qt::SortOrder m_sort_order = Qt::DescendingOrder;
     const QStringList columns{
         /*: Title of Mempool Fee Table column which contains the fee range. */
-        tr("Fee Range (sat/vB)   "),
+        tr("Fee Range (sat/vB)"),
         /*: Title of Mempool Fee Table column which contains the number of transactions in the fee range. */
-        tr("Transactions   "),
+        tr("Transactions"),
         /*: Title of Mempool Fee Table column which contains the total size of transactions in the fee range. */
-        tr("   Total Size"),
-        tr("   Total Weight (WU)")};
+        tr("Total Size"),
+        tr("Total Weight (WU)")};
 
     static const std::vector<QString> FEE_RANGE_STRINGS;
 };

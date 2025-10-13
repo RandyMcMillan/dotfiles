@@ -411,9 +411,10 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
 
     // Position the fee table to fill the parent's width
     m_fee_table->setGeometry(
-        0,
-        rect().top() + GRAPH_PADDING_TOP,
-        rect().width(),
+        0+13, // ok
+        rect().top()+GRAPH_PADDING_TOP+5, // ok
+        //rect().width(),
+        rect().width() - GRAPH_PADDING_RIGHT + 20,
         rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM*10
     );
 

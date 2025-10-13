@@ -134,7 +134,14 @@ void MempoolDetail::updateFeeTable()
     if (m_clientmodel) {
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);
         if (!m_clientmodel->m_mempool_feehist.empty()) {
+            int selected_row = m_fee_table->selectionModel()->currentIndex().row();
             m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
+            QSignalBlocker blocker(m_fee_table->selectionModel());
+            if (selected_row >= 0 && selected_row < m_fee_table->model()->rowCount()) {
+                m_fee_table->selectRow(selected_row);
+            } else {
+                m_fee_table->clearSelection();
+            }
         }
     }
 }
@@ -171,7 +178,6 @@ void MempoolDetail::setFontSize(qreal newSize)
 
 void MempoolDetail::onRangeSelected(int range)
 {
-    updateFeeTable();
     QSignalBlocker blocker(m_fee_table->selectionModel());
     if (range >= 0 && range < m_fee_table->model()->rowCount()) {
         m_fee_table->selectRow(range);

@@ -409,12 +409,12 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
                 (0.9 * rect().height())
         ));
 
-    // Position the fee table
+    // Position the fee table to fill the parent's width
     m_fee_table->setGeometry(
-        0 + GRAPH_PADDING_LEFT/3 + 2, // Start from the left edge of the window
-        rect().top() + GRAPH_PADDING_TOP, // Align with the top padding of the graph
-        rect().width() - (0 + GRAPH_PADDING_LEFT/3 + 2) - GRAPH_PADDING_RIGHT, // Table width, considering paddings
-        rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM*10 // Full height minus top/bottom padding
+        0,
+        rect().top() + GRAPH_PADDING_TOP,
+        rect().width(),
+        rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM*10
     );
 
     m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

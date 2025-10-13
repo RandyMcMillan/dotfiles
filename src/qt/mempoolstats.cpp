@@ -289,7 +289,7 @@ void MempoolStats::setClientModel(ClientModel *model)
 {
     m_clientmodel = model;
     if (model) {
-        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
+        connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart, Qt::QueuedConnection);
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
         if (m_mempool_detail) {
             connect(model, &ClientModel::mempoolFeeHistChanged, m_mempool_detail, &MempoolDetail::updateFeeTable);

@@ -58,6 +58,7 @@ protected:
     void leaveEvent(QEvent *event) override;
 
     int m_selected_range = -1;
+    MempoolDetail* m_mempool_detail{nullptr};
     QMutex m_wallet_tx_mutex;
     std::set<interfaces::WalletTx> m_wallet_transactions;
     std::vector<std::unique_ptr<interfaces::Handler>> m_wallet_handlers;

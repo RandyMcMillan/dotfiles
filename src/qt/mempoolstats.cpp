@@ -289,6 +289,9 @@ void MempoolStats::setClientModel(ClientModel *model)
     if (model) {
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolStats::drawChart);
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
+        if (m_mempool_detail) {
+            connect(model, &ClientModel::mempoolFeeHistChanged, m_mempool_detail, &MempoolDetail::updateFeeTable);
+        }
 
         // Connect to wallet transaction changes
         m_wallet_handlers.clear();
@@ -302,6 +305,7 @@ void MempoolStats::setClientModel(ClientModel *model)
 
 void MempoolStats::setMempoolDetailView(MempoolDetail* mempool_detail)
 {
+    m_mempool_detail = mempool_detail;
 }
 
 void MempoolStats::onMempoolRangeSelected(int selectedRange)

@@ -121,6 +121,7 @@ void MempoolDetail::setClientModel(ClientModel *model)
     m_clientmodel = model;
     if (model) {
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::updateFeeTable);
+        connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolDetail::onRangeSelected);
         MempoolDetail::updateFeeTable();
     }
 }
@@ -162,6 +163,15 @@ void MempoolDetail::setFontSize(qreal newSize)
     settings.setValue(mempoolDetailFontSizeKey, m_font_size);
 
     if (m_clientmodel) {
+    }
+}
+
+void MempoolDetail::onRangeSelected(int range)
+{
+    if (range >= 0 && range < m_fee_table->model()->rowCount()) {
+        m_fee_table->selectRow(range);
+    } else {
+        m_fee_table->clearSelection();
     }
 }
 

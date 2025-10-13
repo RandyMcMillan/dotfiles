@@ -29,6 +29,7 @@ public:
     void setPlatformStyle(const PlatformStyle* platform_style);
 
 public Q_SLOTS:
+    void onRangeSelected(int range);
     void fontBigger();
     void fontSmaller();
     void resetFontSize();

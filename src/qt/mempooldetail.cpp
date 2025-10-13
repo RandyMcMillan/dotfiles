@@ -52,6 +52,10 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     m_gfx_detail->setScene(m_scene);
     m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     m_gfx_detail->setBackgroundBrush(m_gfx_detail->palette().base());
+
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this, &MempoolDetail::updateFeeTable);
+    m_timer->start(1000);
 }
 
 void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)

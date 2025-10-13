@@ -14,6 +14,7 @@
 #include <QGraphicsView>
 #include <QToolButton>
 #include <QHBoxLayout>
+#include <QTimer>
 
 #include <policy/fees.h>
 
@@ -95,6 +96,7 @@ private:
     qreal m_font_size;
     void setFontSize(qreal newSize);
 
+    QTimer* m_timer;
     QToolButton* m_font_bigger_button;
     QToolButton* m_font_smaller_button;
     QToolButton* m_font_reset_button;

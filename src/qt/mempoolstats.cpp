@@ -41,7 +41,7 @@ MempoolStats::MempoolStats(QWidget *parent) : QWidget(parent)
     m_scene = new QGraphicsScene(m_gfx_view);
     m_gfx_view->setScene(m_scene);
     m_gfx_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    m_gfx_view->setBackgroundBrush(m_gfx_view->palette().base());
+    m_gfx_view->setBackgroundBrush(m_gfx_view->palette().window());
 
     if (m_clientmodel)
         drawChart();

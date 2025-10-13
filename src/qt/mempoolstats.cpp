@@ -331,7 +331,7 @@ void MempoolStats::drawWalletTxIndicators()
         qreal y_offset = 20; // Vertical spacing between indicators
 
         QFont gridFont;
-        gridFont.setPointSize(12);
+        //gridFont.setPointSize(36);
         gridFont.setWeight(QFont::Bold);
 
         for (const interfaces::WalletTx& wtx : wallet_transactions_copy) {
@@ -359,9 +359,11 @@ void MempoolStats::drawWalletTxIndicators()
                 QColor sign_color;
 
                 if (net_amount > 0) { // Receive transaction
+                    gridFont.setPointSize(36);
                     sign_item = m_scene->addText("+", gridFont);
                     sign_color = QColor(0, 255, 0); // Green
                 } else if (net_amount < 0) { // Send transaction
+                    gridFont.setPointSize(48);
                     sign_item = m_scene->addText("-", gridFont);
                     sign_color = QColor(255, 0, 0); // Red
                 }

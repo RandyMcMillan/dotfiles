@@ -183,10 +183,10 @@ void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_
 
                 QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
                 ///
-                if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size() - 1)) {
+                if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size() - 1)) {// maybe not = 1
                     fee_text->setHtml(QString::number(list_entry.fee_from) + "<span style='font-size:36pt;'>+</span>");
                 } else {
-                    fee_text->setHtml(QString::number(list_entry.fee_from - 1) + "<span style='font-size:36pt;'> &ndash; </span>" + QString::number(list_entry.fee_to - 1));
+                    fee_text->setHtml(QString::number(list_entry.fee_from - 1) + "<span style='font-size:36pt;'> &ndash; </span>" + QString::number(list_entry.fee_to - 1));// maybe not - 1
                 }
                 //fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
 
@@ -414,7 +414,7 @@ void MempoolDetail::resizeEvent(QResizeEvent *event)
         0+13, // ok
         rect().top()+GRAPH_PADDING_TOP+5, // ok
         //rect().width(),
-        rect().width() - GRAPH_PADDING_RIGHT + 20,
+        rect().width() - GRAPH_PADDING_RIGHT + 30,
         rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM*10
     );
 

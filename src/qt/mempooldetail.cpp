@@ -47,12 +47,6 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 
     }
 
-    m_gfx_detail = new QGraphicsView(this);
-    m_scene = new QGraphicsScene(m_gfx_detail);
-    m_gfx_detail->setScene(m_scene);
-    m_gfx_detail->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    m_gfx_detail->setBackgroundBrush(m_gfx_detail->palette().base());
-
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MempoolDetail::updateFeeTable);
     m_timer->start(1000);
@@ -81,16 +75,6 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_button_layout->addWidget(m_font_bigger_button);
     m_button_layout->addWidget(m_font_reset_button);
 
-    QVBoxLayout* main_layout = new QVBoxLayout(this);
-    main_layout->addLayout(m_button_layout);
-    main_layout->addWidget(m_gfx_detail);
-    setLayout(main_layout);
-
-    connect(m_font_bigger_button, &QToolButton::clicked, this, &MempoolDetail::fontBigger);
-    connect(m_font_smaller_button, &QToolButton::clicked, this, &MempoolDetail::fontSmaller);
-    connect(m_font_reset_button, &QToolButton::clicked, this, &MempoolDetail::resetFontSize);
-
-
     m_fee_table_model = new MempoolFeeTableModel(this);
     m_fee_table = new QTableView(this);
     m_fee_table->setModel(m_fee_table_model);
@@ -102,350 +86,40 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
     m_fee_table->setAlternatingRowColors(true);
-    //m_fee_table->setStyleSheet("QTableView { alternate-background-color: #f0f0f0; background-color: #e0e0e0; } QHeaderView::section { background-color: #d0d0d0; }");
     m_fee_table->setStyleSheet("");
-m_fee_table->setSortingEnabled(true);
+    m_fee_table->setSortingEnabled(true);
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
     m_fee_table->verticalHeader()->setVisible(true);
-    //m_fee_table->sortByColumn(MempoolFeeTableModel::FeeRange, Qt::DescendingOrder);
 
-    //if (m_clientmodel)
-        //drawFeeRects();
+    QVBoxLayout* main_layout = new QVBoxLayout(this);
+    main_layout->addLayout(m_button_layout);
+    main_layout->addWidget(m_fee_table);
+    setLayout(main_layout);
+
+    connect(m_font_bigger_button, &QToolButton::clicked, this, &MempoolDetail::fontBigger);
+    connect(m_font_smaller_button, &QToolButton::clicked, this, &MempoolDetail::fontSmaller);
+    connect(m_font_reset_button, &QToolButton::clicked, this, &MempoolDetail::resetFontSize);
+
+    connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModelIndex &previous) {
+        if (!current.isValid()) {
+            m_selected_range = -1;
+        } else {
+            m_selected_range = current.row();
+        }
+        if (m_clientmodel) {
+            Q_EMIT m_clientmodel->mempoolRangeSelected(m_selected_range);
+        }
+    });
 }
 
-void MempoolDetail::drawFeeRanges( qreal bottom, QFont LABELFONT){
-
-    if (ADD_FEE_RANGES) {
-        QGraphicsTextItem *fee_range_title =
-            m_scene->addText("Fee ranges\n(sat/b)", LABELFONT);
-        fee_range_title->setPos(2, bottom+10);
-        }
-}
-
-void MempoolDetail::drawFeeRects( qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_txcount, bool ADD_TEXT, QFont LABELFONT){
-
-    //m_selected_range = 0;
-    double bottom_display_ratio = (bottom/display_up_to_range);
-
-    if (MEMPOOL_GRAPH_LOGGING){
-
-        LogPrintf("\nbottom = %s\n",bottom);
-        LogPrintf("\nbottom_display_ratio = %s\n",bottom_display_ratio);
-        LogPrintf("\nmaxwidth = %s\n",maxwidth);
-        LogPrintf("\ndisplay_up_to_range = %s\n",display_up_to_range);
-        LogPrintf("\nfee_path_delta = %s\n",QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600).toDouble());
-
-    }
-        qreal c_y = bottom;
-        c_y-=C_MARGIN;
-        int i = 0;
-        for (const interfaces::mempool_feeinfo& list_entry : m_clientmodel->m_mempool_feehist[0].second) {
-
-        if (i > display_up_to_range) { continue; }
-
-            ClickableRectItem *fee_rect_detail = new ClickableRectItem();
-            if (c_y < (bottom + GRAPH_PADDING_BOTTOM + 80))
-                //fee_rect_detail->setRect(C_X, c_y-7, C_W+100, C_H);
-                fee_rect_detail->setRect(C_X, c_y-7, maxwidth, C_H);
-
-            if (MEMPOOL_GRAPH_LOGGING){
-                LogPrintf("\nfee_path_delta = %s\n", typeid(m_clientmodel->m_mempool_feehist[0].second).name());
-                LogPrintf("\n");
-            }
-
-            //Stack of rects on in side panel
-            QColor brush_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
-            brush_color.setAlpha(255);
-            if (m_selected_range >= 0 && m_selected_range != i) {
-                brush_color.setAlpha(100); // white text dimmed
-            }
-
-            fee_rect_detail->setBrush(QBrush(brush_color));
-            //fee_rect_detail->setPen(Qt::NoPen); // no outline only fill with QBrush
-            fee_rect_detail->setCursor(Qt::PointingHandCursor);
-            connect(fee_rect_detail, &ClickableRectItem::objectClicked, [this, i](QGraphicsItem*item) {
-                // if clicked, we select or deselect if selected
-                if (m_selected_range == i) {
-                    //m_selected_range = -1;
-                } else {
-                    m_selected_range = i;
-                }
-                if (m_clientmodel) {
-                    Q_EMIT m_clientmodel->mempoolRangeSelected(m_selected_range);
-                }
-                drawFeeRects();
-            });
-
-            if (ADD_FEE_RECTS){//order matters!
-
-                if (fee_subtotal_txcount > 0){ m_scene->addItem(fee_rect_detail); }
-
-            }
 
 
-            if (ADD_FEE_RANGES){
 
-                QGraphicsTextItem *fee_text = m_scene->addText("fee_text", LABELFONT);
-                ///
-                if (i == static_cast<int>(m_clientmodel->m_mempool_feehist[0].second.size() - 1)) {// maybe not = 1
-                    fee_text->setHtml(QString::number(list_entry.fee_from) + "<span style='font-size:36pt;'>+</span>");
-                } else {
-                    fee_text->setHtml(QString::number(list_entry.fee_from - 1) + "<span style='font-size:36pt;'> &ndash; </span>" + QString::number(list_entry.fee_to - 1));// maybe not - 1
-                }
-                //fee_text->setPlainText(QString::number(list_entry.fee_from)+"-"+QString::number(list_entry.fee_to));
-
-                fee_text->setDefaultTextColor(Qt::white);
-                fee_text->setFont(LABELFONT);
-                fee_text->setPos(4+C_W-7, c_y-7);
-                QString total_text = tr(">>>--->").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
-
-                LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
-
-                if(ADD_TOTAL_TEXT){
-
-                    QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, LABELFONT);
-                    item_tx_count->setPos(C_W+10, c_y-40);
-
-                }
-
-                if (fee_subtotal_txcount > 0){ m_scene->addItem(fee_text); }
-
-            }
-
-            c_y-=C_H+C_MARGIN+C_MARGIN;
-            LogPrintf("\nc_y = %s",c_y);
-            i++;
-            LogPrintf("\ni = %s\n",i);
-        }
-
-}
-
-void MempoolDetail::drawFeeRects()
-{
-    if (!m_clientmodel)
-        return;
-
-    m_scene->clear();
-
-    //
-    qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
-    // TODO: calc dynamic GRAPH_PADDING_BOTTOM
-    const qreal bottom = (m_gfx_detail->scene()->sceneRect().height() - GRAPH_PADDING_BOTTOM);
-    const qreal maxheight_g = (m_gfx_detail->scene()->sceneRect().height() - (GRAPH_PADDING_TOP + GRAPH_PADDING_TOP_LABEL + GRAPH_PADDING_BOTTOM)*3 );
-    if (MEMPOOL_GRAPH_LOGGING){
-
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("bottom = %s\n",bottom);
-        LogPrintf("maxheight_g = %s\n",maxheight_g);
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-        LogPrintf("\n");
-
-    }
-
-    std::vector<QPainterPath> fee_paths;
-    std::vector<size_t> fee_subtotal_txcount;
-    size_t max_txcount=0;
-    QFont gridFont;
-    gridFont.setPointSize(m_font_size);
-	gridFont.setWeight(QFont::Bold);
-    int display_up_to_range = 0;
-    //let view touch boths sides//we will place an over lay of boxes 
-    qreal maxwidth = m_gfx_detail->scene()->sceneRect().width();// - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT);
-    {
-        // we are going to access the clientmodel feehistogram directly avoiding a copy
-        QMutexLocker locker(&m_clientmodel->m_mempool_locker);
-
-        size_t max_txcount_graph=0;
-
-        if (m_clientmodel->m_mempool_feehist.size() == 0) {
-            // draw nothing
-            return;
-        }
-
-        fee_subtotal_txcount.resize(m_clientmodel->m_mempool_feehist[0].second.size());
-        // calculate max tx for upper bound of chart
-        for (const ClientModel::mempool_feehist_sample& sample : m_clientmodel->m_mempool_feehist) {
-            uint64_t txcount = 0;
-            int i = 0;
-            for (const interfaces::mempool_feeinfo& list_entry : sample.second) {
-                LogPrintf("i = %s\n", i);
-                txcount += list_entry.tx_count;
-
-                LogPrintf("txcount = %s\n", txcount);
-
-                fee_subtotal_txcount[i] += list_entry.tx_count;
-
-                LogPrintf("list_entry.tx_count = %s\n", list_entry.tx_count );
-                LogPrintf("fee_subtotal_txcount[i] = %s\n",fee_subtotal_txcount[i]);
-                i++;
-            }
-            if (txcount > max_txcount) max_txcount = txcount;
-                LogPrintf("maxcount = %s\n", max_txcount);
-        }
-
-        // hide ranges we don't have txns
-        for(size_t i = 0; i < fee_subtotal_txcount.size(); i++) {
-            if (fee_subtotal_txcount[i] > 0) {
-                display_up_to_range = i;
-            }
-        }
-
-        //draw wallet txs here
-        //// make a nice y-axis scale
-        //const int amount_of_h_lines = 5;
-        //if (max_txcount > 0) {
-        //    int val = qFloor(log10(1.0*max_txcount/amount_of_h_lines));
-        //    int stepbase = qPow(10.0f, val);
-        //    int step = qCeil((1.0*max_txcount/amount_of_h_lines) / stepbase) * stepbase;
-        //    max_txcount_graph = step*amount_of_h_lines;
-        //    if (MEMPOOL_GRAPH_LOGGING){
-        //        LogPrintf("\n");
-        //        LogPrintf("\n");
-        //        LogPrintf("\n");
-        //        LogPrintf("max_txcount_graph = %s\n",max_txcount_graph);
-        //        LogPrintf("\n");
-        //        LogPrintf("\n");
-        //        LogPrintf("\n");
-        //    }
-        //}
-
-        // calculate the x axis step per sample
-        // we ignore the time difference of collected samples due to locking issues
-        const qreal x_increment = 1.0 * (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT) ) / m_clientmodel->m_mempool_max_samples; //samples.size();
-        QPointF current_x_bottom = QPointF(current_x,bottom);
-
-        // draw the paths
-        bool first = true;
-        for (const ClientModel::mempool_feehist_sample& sample : m_clientmodel->m_mempool_feehist) {
-            current_x += x_increment;
-            int i = 0;
-            qreal y = bottom;
-            for (const interfaces::mempool_feeinfo& list_entry : sample.second) {
-                if (i > display_up_to_range) {
-                    // skip ranges without txns
-                    continue;
-                }
-                y -= (maxheight_g / max_txcount_graph * list_entry.tx_count);
-                if (first) {
-                    // first sample, initiate the path with first point
-                    //                        TODO:dynamic scalar
-                    fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR*current_x, y)); // affects scale height draw
-                }
-                else {
-                    //              TODO:dynamic scalar
-                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR*current_x, y); // affects scale height draw
-                }
-                i++;
-            }
-            first = false;
-        }
-    } // release lock for the actual drawing
-
-    int i = 0;
-    QString total_text = tr("").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall/3600));
-    //QString total_text = tr("Last %1 hours").arg(QString::number(m_clientmodel->m_mempool_max_samples*m_clientmodel->m_mempool_collect_intervall));//10800 units
-    for (auto feepath : fee_paths) {
-        // close paths
-        //if (i > 0) {
-        //    feepath.lineTo(fee_paths[i-1].currentPosition());
-        //    feepath.connectPath(fee_paths[i-1].toReversed());
-        //    //
-        //} else {
-        //    feepath.lineTo(current_x, bottom);
-        //    feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
-        //}
-
-
-        QColor pen_color = colors[(i < static_cast<int>(colors.size()) ? i : static_cast<int>(colors.size())-1)];
-        QColor brush_color = pen_color;
-        //mempool paths 
-        pen_color.setAlpha(255);
-        brush_color.setAlpha(200);
-        if (m_selected_range >= 0 && m_selected_range != i) {
-            //dimmer
-            pen_color.setAlpha(127);
-            brush_color.setAlpha(100);
-        }
-        if (m_selected_range >= 0 && m_selected_range == i) {
-            total_text = ">>>TXs in this range: "+QString::number(fee_subtotal_txcount[i]);
-            LogPrintf("\n%s",m_clientmodel->m_mempool_feehist[0].second.size());
-        }
-
-        //LogPrintf("\nfee_subtotal_txcount[i] = %s",fee_subtotal_txcount[i]);
-        
-        LogPrintf("bottom=%s, maxwidth=%s, display_up_to_range=%s, fee_subtotal_txcount=%s, ADD_TEXT=%s", bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i], ADD_TEXT);
-        if (fee_subtotal_txcount[i] > 0) { drawFeeRects(bottom, maxwidth, display_up_to_range, fee_subtotal_txcount[i], ADD_TEXT, gridFont); }
-
-        QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        //m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
-        i++;
-        LogPrintf("\ni=%s",i);
-    }
-
-    if(ADD_TOTAL_TEXT){
-
-        QGraphicsTextItem *item_tx_count = m_scene->addText(total_text, gridFont);
-        item_tx_count->setPos(ITEM_TX_COUNT_PADDING_LEFT, bottom+20);
-
-    }
-
-}//end drawFeeRects()
-
-// We override the virtual resizeEvent of the QWidget to adjust tables column
-// sizes as the tables width is proportional to the dialogs width.
-void MempoolDetail::resizeEvent(QResizeEvent *event)
-{
-    QWidget::resizeEvent(event);
-    m_gfx_detail->resize(size());
-
-    m_gfx_detail->scene()->setSceneRect(
-            rect().left()/1.618,
-            rect().top()/1.618,
-            rect().width()-GRAPH_PADDING_RIGHT,
-            std::max(
-                (0.1 * rect().width() ),
-                (0.9 * rect().height())
-        ));
-
-    // Position the fee table to fill the parent's width
-    m_fee_table->setGeometry(
-        0+13, // ok
-        rect().top()+GRAPH_PADDING_TOP+5, // ok
-        //rect().width(),
-        rect().width() - GRAPH_PADDING_RIGHT + 30,
-        rect().height() - GRAPH_PADDING_TOP - GRAPH_PADDING_BOTTOM*10
-    );
-
-    m_gfx_detail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_gfx_detail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    drawFeeRects();
-}
-
-void MempoolDetail::showEvent(QShowEvent *event)
-{
-    QWidget::showEvent(event);
-    if (m_clientmodel)
-        drawFeeRects();
-}
-
-void MempoolDetail::hideEvent(QHideEvent *event)
-{
-    QWidget::hideEvent(event);
-    if (m_clientmodel)
-        drawFeeRects();
-}
 
 void MempoolDetail::setClientModel(ClientModel *model)
 {
     m_clientmodel = model;
     if (model) {
-        drawFeeRects();
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::updateFeeTable);
         MempoolDetail::updateFeeTable();
     }
@@ -488,12 +162,8 @@ void MempoolDetail::setFontSize(qreal newSize)
     settings.setValue(mempoolDetailFontSizeKey, m_font_size);
 
     if (m_clientmodel) {
-        drawFeeRects();
     }
 }
-
-void ClickableTextItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
-void ClickableRectItemDetail::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 
 void MempoolDetail::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 

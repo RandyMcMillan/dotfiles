@@ -7,11 +7,6 @@
 
 #include <QEvent>
 #include <QWidget>
-#include <QGraphicsItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsScene>
-#include <QGraphicsSimpleTextItem>
-#include <QGraphicsView>
 #include <QToolButton>
 #include <QHBoxLayout>
 #include <QTimer>
@@ -20,29 +15,9 @@
 
 #include <qt/mempoolfeetables.h>
 #include <interfaces/wallet.h>
-#include <qt/clickableitems.h>
 
 class ClientModel;
 class PlatformStyle;
-
-class ClickableTextItemDetail : public QObject, public QGraphicsSimpleTextItem
-{
-    Q_OBJECT
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-Q_SIGNALS:
-    void objectClicked(QGraphicsItem*);
-};
-
-class ClickableRectItemDetail : public QObject, public QGraphicsRectItem
-{
-    Q_OBJECT
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-Q_SIGNALS:
-    void objectClicked(QGraphicsItem*);
-};
-
 
 class MempoolDetail : public QWidget
 {
@@ -57,9 +32,6 @@ public Q_SLOTS:
     void fontBigger();
     void fontSmaller();
     void resetFontSize();
-    void drawFeeRects();
-    void drawFeeRanges(qreal bottom, QFont LABELFONT);
-    void drawFeeRects(qreal bottom, int maxwidth, int display_up_to_range, int fee_subtotal_tx, bool ADD_TEXT, QFont LABELFONT);
     void updateFeeTable();
 
     void mousePressEvent(QMouseEvent        *event) override;
@@ -80,17 +52,11 @@ private:
     ClientModel* m_clientmodel = Q_NULLPTR;
     const PlatformStyle* m_platform_style{nullptr};
 
-    QGraphicsView *m_gfx_detail;
-    QGraphicsScene *m_scene;
-
     QTableView *m_fee_table{nullptr};
     MempoolFeeTableModel *m_fee_table_model{nullptr};
 
     virtual void enterEvent(QEnterEvent      *event) override;
     virtual void leaveEvent(QEvent           *event) override;
-    virtual void resizeEvent(QResizeEvent    *event) override;
-    virtual void showEvent(QShowEvent        *event) override;
-    virtual void hideEvent(QHideEvent        *event) override;
 
     int m_selected_range = -1;
     qreal m_font_size;

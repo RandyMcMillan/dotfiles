@@ -66,9 +66,6 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
     } else if (role == Qt::BackgroundRole) {
         int row = index.row();
         QColor background_color = colors[(row < static_cast<int>(colors.size()) ? row : static_cast<int>(colors.size()) - 1)];
-        if (m_selected_range >= 0 && m_selected_range != row) {
-            background_color.setAlpha(100); // Dim non-selected rows
-        }
         return background_color;
     } else if (role == Qt::ForegroundRole) {
         if (m_selected_range == index.row()) {

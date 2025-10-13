@@ -85,7 +85,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
-    m_fee_table->setAlternatingRowColors(true);
+    m_fee_table->setAlternatingRowColors(false);
     m_fee_table->setStyleSheet("");
     m_fee_table->setSortingEnabled(true);
     m_fee_table->horizontalHeader()->setStretchLastSection(true);

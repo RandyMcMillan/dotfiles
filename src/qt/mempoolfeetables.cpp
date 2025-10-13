@@ -100,6 +100,8 @@ QVariant MempoolFeeTableModel::headerData(int section, Qt::Orientation orientati
         if(role == Qt::DisplayRole && section < columns.size())
         {
             return columns[section];
+        } else if (role == Qt::BackgroundRole) {
+            return QApplication::palette().window().color();
         }
     }
     return QVariant();

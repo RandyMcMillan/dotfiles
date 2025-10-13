@@ -110,6 +110,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
         if (m_clientmodel) {
             Q_EMIT m_clientmodel->mempoolRangeSelected(m_selected_range);
         }
+        m_fee_table_model->setSelectedRange(m_selected_range);
     });
 }
 
@@ -176,6 +177,7 @@ void MempoolDetail::onRangeSelected(int range)
     } else {
         m_fee_table->clearSelection();
     }
+    m_fee_table_model->setSelectedRange(range);
 }
 
 void MempoolDetail::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);

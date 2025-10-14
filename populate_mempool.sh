@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OP_RETURN_DATA="Hello From @RandyMcMillan $(date +%s)" # Data to embed in OP_RETURN
+#OP_RETURN_DATA="Hello From @RandyMcMillan $(date +%s)" # Data to embed in OP_RETURN
 
 # Configuration
 NUM_TRANSACTIONS=25        # Number of transactions to create
@@ -45,8 +45,9 @@ CURRENT_FEE_RATE=$INITIAL_FEE_RATE
 for i in $(seq 1 $NUM_TRANSACTIONS); do
     echo "--- Transaction $i ---"
 
+    OP_RETURN_DATA="mempool_recipient_$i-$(date +%s)" # Data to embed in OP_RETURN
     # Generate a new recipient address for each transaction
-    RECIPIENT_ADDRESS=$(bitcoin-cli --testnet4 getnewaddress "mempool_recipient_$i")
+    RECIPIENT_ADDRESS=$(bitcoin-cli --testnet4 getnewaddress "mempool_recipient_$i-$(date +%s)")
 
     # Create a raw transaction: spend CURRENT_UTXO, send to RECIPIENT_ADDRESS
     # fundrawtransaction will add the change output and calculate the fee

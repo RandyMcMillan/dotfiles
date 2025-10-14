@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-NUM_TRANSACTIONS=10       # Number of transactions to create
+NUM_TRANSACTIONS=100      # Number of transactions to create
 AMOUNT_PER_OUTPUT=0.00001 # BTC amount for each recipient output
 INITIAL_FEE_RATE=1        # Starting fee rate in sat/vB
 FEE_RATE_INCREMENT=1      # Increment for fee rate per transaction
@@ -54,7 +54,7 @@ for i in $(seq 1 $NUM_TRANSACTIONS); do
     RAW_TX_HEX=$(bitcoin-cli --testnet4 createrawtransaction "$INPUTS" "$OUTPUTS")
 
     # Fund the raw transaction, specifying the fee rate and change address
-    FUNDED_TX_JSON=$(bitcoin-cli --testnet4 fundrawtransaction "$RAW_TX_HEX" "{\"fee_rate\":$CURRENT_FEE_RATE, \"changeAddress\":\"$CHANGE_ADDRESS\"}")
+    FUNDED_TX_JSON=$(bitcoin-cli --testnet4 fundrawtransaction "$RAW_TX_HEX" '{"fee_rate":'$CURRENT_FEE_RATE', "changeAddress":"'$CHANGE_ADDRESS'"}')
     FUNDED_TX_HEX=$(echo "$FUNDED_TX_JSON" | jq -r '.hex')
     FEE=$(echo "$FUNDED_TX_JSON" | jq -r '.fee')
 
@@ -104,4 +104,5 @@ for i in $(seq 1 $NUM_TRANSACTIONS); do
 done
 
 echo "Mempool population script finished."
-echo "You can check the mempool with: bitcoin-cli getrawmempool"
+echo "You can check the mempool with: bitcoin-cli --testnet4 getrawmempool"
+bitcoin-cli --testnet4 getrawmempool

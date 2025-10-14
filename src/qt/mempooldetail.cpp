@@ -15,7 +15,6 @@
 #include <qt/platformstyle.h>
 
 
-const qreal FONT_SIZE_STEP = 1.0;
 const QSize FONT_RANGE(8, 24);
 const char mempoolDetailFontSizeKey[] = "mempoolDetailFontSize";
 

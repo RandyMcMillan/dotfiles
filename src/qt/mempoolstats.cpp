@@ -195,6 +195,9 @@ void MempoolStats::drawChart()
 
         for (const ClientModel::mempool_feehist_sample& sample : m_clientmodel->m_mempool_feehist) {
             current_x += x_increment;
+            // Ensure current_x does not exceed the rightmost boundary
+            qreal clamped_current_x = std::min(current_x, GRAPH_PADDING_LEFT + maxwidth);
+
             int i = 0;
             qreal y_current_sample = bottom;
             for (const interfaces::mempool_feeinfo& list_entry : sample.second) {
@@ -205,9 +208,9 @@ void MempoolStats::drawChart()
 
                 if (first_sample) {
                     fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR * initial_x_for_paths, bottom));
-                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR * current_x, y_current_sample);
+                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR * clamped_current_x, y_current_sample);
                 } else {
-                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR * current_x, y_current_sample);
+                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR * clamped_current_x, y_current_sample);
                 }
                 i++;
             }
@@ -226,7 +229,7 @@ void MempoolStats::drawChart()
 
         } else {
 
-            feepath.lineTo(current_x, bottom);
+            feepath.lineTo(GRAPH_PATH_SCALAR * std::min(current_x, GRAPH_PADDING_LEFT + maxwidth), bottom);
             feepath.lineTo(GRAPH_PADDING_LEFT, bottom);
 
         }

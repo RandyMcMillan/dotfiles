@@ -9,6 +9,7 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSimpleTextItem>
+#include <QGraphicsPathItem>
 #include <QObject>
 
 class ClickableTextItem : public QObject, public QGraphicsSimpleTextItem
@@ -27,6 +28,22 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 Q_SIGNALS:
     void objectClicked(QGraphicsItem*);
+};
+
+class ClickableFeePathItem : public QObject, public QGraphicsPathItem
+{
+    Q_OBJECT
+public:
+    ClickableFeePathItem(int feeRangeIndex, QGraphicsItem *parent = nullptr);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
+Q_SIGNALS:
+    void feePathClicked(int feeRangeIndex);
+
+private:
+    int m_feeRangeIndex;
 };
 
 #endif // BITCOIN_QT_CLICKABLEITEMS_H

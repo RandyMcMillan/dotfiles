@@ -46,16 +46,11 @@ public:
 
 public Q_SLOTS:
     void onMempoolRangeSelected(int selectedRange);
+    void onFeePathClicked(int feeRangeIndex);
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void showEvent(QShowEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void mouseDoubleClickEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void enterEvent(QEnterEvent *event) override;
-    void leaveEvent(QEvent *event) override;
 
     int m_selected_range = -1;
     MempoolDetail* m_mempool_detail{nullptr};
@@ -63,6 +58,7 @@ protected:
     std::set<interfaces::WalletTx> m_wallet_transactions;
     std::vector<std::unique_ptr<interfaces::Handler>> m_wallet_handlers;
     QList<QGraphicsItem*> m_wallet_indicator_items;
+    QList<ClickableFeePathItem*> m_fee_path_items;
 
 public Q_SLOTS:
     void onWalletTxChanged();

@@ -6,3 +6,16 @@
 
 void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
+
+ClickableFeePathItem::ClickableFeePathItem(int feeRangeIndex, QGraphicsItem *parent)
+    : QGraphicsPathItem(parent),
+      m_feeRangeIndex(feeRangeIndex)
+{
+    setFlag(QGraphicsItem::ItemIsSelectable);
+}
+
+void ClickableFeePathItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event);
+    Q_EMIT feePathClicked(m_feeRangeIndex);
+}

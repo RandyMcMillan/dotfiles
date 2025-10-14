@@ -3,10 +3,10 @@
 OP_RETURN_DATA="Hello From @RandyMcMillan $(date +%s)" # Data to embed in OP_RETURN
 
 # Configuration
-NUM_TRANSACTIONS=10       # Number of transactions to create
-AMOUNT_PER_OUTPUT=0.00001 # BTC amount for each recipient output
-INITIAL_FEE_RATE=1        # Starting fee rate in sat/vB
-FEE_RATE_INCREMENT=1      # Increment for fee rate per transaction
+NUM_TRANSACTIONS=25        # Number of transactions to create
+AMOUNT_PER_OUTPUT=0.00001  # BTC amount for each recipient output
+INITIAL_FEE_RATE=1         # Starting fee rate in sat/vB
+FEE_RATE_INCREMENT=1       # Increment for fee rate per transaction
 
 echo "Starting mempool population script for testnet..."
 echo "Creating $NUM_TRANSACTIONS transactions, starting with fee rate $INITIAL_FEE_RATE sat/vB"

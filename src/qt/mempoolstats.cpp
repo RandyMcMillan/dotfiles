@@ -177,7 +177,14 @@ void MempoolStats::drawChart()
 
         // calculate the x axis step per sample
         // we ignore the time difference of collected samples due to locking issues
-        const qreal x_increment = 1.0 * (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT) ) / m_clientmodel->m_mempool_max_samples; //samples.size();
+        qreal x_increment;
+        if (m_clientmodel->m_mempool_feehist.size() > 1) {
+            x_increment = 1.0 * (width() - (GRAPH_PADDING_LEFT + GRAPH_PADDING_RIGHT) ) / (m_clientmodel->m_mempool_feehist.size() - 1);
+        } else if (m_clientmodel->m_mempool_feehist.size() == 1) {
+            x_increment = maxwidth; // If only one sample, fill the width
+        } else {
+            x_increment = 0; // No samples, no increment
+        }
         QPointF current_x_bottom = QPointF(current_x,bottom);
 
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);

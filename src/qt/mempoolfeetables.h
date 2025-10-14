@@ -55,12 +55,12 @@ public:
     Qt::SortOrder m_sort_order = Qt::DescendingOrder;
     const QStringList columns{
         /*: Title of Mempool Fee Table column which contains the fee range. */
-        tr("Fee Range (sat/vB)"),
+        tr("Fee"),
         /*: Title of Mempool Fee Table column which contains the number of transactions in the fee range. */
-        tr("Transactions"),
+        tr("Txs"),
         /*: Title of Mempool Fee Table column which contains the total size of transactions in the fee range. */
-        tr("Total Size"),
-        tr("Total Weight (WU)")};
+        tr("Size"),
+        tr("Weight")};
 
     static const std::vector<QString> FEE_RANGE_STRINGS;
 };

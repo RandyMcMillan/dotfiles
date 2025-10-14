@@ -2,16 +2,16 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <QtMath>
 #include <QMouseEvent>
-#include <qt/guiutil.h>
-#include <qt/clientmodel.h>
-#include <qt/mempooldetail.h>
-#include <qt/clickableitems.h>
-#include <qt/mempoolconstants.h>
-#include <qt/forms/ui_mempooldetail.h>
-#include <interfaces/wallet.h>
 #include <QSettings>
+#include <QtMath>
+#include <interfaces/wallet.h>
+#include <qt/clickableitems.h>
+#include <qt/clientmodel.h>
+#include <qt/forms/ui_mempooldetail.h>
+#include <qt/guiutil.h>
+#include <qt/mempoolconstants.h>
+#include <qt/mempooldetail.h>
 #include <qt/platformstyle.h>
 
 
@@ -19,13 +19,13 @@ const QSize FONT_RANGE(8, 24);
 const char mempoolDetailFontSizeKey[] = "mempoolDetailFontSize";
 
 
-MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
+MempoolDetail::MempoolDetail(QWidget* parent) : QWidget(parent)
 {
     if (parent) {
         parent->installEventFilter(this);
         raise();
     }
-    //setMouseTracking(true);
+    // setMouseTracking(true);
 
     QSettings settings;
     m_font_size = settings.value(mempoolDetailFontSizeKey, 12).toReal();
@@ -34,16 +34,14 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
     }
 
     // autoadjust font size
-    QGraphicsTextItem testText("jY"); //screendesign expected 27.5 pixel in width for this string
+    QGraphicsTextItem testText("jY"); // screendesign expected 27.5 pixel in width for this string
     testText.setFont(QFont(LABEL_FONT, LABEL_TITLE_SIZE, QFont::Light));
-    LABEL_TITLE_SIZE *= 27.5/testText.boundingRect().width();
-    LABEL_KV_SIZE *= 27.5/testText.boundingRect().width();
+    LABEL_TITLE_SIZE *= 27.5 / testText.boundingRect().width();
+    LABEL_KV_SIZE *= 27.5 / testText.boundingRect().width();
 
-    if (MEMPOOL_GRAPH_LOGGING){
-
-        LogPrintf("LABEL_TITLE_SIZE = %s\n",LABEL_TITLE_SIZE);
-        LogPrintf("LABEL_KV_SIZE = %s\n",LABEL_KV_SIZE);
-
+    if (MEMPOOL_GRAPH_LOGGING) {
+        LogPrintf("LABEL_TITLE_SIZE = %s\n", LABEL_TITLE_SIZE);
+        LogPrintf("LABEL_KV_SIZE = %s\n", LABEL_KV_SIZE);
     }
 
     m_timer = new QTimer(this);
@@ -54,78 +52,48 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
 
 {
-
     m_platform_style = platform_style;
-
-
-
     m_temp_widget = new QWidget(this);
-
     m_temp_widget->setFixedSize(QSize(100, 22)); // Adjust size as needed to match original button area
-
-
-
     m_top_layout = new QHBoxLayout();
-
     m_top_layout->addStretch();
-
     m_top_layout->addWidget(m_temp_widget);
-
-
 
     m_fee_table_model = new MempoolFeeTableModel(this);
 
     m_fee_table = new QTableView(this);
-
+    const int defaultSortColumn = MempoolFeeTableModel::FeeRange;
+    const Qt::SortOrder defaultSortOrder = Qt::AscendingOrder; // or Qt::DescendingOrder
+    m_fee_table->sortByColumn(defaultSortColumn, defaultSortOrder);
     m_fee_table->setModel(m_fee_table_model);
-
-
-
     m_fee_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
     m_fee_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-
-
     m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
     m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
-
     m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
-
     m_fee_table->setAlternatingRowColors(false);
-
     m_fee_table->setStyleSheet("");
-
     m_fee_table->setSortingEnabled(true);
-
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
-
     m_fee_table->verticalHeader()->setVisible(true);
+    //m_fee_table->sortByColumn(m_fee_table_model->m_sort_column, m_fee_table_model->m_sort_order);
 
-    m_fee_table->sortByColumn(m_fee_table_model->m_sort_column, m_fee_table_model->m_sort_order);
-
-
+    QHeaderView* m_fee_table_header = m_fee_table->horizontalHeader();
+    m_fee_table_header->resizeSection(MempoolFeeTableModel::FeeRange, 90);
+    m_fee_table_header->resizeSection(MempoolFeeTableModel::TxCount, 35);
+    m_fee_table_header->resizeSection(MempoolFeeTableModel::TotalSize, 55);
+    m_fee_table_header->resizeSection(MempoolFeeTableModel::TotalWeight, 50);
 
     QVBoxLayout* main_layout = new QVBoxLayout(this);
-
     main_layout->addLayout(m_top_layout);
-
     main_layout->addWidget(m_fee_table);
-
     setLayout(main_layout);
 
-
-
     connect(m_fee_table, &QTableView::clicked, this, &MempoolDetail::updateFeeTable);
-
-
-
-    connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModelIndex &previous) {
+    connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex& current, const QModelIndex& previous) {
         if (!current.isValid()) {
             m_selected_range = -1;
-        }
-        else {
+        } else {
             m_selected_range = m_fee_table_model->index(current.row(), 0).data(MempoolFeeTableModel::OriginalIndexRole).toInt();
         }
         if (m_clientmodel) {
@@ -133,88 +101,45 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
         }
         m_fee_table_model->setSelectedRange(m_selected_range);
     });
-
 }
 
-
-
-void MempoolDetail::setClientModel(ClientModel *model)
-
+void MempoolDetail::setClientModel(ClientModel* model)
 {
-
     m_clientmodel = model;
 
     if (model) {
-
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::updateFeeTable);
-
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolDetail::onRangeSelected);
-
         MempoolDetail::updateFeeTable();
-
     }
-
 }
-
-
 
 void MempoolDetail::updateFeeTable()
-
 {
-
     if (m_clientmodel) {
-
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);
-
         if (!m_clientmodel->m_mempool_feehist.empty()) {
-
             int selected_row = m_fee_table->selectionModel()->currentIndex().row();
-
             m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
-
             QSignalBlocker blocker(m_fee_table->selectionModel());
-
             if (selected_row >= 0 && selected_row < m_fee_table->model()->rowCount()) {
-
                 m_fee_table->selectRow(selected_row);
-
             }
-
         }
-
     }
-
 }
-
-
 
 void MempoolDetail::setFontSize(qreal newSize)
-
 {
-
     if (newSize < FONT_RANGE.width() || newSize > FONT_RANGE.height())
-
         return;
 
-
-
     m_font_size = newSize;
-
-
-
     QSettings settings;
-
     settings.setValue(mempoolDetailFontSizeKey, m_font_size);
-
-
-
     if (m_clientmodel) {
-
     }
-
 }
-
-
 
 void MempoolDetail::onRangeSelected(int range)
 {
@@ -235,205 +160,136 @@ void MempoolDetail::onRangeSelected(int range)
     m_fee_table_model->setSelectedRange(range);
 }
 
-
-
-void MempoolDetail::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
-
-
+void MempoolDetail::mousePressEvent(QMouseEvent* event)
+{
+    Q_EMIT objectClicked(this);
 
     QWidget::mousePressEvent(event);
-
-    if (MEMPOOL_GRAPH_LOGGING){
-
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("mousePressEvent\n");
-
-        LogPrintf("event->pos().x() %s\n",event->pos().x());
-
-        LogPrintf("event->pos().y() %s\n",event->pos().y());
-
-        LogPrintf("event->type() %s\n",event->type());
-
-        LogPrintf("event->type() %s\n",event->type());
-
+        LogPrintf("event->pos().x() %s\n", event->pos().x());
+        LogPrintf("event->pos().y() %s\n", event->pos().y());
+        LogPrintf("event->type() %s\n", event->type());
+        LogPrintf("event->type() %s\n", event->type());
     }
 
     updateFeeTable();
-
 }
 
-void MempoolDetail::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
-
-
+void MempoolDetail::mouseReleaseEvent(QMouseEvent* event)
+{
+    Q_EMIT objectClicked(this);
 
     QWidget::mouseReleaseEvent(event);
-
-    if (MEMPOOL_GRAPH_LOGGING){
-
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("mousePressEvent\n");
-
-        LogPrintf("event->pos().x() %s\n",event->pos().x());
-
-        LogPrintf("event->pos().y() %s\n",event->pos().y());
-
-        LogPrintf("event->type() %s\n",event->type());
-
-        LogPrintf("event->type() %s\n",event->type());
-
+        LogPrintf("event->pos().x() %s\n", event->pos().x());
+        LogPrintf("event->pos().y() %s\n", event->pos().y());
+        LogPrintf("event->type() %s\n", event->type());
+        LogPrintf("event->type() %s\n", event->type());
     }
-
 }
 
-void MempoolDetail::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
-
-
+void MempoolDetail::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    Q_EMIT objectClicked(this);
 
     QWidget::mouseDoubleClickEvent(event);
-
-    if (MEMPOOL_GRAPH_LOGGING){
-
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("mousePressEvent\n");
-
-        LogPrintf("event->pos().x() %s\n",event->pos().x());
-
-        LogPrintf("event->pos().y() %s\n",event->pos().y());
-
+        LogPrintf("event->pos().x() %s\n", event->pos().x());
+        LogPrintf("event->pos().y() %s\n", event->pos().y());
     }
-
     updateFeeTable();
-
 }
 
-void MempoolDetail::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
-
-
+void MempoolDetail::mouseMoveEvent(QMouseEvent* event)
+{
+    Q_EMIT objectClicked(this);
 
     QWidget::mouseMoveEvent(event);
-
-    if (MEMPOOL_GRAPH_LOGGING){
-
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("mousePressEvent\n");
-
-        LogPrintf("event->pos().x() %s\n",event->pos().x());
-
-        LogPrintf("event->pos().y() %s\n",event->pos().y());
-
+        LogPrintf("event->pos().x() %s\n", event->pos().x());
+        LogPrintf("event->pos().y() %s\n", event->pos().y());
     }
-
 }
 
+void MempoolDetail::enterEvent(QEnterEvent* event)
+{
+    Q_EMIT objectClicked(this);
 
-
-void MempoolDetail::enterEvent(QEnterEvent *event) { Q_EMIT objectClicked(this);
-
-
-
-    QEvent *this_event = event;
-
-    if (MEMPOOL_GRAPH_LOGGING){
-
+    QEvent* this_event = event;
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("enterEvent\n");
-
-        LogPrintf("this_event->type() %s\n",this_event->type());
-
-        LogPrintf("this_event->type() %s\n",this_event->type());
-
+        LogPrintf("this_event->type() %s\n", this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
     }
-
-
-
     updateFeeTable();
-
     showFeeRanges(this_event);
-
     showFeeRects(this_event);
-
-
-
 }
 
+void MempoolDetail::leaveEvent(QEvent* event)
+{
+    Q_EMIT objectClicked(this);
 
-
-void MempoolDetail::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
-
-
-
-    QEvent *this_event = event;
-
-    if (MEMPOOL_GRAPH_LOGGING){
-
+    QEvent* this_event = event;
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("leaveEvent\n");
-
-        LogPrintf("this_event->type() %s\n",this_event->type());
-
-        LogPrintf("this_event->type() %s\n",this_event->type());
-
+        LogPrintf("this_event->type() %s\n", this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
     }
-
-
-
     hideFeeRanges(this_event);
-
     hideFeeRects(this_event);
-
-
-
 }
-
-
 
 void MempoolDetail::changeEvent(QEvent* e)
 
 {
-
     // No buttons to update on palette change anymore
 
     QWidget::changeEvent(e);
-
 }
 
 
-
-void MempoolDetail::showFeeRanges(QEvent *event){
-
-    QEvent *this_event = event;
-    if (MEMPOOL_GRAPH_LOGGING){
+void MempoolDetail::showFeeRanges(QEvent* event)
+{
+    QEvent* this_event = event;
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
-        LogPrintf("this_event->type() %s\n",this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
     }
     updateFeeTable();
-
 };
-void MempoolDetail::hideFeeRanges(QEvent *event){
-
-    QEvent *this_event = event;
-    if (MEMPOOL_GRAPH_LOGGING){
+void MempoolDetail::hideFeeRanges(QEvent* event)
+{
+    QEvent* this_event = event;
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
-        LogPrintf("this_event->type() %s\n",this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
     }
     updateFeeTable();
-
 };
 
-void MempoolDetail::showFeeRects(QEvent *event){
-
-    QEvent *this_event = event;
-    if (MEMPOOL_GRAPH_LOGGING){
+void MempoolDetail::showFeeRects(QEvent* event)
+{
+    QEvent* this_event = event;
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
-        LogPrintf("this_event->type() %s\n",this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
     }
     updateFeeTable();
-
 };
-void MempoolDetail::hideFeeRects(QEvent *event){
-
-    QEvent *this_event = event;
-    if (MEMPOOL_GRAPH_LOGGING){
+void MempoolDetail::hideFeeRects(QEvent* event)
+{
+    QEvent* this_event = event;
+    if (MEMPOOL_GRAPH_LOGGING) {
         LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
-        LogPrintf("this_event->type() %s\n",this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
+        LogPrintf("this_event->type() %s\n", this_event->type());
     }
-
 };

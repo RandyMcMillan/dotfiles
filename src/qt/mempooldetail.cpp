@@ -121,7 +121,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
 
 
 
-    connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModel-Index &previous) {
+    connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModelIndex &previous) {
         if (!current.isValid()) {
             m_selected_range = -1;
         }

@@ -60,6 +60,8 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
             return GUIUtil::formatBytes(fee_info->total_size);
         case TotalWeight:
             return (qint64)fee_info->total_weight;
+        default:
+            return QVariant();
         }
     } else if (role == Qt::DecorationRole) {
         if (column == FeeRange) {
@@ -76,7 +78,7 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
     } else if (role == Qt::BackgroundRole) {
         return QApplication::palette().window().color();
     } else if (role == Qt::ForegroundRole) {
-        if (m_selected_range == index.row()) {
+        if (m_selected_range == fee_info->original_index) {
             return QVariant(QApplication::palette().highlightedText().color());
         } else {
             return QVariant(QApplication::palette().windowText().color());
@@ -91,6 +93,8 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
         case TotalWeight:
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
+        default:
+            return QVariant();
         }
     }
     return QVariant();

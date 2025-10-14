@@ -58,6 +58,7 @@ private:
 
     virtual void enterEvent(QEnterEvent      *event) override;
     virtual void leaveEvent(QEvent           *event) override;
+    void changeEvent(QEvent* e) override;
 
     int m_selected_range = -1;
     qreal m_font_size;

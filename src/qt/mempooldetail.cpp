@@ -268,8 +268,11 @@ void MempoolDetail::changeEvent(QEvent* e)
     if (e->type() == QEvent::PaletteChange) {
         if (m_platform_style) {
             m_font_bigger_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontbigger"));
+            m_font_bigger_button->update();
             m_font_smaller_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontsmaller"));
+            m_font_smaller_button->update();
             m_font_reset_button->setIcon(m_platform_style->SingleColorIcon(":/icons/remove"));
+            m_font_reset_button->update();
         }
     }
 

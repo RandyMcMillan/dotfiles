@@ -29,7 +29,8 @@ public:
         FeeRange = 0,
         TxCount,
         TotalSize,
-        TotalWeight
+        TotalWeight,
+        OriginalIndexRole = Qt::UserRole
     };
 
     /** @name Methods overridden from QAbstractTableModel

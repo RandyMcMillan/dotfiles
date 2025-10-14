@@ -121,28 +121,17 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
 
 
 
-    connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModelIndex &previous) {
-
+    connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModel-Index &previous) {
         if (!current.isValid()) {
-
             m_selected_range = -1;
-
         }
-
         else {
-
-            m_selected_range = current.row();
-
+            m_selected_range = m_fee_table_model->index(current.row(), 0).data(MempoolFeeTableModel::OriginalIndexRole).toInt();
         }
-
         if (m_clientmodel) {
-
             Q_EMIT m_clientmodel->mempoolRangeSelected(m_selected_range);
-
         }
-
         m_fee_table_model->setSelectedRange(m_selected_range);
-
     });
 
 }
@@ -228,23 +217,22 @@ void MempoolDetail::setFontSize(qreal newSize)
 
 
 void MempoolDetail::onRangeSelected(int range)
-
 {
-
     QSignalBlocker blocker(m_fee_table->selectionModel());
-
-    if (range >= 0 && range < m_fee_table->model()->rowCount()) {
-
-        m_fee_table->selectRow(range);
-
-    } else {
-
-        //m_fee_table->clearSelection();
-
+    int row_to_select = -1;
+    for (int i = 0; i < m_fee_table_model->rowCount(); ++i) {
+        if (m_fee_table_model->index(i, 0).data(MempoolFeeTableModel::OriginalIndexRole).toInt() == range) {
+            row_to_select = i;
+            break;
+        }
     }
 
+    if (row_to_select != -1) {
+        m_fee_table->selectRow(row_to_select);
+    } else {
+        m_fee_table->clearSelection();
+    }
     m_fee_table_model->setSelectedRange(range);
-
 }
 
 

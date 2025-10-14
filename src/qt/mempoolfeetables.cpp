@@ -71,6 +71,8 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
                 return colors[static_cast<int>(colors.size()) - 1];
             }
         }
+    } else if (role == OriginalIndexRole) {
+        return fee_info->original_index;
     } else if (role == Qt::BackgroundRole) {
         return QApplication::palette().window().color();
     } else if (role == Qt::ForegroundRole) {

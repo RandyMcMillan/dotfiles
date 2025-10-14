@@ -250,13 +250,16 @@ void MempoolStats::drawChart()
                 total_text = "transactions in selected fee range: "+QString::number(m_clientmodel->m_mempool_feehist[0].second[m_selected_range].tx_count);
             }
         }
-        ClickableFeePathItem* fee_path_item = new ClickableFeePathItem(i);
-        fee_path_item->setPath(feepath);
-        fee_path_item->setPen(QPen(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        fee_path_item->setBrush(QBrush(brush_color));
-        m_scene->addItem(fee_path_item);
-        m_fee_path_items.append(fee_path_item);
-        connect(fee_path_item, &ClickableFeePathItem::feePathClicked, this, &MempoolStats::onFeePathClicked);
+        if (static_cast<size_t>(i) < m_clientmodel->m_mempool_feehist[0].second.size()) {
+            int original_index = m_clientmodel->m_mempool_feehist[0].second[i].original_index;
+            ClickableFeePathItem* fee_path_item = new ClickableFeePathItem(original_index);
+            fee_path_item->setPath(feepath);
+            fee_path_item->setPen(QPen(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            fee_path_item->setBrush(QBrush(brush_color));
+            m_scene->addItem(fee_path_item);
+            m_fee_path_items.append(fee_path_item);
+            connect(fee_path_item, &ClickableFeePathItem::feePathClicked, this, &MempoolStats::onFeePathClicked);
+        }
         i++;
     }
 

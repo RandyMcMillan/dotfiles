@@ -183,29 +183,28 @@ void MempoolStats::drawChart()
         drawHorzLines(x_increment, current_x_bottom, amount_of_h_lines, maxheight_g, maxwidth, bottom, max_txcount_graph, gridFont);
 
         // draw the paths
-        bool first = true;
+        bool first_sample = true;
+        qreal initial_x_for_paths = GRAPH_PADDING_LEFT;
+
         for (const ClientModel::mempool_feehist_sample& sample : m_clientmodel->m_mempool_feehist) {
             current_x += x_increment;
             int i = 0;
-            qreal y = bottom;
+            qreal y_current_sample = bottom;
             for (const interfaces::mempool_feeinfo& list_entry : sample.second) {
                 if (i > display_up_to_range) {
-                    // skip ranges without txns
                     continue;
                 }
-                y -= (maxheight_g / max_txcount_graph * list_entry.tx_count);
-                if (first) {
-                    // first sample, initiate the path with first point
-                    //                        TODO:dynamic scalar
-                    fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR*current_x, y));//affects scale height draw
-                }
-                else {
-                    //              TODO:dynamic scalar
-                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR*current_x, y);//affects scale height draw
+                y_current_sample -= (maxheight_g / max_txcount_graph * list_entry.tx_count);
+
+                if (first_sample) {
+                    fee_paths.emplace_back(QPointF(GRAPH_PATH_SCALAR * initial_x_for_paths, bottom));
+                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR * current_x, y_current_sample);
+                } else {
+                    fee_paths[i].lineTo(GRAPH_PATH_SCALAR * current_x, y_current_sample);
                 }
                 i++;
             }
-            first = false;
+            first_sample = false;
         }
     } // release lock for the actual drawing
 

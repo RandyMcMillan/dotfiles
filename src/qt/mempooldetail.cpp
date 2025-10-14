@@ -53,231 +53,358 @@ MempoolDetail::MempoolDetail(QWidget *parent) : QWidget(parent)
 }
 
 void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
+
 {
+
     m_platform_style = platform_style;
 
-    m_font_bigger_button = new QToolButton(this);
-    m_font_bigger_button->setToolTip(tr("Increase font size"));
-    m_font_bigger_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontbigger"));
-    GUIUtil::AddButtonShortcut(m_font_bigger_button, tr("Ctrl++"));
-    GUIUtil::AddButtonShortcut(m_font_bigger_button, tr("Ctrl+="));
 
-    m_font_smaller_button = new QToolButton(this);
-    m_font_smaller_button->setToolTip(tr("Decrease font size"));
-    m_font_smaller_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontsmaller"));
-    GUIUtil::AddButtonShortcut(m_font_smaller_button, tr("Ctrl+-"));
-    GUIUtil::AddButtonShortcut(m_font_smaller_button, tr("Ctrl+_"));
 
-    m_font_reset_button = new QToolButton(this);
-    m_font_reset_button->setToolTip(tr("Reset font size"));
-    m_font_reset_button->setIcon(m_platform_style->SingleColorIcon(":/icons/remove"));
-    GUIUtil::AddButtonShortcut(m_font_reset_button, tr("Ctrl+0"));
+    m_temp_widget = new QWidget(this);
 
-    m_button_layout = new QHBoxLayout();
-    m_button_layout->addStretch();
-    m_button_layout->addWidget(m_font_smaller_button);
-    m_button_layout->addWidget(m_font_bigger_button);
-    m_button_layout->addWidget(m_font_reset_button);
+    m_temp_widget->setFixedSize(QSize(100, 22)); // Adjust size as needed to match original button area
+
+
+
+    m_top_layout = new QHBoxLayout();
+
+    m_top_layout->addStretch();
+
+    m_top_layout->addWidget(m_temp_widget);
+
+
 
     m_fee_table_model = new MempoolFeeTableModel(this);
+
     m_fee_table = new QTableView(this);
+
     m_fee_table->setModel(m_fee_table_model);
 
+
+
     m_fee_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     m_fee_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+
+
     m_fee_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+
     m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
+
     m_fee_table->setAlternatingRowColors(false);
+
     m_fee_table->setStyleSheet("");
+
     m_fee_table->setSortingEnabled(true);
+
     m_fee_table->horizontalHeader()->setStretchLastSection(true);
+
     m_fee_table->verticalHeader()->setVisible(true);
+
     m_fee_table->sortByColumn(m_fee_table_model->m_sort_column, m_fee_table_model->m_sort_order);
 
+
+
     QVBoxLayout* main_layout = new QVBoxLayout(this);
-    main_layout->addLayout(m_button_layout);
+
+    main_layout->addLayout(m_top_layout);
+
     main_layout->addWidget(m_fee_table);
+
     setLayout(main_layout);
 
-    connect(m_font_bigger_button, &QToolButton::clicked, this, &MempoolDetail::fontBigger);
-    connect(m_font_smaller_button, &QToolButton::clicked, this, &MempoolDetail::fontSmaller);
-    connect(m_font_reset_button, &QToolButton::clicked, this, &MempoolDetail::resetFontSize);
+
+
     connect(m_fee_table, &QTableView::clicked, this, &MempoolDetail::updateFeeTable);
 
+
+
     connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex &current, const QModelIndex &previous) {
+
         if (!current.isValid()) {
+
             m_selected_range = -1;
-        } else {
+
+        }
+
+        else {
+
             m_selected_range = current.row();
+
         }
+
         if (m_clientmodel) {
+
             Q_EMIT m_clientmodel->mempoolRangeSelected(m_selected_range);
+
         }
+
         m_fee_table_model->setSelectedRange(m_selected_range);
+
     });
+
 }
-
-
 
 
 
 void MempoolDetail::setClientModel(ClientModel *model)
+
 {
+
     m_clientmodel = model;
+
     if (model) {
+
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::updateFeeTable);
+
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolDetail::onRangeSelected);
+
         MempoolDetail::updateFeeTable();
+
     }
+
 }
+
+
 
 void MempoolDetail::updateFeeTable()
+
 {
+
     if (m_clientmodel) {
+
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);
+
         if (!m_clientmodel->m_mempool_feehist.empty()) {
+
             int selected_row = m_fee_table->selectionModel()->currentIndex().row();
+
             m_fee_table_model->updateModel(m_clientmodel->m_mempool_feehist[0].second);
+
             QSignalBlocker blocker(m_fee_table->selectionModel());
+
             if (selected_row >= 0 && selected_row < m_fee_table->model()->rowCount()) {
+
                 m_fee_table->selectRow(selected_row);
-            } else {
-                m_fee_table->clearSelection();
+
             }
+
         }
+
     }
+
 }
 
-void MempoolDetail::fontBigger()
-{
-    setFontSize(m_font_size + FONT_SIZE_STEP);
-}
-
-void MempoolDetail::fontSmaller()
-{
-    setFontSize(m_font_size - FONT_SIZE_STEP);
-}
-
-void MempoolDetail::resetFontSize()
-{
-    setFontSize(12);
-}
 
 
 void MempoolDetail::setFontSize(qreal newSize)
+
 {
+
     if (newSize < FONT_RANGE.width() || newSize > FONT_RANGE.height())
+
         return;
+
+
 
     m_font_size = newSize;
 
+
+
     QSettings settings;
+
     settings.setValue(mempoolDetailFontSizeKey, m_font_size);
 
+
+
     if (m_clientmodel) {
+
     }
+
 }
 
+
+
 void MempoolDetail::onRangeSelected(int range)
+
 {
+
     QSignalBlocker blocker(m_fee_table->selectionModel());
+
     if (range >= 0 && range < m_fee_table->model()->rowCount()) {
+
         m_fee_table->selectRow(range);
+
     } else {
+
         //m_fee_table->clearSelection();
+
     }
+
     m_fee_table_model->setSelectedRange(range);
+
 }
+
+
 
 void MempoolDetail::mousePressEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
+
+
     QWidget::mousePressEvent(event);
+
     if (MEMPOOL_GRAPH_LOGGING){
+
         LogPrintf("mousePressEvent\n");
+
         LogPrintf("event->pos().x() %s\n",event->pos().x());
+
         LogPrintf("event->pos().y() %s\n",event->pos().y());
+
         LogPrintf("event->type() %s\n",event->type());
+
         LogPrintf("event->type() %s\n",event->type());
+
     }
+
     updateFeeTable();
+
 }
+
 void MempoolDetail::mouseReleaseEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
+
+
     QWidget::mouseReleaseEvent(event);
+
     if (MEMPOOL_GRAPH_LOGGING){
+
         LogPrintf("mousePressEvent\n");
+
         LogPrintf("event->pos().x() %s\n",event->pos().x());
+
         LogPrintf("event->pos().y() %s\n",event->pos().y());
+
         LogPrintf("event->type() %s\n",event->type());
+
         LogPrintf("event->type() %s\n",event->type());
+
     }
+
 }
+
 void MempoolDetail::mouseDoubleClickEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
+
+
     QWidget::mouseDoubleClickEvent(event);
+
     if (MEMPOOL_GRAPH_LOGGING){
+
         LogPrintf("mousePressEvent\n");
+
         LogPrintf("event->pos().x() %s\n",event->pos().x());
+
         LogPrintf("event->pos().y() %s\n",event->pos().y());
+
     }
+
     updateFeeTable();
+
 }
+
 void MempoolDetail::mouseMoveEvent(QMouseEvent *event) { Q_EMIT objectClicked(this);
 
+
+
     QWidget::mouseMoveEvent(event);
+
     if (MEMPOOL_GRAPH_LOGGING){
+
         LogPrintf("mousePressEvent\n");
+
         LogPrintf("event->pos().x() %s\n",event->pos().x());
+
         LogPrintf("event->pos().y() %s\n",event->pos().y());
+
     }
+
 }
+
+
 
 void MempoolDetail::enterEvent(QEnterEvent *event) { Q_EMIT objectClicked(this);
 
+
+
     QEvent *this_event = event;
+
     if (MEMPOOL_GRAPH_LOGGING){
+
         LogPrintf("enterEvent\n");
+
         LogPrintf("this_event->type() %s\n",this_event->type());
+
         LogPrintf("this_event->type() %s\n",this_event->type());
+
     }
 
+
+
     updateFeeTable();
+
     showFeeRanges(this_event);
+
     showFeeRects(this_event);
 
+
+
 }
+
+
 
 void MempoolDetail::leaveEvent(QEvent *event) { Q_EMIT objectClicked(this);
 
+
+
     QEvent *this_event = event;
+
     if (MEMPOOL_GRAPH_LOGGING){
+
         LogPrintf("leaveEvent\n");
+
         LogPrintf("this_event->type() %s\n",this_event->type());
+
         LogPrintf("this_event->type() %s\n",this_event->type());
+
     }
+
+
 
     hideFeeRanges(this_event);
+
     hideFeeRects(this_event);
 
+
+
 }
+
+
 
 void MempoolDetail::changeEvent(QEvent* e)
+
 {
-    if (e->type() == QEvent::PaletteChange) {
-        if (m_platform_style) {
-            m_font_bigger_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontbigger"));
-            m_font_bigger_button->update();
-            m_font_smaller_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontsmaller"));
-            m_font_smaller_button->update();
-            m_font_reset_button->setIcon(m_platform_style->SingleColorIcon(":/icons/remove"));
-            m_font_reset_button->update();
-        }
-    }
+
+    // No buttons to update on palette change anymore
 
     QWidget::changeEvent(e);
+
 }
+
+
 
 void MempoolDetail::showFeeRanges(QEvent *event){
 

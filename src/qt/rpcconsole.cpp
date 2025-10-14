@@ -628,8 +628,6 @@ void RPCConsole::setClientModel(ClientModel *model, int bestblock_height, int64_
     }
 
     ui->mempool_detail->setClientModel(model);
-    connect(ui->fontBiggerButton, &QAbstractButton::clicked, ui->mempool_detail, &MempoolDetail::fontBigger);
-    connect(ui->fontSmallerButton, &QAbstractButton::clicked, ui->mempool_detail, &MempoolDetail::fontSmaller);
     ui->mempool_left->resize(ui->mempool_right->height(), ui->mempool_right->height());//left panel square right panel remainder
     ui->mempool_graph->setClientModel(model);
 

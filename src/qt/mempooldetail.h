@@ -30,9 +30,6 @@ public:
 
 public Q_SLOTS:
     void onRangeSelected(int range);
-    void fontBigger();
-    void fontSmaller();
-    void resetFontSize();
     void updateFeeTable();
 
     void mousePressEvent(QMouseEvent        *event) override;
@@ -65,10 +62,8 @@ private:
     void setFontSize(qreal newSize);
 
     QTimer* m_timer;
-    QToolButton* m_font_bigger_button;
-    QToolButton* m_font_smaller_button;
-    QToolButton* m_font_reset_button;
-    QHBoxLayout* m_button_layout;
+    QWidget* m_temp_widget;
+    QHBoxLayout* m_top_layout;
 };
 
 #endif // BITCOIN_QT_MEMPOOLDETAIL_H

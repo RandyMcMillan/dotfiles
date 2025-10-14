@@ -59,15 +59,19 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_font_bigger_button = new QToolButton(this);
     m_font_bigger_button->setToolTip(tr("Increase font size"));
     m_font_bigger_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontbigger"));
-    m_font_bigger_button->setIconSize(QSize(22, 22));
+    GUIUtil::AddButtonShortcut(m_font_bigger_button, tr("Ctrl++"));
+    GUIUtil::AddButtonShortcut(m_font_bigger_button, tr("Ctrl+="));
+
     m_font_smaller_button = new QToolButton(this);
     m_font_smaller_button->setToolTip(tr("Decrease font size"));
     m_font_smaller_button->setIcon(m_platform_style->SingleColorIcon(":/icons/fontsmaller"));
-    m_font_smaller_button->setIconSize(QSize(22, 22));
+    GUIUtil::AddButtonShortcut(m_font_smaller_button, tr("Ctrl+-"));
+    GUIUtil::AddButtonShortcut(m_font_smaller_button, tr("Ctrl+_"));
+
     m_font_reset_button = new QToolButton(this);
     m_font_reset_button->setToolTip(tr("Reset font size"));
     m_font_reset_button->setIcon(m_platform_style->SingleColorIcon(":/icons/remove"));
-    m_font_reset_button->setIconSize(QSize(22, 22));
+    GUIUtil::AddButtonShortcut(m_font_reset_button, tr("Ctrl+0"));
 
     m_button_layout = new QHBoxLayout();
     m_button_layout->addStretch();

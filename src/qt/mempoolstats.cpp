@@ -102,6 +102,7 @@ void MempoolStats::drawChart()
     }
 
     m_scene->clear();
+    m_fee_path_items.clear();
 
     qreal current_x = 0 + GRAPH_PADDING_LEFT; //Must be zero to begin with!!!
     // TODO: calc dynamic GRAPH_PADDING_BOTTOM
@@ -249,8 +250,16 @@ void MempoolStats::drawChart()
                 total_text = "transactions in selected fee range: "+QString::number(m_clientmodel->m_mempool_feehist[0].second[m_selected_range].tx_count);
             }
         }
-        QPen pen_blue(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        m_scene->addPath(feepath, pen_blue, QBrush(brush_color));
+        if (static_cast<size_t>(i) < m_clientmodel->m_mempool_feehist[0].second.size()) {
+            int original_index = m_clientmodel->m_mempool_feehist[0].second[i].original_index;
+            ClickableFeePathItem* fee_path_item = new ClickableFeePathItem(original_index);
+            fee_path_item->setPath(feepath);
+            fee_path_item->setPen(QPen(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            fee_path_item->setBrush(QBrush(brush_color));
+            m_scene->addItem(fee_path_item);
+            m_fee_path_items.append(fee_path_item);
+            connect(fee_path_item, &ClickableFeePathItem::feePathClicked, this, &MempoolStats::onFeePathClicked);
+        }
         i++;
     }
 
@@ -406,6 +415,12 @@ void MempoolStats::drawWalletTxIndicators()
 void ClickableTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMIT objectClicked(this); }
 
+void MempoolStats::onFeePathClicked(int feeRangeIndex)
+{
+    m_selected_range = feeRangeIndex;
+    drawChart();
+}
+
 void MempoolStats::onWalletTxChanged()
 {
     {
@@ -422,61 +437,4 @@ void MempoolStats::onWalletTxChanged()
     }
     QMetaObject::invokeMethod(this, "drawChart", Qt::QueuedConnection);
     Q_EMIT walletTxChanged();
-}
-
-void MempoolStats::mousePressEvent(QMouseEvent *event) {
-
-    QWidget::mousePressEvent(event);
-
-    if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mousePressEvent\n");
-        LogPrintf("event->pos().x() %s\n",event->pos().x());
-        LogPrintf("event->pos().y() %s\n",event->pos().y());
-    }
-}
-void MempoolStats::mouseReleaseEvent(QMouseEvent *event) {
-
-    QWidget::mouseReleaseEvent(event);
-    if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mouseReleaseEvent\n");
-        LogPrintf("event->pos().x() %s\n",event->pos().x());
-        LogPrintf("event->pos().y() %s\n",event->pos().y());
-    }
-}
-void MempoolStats::mouseDoubleClickEvent(QMouseEvent *event) {
-
-    QWidget::mouseDoubleClickEvent(event);
-    if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mouseDoubleClickEvent\n");
-        LogPrintf("event->pos().x() %s\n",event->pos().x());
-        LogPrintf("event->pos().y() %s\n",event->pos().y());
-    }
-    //mempool_right->show();
-}
-void MempoolStats::mouseMoveEvent(QMouseEvent *event) {
-
-    QWidget::mouseMoveEvent(event);
-    if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("mouseMoveEvent\n");
-        LogPrintf("event->pos().x() %s\n",event->pos().x());
-        LogPrintf("event->pos().y() %s\n",event->pos().y());
-    }
-}
-
-void MempoolStats::enterEvent(QEnterEvent *event) { 
-
-    QEvent *this_event = event;
-    if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("enterEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
-    }
-}
-
-void MempoolStats::leaveEvent(QEvent *event) {
-
-    QEvent *this_event = event;
-    if (MEMPOOL_GRAPH_LOGGING){
-        LogPrintf("leaveEvent\n");
-        LogPrintf("this_event->type() %s\n",this_event->type());
-    }
 }

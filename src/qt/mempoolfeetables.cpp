@@ -60,6 +60,8 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
             return GUIUtil::formatBytes(fee_info->total_size);
         case TotalWeight:
             return (qint64)fee_info->total_weight;
+        default:
+            return QVariant();
         }
     } else if (role == Qt::DecorationRole) {
         if (column == FeeRange) {
@@ -71,10 +73,12 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
                 return colors[static_cast<int>(colors.size()) - 1];
             }
         }
+    } else if (role == OriginalIndexRole) {
+        return fee_info->original_index;
     } else if (role == Qt::BackgroundRole) {
         return QApplication::palette().window().color();
     } else if (role == Qt::ForegroundRole) {
-        if (m_selected_range == index.row()) {
+        if (m_selected_range == fee_info->original_index) {
             return QVariant(QApplication::palette().highlightedText().color());
         } else {
             return QVariant(QApplication::palette().windowText().color());
@@ -89,6 +93,8 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
         case TotalWeight:
             return QVariant(Qt::AlignRight | Qt::AlignVCenter);
+        default:
+            return QVariant();
         }
     }
     return QVariant();
@@ -150,6 +156,8 @@ void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
                     return a.total_size < b.total_size;
                 case TotalWeight:
                     return a.total_weight < b.total_weight;
+                default:
+                    return false;
                 }
             } else { // DescendingOrder
                 switch (static_cast<ColumnIndex>(column)) {
@@ -161,6 +169,8 @@ void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
                     return a.total_size > b.total_size;
                 case TotalWeight:
                     return a.total_weight > b.total_weight;
+                default:
+                    return false;
                 }
             }
             return false; // Should not be reached

@@ -74,12 +74,13 @@ public:
     uint64_t tx_count;
     CAmount fee_from;
     CAmount fee_to;
+    int original_index{-1};
 
     //TODO: remove
     // added for storing and loading a mempool set during development to avoid waiting hours for collecting enought samples
     SERIALIZE_METHODS(mempool_feeinfo, obj)
     {
-        READWRITE(obj.total_size, obj.total_fee, obj.total_weight, obj.tx_count, obj.fee_from, obj.fee_to);
+        READWRITE(obj.total_size, obj.total_fee, obj.total_weight, obj.tx_count, obj.fee_from, obj.fee_to, obj.original_index);
     }
 };
 

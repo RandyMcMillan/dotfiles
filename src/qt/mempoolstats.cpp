@@ -330,6 +330,10 @@ void MempoolStats::drawWalletTxIndicators()
         wallet_transactions_copy = m_wallet_transactions;
     }
 
+    if (MEMPOOL_GRAPH_LOGGING) {
+        LogPrintf("drawWalletTxIndicators: wallet_transactions_copy size: %s\n", wallet_transactions_copy.size());
+    }
+
     // Draw wallet transaction indicators
     if (!wallet_transactions_copy.empty()) {
         qreal indicator_x = m_gfx_view->scene()->sceneRect().width() - GRAPH_PADDING_RIGHT - 50; // Adjust position as needed
@@ -358,6 +362,10 @@ void MempoolStats::drawWalletTxIndicators()
                         break; // Found status for this transaction, no need to check other wallets
                     }
                 }
+            }
+
+            if (MEMPOOL_GRAPH_LOGGING) {
+                LogPrintf("drawWalletTxIndicators: tx %s, in_mempool: %s, net_amount: %s\n", wtx.tx->GetHash().ToString(), in_mempool, net_amount);
             }
 
             if (in_mempool) {

@@ -169,6 +169,8 @@ void MempoolFeeTableModel::sort(int column, Qt::SortOrder order)
                     return a.total_size > b.total_size;
                 case TotalWeight:
                     return a.total_weight > b.total_weight;
+                default:
+                    return false;
                 }
             }
             return false; // Should not be reached

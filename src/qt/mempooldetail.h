@@ -14,6 +14,7 @@
 #include <policy/fees.h>
 
 #include <qt/mempoolfeetables.h>
+#include <qt/mempooltxtables.h>
 #include <interfaces/wallet.h>
 
 class ClientModel;
@@ -31,6 +32,7 @@ public:
 public Q_SLOTS:
     void onRangeSelected(int range);
     void updateFeeTable();
+    void updateTxTable();
 
     void mousePressEvent(QMouseEvent        *event) override;
     void mouseReleaseEvent(QMouseEvent      *event) override;
@@ -52,6 +54,9 @@ private:
 
     QTableView *m_fee_table{nullptr};
     MempoolFeeTableModel *m_fee_table_model{nullptr};
+
+    QTableView *m_tx_table{nullptr};
+    MempoolTxTableModel *m_tx_table_model{nullptr};
 
     virtual void enterEvent(QEnterEvent      *event) override;
     virtual void leaveEvent(QEvent           *event) override;

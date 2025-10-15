@@ -95,6 +95,8 @@ add_library(bitcoinqt STATIC EXCLUDE_FROM_ALL
   mempooldetail.cpp
   mempoolfeetables.cpp
   mempoolfeetables.h
+  mempooltxtables.cpp
+  mempooltxtables.h
   mempoolstats.h
   mempoolstats.cpp
   modaloverlay.cpp

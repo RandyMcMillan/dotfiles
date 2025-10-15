@@ -309,6 +309,7 @@ void MempoolStats::setClientModel(ClientModel *model)
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolStats::onMempoolRangeSelected);
         if (m_mempool_detail) {
             connect(model, &ClientModel::mempoolFeeHistChanged, m_mempool_detail, &MempoolDetail::updateFeeTable);
+            connect(model, &ClientModel::walletTxChanged, m_mempool_detail, &MempoolDetail::updateTxTable); // Connect new signal
         }
 
         // Connect to wallet transaction changes

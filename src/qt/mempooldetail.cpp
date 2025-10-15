@@ -13,6 +13,7 @@
 #include <qt/mempoolconstants.h>
 #include <qt/mempooldetail.h>
 #include <qt/platformstyle.h>
+#include <qt/mempooltxtables.h>
 
 
 const QSize FONT_RANGE(8, 24);
@@ -64,6 +65,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_top_layout->addStretch();
     m_top_layout->addWidget(m_temp_widget);
 
+    // Mempool Fee Table
     m_fee_table_model = new MempoolFeeTableModel(this);
 
     m_fee_table = new QTableView(this);
@@ -87,9 +89,31 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table_header->resizeSection(MempoolFeeTableModel::TotalSize, 55);
     m_fee_table_header->resizeSection(MempoolFeeTableModel::TotalWeight, 50);
 
+    // Mempool Transaction Table
+    m_tx_table_model = new MempoolTxTableModel(this);
+    m_tx_table = new QTableView(this);
+    m_tx_table->setModel(m_tx_table_model);
+    m_tx_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_tx_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    m_tx_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_tx_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_tx_table->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_tx_table->setAlternatingRowColors(true);
+    m_tx_table->setStyleSheet("QTableView { background-color: transparent; border: 1px solid gray; border-radius: 5px; }");
+    m_tx_table->setSortingEnabled(false); // Sorting not implemented for this model yet
+    m_tx_table->verticalHeader()->setVisible(false);
+    m_tx_table->horizontalHeader()->setStretchLastSection(true);
+
+    QHeaderView* m_tx_table_header = m_tx_table->horizontalHeader();
+    m_tx_table_header->resizeSection(MempoolTxTableModel::TxID, 200);
+    m_tx_table_header->resizeSection(MempoolTxTableModel::Amount, 100);
+    m_tx_table_header->resizeSection(MempoolTxTableModel::Fee, 80);
+    m_tx_table_header->resizeSection(MempoolTxTableModel::Status, 80);
+
     QVBoxLayout* main_layout = new QVBoxLayout(this);
     main_layout->addLayout(m_top_layout);
-    main_layout->addWidget(m_fee_table);
+    main_layout->addWidget(m_tx_table); // Add transaction table first
+    main_layout->addWidget(m_fee_table); // Then add fee table
     setLayout(main_layout);
 
     connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex& current, const QModelIndex& previous) {
@@ -113,7 +137,9 @@ void MempoolDetail::setClientModel(ClientModel* model)
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::updateFeeTable);
         connect(model, &ClientModel::numBlocksChanged, this, &MempoolDetail::updateFeeTable);
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolDetail::onRangeSelected);
+        connect(model, &ClientModel::walletTxChanged, this, &MempoolDetail::updateTxTable); // Connect new signal
         MempoolDetail::updateFeeTable();
+        MempoolDetail::updateTxTable(); // Initial update for transaction table
     }
 }
 
@@ -129,6 +155,18 @@ void MempoolDetail::updateFeeTable()
                 m_fee_table->selectRow(selected_row);
             }
         }
+    }
+}
+
+void MempoolDetail::updateTxTable()
+{
+    if (m_clientmodel) {
+        QMutexLocker locker(&m_clientmodel->m_mempool_locker);
+        // Assuming m_wallet_transactions in ClientModel is updated via MempoolStats::onWalletTxChanged
+        // and ClientModel::walletTxChanged signal is emitted.
+        // For now, we'll pass the raw set of wallet transactions.
+        // Further filtering for 'in mempool' status can be done in MempoolTxTableModel if needed.
+        m_tx_table_model->updateModel(m_clientmodel->m_wallet_transactions);
     }
 }
 

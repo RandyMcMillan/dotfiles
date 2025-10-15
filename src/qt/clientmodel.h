@@ -16,6 +16,7 @@
 
 #include <netaddress.h>
 #include <interfaces/node.h>
+#include <interfaces/wallet.h> // New: Include for interfaces::WalletTx
 
 class BanTableModel;
 class CBlockIndex;
@@ -63,6 +64,10 @@ public:
     explicit ClientModel(interfaces::Node& node, OptionsModel *optionsModel, QObject *parent = nullptr);
     ~ClientModel();
 
+    // Delete copy constructor and assignment operator to prevent implicit copying
+    ClientModel(const ClientModel&) = delete;
+    ClientModel& operator=(const ClientModel&) = delete;
+
     void stop();
 
     interfaces::Node& node() const { return m_node; }
@@ -108,6 +113,8 @@ public:
     std::vector<mempool_feehist_sample> m_mempool_feehist;
     std::atomic<int64_t> m_mempool_feehist_last_sample_timestamp{0};
 
+    std::set<interfaces::WalletTx> m_wallet_transactions; // New: Stores active wallet's mempool transactions
+
 private:
     interfaces::Node& m_node;
     std::unique_ptr<interfaces::Handler> m_handler_show_progress;
@@ -140,6 +147,7 @@ Q_SIGNALS:
     void networkActiveChanged(bool networkActive);
     void alertsChanged(const QString &warnings);
     void bytesChanged(quint64 totalBytesIn, quint64 totalBytesOut);
+    void walletTxChanged(); // New: Signal emitted when wallet transactions in mempool change
 
     //! Fired when a message should be reported to the user
     void message(const QString &title, const QString &message, unsigned int style);

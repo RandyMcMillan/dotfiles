@@ -430,16 +430,19 @@ void MempoolStats::onWalletTxChanged()
 {
     {
         QMutexLocker locker(&m_wallet_tx_mutex);
-        m_wallet_transactions.clear();
         if (m_clientmodel) {
+            m_clientmodel->m_wallet_transactions.clear(); // Clear ClientModel's transactions
             for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
                 if (!wallet_ptr) continue;
                 for (const interfaces::WalletTx& wtx : wallet_ptr->getWalletTxs()) {
-                    m_wallet_transactions.insert(wtx);
+                    m_clientmodel->m_wallet_transactions.insert(wtx); // Populate ClientModel's transactions
                 }
             }
+            m_wallet_transactions = m_clientmodel->m_wallet_transactions; // Keep MempoolStats's local copy in sync for indicators
         }
     }
     QMetaObject::invokeMethod(this, "drawChart", Qt::QueuedConnection);
-    Q_EMIT walletTxChanged();
+    if (m_clientmodel) {
+        Q_EMIT m_clientmodel->walletTxChanged(); // Emit ClientModel's signal
+    }
 }

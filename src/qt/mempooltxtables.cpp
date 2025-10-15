@@ -112,6 +112,12 @@ void MempoolTxTableModel::updateModel(const std::set<interfaces::WalletTx>& wall
 {
     beginResetModel();
     m_tx_data.clear();
+
+    if (wallet_transactions.empty()) {
+        endResetModel();
+        return;
+    }
+
     for (const auto& wtx : wallet_transactions) {
         // Only add transactions that are currently in the mempool
         // This logic might need to be more sophisticated if we want to show other statuses

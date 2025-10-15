@@ -89,7 +89,6 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     main_layout->addWidget(m_fee_table);
     setLayout(main_layout);
 
-    connect(m_fee_table, &QTableView::clicked, this, &MempoolDetail::updateFeeTable);
     connect(m_fee_table->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [this](const QModelIndex& current, const QModelIndex& previous) {
         if (!current.isValid()) {
             m_selected_range = -1;
@@ -174,7 +173,6 @@ void MempoolDetail::mousePressEvent(QMouseEvent* event)
         LogPrintf("event->type() %s\n", event->type());
     }
 
-    updateFeeTable();
 }
 
 void MempoolDetail::mouseReleaseEvent(QMouseEvent* event)
@@ -201,7 +199,6 @@ void MempoolDetail::mouseDoubleClickEvent(QMouseEvent* event)
         LogPrintf("event->pos().x() %s\n", event->pos().x());
         LogPrintf("event->pos().y() %s\n", event->pos().y());
     }
-    updateFeeTable();
 }
 
 void MempoolDetail::mouseMoveEvent(QMouseEvent* event)
@@ -226,7 +223,6 @@ void MempoolDetail::enterEvent(QEnterEvent* event)
         LogPrintf("this_event->type() %s\n", this_event->type());
         LogPrintf("this_event->type() %s\n", this_event->type());
     }
-    updateFeeTable();
     showFeeRanges(this_event);
     showFeeRects(this_event);
 }
@@ -262,7 +258,6 @@ void MempoolDetail::showFeeRanges(QEvent* event)
         LogPrintf("this_event->type() %s\n", this_event->type());
         LogPrintf("this_event->type() %s\n", this_event->type());
     }
-    updateFeeTable();
 };
 void MempoolDetail::hideFeeRanges(QEvent* event)
 {

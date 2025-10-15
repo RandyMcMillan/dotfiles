@@ -278,7 +278,6 @@ void MempoolDetail::showFeeRects(QEvent* event)
         LogPrintf("this_event->type() %s\n", this_event->type());
         LogPrintf("this_event->type() %s\n", this_event->type());
     }
-    updateFeeTable();
 };
 void MempoolDetail::hideFeeRects(QEvent* event)
 {

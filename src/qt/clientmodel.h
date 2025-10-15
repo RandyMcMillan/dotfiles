@@ -126,6 +126,8 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_notify_header_tip;
 
     std::vector<std::unique_ptr<interfaces::Handler>> m_event_handlers;
+    std::vector<std::unique_ptr<interfaces::Handler>> m_wallet_handlers; // New: Handlers for wallet transaction changes
+
     OptionsModel *optionsModel;
     PeerTableModel* peerTableModel{nullptr};
     PeerTableSortProxy* m_peer_table_sort_proxy{nullptr};
@@ -137,6 +139,9 @@ private:
     void TipChanged(SynchronizationState sync_state, interfaces::BlockTip tip, double verification_progress, SyncType synctype) EXCLUSIVE_LOCKS_REQUIRED(!m_cached_tip_mutex);
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();
+
+private Q_SLOTS: // New: Private slot for wallet transaction changes
+    void onWalletTxChanged();
 
 Q_SIGNALS:
     void numConnectionsChanged(int count);

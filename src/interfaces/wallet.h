@@ -393,7 +393,18 @@ struct WalletTx
     std::map<std::string, std::string> value_map;
     bool is_coinbase;
 
-    bool operator<(const WalletTx& a) const { return tx->GetHash() < a.tx->GetHash(); }
+    bool operator<(const WalletTx& a) const {
+        if (!tx || !a.tx) {
+            // Handle cases where one or both shared_ptrs are null
+            // A consistent ordering is important for std::set.
+            // Here, we define null tx to be 'less' than non-null tx.
+            // If both are null, they are equal.
+            if (!tx && !a.tx) return false; // Both null, considered equal
+            if (!tx) return true;          // This tx is null, so it's less
+            return false;                  // a.tx is null, so this tx is greater
+        }
+        return tx->GetHash() < a.tx->GetHash();
+    }
 };
 
 //! Updated transaction status.

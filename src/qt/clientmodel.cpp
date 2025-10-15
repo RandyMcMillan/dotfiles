@@ -261,6 +261,18 @@ void ClientModel::TipChanged(SynchronizationState sync_state, interfaces::BlockT
     nLastUpdateNotification = now;
 }
 
+void ClientModel::onWalletTxChanged()
+{
+    m_wallet_transactions.clear();
+    for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_node.walletLoader().getWallets()) {
+        if (!wallet_ptr) continue;
+        for (const interfaces::WalletTx& wtx : wallet_ptr->getWalletTxs()) {
+            m_wallet_transactions.insert(wtx);
+        }
+    }
+    Q_EMIT walletTxChanged();
+}
+
 void ClientModel::subscribeToCoreSignals()
 {
     m_event_handlers.emplace_back(m_node.handleShowProgress(
@@ -293,11 +305,18 @@ void ClientModel::subscribeToCoreSignals()
         [this](SynchronizationState sync_state, interfaces::BlockTip tip, bool presync) {
             TipChanged(sync_state, tip, /*verification_progress=*/0.0, presync ? SyncType::HEADER_PRESYNC : SyncType::HEADER_SYNC);
         }));
+
+    // New: Subscribe to wallet transaction changes
+    for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_node.walletLoader().getWallets()) {
+        m_wallet_handlers.emplace_back(wallet_ptr->handleTransactionChanged(std::bind(&ClientModel::onWalletTxChanged, this)));
+    }
+    onWalletTxChanged(); // Initial population of m_wallet_transactions
 }
 
 void ClientModel::unsubscribeFromCoreSignals()
 {
     m_event_handlers.clear();
+    m_wallet_handlers.clear(); // New: Clear wallet handlers as well
 }
 
 bool ClientModel::getProxyInfo(std::string& ip_port) const

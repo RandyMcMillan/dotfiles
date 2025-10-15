@@ -240,18 +240,16 @@ void MempoolStats::drawChart()
         //mempool paths
         pen_color.setAlpha(255);
         brush_color.setAlpha(200);
-        if (m_selected_range >= 0 && m_selected_range != i) {
-            //dimmer
-            pen_color.setAlpha(127);
-            brush_color.setAlpha(100);
-        }
-        if (m_selected_range >= 0 && m_selected_range == i) {
-            if (static_cast<size_t>(m_selected_range) < m_clientmodel->m_mempool_feehist[0].second.size()) {
-                total_text = "transactions in selected fee range: "+QString::number(m_clientmodel->m_mempool_feehist[0].second[m_selected_range].tx_count);
-            }
-        }
         if (static_cast<size_t>(i) < m_clientmodel->m_mempool_feehist[0].second.size()) {
             int original_index = m_clientmodel->m_mempool_feehist[0].second[i].original_index;
+            if (m_selected_range >= 0 && m_selected_range != original_index) {
+                //dimmer
+                pen_color.setAlpha(127);
+                brush_color.setAlpha(100);
+            }
+            if (m_selected_range >= 0 && m_selected_range == original_index) {
+                total_text = "transactions in selected fee range: "+QString::number(m_clientmodel->m_mempool_feehist[0].second[i].tx_count);
+            }
             ClickableFeePathItem* fee_path_item = new ClickableFeePathItem(original_index);
             fee_path_item->setPath(feepath);
             fee_path_item->setPen(QPen(pen_color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -417,8 +415,14 @@ void ClickableRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { Q_EMI
 
 void MempoolStats::onFeePathClicked(int feeRangeIndex)
 {
-    m_selected_range = feeRangeIndex;
-    drawChart();
+    if (m_clientmodel) {
+        if (m_selected_range == feeRangeIndex) {
+            // A second click on the same range deselects it.
+            Q_EMIT m_clientmodel->mempoolRangeSelected(-1);
+        } else {
+            Q_EMIT m_clientmodel->mempoolRangeSelected(feeRangeIndex);
+        }
+    }
 }
 
 void MempoolStats::onWalletTxChanged()

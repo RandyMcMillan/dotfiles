@@ -65,10 +65,10 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
         }
     } else if (role == Qt::DecorationRole) {
         if (column == FeeRange) {
-            int row = index.row();
-            if (row >= 0 && row < static_cast<int>(colors.size())) {
-                return colors[row];
-            } else if (row >= static_cast<int>(colors.size())) {
+            int original_index = fee_info->original_index;
+            if (original_index >= 0 && original_index < static_cast<int>(colors.size())) {
+                return colors[original_index];
+            } else if (original_index >= static_cast<int>(colors.size())) {
                 // If row index exceeds available colors, use the last color
                 return colors[static_cast<int>(colors.size()) - 1];
             }

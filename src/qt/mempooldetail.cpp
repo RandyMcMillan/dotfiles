@@ -74,10 +74,10 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setStyleSheet("");
     m_fee_table->setSortingEnabled(true);
     m_fee_table->sortByColumn(m_fee_table_model->m_sort_column, m_fee_table_model->m_sort_order);
-    m_fee_table->verticalHeader()->setVisible(true);
+    m_fee_table->verticalHeader()->setVisible(false);
 
     QHeaderView* m_fee_table_header = m_fee_table->horizontalHeader();
-    m_fee_table_header->resizeSection(MempoolFeeTableModel::FeeRange, 100);
+    m_fee_table_header->resizeSection(MempoolFeeTableModel::FeeRange, 100);// fits default width
     m_fee_table_header->resizeSection(MempoolFeeTableModel::TxCount, 35);
     m_fee_table_header->resizeSection(MempoolFeeTableModel::TotalSize, 55);
     m_fee_table_header->resizeSection(MempoolFeeTableModel::TotalWeight, 50);

@@ -184,6 +184,10 @@ void MempoolFeeTableModel::updateModel(const std::vector<interfaces::mempool_fee
     m_fee_data.clear();
     m_fee_data.reserve(fee_info.size());
     for (const auto& entry : fee_info) {
+        // Hide fee levels above the 1699-1999 sat/vB range if they have 0 transactions
+        if (entry.fee_from >= 2000 && entry.tx_count == 0) {
+            continue;
+        }
         m_fee_data.append(entry);
     }
     if (m_sort_column != -1) {

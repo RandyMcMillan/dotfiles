@@ -109,6 +109,7 @@ void MempoolDetail::setClientModel(ClientModel* model)
 
     if (model) {
         connect(model, &ClientModel::mempoolFeeHistChanged, this, &MempoolDetail::updateFeeTable);
+        connect(model, &ClientModel::numBlocksChanged, this, &MempoolDetail::updateFeeTable);
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolDetail::onRangeSelected);
         MempoolDetail::updateFeeTable();
     }

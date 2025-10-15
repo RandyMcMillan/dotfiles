@@ -62,9 +62,8 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table_model = new MempoolFeeTableModel(this);
 
     m_fee_table = new QTableView(this);
-    const int defaultSortColumn = MempoolFeeTableModel::FeeRange;
-    const Qt::SortOrder defaultSortOrder = Qt::AscendingOrder; // or Qt::DescendingOrder
-    m_fee_table->sortByColumn(defaultSortColumn, defaultSortOrder);
+    m_fee_table->horizontalHeader()->setStretchLastSection(true);
+    m_fee_table->scrollToBottom();
     m_fee_table->setModel(m_fee_table_model);
     m_fee_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_fee_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -74,9 +73,8 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setAlternatingRowColors(false);
     m_fee_table->setStyleSheet("");
     m_fee_table->setSortingEnabled(true);
-    m_fee_table->horizontalHeader()->setStretchLastSection(true);
+    m_fee_table->sortByColumn(m_fee_table_model->m_sort_column, m_fee_table_model->m_sort_order);
     m_fee_table->verticalHeader()->setVisible(true);
-    //m_fee_table->sortByColumn(m_fee_table_model->m_sort_column, m_fee_table_model->m_sort_order);
 
     QHeaderView* m_fee_table_header = m_fee_table->horizontalHeader();
     m_fee_table_header->resizeSection(MempoolFeeTableModel::FeeRange, 100);

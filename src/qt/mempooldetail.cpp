@@ -25,7 +25,12 @@ MempoolDetail::MempoolDetail(QWidget* parent) : QWidget(parent)
         parent->installEventFilter(this);
         raise();
     }
-    // setMouseTracking(true);
+
+    this->setAutoFillBackground(true);
+
+    QPalette pal = this->palette();
+    pal.setColor(QPalette::Window, pal.color(QPalette::Window));
+    this->setPalette(pal);
 
     QSettings settings;
     m_font_size = settings.value(mempoolDetailFontSizeKey, 12).toReal();
@@ -71,7 +76,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_fee_table->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_fee_table->setSelectionMode(QAbstractItemView::SingleSelection);
     m_fee_table->setAlternatingRowColors(false);
-    m_fee_table->setStyleSheet("");
+    m_fee_table->setStyleSheet("QTableView { background-color: transparent; border: 1px solid gray; border-radius: 5px; }");
     m_fee_table->setSortingEnabled(true);
     m_fee_table->sortByColumn(m_fee_table_model->m_sort_column, m_fee_table_model->m_sort_order);
     m_fee_table->verticalHeader()->setVisible(false);

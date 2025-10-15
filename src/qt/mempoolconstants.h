@@ -56,5 +56,32 @@ QColor(139, 69, 19, 255),   // Saddle Brown
 QColor(105, 105, 105, 255), // Dim Gray
 QColor(70, 130, 180, 255),  // Steel Blue
 QColor(112, 128, 144, 255), // Slate Gray
-QColor(47, 79, 79, 255)     // Dark Slate Gray (very high fee, almost black)
+QColor(47, 79, 79, 255),    // Dark Slate Gray (very high fee, almost black)
+QColor(112, 128, 144, 255), // Slate Gray
+QColor(70, 130, 180, 255),  // Steel Blue
+QColor(105, 105, 105, 255), // Dim Gray
+QColor(139, 69, 19, 255),   // Saddle Brown
+QColor(160, 82, 45, 255),   // Sienna
+QColor(128, 0, 0, 255),     // Maroon
+QColor(139, 0, 0, 255),     // Dark Red
+QColor(178, 34, 34, 255),   // Firebrick
+QColor(220, 20, 60, 255),   // Crimson
+QColor(255, 0, 0, 255),     // Red
+QColor(255, 69, 0, 255),    // Orange Red
+QColor(255, 99, 71, 255),   // Tomato
+QColor(255, 140, 0, 255),   // Dark Orange
+QColor(255, 165, 0, 255),   // Orange
+QColor(255, 215, 0, 255),   // Gold
+QColor(255, 255, 0, 255),   // Yellow
+QColor(173, 255, 47, 255),  // Green Yellow
+QColor(124, 252, 0, 255),   // Lawn Green
+QColor(34, 139, 34, 255),   // Forest Green
+QColor(50, 205, 50, 255),   // Lime Green
+QColor(0, 255, 127, 255),   // Spring Green
+QColor(0, 139, 139, 255),   // Dark Cyan
+QColor(0, 128, 128, 255),   // Teal
+QColor(0, 191, 255, 255),   // Deep Sky Blue
+QColor(0, 0, 205, 255),     // Medium Blue
+QColor(65, 105, 225, 255),  // Royal Blue
+QColor(100, 149, 237, 255), // Cornflower Blue (very low fee)
 };

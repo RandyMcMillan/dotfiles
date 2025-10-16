@@ -58,6 +58,14 @@ QVariant MempoolTxTableModel::data(const QModelIndex& index, int role) const
         default:
             return QVariant();
         }
+    } else if (role == Qt::ForegroundRole) {
+        if (column == Amount) {
+            if (wtx->credit - wtx->debit > 0) {
+                return QColor(Qt::black);
+            } else if (wtx->credit - wtx->debit < 0) {
+                return QColor(Qt::red);
+            }
+        }
     } else if (role == OriginalIndexRole) {
         // We don't have a simple integer index for WalletTx, so we can return the TXID hash as a string
         return QString::fromStdString(wtx->tx->GetHash().ToString());

@@ -44,7 +44,7 @@ public:
     /*@}*/
 
 public Q_SLOTS:
-    void updateModel(const std::set<interfaces::WalletTx>& wallet_transactions);
+    void updateModel(const std::set<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet);
 
 private:
     QList<interfaces::WalletTx> m_tx_data;

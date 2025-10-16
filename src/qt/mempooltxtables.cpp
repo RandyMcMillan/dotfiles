@@ -108,12 +108,12 @@ QModelIndex MempoolTxTableModel::index(int row, int column, const QModelIndex& p
     return QModelIndex();
 }
 
-void MempoolTxTableModel::updateModel(const std::set<interfaces::WalletTx>& wallet_transactions)
+void MempoolTxTableModel::updateModel(const std::set<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet)
 {
     beginResetModel();
     m_tx_data.clear();
 
-    if (wallet_transactions.empty()) {
+    if (!has_active_wallet || wallet_transactions.empty()) {
         endResetModel();
         return;
     }

@@ -13,6 +13,7 @@
 #include <qt/mempoolconstants.h>
 #include <qt/mempooldetail.h>
 #include <qt/platformstyle.h>
+#include <interfaces/wallet.h>
 #include <qt/mempooltxtables.h>
 
 
@@ -162,11 +163,8 @@ void MempoolDetail::updateTxTable()
 {
     if (m_clientmodel) {
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);
-        // Assuming m_wallet_transactions in ClientModel is updated via MempoolStats::onWalletTxChanged
-        // and ClientModel::walletTxChanged signal is emitted.
-        // For now, we'll pass the raw set of wallet transactions.
-        // Further filtering for 'in mempool' status can be done in MempoolTxTableModel if needed.
-        m_tx_table_model->updateModel(m_clientmodel->m_wallet_transactions);
+        bool has_active_wallet = !m_clientmodel->node().walletLoader().getWallets().empty();
+        m_tx_table_model->updateModel(m_clientmodel->m_wallet_transactions, has_active_wallet);
     }
 }
 

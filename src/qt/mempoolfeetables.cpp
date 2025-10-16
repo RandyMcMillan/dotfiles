@@ -53,7 +53,7 @@ QVariant MempoolFeeTableModel::data(const QModelIndex& index, int role) const
     if (role == Qt::DisplayRole) {
         switch (column) {
         case FeeRange:
-            return QString("%1-%2").arg(fee_info->fee_from - 1).arg(fee_info->fee_to - 1);
+            return QString("%1-%2").arg(fee_info->fee_from).arg(fee_info->fee_to);
         case TxCount:
             return (qint64)fee_info->tx_count;
         case TotalSize:

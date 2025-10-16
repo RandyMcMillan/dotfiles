@@ -1,23 +1,43 @@
-cat create_abandon_wallet_fixed_testnet4.sh
 #!/usr/bin/env bash
+#BIP39 Seed
+#408b285c123836004f4b8842c89324c1f01382450c0d439af345ba7fc49acf705489c6fc77dbd4e3dc1dd8cc6bc9f043db8ada1e243c4a0eafb290d399480840
+#BIP32 Root Key
+#tprv8ZgxMBicQKsPfJXBq9F1b7P3tvhNoDLJFLngRsqHNPcW33CeR6X22vkafaUwrqsnbaT8M8AorU4bj1VteRE64LfcQezb8UiT8wbfKg6ZvSw
+#testnet4 derivation path
+#m/44'/1'/0'
+#BIP32 extended private key
+#tprv8g1nJcBzrQy3NKfYUhU23uQ1fGptLiiTzrpnVCmz88NEMsjoVxFyBK6fwC89TQFrXGK18YAJKgKSdippujScJUNBZgtJR1T7Xh9grNZa8F2
+#BIP32 extended public key
+#tpubDChpT2EEzneiFnhLNM8cTK48EJLpW3uNaARZmipHYQAdCMza8M5ZMoiY7MKv9iRC4dTTGdfZXM4dvj92XDQNKuJLXFzSWStmKo1MAYoZEE6
+#CSV
+#path,address,public key,private key
+#m/44'/1'/0'/0,mmeH2tviEhKujQtNf9VHVfZ22vZqF5GYKq,03a92b4d1a6c243db19cfed703719ca2314230cfa27a40e33e98281fa6c542991a,cSRLDuBGRBYopwVNiRxA2MjvwKbhXgADYR7hWS3365ok2LYj47HQ
+#m/44'/1'/0'/1,mrZgB3NWXuobtDLbRz4RtiQzmf87o78ivk,025de4f10b1b7d053bced470fc74bc7751660861c44730cbaa56335bcccde4e9bd,cNY78VHMCoLQhBtDyqm1eJ9XUV1d5ZQUuJisnjZcwpNyiAMako6b
+#m/44'/1'/0'/2,mxDJDf7QxkBHdtx49zccDo2pYRh3eVD1SN,035e9ab1dddb1b3d31ffe9338b7a6eee31d2a0ee0cac87d064fd3107052bb97e9f,cQzDDEuDRF4p8MJ23Zk4Da4BBKBmTn7aPMnsqUdbXZdpF2RS1y2F
+#m/44'/1'/0'/3,mhFk4oDSGU3BZSMf4Rt5DEbjhTwpoJ2AT3,0276ae7b4d889f2645ea9dab70ecab18a7d428590e778b96d9d921172dd01034e8,cUcTwdmtsPcxyb1NUWRhCbywmoSkAFhoRAEuWcGDC3nR1ADhp1tq
+#m/44'/1'/0'/4,mghmf8cXZSPXGmtrq7iaNMsFsiAGeAeHiY,0381b87e76beae776231c28d016bc6b01bd75890af364dce3889850bb3fe321f55,cUju1i6s5Rg5Hn9Rp7Hq3Pv2mu6hv4VHrHEuuQUoENBB9Z3cJ6Zp
+#m/44'/1'/0'/5,mjH7xPKFboTaSUTxrByZdhzCdM3AMcYmJc,03032e4e99d3a0a5b482424b164bb09e97dc422b85c753f204e0facf9227db6abc,cVdCUL7rXPmDqPBbGHn96tHYbegtmUSF2A8WVR5QkSbPmvC1X43R
+#m/44'/1'/0'/6,mt2HnXfE2S4wjVmMtCqD3U89X16kEt1bGQ,0358716d7f5955e57ab6ecd7eedc17c97b8f9bd5bc5c391152cd386a0cb3a71378,cS9HQMfjGqzNr9upTHnNryS67jbMajkh9kuBtTsXzBcAh8asKHJf
+#m/44'/1'/0'/7,mxtBwbZ2EcTS37m8ndQBWnWBCKNrsTJE8c,0226ba2c187b72d9c623f0a7ac8f614b53d9bce76ca1fa6744081287756cf427c3,cTtR4uige1V1hrgqYJWJVUEMw9WKZqsAuzzfiZ3ZbNmtx6Yd8YwZ
+#m/44'/1'/0'/8,mrGswWYLLDeFn1nwXojaG7JNU8UBuR8BZF,02e99a36d6e6b9258def745ba303e312c578747097f79dc991397ed31f3d21fb19,cUggfz7N34w5TRhn2uNQpHY1xi7arhW7vbiXUXYxT436p3PEypdC
+#m/44'/1'/0'/9,mvZmVexfGcnWoPVwre14MWZuwxZmJjBmqm,03351c603f1fe84a58f0e14caa5fffaa6520ccb80f20145cc763cdd4562bd9d9af,cMkxCyEAVDaGR3UzQjh3Ei71GtuuSKPjRQdogEXLkh9nCMvqF6Vh
+#m/44'/1'/0'/10,mt6dmBfQ79dxNs6UiKmGFnLoqiEpXbWeYM,02f6cc1193e0785d32144aae31fb1c9c2c247e22cff0ec535512eafab313164b9b,cUv79G2hFXCodcbnNxuptMzLg6C284LAZDDzdFYVrpWmpqb9W92t
+#m/44'/1'/0'/11,myGT5wYbQMQarPMMsxQqZYCCpCTNoxs321,03a0da57c036ced3cf31ddecae5cc88316a7c3124805c986b49ae263af927cfbd3,cQRyXVYvUYsXoLLUVHMix7s8XpypDk5DF1qKqKBmdw2udcJQzDV3
+#m/44'/1'/0'/12,msxr67YDrxtjv2DDa74XAmTmeq5y2BwGqt,037ac02bfb83b35246b3fce8d0c61494a2b16e3a12daf084398bdbb0de2efd3f35,cNk6ynSkuJ3mKCghj7akSxhcfHXAgfKeQEe8jtGM3WQU12mAvZwc
+#m/44'/1'/0'/13,mupRsWtmUuf4w8oHddwJXYodu2wAjKssKq,02b522b4cf41cc2a68430dd75fa5a99f3826817d15de62b40e2840bd1dc9d89d7b,cN4zDsgyUnobVJZcjqfF1ARsKFVjUYQgDW4mzPRWs7TwTytpYTaF
+#m/44'/1'/0'/14,mmQbkB3BRn1bqxuLXdo9hgDAw5wsbW8i9p,02da0d54e3582947421cd707c91ce29f86530e5e2afa58636e667026b2e31ab23f,cMrRVsqc2yktDhcooS2BQPPTrDqHBU3fHfaSKL4vztoicWWbtP6N
+#m/44'/1'/0'/15,ms3x8CT9ZNc29QcLx5SwMHKUF8cdHZpSjd,02306c44d7500a8f90ebd40f8d4670896405287f7b456418495a1e55a5a3ab5059,cVqXJtQPDvVVDo72WZgQowkYFmnnP22bHdASp5uPJzCo4q8poP36
+#m/44'/1'/0'/16,mnbpEwmDqXMrCexx8wCuY19bAhLvrpp822,030e9e045261be34fc9b5b50ab615c4b3fedbb272a3671369bfaf3f07d71f886e0,cV4jwPyKVKff9K7YdzrxZPzyuYasLBgGCBm8Jyi5Gs1XApbaHEty
+#m/44'/1'/0'/17,mmpmNrX4ez3U4BytoncvVorL8SZHrWFWf2,03c821c2d9ef0cad2c84a5833a0b5ce33a5c0f3cb601a2ecfb980c546182f7225a,cPdDvYGz9Yzu2bq5Yss8hvcFjXGYDfJNy8s75unuhdSXMkxCSQH6
+#m/44'/1'/0'/18,mt65wH3eDPRwFUjRU47bWwizmNQDmsg4ZC,032bec9a82d7f967da04654e83aff9f3143aa6dbc621eff8553e4037f5a7473ff3,cVNnsfAc5pfsbwN5rLej3cyPstWaLisD63WwkXTBnFJYN3RnFsAs
+#m/44'/1'/0'/19,n3N8B99TCgHLBEmmJgao7seBGeBB1ixsnm,0304da104bb7e94e83d5b511478019991db223d10121e542b6e7949b238b7cd090,cTjac24uih1SxmNvZimKMgbZJAn5gaLc7CDJf8iWCcgdKewrKhGS
 
-# --- VARIABLE DEFINITIONS ---
-# Ensure your Bitcoin Core is running with the -testnet4 flag or config for this to work.
-VPRV_KEY="vprv9K51hU4XQj8jN9FmRzJ88mE6yN4xLz1E43D8YtVp6m9Cg3f8yH3Q7x2Z7L5Qp9bFz7v8rB5pB4M3Y4S6F6C8T9F4W1K5yJ6k7M8L9N0P2Q3R4S5T6U7V8W9X0Y1Z2A3B4C5D6E7F8G9H0I1J2K3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E"
-FINGERPRINT="0c3a8e99" 
-WALLET_NAME="abandon_testnet_import"
-
-# 1. Create the new descriptor wallet on the 'testnet4' network
-echo "Creating new descriptor wallet on testnet4: ${WALLET_NAME}..."
-# The -testnet4 flag is used here as requested.
-bitcoin-cli -testnet4 createwallet "${WALLET_NAME}" false true
-
-# 2. Import the descriptors using the vprv key and correct Testnet path (BIP84)
-echo "Importing Native SegWit (BIP84) descriptors to ${WALLET_NAME}..."
-
-bitcoin-cli -testnet4 -rpcwallet="${WALLET_NAME}" importmulti '[
-    {"desc": "wpkh(['"$FINGERPRINT"'/84h/1h/0h]'"$VPRV_KEY"'/0/*)", "timestamp":"now", "internal":false, "keypool":true},
-    {"desc": "wpkh(['"$FINGERPRINT"'/84h/1h/0h]'"$VPRV_KEY"'/1/*)", "timestamp":"now", "internal":true, "keypool":true}
-]'
-
+bitcoin-cli -testnet4 createwallet "testnet4"
+bitcoin-cli -testnet4 -rpcwallet="testnet4" importdescriptors '[{
+  "desc": "wpkh(tprv8g1nJcBzrQy3NKfYUhU23uQ1fGptLiiTzrpnVCmz88NEMsjoVxFyBK6fwC89TQFrXGK18YAJKgKSdippujScJUNBZgtJR1T7Xh9grNZa8F2/*)#7qcyqar8",
+  "timestamp": "now",
+  "active": true,
+  "internal": false,
+  "range": [0, 1000]
+}]'
 echo "Import command sent. Bitcoin Core will now rescan the testnet4 blockchain."

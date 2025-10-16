@@ -137,6 +137,9 @@ Qt::ItemFlags MempoolTxTableModel::flags(const QModelIndex &index) const
     if (!index.isValid()) return Qt::NoItemFlags;
 
     Qt::ItemFlags retval = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    if (index.column() == TxID) {
+        retval |= Qt::ItemIsEditable;
+    }
     return retval;
 }
 

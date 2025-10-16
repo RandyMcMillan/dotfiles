@@ -41,13 +41,16 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
     /*@}*/
 
 public Q_SLOTS:
     void updateModel(const std::set<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet);
 
-private:
+public:
     QList<interfaces::WalletTx> m_tx_data;
+    int m_sort_column = -1;
+    Qt::SortOrder m_sort_order = Qt::AscendingOrder;
     const QStringList columns{
         /*: Title of Mempool Tx Table column which contains the transaction ID. */
         tr("TXID"),

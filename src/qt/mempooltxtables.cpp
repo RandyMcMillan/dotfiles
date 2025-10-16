@@ -13,6 +13,7 @@
 MempoolTxTableModel::MempoolTxTableModel(QObject* parent)
     : QAbstractTableModel(parent)
 {
+    m_sort_column = TxID;
 }
 
 MempoolTxTableModel::~MempoolTxTableModel() = default;
@@ -116,6 +117,45 @@ QModelIndex MempoolTxTableModel::index(int row, int column, const QModelIndex& p
     return QModelIndex();
 }
 
+void MempoolTxTableModel::sort(int column, Qt::SortOrder order)
+{
+    m_sort_column = column;
+    m_sort_order = order;
+    beginResetModel();
+    std::sort(m_tx_data.begin(), m_tx_data.end(),
+        [&](const interfaces::WalletTx& a, const interfaces::WalletTx& b) {
+            if (order == Qt::AscendingOrder) {
+                switch (static_cast<ColumnIndex>(column)) {
+                case TxID:
+                    return a.tx->GetHash().ToString() < b.tx->GetHash().ToString();
+                case Amount:
+                    return (a.credit - a.debit) < (b.credit - b.debit);
+                case Fee:
+                    return (a.debit - a.credit - a.change) < (b.debit - b.credit - b.change);
+                case Status:
+                    return false; // Status is not meaningfully sortable, maintain current order
+                default:
+                    return false;
+                }
+            } else { // DescendingOrder
+                switch (static_cast<ColumnIndex>(column)) {
+                case TxID:
+                    return a.tx->GetHash().ToString() > b.tx->GetHash().ToString();
+                case Amount:
+                    return (a.credit - a.debit) > (b.credit - b.debit);
+                case Fee:
+                    return (a.debit - a.credit - a.change) > (b.debit - b.credit - b.change);
+                case Status:
+                    return false; // Status is not meaningfully sortable, maintain current order
+                default:
+                    return false;
+                }
+            }
+            return false; // Should not be reached
+        });
+    endResetModel();
+}
+
 void MempoolTxTableModel::updateModel(const std::set<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet)
 {
     beginResetModel();
@@ -133,6 +173,9 @@ void MempoolTxTableModel::updateModel(const std::set<interfaces::WalletTx>& wall
         // The `drawWalletTxIndicators` in MempoolStats already checks for in_mempool status.
         // We'll rely on that for now, or add a similar check here if needed.
         m_tx_data.append(wtx);
+    }
+    if (m_sort_column != -1) {
+        sort(m_sort_column, m_sort_order);
     }
     endResetModel();
 }

@@ -101,7 +101,8 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_tx_table->setSelectionMode(QAbstractItemView::SingleSelection);
     m_tx_table->setAlternatingRowColors(true);
     m_tx_table->setStyleSheet("QTableView { background-color: transparent; border: 1px solid gray; border-radius: 5px; }");
-    m_tx_table->setSortingEnabled(false); // Sorting not implemented for this model yet
+    m_tx_table->setSortingEnabled(true);
+    m_tx_table->sortByColumn(m_tx_table_model->m_sort_column, m_tx_table_model->m_sort_order);
     m_tx_table->verticalHeader()->setVisible(false);
     m_tx_table->horizontalHeader()->setStretchLastSection(true);
 

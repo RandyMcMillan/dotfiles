@@ -140,6 +140,7 @@ void MempoolDetail::setClientModel(ClientModel* model)
         connect(model, &ClientModel::numBlocksChanged, this, &MempoolDetail::updateFeeTable);
         connect(model, &ClientModel::mempoolRangeSelected, this, &MempoolDetail::onRangeSelected);
         connect(model, &ClientModel::walletTxChanged, this, &MempoolDetail::updateTxTable); // Connect new signal
+        m_tx_table_model->setClientModel(model);
         MempoolDetail::updateFeeTable();
         MempoolDetail::updateTxTable(); // Initial update for transaction table
     }

@@ -4,6 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/mempooltxtables.h>
+#include <qt/clientmodel.h>
 
 #include <qt/guiutil.h>
 #include <qt/bitcoinunits.h> // New include for BitcoinUnits
@@ -17,6 +18,11 @@ MempoolTxTableModel::MempoolTxTableModel(QObject* parent)
 }
 
 MempoolTxTableModel::~MempoolTxTableModel() = default;
+
+void MempoolTxTableModel::setClientModel(ClientModel* client_model)
+{
+    m_client_model = client_model;
+}
 
 int MempoolTxTableModel::rowCount(const QModelIndex& parent) const
 {
@@ -41,6 +47,17 @@ QVariant MempoolTxTableModel::data(const QModelIndex& index, int role) const
 
     const interfaces::WalletTx* wtx = static_cast<const interfaces::WalletTx*>(index.internalPointer());
 
+    // Declare wallets and wallet outside the switch statement
+    std::vector<std::unique_ptr<interfaces::Wallet>> wallets;
+    interfaces::Wallet* wallet = nullptr;
+
+    if (m_client_model) {
+        wallets = m_client_model->node().walletLoader().getWallets();
+        if (!wallets.empty()) {
+            wallet = wallets[0].get();
+        }
+    }
+
     const auto column = static_cast<ColumnIndex>(index.column());
     if (role == Qt::DisplayRole) {
         switch (column) {
@@ -50,12 +67,29 @@ QVariant MempoolTxTableModel::data(const QModelIndex& index, int role) const
             return BitcoinUnits::formatWithUnit(BitcoinUnits::Unit::BTC, wtx->credit - wtx->debit, false, BitcoinUnits::SeparatorStyle::ALWAYS);
         case Fee:
             {
-                CAmount fee = wtx->debit - wtx->credit - wtx->change;
+                CAmount fee = wtx->debit - wtx->credit;
                 return BitcoinUnits::formatWithUnit(BitcoinUnits::Unit::BTC, fee, false, BitcoinUnits::SeparatorStyle::ALWAYS);
             }
         case Status:
-            // For now, we'll just indicate if it's in the mempool. More detailed status can be added later.
-            return tr("In Mempool");
+            if (!wallet) return tr("No active wallet");
+
+            interfaces::WalletTxStatus tx_status;
+            int num_blocks;
+            int64_t block_time;
+
+            if (wallet->tryGetTxStatus(wtx->tx->GetHash(), tx_status, num_blocks, block_time)) {
+                if (tx_status.is_in_main_chain && tx_status.depth_in_main_chain > 0) {
+                    return tr("Confirmed");
+                } else if (tx_status.depth_in_main_chain == 0 && !tx_status.is_in_main_chain && !tx_status.is_abandoned) {
+                    return tr("In Mempool");
+                } else if (tx_status.is_abandoned) {
+                    return tr("Abandoned");
+                } else {
+                    return tr("Not in Mempool");
+                }
+            } else {
+                return tr("Unknown");
+            }
         default:
             return QVariant();
         }

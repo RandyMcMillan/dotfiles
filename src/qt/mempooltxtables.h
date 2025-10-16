@@ -14,6 +14,8 @@
 
 #include <interfaces/wallet.h>
 
+class ClientModel;
+
 /**
    Qt model providing information about mempool transactions from the active wallet.
  */
@@ -46,6 +48,7 @@ public:
 
 public Q_SLOTS:
     void updateModel(const std::set<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet);
+    void setClientModel(ClientModel* client_model);
 
 public:
     QList<interfaces::WalletTx> m_tx_data;
@@ -61,6 +64,8 @@ public:
         /*: Title of Mempool Tx Table column which contains the status. */
         tr("Status")
     };
-};
 
+private:
+    ClientModel* m_client_model = nullptr;
+};
 #endif // BITCOIN_QT_MEMPOOLTXTABLES_H

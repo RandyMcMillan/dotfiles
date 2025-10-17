@@ -95,7 +95,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
     m_tx_table = new QTableView(this);
     m_tx_table->setModel(m_tx_table_model);
     m_tx_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_tx_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    m_tx_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_tx_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_tx_table->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_tx_table->setSelectionMode(QAbstractItemView::SingleSelection);

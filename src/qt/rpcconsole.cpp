@@ -984,7 +984,29 @@ void RPCConsole::onNumBlocksChanged(int count, const QDateTime& blockDate, doubl
 
     // Hide mempool stats if in IBD mode
     if (clientModel) {
-        ui->mempool_graph->setVisible(!clientModel->inInitialBlockDownload());
+        bool in_ibd = clientModel->inInitialBlockDownload();
+        ui->mempool_graph->setVisible(!in_ibd);
+
+        qDebug() << "Mempool graph parent:" << ui->mempool_graph->parentWidget()->metaObject()->className();
+        if (ui->mempool_graph->parentWidget()->layout()) {
+            qDebug() << "Mempool graph parent layout:" << ui->mempool_graph->parentWidget()->layout()->metaObject()->className();
+        }
+
+        // Adjust layout based on visibility
+        if (ui->mempool_graph->parentWidget()->layout()) {
+            QLayout* parentLayout = ui->mempool_graph->parentWidget()->layout();
+            if (QHBoxLayout* hLayout = qobject_cast<QHBoxLayout*>(parentLayout)) {
+                if (in_ibd) {
+                    // Mempool graph is hidden, make mempool_detail fill the space
+                    hLayout->setStretchFactor(ui->mempool_graph, 0);
+                    hLayout->setStretchFactor(ui->mempool_detail, 1);
+                } else {
+                    // Mempool graph is visible, restore original stretch factors (e.g., equal)
+                    hLayout->setStretchFactor(ui->mempool_graph, 1);
+                    hLayout->setStretchFactor(ui->mempool_detail, 1);
+                }
+            }
+        }
     }
 }
 

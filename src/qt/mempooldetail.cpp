@@ -136,7 +136,7 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
 void MempoolDetail::onMempoolStatusChanged(bool hasMempoolTxs)
 {
     qDebug() << "MempoolDetail::onMempoolStatusChanged(" << hasMempoolTxs << ")";
-    m_tx_table->setVisible(hasMempoolTxs);
+    this->setVisible(hasMempoolTxs);
 }
 
 void MempoolDetail::setClientModel(ClientModel* model)

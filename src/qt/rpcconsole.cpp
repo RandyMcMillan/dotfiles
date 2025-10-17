@@ -3,6 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <bitcoin-build-config.h> // IWYU pragma: keep
+#include <qt/clientmodel.h>
 
 #include <qt/rpcconsole.h>
 #include <qt/forms/ui_debugwindow.h>
@@ -12,7 +13,6 @@
 #include <interfaces/node.h>
 #include <node/connection_types.h>
 #include <qt/bantablemodel.h>
-#include <qt/clientmodel.h>
 #include <qt/guiutil.h>
 #include <qt/peertablesortproxy.h>
 #include <qt/platformstyle.h>
@@ -639,7 +639,7 @@ void RPCConsole::setClientModel(ClientModel *model, int bestblock_height, int64_
         connect(model, &ClientModel::numConnectionsChanged, this, &RPCConsole::setNumConnections);
 
         setNumBlocks(bestblock_height, QDateTime::fromSecsSinceEpoch(bestblock_date), verification_progress, SyncType::BLOCK_SYNC);
-        connect(model, &ClientModel::numBlocksChanged, this, &RPCConsole::setNumBlocks);
+        connect(model, &ClientModel::numBlocksChanged, this, &RPCConsole::onNumBlocksChanged);
 
         updateNetworkState();
         connect(model, &ClientModel::networkActiveChanged, this, &RPCConsole::setNetworkActive);
@@ -974,6 +974,17 @@ void RPCConsole::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     if (synctype == SyncType::BLOCK_SYNC) {
         ui->numberOfBlocks->setText(QString::number(count));
         ui->lastBlockTime->setText(blockDate.toString());
+    }
+}
+
+void RPCConsole::onNumBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, SyncType synctype)
+{
+    // Update the block count and date as usual
+    setNumBlocks(count, blockDate, nVerificationProgress, synctype);
+
+    // Hide mempool stats if in IBD mode
+    if (clientModel) {
+        ui->mempool_graph->setVisible(!clientModel->inInitialBlockDownload());
     }
 }
 

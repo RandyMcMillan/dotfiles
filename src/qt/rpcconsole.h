@@ -110,6 +110,8 @@ private Q_SLOTS:
     void clearSelectedNode();
     /** show detailed information on ui about selected node */
     void updateDetailWidget();
+    /** Slot to handle numBlocksChanged signal from ClientModel and update mempoolstats visibility */
+    void onNumBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, SyncType synctype);
 
 public Q_SLOTS:
     void clear(bool keep_prompt = false);

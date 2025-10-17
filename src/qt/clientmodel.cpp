@@ -338,3 +338,8 @@ bool ClientModel::getProxyInfo(std::string& ip_port) const
     }
     return false;
 }
+
+bool ClientModel::inInitialBlockDownload() const
+{
+    return m_node.isInitialBlockDownload();
+}

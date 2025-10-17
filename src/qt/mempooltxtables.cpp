@@ -50,7 +50,7 @@ QVariant MempoolTxTableModel::data(const QModelIndex& index, int role) const
             return BitcoinUnits::formatWithUnit(BitcoinUnits::Unit::BTC, wtx->credit - wtx->debit, false, BitcoinUnits::SeparatorStyle::ALWAYS);
         case Fee:
             {
-                CAmount fee = wtx->debit - wtx->credit - wtx->change;
+                CAmount fee = wtx->debit - wtx->credit;
                 return BitcoinUnits::formatWithUnit(BitcoinUnits::Unit::BTC, fee, false, BitcoinUnits::SeparatorStyle::ALWAYS);
             }
         case Status:

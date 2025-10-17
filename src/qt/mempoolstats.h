@@ -55,7 +55,7 @@ protected:
     int m_selected_range = -1;
     MempoolDetail* m_mempool_detail{nullptr};
     QMutex m_wallet_tx_mutex;
-    std::set<interfaces::WalletTx> m_wallet_transactions;
+    QList<interfaces::WalletTx> m_wallet_transactions;
     std::vector<std::unique_ptr<interfaces::Handler>> m_wallet_handlers;
     QList<QGraphicsItem*> m_wallet_indicator_items;
     QList<ClickableFeePathItem*> m_fee_path_items;

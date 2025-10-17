@@ -44,8 +44,11 @@ public:
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
     /*@}*/
 
+Q_SIGNALS:
+    void mempoolStatusChanged(bool hasMempoolTxs);
+
 public Q_SLOTS:
-    void updateModel(const std::set<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet);
+    void updateModel(const QList<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet);
 
 public:
     QList<interfaces::WalletTx> m_tx_data;

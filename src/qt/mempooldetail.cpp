@@ -129,6 +129,14 @@ void MempoolDetail::setPlatformStyle(const PlatformStyle* platform_style)
         }
         m_fee_table_model->setSelectedRange(m_selected_range);
     });
+
+    connect(m_tx_table_model, &MempoolTxTableModel::mempoolStatusChanged, this, &MempoolDetail::onMempoolStatusChanged);
+}
+
+void MempoolDetail::onMempoolStatusChanged(bool hasMempoolTxs)
+{
+    qDebug() << "MempoolDetail::onMempoolStatusChanged(" << hasMempoolTxs << ")";
+    m_tx_table->setVisible(hasMempoolTxs);
 }
 
 void MempoolDetail::setClientModel(ClientModel* model)
@@ -165,6 +173,7 @@ void MempoolDetail::updateTxTable()
     if (m_clientmodel) {
         QMutexLocker locker(&m_clientmodel->m_mempool_locker);
         bool has_active_wallet = !m_clientmodel->node().walletLoader().getWallets().empty();
+        // m_clientmodel->m_wallet_transactions is now a QList<interfaces::WalletTx> and already filtered
         m_tx_table_model->updateModel(m_clientmodel->m_wallet_transactions, has_active_wallet);
     }
 }

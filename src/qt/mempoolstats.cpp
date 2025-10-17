@@ -341,7 +341,7 @@ void MempoolStats::drawWalletTxIndicators()
     if (!m_clientmodel)
         return;
 
-    std::set<interfaces::WalletTx> wallet_transactions_copy;
+    QList<interfaces::WalletTx> wallet_transactions_copy;
     {
         QMutexLocker locker(&m_wallet_tx_mutex);
         wallet_transactions_copy = m_wallet_transactions;
@@ -363,49 +363,33 @@ void MempoolStats::drawWalletTxIndicators()
 
         for (const interfaces::WalletTx& wtx : wallet_transactions_copy) {
             if (!wtx.tx) continue;
-            bool in_mempool = false;
-            CAmount net_amount = 0;
-
-            for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
-                if (!wallet_ptr) continue;
-                interfaces::WalletTxStatus tx_status;
-                int num_blocks;
-                int64_t block_time;
-
-                if (wallet_ptr->tryGetTxStatus(wtx.tx->GetHash(), tx_status, num_blocks, block_time)) {
-                    if (tx_status.depth_in_main_chain == 0 && !tx_status.is_abandoned) {
-                        in_mempool = true;
-                        net_amount = wtx.credit - wtx.debit;
-                        break; // Found status for this transaction, no need to check other wallets
-                    }
-                }
-            }
+            // Transactions in m_wallet_transactions are already filtered to be in mempool
+            // No need to check status again here.
+            CAmount net_amount = wtx.credit - wtx.debit;
 
             if (MEMPOOL_GRAPH_LOGGING) {
-                LogPrintf("drawWalletTxIndicators: tx %s, in_mempool: %s, net_amount: %s\n", wtx.tx->GetHash().ToString(), in_mempool, net_amount);
+                LogPrintf("drawWalletTxIndicators: tx %s, net_amount: %s\n", wtx.tx->GetHash().ToString(), net_amount);
             }
 
-            if (in_mempool) {
-                QGraphicsTextItem *sign_item = nullptr;
-                QColor sign_color;
+            QGraphicsTextItem *sign_item = nullptr;
+            QColor sign_color;
 
-                if (net_amount > 0) { // Receive transaction
-                    gridFont.setPointSize(36);
-                    sign_item = m_scene->addText("+", gridFont);
-                    sign_color = QColor(0, 255, 0); // Green
-                } else if (net_amount < 0) { // Send transaction
-                    gridFont.setPointSize(48);
-                    sign_item = m_scene->addText("-", gridFont);
-                    sign_color = QColor(255, 0, 0); // Red
-                }
+            if (net_amount > 0) { // Receive transaction
+                gridFont.setPointSize(36);
+                sign_item = m_scene->addText("+", gridFont);
+                sign_color = QColor(0, 255, 0); // Green
+            } else if (net_amount < 0) { // Send transaction
+                gridFont.setPointSize(48);
+                sign_item = m_scene->addText("-", gridFont);
+                sign_color = QColor(255, 0, 0); // Red
+            }
 
-                if (sign_item) {
-                    sign_item->setDefaultTextColor(sign_color);
-                    sign_item->setPos(indicator_x, indicator_y);
-                    sign_item->setToolTip(QString::fromStdString(wtx.tx->GetHash().ToString()));
-                    m_wallet_indicator_items.append(sign_item); // Store the item
-                    indicator_y += y_offset; // Move down for the next indicator
-                }
+            if (sign_item) {
+                sign_item->setDefaultTextColor(sign_color);
+                sign_item->setPos(indicator_x, indicator_y);
+                sign_item->setToolTip(QString::fromStdString(wtx.tx->GetHash().ToString()));
+                m_wallet_indicator_items.append(sign_item); // Store the item
+                indicator_y += y_offset; // Move down for the next indicator
             }
         }
     }
@@ -431,18 +415,11 @@ void MempoolStats::onWalletTxChanged()
     {
         QMutexLocker locker(&m_wallet_tx_mutex);
         if (m_clientmodel) {
-            m_clientmodel->m_wallet_transactions.clear(); // Clear ClientModel's transactions
-            for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_clientmodel->node().walletLoader().getWallets()) {
-                if (!wallet_ptr) continue;
-                for (const interfaces::WalletTx& wtx : wallet_ptr->getWalletTxs()) {
-                    m_clientmodel->m_wallet_transactions.insert(wtx); // Populate ClientModel's transactions
-                }
-            }
-            m_wallet_transactions = m_clientmodel->m_wallet_transactions; // Keep MempoolStats's local copy in sync for indicators
+            // ClientModel's m_wallet_transactions is already updated and filtered by ClientModel itself.
+            // We just need to keep MempoolStats's local copy in sync.
+            m_wallet_transactions = m_clientmodel->m_wallet_transactions;
         }
     }
     QMetaObject::invokeMethod(this, "drawChart", Qt::QueuedConnection);
-    if (m_clientmodel) {
-        Q_EMIT m_clientmodel->walletTxChanged(); // Emit ClientModel's signal
-    }
+    // No need to emit ClientModel's signal here, it's already emitted by ClientModel itself.
 }

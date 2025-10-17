@@ -33,6 +33,7 @@ public Q_SLOTS:
     void onRangeSelected(int range);
     void updateFeeTable();
     void updateTxTable();
+    void onMempoolStatusChanged(bool hasMempoolTxs);
 
     void mousePressEvent(QMouseEvent        *event) override;
     void mouseReleaseEvent(QMouseEvent      *event) override;

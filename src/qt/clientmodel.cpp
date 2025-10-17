@@ -267,7 +267,17 @@ void ClientModel::onWalletTxChanged()
     for (std::unique_ptr<interfaces::Wallet>& wallet_ptr : m_node.walletLoader().getWallets()) {
         if (!wallet_ptr) continue;
         for (const interfaces::WalletTx& wtx : wallet_ptr->getWalletTxs()) {
-            m_wallet_transactions.insert(wtx);
+            interfaces::WalletTxStatus tx_status;
+            int num_blocks;
+            int64_t block_time;
+            if (wallet_ptr->tryGetTxStatus(wtx.tx->GetHash(), tx_status, num_blocks, block_time)) {
+                if (tx_status.depth_in_main_chain == 0 && !tx_status.is_in_main_chain) {
+                    m_wallet_transactions.append(wtx);
+                }
+            } else {
+                // If status can't be retrieved, assume it's in mempool for now
+                m_wallet_transactions.append(wtx);
+            }
         }
     }
     Q_EMIT walletTxChanged();

@@ -156,26 +156,24 @@ void MempoolTxTableModel::sort(int column, Qt::SortOrder order)
     endResetModel();
 }
 
-void MempoolTxTableModel::updateModel(const std::set<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet)
+void MempoolTxTableModel::updateModel(const QList<interfaces::WalletTx>& wallet_transactions, bool has_active_wallet)
 {
     beginResetModel();
     m_tx_data.clear();
 
     if (!has_active_wallet || wallet_transactions.empty()) {
         endResetModel();
+        qDebug() << "MempoolTxTableModel::mempoolStatusChanged(" << !m_tx_data.empty() << ")";
+        Q_EMIT mempoolStatusChanged(!m_tx_data.empty());
         return;
     }
 
-    for (const auto& wtx : wallet_transactions) {
-        // Only add transactions that are currently in the mempool
-        // This logic might need to be more sophisticated if we want to show other statuses
-        // For now, we assume the set only contains mempool transactions or we filter here.
-        // The `drawWalletTxIndicators` in MempoolStats already checks for in_mempool status.
-        // We'll rely on that for now, or add a similar check here if needed.
-        m_tx_data.append(wtx);
-    }
+    m_tx_data = wallet_transactions;
+
     if (m_sort_column != -1) {
         sort(m_sort_column, m_sort_order);
     }
     endResetModel();
+    qDebug() << "MempoolTxTableModel::mempoolStatusChanged(" << !m_tx_data.empty() << ")";
+    Q_EMIT mempoolStatusChanged(!m_tx_data.empty());
 }

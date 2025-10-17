@@ -113,7 +113,7 @@ public:
     std::vector<mempool_feehist_sample> m_mempool_feehist;
     std::atomic<int64_t> m_mempool_feehist_last_sample_timestamp{0};
 
-    std::set<interfaces::WalletTx> m_wallet_transactions; // New: Stores active wallet's mempool transactions
+    QList<interfaces::WalletTx> m_wallet_transactions; // New: Stores active wallet's mempool transactions
 
 private:
     interfaces::Node& m_node;

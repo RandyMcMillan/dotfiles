@@ -33,7 +33,8 @@ RUN cmake -B build \
   -DREDUCE_EXPORTS=ON \
   -DBUILD_UTIL=ON \
   -DBUILD_WALLET_TOOL=ON \
-  -DWITH_ZMQ=ON
+  -DWITH_ZMQ=ON \
+  -DENABLE_IPC=OFF
 RUN cmake --build build
 
 # Final stage

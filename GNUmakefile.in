@@ -27,9 +27,9 @@ bin_PROGRAMS = nodegit
 NODE_GYP=$(PWD)/node_modules/.bin/node-gyp
 NODE_MODULE_DIR=$(PWD)/node_modules/nodegit
 
-SHELL                                   :=/bin/bash
-POWERSHELL                              :=$(shell which pwsh)
-PWD                                     ?=pwd_unknown
+SHELL                                   := /bin/bash
+POWERSHELL                              := $(shell which pwsh)
+PWD                                     ?= pwd_unknown
 CMAKE                                   :=$(shell which cmake)
 export CMAKE
 GLIBTOOL                                :=$(shell which glibtool)
@@ -45,20 +45,20 @@ export args
 #    install \
 #    run
 
-SHELL									:=/bin/bash
-POWERSHELL								:=$(shell which pwsh)
-PWD										?=pwd_unknown
+SHELL									:= /bin/bash
+POWERSHELL								:= $(shell which pwsh)
+PWD										?= pwd_unknown
 GLIBTOOL								:=$(shell which glibtool)
 export GLIBTOOL
 GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
-#AUTOCONF                               :=$(shell which autoconf)
+#AUTOCONF                                :=$(shell which autoconf)
 #export AUTOCONF
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
-THIS_FILE                               :=$(lastword $(MAKEFILE_LIST))
+THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
 export THIS_FILE
-TIME                                    :=$(shell date +%s)
+TIME                                    := $(shell date +%s)
 export TIME
 
 OS                                      :=$(shell uname -s)
@@ -85,9 +85,9 @@ TRIPLET                                 :=aarch64-linux-gnu
 export TRIPLET
 endif
 
-NODE_VERSION                            :=v24.10.0
+NODE_VERSION                            := v24.10.0
 export NODE_VERSION
-NODE_ALIAS                              :=default node
+NODE_ALIAS                              := v24.10.0
 export NODE_ALIAS
 PACKAGE_MANAGER                         :=yarn
 export PACKAGE_MANAGER
@@ -95,50 +95,50 @@ PACKAGE_INSTALL                         :=add
 export PACKAGE_INSTALL
 
 ifeq ($(docker),)
-DOCKER                                  :=$(shell which docker)
+DOCKER                                  := $(shell which docker)
 else
-DOCKER                                  :=$(docker)
+DOCKER                                  := $(docker)
 endif
 export DOCKER
 
 ifeq ($(compose),)
-DOCKER_COMPOSE                          :=$(shell which docker-compose)
+DOCKER_COMPOSE                          := $(shell which docker-compose)
 else
-DOCKER_COMPOSE                          :=$(compose)
+DOCKER_COMPOSE                          := $(compose)
 endif
 export DOCKER_COMPOSE
 ifeq ($(reset),true)
-RESET                                   :=true
+RESET:=true
 else
-RESET                                   :=false
+RESET:=false
 endif
 export RESET
 
-PYTHON                                  :=$(shell which python)
+PYTHON                                  := $(shell which python)
 export PYTHON
-PYTHON2                                 :=$(shell which python2)
+PYTHON2                                 := $(shell which python2)
 export PYTHON2
-PYTHON3                                 :=$(shell which python3)
+PYTHON3                                 := $(shell which python3)
 export PYTHON3
 
-PIP                                     :=$(shell which pip)
+PIP                                     := $(shell which pip)
 export PIP
-PIP2                                    :=$(shell which pip2)
+PIP2                                    := $(shell which pip2)
 export PIP2
-PIP3                                    :=$(shell which pip3)
+PIP3                                    := $(shell which pip3)
 export PIP3
 
-python_version_full :=$(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
-python_version_major :=$(word 1,${python_version_full})
-python_version_minor :=$(word 2,${python_version_full})
-python_version_patch :=$(word 3,${python_version_full})
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
+python_version_major := $(word 1,${python_version_full})
+python_version_minor := $(word 2,${python_version_full})
+python_version_patch := $(word 3,${python_version_full})
 
-my_cmd.python.3 :=$(PYTHON3) some_script.py3
-my_cmd :=${my_cmd.python.${python_version_major}}
+my_cmd.python.3 := $(PYTHON3) some_script.py3
+my_cmd := ${my_cmd.python.${python_version_major}}
 
-PYTHON_VERSION                         :=${python_version_major}.${python_version_minor}.${python_version_patch}
-PYTHON_VERSION_MAJOR                   :=${python_version_major}
-PYTHON_VERSION_MINOR                   :=${python_version_minor}
+PYTHON_VERSION                         := ${python_version_major}.${python_version_minor}.${python_version_patch}
+PYTHON_VERSION_MAJOR                   := ${python_version_major}
+PYTHON_VERSION_MINOR                   := ${python_version_minor}
 
 export python_version_major
 export python_version_minor
@@ -147,9 +147,9 @@ export PYTHON_VERSION
 
 #PROJECT_NAME defaults to name of the current directory.
 ifeq ($(project),)
-PROJECT_NAME                            :=$(notdir $(PWD))
+PROJECT_NAME                            := $(notdir $(PWD))
 else
-PROJECT_NAME                            :=$(project)
+PROJECT_NAME                            := $(project)
 endif
 export PROJECT_NAME
 
@@ -160,70 +160,70 @@ export PACKAGE_INSTALL
 
 
 ifeq ($(force),true)
-FORCE									:=--force
+FORCE									:= --force
 endif
 export FORCE
 
 #GIT CONFIG
-GIT_USER_NAME                           :=$(shell git config user.name || echo)
+GIT_USER_NAME                           := $(shell git config user.name || echo)
 export GIT_USER_NAME
-GIT_USER_EMAIL                          :=$(shell git config user.email || echo)
+GIT_USER_EMAIL                          := $(shell git config user.email || echo)
 export GIT_USER_EMAIL
-GIT_SERVER                              :=https://github.com
+GIT_SERVER                              := https://github.com
 export GIT_SERVER
-GIT_PROFILE                             :=$(shell git config user.name || echo)
+GIT_PROFILE                             := $(shell git config user.name || echo)
 export GIT_PROFILE
-GIT_BRANCH                              :=$(shell git rev-parse --abbrev-ref HEAD || echo)
+GIT_BRANCH                              := $(shell git rev-parse --abbrev-ref HEAD || echo)
 export GIT_BRANCH
-GIT_HASH                                :=$(shell git rev-parse --short HEAD || echo)
+GIT_HASH                                := $(shell git rev-parse --short HEAD || echo)
 export GIT_HASH
-GIT_PREVIOUS_HASH                       :=$(shell git rev-parse --short HEAD^1 || echo)
+GIT_PREVIOUS_HASH                       := $(shell git rev-parse --short HEAD^1 || echo)
 export GIT_PREVIOUS_HASH
-GIT_REPO_ORIGIN                         :=$(shell git remote get-url origin || echo)
+GIT_REPO_ORIGIN                         := $(shell git remote get-url origin || echo)
 export GIT_REPO_ORIGIN
-GIT_REPO_NAME                           :=$(PROJECT_NAME)
+GIT_REPO_NAME                           := $(PROJECT_NAME)
 export GIT_REPO_NAME
-GIT_REPO_PATH                           :=$(HOME)/$(GIT_REPO_NAME)
+GIT_REPO_PATH                           := $(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
 ifneq ($(bitcoin-datadir),)
-BITCOIN_DATA_DIR                        :=$(bitcoin-datadir)
+BITCOIN_DATA_DIR                        := $(bitcoin-datadir)
 else
-BITCOIN_DATA_DIR                        :=$(HOME)/.bitcoin
+BITCOIN_DATA_DIR                        := $(HOME)/.bitcoin
 endif
 export BITCOIN_DATA_DIR
 
 ifeq ($(nocache),true)
-NOCACHE                                 :=--no-cache
+NOCACHE                                 := --no-cache
 #Force parallel build when --no-cache to speed up build
-PARALLEL                                :=--parallel
+PARALLEL                                := --parallel
 else
 NOCACHE                                 :=
 PARALLEL                                :=
 endif
 ifeq ($(parallel),true)
-PARALLEL                                :=--parallel
+PARALLEL                                := --parallel
 endif
 ifeq ($(para),true)
-PARALLEL                                :=--parallel
+PARALLEL                                := --parallel
 endif
 export NOCACHE
 export PARALLEL
 
 ifeq ($(verbose),true)
-VERBOSE                                 :=--verbose
+VERBOSE                                 := --verbose
 else
 VERBOSE                                 :=
 endif
 export VERBOSE
 
-BREW                                    :=$(shell which brew || echo)
+BREW                                    := $(shell which brew || echo)
 export BREW
-BREW_PREFIX                             :=$(shell brew --prefix || echo)
+BREW_PREFIX                             := $(shell brew --prefix || echo)
 export BREW_PREFIX
-BREW_CELLAR                             :=$(shell brew --cellar || echo)
+BREW_CELLAR                             := $(shell brew --cellar || echo)
 export BREW_CELLAR
-HOMEBREW_NO_ENV_HINTS                   :=false
+HOMEBREW_NO_ENV_HINTS                   := false
 export HOMEBREW_NO_ENV_HINTS
 
 #PORTER_VERSION                         :=v1.0.1
@@ -240,15 +240,16 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
-first:## 	- default - try 'make submodules'
+-:## - default - try 'make submodules'
+-:
+	./autogen.sh configure
+	./configure
 	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
-	eval "$(/opt/homebrew/bin/brew shellenv)" || true
-	#./autogen.sh configure
-	#./configure
+	eval "$(/opt/homebrew/bin/brew shellenv)" #&
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-autoconf:## 	./autogen.sh && ./configure
+autoconf:## ./autogen.sh && ./configure
 	./autogen.sh configure
 
 nodegit$(EXEEXT):
@@ -257,12 +258,12 @@ nodegit$(EXEEXT):
 clean-local:
 	-cd $(NODE_MODULE_DIR) && node-gyp clean
 
+##	:	-
 ##	:	help
 ##	:	report			environment args
 ##	:
 ##	:	all			execute installer scripts
 ##	:	init
-##	:	bootstrap
 ##	:	brew
 ##	:	keymap
 
@@ -271,35 +272,33 @@ clean-local:
 ##	:
 ##	:	adduser-git		add a user named git
 
-keymap:## 	install ./init/com.local.KeyRemapping.plist
+keymap:## install ./init/com.local.KeyRemapping.plist
 	@mkdir -p ~/Library/LaunchAgents/
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:## 	chsh -s /bin/bash && ./scripts/initialize
+init:## chsh -s /bin/bash && ./scripts/initialize
 .ONESHELL:
 	chsh -s /bin/bash && ./scripts/initialize || true
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
-weeble:## 	weeble
-	install $(PWD)/scripts/weeble /usr/local/bin/
-wobble:## 	wobble
-	install $(PWD)/scripts/wobble /usr/local/bin/
-blockheight:## 	blockheight
-	install $(PWD)/scripts/blockheight /usr/local/bin/
-blockhash:## 	blockhash
-	install $(PWD)/scripts/blockhash /usr/local/bin/
-brew: -## 	install or update/upgrade brew
+weeble:## weeble
+	install ./weeble /usr/local/bin/
+wobble:## wobble
+	install ./wobble /usr/local/bin/
+blockheight:## blockheight
+	install ./blockheight /usr/local/bin/
+brew: -## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
-iterm:## 	brew install --cask iterm2
+iterm:## brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
-report:## 	report
+report:
 	@echo ''
 	@echo ' CMAKE=${CMAKE}	'
 	@echo ' GLIBTOOL=${GLIBTOOL}	'
@@ -341,8 +340,8 @@ report:## 	report
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
-whatami:## 	whatami
-	@bash scripts/whatami.sh
+whatami:
+	@bash ./whatami.sh
 #.PHONY:readme
 #readme:
 #	make help > source/COMMANDS.md
@@ -353,16 +352,15 @@ adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 
 
-.PHONY: bootstrap
 ##	:	bootstrap		./bootstrap.sh
-bootstrap:## 	./scripts/bootstrap.sh 
-	$(MAKE) exec
-	@echo "Running sync command 1..."
-	$(PWD)/scripts/bootstrap.sh sync --force || true
-	@echo "Exit code of sync 1: $$?"
-	@echo "Running install command 1..."
-	$(PWD)/scripts/bootstrap.sh install --force || true
-	@echo "Exit code of install 1: $$?"
+.PHONY: bootstrap
+bootstrap: vim exec
+	@$(PWD)/bootstrap force
+##	:	boot-strap		./boot-strap.sh
+.PHONY: boot-strap
+boot-strap: vim exec
+	@$(PWD)/boot-strap.sh force
+
 
 .PHONY: install
 ##	:	install		 	install sequence
@@ -395,9 +393,9 @@ template:
 
 .PHONY: nvm
 .ONESHELL:
-nvm: executable ## 	nvm
-	@./scripts/install-nvm.sh
-	@if [ -f "$(HOME)/.bashrc" ]; then source "$(HOME)/.bashrc"; fi
+nvm: executable ## nvm
+	@curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash || git pull -C $(HOME)/.nvm && export NVM_DIR="$(HOME)/.nvm" && [ -s "$(NVM_DIR)/nvm.sh" ] && \. "$(NVM_DIR)/nvm.sh" && [ -s "$(NVM_DIR)/bash_completion" ] && \. "$(NVM_DIR)/bash_completion"  && nvm install $(NODE_VERSION) && nvm use $(NODE_VERSION)
+	@source ~/.bashrc && nvm alias $(NODE_ALIAS) $(NODE_VERSION)
 
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
@@ -406,12 +404,12 @@ cirrus: executable
 config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
-macvim: vim ## 	macvim
-vim: nvm ## 	vim - install-vim.sh
-	@echo "y" | ./scripts/install-vim.sh
+macvim: vim## 	macvim
+vim:## vim - install-vim.sh
+	./install-vim.sh
 rustup-rs:## 	rustup-rs
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
-macdown:## 	macdown
+macdown:
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
 glow:
 	bash -c "source $(PWD)/template && checkbrew install	glow"
@@ -594,7 +592,7 @@ porter:
 .PHONY: vim
 ##	:	install-vim			install vim and macvim on macos
 install-vim: executable## 	install-vim
-	$(DOTFILES_PATH)/scripts/install-vim.sh $(FORCE)
+	$(DOTFILES_PATH)/install-vim.sh $(FORCE)
 
 .PHONY: protonvpn
 protonvpn: executable
@@ -695,9 +693,9 @@ touch-time:
 ifeq ($(bitcoin-version),)
 	@echo Example:
 	@echo add tag v22.0rc3
-BITCOIN_VERSION                     :=v22.0rc3
+BITCOIN_VERSION:=v22.0rc3
 else
-BITCOIN_VERSION                     :=$(bitcoin-version)
+BITCOIN_VERSION:=$(bitcoin-version)
 endif
 export BITCOIN_VERSION
 .PHONY: bitcoin-test-battery
@@ -710,23 +708,15 @@ bitcoin-test-battery:
 funcs:
 	make -f funcs.mk
 
-remote-managment-enable:## remote-managment-enable
+remote-managment-enable:## 	remote-managment-enable
 	sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -off -restart -agent -privs -all -allowAccessFor -allUsers
 
-screen-sharing-enable:## screen-sharing-enable
+screen-sharing-enable:## 	    screen-sharing-enable
 	sudo defaults write /var/db/launchd.db/com.apple.launchd/overrides.plist com.apple.screensharing -dict Disabled -bool false
 
-gemini:## 	gemini
-	@./install-gemini-cli.sh
 
-binstall:## 	binstall
-	cargo install cargo-binstall
-legit:## 	legit
-	cargo install gnostr-legit
-gnostr: binstall## 	gnostr
-	cargo binstall gnostr
 
-clean-nvm:## 	clean-nvm
+clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm
 
 -include Makefile

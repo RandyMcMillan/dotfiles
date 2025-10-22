@@ -405,8 +405,7 @@ config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
 macvim: vim## 	macvim
-vim:## vim - install-vim.sh
-	$(MAKE) nvm
+vim: nvm## vim - install-vim.sh
 	./install-vim.sh
 rustup-rs:## 	rustup-rs
 	curl https://sh.rustup.rs -sSf | sh -s -- -y

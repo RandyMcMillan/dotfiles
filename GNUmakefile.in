@@ -406,6 +406,7 @@ config-dock: executable
 
 macvim: vim## 	macvim
 vim:## vim - install-vim.sh
+	$(MAKE) nvm
 	./install-vim.sh
 rustup-rs:## 	rustup-rs
 	curl https://sh.rustup.rs -sSf | sh -s -- -y

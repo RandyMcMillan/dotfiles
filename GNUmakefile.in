@@ -85,9 +85,9 @@ TRIPLET                                 :=aarch64-linux-gnu
 export TRIPLET
 endif
 
-NODE_VERSION                            := v16.19.1
+NODE_VERSION                            := v24.10.0
 export NODE_VERSION
-NODE_ALIAS                              := v16.19.0
+NODE_ALIAS                              := v24.10.0
 export NODE_ALIAS
 PACKAGE_MANAGER                         :=yarn
 export PACKAGE_MANAGER
@@ -153,10 +153,6 @@ PROJECT_NAME                            := $(project)
 endif
 export PROJECT_NAME
 
-NODE_VERSION							:=v16.19.1
-export NODE_VERSION
-NODE_ALIAS								:=v16.0.0
-export NODE_ALIAS
 PACKAGE_MANAGER							:=yarn
 export PACKAGE_MANAGER
 PACKAGE_INSTALL							:=add

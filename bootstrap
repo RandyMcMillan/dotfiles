@@ -222,5 +222,6 @@ else
 	fi;
 fi;
 ln -sf $PWD/known_hosts ~/.ssh/known_hosts
+ln -sf $PWD/.cargo/config.toml ~/.cargo/config.toml
 
 unset doIt;

@@ -398,7 +398,6 @@ git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse 
 }
 function git-tag-version (){
 
-    git tag v$(gnostr-weeble).$(gnostr-blockheight).$(gnostr-wobble)
     if [ ! -z "$1" ]
     then
         git tag v$1-$(gnostr-weeble).$(gnostr-blockheight).$(gnostr-wobble)

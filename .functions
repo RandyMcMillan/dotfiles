@@ -396,6 +396,18 @@ git tag $(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse 
     git tags | grep $(gnostr-weeble)
 
 }
+function git-tag-version (){
+
+    git tag v$(gnostr-weeble).$(gnostr-blockheight).$(gnostr-wobble)
+    if [ ! -z "$1" ]
+    then
+        git tag v$1-$(gnostr-weeble).$(gnostr-blockheight).$(gnostr-wobble)
+    else
+        git tag v$(gnostr-weeble).$(gnostr-blockheight).$(gnostr-wobble)
+    fi
+    git tags | grep $(gnostr-weeble)
+
+}
 function git-tag-pr (){
 
 git tag pr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)

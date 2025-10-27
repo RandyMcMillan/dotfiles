@@ -714,6 +714,8 @@ remote-managment-enable:## 	remote-managment-enable
 screen-sharing-enable:## 	    screen-sharing-enable
 	sudo defaults write /var/db/launchd.db/com.apple.launchd/overrides.plist com.apple.screensharing -dict Disabled -bool false
 
+gemini:## 	gemini
+	@./install-gemini-cli.sh
 
 
 clean-nvm: ## clean-nvm

@@ -1,2 +1,2 @@
 [build]
-target-dir = "$HOME/cargo_global_target"
+target-dir = ".cargo"

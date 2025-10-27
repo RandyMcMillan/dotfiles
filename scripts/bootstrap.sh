@@ -9,6 +9,7 @@ touch ~/session.log
 
 function doIt() {
 	rsync \
+		--exclude "target" \
 		--exclude ".DS_Store" \
 		--exclude ".gitconfig" \
 		--exclude ".nojekyll" \
@@ -103,6 +104,7 @@ function doIt() {
 		--exclude "index.html" \
 		--exclude "index.html.sig" \
 		--exclude "init" \
+		--exclude "install-*.sh" \
 		--exclude "install-Docker.sh" \
 		--exclude "install-FastLane.sh" \
 		--exclude "install-Miniconda3-latest-MacOSX-x86_64.bash" \

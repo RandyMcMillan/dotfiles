@@ -71,3 +71,6 @@ debug = 1
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nightly)'] }
+
+[build-dependencies]
+chrono = "0.4.23"

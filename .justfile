@@ -1,4 +1,3 @@
-import? 'justfile.extention'
 default:
   just --choose
 
@@ -62,3 +61,4 @@ cargo-dist-build:
 cargo-dist-manifest:
   @make cargo-dist-manifest
 
+import? 'justfile.extension'

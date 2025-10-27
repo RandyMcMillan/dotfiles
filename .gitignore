@@ -1,3 +1,7 @@
+.cargo/debug
+.cargo/release
+.cargo/.rustc_info.json
+
 .github/gnostr-core/
 .github/nostr-rs/
 .github/rgit/

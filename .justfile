@@ -283,3 +283,4 @@ gnostr:
 clean-nvm:
   @make clean-nvm
 
+import? 'justfile.extension'

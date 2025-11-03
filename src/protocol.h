@@ -347,8 +347,8 @@ enum ServiceFlags : uint64_t {
 
     NODE_REPLACE_BY_FEE = (1 << 26),
 
-    // NODE_BIP148 means the node enforces BIP 148's mandatory Segwit activation beginning August 1, 2017
-    NODE_BIP148 = (1 << 27),
+    // NODE_REDUCED_DATA means the node enforces ReducedData rules as applicable
+    NODE_REDUCED_DATA = (1 << 27),
 
     NODE_MALICIOUS = (1 << 29),
 };
@@ -366,7 +366,7 @@ std::vector<std::string> serviceFlagsToStr(uint64_t flags);
  * should be updated appropriately to filter for nodes with
  * desired service flags (compatible with our new flags).
  */
-constexpr ServiceFlags SeedsServiceFlags() { return ServiceFlags(NODE_NETWORK | NODE_WITNESS); }
+constexpr ServiceFlags SeedsServiceFlags() { return ServiceFlags(NODE_NETWORK | NODE_WITNESS | NODE_REDUCED_DATA); }
 
 /**
  * Checks if a peer with the given service flags may be capable of having a

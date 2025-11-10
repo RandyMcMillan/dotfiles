@@ -1,3 +1,4 @@
+.gemini/tmp
 .cargo/debug
 .cargo/release
 .cargo/.rustc_info.json

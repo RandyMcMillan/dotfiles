@@ -230,7 +230,8 @@ unset doIt;
 
 ## some dev config
 sudo spctl developer-mode enable-terminal
+if hash brew 2>/dev/null; then
 ## Install sccache using Homebrew
 brew install sccache
+fi
 export RUSTC_WRAPPER=$(which sccache)
-

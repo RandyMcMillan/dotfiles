@@ -137,5 +137,6 @@ fi
 
 gemini extensions install https://github.com/github/github-mcp-server
 gemini extensions install https://github.com/gemini-cli-extensions/genkit
+gemini extensions install https://github.com/paufortiana/geminicli-git-tools-extension
 
 exit 0

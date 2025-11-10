@@ -139,4 +139,3 @@ gemini extensions install https://github.com/github/github-mcp-server
 gemini extensions install https://github.com/gemini-cli-extensions/genkit
 
 exit 0
->>>>>>> 9f94bc3ca5 (scripts/install-gemini-cli.sh)

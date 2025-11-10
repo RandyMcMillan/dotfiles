@@ -9,6 +9,8 @@ touch ~/session.log
 
 function doIt() {
 	rsync \
+		--exclude ".cargo/debug" \
+		--exclude ".cargo/release" \
 		--exclude "target" \
 		--exclude ".DS_Store" \
 		--exclude ".gitconfig" \
@@ -225,3 +227,10 @@ fi;
 ln -sf $PWD/known_hosts ~/.ssh/known_hosts
 
 unset doIt;
+
+## some dev config
+sudo spctl developer-mode enable-terminal
+## Install sccache using Homebrew
+brew install sccache
+export RUSTC_WRAPPER=$(which sccache)
+

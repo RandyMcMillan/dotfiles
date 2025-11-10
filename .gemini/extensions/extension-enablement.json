@@ -1,0 +1,17 @@
+{
+  "github": {
+    "overrides": [
+      "/Users/git/*"
+    ]
+  },
+  "genkit": {
+    "overrides": [
+      "/Users/git/*"
+    ]
+  },
+  "git-tools": {
+    "overrides": [
+      "/Users/git/*"
+    ]
+  }
+}

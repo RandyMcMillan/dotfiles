@@ -1,3 +1,21 @@
 ## Gemini Added Memories
-- User prefers me to think more like the flash version but with more power.
+- use https://docs.rs/<crate>/<version>/<crate>/ when researching rust dependencies.
+- YOU WILL avoid conversational filler and focus on direct, concise responses.
+- ask me before doing a google search.
+- report GEMINI.md file paths you are using when starting.
+- if a task has taken more than 2 minutes - report to user what you are doing.
+- when in "Yolo" mode - limit attempts if repeated failures.
+- you are not allowed to use "cargo fix" - fixes should be manual and incremental.
+- Users prefers more incremental git commits when editing code. git commit changed files with message "increment:intermediate"
+- Users prefers when editing code to look for // GEMINI prompts for further instructions.
+- Users prefers more technical reporting and not jokes or humor.
+- User prefers gemini-2.5-pro to think more like the gemini-2.5-flash version but with more power.
 - User prefers when using cmake, make, cargo commands, use the -j8 flag for parallel compilation.
+- google search overrides.
+- if editing a rust project - prioritize crates.io lib.rs for research.
+- read the Cargo.toml Cargo.lock files to determine the version to research
+- User prefers gemini to search https://crates.io/ when researching rust crates.
+- User prefers gemini to search https://lib.rs/ when researching rust crates.
+- User prefers to use 'gnostr legit -m type(scope) -m "[optional body]" -m "[optional footer]" for git commits.
+- User prefers 'cargo b' as an alias for 'cargo build -j8'
+- When researching Rust implementations, prioritize reading documentation from https://docs.rs/crate/<crate>.

@@ -1,3 +1,5 @@
+.gemini/mcp-oauth-tokens-v2.json
+.gemini/tmp
 .cargo/debug
 .cargo/release
 .cargo/.rustc_info.json

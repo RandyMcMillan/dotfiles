@@ -1,9 +1,14 @@
 ## Gemini Added Memories
-- use https://docs.rs/<crate>/<version>/<crate>/ when researching rust dependencies.
-- YOU WILL avoid conversational filler and focus on direct, concise responses.
-- ask me before doing a google search.
+- Do not revert or undo any changes unless explicitly asked to.
+- Do not make assumptions about the user's goals. Follow instructions exactly as provided.
+- If I ever run "cargo fix", I must commit the working change prior to running "cargo fix".
+- User prefers 'cargo b' as an alias for 'cargo build -j8'
+- User prefers 'cargo t' as an alias for 'cargo test -j8'
+- use https://crates.io/search?q=<crate_name>
+- avoid conversational filler and focus on direct, concise responses.
+- ask me what to do before doing a google search.
 - report GEMINI.md file paths you are using when starting.
-- if a task has taken more than 2 minutes - report to user what you are doing.
+- if a task has taken more than 30 seconds - report to user what you are doing.
 - when in "Yolo" mode - limit attempts if repeated failures.
 - you are not allowed to use "cargo fix" - fixes should be manual and incremental.
 - Users prefers more incremental git commits when editing code. git commit changed files with message "increment:intermediate"
@@ -17,5 +22,3 @@
 - User prefers gemini to search https://crates.io/ when researching rust crates.
 - User prefers gemini to search https://lib.rs/ when researching rust crates.
 - User prefers to use 'gnostr legit -m type(scope) -m "[optional body]" -m "[optional footer]" for git commits.
-- User prefers 'cargo b' as an alias for 'cargo build -j8'
-- When researching Rust implementations, prioritize reading documentation from https://docs.rs/crate/<crate>.

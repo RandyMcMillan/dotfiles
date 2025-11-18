@@ -207,11 +207,12 @@ function doIt() {
 		--exclude "**.bash" \
 		--exclude "**akefile**" \
 		-avh --no-perms . ~;
-	source ../.bashrc;
 }
 
-chmod +x ../bash_sessions
-install ../bash_sessions /usr/local/bash_sessions
+chmod +x ../bash_sessions || \
+chmod +x $PWD/bash_sessions
+install ../bash_sessions /usr/local/bash_sessions || \
+install $PWD/bash_sessions /usr/local/bash_sessions
 
 if [ "$1" == "force" ]; then
 	doIt;
@@ -224,8 +225,10 @@ else
 		doIt;
 	fi;
 fi;
-ln -sf ../known_hosts $HOME/.ssh/known_hosts
-ln -sf ../.gemini $HOME/.gemini
+ln -sf ../known_hosts $HOME/.ssh/known_hosts || \
+ln -sf $PWD/known_hosts $HOME/.ssh/known_hosts
+ln -sf ../.gemini $HOME/.gemini || \
+ln -sf $PWD/.gemini $HOME/.gemini
 
 unset doIt;
 

@@ -224,6 +224,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add laanwj               git@github.com:laanwj/bitcoin.git               || true
     git remote add lnhance              git@github.com:lnhance/bitcoin.git              || true
     git remote add luke-jr              git@github.com:luke-jr/bitcoin-core-gui.git     || true
+    git remote add luke-jr-gui          git@github.com:luke-jr/bitcoin-core-gui.git     || true
     git remote add maflcko              git@github.com:maflcko/bitcoin-core.git         || true
     git remote add maflcko-gui          git@github.com:maflcko/bitcoin-core-gui.git     || true
     git remote add mempool-tab          git@github.com:RandyMcMillan/mempool-tab.git    || true

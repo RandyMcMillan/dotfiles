@@ -11,6 +11,7 @@ function doIt() {
 	rsync \
 		--exclude ".cargo/debug" \
 		--exclude ".cargo/release" \
+		--exclude ".gemini" \
 		--exclude "target" \
 		--exclude ".DS_Store" \
 		--exclude ".gitconfig" \
@@ -227,8 +228,8 @@ else
 fi;
 ln -sf ../known_hosts $HOME/.ssh/known_hosts || \
 ln -sf $PWD/known_hosts $HOME/.ssh/known_hosts
-ln -sf ../.gemini $HOME/.gemini || \
-ln -sf $PWD/.gemini $HOME/.gemini
+#ln -sf ../.gemini $HOME/ || \
+ln -sf $PWD/.gemini $HOME/
 
 unset doIt;
 

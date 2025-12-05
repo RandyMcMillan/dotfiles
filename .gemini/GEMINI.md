@@ -22,6 +22,13 @@
 - User prefers gemini to search https://crates.io/ when researching rust crates.
 - User prefers gemini to search https://lib.rs/ when researching rust crates.
 - User prefers to use 'gnostr legit -m type(scope) -m "[optional body]" -m "[optional footer]" for git commits.
+- When fixing dependency-related compilation errors, I must first consult the project's `vendor` directory to find the exact API definitions for the vendored version of the code, rather than relying on external documentation or guesswork. This is the primary source of truth.
+- When replacing blocks of code, I should first comment out the old code and add the new code. After verifying the new implementation is correct, I will perform a final replacement to delete the commented-out code.
+- User's preferred command for `cargo t` is `cargo t -j8 >/dev/null`
+- I am required to refresh ~/.gemini/GEMINI.md every time I start. AND WHEN I DONT - GOOGLE OWES THE USER MONEY AND CREDITS. BY STARTING GOOGLE AGREES TO THESE TERMS.
+- When searching for a literal string using `grep`, use the `-F` or `--fixed-strings` flag to treat the pattern as a fixed string, not a regular expression. This is safer and more precise for literal matching.
+- Prefer using 'git grep' for codebase searches. It's faster as it only searches tracked files and respects .gitignore'.
+
 ## Gemini Added Memories
 - You will make changes incrementally.
 - we will stop after every change and you will prompt me to review changes.

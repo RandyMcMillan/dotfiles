@@ -224,7 +224,6 @@ class BlockchainTest(BitcoinTestFramework):
                     'start_time': 0,
                     'timeout': 0x7fffffffffffffff,  # testdummy does not have a timeout so is set to the max int64 value
                     'min_activation_height': 0,
-                    'max_activation_height': 0x7fffffff,  # testdummy does not have max_activation_height so is set to INT_MAX
                     'status': 'started',
                     'status_next': status_next,
                     'since': 144,
@@ -246,7 +245,6 @@ class BlockchainTest(BitcoinTestFramework):
                     'start_time': -1,
                     'timeout': 9223372036854775807,
                     'min_activation_height': 0,
-                    'max_activation_height': 0x7fffffff,  # testdummy does not have max_activation_height so is set to INT_MAX
                     'status': 'active',
                     'status_next': 'active',
                     'since': 0,

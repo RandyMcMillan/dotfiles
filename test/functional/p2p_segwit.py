@@ -1331,12 +1331,6 @@ class SegWitTest(BitcoinTestFramework):
         Sending to future segwit versions is always allowed.
         Can run this before and after segwit activation."""
 
-        # SKIP: This test expects upgradable witness versions (OP_1 through OP_16) to be accepted.
-        # With DEPLOYMENT_REDUCED_DATA active, SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_WITNESS_PROGRAM
-        # is enforced, which intentionally rejects these transactions to prevent data bloat.
-        self.log.info("Skipping segwit versions test - upgradable witness programs rejected by DEPLOYMENT_REDUCED_DATA")
-        return
-
         NUM_SEGWIT_VERSIONS = 17  # will test OP_0, OP1, ..., OP_16
         if len(self.utxo) < NUM_SEGWIT_VERSIONS:
             tx = CTransaction()
@@ -1361,8 +1355,9 @@ class SegWitTest(BitcoinTestFramework):
         for version in list(range(OP_1, OP_16 + 1)) + [OP_0]:
             # First try to spend to a future version segwit script_pubkey.
             if version == OP_1:
-                # Don't use 32-byte v1 witness (used by Taproot; see BIP 341)
-                script_pubkey = CScript([CScriptOp(version), witness_hash + b'\x00'])
+                # Use 20-byte program to avoid Taproot (32-byte) and stay under
+                # REDUCED_DATA's 34-byte output limit (33-byte program would be 35 bytes total)
+                script_pubkey = CScript([CScriptOp(version), witness_hash[:20]])
             else:
                 script_pubkey = CScript([CScriptOp(version), witness_hash])
             tx.vin = [CTxIn(COutPoint(self.utxo[0].sha256, self.utxo[0].n), b"")]

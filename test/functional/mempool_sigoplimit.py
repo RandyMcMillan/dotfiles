@@ -172,14 +172,14 @@ class BytesPerSigOpTest(BitcoinTestFramework):
         assert_equal(res['allowed'], True)
         assert_equal(res['vsize'], sigop_equivalent_vsize)
 
-        # Increase tx's vsize to be right above the sigop-limit equivalent size
+        # increase the tx's vsize to be right above the sigop-limit equivalent size
         # => tx's vsize in mempool should also grow accordingly
         pad_tx_to_vsize(tx, sigop_equivalent_vsize + 1)
         res = self.nodes[0].testmempoolaccept([tx.serialize().hex()])[0]
         assert_equal(res['allowed'], True)
-        assert_equal(res['vsize'], sigop_equivalent_vsize + 1)
+        assert_equal(res['vsize'], sigop_equivalent_vsize+1)
 
-        # Decrease tx's vsize to be right below the sigop-limit equivalent size
+        # decrease the tx's vsize to be right below the sigop-limit equivalent size
         # => tx's vsize in mempool should stick at the sigop-limit equivalent
         # bytes level, as it is higher than the tx's serialized vsize
         # (the maximum of both is taken)
@@ -192,14 +192,14 @@ class BytesPerSigOpTest(BitcoinTestFramework):
         # also use the same max(sigop_equivalent_vsize, serialized_vsize) logic
         # (to keep it simple, we only test the case here where the sigop vsize
         # is much larger than the serialized vsize, i.e. we create a small child
-        # tx by getting rid of the large padding outputs)
+        # tx by getting rid of the large padding output)
         while len(tx.vout) > 1:
             tx.vout.pop()
         tx.vout[0].scriptPubKey = CScript([OP_RETURN, b'test123'])
         assert_greater_than(sigop_equivalent_vsize, tx.get_vsize())
         self.nodes[0].sendrawtransaction(hexstring=tx.serialize().hex(), maxburnamount='1.0')
 
-        # fetch parent tx (funding tx), which doesn't contain any sigops
+        # fetch parent tx, which doesn't contain any sigops
         parent_txid = tx.vin[0].prevout.hash.to_bytes(32, 'big').hex()
         parent_tx = tx_from_hex(self.nodes[0].getrawtransaction(txid=parent_txid))
 
@@ -216,43 +216,80 @@ class BytesPerSigOpTest(BitcoinTestFramework):
         assert_equal(entry_parent['descendantsize'], parent_tx.get_vsize() + sigop_equivalent_vsize)
 
     def test_sigops_package(self):
-        # SKIP: This test uses bare multisig (37 bytes) which exceeds MAX_OUTPUT_SCRIPT_SIZE=34
-        # Bare multisig is now rejected when DEPLOYMENT_REDUCED_DATA output size limits are active
-        self.log.info("Skipping sigops package test - bare multisig exceeds MAX_OUTPUT_SCRIPT_SIZE=34")
-        return
-
         self.log.info("Test a overly-large sigops-vbyte hits package limits")
         # Make a 2-transaction package which fails vbyte checks even though
         # separately they would work.
-        self.restart_node(0, extra_args=["-bytespersigop=5000","-permitbaremultisig=1"] + self.extra_args[0])
+        #
+        # Using P2WSH multisig instead of bare multisig to comply with REDUCED_DATA
+        # output size limits (34 bytes max). Witness sigops are discounted by 4x,
+        # so we use multiple CHECKMULTISIG ops to achieve sufficient sigop-adjusted vsize.
+        self.restart_node(0, extra_args=["-bytespersigop=5000"] + self.extra_args[0])
 
-        def create_bare_multisig_tx(utxo_to_spend=None):
-            _, pubkey = generate_keypair()
-            amount_for_bare = 50000
-            tx_dict = self.wallet.create_self_transfer(fee=Decimal("3"), utxo_to_spend=utxo_to_spend)
-            tx_utxo = tx_dict["new_utxo"]
-            tx = tx_dict["tx"]
-            tx.vout.append(CTxOut(amount_for_bare, keys_to_multisig_script([pubkey], k=1)))
-            tx.vout[0].nValue -= amount_for_bare
-            tx_utxo["txid"] = tx.rehash()
-            tx_utxo["value"] -= Decimal("0.00005000")
-            return (tx_utxo, tx)
+        # With -bytespersigop=5000 and witness discount of 4:
+        # - Each CHECKMULTISIG = 20 sigops
+        # - Adjusted vsize per CHECKMULTISIG = 20 * 5000 / 4 = 25,000
+        # - Need > 101,000 / 2 = 50,500 per tx to exceed limit as package
+        # - Use 3 CHECKMULTISIG ops = 60 sigops = 75,000 adjusted vsize per tx
+        # - Two txs together = 150,000 > 101,000 (fails package limit)
+        # - Each tx alone = 75,000 < 101,000 (passes individually)
+        NUM_CHECKMULTISIG_OPS = 3
+        expected_sigops_per_tx = NUM_CHECKMULTISIG_OPS * MAX_PUBKEYS_PER_MULTISIG  # 60
+        expected_vsize_per_tx = expected_sigops_per_tx * 5000 // WITNESS_SCALE_FACTOR  # 75,000
 
-        tx_parent_utxo, tx_parent = create_bare_multisig_tx()
-        _tx_child_utxo, tx_child = create_bare_multisig_tx(tx_parent_utxo)
+        # Create witness script with multiple CHECKMULTISIG ops (sigops counted even in unexecuted branches)
+        witness_script = CScript(
+            [OP_FALSE, OP_IF] +
+            [OP_CHECKMULTISIG] * NUM_CHECKMULTISIG_OPS +
+            [OP_ENDIF, OP_TRUE]
+        )
+        p2wsh_script = script_to_p2wsh_script(witness_script)
+
+        # Pre-fund two P2WSH outputs that we'll spend as parent and child
+        funding_amount = 1000000
+        fund_parent = self.wallet.send_to(
+            from_node=self.nodes[0],
+            scriptPubKey=p2wsh_script,
+            amount=funding_amount,
+        )
+        fund_child = self.wallet.send_to(
+            from_node=self.nodes[0],
+            scriptPubKey=p2wsh_script,
+            amount=funding_amount,
+        )
+        self.generate(self.nodes[0], 1)
+
+        # Parent tx: spends first P2WSH (high sigops), outputs to wallet
+        tx_parent = CTransaction()
+        tx_parent.vin = [CTxIn(COutPoint(int(fund_parent["txid"], 16), fund_parent["sent_vout"]))]
+        tx_parent.wit.vtxinwit = [CTxInWitness()]
+        tx_parent.wit.vtxinwit[0].scriptWitness.stack = [bytes(witness_script)]
+        # Output back to a standard address (MiniWallet's default)
+        tx_parent.vout = [CTxOut(funding_amount - 10000, self.wallet.get_output_script())]
+        tx_parent.rehash()
+
+        # Child tx: spends second P2WSH (high sigops) AND spends parent's output (to form package)
+        tx_child = CTransaction()
+        tx_child.vin = [
+            CTxIn(COutPoint(int(fund_child["txid"], 16), fund_child["sent_vout"])),  # P2WSH input (sigops)
+            CTxIn(COutPoint(tx_parent.sha256, 0)),  # Parent's output (links as child)
+        ]
+        tx_child.wit.vtxinwit = [CTxInWitness(), CTxInWitness()]
+        tx_child.wit.vtxinwit[0].scriptWitness.stack = [bytes(witness_script)]  # For P2WSH input
+        tx_child.wit.vtxinwit[1].scriptWitness.stack = [b'']  # Placeholder for wallet input
+        tx_child.vout = [CTxOut(2 * funding_amount - 30000, self.wallet.get_output_script())]
+        tx_child.rehash()
 
         # Separately, the parent tx is ok
         parent_individual_testres = self.nodes[0].testmempoolaccept([tx_parent.serialize().hex()])[0]
         if not parent_individual_testres["allowed"]:
             self.log.error(f"Parent tx rejected: {parent_individual_testres}")
         assert parent_individual_testres["allowed"]
-        max_multisig_vsize = MAX_PUBKEYS_PER_MULTISIG * 5000
-        assert_equal(parent_individual_testres["vsize"], max_multisig_vsize)
+        assert_equal(parent_individual_testres["vsize"], expected_vsize_per_tx)
 
         # But together, it's exceeding limits in the *package* context. If sigops adjusted vsize wasn't being checked
         # here, it would get further in validation and give too-long-mempool-chain error instead.
         packet_test = self.nodes[0].testmempoolaccept([tx_parent.serialize().hex(), tx_child.serialize().hex()])
-        expected_package_error = f"package-mempool-limits, package size {2*max_multisig_vsize} exceeds ancestor size limit [limit: 101000]"
+        expected_package_error = f"package-mempool-limits, package size {2*expected_vsize_per_tx} exceeds ancestor size limit [limit: 101000]"
         assert_equal([x["package-error"] for x in packet_test], [expected_package_error] * 2)
 
         # When we actually try to submit, the parent makes it into the mempool, but the child would exceed ancestor vsize limits

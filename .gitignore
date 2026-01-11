@@ -1,4 +1,6 @@
 .vim_runtime
+.gemini/extensions
+.gemini/history
 .gemini/mcp-oauth-tokens-v2.json
 .gemini/tmp
 .cargo/debug

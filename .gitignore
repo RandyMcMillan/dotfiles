@@ -36,6 +36,11 @@
 .cache/update-informer-rs/
 .cache/vscode-ripgrep/
 .cargo/.rustc_info.json
+.vim_runtime
+.gemini/extensions
+.gemini/history
+.gemini/mcp-oauth-tokens-v2.json
+.gemini/tmp
 .cargo/debug
 .cargo/release
 .config/.DS_Store

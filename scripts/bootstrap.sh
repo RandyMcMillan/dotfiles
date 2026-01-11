@@ -207,13 +207,12 @@ function doIt() {
 		--exclude "**.sh" \
 		--exclude "**.bash" \
 		--exclude "**akefile**" \
+		--exclude ".vim_runtime/.git/" \
 		-avh --no-perms . ~;
 }
 
-chmod +x ../bash_sessions || \
 chmod +x $PWD/bash_sessions
-install ../bash_sessions /usr/local/bash_sessions || \
-install $PWD/bash_sessions /usr/local/bash_sessions
+install $PWD/bash_sessions /usr/local/bash_sessions 2>/dev/null || echo "Warning: Could not install bash_sessions to /usr/local (requires sudo)"
 
 if [ "$1" == "force" ]; then
 	doIt;

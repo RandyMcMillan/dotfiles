@@ -235,8 +235,10 @@ unset doIt;
 
 ## some dev config
 sudo spctl developer-mode enable-terminal
-if hash brew 2>/dev/null; then
+if hash cargo 2>/dev/null; then
 ## Install sccache using Homebrew
-brew install sccache
+cargo install sccache
+else
+echo "Try:\nbrew install rustup-init?"
 fi
 export RUSTC_WRAPPER=$(which sccache)

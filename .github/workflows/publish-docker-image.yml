@@ -2,7 +2,7 @@ name: Docker CI
 on:
   push:
     tags:
-      - 'libre-relay-v30.1-*'
+      - 'libre-relay-v30.2-*'
 
 jobs:
   build:

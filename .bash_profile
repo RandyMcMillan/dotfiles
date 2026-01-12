@@ -127,3 +127,11 @@ if ! hash brew 2>/dev/null; then
        eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
        eval "$(/opt/homebrew/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
 fi
+
+# Add opencode to PATH if installed via Homebrew
+if [ -d "/usr/local/opt/opencode/bin" ]; then
+       pathappend "/usr/local/opt/opencode/bin"
+fi
+if [ -f "/Applications/OpenCode.app/Contents/MacOS/opencode-cli" ]; then
+       pathappend "/Applications/OpenCode.app/Contents/MacOS"
+fi

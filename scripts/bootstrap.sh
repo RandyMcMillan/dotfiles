@@ -211,8 +211,8 @@ function doIt() {
 		-avh --no-perms . ~;
 }
 
-chmod +x $PWD/bash_sessions
-install $PWD/bash_sessions /usr/local/bash_sessions 2>/dev/null || echo "Warning: Could not install bash_sessions to /usr/local (requires sudo)"
+chmod +x ../bash_sessions
+install ../bash_sessions /usr/local/bash_sessions 2>/dev/null || echo "Warning: Could not install bash_sessions to /usr/local (requires sudo)"
 
 if [ "$1" == "force" ]; then
 	doIt;
@@ -226,9 +226,13 @@ else
 	fi;
 fi;
 ln -sf ../known_hosts $HOME/.ssh/known_hosts || \
-ln -sf $PWD/known_hosts $HOME/.ssh/known_hosts
-#ln -sf ../.gemini $HOME/ || \
-ln -sf $PWD/.gemini $HOME/
+ln -sf $PWD/../known_hosts $HOME/.ssh/known_hosts || echo "Warning: Could not create known_hosts symlink"
+
+rsync -r ~/.gemini/** $PWD/.gemini/ || \ ## we want potential updates
+rsync -r ~/.gemini/** $PWD/../.gemini/
+git diff $PWD/.gemini ## review diff
+rsync -r $PWD/.gemini/** $HOME/.gemini/ || \ ## rsync from dotfiles
+rsync -r $PWD/../.gemini/** $HOME/.gemini/
 
 unset doIt;
 

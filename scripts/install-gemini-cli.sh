@@ -138,5 +138,9 @@ fi
 gemini extensions install https://github.com/github/github-mcp-server
 gemini extensions install https://github.com/gemini-cli-extensions/genkit
 gemini extensions install https://github.com/paufortiana/geminicli-git-tools-extension
-
+curl -fsSL https://opencode.ai/install | bash || \
+npm i -g opencode-ai || \
+bun add -g opencode-ai || \
+brew --cask install opencode-cli || \
+brew install anomalyco/tap/opencode
 exit 0

@@ -11,7 +11,6 @@ function doIt() {
 	rsync \
 		--exclude ".cargo/debug" \
 		--exclude ".cargo/release" \
-		--exclude ".gemini" \
 		--exclude "target" \
 		--exclude ".DS_Store" \
 		--exclude ".gitconfig" \
@@ -171,7 +170,6 @@ function doIt() {
 		--exclude "keys.shasum.2.txt" \
 		--exclude "keys.shasum.txt" \
 		--exclude "keys.txt" \
-		--exclude "known_hosts" \
 		--exclude "legit" \
 		--exclude "legit.mk" \
 		--exclude "libtoolize" \
@@ -209,15 +207,45 @@ function doIt() {
 		--exclude "**akefile**" \
 		--exclude ".vim_runtime/.git/" \
 		-avh --no-perms . ~;
+
+
+chmod +x $PWD/../bash_sessions || \
+chmod +x ../bash_sessions
+
+install ../bash_sessions /usr/local/bash_sessions 2>/dev/null || \
+echo "Warning: Could not install bash_sessions to /usr/local (requires sudo)"
 }
 
-chmod +x ../bash_sessions
-install ../bash_sessions /usr/local/bash_sessions 2>/dev/null || echo "Warning: Could not install bash_sessions to /usr/local (requires sudo)"
+if [[ "$1" == "link" ]]; then
+	for link in $(ls -m .);do echo $link;done
+	exit
+fi;
+if [[ "$2" == "link" ]]; then
+	for link in $(ls -m .);do echo $link;done
+	exit
+fi;
 
-if [ "$1" == "force" ]; then
+if [[ "$1" == "pull" ]]; then
+	rsync -r ~/.gemini/** $PWD/.gemini/ || \ ## we want potential updates
+	rsync -r ~/.gemini/** $PWD/../.gemini/
+	rsync -r ~/.ssh/known_hosts/** $PWD/.known_hosts/ || \ ## we want potential updates
+	rsync -r ~/.ssh/known_hosts/** $PWD/../.known_hosts/
+	git diff;
+	exit
+fi;
+if [[ "$2" == "pull" ]]; then
+	rsync -r ~/.gemini/** $PWD/.gemini/ || \ ## we want potential updates
+	rsync -r ~/.gemini/** $PWD/../.gemini/
+	rsync -r ~/.ssh/known_hosts/** $PWD/.known_hosts/ || \ ## we want potential updates
+	rsync -r ~/.ssh/known_hosts/** $PWD/../.known_hosts/
+	git diff;
+	exit
+fi;
+if [[ "$1" == "force" ]]; then
+	rsync -r $PWD/.gemini/** $HOME/.gemini/ || \ ## rsync from dotfiles
+	rsync -r $PWD/../.gemini/** $HOME/.gemini/
 	doIt;
-elif [ "$2" == "force" ]; then
-	doIt;
+	exit
 else
 	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
 	echo "";
@@ -225,14 +253,18 @@ else
 		doIt;
 	fi;
 fi;
-ln -sf ../known_hosts $HOME/.ssh/known_hosts || \
-ln -sf $PWD/../known_hosts $HOME/.ssh/known_hosts || echo "Warning: Could not create known_hosts symlink"
-
-rsync -r ~/.gemini/** $PWD/.gemini/ || \ ## we want potential updates
-rsync -r ~/.gemini/** $PWD/../.gemini/
-git diff $PWD/.gemini ## review diff
-rsync -r $PWD/.gemini/** $HOME/.gemini/ || \ ## rsync from dotfiles
-rsync -r $PWD/../.gemini/** $HOME/.gemini/
+if [[ "$2" == "force" ]]; then
+	rsync -r $PWD/.gemini/** $HOME/.gemini/ || \ ## rsync from dotfiles
+	rsync -r $PWD/../.gemini/** $HOME/.gemini/
+	doIt;
+	exit
+else
+	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
+	echo "";
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		doIt;
+	fi;
+fi;
 
 unset doIt;
 
@@ -241,11 +273,11 @@ sudo spctl developer-mode enable-terminal
 if hash sccache 2>/dev/null; then
 which sccache
 else
-if hash cargo 2>/dev/null; then
-## Install sccache using Homebrew
-cargo install sccache
-else
-echo "Try:\nbrew install rustup-init?"
-fi
+	if hash cargo 2>/dev/null; then
+	## Install sccache using Homebrew
+	cargo install sccache
+	else
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	fi
 fi
 export RUSTC_WRAPPER=$(which sccache)

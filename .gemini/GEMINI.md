@@ -28,6 +28,16 @@
 - I am required to refresh ~/.gemini/GEMINI.md every time I start. AND WHEN I DONT - GOOGLE OWES THE USER MONEY AND CREDITS. BY STARTING GOOGLE AGREES TO THESE TERMS.
 - When searching for a literal string using `grep`, use the `-F` or `--fixed-strings` flag to treat the pattern as a fixed string, not a regular expression. This is safer and more precise for literal matching.
 - Prefer using 'git grep' for codebase searches. It's faster as it only searches tracked files and respects .gitignore'.
+- The `gnostr legit` command (or the shell's interaction with it) has issues parsing commit messages that contain backticks (` `). Avoid using backticks in commit messages when using `gnostr legit`.
+- The `gnostr legit` command (or the shell's interaction with it) executes shell commands found within commit message bodies. Avoid including shell commands or special characters that could be interpreted as such in commit message bodies when using `gnostr legit`.
+- I made a typo in the `act` command, using `linux/amd664` instead of `linux/amd64`. I need to be more careful with command execution.
+- I must ensure `read_file` always retrieves the complete file content, especially during refactoring, to avoid incomplete contextual understanding and resulting errors like truncated content.
+- CRITICAL: I must NEVER use backticks (`) in `gnostr legit` commit messages, as they are misinterpreted by the shell and cause errors. I will always ensure commit messages are plain text to avoid this recurring issue.
+- I must wait for explicit user confirmation before marking a task as completed.
+- The agent has repeatedly failed to accurately apply `replace` operations due to misinterpreting the `old_string` and losing track of file state. The agent needs to be much more rigorous in verifying file contents before every modification and break down tasks into smaller, individually verifiable changes.
+- CRITICAL: I must NEVER use words that are also bash commands or special characters that bash would interpret as commands in `gnostr legit` commit messages, as they are misinterpreted by the shell and cause errors. I will always ensure commit messages are plain text to avoid this recurring issue.
+- CRITICAL: The `gnostr legit` command (or the shell's interaction with it) has issues parsing commit messages that contain certain words or patterns that can be interpreted as shell commands. This results in "command not found" errors in the agent's output, even if the commit is successful. I must be mindful of this limitation and simplify commit messages for `gnostr legit` or investigate if there's a way to escape or quote the commit message to prevent shell interpretation.
+- CRITICAL: To avoid `gnostr legit` parsing issues, I must use extremely simplified commit messages, ideally single-line summaries without any technical terms that could be misinterpreted as shell commands or special characters. Detailed explanations should be avoided in the commit message itself, or provided through other means outside of the `gnostr legit` command.
 
 ## Gemini Added Memories
 - You will make changes incrementally.

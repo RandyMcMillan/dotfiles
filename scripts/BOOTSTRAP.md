@@ -59,7 +59,7 @@ Contains script configuration options. Copy this file and modify values to overr
 - `-v, --verbose`: Enable verbose output
 - `-b, --backup`: Create backup before overwriting (default)
 - `--no-backup`: Skip creating backups
-- `--config FILE`: Use custom config file
+- `-c, --config FILE`: Use custom config file
 
 ## Safety Features
 

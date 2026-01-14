@@ -3,7 +3,7 @@
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly CONFIG_FILE="${SCRIPT_DIR}/.bootstrapconfig"
+CONFIG_FILE="${SCRIPT_DIR}/.bootstrapconfig"
 readonly EXCLUDE_FILE="${SCRIPT_DIR}/.bootstrapignore"
 readonly SESSION_LOG="${HOME}/session.log"
 readonly BACKUP_DIR="${HOME}/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
@@ -256,7 +256,7 @@ main() {
             -v|--verbose) VERBOSE=true; shift ;;
             -b|--backup) BACKUP=true; shift ;;
             --no-backup) BACKUP=false; shift ;;
-            --config) CONFIG_FILE="$2"; shift 2 ;;
+            -c|--config) CONFIG_FILE="$2"; shift 2 ;;
             -h|--help) command="help"; shift ;;
             sync|link|pull|install|help)
                 command="$1"; shift ;;

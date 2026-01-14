@@ -1,3 +1,5 @@
+.gemini/oauth_creds.json
+
 .vim_runtime
 .gemini/extensions
 .gemini/history

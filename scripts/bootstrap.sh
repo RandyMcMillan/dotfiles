@@ -282,7 +282,7 @@ export RUSTC_WRAPPER=$(which sccache)
 
 fi ## end not sudo
 
-if [[ "$EUID" -e 0 ]]; then
+if [[ "$EUID" -eq 0 ]]; then
 chmod +x $PWD/../bash_sessions || \
 chmod +x ../bash_sessions
 

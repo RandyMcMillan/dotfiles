@@ -1,291 +1,315 @@
 #!/usr/bin/env bash
 
-if [ "$EUID" -ne 0 ]; then
-cd "$(dirname "${BASH_SOURCE}")";
+set -euo pipefail
 
-touch ~/session.log
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly CONFIG_FILE="${SCRIPT_DIR}/.bootstrapconfig"
+readonly EXCLUDE_FILE="${SCRIPT_DIR}/.bootstrapignore"
+readonly SESSION_LOG="${HOME}/session.log"
+readonly BACKUP_DIR="${HOME}/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 
-#git pull origin master;
-#git pull origin main;
+# Default configuration
+DRY_RUN=false
+VERBOSE=false
+FORCE=false
+BACKUP=true
 
-function doIt() {
-	rsync \
-		--exclude ".cargo/debug" \
-		--exclude ".cargo/release" \
-		--exclude "target" \
-		--exclude ".DS_Store" \
-		--exclude ".gitconfig" \
-		--exclude ".nojekyll" \
-		--exclude ".venv" \
-		--exclude ".osx" \
-		--exclude "AUTHORS" \
-		--exclude "B.sh" \
-		--exclude "Brewfile" \
-		--exclude "CNAME" \
-		--exclude "COPYING" \
-		--exclude "Cargo.lock" \
-		--exclude "Cargo.toml" \
-		--exclude "Casks" \
-		--exclude "ChangeLog" \
-		--exclude "ColorProfile.icc" \
-		--exclude "Formulae" \
-		--exclude "GNUmakefile" \
-		--exclude "GNUmakefile.in" \
-		--exclude "INSTALL" \
-		--exclude "LICENSE-MIT.txt" \
-		--exclude "LittleSnitch-4.5.2.dmg" \
-		--exclude "Makefile" \
-		--exclude "Makefile.am" \
-		--exclude "Makefile.in" \
-		--exclude "NEWS" \
-		--exclude "README.md" \
-		--exclude "TIME" \
-		--exclude "aclocal.m4" \
-		--exclude "act.mk" \
-		--exclude "adduser-git.sh" \
-		--exclude "autogen.sh" \
-		--exclude "autom4te.cache" \
-		--exclude "bash_profile.log" \
-		--exclude "bitcoin-libs" \
-		--exclude "bitcoin-libs.sh" \
-		--exclude "bitcoin-test-battery.sh" \
-		--exclude "blockheight" \
-		--exclude "boot-reset-boot-mode.sh" \
-		--exclude "boot-safe-mode.sh" \
-		--exclude "boot-single-user-mode.sh" \
-		--exclude "boot-strap*" \
-		--exclude "boot-verbose-mode.sh" \
-		--exclude "bootstrap.sh" \
-		--exclude "brew-bitcoin-gui.sh" \
-		--exclude "brew-bitcoin-no-gui.sh" \
-		--exclude "brew-list.sh" \
-		--exclude "brew_install.sh" \
-		--exclude "brew_install_version.sh" \
-		--exclude "build-bitcoincore-dev-bitcoin-core.sh" \
-		--exclude "build-bitcoincore-dev-bitcoin.org.sh" \
-		--exclude "build-bitcoincore-dev-bitcoin.sh" \
-		--exclude "build-bitcoincore-dev-gui.sh" \
-		--exclude "build-bitcoincore-dev-org-builder.sh" \
-		--exclude "build-bitcoincore.dev.grafana.sh" \
-		--exclude "build-randymcmillan-gui.sh" \
-		--exclude "builder-keys.sha256.txt" \
-		--exclude "builder-keys.txt" \
-		--exclude "builder-keys.txt.gpg" \
-		--exclude "builder.keys.shasum.2.txt" \
-		--exclude "builder.keys.shasum.txt" \
-		--exclude "cargo.mk" \
-		--exclude "checkbrew" \
-		--exclude "checkbrew.sh" \
-		--exclude "checkraspi.sh" \
-		--exclude "compile" \
-		--exclude "config-dock-prefs.sh" \
-		--exclude "config-git" \
-		--exclude "config-git.sh" \
-		--exclude "config-github" \
-		--exclude "config-github.sh" \
-		--exclude "config-hosts-file.sh" \
-		--exclude "config.h" \
-		--exclude "config.h.in~" \
-		--exclude "config.log" \
-		--exclude "config.status" \
-		--exclude "configure" \
-		--exclude "configure.ac" \
-		--exclude "configure~" \
-		--exclude "depends" \
-		--exclude "disable-macos-services.sh" \
-		--exclude "disable.sh" \
-		--exclude "do-mount-volume.sh" \
-		--exclude "do-upgrade-agent.sh" \
-		--exclude "enable-macos-services.sh" \
-		--exclude "funcs.mk" \
-		--exclude "gen-keys.sh" \
-		--exclude "genKeys.sh" \
-		--exclude "get-forks.sh" \
-		--exclude "gnostr.mk" \
-		--exclude "hercules.cnf" \
-		--exclude "hooks" \
-		--exclude "index.html" \
-		--exclude "index.html.sig" \
-		--exclude "init" \
-		--exclude "install-*.sh" \
-		--exclude "install-Docker.sh" \
-		--exclude "install-FastLane.sh" \
-		--exclude "install-Miniconda3-latest-MacOSX-x86_64.bash" \
-		--exclude "install-OSXFuse.sh" \
-		--exclude "install-Onyx.sh" \
-		--exclude "install-Ruby@2.4.bash" \
-		--exclude "install-Ruby@2.5.bash" \
-		--exclude "install-Ruby@2.6.bash" \
-		--exclude "install-SassC.sh" \
-		--exclude "install-XVim2+CS.bash" \
-		--exclude "install-bash.bash" \
-		--exclude "install-bdk-cli.sh" \
-		--exclude "install-brew.sh" \
-		--exclude "install-capnp.sh" \
-		--exclude "install-cirrus.sh" \
-		--exclude "install-clang-format.sh" \
-		--exclude "install-common-lisp.sh" \
-		--exclude "install-discord.sh" \
-		--exclude "install-eq-mac.sh" \
-		--exclude "install-firefox.sh" \
-		--exclude "install-full-node.sh" \
-		--exclude "install-gforth.sh" \
-		--exclude "install-git-legit.sh" \
-		--exclude "install-gitea.sh" \
-		--exclude "install-github-utility.sh" \
-		--exclude "install-gnupg+suite.sh" \
-		--exclude "install-i2p.sh" \
-		--exclude "install-iftop.sh" \
-		--exclude "install-inkscape.sh" \
-		--exclude "install-iterm2.sh" \
-		--exclude "install-karabiner-elements.bash" \
-		--exclude "install-keeping-you-awake.sh" \
-		--exclude "install-little-snitch.sh" \
-		--exclude "install-moby-engine.sh" \
-		--exclude "install-nvm.sh" \
-		--exclude "install-openssl.sh" \
-		--exclude "install-playground.sh" \
-		--exclude "install-porter.sh" \
-		--exclude "install-protonvpn.sh" \
-		--exclude "install-python3.X.sh" \
-		--exclude "install-ql-plugins.sh" \
-		--exclude "install-qt5-creator.sh" \
-		--exclude "install-qt5.sh" \
-		--exclude "install-ruby-install.sh" \
-		--exclude "install-rustup" \
-		--exclude "install-rustup.sh" \
-		--exclude "install-sh" \
-		--exclude "install-sha256sum.sh" \
-		--exclude "install-shell.sh" \
-		--exclude "install-sh~" \
-		--exclude "install-specter-desktop.sh" \
-		--exclude "install-spotify.sh" \
-		--exclude "install-tree.sh" \
-		--exclude "install-umbrel-dev.sh" \
-		--exclude "install-vim.sh" \
-		--exclude "install-youtube-dl.sh" \
-		--exclude "install-ytop.sh" \
-		--exclude "installer-template.sh" \
-		--exclude "iterm2.json" \
-		--exclude "keys.shasum.1.txt" \
-		--exclude "keys.shasum.2.txt" \
-		--exclude "keys.shasum.txt" \
-		--exclude "keys.txt" \
-		--exclude "legit" \
-		--exclude "legit.mk" \
-		--exclude "libtoolize" \
-		--exclude "logs" \
-		--exclude "ltmain.sh" \
-		--exclude "m4" \
-		--exclude "make-actions-runner.sh" \
-		--exclude "missing" \
-		--exclude "nigiri.sh" \
-		--exclude "nostril" \
-		--exclude "nostril.mk" \
-		--exclude "python@2.7.18" \
-		--exclude "report.sh" \
-		--exclude "requirements.lock" \
-		--exclude "requirements.txt" \
-		--exclude "rsync-time-backup" \
-		--exclude "runPiHoleDocker.sh" \
-		--exclude "scripts" \
-		--exclude "sources" \
-		--exclude "src" \
-		--exclude "tags" \
-		--exclude "template" \
-		--exclude "template.sh" \
-		--exclude "thread-sweep.sh" \
-		--exclude "uninstall-brew-all.sh" \
-		--exclude "venv.mk" \
-		--exclude "vimrc" \
-		--exclude "weeble" \
-		--exclude "whatami.sh" \
-		--exclude "wobble" \
-		--exclude ".git/" \
-		--exclude ".github/" \
-		--exclude "**.sh" \
-		--exclude "**.bash" \
-		--exclude "**akefile**" \
-		--exclude ".vim_runtime/.git/" \
-		-avh --no-perms . ~;
+# Colors for output
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m' # No Color
+
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$SESSION_LOG"
 }
 
-## link
-if [[ "$1" == "link" ]]; then
-	for link in $(ls -m .);do echo $link;done
-	exit
-fi;
-if [[ "$2" == "link" ]]; then
-	for link in $(ls -m .);do echo $link;done
-	exit
-fi;
+info() {
+    echo -e "${BLUE}[INFO]${NC} $*" | tee -a "$SESSION_LOG"
+}
 
-## pull
-if [[ "$1" == "pull" ]]; then
-	rsync -r ~/.gemini/** $PWD/.gemini/ || \ ## we want potential updates
-	rsync -r ~/.gemini/** $PWD/../.gemini/
-	rsync -r ~/.ssh/known_hosts/** $PWD/.known_hosts/ || \ ## we want potential updates
-	rsync -r ~/.ssh/known_hosts/** $PWD/../.known_hosts/
-	git diff;
-	exit
-fi;
-if [[ "$2" == "pull" ]]; then
-	rsync -r ~/.gemini/** $PWD/.gemini/ || \ ## we want potential updates
-	rsync -r ~/.gemini/** $PWD/../.gemini/
-	rsync -r ~/.ssh/known_hosts/** $PWD/.known_hosts/ || \ ## we want potential updates
-	rsync -r ~/.ssh/known_hosts/** $PWD/../.known_hosts/
-	git diff;
-	exit
-fi;
+warn() {
+    echo -e "${YELLOW}[WARN]${NC} $*" | tee -a "$SESSION_LOG"
+}
 
-## force
-if [[ "$1" == "force" ]]; then
-	rsync -r $PWD/.gemini/** $HOME/.gemini/ || \ ## rsync from dotfiles
-	rsync -r $PWD/../.gemini/** $HOME/.gemini/
-	doIt;
-	exit
-else
-	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
-	echo "";
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		doIt;
-	fi;
-fi;
-if [[ "$2" == "force" ]]; then
-	rsync -r $PWD/.gemini/** $HOME/.gemini/ || \ ## rsync from dotfiles
-	rsync -r $PWD/../.gemini/** $HOME/.gemini/
-	doIt;
-	exit
-else
-	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
-	echo "";
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		doIt;
-	fi;
-fi;
+error() {
+    echo -e "${RED}[ERROR]${NC} $*" | tee -a "$SESSION_LOG" >&2
+}
 
-unset doIt;
+success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $*" | tee -a "$SESSION_LOG"
+}
 
-## some dev config
-sudo spctl developer-mode enable-terminal
-if hash sccache 2>/dev/null; then
-which sccache
-else
-	if hash cargo 2>/dev/null; then
-	## Install sccache using Homebrew
-	cargo install sccache
-	else
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-	fi
-fi
-export RUSTC_WRAPPER=$(which sccache)
+show_usage() {
+    cat << EOF
+Usage: $(basename "$0") [OPTIONS] [COMMAND]
 
-fi ## end not sudo
+Commands:
+    sync        Sync dotfiles to home directory (default)
+    link        List all available dotfiles for linking
+    pull        Pull changes from home directory to dotfiles
+    install     Install development tools (sccache, etc.)
+    help        Show this help message
 
-if [[ "$EUID" -eq 0 ]]; then
-chmod +x $PWD/../bash_sessions || \
-chmod +x ../bash_sessions
+Options:
+    -f, --force     Skip confirmation prompts
+    -n, --dry-run   Show what would be done without executing
+    -v, --verbose   Enable verbose output
+    -b, --backup    Create backup before overwriting (default: true)
+    --no-backup     Skip creating backups
+    --config FILE   Use custom config file
 
-install ../bash_sessions /usr/local/bash_sessions 2>/dev/null || \
-echo "Warning: Could not install bash_sessions to /usr/local (requires sudo)"
-fi
+Examples:
+    bootstrap.sh                 # Interactive sync with backup
+    bootstrap.sh --force sync    # Force sync without confirmation
+    bootstrap.sh --dry-run pull  # Preview pull operation
+    bootstrap.sh install         # Install development tools only
+EOF
+}
+
+load_config() {
+    if [[ -f "$CONFIG_FILE" ]]; then
+        source "$CONFIG_FILE"
+    fi
+}
+
+check_prerequisites() {
+    if [[ "$EUID" -eq 0 ]]; then
+        error "This script should not be run as root"
+        exit 1
+    fi
+
+    if ! command -v rsync >/dev/null 2>&1; then
+        error "rsync is required but not installed"
+        exit 1
+    fi
+
+    local available_space
+    available_space=$(df -k "$HOME" | awk 'NR==2 {print $4}')
+    if [[ $available_space -lt 10240 ]]; then
+        warn "Low disk space: ${available_space}KB available"
+    fi
+}
+
+get_exclusions() {
+    local exclusions=()
+    
+    if [[ -f "$EXCLUDE_FILE" ]]; then
+        while IFS= read -r pattern; do
+            [[ -n "$pattern" && ! "$pattern" =~ ^# ]] && exclusions+=("--exclude=$pattern")
+        done < "$EXCLUDE_FILE"
+    else
+        # Fallback exclusions if file doesn't exist
+        exclusions=(
+            --exclude=".cargo/debug" --exclude=".cargo/release" --exclude="target"
+            --exclude=".DS_Store" --exclude=".gitconfig" --exclude=".nojekyll"
+            --exclude=".venv" --exclude=".osx" --exclude="scripts" --exclude="src"
+            --exclude=".git/" --exclude=".github/" --exclude="**.sh" --exclude="**.bash"
+            --exclude="**akefile**" --exclude=".vim_runtime/.git/"
+            --exclude="README.md" --exclude="LICENSE*" --exclude="INSTALL"
+            --exclude="AUTHORS" --exclude="ChangeLog" --exclude="NEWS" --exclude="TIME"
+        )
+    fi
+    
+    printf '%s\n' "${exclusions[@]}"
+}
+
+create_backup() {
+    if [[ "$BACKUP" == "true" ]]; then
+        info "Creating backup in $BACKUP_DIR"
+        mkdir -p "$BACKUP_DIR"
+        
+        # Backup existing dotfiles that will be overwritten
+        find "$SCRIPT_DIR" -maxdepth 1 -name ".*" -type f ! -name ".git" | while read -r file; do
+            local basename
+            basename=$(basename "$file")
+            local home_file="${HOME}/${basename}"
+            
+            if [[ -f "$home_file" || -L "$home_file" ]]; then
+                cp -p "$home_file" "$BACKUP_DIR/" 2>/dev/null || true
+            fi
+        done
+        
+        success "Backup created"
+    fi
+}
+
+sync_dotfiles() {
+    info "Syncing dotfiles to home directory"
+    
+    local rsync_cmd=(rsync -avh --no-perms)
+    [[ "$DRY_RUN" == "true" ]] && rsync_cmd+=(--dry-run)
+    [[ "$VERBOSE" == "true" ]] && rsync_cmd+=(-v)
+    
+    # Add exclusions
+    while IFS= read -r exclusion; do
+        rsync_cmd+=("$exclusion")
+    done < <(get_exclusions)
+    
+    rsync_cmd+=("$SCRIPT_DIR/" "$HOME/")
+    
+    if [[ "$VERBOSE" == "true" ]]; then
+        info "Command: ${rsync_cmd[*]}"
+    fi
+    
+    if "${rsync_cmd[@]}"; then
+        success "Dotfiles synced successfully"
+    else
+        error "Failed to sync dotfiles"
+        return 1
+    fi
+}
+
+list_dotfiles() {
+    info "Available dotfiles:"
+    find "$SCRIPT_DIR" -maxdepth 1 -name ".*" -type f ! -name ".git" -exec basename {} \; | sort
+}
+
+pull_changes() {
+    info "Pulling changes from home directory"
+    
+    local dirs=(".gemini" ".ssh/known_hosts")
+    
+    for dir in "${dirs[@]}"; do
+        local home_path="${HOME}/${dir}"
+        local dotfiles_path="${SCRIPT_DIR}/${dir##*/}"
+        
+        if [[ -d "$home_path" ]]; then
+            info "Syncing $dir"
+            if [[ "$DRY_RUN" == "false" ]]; then
+                mkdir -p "$(dirname "$dotfiles_path")"
+                rsync -av "$home_path/" "$dotfiles_path/" || warn "Failed to sync $dir"
+            fi
+        fi
+    done
+    
+    if [[ "$DRY_RUN" == "false" ]]; then
+        git -C "$SCRIPT_DIR" diff --stat
+    fi
+}
+
+install_dev_tools() {
+    info "Installing development tools"
+    
+    # Enable developer mode on macOS
+    if [[ "$(uname)" == "Darwin" ]]; then
+        info "Enabling developer mode"
+        sudo spctl developer-mode enable-terminal || warn "Failed to enable developer mode"
+    fi
+    
+    # Install sccache for Rust compilation
+    if ! command -v sccache >/dev/null 2>&1; then
+        info "Installing sccache"
+        if command -v cargo >/dev/null 2>&1; then
+            cargo install sccache || error "Failed to install sccache via cargo"
+        else
+            info "Installing Rust first"
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+            source "$HOME/.cargo/env"
+            cargo install sccache || error "Failed to install sccache"
+        fi
+    else
+        info "sccache already installed: $(which sccache)"
+    fi
+    
+    # Set up sccache environment
+    export RUSTC_WRAPPER="$(which sccache)"
+    
+    success "Development tools installation complete"
+}
+
+handle_sudo_operations() {
+    if [[ "$EUID" -eq 0 ]]; then
+        warn "Running as root - installing bash_sessions"
+        
+        local bash_sessions_dir="${SCRIPT_DIR}/../bash_sessions"
+        if [[ -d "$bash_sessions_dir" ]]; then
+            chmod +x "$bash_sessions_dir"
+            install -d /usr/local
+            install "$bash_sessions_dir" /usr/local/bash_sessions || warn "Failed to install bash_sessions"
+        fi
+    fi
+}
+
+get_argument() {
+    local arg="$1"
+    # Check both $1 and $2 for compatibility with original script
+    [[ -n "$arg" ]] && echo "$arg"
+}
+
+main() {
+    # Initialize session log
+    touch "$SESSION_LOG"
+    log "Bootstrap script started"
+    
+    # Load configuration
+    load_config
+    
+    # Parse command line arguments
+    local command="sync"
+    
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -f|--force) FORCE=true; shift ;;
+            -n|--dry-run) DRY_RUN=true; shift ;;
+            -v|--verbose) VERBOSE=true; shift ;;
+            -b|--backup) BACKUP=true; shift ;;
+            --no-backup) BACKUP=false; shift ;;
+            --config) CONFIG_FILE="$2"; shift 2 ;;
+            -h|--help) command="help"; shift ;;
+            sync|link|pull|install|help)
+                command="$1"; shift ;;
+            *) error "Unknown option: $1"; show_usage; exit 1 ;;
+        esac
+    done
+    
+    # Show help if requested
+    if [[ "$command" == "help" ]]; then
+        show_usage
+        exit 0
+    fi
+    
+    # Check prerequisites
+    check_prerequisites
+    
+    # Execute command
+    case "$command" in
+        "sync")
+            if [[ "$FORCE" != "true" ]]; then
+                echo -n "This may overwrite existing files in your home directory. Are you sure? (y/n) "
+                read -r response
+                if [[ ! "$response" =~ ^[Yy]$ ]]; then
+                    info "Operation cancelled"
+                    exit 0
+                fi
+            fi
+            create_backup
+            sync_dotfiles
+            install_dev_tools
+            ;;
+        "link")
+            list_dotfiles
+            ;;
+        "pull")
+            pull_changes
+            ;;
+        "install")
+            install_dev_tools
+            ;;
+        *)
+            error "Unknown command: $command"
+            show_usage
+            exit 1
+            ;;
+    esac
+    
+    # Handle any sudo operations
+    handle_sudo_operations
+    
+    log "Bootstrap script completed successfully"
+    success "All operations completed"
+}
+
+# Run main function with all arguments
+main "$@"

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+if [ "$EUID" -ne 0 ]; then
 cd "$(dirname "${BASH_SOURCE}")";
 
 touch ~/session.log
@@ -207,15 +208,9 @@ function doIt() {
 		--exclude "**akefile**" \
 		--exclude ".vim_runtime/.git/" \
 		-avh --no-perms . ~;
-
-
-chmod +x $PWD/../bash_sessions || \
-chmod +x ../bash_sessions
-
-install ../bash_sessions /usr/local/bash_sessions 2>/dev/null || \
-echo "Warning: Could not install bash_sessions to /usr/local (requires sudo)"
 }
 
+## link
 if [[ "$1" == "link" ]]; then
 	for link in $(ls -m .);do echo $link;done
 	exit
@@ -225,6 +220,7 @@ if [[ "$2" == "link" ]]; then
 	exit
 fi;
 
+## pull
 if [[ "$1" == "pull" ]]; then
 	rsync -r ~/.gemini/** $PWD/.gemini/ || \ ## we want potential updates
 	rsync -r ~/.gemini/** $PWD/../.gemini/
@@ -241,6 +237,8 @@ if [[ "$2" == "pull" ]]; then
 	git diff;
 	exit
 fi;
+
+## force
 if [[ "$1" == "force" ]]; then
 	rsync -r $PWD/.gemini/** $HOME/.gemini/ || \ ## rsync from dotfiles
 	rsync -r $PWD/../.gemini/** $HOME/.gemini/
@@ -281,3 +279,13 @@ else
 	fi
 fi
 export RUSTC_WRAPPER=$(which sccache)
+
+fi ## end not sudo
+
+if [[ "$EUID" -e 0 ]]; then
+chmod +x $PWD/../bash_sessions || \
+chmod +x ../bash_sessions
+
+install ../bash_sessions /usr/local/bash_sessions 2>/dev/null || \
+echo "Warning: Could not install bash_sessions to /usr/local (requires sudo)"
+fi

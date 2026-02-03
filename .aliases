@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+
+# Gemini aliases
+alias gemini-pro="nvm exec gemini --model gemini-2.5-pro"
+alias gemini-flash="nvm exec gemini --model gemini-2.5-flash"
+alias gemini-flash-lite="nvm exec gemini --model gemini-2.5-flash-lite"
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."

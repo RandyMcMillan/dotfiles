@@ -3,26 +3,7 @@
 
 [alias]
 
-	# View abbreviated SHA, description, and history graph of the latest 20 commits
-	l = log --pretty=oneline -n 20 --graph --abbrev-commit
 
-	# View the current working tree status using the short format
-	s = status -s
-
-	# Show the diff between the latest commit and the current state
-	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
-
-	# `git di $number` shows the diff between the state `$number` revisions ago and the current state
-	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
-
-	# Pull in remote changes for the current repository and all its submodules
-	p = pull --recurse-submodules
-
-	# Clone a repository including all submodules
-	c = clone --recursive
-
-	# Commit all changes
-	ca = !git add -A && git commit -av
 
 	# Switch to a branch, creating it if necessary
 	# View abbreviated SHA, description, and history graph of the latest 20 commits.
@@ -49,7 +30,7 @@
 	ca = !git add -A && git commit -av
 
 	# Switch to a branch, creating it if necessary.
-	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+	go = "!f() { git checkout -b \"$1\" || git checkout \"$1\"; }; f"
 
 	# Show verbose output about tags, branches or remotes
 	tags = tag -l
@@ -83,12 +64,7 @@
 	# Find commits by commit message
 	fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
 
-	# Remove branches that have already been merged with main
-	# a.k.a. ‘delete merged’
-	dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
-	# List contributors with number of commits
-	contributors = shortlog --summary --numbered
 
 	# Merge GitHub pull request on top of the current branch or,
 	# if a branch name is specified, on top of the specified branch
@@ -231,15 +207,14 @@
 [init]
 
 	templateDir = ~/.config/git/template/
-	defaultBranch = master
+	defaultBranch = main
 
 [user]
 	signingkey = A80B2B4F04E32821
 	name = randymcmillan
 	email = randymcmillan@protonmail.com
 
-#git config --global gpg.program gpg  # perhaps you had this already? On linux maybe gpg2
-#git config --global commit.gpgsign true  # if you want to sign every commit
+
 
 
 [alias]

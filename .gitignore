@@ -1,4 +1,5 @@
 .cache/cargo
+.genkit/
 .gemini/oauth_creds.json
 
 .vim_runtime

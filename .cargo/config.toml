@@ -6,5 +6,5 @@ auto-freq = "1 day"
 # Delete source/git checkouts if not used in X days
 unused-timeout = "7 days"
 
-#[build]
-#target-dir = ".cache/target"
+[build]
+target-dir = ".cache/cargo"

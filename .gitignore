@@ -1,3 +1,4 @@
+.cache/cargo
 .gemini/oauth_creds.json
 
 .vim_runtime

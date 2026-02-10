@@ -1,4 +1,4 @@
-Bitcoin Core version 29.3.knots20260210 is now available from:
+Bitcoin Knots version 29.3.knots20260210 is now available from:
 
   <https://bitcoinknots.org/files/29.x/29.3.knots20260210/>
 

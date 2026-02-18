@@ -1,0 +1,270 @@
+#!/usr/bin/env bash
+
+# --- Configuration ---
+# Set to true to skip confirmation prompts
+# FORCE=false
+# Enable verbose output
+# VERBOSE=false
+# Default config file location
+CONFIG_FILE="${SCRIPT_DIR}/.bootstrapconfig" # Assuming this is loaded elsewhere or defined
+LOG_FILE="git_config.log"
+
+# --- Colors ---
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m' # No Color
+
+# --- Logging Functions ---
+log() {
+    echo -e "${BLUE}[INFO]${NC} $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE"
+}
+
+error() {
+    echo -e "${RED}[ERROR]${NC} $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE" >&2
+}
+
+success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE"
+}
+
+warn() {
+    echo -e "${YELLOW}[WARN]${NC} $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE"
+}
+
+# --- Helper Functions ---
+
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Function to get Git config value
+git_config_get() {
+    git config --global "$1" 2>/dev/null
+}
+
+# Function to set Git config value safely
+git_config_set() {
+    local key="$1"
+    local value="$2"
+    if [[ "$(git_config_get "$key")" != "$value" ]]; then
+        log "Setting git config: $key = $value"
+        git config --global "$key" "$value" >> "$LOG_FILE" 2>&1
+    else
+        log "Git config already set: $key = $value"
+    fi
+}
+
+# --- Core Git Configuration ---
+configure_general_git() {
+    log "Configuring general Git settings..."
+
+    # Editor
+    git_config_set "core.editor" "vim"
+
+    # GPG Signing
+    git_config_set "commit.gpgsign" "true"
+
+    # Case sensitivity for filenames
+    git_config_set "core.ignorecase" "false"
+
+    # Git advice
+    git_config_set "advice.addIgnoredFile" "false"
+
+    # Pull strategy
+    git_config_set "pull.rebase" "true"
+
+    # Line endings
+    git_config_set "core.autocrlf" "false"
+
+    # Git aliases
+    git_config_set "alias.prune-branches-force" '!git remote prune origin && git branch -vv | grep ": gone]" | awk '''{print $1}''' | xargs git branch -D'
+    git_config_set "alias.prune-branches" '!git remote prune origin && git branch -vv | grep ": gone]" | awk '''{print $1}''' | xargs git branch -d'
+
+    # User email and name (prompt if not set)
+    if [[ -z "$(git_config_get user.email)" ]]; then
+        read -p "Enter your Git user email: " GIT_USER_EMAIL
+        git_config_set "user.email" "$GIT_USER_EMAIL"
+    else
+        log "Git user email already set to: $(git_config_get user.email)"
+    fi
+
+    if [[ -z "$(git_config_get user.name)" ]]; then
+        read -p "Enter your Git user name: " GIT_USER_NAME
+        git_config_set "user.name" "$GIT_USER_NAME"
+    else
+        log "Git user name already set to: $(git_config_get user.name)"
+    fi
+
+    # GPG signing key (prompt if not set)
+    if [[ -z "$(git_config_get user.signingkey)" ]]; then
+        log "Listing available GPG secret keys:"
+        gpg --list-secret-keys --keyid-format LONG | grep -E 'sec\s+.*\/(.*)\s+.*' -r | awk '{print "  " $3}'
+        read -p "Enter your GPG signing key ID (leave blank to skip): " GPG_SIGNING_KEY
+        if [[ -n "$GPG_SIGNING_KEY" ]]; then
+            git_config_set "user.signingkey" "$GPG_SIGNING_KEY"
+            log "GPG signing key set to: $GPG_SIGNING_KEY"
+            # Ensure GPG_TTY is set for interactive signing
+            if [[ -z "$GPG_TTY" ]]; then
+                export GPG_TTY=$(tty)
+                log "Set GPG_TTY to $(tty)"
+            fi
+        else
+            log "Skipping GPG key configuration."
+        fi
+    else
+        log "Git user signingkey already set to: $(git_config_get user.signingkey)"
+    fi
+
+    success "General Git settings configured."
+}
+
+# --- Git Ignore Handling ---
+configure_git_ignore() {
+    log "Configuring Git ignore file..."
+    local gitignore_source="${SCRIPT_DIR}/.gitignore"
+    local gitignore_global="$HOME/.gitignore"
+
+    if [[ -f "$gitignore_source" ]]; then
+        if [[ ! -f "$gitignore_global" || "$(md5sum "$gitignore_source" 2>/dev/null | awk '{print $1}')" != "$(md5sum "$gitignore_global" 2>/dev/null | awk '{print $1}')" ]]; then
+            log "Copying $gitignore_source to $gitignore_global"
+            cp "$gitignore_source" "$gitignore_global" >> "$LOG_FILE" 2>&1
+            git_config_set "core.excludesfile" "$gitignore_global"
+            success "Git ignore file configured."
+        else
+            log "Global gitignore file is up-to-date."
+        fi
+    else
+        warn "No .gitignore found in script directory to copy."
+    fi
+}
+
+# --- GitHub Specific Configuration (extracted) ---
+configure_github_ssh() {
+    log "Configuring GitHub SSH access..."
+
+    local ssh_dir="$HOME/.ssh"
+    local ssh_config="$ssh_dir/config"
+    local ssh_config_bak="$ssh_config.bak.$(date +%s)"
+    local github_rsa_key="$ssh_dir/id_rsa_github" # Use a distinct name
+
+    # Ensure .ssh directory exists and has correct permissions
+    if [[ ! -d "$ssh_dir" ]]; then
+        log "Creating SSH directory: $ssh_dir"
+        mkdir -p "$ssh_dir" && chmod 700 "$ssh_dir"
+    else
+        chmod 700 "$ssh_dir"
+    fi
+
+    # Create/ensure essential SSH files
+    touch "$ssh_dir/authorized_keys" && chmod 600 "$ssh_dir/authorized_keys"
+    touch "$ssh_dir/known_hosts" && chmod 644 "$ssh_dir/known_hosts" # Keep known_hosts, don't remove
+
+    # Configure SSH config
+    if [[ ! -f "$ssh_config" ]]; then
+        log "Creating SSH config file: $ssh_config"
+        echo "Host *" > "$ssh_config"
+        echo "  AddKeysToAgent yes" >> "$ssh_config"
+        chmod 644 "$ssh_config"
+    else
+        log "SSH config file exists. Appending if necessary."
+        # Basic check to avoid duplicate entries
+        if ! grep -q "AddKeysToAgent yes" "$ssh_config"; then
+            echo "  AddKeysToAgent yes" >> "$ssh_config"
+        fi
+        # Backup existing config before modifying it for specific hosts if needed
+        mv "$ssh_config" "$ssh_config_bak"
+        cp "$ssh_config_bak" "$ssh_config" # Restore for safety, then append
+        echo "  AddKeysToAgent yes" >> "$ssh_config"
+    fi
+
+    # SSH Key Generation (Optional and interactive)
+    if [[ ! -f "$github_rsa_key" && ! -f "$github_rsa_key.pub" ]]; then
+        log "No GitHub SSH key found. Generating a new one..."
+        read -p "Generate a new SSH key for GitHub? (y/N): " GENERATE_KEY
+        if [[ "$GENERATE_KEY" =~ ^[Yy]$ ]]; then
+            local GITHUB_USER_EMAIL=$(git_config_get user.email)
+            if [[ -z "$GITHUB_USER_EMAIL" ]]; then
+                read -p "Enter your email for the SSH key comment: " GITHUB_USER_EMAIL
+            fi
+            if [[ -n "$GITHUB_USER_EMAIL" ]]; then
+                log "Generating SSH key ($github_rsa_key) with email as comment..."
+                ssh-keygen -t rsa -b 4096 -N "" -C "$GITHUB_USER_EMAIL" -f "$github_rsa_key"
+                chmod 600 "$github_rsa_key"
+                chmod 644 "$github_rsa_key.pub"
+
+                # Append new key to SSH config
+                echo "IdentityFile $github_rsa_key" >> "$ssh_config"
+                log "Added '$github_rsa_key' to SSH config."
+                echo -e "${YELLOW}IMPORTANT:${NC} Please add the following public key to your GitHub account:"
+                cat "$github_rsa_key.pub"
+                echo ""
+            else
+                warn "Email not provided, skipping SSH key generation."
+            fi
+        else
+            log "Skipping SSH key generation."
+        fi
+    else
+        log "Existing GitHub SSH key found: $github_rsa_key"
+    fi
+
+    # Add SSH keys to ssh-agent
+    if ! pgrep -x ssh-agent > /dev/null; then
+        log "Starting ssh-agent..."
+        eval "$(ssh-agent -s)" >> "$LOG_FILE" 2>&1
+    fi
+
+    # Add default and GitHub keys if they exist
+    local keys_to_add=("id_rsa" "github_rsa") # Add more default keys if needed
+    for key_name in "${keys_to_add[@]}"; do
+        local key_path="$ssh_dir/$key_name"
+        if [[ -f "$key_path" ]]; then
+            if ! ssh-add -l | grep -q "$(ssh-add -l 2>/dev/null | grep -F "$key_path" | awk '{print $2}')"; then
+                 log "Adding SSH key: $key_path"
+                 ssh-add "$key_path" >> "$LOG_FILE" 2>&1
+            else
+                log "SSH key already loaded: $key_path"
+            fi
+        fi
+    done
+    # Add the specifically generated GitHub key
+    if [[ -f "$github_rsa_key" ]]; then
+         if ! ssh-add -l | grep -q "$(ssh-add -l 2>/dev/null | grep -F "$github_rsa_key" | awk '{print $2}')"; then
+             log "Adding SSH key: $github_rsa_key"
+             ssh-add "$github_rsa_key" >> "$LOG_FILE" 2>&1
+         else
+            log "SSH key already loaded: $github_rsa_key"
+         fi
+    fi
+
+    success "GitHub SSH configuration complete."
+}
+
+
+# --- Main Execution ---
+main() {
+    # Initialize log file
+    touch "$LOG_FILE"
+    log "Starting Git configuration script..."
+
+    # Set SCRIPT_DIR if not already defined (e.g., when run directly)
+    if [[ -z "$SCRIPT_DIR" ]]; then
+        readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    fi
+
+    # --- Perform Configurations ---
+    configure_general_git
+    configure_git_ignore
+
+    # Call the GitHub SSH configuration
+    configure_github_ssh
+
+    log "Git configuration script finished."
+    success "All Git configurations applied."
+}
+
+# Execute main function
+main "$@"

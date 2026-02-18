@@ -265,15 +265,16 @@ check_prerequisites() {
 get_exclusions() {
     local exclusions=()
     if [[ -f "$EXCLUDE_FILE_PATH" ]]; then
-        log "Using exclusions from '$EXCLUDE_FILE_PATH'" >&2
+        echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - Using exclusions from '$EXCLUDE_FILE_PATH')" >&2
         while IFS= read -r pattern || [[ -n "$pattern" ]]; do
             # Skip empty lines and comments
             [[ -n "$pattern" && ! "$pattern" =~ ^# ]] && exclusions+=("--exclude=$pattern")
         done < "$EXCLUDE_FILE_PATH"
     else
         # If exclude file is missing, warn and proceed without exclusions.
-        warn "Exclusion file '$EXCLUDE_FILE_PATH' not found. Rsync will proceed without exclusions for dotfiles synchronization." >&2
+        echo "[WARN] $(date '+%Y-%m-%d %H:%M:%S') - Exclusion file '$EXCLUDE_FILE_PATH' not found. Rsync will proceed without exclusions for dotfiles synchronization." >&2
     fi
+    printf '%s\n' "${exclusions[@]}"
 }
 
 # --- Backup Function ---

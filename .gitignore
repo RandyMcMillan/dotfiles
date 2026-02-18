@@ -1,3 +1,5 @@
+.gnostr/
+bootstrap.log
 .cache/cargo
 .genkit/
 .gemini/oauth_creds.json

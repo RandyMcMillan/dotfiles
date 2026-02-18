@@ -42,16 +42,12 @@ INSTALL_SCCACHE=true
 INSTALL_RUSTUP=true # Only if sccache installation requires it
 
 # --- Colors for Output ---
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[1;33m'
-readonly BLUE='\033[0;34m'
-readonly NC='\033[0m' # No Color
+
 
 # --- Logging Functions ---
 # Logs a message with a timestamp and color. Outputs to both console and log file.
 log() {
-    echo -e "${BLUE}[INFO]${NC} $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE_PATH"
+    echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE_PATH"
 }
 
 # Provides an alias for informational messages.
@@ -61,17 +57,17 @@ info() {
 
 # Logs an error message. Outputs to both console (stderr) and log file.
 error() {
-    echo -e "${RED}[ERROR]${NC} $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE_PATH" >&2
+    echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE_PATH" >&2
 }
 
 # Logs a success message. Outputs to both console and log file.
 success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE_PATH"
+    echo "[SUCCESS] $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE_PATH"
 }
 
 # Logs a warning message. Outputs to both console and log file.
 warn() {
-    echo -e "${YELLOW}[WARN]${NC} $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE_PATH"
+    echo "[WARN] $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "$LOG_FILE_PATH"
 }
 
 # --- Helper Functions ---
@@ -269,7 +265,7 @@ check_prerequisites() {
 get_exclusions() {
     local exclusions=()
     if [[ -f "$EXCLUDE_FILE_PATH" ]]; then
-        log "Using exclusions from '$EXCLUDE_FILE_PATH'"
+        log "Using exclusions from '$EXCLUDE_FILE_PATH'" >&2
         while IFS= read -r pattern || [[ -n "$pattern" ]]; do
             # Skip empty lines and comments
             [[ -n "$pattern" && ! "$pattern" =~ ^# ]] && exclusions+=("--exclude=$pattern")
@@ -357,6 +353,7 @@ sync_dotfiles() {
         log "Executing rsync command: $rsync_command_str"
     fi
 
+    echo $rsync_command_str;
     if eval "$rsync_command_str"; then
         if [[ "$DRY_RUN" == "true" ]]; then
             log "Dry run complete. No changes were made."
@@ -629,7 +626,7 @@ main() {
     case "$BOOTSTRAP_COMMAND" in
         "sync")
             if [[ "$FORCE" != "true" ]]; then
-                echo -n -e "${YELLOW}This operation may overwrite existing files in your home directory. Are you sure? (y/N): ${NC}"
+                echo -n "This operation may overwrite existing files in your home directory. Are you sure? (y/N): "
                 read -r response
                 if [[ ! "$response" =~ ^[Yy]$ ]]; then
                     log "Operation cancelled by user."
@@ -652,7 +649,7 @@ main() {
                 pull_changes
             else
                 if [[ "$FORCE" != "true" ]]; then
-                    echo -n -e "${YELLOW}This operation will copy files from your home directory back into the repository. Are you sure? (y/N): ${NC}"
+                    echo -n "This operation will copy files from your home directory back into the repository. Are you sure? (y/N): "
                     read -r response
                     if [[ ! "$response" =~ ^[Yy]$ ]]; then
                         log "Operation cancelled by user."

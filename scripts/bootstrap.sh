@@ -281,7 +281,7 @@ get_exclusions() {
 # Creates a backup of dotfiles that are about to be overwritten.
 create_backup() {
     if [[ "$BACKUP" == "true" ]]; then
-        local backup_dir="$HOME_DIR/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
+        local backup_dir="$HOME_DIR/dotfiles/backup_$(date +%Y%m%d_%H%M%S)"
         log "Creating backup of existing dotfiles in '$backup_dir'"
         mkdir -p "$backup_dir" || { error "Failed to create backup directory '$backup_dir'."; return 1; }
 
@@ -549,7 +549,7 @@ sync_dotfiles() {
         log "Executing rsync command: $rsync_command_str"
     fi
 
-    echo $rsync_command_str;
+
     if eval "$rsync_command_str"; then
         if [[ "$DRY_RUN" == "true" ]]; then
             log "Dry run complete. No changes were made."

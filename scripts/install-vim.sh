@@ -14,7 +14,7 @@ install-vim() {
         #sudo rm -rf ~/.vim_runtime
         if [ -d "$HOME/.vim_runtime/" ]; then
 
-          pushd ~/.vim_runtime
+          pushd $HOME/.vim_runtime
           git pull -f origin master
           make
           #sh ~/.vim_runtime/install_awesome_vimrc.sh
@@ -25,7 +25,7 @@ install-vim() {
         else
 
           git clone --depth=1 https://github.com/randymcmillan/vimrc.git ~/.vim_runtime
-          pushd ~/.vim_runtime
+          pushd $HOME/.vim_runtime
           make
           #ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
         fi

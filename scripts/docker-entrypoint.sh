@@ -13,7 +13,6 @@ die() {   msg "error: ${1-}"; exit "${2-1}"; }
 entrypoint_dir="/docker-entrypoint.d"
 
 if [ -d "$entrypoint_dir" ]; then
-    msg "git remote add git-server ssh://git@localhost:2222/srv/git/.git"
     msg "Starting container configuration"
 else
     die "Configuration directory '${entrypoint_dir}' not found" 64

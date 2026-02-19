@@ -406,7 +406,7 @@ config-dock: executable
 
 macvim: vim## 	macvim
 vim: nvm## vim - install-vim.sh
-	.scripts/install-vim.sh
+	@./scripts/install-vim.sh
 rustup-rs:## 	rustup-rs
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
 macdown:
@@ -592,7 +592,7 @@ porter:
 .PHONY: vim
 ##	:	install-vim			install vim and macvim on macos
 install-vim: executable## 	install-vim
-	$(DOTFILES_PATH)/install-vim.sh $(FORCE)
+	$(DOTFILES_PATH)/scripts/install-vim.sh $(FORCE)
 
 .PHONY: protonvpn
 protonvpn: executable

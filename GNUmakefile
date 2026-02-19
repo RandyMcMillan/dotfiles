@@ -394,7 +394,7 @@ template:
 .PHONY: nvm
 .ONESHELL:
 nvm: executable ## nvm
-	@./install-nvm.sh
+	@./scripts/install-nvm.sh
 	@source ~/.bashrc
 
 ##	:	cirrus			source and run install-cirrus command

@@ -178,7 +178,7 @@ parse_arguments() {
                     exit 1
                 fi
                 ;; 
-            sync|link|pull|install)
+            sync|link|pull|install|install-vim)
                 command="$1"
                 shift
                 ;; 
@@ -206,6 +206,7 @@ Commands:
   link        List all available dotfiles for linking in the repository.
   pull        Pull changes from home directory (e.g., .gemini, .ssh) into the dotfiles repository.
   install     Install or update development tools (e.g., sccache, rustup).
+  install-vim Install or update vim.
   help        Show this help message.
 
 Options:
@@ -222,6 +223,7 @@ Examples:
   $(basename "${BASH_SOURCE[0]}") --force sync   # Force sync without confirmation
   $(basename "${BASH_SOURCE[0]}") --dry-run pull  # Preview pull operation
   $(basename "${BASH_SOURCE[0]}") install         # Install development tools only
+  $(basename "${BASH_SOURCE[0]}") install-vim     # Install vim
   $(basename "${BASH_SOURCE[0]}") --config my_custom_config.conf sync # Use a custom config
 
 Logging:
@@ -604,6 +606,39 @@ install_dev_tools() {
 
     success "Development tools setup complete."
 }
+# Main function to invoke install-vim.sh
+install_vim() {
+    log "Install Vim Dialogue"
+    
+    # macOS specific: Developer mode enablement
+    if [[ "$(uname)" == "Darwin" ]]; then
+        # Check if assessments are enabled (a prerequisite for developer mode)
+        local assessments_enabled=false
+        if spctl --status 2>/dev/null | grep -q "Assessments enabled."; then
+            assessments_enabled=true
+        fi
+
+        if [[ "$FORCE" == "true" || "$assessments_enabled" == "true" ]]; then
+            log "Ensuring developer mode is enabled on macOS..."
+            # The command might change slightly across macOS versions, but this is standard
+            # TODO handle --developer-mode not exist on older macs
+            if ! spctl --developer-mode --status | grep -q "developer mode is already enabled"; then
+                if sudo spctl --developer-mode --enable-terminal; then
+                    success "Developer mode enabled."
+                else
+                    warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
+                fi
+            else
+                log "Developer mode is already enabled."
+            fi
+        else
+            warn "Developer mode enablement skipped: Assessments are not enabled and --force flag was not used."
+        fi
+    fi
+
+    ./scripts/install-vim.sh
+    success "Installed vim!"
+}
 
 # --- Main Execution Logic ---
 main() {
@@ -664,6 +699,9 @@ main() {
             ;; 
         "install")
             install_dev_tools
+            ;; 
+        "install-vim")
+            install_vim
             ;; 
         *)
             # This case should ideally not be reached due to parse_arguments handling unknown commands.

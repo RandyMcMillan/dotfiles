@@ -1,1 +1,0 @@
-./scripts/brew_install_version.sh

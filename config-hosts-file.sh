@@ -1,1 +1,0 @@
-./scripts/config-hosts-file.sh

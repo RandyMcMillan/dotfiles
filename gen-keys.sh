@@ -1,1 +1,0 @@
-./scripts/gen-keys.sh

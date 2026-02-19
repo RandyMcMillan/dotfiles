@@ -1,1 +1,0 @@
-./scripts/install-eq-mac.sh

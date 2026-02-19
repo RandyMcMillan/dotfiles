@@ -1,1 +1,0 @@
-./scripts/install-clang-format.sh

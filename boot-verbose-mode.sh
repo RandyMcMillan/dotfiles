@@ -1,1 +1,0 @@
-./scripts/boot-verbose-mode.sh

@@ -1,1 +1,0 @@
-./scripts/brew-bitcoin-no-gui.sh

@@ -1,1 +1,0 @@
-./scripts/install-github-utility.sh

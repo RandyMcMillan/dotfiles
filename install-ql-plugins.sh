@@ -1,1 +1,0 @@
-./scripts/install-ql-plugins.sh

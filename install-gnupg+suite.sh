@@ -1,1 +1,0 @@
-./scripts/install-gnupg+suite.sh

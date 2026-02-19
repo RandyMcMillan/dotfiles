@@ -1,1 +1,0 @@
-./scripts/install-i2p.sh

@@ -1,1 +1,0 @@
-./scripts/do-upgrade-agent.sh

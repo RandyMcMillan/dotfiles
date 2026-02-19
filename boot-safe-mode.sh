@@ -1,1 +1,0 @@
-./scripts/boot-safe-mode.sh

@@ -1,1 +1,0 @@
-./scripts/install-gemini-cli.sh

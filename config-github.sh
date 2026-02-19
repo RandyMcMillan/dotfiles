@@ -1,1 +1,0 @@
-./scripts/config-github.sh

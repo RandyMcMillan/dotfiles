@@ -1,1 +1,0 @@
-./scripts/bitcoin-test-battery.sh

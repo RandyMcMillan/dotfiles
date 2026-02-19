@@ -1,1 +1,0 @@
-./scripts/whatami.sh

@@ -1,1 +1,0 @@
-./scripts/make-actions-runner.sh

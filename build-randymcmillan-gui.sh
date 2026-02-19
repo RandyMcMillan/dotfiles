@@ -1,1 +1,0 @@
-./scripts/build-randymcmillan-gui.sh

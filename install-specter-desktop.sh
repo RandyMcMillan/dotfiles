@@ -1,1 +1,0 @@
-./scripts/install-specter-desktop.sh

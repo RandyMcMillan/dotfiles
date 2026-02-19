@@ -1,1 +1,0 @@
-./scripts/install-shell.sh

@@ -1,1 +1,0 @@
-./scripts/build-bitcoincore-dev-bitcoin-core.sh

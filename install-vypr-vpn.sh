@@ -1,1 +1,0 @@
-./scripts/install-vypr-vpn.sh

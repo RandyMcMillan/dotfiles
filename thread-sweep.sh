@@ -1,1 +1,0 @@
-./scripts/thread-sweep.sh

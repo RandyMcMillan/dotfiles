@@ -1,1 +1,0 @@
-./scripts/get-forks.sh

@@ -1,1 +1,0 @@
-./scripts/install-qt5.sh

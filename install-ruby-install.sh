@@ -1,1 +1,0 @@
-./scripts/install-ruby-install.sh

@@ -1,1 +1,0 @@
-./scripts/boot-single-user-mode.sh

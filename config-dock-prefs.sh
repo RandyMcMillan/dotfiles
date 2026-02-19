@@ -1,1 +1,0 @@
-./scripts/config-dock-prefs.sh

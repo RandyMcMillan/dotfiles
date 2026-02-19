@@ -1,1 +1,0 @@
-./scripts/install-git-legit.sh

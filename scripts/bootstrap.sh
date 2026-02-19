@@ -594,7 +594,7 @@ install_dev_tools() {
     if command_exists "sccache"; then
         local sccache_path
         sccache_path="$(which sccache)"
-        if [[ "$RUSTC_WRAPPER" != "$sccache_path" ]]; then # Only log if changing
+        if [[ "${RUSTC_WRAPPER:-}" != "$sccache_path" ]]; then # Only log if changing
             export RUSTC_WRAPPER="$sccache_path"
             log "RUSTC_WRAPPER set to '$RUSTC_WRAPPER'"
         fi

@@ -4,9 +4,17 @@
 <!-- Designers: Kurtis Stirling, Blissmode, Skyler, and Steven Hay
      License: MIT
 -->
-<g id="icon">
+<defs>
+	<clipPath id="circleClip">
+		<circle cx="512" cy="512" r="480"/>
+	</clipPath>
+</defs>
+<g id="icon" clip-path="url(#circleClip)">
 	<circle cx="512" cy="512" r="495" fill="#F7931A" stroke="#D27A0F" stroke-width="34"/>
-	<g>
+	<rect x="0" y="737" width="1024" height="287" fill="#4169E1"/>
+	<line x1="0" y1="737" x2="1024" y2="737" stroke="#FFFFFF" stroke-width="8" clip-path="url(#circleClip)"/>
+	<text x="512" y="891" font-family="Arial, sans-serif" font-size="140" font-weight="bold" fill="#FFFFFF" text-anchor="middle">110</text>
+	<g transform="translate(512, 432) scale(0.75) translate(-512, -512)">
 		<use xlink:href="bitcoinknots-logo.svg#logo" />
 	</g>
 </g>

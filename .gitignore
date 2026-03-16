@@ -3,6 +3,9 @@
 .gemini/history
 .gemini/mcp-oauth-tokens-v2.json
 .gemini/tmp
+.gemini/oauth_creds.json
+.gemini/settings.json.orig
+
 .cargo/debug
 .cargo/release
 .cargo/.rustc_info.json

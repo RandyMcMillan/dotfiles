@@ -387,7 +387,7 @@ git checkout -b pr/${weeble:-0}/${blockheight:-0}/${wobble:-0}/$(git rev-parse -
     fi
 
 }
-function git-tag (){
+function _git-tag (){
 
 git tag $(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
     if [ ! -z "$1" ]
@@ -397,7 +397,7 @@ git tag $(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-
     git tags | grep $(gnostr --weeble)
 
 }
-function git-tag-version (){
+function _git-tag-version (){
 
     if [ ! -z "$1" ]
     then
@@ -408,7 +408,7 @@ function git-tag-version (){
     git tags | grep $(gnostr --weeble)
 
 }
-function git-tag-pr (){
+function _git-tag-pr (){
 
 git tag pr/$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
     if [ ! -z "$1" ]

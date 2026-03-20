@@ -243,6 +243,16 @@ class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
 
         PortSeed.n = self.options.port_seed
 
+        self.MAINNET_NORMAL_STDERR = f'''Warning: Upcoming BIP110/RDTS Network Upgrade
+
+This version of {self.config['environment']['CLIENT_NAME']} does not support the upcoming BIP110 (RDTS) network upgrade, which fixes critical vulnerabilities in long-standing network design.
+
+Important: Because this upgrade already has broad community support, continuing to run older versions (such as this version) does not reject it. Running outdated software after any network upgrade only leaves your node vulnerable to displaying fake or fraudulent transactions. To effectively reject this upgrade, you need to run alternative software designed to split away from the upgraded network.
+
+To adopt this upgrade and remain secure, please update {self.config['environment']['CLIENT_NAME']}: {self.config['environment']['CLIENT_URL']}
+
+For more information, see: https://bitcoinknots.org/learn/2026-rdts'''.replace('\n', os.linesep)
+
     def set_binary_paths(self):
         """Update self.options with the paths of all binaries from environment variables or their default values"""
 

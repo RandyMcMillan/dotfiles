@@ -40,6 +40,7 @@ BACKUP=true
 # Enable/disable specific tool installations
 INSTALL_SCCACHE=true
 INSTALL_RUSTUP=true # Only if sccache installation requires it
+INSTALL_BASH_COMPLETION=true
 
 # --- Colors for Output ---
 
@@ -126,6 +127,7 @@ load_config() {
                 EXCLUDE_FILE_NAME) EXCLUDE_FILE_NAME="$value"; EXCLUDE_FILE_PATH="$SCRIPT_DIR/$EXCLUDE_FILE_NAME" ;; # Allow exclude file name override
                 INSTALL_SCCACHE) INSTALL_SCCACHE="$value" ;; 
                 INSTALL_RUSTUP) INSTALL_RUSTUP="$value" ;; 
+                INSTALL_BASH_COMPLETION) INSTALL_BASH_COMPLETION="$value" ;; 
                 # Add other configuration options here if needed
             esac
         done < "$CONFIG_FILE_PATH"
@@ -546,6 +548,66 @@ install_sccache_via_package_manager() {
     fi
 }
 
+# Installs bash-completion via Homebrew if not already installed.
+install_bash_completion() {
+    if [[ "$(uname)" == "Darwin" ]]; then # Only applicable for macOS
+        if [[ "$INSTALL_BASH_COMPLETION" == "false" ]]; then
+            log "Bash completion installation is disabled by configuration."
+            return
+        fi
+
+        if ! command_exists "brew"; then
+            warn "Homebrew not found. Cannot install bash-completion."
+            return 1
+        fi
+
+        if ! brew list bash-completion &>/dev/null; then
+            log "Installing bash-completion via Homebrew..."
+            if brew install bash-completion; then
+                success "bash-completion installed via Homebrew."
+            else
+                error "Failed to install bash-completion via Homebrew."
+                return 1
+            fi
+        else
+            log "bash-completion already installed via Homebrew."
+        fi
+
+        # Define the complete block to be added to .bash_profile
+        read -r -d '' bash_completion_source_block << 'EOF'
+# Add tab completion for many Bash commands
+if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
+    . "$(brew --prefix)/etc/bash_completion"
+elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+EOF
+
+        # Check if the exact bash completion block is already present
+        if ! grep -qF "${bash_completion_source_block}" "$HOME_DIR/.bash_profile"; then
+            log "Adding/Updating bash-completion sourcing in ~/.bash_profile..."
+
+            # Check if the old 'Add tab completion for many Bash commands' comment exists
+            if grep -qF "# Add tab completion for many Bash commands" "$HOME_DIR/.bash_profile"; then
+                # Delete the old comment line and any subsequent lines until the next non-empty line or end of file,
+                # then append the correct block.
+                sed -i '' "/^# Add tab completion for many Bash commands/,/^$/d" "$HOME_DIR/.bash_profile"
+                echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
+                success "Replaced old bash-completion section in ~/.bash_profile."
+            else
+                # If the comment doesn't exist, just append the block
+                echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
+                success "Appended bash-completion sourcing to ~/.bash_profile."
+            fi
+        else
+            log "Bash-completion sourcing already present and correct in ~/.bash_profile."
+        fi
+    else
+        log "Skipping bash-completion installation: Only applicable for macOS."
+    fi
+    return 0
+}
+
 # Main function for development tool installation.
 install_dev_tools() {
     log "Setting up development tools..."
@@ -603,6 +665,9 @@ install_dev_tools() {
     else
         warn "sccache is not installed or not found in PATH. RUSTC_WRAPPER not set."
     fi
+
+    # Install bash-completion
+    install_bash_completion
 
     success "Development tools setup complete."
 }

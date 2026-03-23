@@ -55,16 +55,9 @@ done;
 #
 
 # Add tab completion for many Bash commands
-if hash brew 2>/dev/null ; then
-	if [ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]; then
-		# Ensure existing Homebrew v1 completions continue to work
-		set BASH_COMPLETION_COMPAT_DIR="$(brew --prefix)/etc/bash_completion.d";
-		export BASH_COMPLETION_COMPAT_DIR
-		source "$(brew --prefix)/etc/profile.d/bash_completion.sh";
-	fi
-elif [ -f /etc/bash_completion ]; then
-	source /etc/bash_completion;
-fi;
+if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
+    . "$(brew --prefix)/etc/bash_completion"
+fi
 
 ## Enable tab completion for `g` by marking it as an alias for `git`
 ## if type _git &> /dev/null; then

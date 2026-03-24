@@ -782,6 +782,7 @@ main() {
 
     log "Bootstrap script finished."
     success "All requested operations completed."
+    return 0
 }
 
 # Execute main function with script arguments

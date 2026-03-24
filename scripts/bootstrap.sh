@@ -103,6 +103,12 @@ git_config_set() {
     fi
 }
 
+# Checks if 'spctl developer-mode' subcommand is supported.
+# Returns 0 (true) if supported, 1 (false) otherwise.
+_is_developer_mode_supported() {
+    spctl --help 2>&1 | grep -q "Developer Mode Usage:"
+}
+
 # --- Configuration Loading ---
 # Loads configuration settings from the specified config file, allowing overrides by command-line flags.
 load_config() {
@@ -622,10 +628,10 @@ install_dev_tools() {
 
         if [[ "$FORCE" == "true" || "$assessments_enabled" == "true" ]]; then
             log "Ensuring developer mode is enabled on macOS..."
-            # Check if 'developer-mode' subcommand is supported, otherwise fallback to legacy method
-            if spctl developer-mode help 2>&1 | grep -q "enable-terminal"; then
+            # Check if 'developer-mode' subcommand is supported by checking general spctl help output
+            if _is_developer_mode_supported; then
                 # New macOS versions support 'developer-mode enable-terminal'
-                if ! spctl developer-mode status | grep -q "developer mode is already enabled"; then
+                if ! spctl developer-mode status >/dev/null 2>&1 | grep -q "developer mode is already enabled"; then
                     if sudo spctl developer-mode enable-terminal; then
                         success "Developer mode enabled using 'developer-mode enable-terminal'."
                     else
@@ -635,9 +641,8 @@ install_dev_tools() {
                     log "Developer mode is already enabled."
                 fi
             else
-                # Older macOS versions might only support '--enable-terminal' directly (though spctl --help implies it's a subcommand)
-                # Fallback to the previous --enable-terminal attempt, acknowledging it might be deprecated.
-                if ! spctl --status | grep -q "developer mode is already enabled"; then
+                # Older macOS versions might only support '--enable-terminal' directly
+                if ! spctl --status 2>/dev/null | grep -q "developer mode is already enabled"; then
                     if sudo spctl --enable-terminal; then
                         success "Developer mode enabled using --enable-terminal (legacy fallback)."
                     else
@@ -700,7 +705,7 @@ install_vim() {
         if [[ "$FORCE" == "true" || "$assessments_enabled" == "true" ]]; then
             log "Ensuring developer mode is enabled on macOS..."
             # Check if 'developer-mode' subcommand is supported, otherwise fallback to legacy method
-            if spctl developer-mode help 2>&1 | grep -q "enable-terminal"; then
+            if _is_developer_mode_supported; then
                 # New macOS versions support 'developer-mode enable-terminal'
                 if ! spctl developer-mode status | grep -q "developer mode is already enabled"; then
                     if sudo spctl developer-mode enable-terminal; then

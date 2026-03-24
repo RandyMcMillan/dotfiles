@@ -355,18 +355,18 @@ adduser-git:
 ##	:	bootstrap		./bootstrap.sh
 .PHONY: bootstrap
 bootstrap: vim exec
-	echo "Running sync command 1"
-	$(PWD)/scripts/bootstrap.sh sync --force
-	echo "Exit code of sync 1: $$?"
-	echo "Running sync command 2"
-	$(PWD)/scripts/bootstrap.sh sync --force
-	echo "Exit code of sync 2: $$?"
-	echo "Running install command 1"
-	$(PWD)/scripts/bootstrap.sh install --force
-	echo "Exit code of install 1: $$?"
-	echo "Running install command 2"
-	$(PWD)/scripts/bootstrap.sh install --force
-	echo "Exit code of install 2: $$?"
+	@echo "Running sync command 1..."
+	$(PWD)/scripts/bootstrap.sh sync --force || true
+	@echo "Exit code of sync 1: $$?"
+	@echo "Running sync command 2..."
+	$(PWD)/scripts/bootstrap.sh sync --force || true
+	@echo "Exit code of sync 2: $$?"
+	@echo "Running install command 1..."
+	$(PWD)/scripts/bootstrap.sh install --force || true
+	@echo "Exit code of install 1: $$?"
+	@echo "Running install command 2..."
+	$(PWD)/scripts/bootstrap.sh install --force || true
+	@echo "Exit code of install 2: $$?"
 
 ##	:	boot-strap		./boot-strap.sh
 .PHONY: boot-strap

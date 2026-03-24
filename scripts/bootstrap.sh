@@ -200,6 +200,7 @@ parse_arguments() {
 
     # Set the command to be executed
     export BOOTSTRAP_COMMAND="$command"
+    log "DEBUG: FORCE after parse_arguments: $FORCE"
 }
 
 # --- Help Message ---
@@ -616,13 +617,14 @@ EOF
 
 # Main function for development tool installation.
 install_dev_tools() {
+    log "DEBUG: FORCE at start of install_dev_tools: $FORCE"
     log "Setting up development tools..."
 
     # macOS specific: Developer mode enablement
     if [[ "$(uname)" == "Darwin" ]]; then
         # Check if assessments are enabled (a prerequisite for developer mode)
         local assessments_enabled=false
-        if spctl --status 2>/dev/null | grep -q "Assessments enabled."; then
+        if spctl --status 2>/dev/null | grep -q "assessments enabled"; then
             assessments_enabled=true
         fi
 
@@ -684,7 +686,7 @@ install_vim() {
     if [[ "$(uname)" == "Darwin" ]]; then
         # Check if assessments are enabled (a prerequisite for developer mode)
         local assessments_enabled=false
-        if spctl --status 2>/dev/null | grep -q "Assessments enabled."; then
+        if spctl --status 2>/dev/null | grep -q "assessments enabled"; then
             assessments_enabled=true
         fi
 

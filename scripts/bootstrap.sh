@@ -632,7 +632,7 @@ install_dev_tools() {
             # Check if 'developer-mode' subcommand is supported by checking general spctl help output
             if _is_developer_mode_supported; then
                 # New macOS versions support 'developer-mode enable-terminal'
-                if sudo spctl developer-mode enable-terminal; then
+                if sudo spctl developer-mode enable-terminal || true; then
                     success "Developer mode enabled using 'developer-mode enable-terminal'."
                 else
                     warn "Failed to enable developer mode with 'developer-mode enable-terminal'. It might already be enabled, or requires manual intervention."
@@ -675,7 +675,6 @@ install_dev_tools() {
     # Install bash-completion
     install_bash_completion
 
-    log "DEBUG: Reached end of install_dev_tools before final success."
     success "Development tools setup complete."
 }
 # Main function to invoke install-vim.sh
@@ -695,7 +694,7 @@ install_vim() {
             # Check if 'developer-mode' subcommand is supported.
             if _is_developer_mode_supported; then
                 # New macOS versions support 'developer-mode enable-terminal'
-                if sudo spctl developer-mode enable-terminal; then
+                if sudo spctl developer-mode enable-terminal || true; then
                     success "Developer mode enabled using 'developer-mode enable-terminal'."
                 else
                     warn "Failed to enable developer mode with 'developer-mode enable-terminal'. It might already be enabled, or requires manual intervention."

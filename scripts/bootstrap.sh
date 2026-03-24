@@ -591,16 +591,21 @@ EOF
 
         log "Adding/Updating bash-completion sourcing in ~/.bash_profile..."
 
-        # Check if the old 'Add tab completion for many Bash commands' comment exists or if a partial block is present
-        # This will cover both cases where the full block is missing or only a partial one exists.
-        if grep -qF "# Add tab completion for many Bash commands" "$HOME_DIR/.bash_profile"; then
+        # Read the current .bash_profile content for robust substring matching
+        local bash_profile_content
+        bash_profile_content=$(<"$HOME_DIR/.bash_profile")
+
+        if [[ "$bash_profile_content" == *"${bash_completion_source_block}"* ]]; then
+            log "Bash-completion sourcing already present and correct in ~/.bash_profile."
+        elif [[ "$bash_profile_content" == *"# Add tab completion for many Bash commands"* ]]; then
+            log "Replacing old bash-completion section in ~/.bash_profile."
             # Delete the old comment line and any subsequent lines until the next non-empty line or end of file,
             # then append the correct block.
             sed -i '' "/^# Add tab completion for many Bash commands/,/^$/d" "$HOME_DIR/.bash_profile"
             echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
             success "Replaced old bash-completion section in ~/.bash_profile."
         else
-            # If the comment doesn't exist, just append the block
+            log "Appending bash-completion sourcing to ~/.bash_profile."
             echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
             success "Appended bash-completion sourcing to ~/.bash_profile."
         fi

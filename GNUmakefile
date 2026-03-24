@@ -356,7 +356,7 @@ adduser-git:
 .PHONY: bootstrap
 bootstrap: vim exec
 	echo $(PWD)/scripts/bootstrap.sh install --force
-	@$(PWD)/scripts/bootstrap.sh install --force
+	$(PWD)/scripts/bootstrap.sh install --force
 ##	:	boot-strap		./boot-strap.sh
 .PHONY: boot-strap
 boot-strap: vim exec

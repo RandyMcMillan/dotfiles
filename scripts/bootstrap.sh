@@ -623,19 +623,25 @@ install_dev_tools() {
         if [[ "$FORCE" == "true" || "$assessments_enabled" == "true" ]]; then
             log "Ensuring developer mode is enabled on macOS..."
             # The command might change slightly across macOS versions, but this is standard
-            # TODO handle --developer-mode not exist on older macs
-            if ! spctl --developer-mode --status | grep -q "developer mode is already enabled"; then
-                if sudo spctl --developer-mode --enable-terminal; then
-                    success "Developer mode enabled."
+            # Check if --developer-mode is supported, otherwise fallback to legacy --enable-terminal
+            if spctl --help 2>&1 | grep -q "\-\-developer-mode"; then
+                # New macOS versions support --developer-mode
+                if ! spctl --developer-mode --status | grep -q "developer mode is already enabled"; then
+                    if sudo spctl --developer-mode --enable-terminal; then
+                        success "Developer mode enabled using --developer-mode."
+                    else
+                        warn "Failed to enable developer mode with --developer-mode. It might already be enabled, or requires manual intervention."
+                    fi
                 else
-                    warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
+                    log "Developer mode is already enabled."
                 fi
             else
+                # Older macOS versions might only support --enable-terminal
                 if ! spctl --status | grep -q "developer mode is already enabled"; then
                     if sudo spctl --enable-terminal; then
-                        success "Developer mode enabled."
+                        success "Developer mode enabled using --enable-terminal (legacy)."
                     else
-                        warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
+                        warn "Failed to enable developer mode with --enable-terminal. It might already be enabled, or requires manual intervention."
                     fi
                 else
                     log "Developer mode is already enabled."
@@ -694,15 +700,29 @@ install_vim() {
         if [[ "$FORCE" == "true" || "$assessments_enabled" == "true" ]]; then
             log "Ensuring developer mode is enabled on macOS..."
             # The command might change slightly across macOS versions, but this is standard
-            # TODO handle --developer-mode not exist on older macs
-            if ! spctl --developer-mode --status | grep -q "developer mode is already enabled"; then
-                if sudo spctl --developer-mode --enable-terminal; then
-                    success "Developer mode enabled."
+            # Check if --developer-mode is supported, otherwise fallback to legacy --enable-terminal
+            if spctl --help 2>&1 | grep -q "\-\-developer-mode"; then
+                # New macOS versions support --developer-mode
+                if ! spctl --developer-mode --status | grep -q "developer mode is already enabled"; then
+                    if sudo spctl --developer-mode --enable-terminal; then
+                        success "Developer mode enabled using --developer-mode."
+                    else
+                        warn "Failed to enable developer mode with --developer-mode. It might already be enabled, or requires manual intervention."
+                    fi
                 else
-                    warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
+                    log "Developer mode is already enabled."
                 fi
             else
-                log "Developer mode is already enabled."
+                # Older macOS versions might only support --enable-terminal
+                if ! spctl --status | grep -q "developer mode is already enabled"; then
+                    if sudo spctl --enable-terminal; then
+                        success "Developer mode enabled using --enable-terminal (legacy)."
+                    else
+                        warn "Failed to enable developer mode with --enable-terminal. It might already be enabled, or requires manual intervention."
+                    fi
+                else
+                    log "Developer mode is already enabled."
+                fi
             fi
         else
             warn "Developer mode enablement skipped: Assessments are not enabled and --force flag was not used."

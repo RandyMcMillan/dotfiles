@@ -119,15 +119,15 @@ load_config() {
 
             # Assign values to script variables if they match expected options
             case "$key" in
-                DRY_RUN) DRY_RUN="$value" ;; 
-                VERBOSE) VERBOSE="$value" ;; 
-                FORCE) FORCE="$value" ;; 
-                BACKUP) BACKUP="$value" ;; 
+                DRY_RUN) DRY_RUN="$value" ;;
+                VERBOSE) VERBOSE="$value" ;;
+                FORCE) FORCE="$value" ;;
+                BACKUP) BACKUP="$value" ;;
                 LOG_FILE_NAME) LOG_FILE_NAME="$value"; LOG_FILE_PATH="$SCRIPT_DIR/$LOG_FILE_NAME" ;; # Allow log file name override
                 EXCLUDE_FILE_NAME) EXCLUDE_FILE_NAME="$value"; EXCLUDE_FILE_PATH="$SCRIPT_DIR/$EXCLUDE_FILE_NAME" ;; # Allow exclude file name override
-                INSTALL_SCCACHE) INSTALL_SCCACHE="$value" ;; 
-                INSTALL_RUSTUP) INSTALL_RUSTUP="$value" ;; 
-                INSTALL_BASH_COMPLETION) INSTALL_BASH_COMPLETION="$value" ;; 
+                INSTALL_SCCACHE) INSTALL_SCCACHE="$value" ;;
+                INSTALL_RUSTUP) INSTALL_RUSTUP="$value" ;;
+                INSTALL_BASH_COMPLETION) INSTALL_BASH_COMPLETION="$value" ;;
                 # Add other configuration options here if needed
             esac
         done < "$CONFIG_FILE_PATH"
@@ -147,27 +147,27 @@ parse_arguments() {
             -h|--help)
                 show_usage
                 exit 0
-                ;; 
+                ;;
             -f|--force)
                 FORCE=true
                 shift
-                ;; 
+                ;;
             -n|--dry-run)
                 DRY_RUN=true
                 shift
-                ;; 
+                ;;
             -v|--verbose)
                 VERBOSE=true
                 shift
-                ;; 
+                ;;
             -b|--backup)
                 BACKUP=true
                 shift
-                ;; 
+                ;;
             --no-backup)
                 BACKUP=false
                 shift
-                ;; 
+                ;;
             --config)
                 if [[ -n "$2" && "$2" != -* ]]; then
                     CONFIG_FILE_NAME="$2"
@@ -179,19 +179,19 @@ parse_arguments() {
                     show_usage
                     exit 1
                 fi
-                ;; 
+                ;;
             sync|link|pull|install|install-vim)
                 command="$1"
                 shift
-                ;; 
+                ;;
             *)
                 error "Unknown option or command: '$1'"
                 show_usage
                 exit 1
-                ;; 
+                ;;
         esac
     done
-    
+
     # Set the command to be executed
     export BOOTSTRAP_COMMAND="$command"
 }
@@ -247,7 +247,7 @@ check_prerequisites() {
         error "'rsync' is required but not found. Please install it."
         exit 1
     fi
-    
+
     # Check for essential tools needed by install_dev_tools (curl, sh, sudo)
     if ! command_exists "curl"; then
         warn "'curl' is not found. It may be needed for installing Rustup."
@@ -303,7 +303,7 @@ create_backup() {
                 ((backup_count++))
             fi
         done
-        
+
         if [[ $backup_count -gt 0 ]]; then
             success "Backup of $backup_count dotfiles created."
         else
@@ -393,7 +393,7 @@ pull_changes() {
         ".ssh/id_rsa_github"
         ".ssh/id_rsa_github.pub"
     )
-    
+
     local changes_made=false
 
     for target in "${sync_targets[@]}"; do
@@ -408,10 +408,10 @@ pull_changes() {
                 changes_made=true # Mark that a change would have happened
                 continue
             fi
-            
+
             log "Syncing '$target'..."
             mkdir -p "$repo_dir" || { warn "Could not create directory '$repo_dir' for syncing '$target'."; continue; }
-            
+
             # Use rsync for consistent syncing, preserving structure
             if rsync -av "$home_path" "$repo_dir/"; then
                 success "Synced '$target'."
@@ -456,7 +456,7 @@ install_rust_and_sccache_via_rustup() {
                 # Use a temporary file for the installer script
                 local rustup_installer=$(mktemp)
                 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o "$rustup_installer" || { error "Failed to download Rustup installer."; return 1; }
-                
+
                 log "Running Rustup installer..."
                 # Run installer non-interactively with default options
                 sh "$rustup_installer" -y || { error "Failed to install Rustup."; rm -f "$rustup_installer"; return 1; }
@@ -538,7 +538,7 @@ install_sccache_via_package_manager() {
         else
             warn "Unsupported OS for package manager installation. Cannot install sccache via package manager."
         fi
-        
+
         if [[ "$installed" == "false" ]]; then
             # Fallback to cargo installation if package manager failed or not available
             install_rust_and_sccache_via_rustup
@@ -611,7 +611,7 @@ EOF
 # Main function for development tool installation.
 install_dev_tools() {
     log "Setting up development tools..."
-    
+
     # macOS specific: Developer mode enablement
     if [[ "$(uname)" == "Darwin" ]]; then
         # Check if assessments are enabled (a prerequisite for developer mode)
@@ -631,7 +631,15 @@ install_dev_tools() {
                     warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
                 fi
             else
-                log "Developer mode is already enabled."
+                if ! spctl --status | grep -q "developer mode is already enabled"; then
+                    if sudo spctl --enable-terminal; then
+                        success "Developer mode enabled."
+                    else
+                        warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
+                    fi
+                else
+                    log "Developer mode is already enabled."
+                fi
             fi
         else
             warn "Developer mode enablement skipped: Assessments are not enabled and --force flag was not used."
@@ -653,7 +661,7 @@ install_dev_tools() {
     else
         log "sccache installation is disabled by configuration."
     fi
-    
+
     # Set RUSTC_WRAPPER if sccache is installed
     if command_exists "sccache"; then
         local sccache_path
@@ -674,7 +682,7 @@ install_dev_tools() {
 # Main function to invoke install-vim.sh
 install_vim() {
     log "Install Vim Dialogue"
-    
+
     # macOS specific: Developer mode enablement
     if [[ "$(uname)" == "Darwin" ]]; then
         # Check if assessments are enabled (a prerequisite for developer mode)
@@ -738,15 +746,15 @@ main() {
             fi
             create_backup || error "Backup creation failed. Continuing with sync..."
             sync_dotfiles
-            
+
             # Optionally install tools if sync is performed and enabled
             if [[ "$INSTALL_SCCACHE" == "true" ]]; then
                 install_dev_tools
             fi
-            ;; 
+            ;;
         "link")
             list_dotfiles
-            ;; 
+            ;;
         "pull")
             if [[ "$DRY_RUN" == "true" ]]; then
                 pull_changes
@@ -761,19 +769,19 @@ main() {
                 fi
                 pull_changes
             fi
-            ;; 
+            ;;
         "install")
             install_dev_tools
-            ;; 
+            ;;
         "install-vim")
             install_vim
-            ;; 
+            ;;
         *)
             # This case should ideally not be reached due to parse_arguments handling unknown commands.
             error "Invalid command '$BOOTSTRAP_COMMAND' processed."
             show_usage
             exit 1
-            ;; 
+            ;;
     esac
 
     log "Bootstrap script finished."

@@ -670,6 +670,7 @@ install_dev_tools() {
     # Install bash-completion
     install_bash_completion
 
+    log "DEBUG: Reached end of install_dev_tools before final success."
     success "Development tools setup complete."
 }
 # Main function to invoke install-vim.sh

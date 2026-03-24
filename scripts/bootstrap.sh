@@ -624,8 +624,8 @@ install_dev_tools() {
             log "Ensuring developer mode is enabled on macOS..."
             # The command might change slightly across macOS versions, but this is standard
             # TODO handle --developer-mode not exist on older macs
-            if ! spctl --developer-mode --status | grep -q "developer mode is already enabled"; then
-                if sudo spctl --developer-mode --enable-terminal; then
+            if ! spctl --status | grep -q "developer mode is already enabled"; then
+                if sudo spctl --enable-terminal; then
                     success "Developer mode enabled."
                 else
                     warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
@@ -695,8 +695,8 @@ install_vim() {
             log "Ensuring developer mode is enabled on macOS..."
             # The command might change slightly across macOS versions, but this is standard
             # TODO handle --developer-mode not exist on older macs
-            if ! spctl --developer-mode --status | grep -q "developer mode is already enabled"; then
-                if sudo spctl --developer-mode --enable-terminal; then
+            if ! spctl --status | grep -q "developer mode is already enabled"; then
+                if sudo spctl --enable-terminal; then
                     success "Developer mode enabled."
                 else
                     warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."

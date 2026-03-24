@@ -352,9 +352,11 @@ adduser-git:
 	source $(PWD)/adduser-git.sh && adduser-git
 
 
-##	:	bootstrap		./bootstrap.sh
 .PHONY: bootstrap
-bootstrap: vim exec
+##	:	bootstrap		./bootstrap.sh
+bootstrap:
+	$(MAKE) vim
+	$(MAKE) exec
 	@echo "Running sync command 1..."
 	$(PWD)/scripts/bootstrap.sh sync --force || true
 	@echo "Exit code of sync 1: $$?"

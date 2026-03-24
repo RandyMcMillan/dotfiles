@@ -441,6 +441,44 @@ pull_changes() {
 
 # --- Development Tool Installation ---
 
+# --- Development Tool Installation ---
+
+# Helper function to enable developer mode for the terminal on macOS,
+# adapting to different `spctl` command syntaxes across macOS versions.
+_enable_developer_mode_for_terminal() {
+    log "Ensuring developer mode is enabled for Terminal on macOS..."
+
+    local developer_mode_subcommand_exists=false
+
+    # Check if 'spctl developer-mode' subcommand exists
+    if spctl developer-mode help >/dev/null 2>&1; then
+        developer_mode_subcommand_exists=true
+    fi
+
+    if [[ "$developer_mode_subcommand_exists" == "true" ]]; then
+        # Use newer 'spctl developer-mode' commands
+        if ! spctl developer-mode status | grep -q "developer mode is already enabled"; then
+            log "Attempting to enable developer mode using 'sudo spctl developer-mode enable-terminal'..."
+            if sudo spctl developer-mode enable-terminal; then
+                success "Developer mode enabled for Terminal."
+            else
+                warn "Failed to enable developer mode for Terminal. It might require manual intervention or the command failed."
+            fi
+        else
+            log "Developer mode is already enabled for Terminal."
+        fi
+    else
+        # Fallback for older macOS versions where 'developer-mode' subcommand might not exist
+        log "The 'spctl developer-mode' subcommand is not available on this macOS version."
+        if spctl --status 2>/dev/null | grep -q "Assessments enabled."; then
+            log "System assessments are enabled. Developer functionality is likely available."
+            warn "Automatic 'developer mode for Terminal' enablement via spctl is not fully supported on this macOS version. Manual verification may be required."
+        else
+            warn "System assessments are not enabled. Automatic 'developer mode for Terminal' enablement via spctl is not supported on this macOS version, and system assessments are also not active. Manual configuration for developer tools may be required."
+        fi
+    fi
+}
+
 # Installs Rust and sccache using rustup if they are not found.
 install_rust_and_sccache_via_rustup() {
     if [[ "$INSTALL_RUSTUP" == "false" && "$INSTALL_SCCACHE" == "false" ]]; then
@@ -614,36 +652,7 @@ install_dev_tools() {
 
     # macOS specific: Developer mode enablement
     if [[ "$(uname)" == "Darwin" ]]; then
-        # Check if assessments are enabled (a prerequisite for developer mode)
-        local assessments_enabled=false
-        if spctl --status 2>/dev/null | grep -q "Assessments enabled."; then
-            assessments_enabled=true
-        fi
-
-        if [[ "$FORCE" == "true" || "$assessments_enabled" == "true" ]]; then
-            log "Ensuring developer mode is enabled on macOS..."
-            # The command might change slightly across macOS versions, but this is standard
-            # TODO handle --developer-mode not exist on older macs
-            if ! spctl --status | grep -q "developer mode is already enabled"; then
-                if sudo spctl --enable-terminal; then
-                    success "Developer mode enabled."
-                else
-                    warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
-                fi
-            else
-                if ! spctl --status | grep -q "developer mode is already enabled"; then
-                    if sudo spctl --enable-terminal; then
-                        success "Developer mode enabled."
-                    else
-                        warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
-                    fi
-                else
-                    log "Developer mode is already enabled."
-                fi
-            fi
-        else
-            warn "Developer mode enablement skipped: Assessments are not enabled and --force flag was not used."
-        fi
+        _enable_developer_mode_for_terminal
     fi
 
     # Install sccache
@@ -685,28 +694,7 @@ install_vim() {
 
     # macOS specific: Developer mode enablement
     if [[ "$(uname)" == "Darwin" ]]; then
-        # Check if assessments are enabled (a prerequisite for developer mode)
-        local assessments_enabled=false
-        if spctl --status 2>/dev/null | grep -q "Assessments enabled."; then
-            assessments_enabled=true
-        fi
-
-        if [[ "$FORCE" == "true" || "$assessments_enabled" == "true" ]]; then
-            log "Ensuring developer mode is enabled on macOS..."
-            # The command might change slightly across macOS versions, but this is standard
-            # TODO handle --developer-mode not exist on older macs
-            if ! spctl --status | grep -q "developer mode is already enabled"; then
-                if sudo spctl --enable-terminal; then
-                    success "Developer mode enabled."
-                else
-                    warn "Failed to enable developer mode. It might already be enabled, or requires manual intervention."
-                fi
-            else
-                log "Developer mode is already enabled."
-            fi
-        else
-            warn "Developer mode enablement skipped: Assessments are not enabled and --force flag was not used."
-        fi
+        _enable_developer_mode_for_terminal
     fi
 
     ./scripts/install-vim.sh

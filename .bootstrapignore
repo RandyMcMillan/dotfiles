@@ -188,6 +188,3 @@ whatami.sh
 wobble
 .git/
 .github/
-**.sh
-**.bash
-**akefile**

@@ -589,24 +589,20 @@ elif [ -f /etc/bash_completion ]; then
 fi
 EOF
 
-        # Check if the exact bash completion block is already present
-        if ! grep -qF "${bash_completion_source_block}" "$HOME_DIR/.bash_profile"; then
-            log "Adding/Updating bash-completion sourcing in ~/.bash_profile..."
+        log "Adding/Updating bash-completion sourcing in ~/.bash_profile..."
 
-            # Check if the old 'Add tab completion for many Bash commands' comment exists
-            if grep -qF "# Add tab completion for many Bash commands" "$HOME_DIR/.bash_profile"; then
-                # Delete the old comment line and any subsequent lines until the next non-empty line or end of file,
-                # then append the correct block.
-                sed -i '' "/^# Add tab completion for many Bash commands/,/^$/d" "$HOME_DIR/.bash_profile"
-                echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
-                success "Replaced old bash-completion section in ~/.bash_profile."
-            else
-                # If the comment doesn't exist, just append the block
-                echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
-                success "Appended bash-completion sourcing to ~/.bash_profile."
-            fi
+        # Check if the old 'Add tab completion for many Bash commands' comment exists or if a partial block is present
+        # This will cover both cases where the full block is missing or only a partial one exists.
+        if grep -qF "# Add tab completion for many Bash commands" "$HOME_DIR/.bash_profile"; then
+            # Delete the old comment line and any subsequent lines until the next non-empty line or end of file,
+            # then append the correct block.
+            sed -i '' "/^# Add tab completion for many Bash commands/,/^$/d" "$HOME_DIR/.bash_profile"
+            echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
+            success "Replaced old bash-completion section in ~/.bash_profile."
         else
-            log "Bash-completion sourcing already present and correct in ~/.bash_profile."
+            # If the comment doesn't exist, just append the block
+            echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
+            success "Appended bash-completion sourcing to ~/.bash_profile."
         fi
     else
         log "Skipping bash-completion installation: Only applicable for macOS."

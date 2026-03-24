@@ -631,14 +631,10 @@ install_dev_tools() {
             # Check if 'developer-mode' subcommand is supported by checking general spctl help output
             if _is_developer_mode_supported; then
                 # New macOS versions support 'developer-mode enable-terminal'
-                if ! spctl developer-mode status >/dev/null 2>&1 | grep -q "developer mode is already enabled"; then
-                    if sudo spctl developer-mode enable-terminal; then
-                        success "Developer mode enabled using 'developer-mode enable-terminal'."
-                    else
-                        warn "Failed to enable developer mode with 'developer-mode enable-terminal'. It might already be enabled, or requires manual intervention."
-                    fi
+                if sudo spctl developer-mode enable-terminal; then
+                    success "Developer mode enabled using 'developer-mode enable-terminal'."
                 else
-                    log "Developer mode is already enabled."
+                    warn "Failed to enable developer mode with 'developer-mode enable-terminal'. It might already be enabled, or requires manual intervention."
                 fi
 
             fi
@@ -694,19 +690,14 @@ install_vim() {
 
         if [[ "$FORCE" == "true" || "$assessments_enabled" == "true" ]]; then
             log "Ensuring developer mode is enabled on macOS..."
-            # Check if 'developer-mode' subcommand is supported, otherwise fallback to legacy method
+            # Check if 'developer-mode' subcommand is supported.
             if _is_developer_mode_supported; then
                 # New macOS versions support 'developer-mode enable-terminal'
-                if ! _is_developer_mode_supported; then
-                    if sudo spctl developer-mode enable-terminal; then
-                        success "Developer mode enabled using 'developer-mode enable-terminal'."
-                    else
-                        warn "Failed to enable developer mode with 'developer-mode enable-terminal'. It might already be enabled, or requires manual intervention."
-                    fi
+                if sudo spctl developer-mode enable-terminal; then
+                    success "Developer mode enabled using 'developer-mode enable-terminal'."
                 else
-                    log "Developer mode is already enabled."
+                    warn "Failed to enable developer mode with 'developer-mode enable-terminal'. It might already be enabled, or requires manual intervention."
                 fi
-
             fi
         else
             warn "Developer mode enablement skipped: Assessments are not enabled and --force flag was not used."

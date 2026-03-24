@@ -359,6 +359,7 @@ bootstrap: vim exec
 	$(PWD)/scripts/bootstrap.sh sync --force
 	echo $(PWD)/scripts/bootstrap.sh install --force
 	$(PWD)/scripts/bootstrap.sh install --force
+
 ##	:	boot-strap		./boot-strap.sh
 .PHONY: boot-strap
 boot-strap: vim exec
@@ -398,7 +399,7 @@ template:
 .ONESHELL:
 nvm: executable ## nvm
 	@./scripts/install-nvm.sh
-	@source ~/.bashrc
+	@if [ -f "$(HOME)/.bashrc" ]; then source "$(HOME)/.bashrc"; fi
 
 ##	:	cirrus			source and run install-cirrus command
 cirrus: executable
@@ -409,7 +410,7 @@ config-dock: executable
 
 macvim: vim## 	macvim
 vim: nvm## vim - install-vim.sh
-	@./scripts/install-vim.sh
+	@echo "y" | ./scripts/install-vim.sh
 rustup-rs:## 	rustup-rs
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
 macdown:

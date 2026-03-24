@@ -200,7 +200,6 @@ parse_arguments() {
 
     # Set the command to be executed
     export BOOTSTRAP_COMMAND="$command"
-    log "DEBUG: FORCE after parse_arguments: $FORCE"
 }
 
 # --- Help Message ---
@@ -617,7 +616,6 @@ EOF
 
 # Main function for development tool installation.
 install_dev_tools() {
-    log "DEBUG: FORCE at start of install_dev_tools: $FORCE"
     log "Setting up development tools..."
 
     # macOS specific: Developer mode enablement

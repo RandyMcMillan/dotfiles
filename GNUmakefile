@@ -358,7 +358,7 @@ bootstrap: vim exec
 	echo $(PWD)/scripts/bootstrap.sh sync --force
 	$(PWD)/scripts/bootstrap.sh sync --force
 	echo $(PWD)/scripts/bootstrap.sh install --force
-	$(PWD)/scripts/bootstrap.sh install --force
+	$(PWD)/scripts/bootstrap.sh install --force >/dev/null 2>&1
 
 ##	:	boot-strap		./boot-strap.sh
 .PHONY: boot-strap

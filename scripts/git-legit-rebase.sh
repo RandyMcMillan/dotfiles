@@ -8,16 +8,29 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 DEPTH=""
+POW=""
+GIT_LEGIT_ARGS=()
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --depth) DEPTH="$2"; shift ;;
+        --depth)
+            DEPTH="$2"
+            shift
+            ;;
+        --pow)
+            POW="$2"
+            shift
+            ;;
         *) echo -e "${RED}Unknown parameter: $1${NC}"; exit 1 ;;
     esac
     shift
 done
 
 if [[ -z "$DEPTH" ]]; then
-    echo "Usage: $0 --depth <N>"; exit 1
+    echo "Usage: $0 --depth <N> [--pow <N>]"; exit 1
+fi
+
+if [[ -n "$POW" ]]; then
+    GIT_LEGIT_ARGS+=(--pow "$POW")
 fi
 
 if ! git diff-index --quiet HEAD --; then
@@ -62,7 +75,8 @@ for i in $(seq 0 $((DEPTH - 1))); do
     cargo run --bin git-legit -- \
         -m "$RAW_BODY" \
         -m "Ref: $OLD_HASH" \
-        -m "Old Nonce: $OLD_NONCE"
+        -m "Old Nonce: $OLD_NONCE" \
+        "${GIT_LEGIT_ARGS[@]}"
 
     rm "$PATCH_FILE" "$MSG_FILE" "$TMP_DIR/hash_$i.txt" "$TMP_DIR/nonce_$i.txt"
 done

@@ -18,7 +18,6 @@ fn unescape_newlines(s: &str) -> String { s.replace("\\n", "\n") }
 fn unescape_tabs(s: &str) -> String { s.replace("\\t", "\t") }
 fn unescape_carriage_returns(s: &str) -> String { s.replace("\\r", "\n") }
 fn unescape_hex(s: &str) -> String {
-    // Basic support for the Escape char used in ANSI colors
     s.replace("\\x1b", "\x1b")
 }
 
@@ -79,7 +78,19 @@ fn main() {
         }
     }
 
-    let summary = if messages.is_empty() { "gnostr legit commit".to_string() } else { messages.join("\n\n") };
+    let mut summary = if messages.is_empty() {
+        "gnostr legit commit".to_string()
+    } else {
+        messages.join("\n\n")
+    };
+
+    // IDEMPOTENCY: Strip existing prefix if re-mining to prevent stacking
+    if let Some(pos) = summary.find(':') {
+        let prefix_part = &summary[..pos];
+        if prefix_part.contains('/') {
+            summary = summary[pos + 1..].to_string();
+        }
+    }
 
     let weeble = get_gnostr_metadata("--weeble");
     let blockheight = get_gnostr_metadata("--blockheight");

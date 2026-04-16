@@ -74,3 +74,6 @@ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nightly)'] }
 
 [build-dependencies]
 chrono = "0.4.23"
+
+[dev-dependencies]
+wrkflw = "0.7.3"

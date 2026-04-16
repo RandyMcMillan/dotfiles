@@ -1,12 +1,25 @@
 [safe]
 	directory = *
 
+
 [alias]
+    # Captures all -m strings, joins them, and appends Nostr/Blockheight metadata
+    legit = "!f() { \
+        messages=(); \
+        while [ $# -gt 0 ]; do \
+            case \"$1\" in \
+                -m) messages+=(\"$2\"); shift 2 ;; \
+                *) if [ -z \"$1\" ]; then shift; else messages+=(\"$1\"); shift; fi ;; \
+            esac; \
+        done; \
+        summary=\"${messages[0]:-gnostr legit commit}\"; \
+        body=\"\"; \
+        for i in \"${messages[@]:1}\"; do body=\"$body\n\n$i\"; done; \
+        postfix=\"\n\n$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)\"; \
+        gnostr legit -m \"$summary$body$postfix\"; \
+    }; f"
 
-        # 'commit' will now call 'gnostr legit' and append any arguments
-	commit = "!gnostr legit"
-
-
+[alias]
 	# Switch to a branch, creating it if necessary
 	# View abbreviated SHA, description, and history graph of the latest 20 commits.
 	l = log --pretty=oneline -n 10 --graph --abbrev-commit
@@ -166,9 +179,20 @@
 	untracked = cyan
 
 [commit]
+    gpgsign = true
+    # Automatically include a 'Signed-off-by' line at the end of the commit message.
+    # Useful for projects requiring a DCO (Developer Certificate of Origin).
+    status = true
+    
+    # Shows the diff of what you are committing in the editor while writing the message.
+    # Essential for verifying your 'gnostr legit' stage before finalized.
+    verbose = true
 
-	# https://help.github.com/articles/signing-commits-using-gpg/
-	gpgsign = true
+    # Clean up the commit message (removes leading/trailing whitespace/empty lines).
+    cleanup = strip
+
+    # If you use a specific template for BIP/NIP work:
+    # template = ~/.gitmessage
 
 [diff]
 

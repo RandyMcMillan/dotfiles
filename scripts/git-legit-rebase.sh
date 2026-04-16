@@ -69,4 +69,4 @@ done
 
 echo -e "\n${GREEN}=== Rebase Complete ===${NC}"
 rm -rf "$TMP_DIR"
-git cehckout -b "$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)-end-test"
+git checkout -b "$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)-end-test"

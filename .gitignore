@@ -1,3 +1,10 @@
+
+.copilot/command-history-state.json
+.copilot/logs/
+.copilot/session-state/
+
+.gnostr/
+bootstrap.log
 .cache/cargo
 .genkit/
 .gemini/oauth_creds.json

@@ -128,3 +128,4 @@ fi
 if [ -f "/Applications/OpenCode.app/Contents/MacOS/opencode-cli" ]; then
        pathappend "/Applications/OpenCode.app/Contents/MacOS"
 fi
+. "$HOME/.cargo/env"

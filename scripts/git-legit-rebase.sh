@@ -8,16 +8,18 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 DEPTH=""
+POW=""
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --depth) DEPTH="$2"; shift ;;
+        --pow) POW="$2"; shift ;;
         *) echo -e "${RED}Unknown parameter: $1${NC}"; exit 1 ;;
     esac
     shift
 done
 
 if [[ -z "$DEPTH" ]]; then
-    echo "Usage: $0 --depth <N>"; exit 1
+    echo "Usage: $0 --depth <N> [--pow <N>]"; exit 1
 fi
 
 if ! git diff-index --quiet HEAD --; then
@@ -53,16 +55,24 @@ for i in $(seq 0 $((DEPTH - 1))); do
 
     echo -e "${CYAN}Rewriting commit $((i + 1)) (Old Hash: ${OLD_HASH:0:9})...${NC}"
 
-    git apply --index "$PATCH_FILE"
+    git apply --allow-empty --index "$PATCH_FILE"
 
     # Construct the re-mined message including the reference
     RAW_BODY=$(cat "$MSG_FILE")
 
     # Call git-legit with the original message + the reference block
-    cargo run --bin git-legit -- \
+    GIT_LEGIT_ARGS=(
+        cargo run --bin git-legit --
         -m "$RAW_BODY" \
         -m "Ref: $OLD_HASH" \
         -m "Old Nonce: $OLD_NONCE"
+    )
+
+    if [[ -n "$POW" ]]; then
+        GIT_LEGIT_ARGS+=(--pow "$POW")
+    fi
+
+    "${GIT_LEGIT_ARGS[@]}"
 
     rm "$PATCH_FILE" "$MSG_FILE" "$TMP_DIR/hash_$i.txt" "$TMP_DIR/nonce_$i.txt"
 done

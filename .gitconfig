@@ -6,7 +6,7 @@
     legit = "!f() { \
         summary=\"$2\"; \
         prefix=\"$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)\"; \
-        gnostr legit -m \"$prefix:$summary:prefix:example\"; \
+        gnostr legit -m \"$prefix:$summary\"; \
     }; f"
 
 [alias]

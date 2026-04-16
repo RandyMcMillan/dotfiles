@@ -48,11 +48,23 @@ fn fallback_metadata(flag: &str) -> String {
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut messages: Vec<String> = Vec::new();
+    let mut pow: Option<String> = None;
+    let mut commit_prefix: Option<String> = None;
+    let mut threads: Option<String> = None;
     
     let mut i = 1;
     while i < args.len() {
         if (args[i] == "-m" || args[i] == "--message") && i + 1 < args.len() {
             messages.push(unescape_sequences(&args[i + 1]));
+            i += 2;
+        } else if args[i] == "--pow" && i + 1 < args.len() {
+            pow = Some(args[i + 1].clone());
+            i += 2;
+        } else if args[i] == "--prefix" && i + 1 < args.len() {
+            commit_prefix = Some(args[i + 1].clone());
+            i += 2;
+        } else if (args[i] == "-t" || args[i] == "--threads") && i + 1 < args.len() {
+            threads = Some(args[i + 1].clone());
             i += 2;
         } else {
             i += 1;
@@ -77,13 +89,26 @@ fn main() {
     let blockheight = get_gnostr_metadata("--blockheight");
     let wobble = get_gnostr_metadata("--wobble");
 
-    let prefix = format!("{}/{}/{}", weeble, blockheight, wobble);
-    let final_message = format!("{}:{}", prefix, summary);
+    let metadata_prefix = format!("{}/{}/{}", weeble, blockheight, wobble);
+    let final_message = format!("{}:{}", metadata_prefix, summary);
 
     if ensure_gnostr_exists() {
-        let status = Command::new("gnostr")
-            .args(["legit", "-m", &final_message])
-            .status();
+        let mut command = Command::new("gnostr");
+        command.arg("legit").arg("-m").arg(&final_message);
+
+        if let Some(pow) = pow.as_ref() {
+            command.args(["--pow", pow]);
+        }
+
+        if let Some(prefix) = commit_prefix.as_ref() {
+            command.args(["--prefix", prefix]);
+        }
+
+        if let Some(threads) = threads.as_ref() {
+            command.args(["--threads", threads]);
+        }
+
+        let status = command.status();
 
         if let Ok(s) = status {
             if s.success() { return; }

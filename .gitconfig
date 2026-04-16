@@ -4,7 +4,7 @@
 [alias]
     # Captures the summary and wraps it in your custom Nostr/Blockheight metadata
     legit = "!f() { \
-        summary=\"${1:-gnostr legit commit}\"; \
+        summary=\"${2:-gnostr legit commit}\"; \
         prefix=\"$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)\"; \
         gnostr legit -m \"$prefix:$summary\"; \
     }; f"

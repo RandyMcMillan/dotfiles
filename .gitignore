@@ -1,129 +1,106 @@
-
+!default.mode1v3
+!default.mode2v3
+!default.pbxuser
+!default.perspectivev3
+#
+# Compiled Python files
+# Files that might appear on external disks
+# Folder view configuration files
+# Thumbnail cache files
+# Xcode
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+## Gcc Patch
+## User settings
+## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+#ARTIFACTS
+#autoconf
+#justfile
+*.dmg
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+*.pyc
+*.tmp
+*.xccheckout
+*.xcscmblueprint
+./config/.DS_Store
+._*
+.cache/cargo
+.cache/ctrlp/
+.cache/gh/
+.cache/helix/
+.cache/pkg/
+.cache/update-informer-rs/
+.cache/vscode-ripgrep/
+.cargo/.rustc_info.json
+.cargo/debug
+.cargo/release
+.config/.DS_Store
+.config/QtProject
 .copilot/command-history-state.json
 .copilot/logs/
 .copilot/session-state/
-
-.gnostr/
-bootstrap.log
-.cache/cargo
-.genkit/
-.gemini/oauth_creds.json
-
-.vim_runtime
+.DS_Store
 .gemini/extensions
 .gemini/history
 .gemini/mcp-oauth-tokens-v2.json
+.gemini/oauth_creds.json
 .gemini/tmp
-.cargo/debug
-.cargo/release
-.cargo/.rustc_info.json
-
+.genkit/
 .github/gnostr-core/
 .github/nostr-rs/
 .github/rgit/
-
-/target
-Cargo.lock
-.DS_Store
-Makefile.in
-
-*.tmp
-init/init
-*.dmg
-1.1.1*
-infinity
-infinity/*
-
-known_hosts
-
-Python-2.*
-
-known_hosts
-# Compiled Python files
-*.pyc
-
-# Folder view configuration files
-./config/.DS_Store
-.DS_Store
-Desktop.ini
-.config/.DS_Store
-
-#autoconf
-config.h
-config.h.in~
-
-# Thumbnail cache files
-._*
-Thumbs.db
-
-# Files that might appear on external disks
+.gitignore.bak
+.gnostr/
 .Spotlight-V100
 .Trashes
-autom4te.cache/
-brew/
-homebrew-core/
-config.log
-config.status
-bitcoin
-iokit.log
-bash_profile.log
-
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-
-## User settings
-xcuserdata/
-
-## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
-*.xcscmblueprint
-*.xccheckout
-
-## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
-build/
-DerivedData/
-*.moved-aside
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
-
-## Gcc Patch
+.vim_runtime
 /*.gcno
-
-hosts
-etc-dnsmasq.d
-etc-pihole
-.DS_Store
-.config/QtProject
+/target
+1.1.1*
 1.1.1i
-docker.shell
-
-bitcoin-test-battery
+ABOUT-NLS
 autom4te.cache/
+bash_profile.log
+bitcoin
+Bitcoin-Qt.app/
+bitcoin-test-battery
+bootstrap.log
+brew/
+build-aux/
+build/
+Cargo.lock
+ChangeLog~
+config.h
+config.h.in~
 config.log
+config.rpath
 config.status
 configure
-patch.diff
-
-
-configure~
-
-guix.sigs
-
-nostril/bin/
-nostril/share/
-
-#ARTIFACTS
-ABOUT-NLS
-ChangeLog~
-Makefile.am~
-config.rpath
 configure.ac~
+configure~
+contrib/devtools/split-debug.sh
+DerivedData/
+Desktop.ini
+doc/man/Makefile
+docker.shell
+etc-dnsmasq.d
+etc-pihole
+foo
+guix.sigs
+homebrew-core/
+hosts
+infinity
+infinity/*
+init/init
+install-sh~
+iokit.log
+known_hosts
+libbitcoinconsensus.pc
+libtool
 m4/gettext.m4
 m4/gettext.m4~
 m4/host-cpu-c-abi.m4
@@ -144,27 +121,14 @@ m4/po.m4
 m4/po.m4~
 m4/progtest.m4
 m4/progtest.m4~
+Makefile.am~
+Makefile.in
+nostril/bin/
+nostril/share/
+nothing added to commit but untracked files present (use "git add" to track)
+patch.diff
 po/
-
-#bash_profile log
-bash_profile.log
-
-
-# Added by cargo
-
-/target
-
-install-sh~
-
-#justfile
-foo
-
-Bitcoin-Qt.app/
-build-aux/
-contrib/devtools/split-debug.sh
-doc/man/Makefile
-libbitcoinconsensus.pc
-libtool
+Python-2.*
 share/qt/Info.plist
 share/setup.nsi
 signet-datadirs/
@@ -172,7 +136,6 @@ signet-datadirs2/
 signet-datadirs3/
 src/.deps/
 src/.libs/
-src/Makefile
 src/bench/.deps/
 src/bench/.dirstamp
 src/bench/bench_bitcoin
@@ -547,6 +510,7 @@ src/libbitcoinconsensus_la-uint256.o
 src/libtest_fuzz.a
 src/libtest_util.a
 src/libunivalue.la
+src/Makefile
 src/node/.deps/
 src/node/.dirstamp
 src/node/libbitcoin_node_a-abort.o
@@ -1394,5 +1358,5 @@ src/wallet/test/test_test_bitcoin-walletdb_tests.o
 src/wallet/test/test_test_bitcoin-walletload_tests.o
 src/zmq/.deps/
 test/config.ini
-
-nothing added to commit but untracked files present (use "git add" to track)
+Thumbs.db
+xcuserdata/

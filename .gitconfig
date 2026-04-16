@@ -4,7 +4,7 @@
 [alias]
 
         # 'commit' will now call 'gnostr legit' and append any arguments
-	commit = "!gnostr legit"
+	legit = "!gnostr legit"
 
 
 [alias]

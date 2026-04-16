@@ -1,12 +1,22 @@
 [safe]
 	directory = *
 
+
 [alias]
-    # Captures the summary and wraps it in your custom Nostr/Blockheight metadata
+    # Captures all -m strings, joins them, and appends Nostr/Blockheight metadata
     legit = "!f() { \
-        summary=\"${2:-gnostr legit commit}\"; \
-        prefix=\"$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)\"; \
-        gnostr legit -m \"$prefix:$summary\"; \
+        messages=(); \
+        while [ $# -gt 0 ]; do \
+            case \"$1\" in \
+                -m) messages+=(\"$2\"); shift 2 ;; \
+                *) if [ -z \"$1\" ]; then shift; else messages+=(\"$1\"); shift; fi ;; \
+            esac; \
+        done; \
+        summary=\"${messages[0]:-gnostr legit commit}\"; \
+        body=\"\"; \
+        for i in \"${messages[@]:1}\"; do body=\"$body\n\n$i\"; done; \
+        postfix=\"\n\n$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)\"; \
+        gnostr legit -m \"$summary$body$postfix\"; \
     }; f"
 
 [alias]

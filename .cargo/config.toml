@@ -4,7 +4,7 @@ auto-clean = true
 # Frequency of the check (daily is default)
 auto-freq = "1 day"
 # Delete source/git checkouts if not used in X days
-unused-timeout = "7 days"
+unused-timeout = "1 days"
 
 [build]
 target-dir = ".cache/cargo"

@@ -76,4 +76,5 @@ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nightly)'] }
 chrono = "0.4.23"
 
 [dev-dependencies]
+gnostr = "1912.921034.558464"
 wrkflw = "0.7.3"

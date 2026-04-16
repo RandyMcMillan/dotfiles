@@ -125,6 +125,19 @@
 	# https://git-scm.com/docs/git-update-index#_untracked_cache
 	untrackedCache = true
 
+        # avoid file mode noise
+        # A Quick Warning
+        # Since you are managing dotfiles, the only downside is that if you
+        # actually create a new script (like a .sh file) that needs to be
+        # executable for others who clone the repo, Git won't automatically
+        # detect that you changed it to +x.
+        # 
+        # In those specific cases, you'll just need to manually force the bit for that one file:
+        # 
+        # Bash
+        # git update-index --chmod=+x path/to/new-script.sh
+        # 
+        filemode = false
 [color]
 
 	# Use colors in Git commands that are capable of colored output when

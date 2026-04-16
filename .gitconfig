@@ -2,9 +2,12 @@
 	directory = *
 
 [alias]
-
-        # 'commit' will now call 'gnostr legit' and append any arguments
-	legit = "!gnostr legit -m ""$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)":summary:prefix:example""
+    # Captures the summary and wraps it in your custom Nostr/Blockheight metadata
+    legit = "!f() { \
+        summary=\"$2\"; \
+        prefix=\"$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)\"; \
+        gnostr legit -m \"$prefix:$summary:prefix:example\"; \
+    }; f"
 
 [alias]
 	# Switch to a branch, creating it if necessary

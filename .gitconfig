@@ -4,8 +4,7 @@
 [alias]
 
         # 'commit' will now call 'gnostr legit' and append any arguments
-	legit = "!gnostr legit"
-
+	legit = "!gnostr legit -m ""$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)":summary:prefix:example""
 
 [alias]
 	# Switch to a branch, creating it if necessary

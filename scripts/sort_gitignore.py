@@ -1,15 +1,12 @@
-#!/usr/bin/env python3
 import os
 import sys
 
-def sort_gitignore(file_path):
-    """Sorts a single .gitignore file alphabetically, preserving comments."""
+def sort_gitignore(file_path=".gitignore"):
     if not os.path.exists(file_path):
         print(f"Error: {file_path} not found.")
         return
 
-    print(f"Processing: {file_path}")
-
+    # Read the file lines
     with open(file_path, "r") as f:
         lines = f.readlines()
 
@@ -17,7 +14,8 @@ def sort_gitignore(file_path):
     backup_path = file_path + ".bak"
     with open(backup_path, "w") as f:
         f.writelines(lines)
-    
+    print(f"Backup created at {backup_path}")
+
     processed_blocks = []
     current_comments = []
     seen_entries = set()
@@ -25,49 +23,32 @@ def sort_gitignore(file_path):
     for line in lines:
         stripped = line.strip()
         
+        # Keep empty lines as they are or skip them to condense
         if not stripped:
             continue
             
+        # If it's a comment, store it to attach to the next actual entry
         if stripped.startswith("#"):
             current_comments.append(line)
         else:
+            # Avoid duplicates
             if stripped not in seen_entries:
                 # Combine comments + the entry into one sortable block
-                # We handle the newline to ensure the block is self-contained
-                entry_line = line if line.endswith('\n') else line + '\n'
-                block = "".join(current_comments) + entry_line
+                block = "".join(current_comments) + line
                 processed_blocks.append(block)
                 seen_entries.add(stripped)
             current_comments = []
 
-    # Sort blocks based on the last line (the actual pattern)
-    processed_blocks.sort(key=lambda x: x.strip().split('\n')[-1].lower())
+    # Sort the blocks alphabetically (case-insensitive)
+    processed_blocks.sort(key=lambda x: x.split('\n')[-2].lower() if x.endswith('\n') else x.split('\n')[-1].lower())
 
+    # Write back to the original file
     with open(file_path, "w") as f:
         f.writelines(processed_blocks)
 
-    print(f"Successfully sorted and backed up: {file_path}")
-
-def find_and_sort_all(root_dir):
-    """Recursively finds all .gitignore files starting from root_dir."""
-    found_any = False
-    for root, dirs, files in os.walk(root_dir):
-        if ".gitignore" in files:
-            found_any = True
-            full_path = os.path.join(root, ".gitignore")
-            sort_gitignore(full_path)
-    
-    if not found_any:
-        print(f"No .gitignore files found in {root_dir}")
+    print(f"Successfully sorted {file_path}!")
 
 if __name__ == "__main__":
-    # If a directory or file is passed, use it; otherwise, use current directory
-    target_path = sys.argv[1] if len(sys.argv) > 1 else "."
-    
-    if os.path.isdir(target_path):
-        print(f"Starting recursive search in: {os.path.abspath(target_path)}")
-        find_and_sort_all(target_path)
-    elif os.path.isfile(target_path):
-        sort_gitignore(target_path)
-    else:
-        print(f"Path not found: {target_path}")
+    # Check if a specific path was provided as an argument
+    target = sys.argv[1] if len(sys.argv) > 1 else ".gitignore"
+    sort_gitignore(target)

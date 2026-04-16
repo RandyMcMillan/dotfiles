@@ -1,0 +1,24 @@
+{
+  "firstLaunchAt": "2026-04-07T13:31:07.924Z",
+  "banner": "never",
+  "trusted_folders": [
+    "/Users/Shared/bitcoincore-dev/",
+    "/Users/Shared/randymcmillan/",
+    "/Users/Shared/randymcmillan/.github",
+    "/Users/Shared/gnostr-org/",
+    "/Users/Shared/gnostr-org/.github/",
+    "/Users/Shared/gnostr-org/.github/blossom-rs",
+    "/Users/Shared/gnostr-org/.github/gnostr-tui-upstream"
+  ],
+  "logged_in_users": [
+    {
+      "host": "https://github.com",
+      "login": "RandyMcMillan"
+    }
+  ],
+  "last_logged_in_user": {
+    "host": "https://github.com",
+    "login": "RandyMcMillan"
+  },
+  "model": "gpt-5.4-mini"
+}

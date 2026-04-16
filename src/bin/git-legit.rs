@@ -17,36 +17,17 @@ fn unescape_backslashes(s: &str) -> String { s.replace("\\\\", "\\") }
 fn unescape_newlines(s: &str) -> String { s.replace("\\n", "\n") }
 fn unescape_tabs(s: &str) -> String { s.replace("\\t", "\t") }
 fn unescape_carriage_returns(s: &str) -> String { s.replace("\\r", "\n") }
-fn unescape_hex(s: &str) -> String {
-    s.replace("\\x1b", "\x1b")
-}
+fn unescape_hex(s: &str) -> String { s.replace("\\x1b", "\x1b") }
 
-/// Self-healing: ensures gnostr binary is present
 fn ensure_gnostr_exists() -> bool {
-    if Command::new("gnostr").arg("--version").output().is_ok() {
-        return true;
-    }
-
+    if Command::new("gnostr").arg("--version").output().is_ok() { return true; }
     println!("gnostr not found. Attempting: cargo install gnostr...");
-    let install_status = Command::new("cargo")
-        .args(["install", "gnostr"])
-        .status();
-
-    match install_status {
-        Ok(s) if s.success() => true,
-        _ => {
-            eprintln!("Error: Critical dependency 'gnostr' could not be installed.");
-            false
-        }
-    }
+    let install_status = Command::new("cargo").args(["install", "gnostr"]).status();
+    matches!(install_status, Ok(s) if s.success())
 }
 
-/// Robust fetcher with local fallback for network/API failures
 fn get_gnostr_metadata(flag: &str) -> String {
-    if !ensure_gnostr_exists() {
-        return fallback_metadata(flag);
-    }
-
+    if !ensure_gnostr_exists() { return fallback_metadata(flag); }
     match Command::new("gnostr").arg(flag).output() {
         Ok(out) if out.status.success() => {
             let val = String::from_utf8_lossy(&out.stdout).trim().to_string();
@@ -84,7 +65,7 @@ fn main() {
         messages.join("\n\n")
     };
 
-    // IDEMPOTENCY: Strip existing prefix if re-mining to prevent stacking
+    // IDEMPOTENCY: Strip existing Sovereign prefix
     if let Some(pos) = summary.find(':') {
         let prefix_part = &summary[..pos];
         if prefix_part.contains('/') {

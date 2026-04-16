@@ -3,6 +3,8 @@
 
 [alias]
 
+        # 'commit' will now call 'gnostr legit' and append any arguments
+	commit = "!gnostr legit"
 
 
 	# Switch to a branch, creating it if necessary

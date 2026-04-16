@@ -3,6 +3,10 @@ scriptencoding utf-8
 set encoding=utf-8
 
 if has("autocmd")
+    au BufRead,BufNewFile *.cpp         set list
+    au BufRead,BufNewFile *.rs          set noexpandtab
+endif
+if has("autocmd")
     " configure expanding of tabs for various file types
     au BufRead,BufNewFile *.py          set expandtab
     au BufRead,BufNewFile *.py          set list

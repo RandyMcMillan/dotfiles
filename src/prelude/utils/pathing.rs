@@ -32,12 +32,7 @@ pub fn config_path(file: &str) -> String {
             "project-template-".to_owned() + &BINARY_NAME.clone() + "-bin_name",
             file
         ),
-        "windows" => format!(
-            "{}\\{}\\{}",
-            std::env::var("APPDATA").unwrap(),
-            get_binary_name(),
-            file
-        ),
+        "windows" => format!("{}\\{}", std::env::var("APPDATA").unwrap(), file),
         _ => unimplemented!(),
     }
     #[cfg(not(feature = "nightly"))]
@@ -48,12 +43,7 @@ pub fn config_path(file: &str) -> String {
             "project-template-".to_owned() + BINARY_NAME + "-bin_name",
             file
         ),
-        "windows" => format!(
-            "{}\\{}\\{}",
-            std::env::var("APPDATA").unwrap(),
-            get_binary_name(),
-            file
-        ),
+        "windows" => format!("{}\\{}", std::env::var("APPDATA").unwrap(), file),
         _ => unimplemented!(),
     }
 }
@@ -117,9 +107,8 @@ mod tests {
         assert_eq!(
             config_path("config.toml"),
             format!(
-                "{}\\{}\\config.toml",
+                "{}\\config.toml",
                 std::env::var("APPDATA").unwrap(),
-                &BINARY_NAME.clone()
             )
         );
     }

@@ -24,7 +24,7 @@ jobs:
   build-legit:
     strategy:
       matrix:
-        os: [macos-latest, macos-11, macos-12]
+        os: [macos-latest, macos-15-install]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: styfle/cancel-workflow-action@0.11.0

@@ -49,11 +49,11 @@ fi
 if [ -d "${GIT_REPOSITORIES_PATH}" ]; then
     cd "${GIT_REPOSITORIES_PATH}"/.
     set +e
-    chown -R "${GIT_USER}":"${GIT_GROUP}" .
+    chown -R "${GIT_USER}":"${GIT_GROUP}" . 2>/dev/null
     chown_status=$?
-    find . -type f -exec chmod u=rwX,go=rX '{}' \;
+    find . -type f -exec chmod u=rwX,go=rX '{}' \; 2>/dev/null
     file_mode_status=$?
-    find . -type d -exec chmod u=rwx,go=rx '{}' \;
+    find . -type d -exec chmod u=rwx,go=rx '{}' \; 2>/dev/null
     dir_mode_status=$?
     set -e
 
@@ -81,7 +81,7 @@ fi
 # Required by the SSH server to allow public key login
 if [ -f "${SSH_AUTHORIZED_KEYS_FILE}" ]; then
     set +e
-    chown -R "${GIT_USER}":"${GIT_GROUP}" "${GIT_HOME}"
+    chown -R "${GIT_USER}":"${GIT_GROUP}" "${GIT_HOME}" 2>/dev/null
     home_chown_status=$?
     set -e
     if [ "${home_chown_status}" -ne 0 ]; then

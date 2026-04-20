@@ -70,9 +70,8 @@ mod tests {
         assert_eq!(
             config_path("config.toml"),
             format!(
-                "{}\\{}\\config.toml",
+                "{}\\config.toml",
                 std::env::var("APPDATA").unwrap(),
-                &BINARY_NAME.clone()
             )
         );
     }

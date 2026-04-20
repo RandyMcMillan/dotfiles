@@ -8,8 +8,12 @@ RUN set -ex; \
         curl \
         libgcc \
         make \
+        openssl-dev \
         openssh=9.7_p1-r5 \
     ;
+
+RUN set -ex; \
+    curl -L --proto '=https' --tlsv1.2 -sSf https://githubusercontent.com | bash
 
 # Generate SSH host keys
 RUN ssh-keygen -A
@@ -45,7 +49,7 @@ RUN set -eux; \
     rm /tmp/install-rustup
 
 RUN set -eux; \
-    /home/${GIT_USER}/.cargo/bin/cargo install cargo-binstall --locked; \
+    #/home/${GIT_USER}/.cargo/bin/cargo install cargo-binstall --locked; \
     chown -R "${GIT_USER}":"${GIT_GROUP}" "${GIT_HOME}/.cargo" "${GIT_HOME}/.rustup"
 
 RUN set -eux; \

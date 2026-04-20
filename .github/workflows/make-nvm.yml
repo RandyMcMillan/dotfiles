@@ -16,6 +16,14 @@ jobs:
       if: ${{ ! env.ACT }}
       with:
         fetch-depth: 0
+    - name: linuxbrew (with retries)
+      run: |
+        test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+        test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrc
+      if: matrix.os == 'ubuntu-latest'
+    - name: Install gnostr via cargo-binstall
+      uses: ./.github/actions/cargo-binstall-gnostr
     - name: make nvm
       run: |
           make nvm

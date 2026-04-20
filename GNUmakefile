@@ -388,6 +388,8 @@ github: executable
 .PHONY: executable
 executable:
 	chmod +x *.sh
+	chmod +x scripts/*.sh
+	chmod +x scripts/git-server
 .PHONY: exec
 ##	:	executable		make shell scripts executable
 exec: executable

@@ -1,0 +1,3 @@
+
+docker compose up --build -d
+git remote add git-server ssh://git@localhost:2222/srv/git/.git

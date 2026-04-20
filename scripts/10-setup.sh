@@ -113,6 +113,8 @@ if [ -n "${SSH_AUTH_METHODS-}" ]; then
     echo "AuthenticationMethods ${SSH_AUTH_METHODS}" >> ${SSHD_CONFIG_FILE}
 fi
 
+echo "git remote add git-server ssh://git@localhost:2222/srv/git/.git"
+
 # Link the repositories folder on git user's home directory
 if [ -n "${REPOSITORIES_HOME_LINK-}" ]; then
     if [ -d "${REPOSITORIES_HOME_LINK}" ]; then

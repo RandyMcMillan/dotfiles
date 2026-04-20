@@ -48,13 +48,22 @@ fi
 # permissions
 if [ -d "${GIT_REPOSITORIES_PATH}" ]; then
     cd "${GIT_REPOSITORIES_PATH}"/.
-    if ! chown -R "${GIT_USER}":"${GIT_GROUP}" .; then
+    set +e
+    chown -R "${GIT_USER}":"${GIT_GROUP}" .
+    chown_status=$?
+    find . -type f -exec chmod u=rwX,go=rX '{}' \;
+    file_mode_status=$?
+    find . -type d -exec chmod u=rwx,go=rx '{}' \;
+    dir_mode_status=$?
+    set -e
+
+    if [ "${chown_status}" -ne 0 ]; then
         warn "Could not change ownership of all repository files; continuing with existing permissions."
     fi
-    if ! find . -type f -exec chmod u=rwX,go=rX '{}' \;; then
+    if [ "${file_mode_status}" -ne 0 ]; then
         warn "Could not adjust repository file permissions; continuing."
     fi
-    if ! find . -type d -exec chmod u=rwx,go=rx '{}' \;; then
+    if [ "${dir_mode_status}" -ne 0 ]; then
         warn "Could not adjust repository directory permissions; continuing."
     fi
 else
@@ -71,7 +80,13 @@ fi
 # Make the git user the owner of his home directory
 # Required by the SSH server to allow public key login
 if [ -f "${SSH_AUTHORIZED_KEYS_FILE}" ]; then
+    set +e
     chown -R "${GIT_USER}":"${GIT_GROUP}" "${GIT_HOME}"
+    home_chown_status=$?
+    set -e
+    if [ "${home_chown_status}" -ne 0 ]; then
+        warn "Could not change ownership of ${GIT_HOME}; continuing."
+    fi
 else
     warn "File '${SSH_AUTHORIZED_KEYS_FILE}' not found."
     warn "Login using public keys will not be available."

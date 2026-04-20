@@ -48,6 +48,11 @@ RUN set -eux; \
     /home/${GIT_USER}/.cargo/bin/cargo install cargo-binstall --locked; \
     chown -R "${GIT_USER}":"${GIT_GROUP}" "${GIT_HOME}/.cargo" "${GIT_HOME}/.rustup"
 
+RUN set -eux; \
+    ln -sf "${GIT_HOME}/.cargo/bin/cargo" /usr/local/bin/cargo; \
+    ln -sf "${GIT_HOME}/.cargo/bin/rustup" /usr/local/bin/rustup; \
+    ln -sf "${GIT_HOME}/.cargo/bin/cargo-binstall" /usr/local/bin/cargo-binstall
+
 # Restrict git user to git commands
 # See `git-shell(1)`
 COPY git-shell-commands ${GIT_HOME}/git-shell-commands

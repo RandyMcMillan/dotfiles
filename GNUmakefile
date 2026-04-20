@@ -242,6 +242,7 @@ export PORTER_VERSION
 ##	:
 -:## - default - try 'make submodules'
 -:
+	$(MAKE) bootstrap
 	./autogen.sh configure
 	./configure
 	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
@@ -369,12 +370,6 @@ bootstrap:
 	@echo "Running install command 2..."
 	$(PWD)/scripts/bootstrap.sh install --force || true
 	@echo "Exit code of install 2: $$?"
-
-##	:	boot-strap		./boot-strap.sh
-.PHONY: boot-strap
-boot-strap: vim exec
-	@$(PWD)/scripts/boot-strap.sh --force
-
 
 .PHONY: install
 ##	:	install		 	install sequence

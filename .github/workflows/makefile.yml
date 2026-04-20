@@ -14,6 +14,14 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Install cargo-binstall
+      id: binstall
+      continue-on-error: true
+      uses: cargo-bins/cargo-binstall@v1.18.1
+    - name: Install gnostr (latest release)
+      uses: ./.github/actions/get-latest
+      #if: runner.os != 'macOS'
+
     - name: make-commands
       run: |
           sudo apt update && sudo apt upgrade -y

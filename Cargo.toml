@@ -1,6 +1,6 @@
 [package]
 name = "rust-project-template"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["randymcmillan <randy.lee.mcmillan@gmail.com>", "Xithrius <xithrius@gmail.com>"]
 edition = "2021"
 description = "A template for Rust BIN/TUI projects."

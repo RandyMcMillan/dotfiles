@@ -24,7 +24,7 @@ jobs:
   build-legit:
     strategy:
       matrix:
-        os: [macos-latest, macos-15-install]
+        os: [macos-latest, macos-15-intel]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: styfle/cancel-workflow-action@0.11.0
@@ -45,4 +45,4 @@ jobs:
             make
       - name: make legit
         run: |
-            make submodules legit
+            make legit

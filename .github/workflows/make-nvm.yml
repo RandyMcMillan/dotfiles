@@ -16,6 +16,8 @@ jobs:
       if: ${{ ! env.ACT }}
       with:
         fetch-depth: 0
+    - name: brew install
+      run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     - name: linuxbrew (with retries)
       run: |
         test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"

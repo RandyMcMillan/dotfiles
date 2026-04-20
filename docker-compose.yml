@@ -6,6 +6,7 @@ services:
     image: rockstorm/git-server
     container_name: git-server
     restart: unless-stopped
+    privileged: true
 
     environment:
       # Password for the git user

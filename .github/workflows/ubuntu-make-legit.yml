@@ -38,11 +38,15 @@ jobs:
         run: |
             printenv
             make report
+      - name: Install gnostr (latest release)
+        uses: ./.github/actions/get-latest
+        #if: runner.os != 'macOS'
       - name: make
         run: |
             #sudo apt install git 
             curl https://sh.rustup.rs -sSf | sh -s -- -y
-            make init
+            make
+            # make init
             # make brew
             # make submodules
             # make legit

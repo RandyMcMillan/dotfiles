@@ -38,6 +38,10 @@ jobs:
         run: |
             printenv
             make report
+      - name: Install cargo-binstall
+        id: binstall
+        continue-on-error: true
+        uses: cargo-bins/cargo-binstall@v1.18.1
       - name: Install gnostr (latest release)
         uses: ./.github/actions/get-latest
         #if: runner.os != 'macOS'

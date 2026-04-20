@@ -2,8 +2,8 @@ FROM alpine:3.20.3
 
 RUN set -ex; \
     apk add --no-cache \
-        git=2.45.2-r0 \
-        openssh=9.7_p1-r4 \
+        git=2.45.4-r0 \
+        openssh=9.7_p1-r5 \
     ;
 
 # Generate SSH host keys
@@ -46,8 +46,8 @@ RUN rm /etc/motd
 ENV DOCKER_ENTRYPOINT_DIR=/docker-entrypoint.d
 RUN set -eux; \
     mkdir ${DOCKER_ENTRYPOINT_DIR}
-COPY docker-entrypoint.sh /
-COPY 10-setup.sh ${DOCKER_ENTRYPOINT_DIR}
+COPY scripts/docker-entrypoint.sh /
+COPY scripts/10-setup.sh ${DOCKER_ENTRYPOINT_DIR}
 
 EXPOSE 22
 

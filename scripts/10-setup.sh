@@ -48,9 +48,15 @@ fi
 # permissions
 if [ -d "${GIT_REPOSITORIES_PATH}" ]; then
     cd "${GIT_REPOSITORIES_PATH}"/.
-    chown -R "${GIT_USER}":"${GIT_GROUP}" .
-    find . -type f -exec chmod u=rwX,go=rX '{}' \;
-    find . -type d -exec chmod u=rwx,go=rx '{}' \;
+    if ! chown -R "${GIT_USER}":"${GIT_GROUP}" .; then
+        warn "Could not change ownership of all repository files; continuing with existing permissions."
+    fi
+    if ! find . -type f -exec chmod u=rwX,go=rX '{}' \;; then
+        warn "Could not adjust repository file permissions; continuing."
+    fi
+    if ! find . -type d -exec chmod u=rwx,go=rx '{}' \;; then
+        warn "Could not adjust repository directory permissions; continuing."
+    fi
 else
     warn "Directory '${GIT_REPOSITORIES_PATH}' not found."
 fi

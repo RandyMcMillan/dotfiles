@@ -1,0 +1,21 @@
+name: make nvm
+
+on:
+  push:
+    branches: [ "master", "main" , "**", "**/**" ]
+  pull_request:
+    branches: [ "master", "main" , "**", "**/**" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      if: ${{ ! env.ACT }}
+      with:
+        fetch-depth: 0
+    - name: make nvm
+      run: |
+          make nvm

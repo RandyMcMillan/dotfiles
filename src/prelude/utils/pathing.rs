@@ -1,6 +1,7 @@
 #[cfg_attr(nightly, feature(nightly))]
 #[cfg(feature = "nightly")]
 use lazy_static::lazy_static;
+#[cfg(feature = "nightly")]
 use std::env;
 #[cfg(feature = "nightly")]
 lazy_static! {

@@ -1,7 +1,7 @@
 #[cfg_attr(nightly, feature(nightly))]
 #[cfg(feature = "nightly")]
 use lazy_static::lazy_static;
-#[cfg(feature = "nightly")]
+//#[cfg(feature = "nightly")]
 use std::env;
 #[cfg(feature = "nightly")]
 lazy_static! {
@@ -17,7 +17,7 @@ lazy_static! {
 #[cfg(not(feature = "nightly"))]
 pub static BINARY_NAME: &str = "default";
 
-fn get_binary_name() -> String {
+fn _get_binary_name() -> String {
     match env::var("CARGO_BIN_NAME") {
         Ok(name) => name,
         Err(_) => "rust-project-template-default".to_string(), // Provide a default value

@@ -726,6 +726,12 @@ screen-sharing-enable:## 	    screen-sharing-enable
 gemini:## 	gemini
 	@./install-gemini-cli.sh
 
+binstall:## 	binstall
+	cargo install cargo-binstall
+legit:## 	legit
+	cargo install gnostr-legit
+gnostr: binstall## 	gnostr
+	cargo binstall gnostr
 
 clean-nvm: ## clean-nvm
 	@rm -rf ~/.nvm

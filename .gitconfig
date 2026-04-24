@@ -2,8 +2,69 @@
 	directory = *
 
 [alias]
+    lint-config = "!f() { \
+        echo 'Checking Git configuration syntax...'; \
+        if git config --list --file ${1:-.gitconfig} > /dev/null; then \
+            echo '✅ Syntax: OK'; \
+        else \
+            echo '❌ Syntax: FAILED'; \
+            git config --list --file ${1:-.gitconfig}; \
+        fi; \
+        echo 'Checking for broken paths...'; \
+        grep 'path =' ${1:-.gitconfig} | awk '{print $3}' | while read -r path; do \
+            real_path=$(eval echo $path); \
+            if [ ! -e \"$real_path\" ]; then \
+                echo \"⚠️  Broken path found: $path\"; \
+            fi; \
+        done; \
+    }; f"
+    # Compare the current notes state with the previous state in the reflog
+    notes-diff = "!f() { \
+        git diff ${1:-notes/commits@{1}} ${2:-notes/commits@{0}}; \
+    }; f"
 
 
+# Remove all notes pointing to non-existent commits
+    notes-prune-orphans = "!f() { \
+        for target in $(git find-note-targets); do \
+            if ! git cat-file -e \"$target\" 2>/dev/null; then \
+                echo \"Pruning orphaned note for $target\"; \
+                git notes remove \"$target\"; \
+            fi; \
+        done; \
+    }; f"
+
+
+    notes-summary = "!f() { \
+        RED=$(tput setaf 1); \
+        CLR=$(tput sgr0); \
+        for target in $(git find-note-targets); do \
+            if git cat-file -e \"$target\" 2>/dev/null; then \
+                printf \"Target: %s | \" \"$target\"; \
+                git log -1 --format=\"%C(auto)%h %s\" \"$target\"; \
+            else \
+                printf \"Target: %s | ${RED}ORPHANED (Commit Missing)${CLR}\\n\" \"$target\"; \
+            fi; \
+            git notes show \"$target\" 2>/dev/null | sed 's/^/  [Note]: /'; \
+            echo \"-------------------------------------------------------\"; \
+        done; \
+    }; f"
+
+    # Use this when you have the text-blob hash (from a diff)
+    find-note-owner = "!f() { \
+        NOTE_BLOB=$1; \
+        if [ -z \"$NOTE_BLOB\" ]; then echo \"Usage: git find-note-owner <blob-hash>\"; return 1; fi; \
+        TARGET_LINE=$(git ls-tree -r refs/notes/commits | grep \"$NOTE_BLOB\"); \
+        if [ -z \"$TARGET_LINE\" ]; then echo \"No note found with blob hash $NOTE_BLOB\"; return 1; fi; \
+        TARGET_COMMIT=$(echo \"$TARGET_LINE\" | awk '{print $4}'); \
+        git log -1 \"$TARGET_COMMIT\"; \
+    }; f"
+
+    # Use this when you have the lognotes hash (the commit on the notes branch)
+    find-note-targets = "!f() { \
+        NOTES_REV=${1:-refs/notes/commits}; \
+        git ls-tree -r $NOTES_REV | awk '{print $4}'; \
+    }; f"
 
 	# Switch to a branch, creating it if necessary
 	# View abbreviated SHA, description, and history graph of the latest 20 commits.

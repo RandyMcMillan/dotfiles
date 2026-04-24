@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 #
 if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-    echo "This is a Git repository."
+    ## echo "This is a Git repository."
+    git config --global alias.fetchnotes '!f() { git config --add remote.${1:-origin}.fetch "+refs/notes/*:refs/notes/*" && git fetch ${1:-origin}; }; f'
+    git config alias.fetchnotes '!f() { git config --add remote.${1:-origin}.fetch "+refs/notes/*:refs/notes/*" && git fetch ${1:-origin}; }; f'
 else
     echo "This is NOT a Git repository."
 fi

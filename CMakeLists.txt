@@ -238,6 +238,17 @@ if(BUILD_FOR_FUZZING)
   )
 endif()
 
+if(DEFINED CACHE{RDTS_CONSENT})
+  message(FATAL_ERROR
+    "RDTS_CONSENT is set, but this version does not support RDTS.\n"
+    "You are attempting to configure BIP110 (RDTS) consent, but this source code is too old to support the RDTS network upgrade, which fixes critical vulnerabilities in long-standing network design.\n"
+    "Important: Because this upgrade already has broad community support, continuing to run older versions (such as this version) does not reject it. Running outdated software after any network upgrade only leaves your node vulnerable to displaying fake or fraudulent transactions. To effectively reject this upgrade, you need to run alternative software designed to split away from the upgraded network.\n"
+    "If you intend to build a node that supports this upgrade, please update your source code to a newer version: https://bitcoinknots.org\n"
+    "If you intentionally wish to build this older version, you can replace -D RDTS_CONSENT=... with -U RDTS_CONSENT in your CMake options.\n"
+    "For more information, see: https://bitcoinknots.org/learn/2026-rdts"
+  )
+endif()
+
 # The external_lib_interface interface library aims to encapsulate build flags, which
 # are specific to non-internal libraries.
 # It is intended to be a usage requirement for non-internal library

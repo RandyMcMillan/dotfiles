@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+# check=error=true
 FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache \

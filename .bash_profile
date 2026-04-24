@@ -1,9 +1,21 @@
 #!/usr/bin/env bash
 #
+
 if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-    ## echo "This is a Git repository."
+    # Standard Note Fetching
     git config --global alias.fetchnotes '!f() { git config --add remote.${1:-origin}.fetch "+refs/notes/*:refs/notes/*" && git fetch ${1:-origin}; }; f'
-    git config alias.fetchnotes '!f() { git config --add remote.${1:-origin}.fetch "+refs/notes/*:refs/notes/*" && git fetch ${1:-origin}; }; f'
+    
+    # Logging and Navigation
+    git config --global alias.lognotes "log -g refs/notes/commits --pretty=format:'%h %gd %gs' --show-notes=*"
+    git config --global alias.note-follow '!f() { target=$(git notes show ${1:-HEAD} | grep -oE "[a-f0-9]{7,40}" | head -n1); if [ -n "$target" ]; then git show $target; else echo "No hash found in note"; fi; }; f'
+    
+    # Discovery Aliases
+    git config --global alias.find-note-owner '!f() { NOTE_BLOB=$1; if [ -z "$NOTE_BLOB" ]; then echo "Usage: git find-note-owner <note-blob-hash>"; return 1; fi; TARGET_LINE=$(git ls-tree -r refs/notes/commits | grep "$NOTE_BLOB"); if [ -z "$TARGET_LINE" ]; then echo "No note found with blob hash $NOTE_BLOB"; return 1; fi; TARGET_COMMIT=$(echo "$TARGET_LINE" | awk "{print \$4}"); echo "Target Commit: $TARGET_COMMIT"; git log -1 "$TARGET_COMMIT"; }; f'
+    git config --global alias.find-note-targets "!f() { git ls-tree -r refs/notes/commits | awk '{print \$4}'; }; f"
+
+    # The Optimized Summary (Handles Orphans & Colors)
+    git config --global alias.notes-summary '!f() { RED=$(tput setaf 1); CLR=$(tput sgr0); for target in $(git find-note-targets); do if git cat-file -e "$target" 2>/dev/null; then printf "Target: %s | " "$target"; git log -1 --format="%C(auto)%h %s" "$target"; else printf "Target: %s | ${RED}ORPHANED (Commit Missing)${CLR}\n" "$target"; fi; git notes show "$target" 2>/dev/null | sed "s/^/  [Note]: /"; echo "-------------------------------------------------------"; done; }; f'
+
 else
     echo "This is NOT a Git repository."
 fi

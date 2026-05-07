@@ -30,6 +30,10 @@ class SoftwareExpiryTest(BitcoinTestFramework):
     def get_warnings(self, node):
         warnings = node.getnetworkinfo()['warnings']
         try:
+            warnings.remove(self.BASE_WARNING)
+        except ValueError:
+            pass
+        try:
             warnings.remove(PRERELEASE_WARNING)
         except ValueError:
             pass
@@ -48,6 +52,7 @@ class SoftwareExpiryTest(BitcoinTestFramework):
         assert alerts_path.exists()
         with open(alerts_path, 'r', encoding='utf8') as f:
             alerts_data = f.read()
+            alerts_data = alerts_data.replace(self.alerts_base, '')
             if platform.system() == 'Windows':
                 # The echo command on Windows includes the quotes and space in the output
                 assert alerts_data[0] == '"' and alerts_data[-3:] == "\" \n"
@@ -57,6 +62,7 @@ class SoftwareExpiryTest(BitcoinTestFramework):
         return stderr.rstrip()
 
     def run_test(self):
+        self.BASE_WARNING = f'Warning: This outdated version does not support the BIP110/RDTS upgrade, and is therefore vulnerable to displaying fake or fraudulent transactions. Please update: {self.config["environment"]["CLIENT_URL"]}'
         nodes = self.nodes
         addr = nodes[0].get_deterministic_priv_key().address  # what address is irrelevant
         alerts_path = self.nodes[0].datadir_path / 'alerts'
@@ -87,7 +93,11 @@ class SoftwareExpiryTest(BitcoinTestFramework):
         assert_equal(self.get_warnings(nodes[0]), [])
         nodes[0].stderr.seek(0)
         assert_equal(nodes[0].stderr.read().decode('utf-8').strip(), '')
-        assert not alerts_path.exists()
+        if alerts_path.exists():
+            with open(alerts_path, 'r', encoding='utf8') as f:
+                alerts_data = f.read()
+                assert not re.match('expire', alerts_data)
+                self.alerts_base = alerts_data
 
         self.log.info("Once we're within 4 weeks, warnings should trigger")
         nodes[0].mockscheduler(60)

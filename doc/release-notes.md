@@ -17,10 +17,6 @@ To receive security and update notifications, please subscribe to:
 How to Upgrade
 ==============
 
-**Before upgrading,** read [the Reduced Data Temporary Softfork section below](#reduced-data-temporary-softfork),
-and if you run the bitcoind server, be sure to add the `consensusrules=rdts`
-parameter to your `bitcoin.conf` file.
-
 If you are running an older version, shut it down. Wait until it has completely
 shut down (which might take a few minutes in some cases), then run the
 installer (on Windows) or just copy over `/Applications/Bitcoin-Qt` (on macOS)

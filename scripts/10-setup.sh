@@ -6,6 +6,12 @@ warn() { echo "warning: ${1}" >&2; }
 
 if [ -n "${DEBUG-}" ]; then set -x; fi
 
+: "${GIT_USER:=git}"
+: "${GIT_GROUP:=git}"
+: "${GIT_HOME:=/home/${GIT_USER}}"
+: "${SSH_AUTHORIZED_KEYS_FILE:=${GIT_HOME}/.ssh/authorized_keys}"
+: "${GIT_REPOSITORIES_PATH:=/srv/git}"
+
 # Set specific UID and GID for the git user
 if [ -n "${GIT_USER_UID-}" ]; then
 

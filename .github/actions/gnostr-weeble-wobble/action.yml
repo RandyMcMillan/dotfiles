@@ -1,5 +1,5 @@
 name: gnostr-weeble-wobble
-description: Resolve weeble, blockheight, and wobble values for workflows
+description: Resolve blockheight, weeble, and wobble values for workflows
 
 outputs:
   weeble:

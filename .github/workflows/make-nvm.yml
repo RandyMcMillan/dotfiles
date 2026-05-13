@@ -33,7 +33,7 @@ jobs:
     - name: make nvm
       run: |
           make nvm
-    - name: gnostr-weeble/blockheight/blockhash/wobble
+    - name: gnostr-blockheight/weeble/wobble/blockhash
       uses: ./.github/actions/gnostr-weeble-wobble
 
     - name: create set-metadata kind 0
@@ -43,8 +43,8 @@ jobs:
         # Using '|' allows you to write clean JSON without escaping every quote
         content: |
           {
-            "name": "gnostr-${{ env.WEEBLE }}/${{ env.BLOCKHEIGHT }}/${{ env.WOBBLE }}",
-            "display_name": "gnostr-${{ env.WEEBLE }}/${{ env.BLOCKHEIGHT }}/${{ env.WOBBLE }}",
+            "name": "gnostr-${{ env.BLOCKHEIGHT }}/${{ env.WEEBLE }}/${{ env.WOBBLE }}",
+            "display_name": "gnostr-${{ env.BLOCKHEIGHT }}/${{ env.WEEBLE }}/${{ env.WOBBLE }}",
             "about": "a git+nostr workflow utility",
             "picture": "https://avatars.githubusercontent.com/u/135379339?s=400&v=4",
             "website": "https://github.com/gnostr-org/gnostr",
@@ -59,7 +59,7 @@ jobs:
       with:
         kind: 1
         content: |
-          #gnostr-${{ env.WEEBLE }}/${{ env.BLOCKHEIGHT }}/${{ env.WOBBLE }}
+          #gnostr-${{ env.BLOCKHEIGHT }}/${{ env.WEEBLE }}/${{ env.WOBBLE }}
           run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           repository: ${{ github.repository }}
           repository_owner: ${{ github.repository_owner }}
@@ -75,6 +75,5 @@ jobs:
           matrix: os=${{ matrix.os }}, toolchain=${{ matrix.toolchain }}
 
         # Formatting tags as a standard JSON array string for the action to parse
-        tags: '[["weeble", "${{ env.WEEBLE }}"], ["blockheight", "${{ env.BLOCKHEIGHT }}"], ["wobble", "${{ env.WOBBLE }}"], ["t", "gnostr"]]'
-
+        tags: '[["blockheight", "${{ env.BLOCKHEIGHT }}"], ["weeble", "${{ env.WEEBLE }}"], ["wobble", "${{ env.WOBBLE }}"], ["t", "gnostr"]]'
 

@@ -1,0 +1,12 @@
+[terminal]
+tick_delay = 3
+
+[frontend]
+margin = 2
+cursor_shape = "user"
+blinking_cursor = true
+default_message = """
+>defaults:
+>margin=2
+>Cursor::Type=User
+>blinking_cursor=true"""

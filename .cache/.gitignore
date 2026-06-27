@@ -1,0 +1,6 @@
+.cache/ctrlp/
+.cache/gh/
+.cache/helix/
+.cache/pkg/
+.cache/update-informer-rs/
+.cache/vscode-ripgrep/

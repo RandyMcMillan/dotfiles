@@ -1,0 +1,73 @@
+name: makefile.yml
+
+on:
+  push:
+    branches: [ "master", "main" , "**", "**/**" ]
+  pull_request:
+    branches: [ "master", "main" , "**", "**/**" ]
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Install cargo-binstall
+      id: binstall
+      continue-on-error: true
+      uses: cargo-bins/cargo-binstall@v1.18.1
+    - name: Install gnostr (latest release)
+      uses: ./.github/actions/get-latest
+      #if: runner.os != 'macOS'
+
+    - name: make-commands
+      run: |
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install --fix-missing automake bash g++ pkg-config -y
+          ./autogen.sh env
+          make
+    - name: gnostr-blockheight/weeble/wobble/blockhash
+      uses: ./.github/actions/gnostr-weeble-wobble
+
+    - name: create set-metadata kind 0
+      uses: ./.github/actions/gnostr-custom-event
+      with:
+        kind: 0
+        # Using '|' allows you to write clean JSON without escaping every quote
+        content: |
+          {
+            "name": "gnostr-${{ env.BLOCKHEIGHT }}/${{ env.WEEBLE }}/${{ env.WOBBLE }}",
+            "display_name": "gnostr-${{ env.BLOCKHEIGHT }}/${{ env.WEEBLE }}/${{ env.WOBBLE }}",
+            "about": "a git+nostr workflow utility",
+            "picture": "https://avatars.githubusercontent.com/u/135379339?s=400&v=4",
+            "website": "https://github.com/gnostr-org/gnostr",
+            "nip05": "gnostr@example.com",
+            "lud16": "gnostr@getalby.com"
+          }
+        # Formatting tags as a standard JSON array string for the action to parse
+        tags: '[["p", "p-tag"], ["t", "nostr"], ["relay", "wss://blossom.gnostr.cloud"]]'
+
+    - name: Create custom-event kind 1
+      uses: ./.github/actions/gnostr-custom-event
+      with:
+        kind: 1
+        content: |
+          #gnostr-${{ env.BLOCKHEIGHT }}/${{ env.WEEBLE }}/${{ env.WOBBLE }}
+          run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          repository: ${{ github.repository }}
+          repository_owner: ${{ github.repository_owner }}
+          workflow: ${{ github.workflow }}
+          workflow_ref: ${{ github.workflow_ref }}
+          run_id: ${{ github.run_id }}
+          run_attempt: ${{ github.run_attempt }}
+          event_name: ${{ github.event_name }}
+          ref: ${{ github.ref }}
+          sha: ${{ github.sha }}
+          actor: ${{ github.actor }}
+          runner_os: ${{ runner.os }}
+          matrix: os=${{ matrix.os }}, toolchain=${{ matrix.toolchain }}
+
+        # Formatting tags as a standard JSON array string for the action to parse
+        tags: '[["blockheight", "${{ env.BLOCKHEIGHT }}"], ["weeble", "${{ env.WEEBLE }}"], ["wobble", "${{ env.WOBBLE }}"], ["t", "gnostr"]]'

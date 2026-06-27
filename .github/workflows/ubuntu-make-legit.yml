@@ -1,0 +1,57 @@
+name: ubuntu-make-legit
+
+# Controls when the action will run.
+on:
+  pull_request:
+    branches:
+      - '*'
+      - '*/*'
+      - '**'
+      - 'master'
+      - 'main'
+  push:
+    branches:
+      - '*'
+      - '*/*'
+      - '**'
+      - 'master'
+      - 'main'
+
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-legit:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: styfle/cancel-workflow-action@0.11.0
+        if: ${{ !env.ACT }}
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '3'
+      - name: printenv
+        run: |
+            printenv
+            make report
+      - name: Install cargo-binstall
+        id: binstall
+        continue-on-error: true
+        uses: cargo-bins/cargo-binstall@v1.18.1
+      - name: Install gnostr (latest release)
+        uses: ./.github/actions/get-latest
+        #if: runner.os != 'macOS'
+      - name: make
+        run: |
+            #sudo apt install git 
+            curl https://sh.rustup.rs -sSf | sh -s -- -y
+            make
+            # make init
+            # make brew
+            # make submodules
+            # make legit
+

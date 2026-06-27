@@ -1,0 +1,25 @@
+#!/bin/bash
+# Prevents force-pushing to master
+
+function git-checkout-b (){
+
+    git checkout -b $(date +%s)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
+    if [ ! -z "$1" ]
+    then
+        git checkout -b $(git rev-parse --abbrev-ref HEAD)-$1
+    fi
+
+}
+
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+PUSH_COMMAND=$(ps -ocommand= -p $PPID)
+PROTECTED_BRANCHES="^(master|dev|release-*|patch-*)"
+FORCE_PUSH="force|delete|-f"
+
+if [[ "$BRANCH" =~ $PROTECTED_BRANCHES && "$PUSH_COMMAND" =~ $FORCE_PUSH ]]; then
+  echo "Prevented force-push to protected branch \"$BRANCH\" by pre-push hook"
+    git-checkout-b
+  exit 1
+fi
+exit 0

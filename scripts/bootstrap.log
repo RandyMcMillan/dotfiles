@@ -1,0 +1,18 @@
+[0;34m[INFO][0m 2026-02-18 13:27:05 - --------------------------------------------------
+[0;34m[INFO][0m 2026-02-18 13:27:05 - Bootstrap script initialized.
+[0;34m[INFO][0m 2026-02-18 13:27:05 - Script Directory: /Users/Shared/randymcmillan/.github/dotfiles/scripts
+[0;34m[INFO][0m 2026-02-18 13:27:05 - Home Directory: /Users/randymcmillan
+[0;34m[INFO][0m 2026-02-18 13:27:05 - --------------------------------------------------
+[0;34m[INFO][0m 2026-02-18 13:27:05 - Loading configuration from /Users/Shared/randymcmillan/.github/dotfiles/scripts/.bootstrapconfig
+[0;34m[INFO][0m 2026-02-18 13:27:07 - Backing up '/Users/randymcmillan/.bootstrapconfig' to '/Users/randymcmillan/.dotfiles_backup_20260218_132707/'
+[0;34m[INFO][0m 2026-02-18 13:27:07 - Backing up '/Users/randymcmillan/.bootstrapignore' to '/Users/randymcmillan/.dotfiles_backup_20260218_132707/'
+[0;31m[ERROR][0m 2026-02-18 13:27:07 - Backup creation failed. Continuing with sync...
+[0;34m[INFO][0m 2026-02-18 13:27:58 - --------------------------------------------------
+[0;34m[INFO][0m 2026-02-18 13:27:58 - Bootstrap script initialized.
+[0;34m[INFO][0m 2026-02-18 13:27:58 - Script Directory: /Users/Shared/randymcmillan/.github/dotfiles/scripts
+[0;34m[INFO][0m 2026-02-18 13:27:58 - Home Directory: /Users/randymcmillan
+[0;34m[INFO][0m 2026-02-18 13:27:58 - --------------------------------------------------
+[0;34m[INFO][0m 2026-02-18 13:27:58 - Loading configuration from /Users/Shared/randymcmillan/.github/dotfiles/scripts/.bootstrapconfig
+[0;34m[INFO][0m 2026-02-18 13:28:00 - Backing up '/Users/randymcmillan/.bootstrapconfig' to '/Users/randymcmillan/.dotfiles_backup_20260218_132800/'
+[0;34m[INFO][0m 2026-02-18 13:28:00 - Backing up '/Users/randymcmillan/.bootstrapignore' to '/Users/randymcmillan/.dotfiles_backup_20260218_132800/'
+[0;31m[ERROR][0m 2026-02-18 13:28:00 - Backup creation failed. Continuing with sync...

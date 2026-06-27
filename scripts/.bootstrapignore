@@ -1,0 +1,131 @@
+# Bootstrap exclusion patterns
+# Lines starting with # are ignored
+# Use the same patterns as rsync --exclude
+
+# Build artifacts and cache directories
+.cargo/debug
+.cargo/release
+target
+depends
+autom4te.cache
+.m4
+
+# System files
+.DS_Store
+.Thumbs.db
+
+# Git and GitHub
+.git/
+.github/
+.gitconfig
+.gitignore
+
+# Documentation
+README.md
+AUTHORS
+COPYING
+INSTALL
+LICENSE*
+ChangeLog
+NEWS
+TIME
+
+# Virtual environments
+.venv
+venv
+
+# macOS specific
+.osx
+ColorProfile.icc
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*~
+
+# Configuration files that shouldn't be synced
+.ssh/known_hosts
+.gemini/
+.nojekyll
+CNAME
+
+# Scripts and build systems (keep in dotfiles repo, not in home)
+**.sh
+**.bash
+**akefile**
+Makefile*
+*.mk
+configure*
+aclocal.m4
+config.h*
+config.status
+config.log
+libtoolize
+missing
+
+# Development tools
+brew*
+B.sh
+checkbrew
+install-*
+uninstall-*
+
+# Bitcoin-related (keep in repo, not in home)
+bitcoin*
+blockheight
+nostril
+
+# Large files and binaries
+*.dmg
+*.tar.gz
+*.zip
+LittleSnitch-*.dmg
+
+# Directories to exclude completely
+scripts
+src
+hooks
+sources
+logs
+bitcoin-libs
+rsync-time-backup
+
+# Vim specific
+.vim_runtime/.git/
+vimrc
+
+# Other repositories and subprojects
+weeble
+wobble
+nigiri.sh
+
+# Package manager files
+requirements*
+Cargo.lock
+Cargo.toml
+Casks
+Formulae
+
+# Keys and security files (comment out if you want to sync these)
+builder-keys*
+keys.txt*
+*.gpg
+
+# Project management
+act.mk
+config-dock*
+do-*
+enable-*
+disable-*
+gen*
+make-*
+report.sh
+thread-sweep.sh
+whatami.sh
+
+# Test files
+bitcoin-test-battery.sh
+
+# Custom scripts and tools
+template*

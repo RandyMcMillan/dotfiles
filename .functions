@@ -145,16 +145,26 @@ function cargo-clean-r () {
 
 for repo in $(ls --color=none -d */ );
 do pushd $repo && \
-    cargo clean 2>/dev/null; \
+    cargo clean -vv \
     popd; \
     done
 
 }
 function cargo-sweep-r () {
 
-TIME=${1:-1}
+TARGET=${1:-"*/"}
 
-for repo in $(ls --color=none -d */ );
+for repo in $(ls --color=none -d $TARGET );
+do pushd $repo && \
+    echo $repo;
+    rm -rf .deps;
+    rm -rf .venv;
+    rm rust-toolchain.toml 2>/dev/null;
+    cargo clean -vv;
+    cargo sweep -v
+    popd;
+    done
+for repo in $(ls --color=none -d ~/*/ );
 do pushd $repo && \
     echo $repo;
     rm -rf .deps;

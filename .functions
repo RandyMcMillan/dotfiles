@@ -150,32 +150,23 @@ do pushd $repo && \
     done
 
 }
-function cargo-sweep-r () {
 
-TARGET=${1:-"*/"}
+cargo-sweep-r() {
+    # Default to current directory if no argument is provided
+    local TARGET="${1:-.}"
+    echo "Recursively sweeping: $TARGET"
 
-for repo in $(ls --color=none -d $TARGET );
-do pushd $repo && \
-    echo $repo;
-    rm -rf .deps;
-    rm -rf .venv;
-    rm rust-toolchain.toml 2>/dev/null;
-    cargo clean -vv;
-    cargo sweep -v
-    popd;
+    # Use find to locate all directories containing a Cargo.toml file
+    # This prevents blindly running 'cargo clean' in every sub-directory
+    find "$TARGET" -name "Cargo.toml" -exec dirname {} \; | while read -r repo; do
+        echo "--- Processing: $repo ---"
+        (
+            cd "$repo" || continue
+            rm -rf .deps .venv
+            rm -f rust-toolchain.toml
+            cargo clean -vv 2>/dev/null
+        )
     done
-for repo in $(ls --color=none -d ~/*/ );
-do pushd $repo && \
-    echo $repo;
-    rm -rf .deps;
-    rm -rf .venv;
-    rm rust-toolchain.toml 2>/dev/null;
-    cargo clean 2>/dev/null;
-    cargo sweep -v -t $TIME 2>/dev/null;
-    popd;
-    done
-
-rm-rf-node_modules || true
 }
 function rm-rf-node_modules () {
 

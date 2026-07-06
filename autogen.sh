@@ -2701,7 +2701,7 @@ main() {
     PROJECT_DIR=$(dirname "$CURRENT_SCRIPT_FILEPATH")
 
     # https://www.gnu.org/software/autoconf/manual/autoconf-2.69/html_node/Initializing-configure.html
-    PROJECT_NAME=$(grep 'AC_INIT\s*(\[.*' configure.ac | sed 's/AC_INIT\s*(\[\(.*\)\],.*/\1/')
+    PACKAGE_NAME=$(grep -E '^AC_INIT\(\[' configure.ac | sed -E 's/^AC_INIT\(\[([^]]*)\].*/\1/' || grep 'AC_INIT\s*(\[.*' configure.ac | sed 's/AC_INIT\s*(\[\(.*\)\],.*/\1/')
     PROJECT_VERSION=$(grep 'AC_INIT\s*(\[.*' configure.ac | sed "s/AC_INIT\s*(\[$PROJECT_NAME\],\[\(.*\)\].*/\1/")
 
     echo "PROJECT_DIR     = $PROJECT_DIR"

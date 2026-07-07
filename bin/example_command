@@ -1,1 +1,10 @@
-echo "example_command"
+# --- Environment Variables & Paths ---
+# Determine the directory where this script is located
+# This should resolve to the root of the dotfiles repository (one level up from 'scripts/').
+# Get the absolute path of the directory containing this script.
+SCRIPT_DIR_SELF="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+# Go up one level from the script's directory to get the repository root.
+readonly SCRIPT_DIR="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
+readonly HOME_DIR="$HOME"
+
+echo "$SCRIPT_DIR_SELF/example_command"

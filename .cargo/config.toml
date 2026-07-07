@@ -1,0 +1,10 @@
+[gc]
+# Automatically clean registry and git caches
+auto-clean = true
+# Frequency of the check (daily is default)
+auto-freq = "1 day"
+# Delete source/git checkouts if not used in X days
+unused-timeout = "7 days"
+
+[build]
+target-dir = ".cache/cargo"

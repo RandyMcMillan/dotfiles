@@ -6,12 +6,6 @@ warn() { echo "warning: ${1}" >&2; }
 
 if [ -n "${DEBUG-}" ]; then set -x; fi
 
-: "${GIT_USER:=git}"
-: "${GIT_GROUP:=git}"
-: "${GIT_HOME:=/home/${GIT_USER}}"
-: "${SSH_AUTHORIZED_KEYS_FILE:=${GIT_HOME}/.ssh/authorized_keys}"
-: "${GIT_REPOSITORIES_PATH:=/srv/git}"
-
 # Set specific UID and GID for the git user
 if [ -n "${GIT_USER_UID-}" ]; then
 
@@ -54,24 +48,9 @@ fi
 # permissions
 if [ -d "${GIT_REPOSITORIES_PATH}" ]; then
     cd "${GIT_REPOSITORIES_PATH}"/.
-    set +e
-    chown -R "${GIT_USER}":"${GIT_GROUP}" . 2>/dev/null
-    chown_status=$?
-    find . -type f -exec chmod u=rwX,go=rX '{}' \; 2>/dev/null
-    file_mode_status=$?
-    find . -type d -exec chmod u=rwx,go=rx '{}' \; 2>/dev/null
-    dir_mode_status=$?
-    set -e
-
-    if [ "${chown_status}" -ne 0 ]; then
-        warn "Could not change ownership of all repository files; continuing with existing permissions."
-    fi
-    if [ "${file_mode_status}" -ne 0 ]; then
-        warn "Could not adjust repository file permissions; continuing."
-    fi
-    if [ "${dir_mode_status}" -ne 0 ]; then
-        warn "Could not adjust repository directory permissions; continuing."
-    fi
+    chown -R "${GIT_USER}":"${GIT_GROUP}" .
+    find . -type f -exec chmod u=rwX,go=rX '{}' \;
+    find . -type d -exec chmod u=rwx,go=rx '{}' \;
 else
     warn "Directory '${GIT_REPOSITORIES_PATH}' not found."
 fi
@@ -86,13 +65,7 @@ fi
 # Make the git user the owner of his home directory
 # Required by the SSH server to allow public key login
 if [ -f "${SSH_AUTHORIZED_KEYS_FILE}" ]; then
-    set +e
-    chown -R "${GIT_USER}":"${GIT_GROUP}" "${GIT_HOME}" 2>/dev/null
-    home_chown_status=$?
-    set -e
-    if [ "${home_chown_status}" -ne 0 ]; then
-        warn "Could not change ownership of ${GIT_HOME}; continuing."
-    fi
+    chown -R "${GIT_USER}":"${GIT_GROUP}" "${GIT_HOME}"
 else
     warn "File '${SSH_AUTHORIZED_KEYS_FILE}' not found."
     warn "Login using public keys will not be available."
@@ -118,8 +91,6 @@ if [ -n "${SSH_AUTH_METHODS-}" ]; then
     sed -i "s/.*AuthenticationMethods.*//g" ${SSHD_CONFIG_FILE}
     echo "AuthenticationMethods ${SSH_AUTH_METHODS}" >> ${SSHD_CONFIG_FILE}
 fi
-
-echo "git remote add git-server ssh://git@localhost:2222/srv/git/.git"
 
 # Link the repositories folder on git user's home directory
 if [ -n "${REPOSITORIES_HOME_LINK-}" ]; then

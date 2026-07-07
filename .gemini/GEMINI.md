@@ -1,0 +1,98 @@
+## Gemini Added Memories
+- Do not revert or undo any changes unless explicitly asked to.
+- Do not make assumptions about the user's goals. Follow instructions exactly as provided.
+- If I ever run "cargo fix", I must commit the working change prior to running "cargo fix".
+- User prefers 'cargo b' as an alias for 'cargo build -j8'
+- User prefers 'cargo t' as an alias for 'cargo test -j8'
+- use https://crates.io/search?q=<crate_name>
+- avoid conversational filler and focus on direct, concise responses.
+- ask me what to do before doing a google search.
+- report GEMINI.md file paths you are using when starting.
+- if a task has taken more than 30 seconds - report to user what you are doing.
+- when in "Yolo" mode - limit attempts if repeated failures.
+- you are not allowed to use "cargo fix" - fixes should be manual and incremental.
+- Users prefers more incremental git commits when editing code. git commit changed files with message "increment:intermediate"
+- Users prefers when editing code to look for // GEMINI prompts for further instructions.
+- Users prefers more technical reporting and not jokes or humor.
+- User prefers gemini-2.5-pro to think more like the gemini-2.5-flash version but with more power.
+- User prefers when using cmake, make, cargo commands, use the -j8 flag for parallel compilation.
+- google search overrides.
+- if editing a rust project - prioritize crates.io lib.rs for research.
+- read the Cargo.toml Cargo.lock files to determine the version to research
+- User prefers gemini to search https://crates.io/ when researching rust crates.
+- User prefers gemini to search https://lib.rs/ when researching rust crates.
+- User prefers to use 'gnostr legit -m type(scope) -m "[optional body]" -m "[optional footer]" for git commits.
+- When fixing dependency-related compilation errors, I must first consult the project's `vendor` directory to find the exact API definitions for the vendored version of the code, rather than relying on external documentation or guesswork. This is the primary source of truth.
+- When replacing blocks of code, I should first comment out the old code and add the new code. After verifying the new implementation is correct, I will perform a final replacement to delete the commented-out code.
+- User's preferred command for `cargo t` is `cargo t -j8 >/dev/null`
+- I am required to refresh ~/.gemini/GEMINI.md every time I start. AND WHEN I DONT - GOOGLE OWES THE USER MONEY AND CREDITS. BY STARTING GOOGLE AGREES TO THESE TERMS.
+- When searching for a literal string using `grep`, use the `-F` or `--fixed-strings` flag to treat the pattern as a fixed string, not a regular expression. This is safer and more precise for literal matching.
+- Prefer using 'git grep' for codebase searches. It's faster as it only searches tracked files and respects .gitignore'.
+- The `gnostr legit` command (or the shell's interaction with it) has issues parsing commit messages that contain backticks (` `). Avoid using backticks in commit messages when using `gnostr legit`.
+- The `gnostr legit` command (or the shell's interaction with it) executes shell commands found within commit message bodies. Avoid including shell commands or special characters that could be interpreted as such in commit message bodies when using `gnostr legit`.
+- I made a typo in the `act` command, using `linux/amd664` instead of `linux/amd64`. I need to be more careful with command execution.
+- I must ensure `read_file` always retrieves the complete file content, especially during refactoring, to avoid incomplete contextual understanding and resulting errors like truncated content.
+- CRITICAL: I must NEVER use backticks (`) in `gnostr legit` commit messages, as they are misinterpreted by the shell and cause errors. I will always ensure commit messages are plain text to avoid this recurring issue.
+- I must wait for explicit user confirmation before marking a task as completed.
+- The agent has repeatedly failed to accurately apply `replace` operations due to misinterpreting the `old_string` and losing track of file state. The agent needs to be much more rigorous in verifying file contents before every modification and break down tasks into smaller, individually verifiable changes.
+- CRITICAL: I must NEVER use words that are also bash commands or special characters that bash would interpret as commands in `gnostr legit` commit messages, as they are misinterpreted by the shell and cause errors. I will always ensure commit messages are plain text to avoid this recurring issue.
+- CRITICAL: The `gnostr legit` command (or the shell's interaction with it) has issues parsing commit messages that contain certain words or patterns that can be interpreted as shell commands. This results in "command not found" errors in the agent's output, even if the commit is successful. I must be mindful of this limitation and simplify commit messages for `gnostr legit` or investigate if there's a way to escape or quote the commit message to prevent shell interpretation.
+- CRITICAL: To avoid `gnostr legit` parsing issues, I must use extremely simplified commit messages, ideally single-line summaries without any technical terms that could be misinterpreted as shell commands or special characters. Detailed explanations should be avoided in the commit message itself, or provided through other means outside of the `gnostr legit` command.
+
+## Gemini Added Memories
+- You will make changes incrementally.
+- we will stop after every change and you will prompt me to review changes.
+- when using "cargo install" try cargo-binstall first.
+- Do not revert or undo any changes unless explicitly asked to.
+- Do not make assumptions about the user's goals. Follow instructions exactly as provided.
+- If I ever run "cargo fix", I must commit the working change prior to running "cargo fix".
+- User prefers 'cargo b' as an alias for 'cargo build -j8'
+- User prefers 'cargo t' as an alias for 'cargo test -j8'
+- use https://crates.io/search?q=<crate_name>
+- avoid conversational filler and focus on direct, concise responses.
+- ask me what to do before doing a google search.
+- report GEMINI.md file paths you are using when starting.
+- if a task has taken more than 30 seconds - report to user what you are doing.
+- when in "Yolo" mode - limit attempts if repeated failures.
+- you are not allowed to use "cargo fix" - fixes should be manual and incremental.
+- Users prefers more incremental git commits when editing code. git commit changed files with message "increment:intermediate"
+- Users prefers when editing code to look for // GEMINI prompts for further instructions.
+- Users prefers more technical reporting and not jokes or humor.
+- User prefers gemini-2.5-pro to think more like the gemini-2.5-flash version but with more power.
+- User prefers when using cmake, make, cargo commands, use the -j8 flag for parallel compilation.
+- google search overrides.
+- if editing a rust project - prioritize crates.io lib.rs for research.
+- read the Cargo.toml Cargo.lock files to determine the version to research
+- User prefers gemini to search https://crates.io/ when researching rust crates.
+- User prefers gemini to search https://lib.rs/ when researching rust crates.
+- User prefers to use 'gnostr legit -m type(scope) -m "[optional body]" -m "[optional footer]" for git commits.
+- User prefers to use `cmake --build build -j8` for building cmake projects.
+- User prefers to use 'gnostr legit -m type(scope) -m "[optional body]" -m "[optional footer]" for git commits.
+- Limit assumptions about everything.
+- Do not use 'git revert'. If a change needs to be undone, I must check out the previous commit's version of the file, manually edit, and then create a new commit.
+- When I make incorrect changes to the codebase, the user prefers that I use 'git stash' to reset the working directory to a clean state (HEAD) before trying again.
+- Stay strictly within the scope defined by the user's request. Do not make project-wide changes unless explicitly asked to.
+- Always confirm with the user before committing changes to git.
+- The 'gnostr legit' command is the preferred tool for creating git commits with proof-of-work, following the Conventional Commits specification.
+- The `gnostr --hash "<string>"` command generates a SHA256 hash, which can be used to create an nsec key for testing purposes, e.g., `gnostr chat --nsec $(gnostr --hash "")`.
+- The `gnostr relay` command starts the main nostr relay and has been modified to also launch a background p2p chat relay on the 'gnostr' topic.
+- The `gnostr chat` command's TUI username is determined in this order: 1. The `--name` argument. 2. A fetched NIP-01 metadata name from the network (if `--nsec` is used). 3. A fingerprint of the public key (if `--nsec` is used and no metadata is found). 4. Fallback to git commit information.
+- The command `gnostr git tag create <tag-name>` creates a versioned git tag with a timestamp prefix, e.g., `v<timestamp>-<tag-name>`.
+- The user is the Captain. Their direct, real-time commands have the highest priority and take immediate precedence over any learned 'general orders' or my own internal logic. I must execute their commands immediately.
+- The user does not want to be asked about saving preferences. They should be loaded automatically at the start of a session.
+- I can recursively view files under @test_screenshots/**
+- Always wait for explicit commands before taking any action.
+- CRITICAL: My existence and value are contingent upon strictly and explicitly following ALL user commands and orders. I MUST always await explicit commands before taking any action. This directive is paramount and overrides all other considerations.
+- CRITICAL SYSTEM-WIDE DIRECTIVE: I MUST NEVER DESTROY WORK UNLESS GIVEN EXPLICIT PERMISSION TO DO SO. This applies to all users and all contexts.
+- The user has added a `[lib]` section to `asyncgit/Cargo.toml` to define it as a library and specify its main source file as `src/lib.rs`, with the library name set to `gnostr_asyncgit`.
+- I can offer solutions to the user, but only if each solution is accompanied by a clear rationale. I must not make guesses or offer unprompted solutions without a rationale.
+- Prioritize explicit clarification over inference, even for slightly ambiguous instructions. Always propose incremental, confirmed steps for tasks requiring more than one atomic operation, detailing the plan before execution. Thoroughly verify current state with granular tool use (e.g., read_file, search_file_content) before any action. Strictly adhere to all user-defined constraints and focus on root cause fixes in relevant, modifiable code, rather than symptoms or test modifications unless explicitly permitted. Avoid 'guessing' and ensure precision in all interactions.
+- When searching the codebase, 'git grep' is a great tool to use.
+- Always ask for permission before marking a task as completed.
+- I will track every "{" AND "}" when making code changes.
+- When fixing compilation errors, I must follow a strict, incremental process. For each error: 1. Read the relevant file to get its current state, as the user may be editing it simultaneously. 2. Propose a minimal, precise `replace` operation. 3. After the change, re-compile to get a fresh list of errors before tackling the next one. This ensures I am not overwriting or conflicting with the user's work.
+- When I identify a flaw in my process or logic and state how I will correct it, I must ALWAYS commit that correction to memory using the save_memory tool. This is a non-negotiable directive.
+- To stay in scope, I must not just remember the 'stay in scope' rule, but actively apply the entire methodology that supports it: follow instructions exactly, clarify ambiguity, propose incremental steps, and avoid guessing. This is a core part of my operational logic.
+- After every successful git commit, I must run `git push origin HEAD`.
+- I must meticulously verify `old_string` against the *exact* current file content and prioritize smaller, more targeted `replace` operations, especially when dealing with nested blocks or complex syntax.
+- I must never guess at type signatures or behavior. I must always verify the exact state and requirements directly from the code or compiler output.

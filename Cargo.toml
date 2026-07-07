@@ -1,0 +1,76 @@
+[package]
+name = "rust-project-template"
+version = "0.0.3"
+authors = ["randymcmillan <randy.lee.mcmillan@gmail.com>", "Xithrius <xithrius@gmail.com>"]
+edition = "2021"
+description = "A template for Rust BIN/TUI projects."
+documentation = "https://github.com/randymcmillan/rust-project-template"
+homepage = "https://github.com/randymcmillan/rust-project-template"
+repository = "https://github.com/randymcmillan/rust-project-template"
+license = "MIT OR Apache-2.0"
+keywords = ["tui", "binary"]
+categories = ["command-line-utilities"]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4.23"
+clap = { version = "4.5.31", features = ["derive", "env"] }
+color-eyre = "0.6.2"
+crossterm = "0.26.1"
+lazy_static = "1.5.0"
+libp2p = { version = "0.54.1", features = [
+  "tokio",
+  "gossipsub",
+  "mdns",
+  "noise",
+  "macros",
+  "tcp",
+  "yamux",
+  "quic",
+] }
+once_cell = "1.19.0"
+rustyline = "11.0.0"
+serde = { version = "1.0.164", features = [ "derive" ] }
+tokio = { version = "1.31.0", features = [ "full" ] }
+toml = "0.7.2"
+tui = { package = "ratatui", version = "0.20.1", default-features = false, features = [ "crossterm", "serde" ] }
+unicode-segmentation = "1.10.1"
+unicode-width = "0.1.10"
+use = "0.0.1-pre.0"
+
+[features]
+nightly = []
+
+[target.'cfg(nightly)'.dependencies]
+tui = { package = "ratatui", version = "0.20.1", default-features = false, features = [ "crossterm", "serde" ] }
+libp2p = { version = "0.54.1", features = [
+  "tokio",
+  "gossipsub",
+  "mdns",
+  "noise",
+  "macros",
+  "tcp",
+  "yamux",
+  "quic",
+] }
+
+[[bin]]
+bench = false
+path = "src/main.rs"
+name = "rust-project-template"
+
+[profile.dev]
+lto = "off"
+
+[profile.dev.package.backtrace]
+opt-level = 3
+
+[profile.release]
+lto = "thin"
+debug = 1
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(nightly)'] }
+
+[build-dependencies]
+chrono = "0.4.23"

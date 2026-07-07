@@ -342,7 +342,7 @@ report:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
 whatami:
-	@bash ./whatami.sh
+	@bash scripts/whatami.sh
 #.PHONY:readme
 #readme:
 #	make help > source/COMMANDS.md

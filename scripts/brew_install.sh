@@ -1,3 +1,171 @@
+#!/usr/bin/env bash
+
+BREW_COMMIT="main"
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --commit) BREW_COMMIT="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
+UNAME_MACHINE="$(uname -m)"
+if [[ "${UNAME_MACHINE}" == "arm64" ]]; then
+    HOMEBREW_PREFIX="/opt/homebrew"
+else
+    HOMEBREW_PREFIX="/usr/local"
+fi
+
+# 1. Standard install if Homebrew directory is missing
+if [ ! -d "${HOMEBREW_PREFIX}/Homebrew" ]; then
+    echo "Homebrew not found. Running standard installation..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/RandyMcMillan/install/HEAD/install.sh)"
+fi
+
+
+# 2. Reset to commit (using absolute path for git -C)
+echo "Resetting Homebrew at ${HOMEBREW_PREFIX}/Homebrew to commit ${BREW_COMMIT}..."
+git -C "${HOMEBREW_PREFIX}/Homebrew" stash -u
+git -C "${HOMEBREW_PREFIX}/Homebrew" clean -d -f
+git -C "${HOMEBREW_PREFIX}/Homebrew" fetch origin
+git -C "${HOMEBREW_PREFIX}/Homebrew" reset --hard "${BREW_COMMIT}"
+
+# 3. Ensure the symlink exists
+# Check if brew exists in the location we just reset
+if [ -f "${HOMEBREW_PREFIX}/Homebrew/bin/brew" ]; then
+    sudo ln -sf "${HOMEBREW_PREFIX}/Homebrew/bin/brew" /usr/local/bin/brew
+else
+    echo "Error: Homebrew binary not found at ${HOMEBREW_PREFIX}/Homebrew/bin/brew"
+    exit 1
+fi
+
+echo "Homebrew configuration complete."
+# Use the direct path to run doctor if the symlink isn't in your PATH yet
+"${HOMEBREW_PREFIX}/Homebrew/bin/brew" doctor
+
+exit 0;
+
+#!/usr/bin/env bash
+
+# Default value
+BREW_COMMIT="master"
+
+# Parse arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --commit) BREW_COMMIT="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
+# Detect architecture
+UNAME_MACHINE="$(uname -m)"
+if [[ "${UNAME_MACHINE}" == "arm64" ]]; then
+    HOMEBREW_PREFIX="/opt/homebrew"
+elif [[ "${UNAME_MACHINE}" == "x86_64" ]]; then
+    HOMEBREW_PREFIX="/usr/local"
+else
+    echo "Unsupported architecture: ${UNAME_MACHINE}"
+    exit 1
+fi
+
+# Check if Homebrew exists; if not, run the standard install
+if [ ! -d "${HOMEBREW_PREFIX}/Homebrew" ]; then
+    echo "Homebrew not found at ${HOMEBREW_PREFIX}/Homebrew. Running standard installation..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Cleanup existing Homebrew state if it exists
+if [ -d "${HOMEBREW_PREFIX}/Homebrew" ]; then
+    echo "Resetting Homebrew installation at ${HOMEBREW_PREFIX}/Homebrew to commit ${BREW_COMMIT}..."
+
+    # Stash uncommitted changes and clean
+    git -C "${HOMEBREW_PREFIX}/Homebrew" stash -u
+    git -C "${HOMEBREW_PREFIX}/Homebrew" clean -d -f
+
+    # Fetch and reset to specific commit
+    git -C "${HOMEBREW_PREFIX}/Homebrew" fetch origin
+    git -C "${HOMEBREW_PREFIX}/Homebrew" reset --hard "${BREW_COMMIT}"
+fi
+
+# Link the executable
+if [ ! -L "/usr/local/bin/brew" ]; then
+    sudo ln -sf "${HOMEBREW_PREFIX}/Homebrew/bin/brew" /usr/local/bin/brew
+fi
+
+echo "Homebrew configuration complete."
+/usr/local/bin/brew doctor
+
+exit 0;
+
+#!/usr/bin/env bash
+
+
+
+# Stash your custom changes to restore them later
+git -C "/usr/local/Homebrew" stash -u && git -C "/usr/local/Homebrew" clean -d -f
+
+
+# Default value if no --commit is provided
+BREW_COMMIT="master"
+
+# Parse arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --commit) BREW_COMMIT="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
+# Detect architecture
+UNAME_MACHINE="$(uname -m)"
+if [[ "${UNAME_MACHINE}" == "arm64" ]]; then
+    HOMEBREW_PREFIX="/opt/homebrew"
+elif [[ "${UNAME_MACHINE}" == "x86_64" ]]; then
+    HOMEBREW_PREFIX="/usr/local"
+else
+    echo "Unsupported architecture: ${UNAME_MACHINE}"
+    exit 1
+fi
+
+# Cleanup existing Homebrew state if it exists
+if [ -d "${HOMEBREW_PREFIX}/Homebrew" ]; then
+    echo "Cleaning up existing Homebrew installation at ${HOMEBREW_PREFIX}/Homebrew..."
+
+    # Stash uncommitted changes
+    git -C "${HOMEBREW_PREFIX}/Homebrew" stash -u
+    # Clean untracked files
+    git -C "${HOMEBREW_PREFIX}/Homebrew" clean -d -f
+fi
+
+echo "Installing/Resetting Homebrew to ${HOMEBREW_PREFIX} from commit ${BREW_COMMIT}"
+
+# 1. Ensure directory exists and ownership is correct
+sudo mkdir -p "${HOMEBREW_PREFIX}/Homebrew"
+sudo chown -R $(whoami) "${HOMEBREW_PREFIX}/Homebrew"
+
+# 2. Fetch and reset to specific commit
+cd "${HOMEBREW_PREFIX}/Homebrew"
+git fetch origin
+git reset --hard "${BREW_COMMIT}"
+
+# 3. Link the executable
+if [ ! -L "/usr/local/bin/brew" ]; then
+    sudo ln -sf "${HOMEBREW_PREFIX}/Homebrew/bin/brew" /usr/local/bin/brew
+fi
+
+# 4. Handle broken symlinks and cleanup
+echo "Running brew cleanup to remove broken symlinks..."
+/usr/local/bin/brew cleanup
+
+echo "Homebrew updated to commit ${BREW_COMMIT}."
+/usr/local/bin/brew doctor
+
+exit 0;
+
 #!/bin/bash
 
 # We don't need return codes for "$(command)", only stdout is needed.

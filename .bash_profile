@@ -137,6 +137,18 @@ fi
 ## done
 
 
+_make_targets() {
+    # Get the word currently being typed
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    
+    # Extract all targets from the Makefile (lines starting with [a-zA-Z0-9] followed by :)
+    # This works for both Makefile and GNUmakefile
+    if [[ -f Makefile ]]; then
+        local targets=$(grep -oE '^[a-zA-Z0-9_-]+:' Makefile | sed 's/://')
+        COMPREPLY=( $(compgen -W "${targets}" -- ${cur}) )
+    fi
+}
+
 # Example of a more robust completion logic
 _make_completion() {
     if [[ -f Makefile || -f GNUmakefile ]]; then
@@ -144,6 +156,7 @@ _make_completion() {
         COMPREPLY=( $(compgen -W "$(make -pRrq : 2>/dev/null | awk -F: '/^[a-zA-Z0-9][^$#\/\\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}')" -- ${COMP_WORDS[COMP_CWORD]}) )
     fi
 }
+complete -F _make_targets make
 complete -F _make_completion make
 
 #export GPG_TTY=$(tty)

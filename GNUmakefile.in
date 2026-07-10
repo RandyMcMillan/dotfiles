@@ -242,11 +242,10 @@ export PORTER_VERSION
 ##	:
 -:## - default - try 'make submodules'
 -:
-	$(MAKE) bootstrap
-	./autogen.sh configure
-	./configure
 	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
-	eval "$(/opt/homebrew/bin/brew shellenv)" #&
+	eval "$(/opt/homebrew/bin/brew shellenv)" || true
+	#./autogen.sh configure
+	#./configure
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -265,6 +264,7 @@ clean-local:
 ##	:
 ##	:	all			execute installer scripts
 ##	:	init
+##	:	bootstrap
 ##	:	brew
 ##	:	keymap
 
@@ -355,21 +355,14 @@ adduser-git:
 
 .PHONY: bootstrap
 ##	:	bootstrap		./bootstrap.sh
-bootstrap:
-	$(MAKE) vim
+bootstrap:## ./sccripts/bootstrap.sh 
 	$(MAKE) exec
 	@echo "Running sync command 1..."
 	$(PWD)/scripts/bootstrap.sh sync --force || true
 	@echo "Exit code of sync 1: $$?"
-	@echo "Running sync command 2..."
-	$(PWD)/scripts/bootstrap.sh sync --force || true
-	@echo "Exit code of sync 2: $$?"
 	@echo "Running install command 1..."
 	$(PWD)/scripts/bootstrap.sh install --force || true
 	@echo "Exit code of install 1: $$?"
-	@echo "Running install command 2..."
-	$(PWD)/scripts/bootstrap.sh install --force || true
-	@echo "Exit code of install 2: $$?"
 
 .PHONY: install
 ##	:	install		 	install sequence

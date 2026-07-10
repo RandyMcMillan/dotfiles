@@ -73,6 +73,14 @@ if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
     . "$(brew --prefix)/etc/bash_completion"
 fi
 
+GIT_COMPLETION_PATH="$(brew --prefix)/share/bash-completion/completions/git"
+
+if [ -f "$GIT_COMPLETION_PATH" ]; then
+    # Load the official git completion
+    source "$GIT_COMPLETION_PATH"
+fi
+
+
 ## Enable tab completion for `g` by marking it as an alias for `git`
 ## if type _git &> /dev/null; then
 ## 	complete -o default -o nospace -F _git g;

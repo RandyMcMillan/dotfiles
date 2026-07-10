@@ -240,7 +240,7 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--:## - default - try 'make submodules'
+-:## 	- default - try 'make submodules'
 -:
 	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	eval "$(/opt/homebrew/bin/brew shellenv)" || true
@@ -249,7 +249,7 @@ export PORTER_VERSION
 	#NOTE: 2 hashes are detected as 1st column output with color
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-autoconf:## ./autogen.sh && ./configure
+autoconf:## 	./autogen.sh && ./configure
 	./autogen.sh configure
 
 nodegit$(EXEEXT):
@@ -273,33 +273,33 @@ clean-local:
 ##	:
 ##	:	adduser-git		add a user named git
 
-keymap:## install ./init/com.local.KeyRemapping.plist
+keymap:## 	install ./init/com.local.KeyRemapping.plist
 	@mkdir -p ~/Library/LaunchAgents/
 	@cat ./init/com.local.KeyRemapping.plist > ~/Library/LaunchAgents/com.local.KeyRemapping.plist
 #REF: https://tldp.org/LDP/abs/html/abs-guide.html#IO-REDIRECTION
 	#test hidutil && hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' > /dev/null 2>&1 && echo "<Caps> = <Esc>" || echo wuh
 
-init:## chsh -s /bin/bash && ./scripts/initialize
+init:## 	chsh -s /bin/bash && ./scripts/initialize
 .ONESHELL:
 	chsh -s /bin/bash && ./scripts/initialize || true
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
-weeble:## weeble
+weeble:## 	weeble
 	install ./weeble /usr/local/bin/
-wobble:## wobble
+wobble:## 	wobble
 	install ./wobble /usr/local/bin/
-blockheight:## blockheight
+blockheight:## 	blockheight
 	install ./blockheight /usr/local/bin/
-brew: -## install or update/upgrade brew
+brew: -## 	install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
-iterm:## brew install --cask iterm2
+iterm:## 	brew install --cask iterm2
 	rm -rf /Applications/iTerm.app
 	test brew && brew install -f --cask iterm2 && \
 		curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
 
-report:
+report:## 	report
 	@echo ''
 	@echo ' CMAKE=${CMAKE}	'
 	@echo ' GLIBTOOL=${GLIBTOOL}	'
@@ -341,7 +341,7 @@ report:
 #phony:
 #	@sed -n 's/^.PHONY//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
-whatami:
+whatami:## 	whatami
 	@bash scripts/whatami.sh
 #.PHONY:readme
 #readme:
@@ -355,7 +355,7 @@ adduser-git:
 
 .PHONY: bootstrap
 ##	:	bootstrap		./bootstrap.sh
-bootstrap:## ./sccripts/bootstrap.sh 
+bootstrap:## 	./scripts/bootstrap.sh 
 	$(MAKE) exec
 	@echo "Running sync command 1..."
 	$(PWD)/scripts/bootstrap.sh sync --force || true
@@ -395,7 +395,7 @@ template:
 
 .PHONY: nvm
 .ONESHELL:
-nvm: executable ## nvm
+nvm: executable ## 	nvm
 	@./scripts/install-nvm.sh
 	@if [ -f "$(HOME)/.bashrc" ]; then source "$(HOME)/.bashrc"; fi
 
@@ -406,12 +406,12 @@ cirrus: executable
 config-dock: executable
 	bash -c "source $(PWD)/config-dock-prefs.sh && brew-install-dockutils && config-dock-prefs $(FORCE)"
 
-macvim: vim## 	macvim
-vim: nvm## vim - install-vim.sh
+macvim: vim ## 	macvim
+vim: nvm ## 	vim - install-vim.sh
 	@echo "y" | ./scripts/install-vim.sh
 rustup-rs:## 	rustup-rs
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
-macdown:
+macdown:## 	macdown
 	bash -c "source $(PWD)/template && checkbrew install	macdown"
 glow:
 	bash -c "source $(PWD)/template && checkbrew install	glow"
@@ -710,10 +710,10 @@ bitcoin-test-battery:
 funcs:
 	make -f funcs.mk
 
-remote-managment-enable:## 	remote-managment-enable
+remote-managment-enable:## remote-managment-enable
 	sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -off -restart -agent -privs -all -allowAccessFor -allUsers
 
-screen-sharing-enable:## 	    screen-sharing-enable
+screen-sharing-enable:## screen-sharing-enable
 	sudo defaults write /var/db/launchd.db/com.apple.launchd/overrides.plist com.apple.screensharing -dict Disabled -bool false
 
 gemini:## 	gemini
@@ -726,7 +726,7 @@ legit:## 	legit
 gnostr: binstall## 	gnostr
 	cargo binstall gnostr
 
-clean-nvm: ## clean-nvm
+clean-nvm:## 	clean-nvm
 	@rm -rf ~/.nvm
 
 -include Makefile

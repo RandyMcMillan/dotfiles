@@ -285,11 +285,13 @@ init:## 	chsh -s /bin/bash && ./scripts/initialize
 	#["$(shell $(SHELL))" == "/bin/zsh"] && zsh --emulate sh
 	#["$(shell $(SHELL))" == "/bin/zsh"] && chsh -s /bin/bash
 weeble:## 	weeble
-	install ./weeble /usr/local/bin/
+	install $(PWD)/scripts/weeble /usr/local/bin/
 wobble:## 	wobble
-	install ./wobble /usr/local/bin/
+	install $(PWD)/scripts/wobble /usr/local/bin/
 blockheight:## 	blockheight
-	install ./blockheight /usr/local/bin/
+	install $(PWD)/scripts/blockheight /usr/local/bin/
+blockhash:## 	blockhash
+	install $(PWD)/scripts/blockhash /usr/local/bin/
 brew: -## 	install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh

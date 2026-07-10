@@ -108,25 +108,35 @@ if test -f /usr/bin/true; then
   echo "/usr/bin/true exists" &>/dev/null
 fi
 
-for OUTPUT in $(ls -f Makefile 2>/dev/null)
-do
+## for OUTPUT in $(ls -f Makefile 2>/dev/null)
+## do
+## 
+## #echo $OUTPUT
+## 
+## complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
+## 
+## ## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+## 
+## done
+## for OUTPUT in $(ls -f GNUmakefile 2>/dev/null)
+## do
+## 
+## #echo $OUTPUT
+## 
+## complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
+## ##complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+## 
+## done
 
-#echo $OUTPUT
 
-complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
-
-## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-
-done
-for OUTPUT in $(ls -f GNUmakefile 2>/dev/null)
-do
-
-#echo $OUTPUT
-
-complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
-##complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-
-done
+# Example of a more robust completion logic
+_make_completion() {
+    if [[ -f Makefile || -f GNUmakefile ]]; then
+        # Only parse targets if a Makefile actually exists here
+        COMPREPLY=( $(compgen -W "$(make -pRrq : 2>/dev/null | awk -F: '/^[a-zA-Z0-9][^$#\/\\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}')" -- ${COMP_WORDS[COMP_CWORD]}) )
+    fi
+}
+complete -F _make_completion make
 
 #export GPG_TTY=$(tty)
 # Set PATH, MANPATH, etc., for Homebrew.

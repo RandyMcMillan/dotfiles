@@ -137,21 +137,46 @@ fi
 ## done
 
 
+# Custom completion function for Make
 _make_targets() {
-    # Get the word currently being typed
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    
-    # Extract all targets from the Makefile (lines starting with [a-zA-Z0-9] followed by :)
-    # This works for both Makefile and GNUmakefile
-    if [[ -f Makefile ]]; then
-        local targets=$(grep -oE '^[a-zA-Z0-9_-]+:' Makefile | sed 's/://')
-        COMPREPLY=( $(compgen -W "${targets}" -- ${cur}) )
+    # 1. Look for a Makefile or GNUmakefile in the current directory
+    local makefile=""
+    if [[ -f GNUmakefile ]]; then
+        makefile="GNUmakefile"
+    #elif [[ -f Makefile ]]; then
+    #    makefile="Makefile"
+    fi
+
+    # 2. If a Makefile exists, parse it for targets
+    if [[ -n "$makefile" ]]; then
+        # Grep targets: lines starting with a letter/digit followed by a colon
+        # Excludes lines that start with a dot (like .PHONY) or contains '=' (variables)
+        local targets=$(grep -oE '^[a-zA-Z0-9_-]+:' "$makefile" | sed 's/://')
+        COMPREPLY=( $(compgen -W "${targets}" -- "${COMP_WORDS[COMP_CWORD]}") )
+    else
+        # 3. If no Makefile exists, do nothing (or fallback to file completion if desired)
+        return 0
     fi
 }
 
+# 4. Bind the function specifically to 'make'
+complete -F _make_targets make
+
+## _make_targets() {
+##     # Get the word currently being typed
+##     local cur="${COMP_WORDS[COMP_CWORD]}"
+##     
+##     # Extract all targets from the Makefile (lines starting with [a-zA-Z0-9] followed by :)
+##     # This works for both Makefile and GNUmakefile
+##     if [[ -f GNUmakefile ]]; then
+##         local targets=$(grep -oE '^[a-zA-Z0-9_-]+:' Makefile | sed 's/://')
+##         COMPREPLY=( $(compgen -W "${targets}" -- ${cur}) )
+##     fi
+## }
+
 # Example of a more robust completion logic
 _make_completion() {
-    if [[ -f Makefile || -f GNUmakefile ]]; then
+    if [[ -f GNUmakefile ]]; then
         # Only parse targets if a Makefile actually exists here
         COMPREPLY=( $(compgen -W "$(make -pRrq : 2>/dev/null | awk -F: '/^[a-zA-Z0-9][^$#\/\\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}')" -- ${COMP_WORDS[COMP_CWORD]}) )
     fi

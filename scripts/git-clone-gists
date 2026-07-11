@@ -7,14 +7,22 @@ CLONE_DIR="${CLONE_DIR:-gists}"
 
 show_usage() {
   cat <<EOF
-Usage: $0 [install|uninstall|--help] [--force] [github-username] [github-token]
+Usage: $0 [install|uninstall|--help] [--force] [--user USERNAME] [filters] [github-token]
 
 Defaults:
   github-username  randymcmillan
   github-token     optional token argument or GH_TOKEN env var
   --force          overwrite existing gist directories instead of fetching
+  --filename       match filenames containing the value
+  --language       match gists with a file in the given language
+  --extension      match gists with a file ending in the extension
+  --size           match gists with a file size expression, e.g. >1000
+  --not            exclude gists containing the value in metadata or filenames
+  --fork-only      clone only forked gists
+  --anon           recognized for parity, but unsupported by the REST API here
+  --stars          recognized for parity, but unsupported by the REST API here
 
-The script clones all gists for the chosen user into ./gists and refreshes
+The script clones matching gists for the chosen user into ./gists and refreshes
 ~/gists to point at that directory.
 EOF
 }
@@ -51,57 +59,273 @@ case "${1:-}" in
 esac
 
 FORCE_OVERWRITE=0
-if [ "${1:-}" = "--force" ] || [ "${1:-}" = "-f" ]; then
-  FORCE_OVERWRITE=1
-  shift
+TARGET_USER=""
+FILTER_FILENAME=""
+FILTER_LANGUAGE=""
+FILTER_EXTENSION=""
+FILTER_SIZE=""
+FILTER_NOT=""
+FORK_ONLY=0
+INCLUDE_ANON=0
+STARS_EXPR=""
+POSITIONAL=()
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --force|-f)
+      FORCE_OVERWRITE=1
+      shift
+      ;;
+    --user)
+      if [ $# -lt 2 ]; then
+        echo "Error: --user requires a value." >&2
+        exit 1
+      fi
+      TARGET_USER="$2"
+      shift 2
+      ;;
+    --filename)
+      if [ $# -lt 2 ]; then
+        echo "Error: --filename requires a value." >&2
+        exit 1
+      fi
+      FILTER_FILENAME="$2"
+      shift 2
+      ;;
+    --language)
+      if [ $# -lt 2 ]; then
+        echo "Error: --language requires a value." >&2
+        exit 1
+      fi
+      FILTER_LANGUAGE="$2"
+      shift 2
+      ;;
+    --extension)
+      if [ $# -lt 2 ]; then
+        echo "Error: --extension requires a value." >&2
+        exit 1
+      fi
+      FILTER_EXTENSION="$2"
+      shift 2
+      ;;
+    --size)
+      if [ $# -lt 2 ]; then
+        echo "Error: --size requires a value." >&2
+        exit 1
+      fi
+      FILTER_SIZE="$2"
+      shift 2
+      ;;
+    --not)
+      if [ $# -lt 2 ]; then
+        echo "Error: --not requires a value." >&2
+        exit 1
+      fi
+      FILTER_NOT="$2"
+      shift 2
+      ;;
+    --fork-only)
+      FORK_ONLY=1
+      shift
+      ;;
+    --anon)
+      INCLUDE_ANON=1
+      shift
+      ;;
+    --stars)
+      if [ $# -lt 2 ]; then
+        echo "Error: --stars requires a value." >&2
+        exit 1
+      fi
+      STARS_EXPR="$2"
+      shift 2
+      ;;
+    --)
+      shift
+      while [ $# -gt 0 ]; do
+        POSITIONAL+=("$1")
+        shift
+      done
+      ;;
+    -*)
+      echo "Error: unknown flag '$1'." >&2
+      exit 1
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
+done
+
+if [ -z "$TARGET_USER" ]; then
+  TARGET_USER="${POSITIONAL[0]:-randymcmillan}"
 fi
 
-GITHUB_USERNAME="${1:-randymcmillan}"
-if [ $# -ge 2 ]; then
-  GITHUB_PAT="$2"
+if [ "${#POSITIONAL[@]}" -ge 2 ]; then
+  GITHUB_PAT="${POSITIONAL[1]}"
 else
-  GITHUB_PAT=""
+  GITHUB_PAT="${GITHUB_PAT:-}"
+fi
+
+if [ "$INCLUDE_ANON" -eq 1 ]; then
+  echo "Error: --anon is recognized for parity, but GitHub's REST API does not expose anonymous gist discovery here." >&2
+  exit 1
+fi
+
+if [ -n "$STARS_EXPR" ]; then
+  echo "Error: --stars is recognized for parity, but GitHub's REST API does not expose gist stars here." >&2
+  exit 1
+fi
+
+if [ -n "$FILTER_SIZE" ] && [[ ! "$FILTER_SIZE" =~ ^(>=|<=|>|<|=)?[0-9]+$ ]]; then
+  echo "Error: invalid --size expression '$FILTER_SIZE'." >&2
+  exit 1
+fi
+
+if [ -n "$FILTER_EXTENSION" ]; then
+  FILTER_EXTENSION="${FILTER_EXTENSION#.}"
 fi
 
 command -v gh >/dev/null
 command -v git >/dev/null
+command -v jq >/dev/null
 
 if [ -n "$GITHUB_PAT" ]; then
   export GH_TOKEN="$GITHUB_PAT"
 fi
 
-echo "Starting Gist cloning process for user: $GITHUB_USERNAME"
+shopt -s nocasematch
+
+echo "Starting Gist cloning process for user: $TARGET_USER"
 
 mkdir -p "$CLONE_DIR"
 ln -sfn "$PWD/$CLONE_DIR" "$HOME/gists"
 cd "$CLONE_DIR"
-mkdir -p "$GITHUB_USERNAME"
+mkdir -p "$TARGET_USER"
 
-ALL_GISTS=()
-if ! GIST_IDS="$(
-  gh api --paginate "users/$GITHUB_USERNAME/gists?per_page=100" --jq '.[].id'
+gist_matches_filters() {
+  local gist_json="$1"
+  local gist_description gist_url gist_fork_of
+  local filename language size
+  local filename_ok=0 language_ok=0 extension_ok=0 size_ok=0
+  local not_hit=0
+
+  gist_description="$(jq -r '.description // ""' <<<"$gist_json")"
+  gist_url="$(jq -r '.html_url // ""' <<<"$gist_json")"
+  gist_fork_of="$(jq -r '.fork_of != null' <<<"$gist_json")"
+
+  if [ "$FORK_ONLY" -eq 1 ] && [ "$gist_fork_of" != "true" ]; then
+    return 1
+  fi
+
+  if [ -n "$FILTER_NOT" ]; then
+    if [[ "$gist_description" == *"$FILTER_NOT"* ]] || [[ "$gist_url" == *"$FILTER_NOT"* ]]; then
+      return 1
+    fi
+  fi
+
+  while IFS=$'\t' read -r filename language size; do
+    [ -z "${filename}${language}${size}" ] && continue
+
+    if [ -n "$FILTER_FILENAME" ] && [[ "$filename" == *"$FILTER_FILENAME"* ]]; then
+      filename_ok=1
+    fi
+
+    if [ -n "$FILTER_LANGUAGE" ] && [[ "$language" == "$FILTER_LANGUAGE" ]]; then
+      language_ok=1
+    fi
+
+    if [ -n "$FILTER_EXTENSION" ] && [[ "$filename" == *."$FILTER_EXTENSION" ]]; then
+      extension_ok=1
+    fi
+
+    if [ -n "$FILTER_SIZE" ] && size_expr_matches "$FILTER_SIZE" "$size"; then
+      size_ok=1
+    fi
+
+    if [ -n "$FILTER_NOT" ] && ([[ "$filename" == *"$FILTER_NOT"* ]] || [[ "$language" == *"$FILTER_NOT"* ]]); then
+      not_hit=1
+    fi
+  done < <(jq -r '.files[]? | [.filename, (.language // ""), (.size | tostring)] | @tsv' <<<"$gist_json")
+
+  if [ -n "$FILTER_FILENAME" ] && [ "$filename_ok" -ne 1 ]; then
+    return 1
+  fi
+
+  if [ -n "$FILTER_LANGUAGE" ] && [ "$language_ok" -ne 1 ]; then
+    return 1
+  fi
+
+  if [ -n "$FILTER_EXTENSION" ] && [ "$extension_ok" -ne 1 ]; then
+    return 1
+  fi
+
+  if [ -n "$FILTER_SIZE" ] && [ "$size_ok" -ne 1 ]; then
+    return 1
+  fi
+
+  if [ -n "$FILTER_NOT" ] && [ "$not_hit" -eq 1 ]; then
+    return 1
+  fi
+
+  return 0
+}
+
+size_expr_matches() {
+  local expr="$1"
+  local size="$2"
+  local op limit
+
+  if [[ "$expr" =~ ^(>=|<=|>|<|=)?([0-9]+)$ ]]; then
+    op="${BASH_REMATCH[1]:-=}"
+    limit="${BASH_REMATCH[2]}"
+  else
+    return 1
+  fi
+
+  case "$op" in
+    '>')
+      [ "$size" -gt "$limit" ]
+      ;;
+    '>=')
+      [ "$size" -ge "$limit" ]
+      ;;
+    '<')
+      [ "$size" -lt "$limit" ]
+      ;;
+    '<=')
+      [ "$size" -le "$limit" ]
+      ;;
+    '=')
+      [ "$size" -eq "$limit" ]
+      ;;
+    *)
+      [ "$size" -eq "$limit" ]
+      ;;
+  esac
+}
+
+if ! GIST_JSON="$(
+  gh api --paginate --slurp "users/$TARGET_USER/gists?per_page=100"
 )"; then
-  echo "Error: unable to list gists for $GITHUB_USERNAME. Authenticate with gh or pass a valid token." >&2
+  echo "Error: unable to list gists for $TARGET_USER. Authenticate with gh or pass a valid token." >&2
   exit 1
 fi
 
-while IFS= read -r gist_id; do
-  gist_id="${gist_id//$'\r'/}"
-  if [[ "$gist_id" =~ ^[0-9a-f]{32}$ ]]; then
-    ALL_GISTS+=("$gist_id")
+FOUND_COUNT=0
+while IFS= read -r gist_json; do
+  [ -z "$gist_json" ] && continue
+
+  if ! gist_matches_filters "$gist_json"; then
+    continue
   fi
-done <<<"$GIST_IDS"
 
-if [ "${#ALL_GISTS[@]}" -eq 0 ]; then
-  echo "No gists found for user $GITHUB_USERNAME."
-  exit 0
-fi
+  GIST_ID="$(jq -r '.id' <<<"$gist_json")"
+  GIST_URL="$(jq -r '.html_url' <<<"$gist_json")"
+  GIST_DIR_NAME="$TARGET_USER/${GIST_ID:0:7}"
 
-echo "Found ${#ALL_GISTS[@]} gists to clone."
-
-for GIST_ID in "${ALL_GISTS[@]}"; do
-  GIST_URL="https://gist.github.com/$GITHUB_USERNAME/$GIST_ID"
-  GIST_DIR_NAME="$GITHUB_USERNAME/${GIST_ID:0:7}"
+  FOUND_COUNT=$((FOUND_COUNT + 1))
 
   if [ -e "$GIST_DIR_NAME" ] && [ "$FORCE_OVERWRITE" -eq 1 ]; then
     echo "Refreshing existing directory $GIST_URL"
@@ -117,6 +341,12 @@ for GIST_ID in "${ALL_GISTS[@]}"; do
 
   echo "Cloning $GIST_URL into gist/$GIST_DIR_NAME"
   gh gist clone "$GIST_ID" "$GIST_DIR_NAME" >/dev/null
-done
+done < <(jq -c '.[][] | {id, html_url, description: (.description // ""), fork_of: (.fork_of != null), files: [ .files | to_entries[] | {filename: .value.filename, language: (.value.language // ""), size: .value.size} ] }' <<<"$GIST_JSON")
 
+if [ "$FOUND_COUNT" -eq 0 ]; then
+  echo "No gists found for user $TARGET_USER."
+  exit 0
+fi
+
+echo "Found $FOUND_COUNT gists to clone."
 echo "Gist cloning process completed."

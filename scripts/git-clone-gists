@@ -21,6 +21,7 @@ Defaults:
   --fork-only      clone only forked gists
   --anon           recognized for parity, but unsupported by the REST API here
   --stars          recognized for parity, but unsupported by the REST API here
+  --query          gist search syntax, e.g. 'cat stars:>100 user:octocat'
 
 The script clones matching gists for the chosen user into ./gists and refreshes
 ~/gists to point at that directory.
@@ -64,10 +65,12 @@ FILTER_FILENAME=""
 FILTER_LANGUAGE=""
 FILTER_EXTENSION=""
 FILTER_SIZE=""
-FILTER_NOT=""
 FORK_ONLY=0
 INCLUDE_ANON=0
 STARS_EXPR=""
+SEARCH_QUERY=""
+SEARCH_TERMS=()
+SEARCH_NOT_TERMS=()
 POSITIONAL=()
 
 while [ $# -gt 0 ]; do
@@ -121,7 +124,7 @@ while [ $# -gt 0 ]; do
         echo "Error: --not requires a value." >&2
         exit 1
       fi
-      FILTER_NOT="$2"
+      SEARCH_NOT_TERMS+=("$2")
       shift 2
       ;;
     --fork-only)
@@ -138,6 +141,14 @@ while [ $# -gt 0 ]; do
         exit 1
       fi
       STARS_EXPR="$2"
+      shift 2
+      ;;
+    --query)
+      if [ $# -lt 2 ]; then
+        echo "Error: --query requires a value." >&2
+        exit 1
+      fi
+      SEARCH_QUERY="$2"
       shift 2
       ;;
     --)
@@ -187,6 +198,55 @@ if [ -n "$FILTER_EXTENSION" ]; then
   FILTER_EXTENSION="${FILTER_EXTENSION#.}"
 fi
 
+parse_search_query() {
+  local token negate_next=0
+
+  for token in $SEARCH_QUERY; do
+    case "$token" in
+      NOT)
+        negate_next=1
+        ;;
+      user:*)
+        TARGET_USER="${token#user:}"
+        ;;
+      filename:*)
+        FILTER_FILENAME="${token#filename:}"
+        ;;
+      language:*)
+        FILTER_LANGUAGE="${token#language:}"
+        ;;
+      extension:*)
+        FILTER_EXTENSION="${token#extension:}"
+        FILTER_EXTENSION="${FILTER_EXTENSION#.}"
+        ;;
+      size:*)
+        FILTER_SIZE="${token#size:}"
+        ;;
+      stars:*)
+        STARS_EXPR="${token#stars:}"
+        ;;
+      anon:true)
+        INCLUDE_ANON=1
+        ;;
+      fork:only)
+        FORK_ONLY=1
+        ;;
+      *)
+        if [ "$negate_next" -eq 1 ]; then
+          SEARCH_NOT_TERMS+=("$token")
+          negate_next=0
+        else
+          SEARCH_TERMS+=("$token")
+        fi
+        ;;
+    esac
+  done
+}
+
+if [ -n "$SEARCH_QUERY" ]; then
+  parse_search_query
+fi
+
 command -v gh >/dev/null
 command -v git >/dev/null
 command -v jq >/dev/null
@@ -206,23 +266,45 @@ mkdir -p "$TARGET_USER"
 
 gist_matches_filters() {
   local gist_json="$1"
-  local gist_description gist_url gist_fork_of
+  local gist_description gist_url gist_fork_of gist_haystack
   local filename language size
   local filename_ok=0 language_ok=0 extension_ok=0 size_ok=0
-  local not_hit=0
+  local search_term search_not_term
+  local content_match=0
 
   gist_description="$(jq -r '.description // ""' <<<"$gist_json")"
   gist_url="$(jq -r '.html_url // ""' <<<"$gist_json")"
   gist_fork_of="$(jq -r '.fork_of != null' <<<"$gist_json")"
+  gist_haystack="$(
+    jq -r '
+      [
+        (.description // ""),
+        (.html_url // ""),
+        (.files[]?.filename // ""),
+        (.files[]?.language // "")
+      ] | map(select(. != null)) | join(" ")
+    ' <<<"$gist_json"
+  )"
 
   if [ "$FORK_ONLY" -eq 1 ] && [ "$gist_fork_of" != "true" ]; then
     return 1
   fi
 
-  if [ -n "$FILTER_NOT" ]; then
-    if [[ "$gist_description" == *"$FILTER_NOT"* ]] || [[ "$gist_url" == *"$FILTER_NOT"* ]]; then
+  for search_not_term in "${SEARCH_NOT_TERMS[@]}"; do
+    if [[ "$gist_haystack" == *"$search_not_term"* ]]; then
       return 1
     fi
+  done
+
+  for search_term in "${SEARCH_TERMS[@]}"; do
+    if [[ "$gist_haystack" != *"$search_term"* ]]; then
+      content_match=1
+      break
+    fi
+  done
+
+  if [ "$content_match" -eq 1 ]; then
+    return 1
   fi
 
   while IFS=$'\t' read -r filename language size; do
@@ -243,10 +325,6 @@ gist_matches_filters() {
     if [ -n "$FILTER_SIZE" ] && size_expr_matches "$FILTER_SIZE" "$size"; then
       size_ok=1
     fi
-
-    if [ -n "$FILTER_NOT" ] && ([[ "$filename" == *"$FILTER_NOT"* ]] || [[ "$language" == *"$FILTER_NOT"* ]]); then
-      not_hit=1
-    fi
   done < <(jq -r '.files[]? | [.filename, (.language // ""), (.size | tostring)] | @tsv' <<<"$gist_json")
 
   if [ -n "$FILTER_FILENAME" ] && [ "$filename_ok" -ne 1 ]; then
@@ -262,10 +340,6 @@ gist_matches_filters() {
   fi
 
   if [ -n "$FILTER_SIZE" ] && [ "$size_ok" -ne 1 ]; then
-    return 1
-  fi
-
-  if [ -n "$FILTER_NOT" ] && [ "$not_hit" -eq 1 ]; then
     return 1
   fi
 

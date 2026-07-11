@@ -75,6 +75,7 @@ echo "Starting Gist cloning process for user: $GITHUB_USERNAME"
 mkdir -p "$CLONE_DIR"
 ln -sfn "$PWD/$CLONE_DIR" "$HOME/gists"
 cd "$CLONE_DIR"
+mkdir -p "$GITHUB_USERNAME"
 
 ALL_GISTS=()
 if ! GIST_IDS="$(
@@ -99,13 +100,14 @@ fi
 echo "Found ${#ALL_GISTS[@]} gists to clone."
 
 for GIST_ID in "${ALL_GISTS[@]}"; do
-  GIST_DIR_NAME="${GIST_ID:0:7}"
+  GIST_URL="https://gist.github.com/$GITHUB_USERNAME/$GIST_ID"
+  GIST_DIR_NAME="$GITHUB_USERNAME/${GIST_ID:0:7}"
 
   if [ -e "$GIST_DIR_NAME" ] && [ "$FORCE_OVERWRITE" -eq 1 ]; then
-    echo "Refreshing existing directory $GIST_DIR_NAME..."
+    echo "Refreshing existing directory $GIST_URL"
     rm -rf "$GIST_DIR_NAME"
   elif [ -d "$GIST_DIR_NAME/.git" ]; then
-    echo "Fetching updates for $GIST_DIR_NAME..."
+    echo "Fetching updates for $GIST_URL"
     git -C "$GIST_DIR_NAME" fetch --all --prune >/dev/null
     continue
   elif [ -e "$GIST_DIR_NAME" ]; then
@@ -113,7 +115,7 @@ for GIST_ID in "${ALL_GISTS[@]}"; do
     exit 1
   fi
 
-  echo "Cloning $GIST_ID into $GIST_DIR_NAME..."
+  echo "Cloning $GIST_URL into gist/$GIST_DIR_NAME"
   gh gist clone "$GIST_ID" "$GIST_DIR_NAME" >/dev/null
 done
 

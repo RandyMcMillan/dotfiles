@@ -12,6 +12,7 @@ Usage: $0 [install|uninstall|--help] [--force] [--user USERNAME] [filters] [gith
 Defaults:
   github-username  randymcmillan
   github-token     optional token argument or GH_TOKEN env var
+  --gh-token       read the token from a file path
   --force          overwrite existing gist directories instead of fetching
   --filename       match filenames containing the value
   --language       match gists with a file in the given language
@@ -69,8 +70,9 @@ FORK_ONLY=0
 INCLUDE_ANON=0
 STARS_EXPR=""
 SEARCH_QUERY=""
-SEARCH_TERMS=()
-SEARCH_NOT_TERMS=()
+GITHUB_TOKEN_PATH=""
+declare -a SEARCH_TERMS=()
+declare -a SEARCH_NOT_TERMS=()
 POSITIONAL=()
 
 while [ $# -gt 0 ]; do
@@ -151,6 +153,14 @@ while [ $# -gt 0 ]; do
       SEARCH_QUERY="$2"
       shift 2
       ;;
+    --gh-token)
+      if [ $# -lt 2 ]; then
+        echo "Error: --gh-token requires a file path." >&2
+        exit 1
+      fi
+      GITHUB_TOKEN_PATH="$2"
+      shift 2
+      ;;
     --)
       shift
       while [ $# -gt 0 ]; do
@@ -177,6 +187,14 @@ if [ "${#POSITIONAL[@]}" -ge 2 ]; then
   GITHUB_PAT="${POSITIONAL[1]}"
 else
   GITHUB_PAT="${GITHUB_PAT:-}"
+fi
+
+if [ -n "$GITHUB_TOKEN_PATH" ]; then
+  if [ ! -f "$GITHUB_TOKEN_PATH" ]; then
+    echo "Error: token file '$GITHUB_TOKEN_PATH' does not exist." >&2
+    exit 1
+  fi
+  GITHUB_PAT="$(<"$GITHUB_TOKEN_PATH")"
 fi
 
 if [ "$INCLUDE_ANON" -eq 1 ]; then
@@ -290,18 +308,22 @@ gist_matches_filters() {
     return 1
   fi
 
-  for search_not_term in "${SEARCH_NOT_TERMS[@]}"; do
-    if [[ "$gist_haystack" == *"$search_not_term"* ]]; then
-      return 1
-    fi
-  done
+  if [ "${#SEARCH_NOT_TERMS[@]}" -gt 0 ]; then
+    for search_not_term in "${SEARCH_NOT_TERMS[@]}"; do
+      if [[ "$gist_haystack" == *"$search_not_term"* ]]; then
+        return 1
+      fi
+    done
+  fi
 
-  for search_term in "${SEARCH_TERMS[@]}"; do
-    if [[ "$gist_haystack" != *"$search_term"* ]]; then
-      content_match=1
-      break
-    fi
-  done
+  if [ "${#SEARCH_TERMS[@]}" -gt 0 ]; then
+    for search_term in "${SEARCH_TERMS[@]}"; do
+      if [[ "$gist_haystack" != *"$search_term"* ]]; then
+        content_match=1
+        break
+      fi
+    done
+  fi
 
   if [ "$content_match" -eq 1 ]; then
     return 1

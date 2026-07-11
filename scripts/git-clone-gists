@@ -7,11 +7,12 @@ CLONE_DIR="${CLONE_DIR:-gists}"
 
 show_usage() {
   cat <<EOF
-Usage: $0 [install|uninstall|--help] [github-username] [github-token]
+Usage: $0 [install|uninstall|--help] [--force] [github-username] [github-token]
 
 Defaults:
   github-username  randymcmillan
   github-token     optional token argument or GH_TOKEN env var
+  --force          overwrite existing gist directories instead of fetching
 
 The script clones all gists for the chosen user into ./gists and refreshes
 ~/gists to point at that directory.
@@ -48,6 +49,12 @@ case "${1:-}" in
     exit 0
     ;;
 esac
+
+FORCE_OVERWRITE=0
+if [ "${1:-}" = "--force" ] || [ "${1:-}" = "-f" ]; then
+  FORCE_OVERWRITE=1
+  shift
+fi
 
 GITHUB_USERNAME="${1:-randymcmillan}"
 if [ $# -ge 2 ]; then
@@ -94,9 +101,16 @@ echo "Found ${#ALL_GISTS[@]} gists to clone."
 for GIST_ID in "${ALL_GISTS[@]}"; do
   GIST_DIR_NAME="${GIST_ID:0:7}"
 
-  if [ -e "$GIST_DIR_NAME" ]; then
+  if [ -e "$GIST_DIR_NAME" ] && [ "$FORCE_OVERWRITE" -eq 1 ]; then
     echo "Refreshing existing directory $GIST_DIR_NAME..."
     rm -rf "$GIST_DIR_NAME"
+  elif [ -d "$GIST_DIR_NAME/.git" ]; then
+    echo "Fetching updates for $GIST_DIR_NAME..."
+    git -C "$GIST_DIR_NAME" fetch --all --prune >/dev/null
+    continue
+  elif [ -e "$GIST_DIR_NAME" ]; then
+    echo "Error: '$GIST_DIR_NAME' exists but is not a git repository. Re-run with --force." >&2
+    exit 1
   fi
 
   echo "Cloning $GIST_ID into $GIST_DIR_NAME..."

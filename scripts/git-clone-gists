@@ -1,111 +1,101 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# --- Configuration ---
 INSTALL_DIR="/usr/local/bin"
 SCRIPT_NAME="git-clone-gists"
+CLONE_DIR="${CLONE_DIR:-gists}"
 
-# --- Functions ---
-
-# Function to display usage information
 show_usage() {
-  echo "Usage: $0 [install|uninstall|--help]"
-  echo ""
-  echo "Commands:"
-  echo "  install    Install the script to $INSTALL_DIR/$SCRIPT_NAME"
-  echo "  uninstall  Remove the script from $INSTALL_DIR/$SCRIPT_NAME"
-  echo "  --help     Show this help message"
-  echo ""
-  echo "To install for all users, run with 'sudo'."
-  echo "Example: sudo $0 install"
+  cat <<EOF
+Usage: $0 [install|uninstall|--help] [github-username] [github-token]
+
+Defaults:
+  github-username  randymcmillan
+  github-token     optional token argument or GH_TOKEN env var
+
+The script clones all gists for the chosen user into ./gists and refreshes
+~/gists to point at that directory.
+EOF
 }
 
-# Function to install the script
 install_script() {
-  echo "Attempting to install '$0' as '$SCRIPT_NAME' to '$INSTALL_DIR'..."
-
-  # Check if the install directory exists and is writable
   if [ ! -d "$INSTALL_DIR" ]; then
-    echo "Error: Installation directory '$INSTALL_DIR' does not exist."
-    echo "Please create it or choose a different directory."
+    echo "Error: installation directory '$INSTALL_DIR' does not exist."
     exit 1
   fi
 
-  if [ ! -w "$INSTALL_DIR" ]; then
-    echo "Warning: '$INSTALL_DIR' is not writable by the current user."
-    echo "You may need to run this command with 'sudo' for a system-wide installation."
-  fi
-
-  # Copy the script to the installation directory
   cp "$0" "$INSTALL_DIR/$SCRIPT_NAME"
-
-  # Make the copied script executable
   chmod +x "$INSTALL_DIR/$SCRIPT_NAME"
-
-  if [ $? -eq 0 ]; then
-  echo
-    echo "Installed '$SCRIPT_NAME'."
-  else
-    echo "Error: Failed to install '$SCRIPT_NAME'."
-    exit 1
-  fi
+  echo "Installed '$SCRIPT_NAME' to '$INSTALL_DIR/$SCRIPT_NAME'."
 }
 
-# Configuration
-GITHUB_USERNAME=${1:-randymcmillan}
-GITHUB_PAT=${2:-$(cat ~/GITHUB_TOKEN.txt)}
-CLONE_DIR="." # Directory to clone Gists into
+uninstall_script() {
+  rm -f "$INSTALL_DIR/$SCRIPT_NAME"
+  echo "Removed '$INSTALL_DIR/$SCRIPT_NAME'."
+}
 
-install_script;
+case "${1:-}" in
+  install)
+    install_script
+    exit 0
+    ;;
+  uninstall)
+    uninstall_script
+    exit 0
+    ;;
+  -h|--help|help)
+    show_usage
+    exit 0
+    ;;
+esac
 
-# --- SCRIPT STARTS HERE ---
+GITHUB_USERNAME="${1:-randymcmillan}"
+if [ $# -ge 2 ]; then
+  GITHUB_PAT="$2"
+else
+  GITHUB_PAT=""
+fi
+
+command -v gh >/dev/null
+command -v git >/dev/null
+
+if [ -n "$GITHUB_PAT" ]; then
+  export GH_TOKEN="$GITHUB_PAT"
+fi
 
 echo "Starting Gist cloning process for user: $GITHUB_USERNAME"
 
-# Create the cloning directory if it doesn't exist
 mkdir -p "$CLONE_DIR"
-ln -s . ~/gists
-cd "$CLONE_DIR" || { echo "Error: Could not enter directory $CLONE_DIR"; exit 1; }
+ln -sfn "$PWD/$CLONE_DIR" "$HOME/gists"
+cd "$CLONE_DIR"
 
-# Fetch Gists using the GitHub API
-# We use pagination to ensure all gists are fetched if you have many
-PAGE=1
 ALL_GISTS=()
-while true; do
-  echo "Fetching Gists from page $PAGE..."
-  GISTS_PAGE=$(curl -s -H "Authorization: token $GITHUB_PAT" \
-                    "https://api.github.com/users/$GITHUB_USERNAME/gists?page=$PAGE&per_page=100")
+if ! GIST_IDS="$(
+  gh api --paginate "users/$GITHUB_USERNAME/gists?per_page=100" --jq '.[].id'
+)"; then
+  echo "Error: unable to list gists for $GITHUB_USERNAME. Authenticate with gh or pass a valid token." >&2
+  exit 1
+fi
 
-  # Check if the response is empty (no more gists)
-  if [ "$(echo "$GISTS_PAGE" | jq 'length')" -eq 0 ]; then
-    break
+while IFS= read -r gist_id; do
+  gist_id="${gist_id//$'\r'/}"
+  if [[ "$gist_id" =~ ^[0-9a-f]{32}$ ]]; then
+    ALL_GISTS+=("$gist_id")
   fi
+done <<<"$GIST_IDS"
 
-  # Add current page's gists to the ALL_GISTS array
-  ALL_GISTS+=($(echo "$GISTS_PAGE" | jq -r '.[].git_pull_url'))
-
-  PAGE=$((PAGE + 1))
-done
-
-if [ ${#ALL_GISTS[@]} -eq 0 ]; then
-  echo "No Gists found for user $GITHUB_USERNAME. Exiting."
-  echo "Usage:"
-  echo "clone_gists.sh randymcmillan $(cat ~/GITHUB_TOKEN.txt)"
+if [ "${#ALL_GISTS[@]}" -eq 0 ]; then
+  echo "No gists found for user $GITHUB_USERNAME."
   exit 0
 fi
 
-echo "Found ${#ALL_GISTS[@]} Gists to clone."
+echo "Found ${#ALL_GISTS[@]} gists to clone."
 
-# Clone each Gist
-for GIST_URL in "${ALL_GISTS[@]}"; do
-  GIST_ID=$(basename "$GIST_URL" .git)
-  GIST_DIR_NAME=$(echo "$GIST_ID" | cut -c 1-7) # Use first 7 chars of ID for directory name
+for GIST_ID in "${ALL_GISTS[@]}"; do
+  GIST_DIR_NAME="${GIST_ID:0:7}"
 
-  echo "Cloning Gist: $GIST_URL into directory $GIST_DIR_NAME..."
-  if git clone "$GIST_URL" "$GIST_DIR_NAME" 2>/dev/null; then
-    echo "Successfully cloned $GIST_URL"
-  else
-    echo "Error cloning $GIST_URL"
-  fi
+  echo "Cloning $GIST_ID into $GIST_DIR_NAME..."
+  gh gist clone "$GIST_ID" "$GIST_DIR_NAME" >/dev/null
 done
 
 echo "Gist cloning process completed."

@@ -22,6 +22,8 @@ Defaults:
   --fork-only      clone only forked gists
   --anon           recognized for parity, but unsupported by the REST API here
   --stars          recognized for parity, but unsupported by the REST API here
+  --sort           sort field for the gist list request, e.g. created
+  --direction      sort direction for the gist list request, e.g. asc|desc
   --query          gist search syntax, e.g. 'cat stars:>100 user:octocat'
 
 The script clones matching gists for the chosen user into ./gists and refreshes
@@ -69,6 +71,8 @@ FILTER_SIZE=""
 FORK_ONLY=0
 INCLUDE_ANON=0
 STARS_EXPR=""
+SORT_BY=""
+SORT_DIRECTION=""
 SEARCH_QUERY=""
 GITHUB_TOKEN_PATH=""
 declare -a SEARCH_TERMS=()
@@ -145,6 +149,22 @@ while [ $# -gt 0 ]; do
       STARS_EXPR="$2"
       shift 2
       ;;
+    --sort)
+      if [ $# -lt 2 ]; then
+        echo "Error: --sort requires a value." >&2
+        exit 1
+      fi
+      SORT_BY="$2"
+      shift 2
+      ;;
+    --direction)
+      if [ $# -lt 2 ]; then
+        echo "Error: --direction requires a value." >&2
+        exit 1
+      fi
+      SORT_DIRECTION="$2"
+      shift 2
+      ;;
     --query)
       if [ $# -lt 2 ]; then
         echo "Error: --query requires a value." >&2
@@ -204,6 +224,11 @@ fi
 
 if [ -n "$STARS_EXPR" ]; then
   echo "Error: --stars is recognized for parity, but GitHub's REST API does not expose gist stars here." >&2
+  exit 1
+fi
+
+if [ -n "$SORT_DIRECTION" ] && [[ ! "$SORT_DIRECTION" =~ ^(asc|desc)$ ]]; then
+  echo "Error: --direction must be 'asc' or 'desc'." >&2
   exit 1
 fi
 
@@ -403,7 +428,7 @@ size_expr_matches() {
 }
 
 if ! GIST_JSON="$(
-  gh api --paginate --slurp "users/$TARGET_USER/gists?per_page=100"
+  gh api --paginate --slurp "users/$TARGET_USER/gists?per_page=100${SORT_BY:+&sort=$SORT_BY}${SORT_DIRECTION:+&direction=$SORT_DIRECTION}"
 )"; then
   echo "Error: unable to list gists for $TARGET_USER. Authenticate with gh or pass a valid token." >&2
   exit 1

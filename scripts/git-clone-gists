@@ -94,6 +94,11 @@ echo "Found ${#ALL_GISTS[@]} gists to clone."
 for GIST_ID in "${ALL_GISTS[@]}"; do
   GIST_DIR_NAME="${GIST_ID:0:7}"
 
+  if [ -e "$GIST_DIR_NAME" ]; then
+    echo "Refreshing existing directory $GIST_DIR_NAME..."
+    rm -rf "$GIST_DIR_NAME"
+  fi
+
   echo "Cloning $GIST_ID into $GIST_DIR_NAME..."
   gh gist clone "$GIST_ID" "$GIST_DIR_NAME" >/dev/null
 done

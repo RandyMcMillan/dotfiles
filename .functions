@@ -154,11 +154,15 @@ do pushd $repo && \
 cargo-sweep-r() {
     # Default to current directory if no argument is provided
     local TARGET="${1:-.}"
+    local interrupted=0 repo
+
+    trap 'interrupted=1; printf "\nStopping cargo-sweep-r...\n" >&2' INT
     echo "Recursively sweeping: $TARGET"
 
     # Use find to locate all directories containing a Cargo.toml file
     # This prevents blindly running 'cargo clean' in every sub-directory
-    find "$TARGET" -name "Cargo.toml" -exec dirname {} \; | while read -r repo; do
+    while IFS= read -r repo; do
+        [ "$interrupted" -eq 1 ] && break
         echo "--- Processing: $repo ---"
         (
             cd "$repo" || continue
@@ -166,7 +170,9 @@ cargo-sweep-r() {
             rm -f rust-toolchain.toml
             cargo clean -vv 2>/dev/null
         )
-    done
+    done < <(find "$TARGET" -name "Cargo.toml" -exec dirname {} \;)
+
+    trap - INT
 }
 function rm-rf-node_modules () {
 

@@ -18,7 +18,7 @@ clap = { version = "4.5.31", features = ["derive", "env"] }
 color-eyre = "0.6.2"
 crossterm = "0.26.1"
 lazy_static = "1.5.0"
-libp2p = { version = "0.54.1", features = [
+libp2p = { version = "0.56.0", features = [
   "tokio",
   "gossipsub",
   "mdns",
@@ -43,7 +43,7 @@ nightly = []
 
 [target.'cfg(nightly)'.dependencies]
 tui = { package = "ratatui", version = "0.20.1", default-features = false, features = [ "crossterm", "serde" ] }
-libp2p = { version = "0.54.1", features = [
+libp2p = { version = "0.56.0", features = [
   "tokio",
   "gossipsub",
   "mdns",

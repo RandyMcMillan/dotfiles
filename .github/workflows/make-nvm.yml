@@ -27,7 +27,7 @@ jobs:
     - name: Install cargo-binstall
       id: binstall
       continue-on-error: true
-      uses: cargo-bins/cargo-binstall@v1.18.1
+      uses: cargo-bins/cargo-binstall@v1.20.1
     - name: Install gnostr via cargo-binstall
       uses: ./.github/actions/cargo-binstall-gnostr
     - name: make nvm

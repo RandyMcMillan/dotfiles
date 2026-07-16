@@ -13,6 +13,9 @@ set -euo pipefail
 SCRIPT_DIR_SELF="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # Go up one level from the script's directory to get the repository root.
 readonly SCRIPT_DIR="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
+readonly REPO_ROOT="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
+readonly BIN_DIR="$( cd "$REPO_ROOT"/bin && pwd )"
+#echo $BIN_DIR
 readonly HOME_DIR="$HOME"
 
 # Configuration file name (relative to SCRIPT_DIR)

@@ -152,6 +152,7 @@
 
 	# Show the user email for the current repository.
 	whoami = config user.email
+	gc = gc
 
 [apply]
 

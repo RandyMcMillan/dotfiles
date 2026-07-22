@@ -288,7 +288,7 @@ wobble:## wobble
 	install ./wobble /usr/local/bin/
 blockheight:## blockheight
 	install ./blockheight /usr/local/bin/
-brew: -## install or update/upgrade brew
+brew: first## install or update/upgrade brew
 	export HOMEBREW_INSTALL_FROM_API=1
 	type -P brew && echo -e "try\nbrew update --casks --greedy"|| ./install-brew.sh
 	@eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)" && brew upgrade  --casks && brew update
@@ -484,7 +484,7 @@ texi2html:
 ffmpeg@2.8:
 	bash -c "source $(PWD)/template && checkbrew install ffmpeg@2.8"
 
-gnupg: - executable
+gnupg: first executable
 	bash -c "source $(PWD)/template && \
 		checkbrew install gettext gnutls \
 		libassuan libgcrypt libgpg-error \

@@ -5,7 +5,7 @@ set mark-symlinked-directories on
 # List all matches in case multiple possible completions are possible
 set show-all-if-ambiguous on
 set menu-complete-display-prefix on
-# "\t": menu-complete
-# "\e[Z": menu-complete-backward  # Shift+Tab cycles backward
-# "\e[A": history-search-backward # Up arrow searches history
-# "\e[B": history-search-forward  # Down arrow searches history
+"\t": history-search-backward
+"\e[Z": history-search-forward  # Shift+Tab cycles forward through matches
+"\e[A": history-search-backward # Up arrow searches history
+"\e[B": history-search-forward  # Down arrow searches history

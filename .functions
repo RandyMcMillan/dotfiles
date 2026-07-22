@@ -147,6 +147,7 @@ for repo in $(ls --color=none -d */ );
 do pushd $repo && \
     cargo clean -vv \
     popd; \
+    git gc; \
     done
 
 }
@@ -423,6 +424,10 @@ git tag pr/$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git r
 
 function git-fetch--all (){
 git fetch --all
+}
+
+function git-gc (){
+git gc
 }
 
 

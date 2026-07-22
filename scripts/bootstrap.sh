@@ -14,7 +14,7 @@ SCRIPT_DIR_SELF="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # Go up one level from the script's directory to get the repository root.
 readonly SCRIPT_DIR="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
 readonly REPO_ROOT="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
-readonly BIN_DIR="$( cd "$REPO_ROOT"/bin && pwd )"
+readonly BIN_DIR="$REPO_ROOT/bin"
 #echo $BIN_DIR
 readonly HOME_DIR="$HOME"
 
@@ -287,7 +287,9 @@ get_exclusions() {
         # If exclude file is missing, warn and proceed without exclusions.
         echo "[WARN] $(date '+%Y-%m-%d %H:%M:%S') - Exclusion file '$EXCLUDE_FILE_PATH' not found. Rsync will proceed without exclusions for dotfiles synchronization." >&2
     fi
-    printf '%s\n' "${exclusions[@]}"
+    if (( ${#exclusions[@]} > 0 )); then
+        printf '%s\n' "${exclusions[@]}"
+    fi
 }
 
 # --- Backup Function ---

@@ -584,7 +584,7 @@ install_bash_completion() {
             log "bash-completion already installed via Homebrew."
         fi
 
-        # Define the complete block to be added to .bash_profile
+        # Define the complete block to be added to .bashrc
         read -r -d '' bash_completion_source_block << 'EOF'
 # Add tab completion for many Bash commands
 if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
@@ -594,25 +594,25 @@ elif [ -f /etc/bash_completion ]; then
 fi
 EOF
 
-        log "Adding/Updating bash-completion sourcing in ~/.bash_profile..."
+        log "Adding/Updating bash-completion sourcing in ~/.bashrc..."
 
-        # Read the current .bash_profile content for robust substring matching
-        local bash_profile_content
-        bash_profile_content=$(<"$HOME_DIR/.bash_profile")
+        # Read the current .bashrc content for robust substring matching
+        local bashrc_content
+        bashrc_content=$(<"$HOME_DIR/.bashrc")
 
-        if [[ "$bash_profile_content" == *"${bash_completion_source_block}"* ]]; then
-            log "Bash-completion sourcing already present and correct in ~/.bash_profile."
-        elif [[ "$bash_profile_content" == *"# Add tab completion for many Bash commands"* ]]; then
-            log "Replacing old bash-completion section in ~/.bash_profile."
+        if [[ "$bashrc_content" == *"${bash_completion_source_block}"* ]]; then
+            log "Bash-completion sourcing already present and correct in ~/.bashrc."
+        elif [[ "$bashrc_content" == *"# Add tab completion for many Bash commands"* ]]; then
+            log "Replacing old bash-completion section in ~/.bashrc."
             # Delete the old comment line and any subsequent lines until the next non-empty line or end of file,
             # then append the correct block.
-            sed -i '' "/^# Add tab completion for many Bash commands/,/^$/d" "$HOME_DIR/.bash_profile"
-            echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
-            success "Replaced old bash-completion section in ~/.bash_profile."
+            sed -i '' "/^# Add tab completion for many Bash commands/,/^$/d" "$HOME_DIR/.bashrc"
+            echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bashrc"
+            success "Replaced old bash-completion section in ~/.bashrc."
         else
-            log "Appending bash-completion sourcing to ~/.bash_profile."
-            echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bash_profile"
-            success "Appended bash-completion sourcing to ~/.bash_profile."
+            log "Appending bash-completion sourcing to ~/.bashrc."
+            echo -e "\n${bash_completion_source_block}" >> "$HOME_DIR/.bashrc"
+            success "Appended bash-completion sourcing to ~/.bashrc."
         fi
     else
         log "Skipping bash-completion installation: Only applicable for macOS."

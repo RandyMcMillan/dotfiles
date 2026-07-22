@@ -25,9 +25,6 @@ wobble:
 blockheight:
   @make blockheight
 
-blockhash:
-  @make blockhash
-
 brew:
   @make brew
 
@@ -45,6 +42,9 @@ adduser-git:
 
 bootstrap:
   @make bootstrap
+
+boot-strap:
+  @make boot-strap
 
 install:
   @make install
@@ -256,6 +256,9 @@ docs-docker:
 touch-time:
   @make touch-time
 
+BITCOIN_VERSION:
+  @make BITCOIN_VERSION
+
 bitcoin-test-battery:
   @make bitcoin-test-battery
 
@@ -268,19 +271,6 @@ remote-managment-enable:
 screen-sharing-enable:
   @make screen-sharing-enable
 
-gemini:
-  @make gemini
-
-binstall:
-  @make binstall
-
-legit:
-  @make legit
-
-gnostr:
-  @make gnostr
-
 clean-nvm:
   @make clean-nvm
 
-import? 'justfile.extension'

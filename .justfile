@@ -1,8 +1,8 @@
 default:
   just --choose
 
-RESET:
-  @make RESET
+first:
+  @make first
 
 autoconf:
   @make autoconf
@@ -255,9 +255,6 @@ docs-docker:
 
 touch-time:
   @make touch-time
-
-BITCOIN_VERSION:
-  @make BITCOIN_VERSION
 
 bitcoin-test-battery:
   @make bitcoin-test-battery

@@ -27,9 +27,9 @@ bin_PROGRAMS = nodegit
 NODE_GYP=$(PWD)/node_modules/.bin/node-gyp
 NODE_MODULE_DIR=$(PWD)/node_modules/nodegit
 
-SHELL                                   := /bin/bash
-POWERSHELL                              := $(shell which pwsh)
-PWD                                     ?= pwd_unknown
+SHELL                                   :=/bin/bash
+POWERSHELL                              :=$(shell which pwsh)
+PWD                                     ?=pwd_unknown
 CMAKE                                   :=$(shell which cmake)
 export CMAKE
 GLIBTOOL                                :=$(shell which glibtool)
@@ -45,20 +45,20 @@ export args
 #    install \
 #    run
 
-SHELL									:= /bin/bash
-POWERSHELL								:= $(shell which pwsh)
-PWD										?= pwd_unknown
+SHELL									:=/bin/bash
+POWERSHELL								:=$(shell which pwsh)
+PWD										?=pwd_unknown
 GLIBTOOL								:=$(shell which glibtool)
 export GLIBTOOL
 GLIBTOOLIZE                             :=$(shell which glibtoolize)
 export GLIBTOOLIZE
-#AUTOCONF                                :=$(shell which autoconf)
+#AUTOCONF                               :=$(shell which autoconf)
 #export AUTOCONF
 DOTFILES_PATH=$(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 export DOTFILES_PATH
-THIS_FILE                               := $(lastword $(MAKEFILE_LIST))
+THIS_FILE                               :=$(lastword $(MAKEFILE_LIST))
 export THIS_FILE
-TIME                                    := $(shell date +%s)
+TIME                                    :=$(shell date +%s)
 export TIME
 
 OS                                      :=$(shell uname -s)
@@ -85,9 +85,9 @@ TRIPLET                                 :=aarch64-linux-gnu
 export TRIPLET
 endif
 
-NODE_VERSION                            := v24.10.0
+NODE_VERSION                            :=v24.10.0
 export NODE_VERSION
-NODE_ALIAS                              := default node
+NODE_ALIAS                              :=default node
 export NODE_ALIAS
 PACKAGE_MANAGER                         :=yarn
 export PACKAGE_MANAGER
@@ -95,50 +95,50 @@ PACKAGE_INSTALL                         :=add
 export PACKAGE_INSTALL
 
 ifeq ($(docker),)
-DOCKER                                  := $(shell which docker)
+DOCKER                                  :=$(shell which docker)
 else
-DOCKER                                  := $(docker)
+DOCKER                                  :=$(docker)
 endif
 export DOCKER
 
 ifeq ($(compose),)
-DOCKER_COMPOSE                          := $(shell which docker-compose)
+DOCKER_COMPOSE                          :=$(shell which docker-compose)
 else
-DOCKER_COMPOSE                          := $(compose)
+DOCKER_COMPOSE                          :=$(compose)
 endif
 export DOCKER_COMPOSE
 ifeq ($(reset),true)
-RESET:=true
+RESET                                   :=true
 else
-RESET:=false
+RESET                                   :=false
 endif
 export RESET
 
-PYTHON                                  := $(shell which python)
+PYTHON                                  :=$(shell which python)
 export PYTHON
-PYTHON2                                 := $(shell which python2)
+PYTHON2                                 :=$(shell which python2)
 export PYTHON2
-PYTHON3                                 := $(shell which python3)
+PYTHON3                                 :=$(shell which python3)
 export PYTHON3
 
-PIP                                     := $(shell which pip)
+PIP                                     :=$(shell which pip)
 export PIP
-PIP2                                    := $(shell which pip2)
+PIP2                                    :=$(shell which pip2)
 export PIP2
-PIP3                                    := $(shell which pip3)
+PIP3                                    :=$(shell which pip3)
 export PIP3
 
-python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
-python_version_major := $(word 1,${python_version_full})
-python_version_minor := $(word 2,${python_version_full})
-python_version_patch := $(word 3,${python_version_full})
+python_version_full :=$(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
+python_version_major :=$(word 1,${python_version_full})
+python_version_minor :=$(word 2,${python_version_full})
+python_version_patch :=$(word 3,${python_version_full})
 
-my_cmd.python.3 := $(PYTHON3) some_script.py3
-my_cmd := ${my_cmd.python.${python_version_major}}
+my_cmd.python.3 :=$(PYTHON3) some_script.py3
+my_cmd :=${my_cmd.python.${python_version_major}}
 
-PYTHON_VERSION                         := ${python_version_major}.${python_version_minor}.${python_version_patch}
-PYTHON_VERSION_MAJOR                   := ${python_version_major}
-PYTHON_VERSION_MINOR                   := ${python_version_minor}
+PYTHON_VERSION                         :=${python_version_major}.${python_version_minor}.${python_version_patch}
+PYTHON_VERSION_MAJOR                   :=${python_version_major}
+PYTHON_VERSION_MINOR                   :=${python_version_minor}
 
 export python_version_major
 export python_version_minor
@@ -147,9 +147,9 @@ export PYTHON_VERSION
 
 #PROJECT_NAME defaults to name of the current directory.
 ifeq ($(project),)
-PROJECT_NAME                            := $(notdir $(PWD))
+PROJECT_NAME                            :=$(notdir $(PWD))
 else
-PROJECT_NAME                            := $(project)
+PROJECT_NAME                            :=$(project)
 endif
 export PROJECT_NAME
 
@@ -160,70 +160,70 @@ export PACKAGE_INSTALL
 
 
 ifeq ($(force),true)
-FORCE									:= --force
+FORCE									:=--force
 endif
 export FORCE
 
 #GIT CONFIG
-GIT_USER_NAME                           := $(shell git config user.name || echo)
+GIT_USER_NAME                           :=$(shell git config user.name || echo)
 export GIT_USER_NAME
-GIT_USER_EMAIL                          := $(shell git config user.email || echo)
+GIT_USER_EMAIL                          :=$(shell git config user.email || echo)
 export GIT_USER_EMAIL
-GIT_SERVER                              := https://github.com
+GIT_SERVER                              :=https://github.com
 export GIT_SERVER
-GIT_PROFILE                             := $(shell git config user.name || echo)
+GIT_PROFILE                             :=$(shell git config user.name || echo)
 export GIT_PROFILE
-GIT_BRANCH                              := $(shell git rev-parse --abbrev-ref HEAD || echo)
+GIT_BRANCH                              :=$(shell git rev-parse --abbrev-ref HEAD || echo)
 export GIT_BRANCH
-GIT_HASH                                := $(shell git rev-parse --short HEAD || echo)
+GIT_HASH                                :=$(shell git rev-parse --short HEAD || echo)
 export GIT_HASH
-GIT_PREVIOUS_HASH                       := $(shell git rev-parse --short HEAD^1 || echo)
+GIT_PREVIOUS_HASH                       :=$(shell git rev-parse --short HEAD^1 || echo)
 export GIT_PREVIOUS_HASH
-GIT_REPO_ORIGIN                         := $(shell git remote get-url origin || echo)
+GIT_REPO_ORIGIN                         :=$(shell git remote get-url origin || echo)
 export GIT_REPO_ORIGIN
-GIT_REPO_NAME                           := $(PROJECT_NAME)
+GIT_REPO_NAME                           :=$(PROJECT_NAME)
 export GIT_REPO_NAME
-GIT_REPO_PATH                           := $(HOME)/$(GIT_REPO_NAME)
+GIT_REPO_PATH                           :=$(HOME)/$(GIT_REPO_NAME)
 export GIT_REPO_PATH
 
 ifneq ($(bitcoin-datadir),)
-BITCOIN_DATA_DIR                        := $(bitcoin-datadir)
+BITCOIN_DATA_DIR                        :=$(bitcoin-datadir)
 else
-BITCOIN_DATA_DIR                        := $(HOME)/.bitcoin
+BITCOIN_DATA_DIR                        :=$(HOME)/.bitcoin
 endif
 export BITCOIN_DATA_DIR
 
 ifeq ($(nocache),true)
-NOCACHE                                 := --no-cache
+NOCACHE                                 :=--no-cache
 #Force parallel build when --no-cache to speed up build
-PARALLEL                                := --parallel
+PARALLEL                                :=--parallel
 else
 NOCACHE                                 :=
 PARALLEL                                :=
 endif
 ifeq ($(parallel),true)
-PARALLEL                                := --parallel
+PARALLEL                                :=--parallel
 endif
 ifeq ($(para),true)
-PARALLEL                                := --parallel
+PARALLEL                                :=--parallel
 endif
 export NOCACHE
 export PARALLEL
 
 ifeq ($(verbose),true)
-VERBOSE                                 := --verbose
+VERBOSE                                 :=--verbose
 else
 VERBOSE                                 :=
 endif
 export VERBOSE
 
-BREW                                    := $(shell which brew || echo)
+BREW                                    :=$(shell which brew || echo)
 export BREW
-BREW_PREFIX                             := $(shell brew --prefix || echo)
+BREW_PREFIX                             :=$(shell brew --prefix || echo)
 export BREW_PREFIX
-BREW_CELLAR                             := $(shell brew --cellar || echo)
+BREW_CELLAR                             :=$(shell brew --cellar || echo)
 export BREW_CELLAR
-HOMEBREW_NO_ENV_HINTS                   := false
+HOMEBREW_NO_ENV_HINTS                   :=false
 export HOMEBREW_NO_ENV_HINTS
 
 #PORTER_VERSION                         :=v1.0.1
@@ -240,8 +240,7 @@ export PORTER_VERSION
 
 ##make	:	command			description
 ##	:
--:## 	- default - try 'make submodules'
--:
+first:## 	- default - try 'make submodules'
 	bash -c "cat $(PWD)/GNUmakefile.in > $(PWD)/GNUmakefile"
 	eval "$(/opt/homebrew/bin/brew shellenv)" || true
 	#./autogen.sh configure
@@ -258,7 +257,6 @@ nodegit$(EXEEXT):
 clean-local:
 	-cd $(NODE_MODULE_DIR) && node-gyp clean
 
-##	:	-
 ##	:	help
 ##	:	report			environment args
 ##	:
@@ -697,9 +695,9 @@ touch-time:
 ifeq ($(bitcoin-version),)
 	@echo Example:
 	@echo add tag v22.0rc3
-BITCOIN_VERSION:=v22.0rc3
+BITCOIN_VERSION                     :=v22.0rc3
 else
-BITCOIN_VERSION:=$(bitcoin-version)
+BITCOIN_VERSION                     :=$(bitcoin-version)
 endif
 export BITCOIN_VERSION
 .PHONY: bitcoin-test-battery

@@ -97,7 +97,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(top_srcdir)/configure \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_CLEAN_FILES = GNUmakefile
+CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
@@ -119,9 +119,12 @@ am__can_run_installinfo = \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
-am__DIST_COMMON = $(srcdir)/GNUmakefile.in $(srcdir)/Makefile.in \
-	AUTHORS COPYING ChangeLog INSTALL NEWS README.md compile \
-	depcomp install-sh missing
+am__DIST_COMMON = $(srcdir)/Makefile.in \
+	$(top_srcdir)/build-aux/compile \
+	$(top_srcdir)/build-aux/install-sh \
+	$(top_srcdir)/build-aux/missing INSTALL README.md \
+	build-aux/compile build-aux/install-sh build-aux/missing \
+	compile depcomp install-sh missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -150,7 +153,6 @@ AUTOCONF = ${SHELL} '/Users/Shared/randymcmillan/.github/dotfiles/build-aux/miss
 AUTOHEADER = ${SHELL} '/Users/Shared/randymcmillan/.github/dotfiles/build-aux/missing' autoheader
 AUTOMAKE = ${SHELL} '/Users/Shared/randymcmillan/.github/dotfiles/build-aux/missing' automake-1.18
 AWK = gawk
-BREW = @BREW@
 CC = gcc
 CCDEPMODE = depmode=none
 CFLAGS = -g -O2
@@ -165,7 +167,6 @@ ECHO_N =
 ECHO_T = 
 ETAGS = etags
 EXEEXT = 
-HELP2MAN = @HELP2MAN@
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -174,11 +175,9 @@ INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LIBOBJS = 
 LIBS = 
-LN_S = @LN_S@
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} '/Users/Shared/randymcmillan/.github/dotfiles/build-aux/missing' makeinfo
 MKDIR_P = mkdir -p
-NOSTRIL = @NOSTRIL@
 OBJEXT = o
 PACKAGE = gnostr-notes
 PACKAGE_BUGREPORT = randymcmillan@gmail.com
@@ -189,11 +188,9 @@ PACKAGE_URL =
 PACKAGE_VERSION = 0.1.0
 PATH_SEPARATOR = :
 SET_MAKE = 
-SHELL = $(which bash)
+SHELL = /bin/sh
 STRIP = 
 VERSION = 0.1.0
-YACC = @YACC@
-YFLAGS = @YFLAGS@
 abs_builddir = /Users/Shared/randymcmillan/.github/dotfiles
 abs_srcdir = /Users/Shared/randymcmillan/.github/dotfiles
 abs_top_builddir = /Users/Shared/randymcmillan/.github/dotfiles
@@ -239,7 +236,6 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-ACLOCAL_AMFLAGS = -I m4
 all: all-am
 
 .SUFFIXES:
@@ -249,15 +245,15 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
-	      echo ' cd $(srcdir) && $(AUTOMAKE) --gnu'; \
-	      $(am__cd) $(srcdir) && $(AUTOMAKE) --gnu \
+	      echo ' cd $(srcdir) && $(AUTOMAKE) --foreign'; \
+	      $(am__cd) $(srcdir) && $(AUTOMAKE) --foreign \
 		&& exit 0; \
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu Makefile
+	  $(AUTOMAKE) --foreign Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -276,8 +272,6 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-GNUmakefile: $(top_builddir)/config.status $(srcdir)/GNUmakefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
 tags TAGS:
 
 ctags CTAGS:

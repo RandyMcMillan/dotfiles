@@ -256,9 +256,6 @@ docs-docker:
 touch-time:
   @make touch-time
 
-BITCOIN_VERSION:
-  @make BITCOIN_VERSION
-
 bitcoin-test-battery:
   @make bitcoin-test-battery
 

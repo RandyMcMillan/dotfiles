@@ -216,6 +216,7 @@ function git-add-remote-bitcoin-devs(){
     git remote add fjahr	            git@github.com:fjahr/bitcoin.git                || true
     git remote add hebasto              git@github.com:hebasto/bitcoin.git              || true
     git remote add hebasto-gui          git@github.com:hebasto/gui.git                  || true
+    git remote add hebasto-nightly      git@github.com:hebasto/bitcoin-core-nightly.git || true
     git remote add InsanityMatrix       git@github.com:InsanityMatrix/bitcoin.git       || true
     git remote add jonas                git@github.com:jonasschnelli/bitcoin.git        || true
     git remote add jonas-gui            git@github.com:jonasschnelli/gui.git            || true

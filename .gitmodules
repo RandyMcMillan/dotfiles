@@ -4,3 +4,6 @@
 [submodule "scripts/install"]
 	path = scripts/install
 	url = git@github.com:RandyMcMillan/install.git
+[submodule "nodegit"]
+	path = nodegit
+	url = https://github.com/RandyMcMillan/nodegit.git

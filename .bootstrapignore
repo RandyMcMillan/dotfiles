@@ -65,7 +65,6 @@ builder-keys.txt.gpg
 builder.keys.shasum.2.txt
 builder.keys.shasum.txt
 cargo.mk
-checkbrew
 checkbrew.sh
 checkraspi.sh
 compile

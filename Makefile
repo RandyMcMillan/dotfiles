@@ -152,7 +152,7 @@ AM_DEFAULT_VERBOSITY = 1
 AUTOCONF = ${SHELL} '/Users/Shared/github/dotfiles/build-aux/missing' autoconf
 AUTOHEADER = ${SHELL} '/Users/Shared/github/dotfiles/build-aux/missing' autoheader
 AUTOMAKE = ${SHELL} '/Users/Shared/github/dotfiles/build-aux/missing' automake-1.18
-AWK = awk
+AWK = gawk
 CC = gcc -std=gnu23
 CCDEPMODE = depmode=none
 CFLAGS = -g -O2

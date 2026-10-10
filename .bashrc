@@ -155,12 +155,13 @@ _make_completion() {
             awk -F: '
                 /^\.PHONY:([[:space:]]|$)/ {
                     for (i = 2; i <= NF; i++) {
-                        if ($i != "" && $i !~ /^[[:space:]]*$/) {
+                        gsub(/^[[:space:]]+|[[:space:]]+$/, "", $i)
+                        if ($i != "") {
                             print $i
                         }
                     }
                 }
-                /^[A-Za-z0-9_][^$#\/\t=]*:([^=]|$)/ {
+                /^[A-Za-z0-9_.-][^$#\/\t=]*:([^=]|$)/ {
                     split($1, parts, /[[:space:]]+/)
                     for (i in parts) {
                         if (parts[i] != "" && parts[i] !~ /^\./ && parts[i] !~ /%/) {

@@ -153,10 +153,17 @@ _make_completion() {
     targets="$(
         make -qpRr -f "$makefile" 2>/dev/null |
             awk -F: '
-                /^[A-Za-z0-9][^$#\/\t=]*:([^=]|$)/ {
+                /^\.PHONY:([[:space:]]|$)/ {
+                    for (i = 2; i <= NF; i++) {
+                        if ($i != "" && $i !~ /^[[:space:]]*$/) {
+                            print $i
+                        }
+                    }
+                }
+                /^[A-Za-z0-9_][^$#\/\t=]*:([^=]|$)/ {
                     split($1, parts, /[[:space:]]+/)
                     for (i in parts) {
-                        if (parts[i] != "" && parts[i] !~ /^\./) {
+                        if (parts[i] != "" && parts[i] !~ /^\./ && parts[i] !~ /%/) {
                             print parts[i]
                         }
                     }

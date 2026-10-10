@@ -168,7 +168,8 @@ $if mode=vi
 	# using ;; to easily move to command mode from insert mode instead of going to press Escape key each time
 	# ;; as I find it relatively easily on the home row and it doesnt interfere with typing in insert mode
 	# as commands to come by with ;; are rare?
-    TAB: menu-complete
+    # TAB: menu-complete #tab one command at a time
+    TAB: complete
     # shift tab to menu complete backward
     "\e[Z": menu-complete-backward
 

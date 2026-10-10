@@ -67,16 +67,19 @@ done;
 #
 
 if [[ -n "${BASH_VERSION:-}" ]]; then
-    # Add tab completion for many Bash commands
-    if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
-        . "$(brew --prefix)/etc/bash_completion"
-    fi
+    # Homebrew's completion bundle uses options that are unavailable in Bash 3.2
+    # (the system Bash on macOS), so only load it on newer Bash releases.
+    if [[ ${BASH_VERSINFO[0]:-0} -ge 4 ]]; then
+        if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
+            . "$(brew --prefix)/etc/bash_completion"
+        fi
 
-    GIT_COMPLETION_PATH="$(brew --prefix)/share/bash-completion/completions/git"
+        GIT_COMPLETION_PATH="$(brew --prefix)/share/bash-completion/completions/git"
 
-    if [ -f "$GIT_COMPLETION_PATH" ]; then
-        # Load the official git completion
-        source "$GIT_COMPLETION_PATH"
+        if [ -f "$GIT_COMPLETION_PATH" ]; then
+            # Load the official git completion
+            source "$GIT_COMPLETION_PATH"
+        fi
     fi
 fi
 

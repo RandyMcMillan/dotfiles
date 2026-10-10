@@ -184,7 +184,8 @@ if [[ -n "${BASH_VERSION:-}" ]]; then
     complete -o bashdefault -o default -F _make_completion make
 fi
 
-#export GPG_TTY=$(tty)
+export GPG_TTY=$(tty)
+
 # Set PATH, MANPATH, etc., for Homebrew.
 if ! hash brew 2>/dev/null; then
        eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a bash_profile.log)

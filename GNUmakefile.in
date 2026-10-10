@@ -251,8 +251,9 @@ first:## - default - try 'make submodules'
 autoconf:## ./autogen.sh && ./configure
 	./autogen.sh configure
 
-nodegit$(EXEEXT):
-	-cd $(NODE_MODULE_DIR) && $(NODE_GYP) build
+.PHONY: nodegit
+nodegit:
+	-cd nodegit && npm install && npm run
 
 clean-local:
 	-cd $(NODE_MODULE_DIR) && node-gyp clean
@@ -387,7 +388,7 @@ exec: executable
 template:
 ##	:	template		install checkbrew command
 	rm -f /usr/local/bin/checkbrew
-	@install -bC $(PWD)/template /usr/local/bin/checkbrew
+	@install -bC $(PWD)/scripts/checkbrew /usr/local/bin/checkbrew
 	bash -c "source /usr/local/bin/checkbrew"
 
 .PHONY: nvm
@@ -409,83 +410,83 @@ vim:## vim - install-vim.sh
 rustup-rs:## 	rustup-rs
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
 macdown:
-	bash -c "source $(PWD)/template && checkbrew install	macdown"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	macdown"
 glow:
-	bash -c "source $(PWD)/template && checkbrew install	glow"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	glow"
 coreutils:
-	bash -c "source $(PWD)/template && checkbrew install	coreutils"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	coreutils"
 gettext:
-	bash -c "source $(PWD)/template && checkbrew install	gettext"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	gettext"
 texinfo:
-	bash -c "source $(PWD)/template && checkbrew install	texinfo"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	texinfo"
 help2man:
-	bash -c "source $(PWD)/template && checkbrew install	help2man"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	help2man"
 gnutls:
-	bash -c "source $(PWD)/template && checkbrew install	gnutls"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	gnutls"
 keepingyouawake:## 	keepingyouawake
-	bash -c "source $(PWD)/template && checkbrew install	keepingyouawake"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	keepingyouawake"
 moom:## 	moom
-	bash -c "source $(PWD)/template && checkbrew install	moom"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	moom"
 wasm-pack:
 	curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 brew-libs: libassuan libgcrypt libgpg-error libksba libusb
 libassuan:
-	bash -c "source $(PWD)/template && checkbrew install	libassuan"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	libassuan"
 libgcrypt:
-	bash -c "source $(PWD)/template && checkbrew install	libgcrypt"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	libgcrypt"
 libgpg-error:
-	bash -c "source $(PWD)/template && checkbrew install	libgpg-error"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	libgpg-error"
 libksba:
-	bash -c "source $(PWD)/template && checkbrew install	libksba"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	libksba"
 libusb:
-	bash -c "source $(PWD)/template && checkbrew install	libusb"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	libusb"
 htmlcleaner:
-	bash -c "source $(PWD)/template && checkbrew install	maven"
-	bash -c "source $(PWD)/template && checkbrew install	htmlcleaner"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	maven"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install	htmlcleaner"
 
 npth:
-	bash -c "source $(PWD)/template && checkbrew install                npth"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install                npth"
 pinentry:
-	bash -c "source $(PWD)/template && checkbrew install pinentry"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install pinentry"
 gdbm:
-	bash -c "source $(PWD)/template && checkbrew install                gdbm"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install                gdbm"
 mpdecimal:
-	bash -c "source $(PWD)/template && checkbrew install mpdecimal"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install mpdecimal"
 openssl@1.1:
-	bash -c "source $(PWD)/template && checkbrew install           openssl@1.1"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install           openssl@1.1"
 readline:
-	bash -c "source $(PWD)/template && checkbrew install readline"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install readline"
 sqlite:
-	bash -c "source $(PWD)/template && checkbrew install          sqlite"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install          sqlite"
 xz:
-	bash -c "source $(PWD)/template && checkbrew install xz"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install xz"
 python@3.10:
-	bash -c "source $(PWD)/template && checkbrew install    python@3.10"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install    python@3.10"
 node:
-	bash -c "source $(PWD)/template && checkbrew install node"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install node"
 node@18:
-	bash -c "source $(PWD)/template && checkbrew install node@18"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install node@18"
 node@16:
-	bash -c "source $(PWD)/template && checkbrew install node@16"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install node@16"
 node@14:
-	bash -c "source $(PWD)/template && checkbrew install node@14"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install node@14"
 node@12:
-	bash -c "source $(PWD)/template && checkbrew install node@12"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install node@12"
 node@10:
-	bash -c "source $(PWD)/template && checkbrew install node@10"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install node@10"
 yarn:
-	bash -c "source $(PWD)/template && checkbrew install      yarn"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install      yarn"
 powershell:
-	bash -c "source $(PWD)/template && checkbrew install     powershell"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install     powershell"
 meson:
-	bash -c "source $(PWD)/template && checkbrew install                meson"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install                meson"
 texi2html:
-	bash -c "source $(PWD)/template && checkbrew install texi2html"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install texi2html"
 ffmpeg@2.8:
-	bash -c "source $(PWD)/template && checkbrew install ffmpeg@2.8"
+	bash -c "source $(PWD)/scripts/checkbrew && checkbrew install ffmpeg@2.8"
 
 gnupg: first executable
-	bash -c "source $(PWD)/template && \
+	bash -c "source $(PWD)/scripts/checkbrew && \
 		checkbrew install gettext gnutls \
 		libassuan libgcrypt libgpg-error \
 		libksba libusb npth pinentry gnupg"

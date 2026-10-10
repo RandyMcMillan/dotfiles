@@ -1,0 +1,1 @@
+which cargo || brew install rustup rust && rustup toolchain install stable || false

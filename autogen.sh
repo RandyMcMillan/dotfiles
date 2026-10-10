@@ -2477,6 +2477,7 @@ __decode_dependency() {
 # ne VERSION
 #
 # examples:
+# regist_dependency required exe cargo ne 0.0
 # regist_dependency required exe pkg-config ge 0.18
 # regist_dependency required exe python     ge 3.5
 # regist_dependency required py  libxml2    ge 2.19
@@ -2485,6 +2486,7 @@ __decode_dependency() {
 # regist_dependency optional exe python     ge 3.5
 # regist_dependency optional py  libxml2    ge 2.19
 regist_dependency() {
+    printf 1=$1
     case $1 in
         required)
             if [ -z "$REQUIRED_DEPENDENCY_LIST" ] ; then
@@ -2501,6 +2503,7 @@ regist_dependency() {
             fi
     esac
 }
+regist_dependency required exe cargo gt 1.99
 
 # }}}
 ##############################################################################
@@ -2526,7 +2529,7 @@ gen_config_pre() {
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none
 type -P rustup || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile minimal --default-toolchain stable
-
+type -P cargo
 }
 
 gen_config() {

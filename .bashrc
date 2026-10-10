@@ -66,16 +66,18 @@ for option in autocd globstar; do
 done;
 #
 
-# Add tab completion for many Bash commands
-if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
-    . "$(brew --prefix)/etc/bash_completion"
-fi
+if [[ -n "${BASH_VERSION:-}" ]]; then
+    # Add tab completion for many Bash commands
+    if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
+        . "$(brew --prefix)/etc/bash_completion"
+    fi
 
-GIT_COMPLETION_PATH="$(brew --prefix)/share/bash-completion/completions/git"
+    GIT_COMPLETION_PATH="$(brew --prefix)/share/bash-completion/completions/git"
 
-if [ -f "$GIT_COMPLETION_PATH" ]; then
-    # Load the official git completion
-    source "$GIT_COMPLETION_PATH"
+    if [ -f "$GIT_COMPLETION_PATH" ]; then
+        # Load the official git completion
+        source "$GIT_COMPLETION_PATH"
+    fi
 fi
 
 
@@ -135,47 +137,49 @@ fi
 ## done
 
 
-# Custom completion function for Make
-_make_completion() {
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    local makefile=""
-    local targets
+if [[ -n "${BASH_VERSION:-}" ]]; then
+    # Custom completion function for Make
+    _make_completion() {
+        local cur="${COMP_WORDS[COMP_CWORD]}"
+        local makefile=""
+        local targets
 
-    for candidate in GNUmakefile Makefile makefile; do
-        if [[ -f "$candidate" ]]; then
-            makefile="$candidate"
-            break
-        fi
-    done
+        for candidate in GNUmakefile Makefile makefile; do
+            if [[ -f "$candidate" ]]; then
+                makefile="$candidate"
+                break
+            fi
+        done
 
-    [[ -n "$makefile" ]] || return 0
+        [[ -n "$makefile" ]] || return 0
 
-    targets="$(
-        make -qpRr -f "$makefile" 2>/dev/null |
-            awk -F: '
-                /^\.PHONY:([[:space:]]|$)/ {
-                    for (i = 2; i <= NF; i++) {
-                        gsub(/^[[:space:]]+|[[:space:]]+$/, "", $i)
-                        if ($i != "") {
-                            print $i
+        targets="$(
+            make -qpRr -f "$makefile" 2>/dev/null |
+                awk -F: '
+                    /^\.PHONY:([[:space:]]|$)/ {
+                        for (i = 2; i <= NF; i++) {
+                            gsub(/^[[:space:]]+|[[:space:]]+$/, "", $i)
+                            if ($i != "") {
+                                print $i
+                            }
                         }
                     }
-                }
-                /^[A-Za-z0-9_.-][^$#\/\t=]*:([^=]|$)/ {
-                    split($1, parts, /[[:space:]]+/)
-                    for (i in parts) {
-                        if (parts[i] != "" && parts[i] !~ /^\./ && parts[i] !~ /%/) {
-                            print parts[i]
+                    /^[A-Za-z0-9_.-][^$#\/\t=]*:([^=]|$)/ {
+                        split($1, parts, /[[:space:]]+/)
+                        for (i in parts) {
+                            if (parts[i] != "" && parts[i] !~ /^\./ && parts[i] !~ /%/) {
+                                print parts[i]
+                            }
                         }
                     }
-                }
-            ' | sort -u
-    )"
+                ' | sort -u
+        )"
 
-    COMPREPLY=( $(compgen -W "$targets" -- "$cur") )
-}
+        COMPREPLY=( $(compgen -W "$targets" -- "$cur") )
+    }
 
-complete -o bashdefault -o default -F _make_completion make
+    complete -o bashdefault -o default -F _make_completion make
+fi
 
 #export GPG_TTY=$(tty)
 # Set PATH, MANPATH, etc., for Homebrew.

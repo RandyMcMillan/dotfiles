@@ -3,6 +3,12 @@
 .nojekyll
 .venv
 .osx
+# Ignore the repository root's non-dot files/directories; bootstrap should only sync dotfiles.
+/[!.]*
+/.cache/
+/.devcontainer/
+/.github/
+/.vscode/
 AUTHORS
 B.sh
 Brewfile

@@ -190,3 +190,7 @@ wobble
 .git/
 .github/
 **/.git
+
+build-aux
+
+bootstrap.log

@@ -1,0 +1,37 @@
+# Bootstrap Configuration
+# Override defaults by uncommenting and setting values
+
+# General options
+# DRY_RUN=false
+# VERBOSE=false
+# FORCE=false
+# BACKUP=true
+
+# Paths (can be absolute or relative to script directory)
+# CONFIG_FILE=".bootstrapconfig"
+# EXCLUDE_FILE=".bootstrapignore" 
+# SESSION_LOG="$HOME/session.log"
+
+# Backup settings
+# BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
+
+# Sync options
+# RSYNC_OPTIONS="-avh --no-perms"
+# PRESERVE_PERMISSIONS=false
+# PRESERVE_OWNERSHIP=false
+
+# Development tools
+# INSTALL_SCCACHE=true
+# INSTALL_RUST=true
+# ENABLE_DEVELOPER_MODE=true
+
+# Git options
+# AUTO_PULL=false
+# AUTO_COMMIT=false
+# AUTO_PUSH=false
+
+# Directories to sync back (pull command)
+# SYNC_BACK_DIRS=(".gemini" ".ssh/known_hosts")
+
+# Custom exclusions (additional patterns to exclude)
+# CUSTOM_EXCLUDES=()

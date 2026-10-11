@@ -4,21 +4,16 @@ set editing-mode vi
 # SHOW THE VIM MODE IN THE PROMPT (COMMAND OR INSERT)
 set show-mode-in-prompt on
 
-# SET THE MODE STRING AND CURSOR TO INDICATE THE VIM MODE
-#   FOR THE NUMBER AFTER `\e[`:
-#     0: blinking block
-#     1: blinking block (default)
-#     2: steady block
-#     3: blinking underline
-#     4: steady underline
-#     5: blinking bar (xterm)
-#     6: steady bar (xterm)
+# SET THE MODE STRING TO INDICATE THE VIM MODE
+# NOTE: cursor-shape escape sequences (e.g. \e[5 q) were removed here
+# because they throw off readline's cursor-position accounting, which
+# can make backspace fail to delete the last visible character.
 
 # distinguish between command and insert mode
-# Prepend I to indicate insert mode and have blinking bar
-set vi-ins-mode-string I\1\e[5 q\2
-# prepend C to indicate command mode and have a blinking block
-set vi-cmd-mode-string C\1\e[1 q\2
+# Prepend I to indicate insert mode
+set vi-ins-mode-string I
+# prepend C to indicate command mode
+set vi-cmd-mode-string C
 set blink-matching-paren on
 
 # sets the readline to display possible completions using different colors

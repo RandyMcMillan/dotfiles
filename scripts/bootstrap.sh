@@ -787,6 +787,7 @@ main() {
 
     log "Bootstrap script finished."
     success "All requested operations completed."
+    bind -f ~/.inputrc
     return 0
 }
 

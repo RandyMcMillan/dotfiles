@@ -257,6 +257,20 @@ gpg --keyserver hkps://keys.openpgp.org --send-keys E616FA7221A1613E5B9920629796
 
 }
 
+fix-gpg-sockets() {
+    echo "==> Killing active dirmngr and gpg-agent..."
+    gpgconf --kill dirmngr
+    gpgconf --kill gpg-agent
+
+    echo "==> Clearing stale sockets in ~/.gnupg..."
+    rm -f ~/.gnupg/S.dirmngr ~/.gnupg/S.gpg-agent*
+
+    echo "==> Spawning fresh dirmngr daemon..."
+    echo "BYE" | dirmngr --verbose --daemon
+
+    echo "==> GPG socket reset complete."
+}
+
 function gpg-sync-keys-bitcoin-devs(){
 
 curl -fsS https://b10c.me/gpg.txt > 0xB10C.txt

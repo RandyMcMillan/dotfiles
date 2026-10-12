@@ -57,7 +57,7 @@
 .gnostr/
 .Spotlight-V100
 .Trashes
-.vim_runtime
+!.vim_runtime
 /*.gcno
 /target
 1.1.1*

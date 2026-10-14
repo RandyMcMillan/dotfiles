@@ -49,17 +49,38 @@ struct Cli {
 }
 
 #[derive(Subcommand, Debug)]
-enum Commands {
-    #[command(alias = "checkbrew-bundle", about = "bundle install/dump/cleanup")]
-    Bundle {
-        #[arg(default_value = "dump", value_name = "ACTION")]
-        action: String,
-
+enum BundleCommands {
+    #[command(about = "Install from Brewfile")]
+    Install {
         #[arg(short = 'f', long = "force")]
         force: bool,
 
-        #[arg(long = "file", value_name = "PATH")]
-        file: Option<String>,
+        #[arg(long = "file", value_name = "PATH", default_value = "Brewfile")]
+        file: String,
+    },
+
+    #[command(about = "Dump a Brewfile")]
+    Dump {
+        #[arg(short = 'f', long = "force")]
+        force: bool,
+
+        #[arg(long = "file", value_name = "PATH", default_value = "Brewfile")]
+        file: String,
+    },
+
+    #[command(about = "Remove unbundled packages")]
+    Cleanup {
+        #[arg(short = 'f', long = "force")]
+        force: bool,
+    },
+}
+
+#[derive(Subcommand, Debug)]
+enum Commands {
+    #[command(alias = "checkbrew-bundle", about = "bundle install/dump/cleanup")]
+    Bundle {
+        #[command(subcommand)]
+        command: Option<BundleCommands>,
     },
 
     #[command(alias = "checkbrew-cleanup", about = "Run brew bundle cleanup")]
@@ -284,37 +305,34 @@ fn uninstall() {
     }
 }
 
-fn bundle_action(action: &str, force: bool, file: Option<&str>) {
-    let file = file.unwrap_or("Brewfile");
-    match action {
-        "install" => {
-            let mut args = vec!["bundle", "install"];
-            if force {
-                args.push("--force");
-            }
-            args.push("--file");
-            args.push(file);
-            let refs: Vec<&str> = args.iter().copied().collect();
-            let _ = run("brew", &refs);
-        }
-        "dump" => {
-            bundle(force);
-        }
-        "cleanup" => {
-            cleanup(force);
-        }
-        _ => {
-            eprintln!("unknown bundle action: {}", action);
-        }
+
+fn bundle_install(force: bool, file: &str) {
+    let mut args = vec!["bundle", "install"];
+    if force {
+        args.push("--force");
     }
+    args.push("--file");
+    args.push(file);
+    let refs: Vec<&str> = args.iter().copied().collect();
+    let _ = run("brew", &refs);
 }
 
-fn bundle(force: bool) {
+fn bundle(force: bool, file: &str) {
     if !is_root() && has("brew") {
+        let path = std::path::Path::new(file);
+        if !force && path.exists() {
+            eprintln!("{} already exists. Use --force to overwrite.", file);
+            print_help();
+            return;
+        }
         if force {
-            let _ = run("brew", &["bundle", "--force", "dump"]);
+            let mut args = vec!["bundle", "--force", "dump", "--file", file];
+            let refs: Vec<&str> = args.iter().copied().collect();
+            let _ = run("brew", &refs);
         } else {
-            let _ = run("brew", &["bundle", "dump"]);
+            let mut args = vec!["bundle", "dump", "--file", file];
+            let refs: Vec<&str> = args.iter().copied().collect();
+            let _ = run("brew", &refs);
         }
     }
 }
@@ -429,8 +447,21 @@ fn main() {
 
     if let Some(command) = cli.command {
         match command {
-            Commands::Bundle { action, force, file } => {
-                bundle_action(&action, force || cli.force, file.as_deref());
+            Commands::Bundle { command } => {
+                match command {
+                    Some(BundleCommands::Install { force, file }) => {
+                        bundle_install(force || cli.force, &file);
+                    }
+                    Some(BundleCommands::Dump { force, .. }) => {
+                        bundle(force || cli.force, "Brewfile");
+                    }
+                    Some(BundleCommands::Cleanup { force }) => {
+                        cleanup(force || cli.force);
+                    }
+                    None => {
+                        bundle(cli.force, "Brewfile");
+                    }
+                }
             }
             Commands::Cleanup => cleanup(cli.force),
             Commands::Usage => print_help(),

@@ -9,8 +9,8 @@ if hash brew 2>/dev/null; then
 	PREFIX=$(brew --prefix)
 	export PREFIX
     # take ownership
-	sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node} >/dev/null
-	sudo chown -R $USER $PREFIX/{share/man,bin,sbin,lib/node,include/node} >/dev/null
+	sudo mkdir -p "$PREFIX"/{share/man,bin,lib/node,include/node} >/dev/null
+	sudo chown -R "$USER" "$PREFIX"/{share/man,bin,sbin,lib/node,include/node} >/dev/null
 
 fi
 
@@ -20,8 +20,8 @@ function checkbrew-upgrade() {
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then
     for item in "${@}"; do
-        echo ${item}
-        brew upgrade ${FORCE} ${item}
+        echo "${item}"
+        brew upgrade ${FORCE:+"$FORCE"} "${item}"
         shift
     done
     fi
@@ -30,7 +30,7 @@ fi
 function checkbrew-cleanup() {
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then
-        brew bundle ${FORCE} cleanup
+        brew bundle ${FORCE:+"$FORCE"} cleanup
     fi
 fi
 }
@@ -43,7 +43,7 @@ function checkbrew-uninstall(){
 function checkbrew-bundle() {
 if [ "$EUID" -ne "0" ]; then
     if hash brew 2>/dev/null; then
-        brew bundle ${FORCE} dump
+        brew bundle ${FORCE:+"$FORCE"} dump
     fi
 fi
 }
@@ -92,7 +92,6 @@ fi
 
 # Detect Flags and set ENV
 for item in "$@"; do
-    echo ${item}
     if [[ ${item} == "-v" ]] || [[ ${item} == "--verbose" ]]; then
         VERBOSE="--verbose"
     else
@@ -141,7 +140,7 @@ fi
 if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
     if [[ ${1} == "-f" ]] || [[ ${1} == "--force" ]] || \
         [[ ${2} == "-f" ]] || [[ ${2} == "--force" ]]; then
-        set FORCE=--force
+        FORCE=--force
         export FORCE
         # echo $FORCE
         shift
@@ -152,28 +151,25 @@ fi
 if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
     # echo "--bundle"
     # TODO: --force detect
-    brew bundle ${FORCE} dump
+    brew bundle ${FORCE:+"$FORCE"} dump
     shift
 fi
 #--install
 if [[ ${!i} == "--install" ]] || [[ ${!i} == "install" ]] || [[ ${!i} == "-i" ]]; then
-    echo ${!i}
     #--force
     ((i++))
     if [[ ${!i} == "-f" ]] || [[ ${!i} == "--force" ]]; then
         FORCE=--force
         export FORCE
-        echo ${FORCE}
         ((i++))
     fi
-    echo ${!i}
     if [[ ${!i} == "--cask" ]]; then
         ((i++))
         brew info --cask ${!i}
-        brew install ${FORCE} homebrew/cask/${!i}
+        brew install ${FORCE:+"$FORCE"} homebrew/cask/${!i}
     else
         brew info ${!i}
-        brew install ${FORCE} ${!i}
+        brew install ${FORCE:+"$FORCE"} ${!i}
     fi
 fi
 #-uu
@@ -197,8 +193,12 @@ if [[ ${!i} == "info" ]] || [[ ${!i} == "--info" ]]; then
     shift;
     for item in "${@}"; do
         echo "item = $item"
-        brew info $item
+        brew info "$item"
     done
+fi
+#--version
+if [[ ${!i} == "--version" ]] || [[ ${!i} == "version" ]] || [[ ${!i} == "-V" ]]; then
+    brew --version
 fi
 #--help
 if [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]] || [[ ${!i} == " " ]]; then
@@ -217,6 +217,12 @@ fi
 
 done
 # End loop
+
+if [[ $# -eq 0 ]]; then
+    HELP=TRUE
+    export HELP
+    checkbrew-help
+fi
 }
 
 function checkbrew-help(){

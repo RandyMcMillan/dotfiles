@@ -391,6 +391,10 @@ template:
 	@install -bC $(PWD)/scripts/checkbrew /usr/local/bin/checkbrew
 	bash -c "source /usr/local/bin/checkbrew"
 
+##	:	checkbrew		install checkbrew command
+checkbrew:
+	@cargo install --path $(PWD) --bin checkbrew
+
 .PHONY: nvm
 .ONESHELL:
 nvm: executable ## nvm

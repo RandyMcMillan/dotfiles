@@ -286,7 +286,8 @@ fn main() {
                 // Instruct rustc to link against the OpenSSL libraries.
                 // The `openssl` crate generally handles finding these libraries.
                 // If you need explicit linking (less recommended):
-                let target_arch = env::var("CARGO_CFG_TARGET_ARCH").expect("CARGO_CFG_TARGET_ARCH not set");
+                let target_arch =
+                    env::var("CARGO_CFG_TARGET_ARCH").expect("CARGO_CFG_TARGET_ARCH not set");
                 if target_arch == "aarch64" {
                     println!("cargo:rustc-link-search=native=/opt/homebrew/opt/openssl@3/lib");
                     println!("cargo:rustc-link-lib=dylib=ssl");

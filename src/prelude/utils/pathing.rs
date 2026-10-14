@@ -60,10 +60,7 @@ mod tests {
     fn test_windows_config_path() {
         assert_eq!(
             config_path("config.toml"),
-            format!(
-                "{}\\config.toml",
-                std::env::var("APPDATA").unwrap(),
-            )
+            format!("{}\\config.toml", std::env::var("APPDATA").unwrap(),)
         );
     }
 
@@ -107,10 +104,7 @@ mod tests {
     fn test_windows_config_path() {
         assert_eq!(
             config_path("config.toml"),
-            format!(
-                "{}\\config.toml",
-                std::env::var("APPDATA").unwrap(),
-            )
+            format!("{}\\config.toml", std::env::var("APPDATA").unwrap(),)
         );
     }
 

@@ -50,8 +50,17 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    #[command(alias = "checkbrew-bundle", about = "Dump Homebrew bundle")]
-    Bundle,
+    #[command(alias = "checkbrew-bundle", about = "bundle install/dump/cleanup")]
+    Bundle {
+        #[arg(default_value = "dump", value_name = "ACTION")]
+        action: String,
+
+        #[arg(short = 'f', long = "force")]
+        force: bool,
+
+        #[arg(long = "file", value_name = "PATH")]
+        file: Option<String>,
+    },
 
     #[command(alias = "checkbrew-cleanup", about = "Run brew bundle cleanup")]
     Cleanup,
@@ -275,6 +284,31 @@ fn uninstall() {
     }
 }
 
+fn bundle_action(action: &str, force: bool, file: Option<&str>) {
+    let file = file.unwrap_or("Brewfile");
+    match action {
+        "install" => {
+            let mut args = vec!["bundle", "install"];
+            if force {
+                args.push("--force");
+            }
+            args.push("--file");
+            args.push(file);
+            let refs: Vec<&str> = args.iter().copied().collect();
+            let _ = run("brew", &refs);
+        }
+        "dump" => {
+            bundle(force);
+        }
+        "cleanup" => {
+            cleanup(force);
+        }
+        _ => {
+            eprintln!("unknown bundle action: {}", action);
+        }
+    }
+}
+
 fn bundle(force: bool) {
     if !is_root() && has("brew") {
         if force {
@@ -395,7 +429,9 @@ fn main() {
 
     if let Some(command) = cli.command {
         match command {
-            Commands::Bundle => bundle(cli.force),
+            Commands::Bundle { action, force, file } => {
+                bundle_action(&action, force || cli.force, file.as_deref());
+            }
             Commands::Cleanup => cleanup(cli.force),
             Commands::Usage => print_help(),
             Commands::Sudoless => sudoless(),

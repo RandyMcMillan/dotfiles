@@ -72,7 +72,7 @@ bootstrap.log
 brew/
 build-aux/
 build/
-Cargo.lock
+!Cargo.lock
 ChangeLog~
 config.h
 config.h.in~

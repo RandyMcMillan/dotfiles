@@ -271,6 +271,7 @@
 	templateDir = ~/.config/git/template/
 	defaultBranch = main
 
+## gpg --list-secret-keys --keyid-format LONG
 [user]
 	signingkey = A80B2B4F04E32821
 	name = randymcmillan

@@ -1,3 +1,4 @@
+tap "gnostr-org/gnostr-org"
 tap "randymcmillan/randymcmillan", "https://github.com/RandyMcMillan/homebrew-randymcmillan"
 # Run your GitHub Actions locally
 brew "act"

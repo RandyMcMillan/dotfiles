@@ -1,7 +1,10 @@
+tap "randymcmillan/randymcmillan", "https://github.com/RandyMcMillan/homebrew-randymcmillan"
 # Run your GitHub Actions locally
 brew "act"
 # Static checker for GitHub Actions workflow files
 brew "actionlint"
+# X.Org: Interface to the X Window System protocol
+brew "libxcb"
 # Automatic configure script builder
 brew "autoconf"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -14,14 +17,18 @@ brew "bash-completion"
 brew "binaryen"
 # Collection of portable C++ source libraries
 brew "boost"
-# X.Org: Interface to the X Window System protocol
-brew "libxcb"
 # Data interchange format and capability-based RPC system
 brew "capnp"
+# Decentralized dependency manager for Cocoa
+brew "carthage"
 # Cross-platform make
 brew "cmake"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
+# User-friendly command-line shell for UNIX-like operating systems
+brew "fish"
 # Serialization library for C++, supporting Java, C#, and Go
 brew "flatbuffers"
 # Command-line fuzzy finder written in Go
@@ -40,6 +47,12 @@ brew "gh"
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
+# Library access to GnuPG
+brew "gpgme"
+# Toolkit for creating graphical user interfaces
+brew "gtk+3"
+# Toolkit for creating graphical user interfaces
+brew "gtk4"
 # AI coding agent for your terminal
 brew "kimi-code"
 # Peer-to-peer hypermedia protocol
@@ -54,6 +67,8 @@ brew "nvm"
 brew "opencode"
 # Package compiler and linker metadata toolkit
 brew "pkgconf"
+# Fast, disk space efficient package manager
+brew "pnpm"
 # Protocol buffers (Google's data interchange format)
 brew "protobuf"
 # QR Code generation
@@ -70,6 +85,8 @@ brew "swiftformat"
 brew "yarn"
 # General-purpose lossless data-compression library
 brew "zlib"
+# Continuous, differentiable layout transitions for Ratatui
+brew "randymcmillan/randymcmillan/ratatui-relu", trusted: true
 # Toolset to implement parts of Android apps in native code
 cask "android-ndk"
 # Brings the power of Copilot coding agent directly to your terminal
@@ -84,6 +101,8 @@ cask "firefox"
 cask "firefox@developer-edition"
 # Web browser
 cask "google-chrome@dev"
+# Client for the Google Drive storage service
+cask "google-drive"
 # Tools to protect your emails and files
 cask "gpg-suite"
 # Menu bar application for the IPFS peer-to-peer network
@@ -102,12 +121,16 @@ cask "opencode-desktop"
 cask "protonvpn"
 # IDE for application development
 cask "qt-creator@dev"
+# Google Chromium, sans integration with Google
+cask "ungoogled-chromium"
 go "github.com/ipfs/kubo/cmd/ipfs"
+go "github.com/ipfs/kubo/cmd/ipfswatch"
 cargo "blossom-cli"
 cargo "blossom-server"
 cargo "cargo-binstall"
 cargo "cargo-deny"
 cargo "cargo-dist"
+cargo "cargo-llvm-cov"
 cargo "cargo-ndk"
 cargo "cargo-sort"
 cargo "cargo-watch"
@@ -115,17 +138,21 @@ cargo "get_file_hash"
 cargo "gnostr"
 cargo "gnostr-bins"
 cargo "gnostr-cat"
+cargo "gnostr-dev"
 cargo "gnostr-query"
 cargo "gnostr-tui"
 cargo "gnostr-xq"
+cargo "gpg-tui"
 cargo "just"
 cargo "radicle-cli"
 cargo "radicle-node"
 cargo "radicle-remote-helper"
 cargo "radicle-schemars"
+cargo "ratatui-relu"
 cargo "rust-project-template"
 cargo "sccache"
 cargo "taplo-cli"
 cargo "trunk"
 cargo "wasm-bindgen-cli"
 cargo "wasm-pack"
+cargo "websocat"

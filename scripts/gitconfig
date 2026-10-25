@@ -1,0 +1,76 @@
+# 1. Find the actual underlying Git directory
+REAL_GIT_DIR=$(git rev-parse --git-dir)
+
+# 2. Ensure the hooks directory exists inside it
+mkdir -p "$REAL_GIT_DIR/hooks"
+
+# 3. Create the pre-commit hook script
+cat << 'EOF' > "$REAL_GIT_DIR/hooks/pre-commit"
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "========================================"
+echo " [pre-commit] Running configuration checks..."
+echo "========================================"
+
+# 1. Validate current repository Git configuration syntax
+echo "-> Checking active repository git config syntax..."
+if ! git config --list --show-origin > /dev/null 2>&1; then
+    echo "[ERROR] Git configuration syntax error detected!"
+    git config --list --show-origin
+    exit 1
+fi
+echo "-> Active git config syntax is valid."
+
+# 2. Check staged configuration files
+STAGED_CONFIGS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.gitconfig$|\.ini$|\.toml$|\.json$|\.yaml$|\.yml$' || true)
+
+if [ -n "$STAGED_CONFIGS" ]; then
+    echo "-> Inspecting staged configuration files:"
+    echo "$STAGED_CONFIGS"
+
+    for file in $STAGED_CONFIGS; do
+        if [[ "$file" == *".gitconfig" ]] || [[ "$file" == *".ini" ]]; then
+            echo "-> Validating INI syntax for: $file"
+            if ! git config --file "$file" --list > /dev/null 2>&1; then
+                echo "[ERROR] Syntax error in configuration file: $file"
+                git config --file "$file" --list
+                exit 1
+            fi
+        fi
+    done
+fi
+
+echo "========================================"
+echo " [pre-commit] All checks passed successfully!"
+echo "========================================"
+exit 0
+EOF
+
+# 4. Make the hook executable
+chmod +x "$REAL_GIT_DIR/hooks/pre-commit"
+echo "Successfully installed pre-commit hook to: $REAL_GIT_DIR/hooks/pre-commit"
+
+
+## Quick Comparison
+## Feature	autocrlf = input	autocrlf = false
+## Normalizes on Commit?	Yes (CRLF → LF)	No
+## Touches Checkouts?	No	No
+## Prevents CRLF Pollution?	Yes	No
+## Best For:	macOS/Linux developers collaborating with others
+##              Strict binary preservation / personal sandbox repos
+
+## git config core.autocrlf false
+## [core]
+##     repositoryformatversion = 0
+##     filemode = true
+##     bare = false
+##     logallrefupdates = true
+##     precomposeunicode = true
+##     autocrlf = false
+
+
+## cat << 'EOF' > ~/.vim_runtime/.gitconfig
+## [core]
+##     autocrlf = input
+## EOF

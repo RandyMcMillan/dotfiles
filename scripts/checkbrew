@@ -2,14 +2,16 @@
 HOMEBREW_NO_INSTALL_CLEANUP=
 export  HOMEBREW_NO_INSTALL_CLEANUP
 
+BREW=$(which brew)
+export BREW
 function checkbrew-sudoless () {
 
-if hash brew 2>/dev/null; then
+if hash  $BREW 2>/dev/null; then
 
-	PREFIX=$(brew --prefix)
-	export PREFIX
+	BREW_PREFIX=$($BREW --prefix)
+	export BREW_PREFIX
     # take ownership
-	sudo mkdir -p "$PREFIX"/{share/man,bin,lib/node,include/node} >/dev/null
+	sudo mkdir -p "$BREW_PREFIX"/{share/man,bin,lib/node,include/node} >/dev/null
 	sudo chown -R "$USER" "$PREFIX"/{share/man,bin,sbin,lib/node,include/node} >/dev/null
 
 fi
@@ -18,10 +20,10 @@ fi
 
 function checkbrew-upgrade() {
 if [ "$EUID" -ne "0" ]; then
-    if hash brew 2>/dev/null; then
+    if hash $BREW 2>/dev/null; then
     for item in "${@}"; do
         echo "${item}"
-        brew upgrade ${FORCE:+"$FORCE"} "${item}"
+        $BREW upgrade ${FORCE:+"$FORCE"} "${item}"
         shift
     done
     fi
@@ -29,39 +31,39 @@ fi
 }
 function checkbrew-cleanup() {
 if [ "$EUID" -ne "0" ]; then
-    if hash brew 2>/dev/null; then
-        brew bundle ${FORCE:+"$FORCE"} cleanup
+    if hash $BREW 2>/dev/null; then
+        $BREW bundle ${FORCE:+"$FORCE"} cleanup
     fi
 fi
 }
 function checkbrew-uninstall(){
 
-    brew remove --force $(brew list --formula)
-    brew remove --cask --force $(brew list)
+    $BREW remove --force $($BREW list --formula)
+    $BREW remove --cask --force $($BREW list)
 
 }
 function checkbrew-bundle() {
 if [ "$EUID" -ne "0" ]; then
-    if hash brew 2>/dev/null; then
-        brew bundle ${FORCE:+"$FORCE"} dump
+    if hash $BREW 2>/dev/null; then
+        $BREW bundle ${FORCE:+"$FORCE"} dump
     fi
 fi
 }
 function checkbrew() {
 if [ "$EUID" == "0" ]; then
-    printf "home brew prevents being installed from root!!!\nTry\nmake adduser-git"
+    printf "home $BREW prevents being installed from root!!!\nTry\nmake adduser-git"
 fi
-if hash brew 2>/dev/null; then
+if hash $BREW 2>/dev/null; then
     export AWK=gawk
     if ! hash $AWK 2>/dev/null; then
         if hash gawk 2>/dev/null; then
-            brew unlink gawk
+            $BREW unlink gawk
         fi
-        brew install $AWK
-        brew link $AWK
+        $BREW install $AWK
+        $BREW link $AWK
     fi
     if ! hash git 2>/dev/null; then
-        brew install git
+        $BREW install git
     fi
 else
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -151,7 +153,7 @@ fi
 if [[ ${!i} == "-b" ]] || [[ ${!i} == "--bundle" ]]; then
     # echo "--bundle"
     # TODO: --force detect
-    brew bundle ${FORCE:+"$FORCE"} dump
+    $BREW bundle ${FORCE:+"$FORCE"} dump
     shift
 fi
 #--install
@@ -165,23 +167,23 @@ if [[ ${!i} == "--install" ]] || [[ ${!i} == "install" ]] || [[ ${!i} == "-i" ]]
     fi
     if [[ ${!i} == "--cask" ]]; then
         ((i++))
-        brew info --cask ${!i}
-        brew install ${FORCE:+"$FORCE"} homebrew/cask/${!i}
+        $BREW info --cask ${!i}
+        $BREW install ${FORCE:+"$FORCE"} homebrew/cask/${!i}
     else
-        brew info ${!i}
-        brew install ${FORCE:+"$FORCE"} ${!i}
+        $BREW info ${!i}
+        $BREW install ${FORCE:+"$FORCE"} ${!i}
     fi
 fi
 #-uu
 if [[ ${!i} == "-uu" ]];then
-    brew update
+    $BREW update
     checkbrew-upgrade
 
 fi
 #update
 if [[ ${!i} == "-ud" ]] || [[ ${!i} == "update" ]]; then
     shift;
-    brew update
+    $BREW update
 fi
 if [[ ${!i} == "-ug" ]] || [[ ${!i} == "upgrade" ]]; then
     # shift;
@@ -193,12 +195,12 @@ if [[ ${!i} == "info" ]] || [[ ${!i} == "--info" ]]; then
     shift;
     for item in "${@}"; do
         echo "item = $item"
-        brew info "$item"
+        $BREW info "$item"
     done
 fi
 #--version
 if [[ ${!i} == "--version" ]] || [[ ${!i} == "version" ]] || [[ ${!i} == "-V" ]]; then
-    brew --version
+    $BREW --version
 fi
 #--help
 if [[ ${!i} == "-h" ]] || [[ ${!i} == "--help" ]] || [[ ${!i} == " " ]]; then

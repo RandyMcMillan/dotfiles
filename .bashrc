@@ -119,25 +119,25 @@ unset file;
 ##   echo "/usr/bin/true exists" &>/dev/null
 ## fi
 ## 
-## ## for OUTPUT in $(ls -f Makefile 2>/dev/null)
-## ## do
-## ## 
-## ## #echo $OUTPUT
-## ## 
-## ## complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
-## ## 
-## ## ## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-## ## 
-## ## done
-## ## for OUTPUT in $(ls -f GNUmakefile 2>/dev/null)
-## ## do
-## ## 
-## ## #echo $OUTPUT
-## ## 
-## ## complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
-## ## ##complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-## ## 
-## ## done
+for OUTPUT in $(ls -f Makefile 2>/dev/null)
+do
+
+#echo $OUTPUT
+
+complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
+
+## complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+
+done
+for OUTPUT in $(ls -f $PWD/GNUmakefile 2>/dev/null)
+do
+
+#echo $OUTPUT
+
+complete -W "`([[ -r $OUTPUT ]] && grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' $OUTPUT || cat /dev/null) | sed 's/[^a-zA-Z0-9_-]*$//'`" make
+complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)'    $OUTPUT | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+
+done
 ## 
 ## 
 ## if [[ -n "${BASH_VERSION:-}" ]]; then

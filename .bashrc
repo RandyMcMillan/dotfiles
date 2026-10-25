@@ -26,11 +26,11 @@ else
     type -P rustup && rustup default stable
 fi
 ##
-if hash brew 2>/dev/null; then
-	if [ -f /usr/local/bin/checkbrew ]; then
-	source /usr/local/bin/checkbrew
-	fi
-fi
+## if hash brew 2>/dev/null; then
+## 	if [ -f /usr/local/bin/checkbrew ]; then
+## 	source /usr/local/bin/checkbrew
+## 	fi
+## fi
 
 ##just completion
 complete -F _just -o bashdefault -o default j
@@ -199,3 +199,5 @@ fi
 if [ -f "/Applications/OpenCode.app/Contents/MacOS/opencode-cli" ]; then
        pathappend "/Applications/OpenCode.app/Contents/MacOS"
 fi
+
+source "$(find /Users/Shared/github -path '*/gnostr/scripts/gnostr-completion.sh' -type f -print -quit)"

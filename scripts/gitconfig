@@ -1,19 +1,24 @@
-# 1. Find the actual underlying Git directory
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 1. Find the actual underlying Git directory (handles submodules & worktrees safely)
 REAL_GIT_DIR=$(git rev-parse --git-dir)
 
 # 2. Ensure the hooks directory exists inside it
 mkdir -p "$REAL_GIT_DIR/hooks"
 
-# 3. Create the pre-commit hook script
+# 3. Create the robust pre-commit hook script with Git config + ShellCheck support
 cat << 'EOF' > "$REAL_GIT_DIR/hooks/pre-commit"
 #!/usr/bin/env bash
 set -euo pipefail
 
 echo "========================================"
-echo " [pre-commit] Running configuration checks..."
+echo " [pre-commit] Running repository checks..."
 echo "========================================"
 
+# -----------------------------------------------------------------------------
 # 1. Validate current repository Git configuration syntax
+# -----------------------------------------------------------------------------
 echo "-> Checking active repository git config syntax..."
 if ! git config --list --show-origin > /dev/null 2>&1; then
     echo "[ERROR] Git configuration syntax error detected!"
@@ -22,7 +27,9 @@ if ! git config --list --show-origin > /dev/null 2>&1; then
 fi
 echo "-> Active git config syntax is valid."
 
-# 2. Check staged configuration files
+# -----------------------------------------------------------------------------
+# 2. Check staged configuration files (.gitconfig, .ini, etc.)
+# -----------------------------------------------------------------------------
 STAGED_CONFIGS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.gitconfig$|\.ini$|\.toml$|\.json$|\.yaml$|\.yml$' || true)
 
 if [ -n "$STAGED_CONFIGS" ]; then
@@ -41,6 +48,29 @@ if [ -n "$STAGED_CONFIGS" ]; then
     done
 fi
 
+# -----------------------------------------------------------------------------
+# 3. Lint staged Bash scripts with ShellCheck
+# -----------------------------------------------------------------------------
+STAGED_SCRIPTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.sh$' || true)
+
+if [ -n "$STAGED_SCRIPTS" ]; then
+    echo "-> Inspecting staged Bash scripts for lint errors:"
+    echo "$STAGED_SCRIPTS"
+
+    if ! command -v shellcheck &> /dev/null; then
+        echo "[WARNING] 'shellcheck' is not installed. Skipping bash linting."
+        echo "          Install it via: brew install shellcheck"
+    else
+        for script in $STAGED_SCRIPTS; do
+            echo "-> Running shellcheck on: $script"
+            if ! shellcheck "$script"; then
+                echo "[ERROR] ShellCheck found syntax or style issues in $script"
+                exit 1
+            fi
+        done
+    fi
+fi
+
 echo "========================================"
 echo " [pre-commit] All checks passed successfully!"
 echo "========================================"
@@ -49,16 +79,17 @@ EOF
 
 # 4. Make the hook executable
 chmod +x "$REAL_GIT_DIR/hooks/pre-commit"
+echo "Successfully installed and configured pre-commit hook at: $REAL_GIT_DIR/hooks/pre-commit"
 echo "Successfully installed pre-commit hook to: $REAL_GIT_DIR/hooks/pre-commit"
 
 
 ## Quick Comparison
-## Feature	autocrlf = input	autocrlf = false
-## Normalizes on Commit?	Yes (CRLF → LF)	No
-## Touches Checkouts?	No	No
-## Prevents CRLF Pollution?	Yes	No
-## Best For:	macOS/Linux developers collaborating with others
-##              Strict binary preservation / personal sandbox repos
+## Feature     autocrlf = input        autocrlf = false
+## Normalizes on Commit?       Yes (CRLF → LF) No
+## Touches Checkouts?  No      No
+## Prevents CRLF Pollution?    Yes     No
+## Best For:   macOS/Linux developers collaborating with others
+##             Strict binary preservation / personal sandbox repos
 
 ## git config core.autocrlf false
 ## [core]

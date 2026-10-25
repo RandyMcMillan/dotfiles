@@ -95,6 +95,11 @@
 	# `git di $number` shows the diff between the state `$number` revisions ago and the current state.
 	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
+	# Word diff with the [-removed-] / {+added+} markers stripped out.
+	word-diff = "!f() { \
+		git diff --color=always --word-diff=plain \"$@\" | sed -E 's/\\[\\-//g; s/\\-\\]//g; s/\\{\\+//g; s/\\+\\}//g'; \
+	}; f"
+
 	# Pull in remote changes for the current repository and all its submodules.
 	p = pull --recurse-submodules
 

@@ -19,8 +19,9 @@ function pathprepend() {
   done
 }
 
-function rustup-clean() {
- for toolchain in $(rustup toolchain list | sed 's/(active,//g' | sed 's/default)//g');do rustup toolchain uninstall $toolchain;done
+function rustup_clean() {
+ for toolchain in $($(which rustup) toolchain list | sed 's/(active,//g' | sed 's/default)//g');do \
+     rustup toolchain uninstall $toolchain;done
 
 }
 
@@ -67,7 +68,7 @@ DEVICE=en1
 }
 
 
-function install-gnumakefile (){
+function install_gnumakefile (){
 
 type -P gh && \
 gh gist view c40380c6548d46d45a88fad5c02abe16 | sed 's/make-nvm//g' > GNUmakefile || \
@@ -75,208 +76,208 @@ type -P brew && brew install gh
 
 }
 
-function bitcoin-autogen (){
+function bitcoin_autogen (){
     ./autogen.sh
 }
-function bitcoin-configure-disable-tests-bench-fuzz(){
+function bitcoin_configure_disable_tests_bench_fuzz(){
     ./configure --disable-tests --disable-bench --disable-fuzz
 }
 
-function bitcoin-configure-disable-wallet-tests-bench-fuzz(){
+function bitcoin_configure_disable_wallet_tests_bench_fuzz(){
     ./configure --disable-wallet --disable-tests --disable-bench --disable-fuzz
 }
-function bitcoin-configure-disable-wallet-tests-bench(){
+function bitcoin_configure_disable_wallet_tests_bench(){
     ./configure --disable-wallet --disable-tests --disable-bench
 }
-function bitcoin-configure-disable-tests-bench(){
+function bitcoin_configure_disable_tests_bench(){
     ./configure --disable-tests --disable-bench
 }
 
-function bitcoin-make-appbundle (){
+function bitcoin_make_appbundle (){
     rm -f src/bitcoind && rm -rf Bitcoin-Qt.app && rm -rf ~/Library/Saved\ Application\ State/org.bitcoinfoundation.Bitcoin-Qt.savedState && rm -rf ~/Library/Preferences/org.bitcoin.Bitcoin-Qt.plist && make appbundle && wait && ./Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt -resetguisettings
 }
 
-function bitcoin-make-depends () {
+function bitcoin_make_depends () {
     make -C depends
 }
 
-function bitcoin-dl-install-depends(){
+function bitcoin_dl_install_depends(){
 
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
             apt install linuxbrew-wrapper
             apt install autoconf
-            apt install libdb4.8++-dev
-            apt -y install libboost libevent miniupnpc libdb4.8 qt libqrencode univalue libzmq3
-            apt install build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
-            apt install libevent-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev libboost-thread-dev
-            apt install libminiupnpc-dev
-            apt install libzmq3-dev
-            apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools
-            apt install libqrencode-dev
+            apt install libdb4.8++_dev
+            apt _y install libboost libevent miniupnpc libdb4.8 qt libqrencode univalue libzmq3
+            apt install build_essential libtool autotools_dev automake pkg_config bsdmainutils python3
+            apt install libevent_dev libboost_system_dev libboost_filesystem_dev libboost_test_dev libboost_thread_dev
+            apt install libminiupnpc_dev
+            apt install libzmq3_dev
+            apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5_dev qttools5_dev_tools
+            apt install libqrencode_dev
 
             ./contrib/install_db4.sh .
-            ./autogen.sh && ./configure --disable-tests && make download install -C depends
+            ./autogen.sh && ./configure __disable_tests && make download install _C depends
 
     elif [[ "$OSTYPE" == "darwin"* ]]; then
 
         if hash brew 2>/dev/null; then
             brew install wget
             brew install curl
-            brew install autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config python qt libevent qrencode
+            brew install autoconf automake berkeley_db4 libtool boost miniupnpc pkg_config python qt libevent qrencode
             brew install librsvg
         else
-            #example - execute script with perl
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-            install-bitcoin-depends
+            #example _ execute script with perl
+            /bin/bash _c "$(curl _fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+            install_bitcoin_depends
         fi
         pushd ~/gui || exit
-        make download install -C depends
-        ./autogen.sh && ./configure --disable-tests && make download install -C depends
+        make download install _C depends
+        ./autogen.sh && ./configure __disable_tests && make download install _C depends
         popd || exit
         pushd ~/bitcoin || exit
-        make download install -C depends
-        ./autogen.sh && ./configure --disable-tests && make download install -C depends
+        make download install _C depends
+        ./autogen.sh && ./configure __disable_tests && make download install _C depends
         popd || exit
     fi
 }
 
-function cargo-clean-r () {
+function cargo_clean_r () {
 
-for repo in $(ls --color=none -d */ );
+for repo in $(ls __color=none _d */ );
 do pushd $repo && \
-    cargo clean -vv \
+    cargo clean _vv \
     popd; \
     git gc; \
     done
 
 }
 
-cargo-sweep-r() {
+cargo_sweep_r() {
     # Default to current directory if no argument is provided
-    local TARGET="${1:-.}"
+    local TARGET="${1:_.}"
     echo "Recursively sweeping: $TARGET"
 
     # Use find to locate all directories containing a Cargo.toml file
-    # This prevents blindly running 'cargo clean' in every sub-directory
-    find "$TARGET" -name "Cargo.toml" -exec dirname {} \; | while read -r repo; do
-        echo "--- Processing: $repo ---"
+    # This prevents blindly running 'cargo clean' in every sub_directory
+    find "$TARGET" _name "Cargo.toml" _exec dirname {} \; | while read _r repo; do
+        echo "___ Processing: $repo ___"
         (
             cd "$repo" || continue
-            rm -rf .deps .venv
-            rm -f rust-toolchain.toml
-            cargo clean -vv 2>/dev/null
+            rm _rf .deps .venv
+            rm _f rust_toolchain.toml
+            cargo clean _vv 2>/dev/null
         )
     done
 }
-function rm-rf-node_modules () {
+function rm_rf_node_modules () {
 
-TIME=${1:-1}
+TIME=${1:_1}
 
-for repo in $(ls --color=none -d */node_modules 2>/dev/null || true );
+for repo in $(ls __color=none _d */node_modules 2>/dev/null || true );
 do pushd $repo && \
 echo $repo
-    rm -rf node_modules || true
+    rm _rf node_modules || true
     popd; \
     done
 
 }
 
-function git-fetch-all(){
-    git fetch --all 2>/dev/null
+function git_fetch_all(){
+    git fetch __all 2>/dev/null
 }
-function git-fetch-all-tags(){
-    git fetch --all --tags 2>/dev/null
+function git_fetch_all_tags(){
+    git fetch __all __tags 2>/dev/null
 }
-function git-fetch-branches(){
+function git_fetch_branches(){
     git stash && export STASH=true || echo "no stash"
-    git branch -q -r || grep -v '\->' || while read remote; \
-    do git branch -q "${remote#origin/}" "$remote" || echo skip "$remote"; done
-    #git fetch --all  || echo skip && git pull --all || echo skip
+    git branch _q _r || grep _v '\_>' || while read remote; \
+    do git branch _q "${remote#origin/}" "$remote" || echo skip "$remote"; done
+    #git fetch __all  || echo skip && git pull __all || echo skip
     git fetch $1 $2 $3 || echo skip #&& git pull $1 $2 $3 || echo skip
     echo $STASH
     #if [[ $STASH == "true" ]];then echo $STASH; fi || echo nogo
     if [[ $STASH == "true" ]];then git stash list; fi || echo nogo
     #git stash pop || echo "no pop"
 }
-function git-push-tags(){
-    git push --tags 2>/dev/null
+function git_push_tags(){
+    git push __tags 2>/dev/null
 }
-function git-add-remote-bitcoin-devs(){
+function git_add_remote_bitcoin_devs(){
 
     git remote add darosior             git@github.com:darosior/bitcoin.git             || true
     git remote add bitcoinknots         git@github.com:bitcoinknots/bitcoin.git         || true
     git remote add Hyunhum              git@github.com:Hyunhum/bitcoin.git              || true
     git remote add MarcoFalke           git@github.com:MarcoFalke/bitcoin               || true
     git remote add bitschmidty          git@github.com:bitschmidty/bitcoin.git          || true
-    #git remote add bitcoincore-dev      git@github.com:bitcoincore-dev/bitcoin.git     || true
-    git remote add bitcoincore-dev-gui	git@github.com:bitcoincore-dev/gui.git          || true
+    #git remote add bitcoincore_dev      git@github.com:bitcoincore_dev/bitcoin.git     || true
+    git remote add bitcoincore_dev_gui	git@github.com:bitcoincore_dev/gui.git          || true
     git remote add ekzyis               git@github.com:ekzyis/bitcoin.git               || true
     git remote add fanquake	            git@github.com:fanquake/bitcoin.git             || true
     git remote add fjahr	            git@github.com:fjahr/bitcoin.git                || true
     git remote add hebasto              git@github.com:hebasto/bitcoin.git              || true
-    git remote add hebasto-gui          git@github.com:hebasto/gui.git                  || true
-    git remote add hebasto-nightly      git@github.com:hebasto/bitcoin-core-nightly.git || true
+    git remote add hebasto_gui          git@github.com:hebasto/gui.git                  || true
+    git remote add hebasto_nightly      git@github.com:hebasto/bitcoin_core_nightly.git || true
     git remote add InsanityMatrix       git@github.com:InsanityMatrix/bitcoin.git       || true
     git remote add jonas                git@github.com:jonasschnelli/bitcoin.git        || true
-    git remote add jonas-gui            git@github.com:jonasschnelli/gui.git            || true
+    git remote add jonas_gui            git@github.com:jonasschnelli/gui.git            || true
     git remote add jonatack             git@github.com:jonatack/bitcoin.git             || true
-    git remote add jonatack-gui         git@github.com:jonatack/gui.git                 || true
+    git remote add jonatack_gui         git@github.com:jonatack/gui.git                 || true
     git remote add jamesob              git@github.com:jamesob/bitcoin.git              || true
     git remote add kallewoof            git@github.com:kallewoof/bitcoin.git            || true
     git remote add kouloumos            git@github.com:kouloumos/bitcoin.git            || true
     git remote add laanwj               git@github.com:laanwj/bitcoin.git               || true
     git remote add lnhance              git@github.com:lnhance/bitcoin.git              || true
-    git remote add luke-jr              git@github.com:luke-jr/bitcoin-core-gui.git     || true
-    git remote add luke-jr-gui          git@github.com:luke-jr/bitcoin-core-gui.git     || true
-    git remote add maflcko              git@github.com:maflcko/bitcoin-core.git         || true
-    git remote add maflcko-gui          git@github.com:maflcko/bitcoin-core-gui.git     || true
-    git remote add mempool-tab          git@github.com:RandyMcMillan/mempool-tab.git    || true
+    git remote add luke_jr              git@github.com:luke_jr/bitcoin_core_gui.git     || true
+    git remote add luke_jr_gui          git@github.com:luke_jr/bitcoin_core_gui.git     || true
+    git remote add maflcko              git@github.com:maflcko/bitcoin_core.git         || true
+    git remote add maflcko_gui          git@github.com:maflcko/bitcoin_core_gui.git     || true
+    git remote add mempool_tab          git@github.com:RandyMcMillan/mempool_tab.git    || true
     git remote add mzumsande            git@github.com:mzumsande/bitcoin.git            || true
     git remote add BrandonOdiwuor       git@github.com:BrandonOdiwuor/bitcoin.git       || true
     #git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git       || true
-    git remote add randymcmillan-gui	git@github.com:randymcmillan/gui.git            || true
+    git remote add randymcmillan_gui	git@github.com:randymcmillan/gui.git            || true
     git remote add pinheadmz            git@github.com:pinheadmz/bitcoin.git            || true
     git remote add petertodd            git@github.com:petertodd/bitcoin.git            || true
     git remote add randymcmillan        git@github.com:RandyMcMillan/bitcoin.git        || true
     git remote add reardencode          git@github.com:reardencode/bitcoin.git          || true
-    git remote add rsafier-gui          git@github.com:rsafier/gui.git                  || true
+    git remote add rsafier_gui          git@github.com:rsafier/gui.git                  || true
     git remote add russeree             git@github.com:russeree/bitcoin                 || true
     git remote add statoshi             git@github.com:jlopp/statoshi.git               || true
-    git remote add sjors-gui            git@github.com:Sjors/gui.git                    || true
+    git remote add sjors_gui            git@github.com:Sjors/gui.git                    || true
     git remote add TheStack             git@github.com:TheStack/bitcoin.git             || true
     git remote add upstream             git@github.com:bitcoin/bitcoin.git              || true
-    git remote add upstream-gui         git@github.com:bitcoin-core/gui.git             || true
+    git remote add upstream_gui         git@github.com:bitcoin_core/gui.git             || true
     git remote add virtu                git@github.com:virtu/bitcoin.git                || true
-    git remote add willcl-ark           git@github.com:willcl-ark/bitcoin.git           || true
+    git remote add willcl_ark           git@github.com:willcl_ark/bitcoin.git           || true
 
 }
-function gpg-sync-keys-bitcoin-devs-test(){
+function gpg_sync_keys_bitcoin_devs_test(){
 
-gpg --keyserver hkps://keys.openpgp.org --send-keys E616FA7221A1613E5B99206297966C06BB06757B
+gpg __keyserver hkps://keys.openpgp.org __send_keys E616FA7221A1613E5B99206297966C06BB06757B
 
 }
 
-fix-gpg-sockets() {
-    echo "==> Killing active dirmngr and gpg-agent..."
-    gpgconf --kill dirmngr
-    gpgconf --kill gpg-agent
+fix_gpg_sockets() {
+    echo "==> Killing active dirmngr and gpg_agent..."
+    gpgconf __kill dirmngr
+    gpgconf __kill gpg_agent
 
     echo "==> Clearing stale sockets in ~/.gnupg..."
-    rm -f ~/.gnupg/S.dirmngr ~/.gnupg/S.gpg-agent*
+    rm _f ~/.gnupg/S.dirmngr ~/.gnupg/S.gpg_agent*
 
     echo "==> Spawning fresh dirmngr daemon..."
-    echo "BYE" | dirmngr --verbose --daemon
+    echo "BYE" | dirmngr __verbose __daemon
 
     echo "==> GPG socket reset complete."
 }
 
-function gpg-sync-keys-bitcoin-devs(){
+function gpg_sync_keys_bitcoin_devs(){
 
-curl -fsS https://b10c.me/gpg.txt > 0xB10C.txt
-gpg-sync-keys-bitcoin-devs-test
+curl _fsS https://b10c.me/gpg.txt > 0xB10C.txt
+gpg_sync_keys_bitcoin_devs_test
 
-gpg-recv-keys-bitcoin-devs
+gpg_recv_keys_bitcoin_devs
 
 #PGP_SERVERS="hkps://keys.openpgp.org"
 #PGP_SERVERS="keys.openpgp.org"
@@ -290,207 +291,207 @@ for server in $PGP_SERVERS; do
 echo $server
 
 #laanwj list
-	while read line; do echo $line && gpg  --keyserver $server --recv-key ${line:0:41}; done < keys.txt
-	#while read line; do echo $line && gpg  --keyserver hkps://keyserver.ubuntu.com  --send-key ${line:0:41}; done < keys.txt
-    #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < keys.txt
+	while read line; do echo $line && gpg  __keyserver $server __recv_key ${line:0:41}; done < keys.txt
+	#while read line; do echo $line && gpg  __keyserver hkps://keyserver.ubuntu.com  __send_key ${line:0:41}; done < keys.txt
+    #while read line; do gpg  __keyserver $server               __send_key ${line:0:41}; done < keys.txt
 
-	#while read line; do gpg  --keyserver pgp.mit.edu           --recv-key ${line:0:41}; done < keys.txt
-    #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < keys.txt
+	#while read line; do gpg  __keyserver pgp.mit.edu           __recv_key ${line:0:41}; done < keys.txt
+    #while read line; do gpg  __keyserver $server               __send_key ${line:0:41}; done < keys.txt
 
-	#while read line; do gpg  --keyserver keys.openpgp.org      --recv-key ${line:0:41}; done < keys.txt
-    #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < keys.txt
+	#while read line; do gpg  __keyserver keys.openpgp.org      __recv_key ${line:0:41}; done < keys.txt
+    #while read line; do gpg  __keyserver $server               __send_key ${line:0:41}; done < keys.txt
 
-#bitcoin-builder-list
-	while read line; do gpg  --keyserver hkps://keyserver.ubuntu.com  --recv-key ${line:0:41}; done < builder-keys.txt
-    #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < builder-keys.txt
+#bitcoin_builder_list
+	while read line; do gpg  __keyserver hkps://keyserver.ubuntu.com  __recv_key ${line:0:41}; done < builder_keys.txt
+    #while read line; do gpg  __keyserver $server               __send_key ${line:0:41}; done < builder_keys.txt
 
-	#while read line; do gpg  --keyserver pgp.mit.edu           --recv-key ${line:0:41}; done < builder-keys.txt
-    #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < builder-keys.txt
+	#while read line; do gpg  __keyserver pgp.mit.edu           __recv_key ${line:0:41}; done < builder_keys.txt
+    #while read line; do gpg  __keyserver $server               __send_key ${line:0:41}; done < builder_keys.txt
 
-	#while read line; do gpg  --keyserver keys.openpgp.org      --recv-key ${line:0:41}; done < builder-keys.txt
-    #while read line; do gpg  --keyserver $server               --send-key ${line:0:41}; done < builder-keys.txt
+	#while read line; do gpg  __keyserver keys.openpgp.org      __recv_key ${line:0:41}; done < builder_keys.txt
+    #while read line; do gpg  __keyserver $server               __send_key ${line:0:41}; done < builder_keys.txt
 
 done;
 
 }
 
-function gpg-recv-keys-bitcoin-devs(){
+function gpg_recv_keys_bitcoin_devs(){
 
 #laanwj list
-#LAANWJ_LIST="https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt" curl -fsSL $LAANWJ_LIST
+#LAANWJ_LIST="https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt" curl _fsSL $LAANWJ_LIST
 
 
 LAANWJ_LIST="https://gist.githubusercontent.com/laanwj/8368525bba4d89488dd5a0418884d91d/raw/0ff5573bf5c0b932d2ca567f77fadf038816c7b8/keys.txt"
-curl  -fsSL \
+curl  _fsSL \
 $LAANWJ_LIST \
--o  keys.txt && \
-shasum -a 256 keys.txt > keys.shasum.1.txt
+_o  keys.txt && \
+shasum _a 256 keys.txt > keys.shasum.1.txt
 #echo
 #cat keys.txt && echo
 #cat keys.shasum.1.txt && echo
 
 sed '/A2FD494D0021AA9B4FA58F759102B7AE654A4A5A/d' keys.txt > tmpfile && mv tmpfile keys.txt
-shasum -a 256 keys.txt > keys.shasum.2.txt
+shasum _a 256 keys.txt > keys.shasum.2.txt
 #echo
 #cat keys.txt
 #echo
 #cat keys.shasum.2.txt
 
-#bitcoin-builder-list
-curl  -fsSL  \
-https://raw.githubusercontent.com/bitcoin/bitcoin/3116ccd790e76de8f64d2ef9aa5a2641c15bbd8b/contrib/builder-keys/keys.txt \
--o  builder-keys.txt && \
-shasum -a 256 builder-keys.txt > builder.keys.shasum.txt
+#bitcoin_builder_list
+curl  _fsSL  \
+https://raw.githubusercontent.com/bitcoin/bitcoin/3116ccd790e76de8f64d2ef9aa5a2641c15bbd8b/contrib/builder_keys/keys.txt \
+_o  builder_keys.txt && \
+shasum _a 256 builder_keys.txt > builder.keys.shasum.txt
 
-sed '/A2FD494D0021AA9B4FA58F759102B7AE654A4A5A/d' builder-keys.txt > tmpfile && mv tmpfile builder-keys.txt
-shasum -a 256 builder-keys.txt > builder.keys.shasum.2.txt
+sed '/A2FD494D0021AA9B4FA58F759102B7AE654A4A5A/d' builder_keys.txt > tmpfile && mv tmpfile builder_keys.txt
+shasum _a 256 builder_keys.txt > builder.keys.shasum.2.txt
 
-rm -f tmpfile
+rm _f tmpfile
 
 }
 
-function git-branch-D (){
+function git_branch_D (){
 
-if [ -z "$1" ]
+if [ _z "$1" ]
     then
 
     git branch
     echo "try:"
-    echo "git-branch-D *string*"
-    ##git branch -D $(git branch --list "$1")
+    echo "git_branch_D *string*"
+    ##git branch _D $(git branch __list "$1")
 
 else
-    git branch -D "$(git branch --list "$1*")"
+    git branch _D "$(git branch __list "$1*")"
 fi
 
 }
-function git-branch-D-r (){
+function git_branch_D_r (){
 
-if [ -z "$1" ]
+if [ _z "$1" ]
     then
 
-    git branch -r
+    git branch _r
     echo "try:"
-    echo "git-branch-D *string*"
-    #git branch -D -r $(git branch --list "$1")
+    echo "git_branch_D *string*"
+    #git branch _D _r $(git branch __list "$1")
 
 else
-    git branch -D -r  "$(git branch --list -r "$1*")"
+    git branch _D _r  "$(git branch __list _r "$1*")"
 fi
 
 }
-function git-checkout-b (){
+function git_checkout_b (){
 
-weeble=$(gnostr --weeble)
-blockheight=$(gnostr --blockheight)
-wobble=$(gnostr --wobble)
+weeble=$(gnostr __weeble)
+blockheight=$(gnostr __blockheight)
+wobble=$(gnostr __wobble)
 
-git checkout -b ${weeble:-0}/${blockheight:-0}/${wobble:-0}/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
-    if [ ! -z "$1" ]
+git checkout _b ${weeble:_0}/${blockheight:_0}/${wobble:_0}/$(git rev_parse __short HEAD^1)/$(git rev_parse __short HEAD)
+    if [ ! _z "$1" ]
     then
-        git checkout -b $(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+        git checkout _b $(gnostr __weeble)/$(gnostr __blockheight)/$(gnostr __wobble)/$(git rev_parse __short HEAD^1)/$(git rev_parse __short HEAD)_$1
     fi
 
 }
-function git-checkout-pr (){
+function git_checkout_pr (){
 
-weeble=$(gnostr --weeble)
-blockheight=$(gnostr --blockheight)
-wobble=$(gnostr --wobble)
+weeble=$(gnostr __weeble)
+blockheight=$(gnostr __blockheight)
+wobble=$(gnostr __wobble)
 
-git checkout -b pr/${weeble:-0}/${blockheight:-0}/${wobble:-0}/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
-    if [ ! -z "$1" ]
+git checkout _b pr/${weeble:_0}/${blockheight:_0}/${wobble:_0}/$(git rev_parse __short HEAD^1)/$(git rev_parse __short HEAD)
+    if [ ! _z "$1" ]
     then
-        git checkout -b pr/$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+        git checkout _b pr/$(gnostr __weeble)/$(gnostr __blockheight)/$(gnostr __wobble)/$(git rev_parse __short HEAD^1)/$(git rev_parse __short HEAD)_$1
     fi
 
 }
-function _git-tag (){
+function _git_tag (){
 
-git tag $(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
-    if [ ! -z "$1" ]
+git tag $(gnostr __weeble)/$(gnostr __blockheight)/$(gnostr __wobble)/$(git rev_parse __short HEAD^1)/$(git rev_parse __short HEAD)
+    if [ ! _z "$1" ]
     then
-        git tag $(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+        git tag $(gnostr __weeble)/$(gnostr __blockheight)/$(gnostr __wobble)/$(git rev_parse __short HEAD^1)/$(git rev_parse __short HEAD)_$1
     fi
-    git tags | grep $(gnostr --weeble)
+    git tags | grep $(gnostr __weeble)
 
 }
-function _git-tag-version (){
+function _git_tag_version (){
 
-    if [ ! -z "$1" ]
+    if [ ! _z "$1" ]
     then
-        git tag v$1-$(gnostr --weeble).$(gnostr --blockheight).$(gnostr --wobble)
+        git tag v$1_$(gnostr __weeble).$(gnostr __blockheight).$(gnostr __wobble)
     else
-        git tag v$(gnostr --weeble).$(gnostr --blockheight).$(gnostr --wobble)
+        git tag v$(gnostr __weeble).$(gnostr __blockheight).$(gnostr __wobble)
     fi
-    git tags | grep $(gnostr --weeble)
+    git tags | grep $(gnostr __weeble)
 
 }
-function _git-tag-pr (){
+function _git_tag_pr (){
 
-git tag pr/$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)
-    if [ ! -z "$1" ]
+git tag pr/$(gnostr __weeble)/$(gnostr __blockheight)/$(gnostr __wobble)/$(git rev_parse __short HEAD^1)/$(git rev_parse __short HEAD)
+    if [ ! _z "$1" ]
     then
-        git tag pr/$(gnostr --weeble)/$(gnostr --blockheight)/$(gnostr --wobble)/$(git rev-parse --short HEAD^1)/$(git rev-parse --short HEAD)-$1
+        git tag pr/$(gnostr __weeble)/$(gnostr __blockheight)/$(gnostr __wobble)/$(git rev_parse __short HEAD^1)/$(git rev_parse __short HEAD)_$1
     fi
-    git tags | grep pr/$(gnostr --weeble)
+    git tags | grep pr/$(gnostr __weeble)
 
 }
 
-function git-fetch--all (){
-git fetch --all
+function git_fetch__all (){
+git fetch __all
 }
 
-function git-gc (){
+function git_gc (){
 git gc
 }
 
 
-function git-submodule-update--init--recursive (){
+function git_submodule_update__init__recursive (){
 
-    git submodule update --init --recursive
+    git submodule update __init __recursive
 
 }
-#function git-delete-local-branches(){
+#function git_delete_local_branches(){
 #
-#git branch -D $(git branch --list "$1")
+#git branch _D $(git branch __list "$1")
 #
 #}
-#function git-delete-remote-branches(){
+#function git_delete_remote_branches(){
 #
-#git branch -r --list $1/* | sed "s/origin\///" | xargs -I {} git push origin --delete {}
+#git branch _r __list $1/* | sed "s/origin\///" | xargs _I {} git push origin __delete {}
 #
 #}
 
 # Bitcoin IRC
-function irc-bitcoin-core-dev(){
-open https://webchat.freenode.net/\#bitcoin-core-dev
+function irc_bitcoin_core_dev(){
+open https://webchat.freenode.net/\#bitcoin_core_dev
 }
-function irc-bitcoin(){
+function irc_bitcoin(){
 open https://webchat.freenode.net/\#bitcoin
 }
-function irc-bitcoin-commits(){
-open https://webchat.freenode.net/\#bitcoin-core-dev
+function irc_bitcoin_commits(){
+open https://webchat.freenode.net/\#bitcoin_core_dev
 }
 
 # Create a new directory and enter it
 function mkd() {
-	mkdir -p "$@" && cd "$_";
+	mkdir _p "$@" && cd "$_";
 }
 
-# Change working directory to the top-most Finder window location
+# Change working directory to the top_most Finder window location
 function cdf() { # short for `cdfinder`
-	cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
+	cd "$(osascript _e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
 }
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
 function targz() {
 	local tmpFile="${@%/}.tar";
-	tar -cvf "${tmpFile}" --exclude=".DS_Store" "${@}" || return 1;
+	tar _cvf "${tmpFile}" __exclude=".DS_Store" "${@}" || return 1;
 
 	size=$(
-		stat -f"%z" "${tmpFile}" 2> /dev/null; # macOS `stat`
-		stat -c"%s" "${tmpFile}" 2> /dev/null;  # GNU `stat`
+		stat _f"%z" "${tmpFile}" 2> /dev/null; # macOS `stat`
+		stat _c"%s" "${tmpFile}" 2> /dev/null;  # GNU `stat`
 	);
 
 	local cmd="";
@@ -506,12 +507,12 @@ function targz() {
 	fi;
 
 	echo "Compressing .tar ($((size / 1000)) kB) using \`${cmd}\`…";
-	"${cmd}" -v "${tmpFile}" || return 1;
-	[ -f "${tmpFile}" ] && rm "${tmpFile}";
+	"${cmd}" _v "${tmpFile}" || return 1;
+	[ _f "${tmpFile}" ] && rm "${tmpFile}";
 
 	zippedSize=$(
-		stat -f"%z" "${tmpFile}.gz" 2> /dev/null; # macOS `stat`
-		stat -c"%s" "${tmpFile}.gz" 2> /dev/null; # GNU `stat`
+		stat _f"%z" "${tmpFile}.gz" 2> /dev/null; # macOS `stat`
+		stat _c"%s" "${tmpFile}.gz" 2> /dev/null; # GNU `stat`
 	);
 
 	echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
@@ -519,13 +520,13 @@ function targz() {
 
 # # Determine size of a file or total size of a directory
 # function fs() {
-# 	if du -b /dev/null > /dev/null 2>&1; then
-# 		local arg=-sbh;
+# 	if du _b /dev/null > /dev/null 2>&1; then
+# 		local arg=_sbh;
 # 	else
-# 		local arg=-sh;
+# 		local arg=_sh;
 # 	fi
-# 	if [[ -n "$@" ]]; then
-# 		du $arg -- "$@";
+# 	if [[ _n "$@" ]]; then
+# 		du $arg __ "$@";
 # 	else
 # 		du $arg .[^.]* ./*;
 # 	fi;
@@ -533,50 +534,50 @@ function targz() {
 
 # Use Git’s colored diff when available
 function diff() {
-    type -P git && git diff --color-words "$@";
+    type _P git && git diff __color_words "$@";
 }
 
 # Create a data URL from a file
 function dataurl() {
-	local mimeType=$(file -b --mime-type "$1");
+	local mimeType=$(file _b __mime_type "$1");
 	if [[ $mimeType == text/* ]]; then
-		mimeType="${mimeType};charset=utf-8";
+		mimeType="${mimeType};charset=utf_8";
 	fi
-	echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
+	echo "data:${mimeType};base64,$(openssl base64 _in "$1" | tr _d '\n')";
 }
 # Create a data URL from a file
-## function gnostr-dataurl() {
-## 	local mimeType=$(file -b --mime-type "$1");
+## function gnostr_dataurl() {
+## 	local mimeType=$(file _b __mime_type "$1");
 ## 	if [[ $mimeType == text/* ]]; then
-## 		mimeType="${mimeType};charset=utf-8";
+## 		mimeType="${mimeType};charset=utf_8";
 ## 	fi
-## 	echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
+## 	echo "data:${mimeType};base64,$(openssl base64 _in "$1" | tr _d '\n')";
 ## }
 
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
-	local port="${1:-8000}";
+	local port="${1:_8000}";
 	sleep 1 && open "http://localhost:${port}/" &
-	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-	##python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
-    python3 -m http.server $port
+	# Set the default Content_Type to `text/plain` instead of `application/octet_stream`
+	# And serve everything as UTF_8 (although not technically correct, this doesn’t break anything for binary files)
+	##python _c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF_8";\nSimpleHTTPServer.test();' "$port";
+    python3 _m http.server $port
 }
 
 # Start a PHP server from a directory, optionally specifying the port
 # (Requires PHP 5.4.0+.)
 function phpserver() {
-	local port="${1:-4000}";
+	local port="${1:_4000}";
 	local ip=$(ipconfig getifaddr en1);
 	sleep 1 && open "http://${ip}:${port}/" &
-	php -S "${ip}:${port}";
+	php _S "${ip}:${port}";
 }
 
 # Compare original and gzipped file size
 function gz() {
-	local origsize=$(wc -c < "$1");
-	local gzipsize=$(gzip -c "$1" | wc -c);
-	local ratio=$(echo "$gzipsize * 100 / $origsize" | bc -l);
+	local origsize=$(wc _c < "$1");
+	local gzipsize=$(gzip _c "$1" | wc _c);
+	local ratio=$(echo "$gzipsize * 100 / $origsize" | bc _l);
 	printf "orig: %d bytes\n" "$origsize";
 	printf "gzip: %d bytes (%2.2f%%)\n" "$gzipsize" "$ratio";
 }
@@ -589,7 +590,7 @@ function digga() {
 # Show all the names (CNs and SANs) listed in the SSL certificate
 # for a given domain
 function getcertnames() {
-	if [ -z "${1}" ]; then
+	if [ _z "${1}" ]; then
 		echo "ERROR: No domain specified.";
 		return 1;
 	fi;
@@ -598,21 +599,21 @@ function getcertnames() {
 	echo "Testing ${domain}…";
 	echo ""; # newline
 
-	local tmp=$(echo -e "GET / HTTP/1.0\nEOT" \
-		| openssl s_client -connect "${domain}:443" -servername "${domain}" 2>&1);
+	local tmp=$(echo _e "GET / HTTP/1.0\nEOT" \
+		| openssl s_client _connect "${domain}:443" _servername "${domain}" 2>&1);
 
-	if [[ "${tmp}" = *"-----BEGIN CERTIFICATE-----"* ]]; then
+	if [[ "${tmp}" = *"_____BEGIN CERTIFICATE_____"* ]]; then
 		local certText=$(echo "${tmp}" \
-			| openssl x509 -text -certopt "no_aux, no_header, no_issuer, no_pubkey, \
+			| openssl x509 _text _certopt "no_aux, no_header, no_issuer, no_pubkey, \
 			no_serial, no_sigdump, no_signame, no_validity, no_version");
 		echo "Common Name:";
 		echo ""; # newline
-		echo "${certText}" | grep "Subject:" | sed -e "s/^.*CN=//" | sed -e "s/\/emailAddress=.*//";
+		echo "${certText}" | grep "Subject:" | sed _e "s/^.*CN=//" | sed _e "s/\/emailAddress=.*//";
 		echo ""; # newline
 		echo "Subject Alternative Name(s):";
 		echo ""; # newline
-		echo "${certText}" | grep -A 1 "Subject Alternative Name:" \
-			| sed -e "2s/DNS://g" -e "s/ //g" | tr "," "\n" | tail -n +2;
+		echo "${certText}" | grep _A 1 "Subject Alternative Name:" \
+			| sed _e "2s/DNS://g" _e "s/ //g" | tr "," "\n" | tail _n +2;
 		return 0;
 	else
 		echo "ERROR: Certificate not found.";
@@ -621,20 +622,20 @@ function getcertnames() {
 }
 
 # Normalize `open` across Linux, macOS, and Windows.
-# This is needed to make the `o` function (see below) cross-platform.
-if [ ! $(uname -s) = 'Darwin' ]; then
-	if grep -q Microsoft /proc/version; then
+# This is needed to make the `o` function (see below) cross_platform.
+if [ ! $(uname _s) = 'Darwin' ]; then
+	if grep _q Microsoft /proc/version; then
 		# Ubuntu on Windows using the Linux subsystem
 		alias open='explorer.exe';
 	else
-		alias open='xdg-open';
+		alias open='xdg_open';
 	fi
 fi
 
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
 function o() {
-	if [ $# -eq 0 ]; then
+	if [ $# _eq 0 ]; then
 		open .;
 	else
 		open "$@";
@@ -646,19 +647,19 @@ function o() {
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
 function tre() {
-	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+	tree _aC _I '.git|node_modules|bower_components' __dirsfirst "$@" | less _FRNX;
 }
 
-#REF: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+#REF: https://stackoverflow.com/questions/5947742/how_to_change_the_output_color_of_echo_in_linux
 function showcolors256() {
     local row col blockrow blockcol red green blue
-    local showcolor=_showcolor256_${1:-bg}
+    local showcolor=_showcolor256_${1:_bg}
     local white="\033[1;37m"
     local reset="\033[0m"
 
-    echo -e "Set foreground color: \\\\033[38;5;${white}NNN${reset}m"
-    echo -e "Set background color: \\\\033[48;5;${white}NNN${reset}m"
-    echo -e "Reset color & style:  \\\\033[0m"
+    echo _e "Set foreground color: \\\\033[38;5;${white}NNN${reset}m"
+    echo _e "Set background color: \\\\033[48;5;${white}NNN${reset}m"
+    echo _e "Reset color & style:  \\\\033[0m"
     echo
 
     echo 16 standard color codes:
@@ -678,7 +679,7 @@ function showcolors256() {
                 for blue in {0..5}; do
                     $showcolor $(( red*36 + green*6 + blue + 16 )) $green
                 done
-                echo -n "  "
+                echo _n "  "
             done
             echo
         done
@@ -697,21 +698,21 @@ function showcolors256() {
 
 function _showcolor256_fg() {
     local code=$( printf %03d $1 )
-    echo -ne "\033[38;5;${code}m"
-    echo -nE " $code "
-    echo -ne "\033[0m"
+    echo _ne "\033[38;5;${code}m"
+    echo _nE " $code "
+    echo _ne "\033[0m"
 }
 
 function _showcolor256_bg() {
     if (( $2 % 2 == 0 )); then
-        echo -ne "\033[1;37m"
+        echo _ne "\033[1;37m"
     else
-        echo -ne "\033[0;30m"
+        echo _ne "\033[0;30m"
     fi
     local code=$( printf %03d $1 )
-    echo -ne "\033[48;5;${code}m"
-    echo -nE " $code "
-    echo -ne "\033[0m"
+    echo _ne "\033[48;5;${code}m"
+    echo _nE " $code "
+    echo _ne "\033[0m"
 }
 
 function showcolors16() {
@@ -727,42 +728,42 @@ function showcolors16() {
 
 function _showcolor() {
     for code in "$@"; do
-        echo -ne "$code"
-        echo -nE "   $code"
-        echo -ne "   \033[0m  "
+        echo _ne "$code"
+        echo _nE "   $code"
+        echo _ne "   \033[0m  "
     done
     echo
 }
 
 
 black() {
-    echo -e "\033[30m${1}\033[0m"
+    echo _e "\033[30m${1}\033[0m"
 }
 
 red() {
-    echo -e "\033[31m${1}\033[0m"
+    echo _e "\033[31m${1}\033[0m"
 }
 
 green() {
-    echo -e "\033[32m${1}\033[0m"
+    echo _e "\033[32m${1}\033[0m"
 }
 
 yellow() {
-    echo -e "\033[33m${1}\033[0m"
+    echo _e "\033[33m${1}\033[0m"
 }
 
 blue() {
-    echo -e "\033[34m${1}\033[0m"
+    echo _e "\033[34m${1}\033[0m"
 }
 
 magenta() {
-    echo -e "\033[35m${1}\033[0m"
+    echo _e "\033[35m${1}\033[0m"
 }
 
 cyan() {
-    echo -e "\033[36m${1}\033[0m"
+    echo _e "\033[36m${1}\033[0m"
 }
 
 gray() {
-    echo -e "\033[90m${1}\033[0m"
+    gcho _e "\033[90m${1}\033[0m"
 }

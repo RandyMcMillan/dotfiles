@@ -1,31 +1,32 @@
 [alias]
-    git-word-diff = "!f() { \
-        echo 'Checking Git configuration syntax...'; \
-        if git config --list --file ${1:-.gitconfig} > /dev/null; then \
-            echo '✅ Syntax: OK'; \
-        else \
-            echo '❌ Syntax: FAILED'; \
-            git config --list --file ${1:-.gitconfig}; \
-        fi; \
-        echo 'Checking for broken paths...'; \
-        grep 'path =' ${1:-.gitconfig} | awk '{print $3}' | while read -r path; do \
-            real_path=$(eval echo $path); \
-            if [ ! -e \"$real_path\" ]; then \
-                echo \"⚠️  Broken path found: $path\"; \
-            fi; \
-        done; \
-    }; f"
     lint-config = "!f() { \
+        file=${1:-.gitconfig}; \
+        if [ ! -f \"$file\" ]; then \
+            echo \"❌ File not found: $file\"; \
+            return 1; \
+        fi; \
+        case $file in \
+            *.gitignore|*.gitattributes) \
+                echo \"❌ $file is not a Git config file (expected .gitconfig, .gitmodules, or similar)\"; \
+                return 1; \
+                ;; \
+        esac; \
         echo 'Checking Git configuration syntax...'; \
-        if git config --list --file ${1:-.gitconfig} > /dev/null; then \
+        if git config --list --file \"$file\" > /dev/null 2>&1; then \
             echo '✅ Syntax: OK'; \
         else \
             echo '❌ Syntax: FAILED'; \
-            git config --list --file ${1:-.gitconfig}; \
+            git config --list --file \"$file\"; \
+            return 1; \
         fi; \
         echo 'Checking for broken paths...'; \
-        grep 'path =' ${1:-.gitconfig} | awk '{print $3}' | while read -r path; do \
-            real_path=$(eval echo $path); \
+        base=$(CDPATH= cd -- \"$(dirname -- \"$file\")\" && pwd); \
+        git config --file \"$file\" --get-regexp '\\.path$' | while read -r key path; do \
+            case $path in \
+                /*) real_path=$path ;; \
+                '~/'*) real_path=$HOME/${path#\\~/} ;; \
+                *) real_path=$base/$path ;; \
+            esac; \
             if [ ! -e \"$real_path\" ]; then \
                 echo \"⚠️  Broken path found: $path\"; \
             fi; \

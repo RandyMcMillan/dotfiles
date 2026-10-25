@@ -1,7 +1,20 @@
-[safe]
-	directory = *
-
 [alias]
+    git-word-diff = "!f() { \
+        echo 'Checking Git configuration syntax...'; \
+        if git config --list --file ${1:-.gitconfig} > /dev/null; then \
+            echo '✅ Syntax: OK'; \
+        else \
+            echo '❌ Syntax: FAILED'; \
+            git config --list --file ${1:-.gitconfig}; \
+        fi; \
+        echo 'Checking for broken paths...'; \
+        grep 'path =' ${1:-.gitconfig} | awk '{print $3}' | while read -r path; do \
+            real_path=$(eval echo $path); \
+            if [ ! -e \"$real_path\" ]; then \
+                echo \"⚠️  Broken path found: $path\"; \
+            fi; \
+        done; \
+    }; f"
     lint-config = "!f() { \
         echo 'Checking Git configuration syntax...'; \
         if git config --list --file ${1:-.gitconfig} > /dev/null; then \

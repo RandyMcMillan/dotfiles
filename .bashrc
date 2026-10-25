@@ -187,10 +187,10 @@ done
 ## export GPG_TTY=$(tty)
 ## 
 ## # Set PATH, MANPATH, etc., for Homebrew.
-## if ! hash brew 2>/dev/null; then
-##        eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
-##        eval "$(/opt/homebrew/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
-## fi
+if ! hash brew 2>/dev/null; then
+       eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
+       eval "$(/opt/homebrew/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
+fi
 ## 
 ## # Add opencode to PATH if installed via Homebrew
 ## if [ -d "/usr/local/opt/opencode/bin" ]; then

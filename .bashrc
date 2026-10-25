@@ -36,11 +36,11 @@ fi
 ## complete -F _just -o bashdefault -o default j
 ## 
 ## # Add `~/bin` to the `$PATH`
-## export PATH="$HOME/bin:$PATH";
-## export PATH="/usr/local/bin:$PATH"
-## export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/bin:$PATH";
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
 ## # Add `~/init` to the `$PATH`
-## export PATH="$HOME/init:$PATH";
+export PATH="$HOME/init:$PATH";
 ## ## Load the shell dotfiles, and then some:
 ## # * ~/.path can be used to extend `$PATH`.
 ## # * ~/.extra can be used for other settings you don’t want to commit.

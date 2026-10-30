@@ -1360,3 +1360,5 @@ src/zmq/.deps/
 test/config.ini
 Thumbs.db
 xcuserdata/
+
+backup_**

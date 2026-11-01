@@ -635,7 +635,7 @@ fi
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
 function o() {
-	if [ $# _eq 0 ]; then
+	if [ $# -eq 0 ]; then
 		open .;
 	else
 		open "$@";

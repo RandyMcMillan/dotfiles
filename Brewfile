@@ -1,4 +1,4 @@
-tap "gnostr-org/gnostr-org"
+tap "gnostr-org/gnostr-org", trusted: true
 tap "randymcmillan/randymcmillan", "https://github.com/RandyMcMillan/homebrew-randymcmillan"
 # Run your GitHub Actions locally
 brew "act"
@@ -13,7 +13,9 @@ brew "automake"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Programmable completion for Bash 3.2
-brew "bash-completion"
+brew "bash-completion", link: false
+# Programmable completion for Bash 4.2+
+brew "bash-completion@2"
 # Compiler infrastructure and toolchain library for WebAssembly
 brew "binaryen"
 # Collection of portable C++ source libraries
@@ -36,8 +38,6 @@ brew "flatbuffers"
 brew "fzf"
 # GNU awk utility
 brew "gawk"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # Interact with Google Gemini AI models from the command-line
@@ -58,20 +58,32 @@ brew "gtk4"
 brew "kimi-code"
 # Peer-to-peer hypermedia protocol
 brew "kubo"
+# Asynchronous event library
+brew "libevent"
 # Generic library support script
 brew "libtool"
+# LLVM Project Linker
+brew "lld"
 # Dependency manager that installs and runs Swift command-line tool packages
 brew "mint"
+# Modern Linker
+brew "mold"
+# Small build system for use with gyp or CMake
+brew "ninja"
 # Manage multiple Node.js versions
 brew "nvm"
 # AI coding agent, built for the terminal
 brew "opencode"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
 # Package compiler and linker metadata toolkit
 brew "pkgconf"
 # Fast, disk space efficient package manager
 brew "pnpm"
 # Protocol buffers (Google's data interchange format)
 brew "protobuf"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.15"
 # QR Code generation
 brew "qrencode"
 # Cross-platform application and UI framework
@@ -82,6 +94,8 @@ brew "rust"
 brew "scdoc"
 # Formatting tool for reformatting Swift code
 brew "swiftformat"
+# Next generation frontend tooling. It's fast!
+brew "vite"
 # JavaScript package manager
 brew "yarn"
 # General-purpose lossless data-compression library
@@ -131,6 +145,8 @@ cargo "blossom-server"
 cargo "cargo-binstall"
 cargo "cargo-deny"
 cargo "cargo-dist"
+cargo "cargo-generate"
+cargo "cargo-insta"
 cargo "cargo-llvm-cov"
 cargo "cargo-ndk"
 cargo "cargo-sort"

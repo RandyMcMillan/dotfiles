@@ -1,1 +1,26 @@
+# Default behavior: automatically detect text files and normalize them to LF on commit
 * text=auto
+
+# Explicitly force common source code and text files to normalize
+*.rs text diff=rust
+*.toml text
+*.json text
+*.md text
+*.yml text
+*.yaml text
+
+# Force shell scripts to always use LF (prevents Windows runner execution failures)
+*.sh text eol=lf
+
+# Force Windows batch/command scripts to always use CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Prevent binary files from being treated as text
+*.png binary
+*.jpg binary
+*.zip binary
+*.tar.gz binary
+*.a binary
+*.so binary
+*.dylib binary

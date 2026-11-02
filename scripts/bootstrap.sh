@@ -12,15 +12,13 @@ set -euo pipefail
 # Get the absolute path of the directory containing this script.
 SCRIPT_DIR_SELF="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # Go up one level from the script's directory to get the repository root.
-readonly SCRIPT_DIR
-SCRIPT_DIR="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
-readonly REPO_ROOT
-REPO_ROOT="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
-readonly BIN_DIR
-BIN_DIR="$REPO_ROOT/bin"
+# shellcheck disable=SC2155
+readonly SCRIPT_DIR="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
+# shellcheck disable=SC2155
+readonly REPO_ROOT="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
+readonly BIN_DIR="$REPO_ROOT/bin"
 echo "$BIN_DIR"
-readonly HOME_DIR
-HOME_DIR="$HOME"
+readonly HOME_DIR="$HOME"
 
 # Configuration file name (relative to SCRIPT_DIR)
 CONFIG_FILE_NAME=".bootstrapconfig"

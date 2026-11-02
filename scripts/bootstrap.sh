@@ -12,11 +12,15 @@ set -euo pipefail
 # Get the absolute path of the directory containing this script.
 SCRIPT_DIR_SELF="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # Go up one level from the script's directory to get the repository root.
-readonly SCRIPT_DIR="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
-readonly REPO_ROOT="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
-readonly BIN_DIR="$REPO_ROOT/bin"
-#echo $BIN_DIR
-readonly HOME_DIR="$HOME"
+readonly SCRIPT_DIR
+SCRIPT_DIR="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
+readonly REPO_ROOT
+REPO_ROOT="$( cd "$SCRIPT_DIR_SELF"/.. && pwd )"
+readonly BIN_DIR
+BIN_DIR="$REPO_ROOT/bin"
+echo "$BIN_DIR"
+readonly HOME_DIR
+HOME_DIR="$HOME"
 
 # Configuration file name (relative to SCRIPT_DIR)
 CONFIG_FILE_NAME=".bootstrapconfig"
@@ -296,7 +300,9 @@ get_exclusions() {
 # Creates a backup of dotfiles that are about to be overwritten.
 create_backup() {
     if [[ "$BACKUP" == "true" ]]; then
-        local backup_dir="$HOME_DIR/dotfiles/backup_$(date +%Y%m%d_%H%M%S)"
+        #local backup_dir="$HOME_DIR/dotfiles/backup_$(date +%Y%m%d_%H%M%S)"
+        local backup_dir
+        backup_dir="$HOME_DIR/dotfiles/backup_$(gnostr --blockheight)/$(gnostr --weeble)/$(gnostr --wobble)"
         log "Creating backup of existing dotfiles in '$backup_dir'"
         mkdir -p "$backup_dir" || { error "Failed to create backup directory '$backup_dir'."; return 1; }
 
@@ -399,6 +405,7 @@ pull_changes() {
     # List of directories/files in HOME to synchronize back to dotfiles
     local sync_targets=(
         ".gemini"
+        ".agents"
         ".ssh/known_hosts"
         ".ssh/config"
         ".ssh/id_rsa_github"
@@ -410,8 +417,10 @@ pull_changes() {
     for target in "${sync_targets[@]}"; do
         local home_path="$HOME_DIR/$target"
         # Determine the corresponding path within the dotfiles repository
-        local repo_path="$SCRIPT_DIR/$target"
-        local repo_dir=$(dirname "$repo_path")
+        local repo_path
+        repo_path="$SCRIPT_DIR/$target"
+        local repo_dir
+        repo_dir=$(dirname "$repo_path")
 
         if [[ -e "$home_path" ]]; then # Check if source exists (file or dir)
             if [[ "$DRY_RUN" == "true" ]]; then
@@ -465,7 +474,8 @@ install_rust_and_sccache_via_rustup() {
             if command_exists "curl"; then
                 log "Downloading Rustup installer..."
                 # Use a temporary file for the installer script
-                local rustup_installer=$(mktemp)
+                local rustup_installer
+                rustup_installer=$(mktemp)
                 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o "$rustup_installer" || { error "Failed to download Rustup installer."; return 1; }
 
                 log "Running Rustup installer..."
@@ -475,6 +485,7 @@ install_rust_and_sccache_via_rustup() {
 
                 # Source the cargo environment to make 'cargo' command available
                 log "Sourcing Rustup environment..."
+                # shellcheck disable=SC1091
                 source "$HOME_DIR/.cargo/env" || warn "Could not source Rustup environment. You might need to restart your shell."
                 success "Rustup installed."
             else
@@ -487,6 +498,7 @@ install_rust_and_sccache_via_rustup() {
         fi
     else
         log "Rust (cargo) already installed: $(which cargo)"
+        # shellcheck disable=SC1091
         source "$HOME_DIR/.cargo/env" # Ensure environment is loaded if cargo exists
     fi
 
@@ -530,7 +542,11 @@ install_sccache_via_package_manager() {
         elif [[ "$(uname)" == "Linux" ]]; then
             if command_exists "apt-get"; then # Debian/Ubuntu
                 log "Using apt-get to install sccache..."
-                sudo apt-get update && sudo apt-get install -y sccache || { error "Failed to install sccache via apt-get."; return 1; }
+                # Fixed SC2015 by replacing A && B || C with a proper if/else block
+                if ! sudo apt-get update || ! sudo apt-get install -y sccache; then
+                    error "Failed to install sccache via apt-get."
+                    return 1
+                fi
                 success "sccache installed via apt-get."
                 installed=true
             elif command_exists "dnf"; then # Fedora/CentOS Stream

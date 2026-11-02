@@ -1,0 +1,51 @@
+{
+  "version": 3,
+  "skills": {
+    "chrome-extensions": {
+      "source": "GoogleChrome/modern-web-guidance",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/GoogleChrome/modern-web-guidance.git",
+      "skillPath": "skills/chrome-extensions/SKILL.md",
+      "skillFolderHash": "70ae21f9bbccb4d97c2748dffcc227f9ed07c6cf",
+      "installedAt": "2026-11-02T13:31:05.193Z",
+      "updatedAt": "2026-11-02T13:31:05.193Z"
+    },
+    "modern-web-guidance": {
+      "source": "GoogleChrome/modern-web-guidance",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/GoogleChrome/modern-web-guidance.git",
+      "skillPath": "skills/modern-web-guidance/SKILL.md",
+      "skillFolderHash": "f36692bc081465b920c16c5801415f2f0627146c",
+      "installedAt": "2026-11-02T13:31:05.194Z",
+      "updatedAt": "2026-11-02T13:31:05.194Z"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "76a98a285cb0434f3d39e1a873823556330e398b",
+      "installedAt": "2026-11-02T13:31:15.403Z",
+      "updatedAt": "2026-11-02T13:31:15.403Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "cline",
+    "codex",
+    "cursor",
+    "droid",
+    "fx",
+    "gemini-cli",
+    "github-copilot",
+    "kilo",
+    "kimi-code-cli",
+    "opencode",
+    "pi",
+    "warp",
+    "zed"
+  ]
+}

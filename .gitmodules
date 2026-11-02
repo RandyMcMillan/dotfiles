@@ -13,3 +13,6 @@
 [submodule ".agents/skills/swift-agent-skills"]
 	path = .agents/skills/swift-agent-skills
 	url = git@github.com:RandyMcMillan/swift-agent-skills.git
+[submodule ".agents/skills/rust-skills"]
+	path = .agents/skills/rust-skills
+	url = git@github.com:RandyMcMillan/rust-skills.git

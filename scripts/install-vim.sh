@@ -13,12 +13,11 @@ install-vim() {
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-        #sudo rm -rf ~/.vim_runtime
         if [ -d "$HOME/.vim_runtime/" ]; then
-          rsync -av .vim_runtime/ ~/.vim_runtime/
-          pushd ~/.vim_runtime && make
-          #sh ~/.vim_runtime/install_awesome_vimrc.sh
-          popd || exit
+        rm -rf ~/.vim_runtime
+    rsync -av .vim_runtime/ ~/.vim_runtime/ || exit 1
+    pushd ~/.vim_runtime && make
+    popd || exit
 
         else
 

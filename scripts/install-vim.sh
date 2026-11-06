@@ -13,18 +13,18 @@ install-vim() {
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-        if [ -d "$HOME/.vim_runtime/" ]; then
+        #if [ -d "$HOME/.vim_runtime/" ]; then
         rm -rf ~/.vim_runtime
     #rsync -av .vim_runtime/ ~/.vim_runtime/ || exit 1
     ln -s "$PWD/.vim_runtime" ~/.vim_runtime
 
-        else
+        #else
 
-          git clone --depth=1 https://github.com/randymcmillan/vimrc.git "$HOME/.vim_runtime"
-          pushd "$HOME/.vim_runtime" || exit
-          make
+          #git clone --depth=1 https://github.com/randymcmillan/vimrc.git "$HOME/.vim_runtime"
+          #pushd "$HOME/.vim_runtime" || exit
+          #make
           #ln -sf ~/dotfiles/.vimrc ~/.vim_runtime/my_configs.vim
-        fi
+        #fi
 
     fi
     echo

@@ -184,12 +184,40 @@ done
 ##     complete -o bashdefault -o default -F _make_completion make
 ## fi
 ## 
-## export GPG_TTY=$(tty)
+declare GPG_TTY
+GPG_TTY=$(tty)
+export GPG_TTY
 ## 
 ## # Set PATH, MANPATH, etc., for Homebrew.
 if ! hash brew 2>/dev/null; then
        eval "$(/usr/local/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
        eval "$(/opt/homebrew/bin/brew shellenv)" 2> >(tee -a bash_profile.log)
+       # Detect and configure pinentry-mac for GPG
+       PINENTRY_PATH="/opt/homebrew/bin/pinentry-mac"
+       
+       if [ -x "$PINENTRY_PATH" ]; then
+           # Binary exists at the standard Apple Silicon Homebrew path
+           GPG_AGENT_CONF="$HOME/.gnupg/gpg-agent.conf"
+       
+           # Ensure ~/.gnupg directory exists
+           mkdir -p "$HOME/.gnupg"
+           chmod 700 "$HOME/.gnupg"
+       
+           # Check if pinentry-program is already configured
+           if ! grep -q "pinentry-program" "$GPG_AGENT_CONF" 2>/dev/null; then
+               echo "pinentry-program $PINENTRY_PATH" >> "$GPG_AGENT_CONF"
+               echo "Configured GPG to use pinentry-mac at $PINENTRY_PATH"
+           elif ! grep -q "$PINENTRY_PATH" "$GPG_AGENT_CONF" 2>/dev/null; then
+               # Update existing pinentry-program path if it differs
+               sed -i.bak "s|^pinentry-program.*|pinentry-program $PINENTRY_PATH|" "$GPG_AGENT_CONF"
+               echo "Updated GPG pinentry path to $PINENTRY_PATH"
+           fi
+       
+           # Export GPG TTY for proper terminal prompt handoff
+           export GPG_TTY=$(tty)
+       else
+           echo "Warning: pinentry-mac not found at $PINENTRY_PATH. Run 'brew install pinentry-mac'."
+       fi
 fi
 ## 
 ## # Add opencode to PATH if installed via Homebrew

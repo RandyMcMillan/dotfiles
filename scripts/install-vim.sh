@@ -15,7 +15,8 @@ install-vim() {
 
         if [ -d "$HOME/.vim_runtime/" ]; then
         rm -rf ~/.vim_runtime
-    rsync -av .vim_runtime/ ~/.vim_runtime/ || exit 1
+    #rsync -av .vim_runtime/ ~/.vim_runtime/ || exit 1
+    ln -s "$PWD/.vim_runtime" ~/.vim_runtime
     pushd ~/.vim_runtime && make
     popd || exit
 

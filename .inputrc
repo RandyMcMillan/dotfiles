@@ -1,8 +1,8 @@
 # TURN ON VIM (E.G. FOR READLINE)
-set editing-mode vi
+# set editing-mode vi
 
 # SHOW THE VIM MODE IN THE PROMPT (COMMAND OR INSERT)
-set show-mode-in-prompt on
+# set show-mode-in-prompt on
 
 # SET THE MODE STRING TO INDICATE THE VIM MODE
 # NOTE: cursor-shape escape sequences (e.g. \e[5 q) were removed here
@@ -11,9 +11,9 @@ set show-mode-in-prompt on
 
 # distinguish between command and insert mode
 # Prepend I to indicate insert mode
-set vi-ins-mode-string I
+# set vi-ins-mode-string I
 # prepend C to indicate command mode
-set vi-cmd-mode-string C
+# set vi-cmd-mode-string C
 set blink-matching-paren on
 
 # sets the readline to display possible completions using different colors

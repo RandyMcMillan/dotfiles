@@ -298,7 +298,7 @@
 
 [init]
 
-    templateDir = ~/.config/git/template/
+    #templateDir = ~/.config/git/template/
     defaultBranch = main
 
 ## gpg --list-secret-keys --keyid-format LONG

@@ -41,6 +41,10 @@ export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 ## # Add `~/init` to the `$PATH`
 export PATH="$HOME/init:$PATH";
+## # Rust toolchain (rustup shims: cargo/rustc/trunk). Must precede
+## # /opt/homebrew/bin — Homebrew's rust ships without wasm targets and
+## # otherwise shadows rustup (E0463 on wasm builds).
+export PATH="$HOME/.cargo/bin:$PATH";
 ## ## Load the shell dotfiles, and then some:
 ## # * ~/.path can be used to extend `$PATH`.
 ## # * ~/.extra can be used for other settings you don’t want to commit.
